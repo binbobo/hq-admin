@@ -1,0 +1,25 @@
+.navbar-right{
+    width:100%;
+    text-align: right;
+    color:#fff;
+}
+
+.navbar-right a{
+    color:#fff;
+}
+
+.dropdown-menu{
+    margin-top: 19px;
+}
+
+.dropdown-menu.bg-inverse .dropdown-item:focus,.dropdown-menu.bg-inverse .dropdown-item:hover{
+    color:#000;
+}
+
+.fa.fa-check{
+  margin-left: -20px;
+}
+
+.btn.dropdown-toggle{
+    padding: 8px 2px;
+}

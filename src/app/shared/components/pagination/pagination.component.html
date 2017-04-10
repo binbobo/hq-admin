@@ -1,0 +1,7 @@
+<hq-loading [loading]="loading"></hq-loading>
+<div *ngIf="totalItems" [hidden]="totalItems<=10||loading">
+  <pagination [totalItems]="totalItems" [maxSize]="maxSize" [boundaryLinks]="boundaryLinks" [itemsPerPage]="itemsPerPage" firstText="{{'first.text'|translate}}"
+    lastText="{{'last.text'|translate}}" previousText="{{'previous.text'|translate}}" nextText="{{'next.text'|translate}}"
+    [(ngModel)]="currentPage" (numPages)="onNumPages($event)" (pageChanged)="onPageChanged($event)">
+  </pagination>
+</div>

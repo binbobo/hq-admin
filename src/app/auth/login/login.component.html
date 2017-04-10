@@ -1,0 +1,44 @@
+<hq-alerter [service]="alerter"></hq-alerter>
+<div class="card">
+  <div class="card-header">
+    用户登录
+  </div>
+  <form *ngIf="form" class="card-block" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group row">
+      <label for="username" class="col-sm-3 col-form-label">用户名</label>
+      <div class="col-sm-9">
+        <input type="text" formControlName="username" class="form-control" id="username" placeholder="请输入用户名">
+        <control-errors control="username" [form]="form">
+          <control-error code="required">用户名不能为空</control-error>
+          <control-error code="minlength">用户名要求最少6位字符</control-error>
+          <control-error code="maxlength">用户名要求不能超过20位字符</control-error>
+        </control-errors>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="password" class="col-sm-3 col-form-label">密码</label>
+      <div class="col-sm-9">
+        <input type="password" formControlName="password" class="form-control" id="password" placeholder="请输入用户密码">
+        <control-errors control="password" [form]="form">
+          <control-error code="required">密码不能为空</control-error>
+          <control-error code="minlength">密码要求最少6位字符</control-error>
+          <control-error code="maxlength">密码要求不能超过20位字符</control-error>
+        </control-errors>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="offset-sm-3">
+        <div class="form-check">
+          <label class="form-check-label">
+            <input class="form-check-input" formControlName="rememberMe" type="checkbox"> 
+            <span>保持登录状态</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="text-center">
+      <button type="submit" [disabled]="!form.valid" class="btn btn-primary mr-5">登录</button>
+      <button routerLink="/register" class="btn btn-secondary">注册</button>
+    </div>
+  </form>
+</div>

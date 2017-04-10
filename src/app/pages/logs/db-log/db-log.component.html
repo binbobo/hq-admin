@@ -1,0 +1,116 @@
+<hq-alerter [service]="alerter"></hq-alerter>
+<div class="card">
+  <div class="card-header">
+    数据库日志列表
+  </div>
+  <div class="card-block">
+    <form class="form-inline mb-2">
+      <input type="text" class="form-control mb-2 mr-2" placeholder="请输入菜单名称">
+      <button type="submit" class="btn btn-primary mb-2 mr-2">search</button>
+    </form>
+    <table class="table table-bordered table-sm table-striped">
+      <thead>
+        <tr>
+          <th translate>environment</th>
+          <th translate>level</th>
+          <th translate>database</th>
+          <th translate>command</th>
+          <th translate>timestamp</th>
+          <th translate>time.consuming</th>
+          <th translate>operators</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of list">
+          <td>{{item.environmentName}}</td>
+          <td>{{item.logLevel}}</td>
+          <td>{{ item.databaseName}}</td>
+          <td>
+            <clipped-word length="20" [content]="item.commandText"></clipped-word>
+          </td>
+          <td>{{item.timestamp|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+          <td class="text-right">{{item.takeTime|number:'1.3'}}</td>
+          <td>
+            <a (click)="showModal(item.id)" class="btn btn-sm btn-info" title="详情"><i class="fa fa-info-circle"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+  </div>
+</div>
+
+<div bsModal #detailModal="bs-modal" class="modal fade" [class.show]="model" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="close" aria-label="Close" (click)="detailModal.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" *ngIf="model">
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" translate>session.id</label>
+          <div class="col-sm-10">
+            <p class="form-control-static mb-0">{{model.sessionId}}</p>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" translate>level</label>
+          <div class="col-sm-10">
+            <p class="form-control-static mb-0">{{model.logLevel}}</p>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" translate>application</label>
+          <div class="col-sm-10">
+            <p class="form-control-static mb-0">{{model.applicationName}}</p>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" translate>timestamp</label>
+          <div class="col-sm-10">
+            <p class="form-control-static mb-0">{{model.timestamp|date:"yyyy/MM/dd HH:mm:ss"}}</p>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" translate>environment</label>
+          <div class="col-sm-10">
+            <p class="form-control-static mb-0">{{model.environmentName}}</p>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" translate>source</label>
+          <div class="col-sm-10">
+            <p class="form-control-static mb-0">{{model.sourceName}}</p>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" translate>database</label>
+          <div class="col-sm-10">
+            <p class="form-control-static mb-0">{{model.databaseName}}</p>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" translate>command</label>
+          <div class="col-sm-10">
+            <p class="form-control-static mb-0">{{model.commandText}}</p>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" translate>result</label>
+          <div class="col-sm-10">
+            <p class="form-control-static mb-0">{{model.result}}</p>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" translate>time.consuming</label>
+          <div class="col-sm-10">
+            <p class="form-control-static mb-0">{{model.takeTime}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

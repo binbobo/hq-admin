@@ -1,0 +1,7 @@
+input.ng-touched.ng-invalid,select.ng-touched.ng-invalid{
+    border:1px solid red;
+}
+
+select.form-control{
+    padding: 0 12px;
+}

@@ -1,0 +1,51 @@
+<hq-alerter [service]="alerter"></hq-alerter>
+<div class="card">
+  <div class="card-header">
+    <span>添加资源</span>
+    <div class="pull-right">
+      <a routerLink="../" class="btn btn-sm btn-info">返回</a>
+    </div>
+  </div>
+  <form *ngIf="form" class="card-block" [formGroup]="form" (ngSubmit)="onCreate()">
+    <div class="form-group">
+      <label class="form-control-label">资源名称</label>
+      <input type="text" formControlName="key" class="form-control" placeholder="请输入资源名称">
+      <control-errors control="key" [form]="form">
+        <control-error code="required">资源名称不能为空</control-error>
+        <control-error code="maxlength">资源名称要求不能超过30位字符</control-error>
+      </control-errors>
+    </div>
+    <div class="form-group">
+      <label class="form-control-label">资源值</label>
+      <input type="text" formControlName="value" class="form-control" placeholder="请输入资源值">
+      <control-errors control="value" [form]="form">
+        <control-error code="required">资源值不能为空</control-error>
+        <control-error code="maxlength">资源值要求不能超过100位字符</control-error>
+      </control-errors>
+    </div>
+    <div class="form-group">
+      <label class="form-control-label">资源语言</label>
+      <select name="languageId" class="form-control" formControlName="languageId">
+        <option *ngFor="let item of languages" value="{{item.id}}">{{item.name}}</option>
+      </select>
+      <control-errors control="languageId" [form]="form">
+        <control-error code="required">资源语言不能为空</control-error>
+        <control-error code="maxlength">资源语言不能超过36个字符</control-error>
+      </control-errors>
+    </div>
+    <div class="form-group">
+      <label class="form-control-label">资源分组</label>
+      <div class="form-control">
+        <div class="form-check form-check-inline" *ngFor="let item of groups">
+          <label class="form-check-label">
+            <input class="form-check-input" (change)="onSelectGroup($event)" type="checkbox" [value]="item.value"> {{item.text}}
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <button type="submit" [disabled]="form.invalid||submitting" class="btn btn-primary mr-3">提交</button>
+      <button type="button" (click)="onReset()" class="btn btn-secondary mr-3">重置</button>
+    </div>
+  </form>
+</div>

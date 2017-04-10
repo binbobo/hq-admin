@@ -1,0 +1,42 @@
+<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+  <a class="navbar-brand" href="/">华汽后台综合管理系统</a>
+  <div class="navbar-right">
+    <div class="dropdown d-inline">
+      <a class="btn dropdown-toggle" data-toggle="dropdown">
+        <span [hidden]="language" class="fa fa-globe" translate> language</span>
+        <p *ngIf="language" class="d-inline">
+            <span class="flag-icon flag-icon-{{language.flag}}"></span>
+            {{language.name}}
+        </p>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right bg-inverse">
+        <a class="dropdown-item" (click)="onSelectLanguage(item)" *ngFor="let item of languages">
+            <i *ngIf="item.selected||item.culture===language?.culture" class="fa fa-check"></i>
+            <span class="flag-icon flag-icon-{{item.flag}}"></span>
+            {{item.name}}
+        </a>
+      </div>
+    </div>
+    <div class="dropdown d-inline">
+      <a class="btn dropdown-toggle"  data-toggle="dropdown">
+        <a><i class="fa fa-user-circle"> {{userService?.user?.username}}</i></a>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right bg-inverse">
+        <a class="dropdown-item" href="#">Action</a>
+        <a class="dropdown-item" href="#">Another action</a>
+        <div class="dropdown-divider"></div>
+        <a routerLink="/logout" class="dropdown-item"><i class="fa fa-sign-out">退出</i></a>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="container-fluid mt-2">
+  <div class="row">
+    <div *ngIf="menus" class="pr-0 col-xs-3 col-sm-3 col-md-3 col-lg-2">
+      <hq-menu [menus]="menus" [root]="true"></hq-menu>
+    </div>
+    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

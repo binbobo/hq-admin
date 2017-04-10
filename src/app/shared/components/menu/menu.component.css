@@ -1,0 +1,23 @@
+.menu-text{
+    margin-left:5px;
+}
+
+i.fa-caret-down,i.fa-caret-up{
+    position: absolute;
+    right: 10px;
+}
+
+.list-group.list-group-item{
+    border-width: 0;
+    padding: 0;
+    
+}
+
+.list-group.list-group-item .list-group-item{
+    border-radius: 0;
+}
+
+hq-menu{
+    width:100%;
+    margin-bottom: -1px;
+}

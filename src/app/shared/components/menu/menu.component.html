@@ -1,0 +1,14 @@
+<div class="list-group" [class.list-group-item]="!root">
+  <ng-template ngFor let-item [ngForOf]="menus">
+    <a *ngIf="!item?.children?.length" [routerLink]="item.routes" routerLinkActive="active" class="list-group-item list-group-item-action">
+      <span [style.width.%]="spaceWidth"></span>
+      <span class="{{item.icon}}"> {{item.title}}</span>
+    </a>
+    <a *ngIf="item?.children?.length" (click)="item.expand=!item.expand" class="list-group-item list-group-item-action">
+      <span [style.width.%]="spaceWidth"></span>
+      <span class="{{item.icon}}"> {{item.title}}</span>
+      <i class="fa" [class.fa-caret-down]="!item.expand" [class.fa-caret-up]="item.expand"></i>
+    </a>
+    <hq-menu [hidden]="!item.expand" *ngIf="item?.children?.length" [parents]="item.routes" [menus]="item.children"></hq-menu>
+  </ng-template>
+</div>

@@ -1,0 +1,59 @@
+<hq-alerter [service]="alerter"></hq-alerter>
+<div class="row">
+  <div class="col-sm-6 col-xs-12">
+    <div class="card">
+      <div class="card-header">
+        配置结构
+      </div>
+      <div class="card-block">
+        <div class="pull-right ">
+          <button (click)="onRefresh($event) " class="btn btn-sm btn-success" type="button">
+                <i class="fa fa-refresh"></i>
+            </button>
+          <button [hidden]="!editable " (click)="onDelete($event) " class="btn btn-sm btn-danger" type="button">
+                <i class="fa fa-trash"></i>
+            </button>
+          <button (click)="onCreate($event) " class="btn btn-sm btn-info" type="button">
+                <i class="fa fa-plus"></i>
+            </button>
+        </div>
+        <tree id="tree-view" (nodeSelected)="handleSelected($event)" [tree]="tree">
+        </tree>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-xs-12">
+    <div class="card">
+      <div class="card-header">
+        {{editable? '修改': '添加'}}配置信息
+      </div>
+      <div class="card-block">
+        <form *ngIf="currentNode" #cfgForm="ngForm" (ngSubmit)="onSubmit($event)">
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">路径</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" disabled value="{{currentNode.path}}" name="path">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">名称</label>
+            <div class="col-sm-10">
+              <input name="value" type="text" [disabled]="editable" [(ngModel)]="currentNode.value" class="form-control">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">值</label>
+            <div class="col-sm-10">
+              <textarea name="originValue" [(ngModel)]="currentNode.nodeValue" class="form-control" rows="5"></textarea>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="offset-sm-2 col-sm-10 ">
+              <button type="submit" class="btn btn-primary" [disabled]="!cfgForm.form.valid">保存</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

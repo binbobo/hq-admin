@@ -1,0 +1,138 @@
+import { Injectable } from '@angular/core';
+import 'rxjs/add/operator/toPromise';
+import { Request, Response, RequestOptionsArgs, URLSearchParams, Headers, RequestMethod, ResponseContentType, RequestOptions, Http } from '@angular/http';
+import { UserService } from './user.service';
+import * as fileSaver from 'file-saver';
+import { ActivatedRoute } from '@angular/router';
+import { ApiResult } from '../models/api-result';
+import { Observable } from 'rxjs/Observable';
+import { Urls } from './url.service';
+
+@Injectable()
+export class HttpService {
+
+    constructor(
+        private http: Http,
+        private user: UserService,
+    ) { }
+
+    request(url: string, option?: RequestOptionsArgs): Observable<Response> {
+        option = option || { method: RequestMethod.Get };
+        return this.http.request(url, option);
+    }
+
+    promise(url: string, option?: RequestOptionsArgs): Promise<Response> {
+        return this.request(url, option).toPromise();
+    }
+
+    get<TResult>(url: string, search?: string): Promise<TResult> {
+        return this.promise(url, { method: RequestMethod.Get, search: search })
+            .then(resp => this.extractData<TResult>(resp))
+            .then(result => result || Promise.reject('获取数据无效'))
+            .catch(resp => this.handleError(resp));
+    }
+
+    post<TResult>(url: string, body: any): Promise<TResult> {
+        return this.promise(url, { method: RequestMethod.Post, body: body })
+            .then(resp => this.extractData<TResult>(resp))
+            .catch(resp => this.handleError(resp));
+    }
+
+    put<TResult>(url: string, body: any): Promise<TResult> {
+        return this.promise(url, { method: RequestMethod.Put, body: body })
+            .then(resp => this.extractData<TResult>(resp))
+            .catch(resp => this.handleError(resp));
+    }
+
+    patch<TResult>(url: string, body: any): Promise<TResult> {
+        return this.promise(url, { method: RequestMethod.Patch, body: body })
+            .then(resp => this.extractData<TResult>(resp))
+            .catch(resp => this.handleError(resp));
+    }
+
+    delete(url: string): Promise<void> {
+        return this.promise(url, { method: RequestMethod.Delete })
+            .then(resp => Promise.resolve())
+            .catch(resp => this.handleError(resp));
+    }
+
+    public download(url: string, search?: string, fileName?: string): void {
+        let option = new RequestOptions({
+            search: search,
+            responseType: ResponseContentType.Blob,
+            method: RequestMethod.Get
+        });
+        this.promise(url, option)
+            .then(resp => {
+                let data = resp.blob();
+                fileSaver.saveAs(data, fileName);
+            })
+            .catch(error => console.error(error))
+
+    }
+
+    public extractData<TResult>(res: Response): TResult {
+        let text = res.text();
+        if (!text) return;
+        let data = res.json();
+        if (!data) return;
+        let result = data as TResult;
+        if (!result) {
+            throw new TypeError('返回对象类型转换失败！');
+        }
+        return result;
+    }
+
+    private handleError(error: Response | any) {
+        console.error(error);
+        let errMsg: string = error.statusText;
+        if (error instanceof Response) {
+            if (error.status == 401) {
+                this.refresh();
+            } else if (error.status == 403) {
+                errMsg = '请求没有权限！';
+            } else if (error.status === 0) {
+                errMsg = '网络连接失败！'
+            } else {
+                const body = error.json() || '';
+                if (body) {
+                    errMsg = body.error || this.handleModelValidateError(body) || JSON.stringify(body);
+                }
+            }
+        } else {
+            errMsg = error.message ? error.message : error.toString();
+        }
+        return Promise.reject(errMsg);
+    }
+    //.net core模型验证返回结果处理
+    private handleModelValidateError(errors: any) {
+        let errorArr = [];
+        for (var err in errors) {
+            if (Array.isArray(errors[err])) {
+                errorArr = errorArr.concat(errors[err]);
+            }
+        }
+        return errorArr.join('');
+    }
+
+    private refresh() {
+        let user = this.user.user;
+        if (user && user.refreshToken) {
+            let url = Urls.platform.concat('/Users/RefreshToken?refreshToken=', user.refreshToken);
+            this.http.get(url)
+                .toPromise()
+                .then(resp => resp.json())
+                .then(data => data || Promise.reject('无效的数据！'))
+                .then(data => {
+                    user.token = data.accessToken;
+                    user.refreshToken = data.refreshToken;
+                    this.user.onUserLogin.emit(user);
+                })
+                .catch(err => this.user.onUserLogout.emit());
+        } else {
+            this.user.onUserLogout.emit();
+        }
+    }
+}
+
+
