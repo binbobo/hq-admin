@@ -15,6 +15,7 @@ export class MenuComponent implements OnInit {
   @Input()
   private parents: Array<string> = ["/"];
   private level: number = 0;
+  private initCompleted: boolean;
 
   constructor(private router: Router) {}
 

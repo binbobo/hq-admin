@@ -37,6 +37,11 @@ export class AuthService {
       .then(resp => { })
       .catch(err => Promise.reject('用户注册失败！'));
   }
+
+  public logout(user: User): Promise<void> {
+    const url = Urls.platform.concat('users/logout?token=', user.token);
+    return this.http.get(url).toPromise().then(resp => { });
+  }
 }
 
 export class LoginRequestModel {

@@ -5,6 +5,8 @@ import { BsDropdownModule } from "ngx-bootstrap";
 import { RouterModule } from '@angular/router';
 import { SharedModule } from 'app/shared/shared.module';
 import { LanguageService } from './locale/language/language.service';
+import { MenuService } from './settings/menu/menu.service';
+import { PagesService } from './pages.service';
 
 @NgModule({
   imports: [
@@ -13,7 +15,7 @@ import { LanguageService } from './locale/language/language.service';
     RouterModule,
     BsDropdownModule.forRoot()
   ],
-  providers: [AuthGuard, LanguageService],
+  providers: [AuthGuard, LanguageService, MenuService, PagesService],
   declarations: [routedComponents]
 })
 export class PagesModule { }

@@ -1,6 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { Urls } from 'app/shared/services';
+import { StorageKeys } from 'app/shared/models';
 
 @Injectable()
 export class UserService {
@@ -8,7 +9,7 @@ export class UserService {
     public onUserLogin = new EventEmitter<User>();
     public onUserLogout = new EventEmitter();
     public redirectUrl: string;
-    private readonly sessionName = 'GLOBAL_IDENTITY';
+
     constructor(
         private router: Router,
     ) {
@@ -29,15 +30,15 @@ export class UserService {
     }
 
     private clearStorage() {
-        localStorage.removeItem(this.sessionName);
-        sessionStorage.removeItem(this.sessionName);
+        localStorage.removeItem(StorageKeys.Identity);
+        sessionStorage.removeItem(StorageKeys.Identity);
     }
 
     private saveStorage(permanent: boolean) {
         let json: string = JSON.stringify(this._user);
-        sessionStorage.setItem(this.sessionName, json);
+        sessionStorage.setItem(StorageKeys.Identity, json);
         if (permanent) {
-            localStorage.setItem(this.sessionName, json);
+            localStorage.setItem(StorageKeys.Identity, json);
         }
     }
 
@@ -46,7 +47,7 @@ export class UserService {
     }
 
     private getUserFromStroage() {
-        let userJson = sessionStorage.getItem(this.sessionName) || localStorage.getItem(this.sessionName);
+        let userJson = sessionStorage.getItem(StorageKeys.Identity) || localStorage.getItem(StorageKeys.Identity);
         if (!userJson) return null;
         try {
             let user = JSON.parse(userJson) as User;

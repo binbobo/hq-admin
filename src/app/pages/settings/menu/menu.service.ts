@@ -8,7 +8,7 @@ export class MenuService implements BasicService<Menu> {
     constructor(private httpService: HttpService) { }
 
     public getPagedList(params: PagedParams): Promise<PagedResult<Menu>> {
-        let url = Urls.user.concat('/menus?', params.serialize());
+        let url = Urls.configuration.concat('/menus?', params.serialize());
         return this.httpService
             .get<PagedResult<Menu>>(url)
             .then(result => {
@@ -32,7 +32,7 @@ export class MenuService implements BasicService<Menu> {
     }
 
     public getSelectOptions(): Promise<Array<SelectOption>> {
-        let url = Urls.user.concat('/menus/options');
+        let url = Urls.configuration.concat('/menus/options');
         return this.httpService
             .get<ListResult<SelectOption>>(url)
             .then(result => result.data)
@@ -40,8 +40,16 @@ export class MenuService implements BasicService<Menu> {
             .catch(err => Promise.reject(`菜单选项获取失败：${err}`));
     }
 
+    public getMenuTree(): Promise<Array<any>> {
+        let url = Urls.configuration.concat('/menus/tree');
+        return this.httpService.get<ListResult<any>>(url)
+            .then(result => result.data)
+            .then(data => data || Promise.reject('获取数据无效！'))
+            .catch(err => console.error(err));
+    }
+
     public get(id: string): Promise<Menu> {
-        let url = Urls.user.concat('/menus/', id);
+        let url = Urls.configuration.concat('/menus/', id);
         return this.httpService
             .get<ApiResult<Menu>>(url)
             .then(result => result.data)
@@ -50,14 +58,14 @@ export class MenuService implements BasicService<Menu> {
     }
 
     public update(body: Menu): Promise<void> {
-        let url = Urls.user.concat('/menus/', body.id);
+        let url = Urls.configuration.concat('/menus/', body.id);
         return this.httpService.
             put<void>(url, body)
             .catch(err => Promise.reject(`更新菜单失败：${err}`));
     }
 
     public create(body: Menu): Promise<Menu> {
-        let url = Urls.user.concat('/menus');
+        let url = Urls.configuration.concat('/menus');
         return this.httpService
             .post<ApiResult<Menu>>(url, body)
             .then(m => m.data)
@@ -69,7 +77,7 @@ export class MenuService implements BasicService<Menu> {
     }
 
     public delete(id: string): Promise<void> {
-        let url = Urls.user.concat('/menus/', id);
+        let url = Urls.configuration.concat('/menus/', id);
         return this.httpService
             .delete(url)
             .catch(err => Promise.reject(`删除菜单失败：${err}`));

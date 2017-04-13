@@ -17,7 +17,7 @@ export class EventDispatcher {
 
     public subscribe(event: string, generatorOrNext?: any, error?: any, complete?: any): any {
         if (!event) return;
-        let emitter = new EventEmitter<any>();
+        let emitter = this.events[event] || new EventEmitter<any>();
         let subscription = emitter.subscribe(generatorOrNext, error, complete);
         this.events[event] = emitter;
         return subscription

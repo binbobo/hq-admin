@@ -13,14 +13,20 @@ export class DefaultRequestOptions extends BaseRequestOptions {
     ) {
         super();
         let user = userService.user;
+        this.setAuthorization(user);
+        userService.onUserLogin.subscribe(user=>this.setAuthorization(user));
+        this.dispatcher.subscribe('LanguageChanged', lang => this.setAcceptLanguage(lang))
+        this.headers.set('Content-Type', 'application/json');
+    }
+
+    private setAcceptLanguage(lang){
+        this.headers.set('Accept-Language', lang.culture || navigator.language);
+    }
+
+    private setAuthorization(user) {
         if (user && user.token) {
             this.headers.set('Authorization', `Bearer ${user.token}`);
         }
-        this.dispatcher.subscribe('LanguageChanged', lang => {
-            console.log(lang);
-            this.headers.set('Accept-Language', lang || navigator.language);
-        })
-        this.headers.set('Content-Type', 'application/json');
     }
 }
 

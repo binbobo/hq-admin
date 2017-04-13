@@ -15,7 +15,7 @@ export abstract class DataList<T> implements OnInit {
     this.index = this.params.pageIndex;
     this.route.queryParams.subscribe((params: Params) => {
       Object.keys(this.params).forEach(key => {
-        if (params[key] !== undefined && params[key] != this.params[key]) {
+        if (params[key] !== undefined && params[key] !== this.params[key]) {
           this.index = 1;
           this.params[key] = params[key];
         }
