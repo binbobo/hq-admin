@@ -19,6 +19,7 @@ const appRoutes: Routes = [
   ],
   imports: [
     RouterModule.forRoot(appRoutes, { useHash: false }),
+    PagesModule,
     AuthModule,
     BrowserModule,
     SharedModule.forRoot(),
