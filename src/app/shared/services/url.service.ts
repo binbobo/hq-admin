@@ -1,5 +1,5 @@
 export class Urls {
-    private static readonly debug: boolean = true;//process.env.ENV === "development";
+    private static readonly debug: boolean = false;//process.env.ENV === "development";
     private static readonly base = 'http://api.sinoauto.com/';
     public static readonly localization = !Urls.debug ? Urls.base.concat('localization/') : "http://localhost:55820/api/";
     public static readonly configuration = !Urls.debug ? Urls.base.concat('zookeeper/') : "http://localhost:8012/api/";
