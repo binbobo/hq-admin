@@ -59,7 +59,8 @@ export class UserService {
     }
 
     public redirect(): void {
-        var url = this.redirectUrl || '/';
+        let url = this.redirectUrl || '/';
+        url=url.includes('login')?'/':url;
         console.info('跳转至', url);
         this.router.navigate([url]);
     }
