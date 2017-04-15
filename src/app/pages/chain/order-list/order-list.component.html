@@ -1,0 +1,207 @@
+<div class="card">
+  <div class="card-header">
+    工单列表
+  </div>
+</div>
+
+<br>
+
+<div class="container">
+  <form>
+    <!--不同工单状态工单复选框部分-->
+    <div class="form-group">
+      <div class="form-check form-check-inline">
+        <label class="form-check-label">
+          <input class="form-check-input" type="checkbox" value="待派工"> 待派工
+        </label>
+      </div>
+      <div class="form-check form-check-inline">
+        <label class="form-check-label">
+          <input class="form-check-input" type="checkbox" value="已派工"> 已派工
+        </label>
+      </div>
+      <div class="form-check form-check-inline">
+        <label class="form-check-label">
+          <input class="form-check-input" type="checkbox" value="待验收"> 待验收
+        </label>
+      </div>
+      <div class="form-check form-check-inline">
+        <label class="form-check-label">
+          <input class="form-check-input" type="checkbox" value="待结算"> 待结算
+        </label>
+      </div>
+      <div class="form-check form-check-inline">
+        <label class="form-check-label">
+          <input class="form-check-input" type="checkbox" value="待收银"> 待收银
+        </label>
+      </div>
+      <div class="form-check form-check-inline">
+        <label class="form-check-label">
+          <input class="form-check-input" type="checkbox" value="已完工"> 已完工
+        </label>
+      </div>
+      <div class="form-check form-check-inline">
+        <label class="form-check-label">
+          <input class="form-check-input" type="checkbox" value="all"> 全部工单
+        </label>
+      </div>
+    </div>
+    <hr>
+    <!--工单基本筛选条件面板-->
+    <div class="form-group row">
+      <label for="carNo" class="col-sm-1 col-form-label col-form-label-sm">车牌号</label>
+      <div class="col-sm-3">
+        <input type="text" class="form-control form-control-sm" id="carNo" placeholder="车牌号">
+      </div>
+      <label for="carOwner" class="col-sm-2 col-form-label col-form-label-sm">车主</label>
+      <div class="col-sm-3">
+        <input type="text" class="form-control form-control-sm" id="carOwner" placeholder="车主">
+      </div>
+      <label for="carOwnerPhone" class="col-sm-1 col-form-label col-form-label-sm">车主电话</label>
+      <div class="col-sm-2">
+        <input type="tel" class="form-control form-control-sm" id="carOwnerPhone" placeholder="车主电话">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="sender" class="col-sm-1 col-form-label col-form-label-sm">送修人</label>
+      <div class="col-sm-3">
+        <input type="email" class="form-control form-control-sm" id="carNo" placeholder="送修人">
+      </div>
+      <label for="carNo" class="col-sm-2 col-form-label col-form-label-sm">送修人电话</label>
+      <div class="col-sm-3">
+        <input type="tel" class="form-control form-control-sm" id="carNo" placeholder="送修人电话">
+      </div>
+      <div class="col-sm-3">
+        <button type="button" class="btn btn-primary btn-sm">查&nbsp;&nbsp;询</button>
+      </div>
+    </div>
+
+    <!--高级筛选面板-->
+    <fieldset>
+      <legend class="col-form-legend text-center">
+        <a data-toggle="collapse" style="cursor: pointer;" data-target="#advance" aria-expanded="false" aria-controls="advance">高级筛选</a>
+      </legend>
+      <div id="advance" class="collapse" style="margin-top: 5px;">
+        <div class="form-group row">
+          <label for="carNo" class="col-sm-1 col-form-label col-form-label-sm">品牌</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control form-control-sm" id="carNo" placeholder="品牌">
+          </div>
+          <label for="carOwner" class="col-sm-1 col-form-label col-form-label-sm">车系</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control form-control-sm" id="carOwner" placeholder="车系">
+          </div>
+          <label for="carOwner" class="col-sm-1 col-form-label col-form-label-sm">工单号</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control form-control-sm" id="carOwner" placeholder="工单号">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="carNo" class="col-sm-1 col-form-label col-form-label-sm">服务顾问</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control form-control-sm" id="carNo" placeholder="服务顾问">
+          </div>
+          <label for="carOwner" class="col-sm-1 col-form-label col-form-label-sm">车型</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control form-control-sm" id="carOwner" placeholder="车型">
+          </div>
+          <label for="carOwner" class="col-sm-1 col-form-label col-form-label-sm">维修类型</label>
+          <div class="col-sm-3">
+            <select class="form-control form-control-sm">
+              <option selected>Open this select menu</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+            <!--<input type="text" class="form-control form-control-sm" id="carOwner" >-->
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="carOwner" class="col-sm-1 col-form-label col-form-label-sm">进店时间</label>
+          <div class="col-sm-2">
+            <input type="date" class="form-control form-control-sm" id="carOwner">
+          </div>
+          至
+          <div class="col-sm-2">
+            <input type="date" class="form-control form-control-sm" id="carOwner">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="carOwner" class="col-sm-1 col-form-label col-form-label-sm">出厂时间</label>
+          <div class="col-sm-2">
+            <input type="date" class="form-control form-control-sm" id="carOwner">
+          </div>
+          至
+          <div class="col-sm-2">
+            <input type="date" class="form-control form-control-sm" id="carOwner">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="carOwner" class="col-sm-1 col-form-label col-form-label-sm">查询范围</label>
+          <div class="col-sm-5">
+            <select class="form-control form-control-sm">
+              <option selected>Open this select menu</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+  <hr>
+
+  <!--显示工单列表的表格-->
+  <div class="card">
+    <div class="card-header">
+     <button class="btn btn-sm btn-secondary">导&nbsp;出</button>
+    </div>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>操作</th>
+          <th>店名</th>
+          <th>状态</th>
+          <th>维修类型</th>
+          <th>工单号</th>
+          <th>进店时间</th>
+          <th>预计交车时间</th>
+          <th>超时</th>
+          <th>服务顾问</th>
+          <th>品牌</th>
+          <th>车型</th>
+          <th>车牌号</th>
+          <th>行驶里程</th>
+          <th>购车时间</th>
+          <th>车主</th>
+          <th>送修人</th>
+          <th>送修人电话</th>
+          <th>介绍人电话</th>
+          <th>维修技师</th>
+          <th>出厂时间</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">1</th>
+          <td>Mark</td>
+          <td>Otto</td>
+          <td>@mdo</td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td>Jacob</td>
+          <td>Thornton</td>
+          <td>@fat</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td colspan="2">Larry the Bird</td>
+          <td>@twitter</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
