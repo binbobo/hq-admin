@@ -1,0 +1,25 @@
+.assign table th{
+    font-size:.8rem;
+    vertical-align: top;
+    min-width: 40px;
+}
+.assign table td{
+    font-size:.8rem;
+}
+.assign .assign-detail{
+    cursor:pointer;
+    display: inline-block;
+    color:#0275d8;
+   
+}
+.assign .assign-detail:hover{
+    color: #014c8c;
+    text-decoration: underline;
+}
+.assign .alert-warning{
+    background-color: #f3f3f3;
+}
+.assign .title-border{
+    padding-bottom: 10px;
+    border-bottom:1px solid #ddd;
+}
