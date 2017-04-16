@@ -1,0 +1,46 @@
+/*重写表单下面的label样式*/
+.col-form-label {
+    padding: 0;
+    text-align: center;
+}
+
+/*重写表格样式*/
+.table th, .table td {
+    text-align: center;
+    vertical-align: middle;
+    font-size: small;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+.table th {
+    background: silver;
+}
+
+
+/*只读的文本框背景透明*/
+input[readonly]{
+  background-color:transparent;
+}
+
+/*高级筛选条件部分*/
+fieldset a {
+    cursor: pointer;
+}
+#advanceFilter {
+    margin-top: 10px;
+}
+
+/*ngx-bootstrap datetimepicker 样式*/
+.full button span {
+    background-color: limegreen;
+    border-radius: 32px;
+    color: black;
+}
+.partially button span {
+    background-color: orange;
+    border-radius: 32px;
+    color: black;
+}
+
+
+

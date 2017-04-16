@@ -45,6 +45,7 @@ const HQ_SERVICES = [
     exports: [
         CommonModule,
         TranslateModule,
+        FormsModule,
         HQ_COMPONENTS,
         HQ_PIPES,
     ],
