@@ -22,9 +22,12 @@ input[readonly]{
   background-color:transparent;
 }
 
-/*显示高级筛选条件按钮*/
+/*高级筛选条件部分*/
 fieldset a {
     cursor: pointer;
+}
+#advanceFilter {
+    margin-top: 10px;
 }
 
 /*ngx-bootstrap datetimepicker 样式*/
@@ -39,5 +42,5 @@ fieldset a {
     color: black;
 }
 
-/*查询范围下拉树组件样式调整*/
+
 

@@ -3,6 +3,8 @@ import { ChainRoutingModule, routedComponents } from './chain.routing';
 import { SharedModule } from '../../shared/shared.module';
 import { DatepickerModule } from 'ngx-bootstrap/datepicker';
 import {DropdownTreeviewModule} from 'ng2-dropdown-treeview';
+import { ReactiveFormsModule } from '@angular/forms'; 
+
 
 import { OrderService } from './order.service';
 
@@ -12,7 +14,8 @@ import { OrderService } from './order.service';
     DropdownTreeviewModule.forRoot(),
     DatepickerModule.forRoot(),
     ChainRoutingModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule
   ],
   declarations: [routedComponents],
   providers: [OrderService]
