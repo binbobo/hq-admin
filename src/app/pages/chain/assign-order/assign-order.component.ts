@@ -5,9 +5,12 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './assign-order.component.html',
   styleUrls: ['./assign-order.component.css']
 })
+
 export class AssignOrderComponent implements OnInit {
   private isShow=false;
   private isShowPerson=false;
+ 
+  
   // 指派工单表格详情点击事件
   private OnClickDetail(){
     this.isShow=true;
@@ -24,9 +27,21 @@ export class AssignOrderComponent implements OnInit {
   private OnClickPersonClose(){
     this.isShowPerson=false;
   }
-  constructor() { }
+
+  MiddleBox(id:string){
+    let box=document.getElementById(id);
+    let w=box.offsetWidth;
+    let h=box.offsetHeight;  
+    box.style.marginLeft=-(w/2)+"px";
+    box.style.marginTop=-(h/2)+"px";
+  }
+  constructor() {
+   
+   }
 
   ngOnInit() {
+     this.MiddleBox("alertDetail");
+     this.MiddleBox("assignBox");
   }
 
 }
