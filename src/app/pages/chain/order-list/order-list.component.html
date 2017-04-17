@@ -69,7 +69,7 @@
           <input type="tel" class="form-control form-control-sm" formControlName="senderPhone" id="senderPhone" placeholder="送修人电话">
         </div>
 
-        <div class="col-sm-3" *ngIf="true">
+        <div class="col-sm-3" *ngIf="isCollapsed">
           &nbsp;&nbsp;
           <button type="submit" [disabled]="false" class="btn btn-sm btn-success">查&nbsp;&nbsp;询</button>&nbsp;&nbsp;
           <button type="reset" (click)="revert()" [disabled]="false" class=" btn-sm btn btn-danger">撤销</button>&nbsp;&nbsp;
@@ -80,10 +80,11 @@
       <!--高级筛选面板-->
       <fieldset>
         <legend class="col-form-legend text-center">
-          <a data-toggle="collapse" (click)="toggleAdvanceFilter()" data-target="#advanceFilter" aria-expanded="false" aria-controls="advanceFilter">高级筛选</a>
+          <a  (click)="isCollapsed = !isCollapsed" >高级筛选</a>
         </legend>
-        <div id="advanceFilter" class="collapse">
-          <div class="form-group row">
+        <div [collapse]="isCollapsed" class="card card-block">
+          <div class="well well-lg">
+             <div class="form-group row">
             <label for="carBrand" class="col-sm-1 col-form-label col-form-label-sm">品牌</label>
             <div class="col-sm-4">
               <input type="text" class="form-control form-control-sm" formControlName="carBrand" id="carBrand" placeholder="品牌">
@@ -161,22 +162,20 @@
               <leo-dropdown-treeview class="sm" [config]="config" [items]="items">
               </leo-dropdown-treeview>
             </div>
-            <div class="col-sm-3" *ngIf="true">
+            <div class="col-sm-3" *ngIf="!isCollapsed">
               &nbsp;&nbsp;
-              <button type="submit" [disabled]="false" class="btn btn-sm btn-success">查&nbsp;&nbsp;询</button>&nbsp;&nbsp;
-              <button type="reset" (click)="revert()" [disabled]="false" class=" btn-sm btn btn-danger">撤销</button>&nbsp;&nbsp;
+              <button type="submit" [disabled]="false" class="btn btn-sm btn-success mr-2">查询</button>
+              <button type="reset" (click)="revert()" [disabled]="false" class=" btn-sm btn btn-danger mr-2 mr-2">撤销</button>
               <button type="button" (click)="export()" [disabled]="falsee" class=" btn-sm btn btn-info">导出</button>
             </div>
           </div>
-
+          </div>
         </div>
       </fieldset>
     </form>
     <hr>
     <!--显示工单列表的表格-->
-    <div class="card-header" style="padding: 5px;">
-      <button type="submit" class="btn btn-secondary btn-sm">导&nbsp;&nbsp;出</button>
-    </div>
+
     <table class="table table-hover table-bordered table-sm">
       <thead>
         <tr>

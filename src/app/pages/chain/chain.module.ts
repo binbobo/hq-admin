@@ -4,8 +4,10 @@ import { SharedModule } from '../../shared/shared.module';
 import { DatepickerModule } from 'ngx-bootstrap/datepicker';
 import {DropdownTreeviewModule} from 'ng2-dropdown-treeview';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TabsModule } from 'ngx-bootstrap/tabs'; 
+import { TabsModule } from 'ngx-bootstrap/tabs';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { PopoverModule } from 'ngx-bootstrap/popover';
 
 import { OrderService } from './order.service';
 
@@ -14,7 +16,9 @@ import { OrderService } from './order.service';
   imports: [
     DropdownTreeviewModule.forRoot(),
     DatepickerModule.forRoot(),
+    CollapseModule.forRoot(),
     TabsModule.forRoot(),
+    PopoverModule.forRoot(),
     ChainRoutingModule,
     SharedModule,
     Ng2SmartTableModule,
