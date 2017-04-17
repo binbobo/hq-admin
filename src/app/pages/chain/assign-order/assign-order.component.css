@@ -38,7 +38,7 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 200px;
+    width: 160px;
     overflow: hidden;
      background-color: #fff;
 }
@@ -54,4 +54,16 @@
 }
 .assign .alert-warning{
     z-index:997;
+}
+.assign .assign-person-btn{
+    margin-top:.5rem;
+}
+.assign .assign-total{
+    margin-top:60px;
+}
+.assign .assign-total .p-2{
+    background-color: #f3f3f3;
+}
+.assign .assign-total .bg-f3{
+    border-right: 1px solid #ddd;
 }

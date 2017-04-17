@@ -1,0 +1,15 @@
+.append .input-padd{
+    line-height: 2;
+    text-align:right;
+}
+@media (min-width: 576px){
+.col-sm-1 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 12.333333%;
+    flex: 0 0 12.333333%;
+    max-width: 12.333333%;
+}
+}
+.append input{
+    height:30px;
+}

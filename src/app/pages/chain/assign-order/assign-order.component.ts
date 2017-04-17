@@ -8,9 +8,7 @@ import { Component, OnInit } from '@angular/core';
 
 export class AssignOrderComponent implements OnInit {
   private isShow=false;
-  private isShowPerson=false;
- 
-  
+  private isShowPerson=false;  
   // 指派工单表格详情点击事件
   private OnClickDetail(){
     this.isShow=true;
