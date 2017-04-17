@@ -1,17 +1,18 @@
-import { Component,ViewChild,OnInit,Injector} from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { DataList } from '../../../shared/models/data-list';
 import { OrderService, OrderListRequest, Order } from '../order.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TabsetComponent } from 'ngx-bootstrap';
 
 @Component({
-  selector: 'app-append-order',
-  templateUrl: './append-order.component.html',
-  styleUrls: ['./append-order.component.css']
+  selector: 'app-create-order',
+  templateUrl: './create-order.component.html',
+  styleUrls: ['./create-order.component.css']
 })
+export class CreateOrderComponent  extends DataList<Order> {
+  // 构建表单
+  createWorkSheetForm: FormGroup;
 
-export class AppendOrderComponent extends DataList<Order> {
-   createWorkSheetForm: FormGroup;
   // ng2-smart-table
 
   //维修项目表头

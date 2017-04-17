@@ -1,45 +1,41 @@
 /*重写表单下面的label样式*/
-.append-order .col-form-label {
+.col-form-label {
     padding: 0;
     text-align: center;
 }
-.append-order .col-form-label span {
+.col-form-label span {
     color: red;
 }
 
 /*重写表格样式*/
-.append-order .table th, .table td {
+.table th, .table td {
     text-align: center;
     vertical-align: middle;
     font-size: small;
     word-wrap: break-word;
     overflow-wrap: break-word;
 }
-.append-order .table th {
+.table th {
     background: silver;
 }
 
 /*必选项前面的星号样式*/ 
-.append-order .asterisk {
+.asterisk {
     color: red;
 }
 /*生产订单,挂单按钮样式*/
-.append-order .textInputBtn {
+.textInputBtn {
     border: 1px solid #eceeef;
 }
 
 /*mileage unit*/
-.append-order .mileageUnit {
+.mileageUnit {
     background: transparent;
     border:0;
 }
 
 
 /*只读的文本框背景透明*/
-.append-order input[readonly]{
+input[readonly]{
   background-color:transparent;
-}
-.append-order .form-group label{
-line-height: 2;
-text-align: right;
 }

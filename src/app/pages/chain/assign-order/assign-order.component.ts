@@ -7,8 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class AssignOrderComponent implements OnInit {
+  public alerts: any = [];
   private isShow=false;
-  private isShowPerson=false;  
+  private isShowPerson=false; 
   // 指派工单表格详情点击事件
   private OnClickDetail(){
     this.isShow=true;
@@ -22,8 +23,8 @@ export class AssignOrderComponent implements OnInit {
     this.isShowPerson=true;
   }
    // 指派工单指派以及更改指派人员关闭事件
-  private OnClickPersonClose(){
-    this.isShowPerson=false;
+  public OnClickPersonClose(){
+    this.isShowPerson=false;    
   }
 
   MiddleBox(id:string){

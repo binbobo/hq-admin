@@ -11,7 +11,7 @@
     <table class="table table-bordered table-sm table-striped">
       <thead>
         <tr>
-          <th>操作</th>
+         
           <th>指派维修技师</th>
           <th>状态</th>
           <th>维修类型</th>
@@ -28,12 +28,12 @@
           <th>车主</th>
           <th>送修人</th>
           <th>电话</th>
+           <th>操作</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><span class='assign-detail' (click)="OnClickDetail()">详情</span>
-          </td>
+         
           <td><span class='assign-detail' (click)="OnClickPerson()">指派</span></td>
           <td>未指派</td>
           <td>修车灯</td>
@@ -50,9 +50,11 @@
           <td>凡凡</td>
           <td>凡凡</td>
           <td>13699117904</td>
+           <td><span class='assign-detail' (click)="OnClickDetail()">详情</span>
+          </td>
         </tr>
         <tr>
-          <td><span class='assign-detail' (click)="OnClickDetail()">详情</span></td>
+         
           <td>蛋蛋、池子<br><span class='assign-detail' (click)="OnClickPerson()">更改</span></td>
           <td></td>
           <td></td>
@@ -69,10 +71,10 @@
           <td></td>
           <td></td>
           <td>13699117904</td>
-
+           <td><span class='assign-detail' (click)="OnClickDetail()">详情</span></td>
         </tr>
         <tr>
-          <td><span class='assign-detail' (click)="OnClickDetail()">详情</span></td>
+          
           <td><span class='assign-detail' (click)="OnClickPerson()">指派</span></td>
           <td></td>
           <td></td>
@@ -89,6 +91,7 @@
           <td></td>
           <td></td>
           <td></td>
+          <td><span class='assign-detail' (click)="OnClickDetail()">详情</span></td>
         </tr>
       </tbody>
     </table>
@@ -372,4 +375,6 @@
   </div>
     </div>
 <!--指派或更改弹出框 end-->
+
+
 </div>
