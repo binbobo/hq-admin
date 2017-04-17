@@ -79,10 +79,12 @@
       <hr>
       <!--高级筛选面板-->
       <fieldset>
-        <legend class="col-form-legend text-center">
-          <a  (click)="isCollapsed = !isCollapsed" >高级筛选</a>
+        <legend class="col-form-legend p-0 text-center">
+          <a (click)="isCollapsed = !isCollapsed" >高级筛选</a>
+          <i class="fa fa-angle-double-up" [hidden]="isCollapsed"></i>
+          <i class="fa fa-angle-double-down" [hidden]="!isCollapsed"></i>
         </legend>
-        <div [collapse]="isCollapsed" class="card card-block">
+        <div [collapse]="isCollapsed" class="card mt-3 card-block">
           <div class="well well-lg">
              <div class="form-group row">
             <label for="carBrand" class="col-sm-1 col-form-label col-form-label-sm">品牌</label>
