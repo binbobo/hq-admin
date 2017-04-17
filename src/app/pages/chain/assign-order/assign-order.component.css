@@ -1,0 +1,57 @@
+.assign{
+    position: relative;
+}
+.assign table th{
+    font-size:.8rem;
+    vertical-align: top;
+    min-width: 40px;
+}
+.assign table td{
+    font-size:.8rem;
+}
+.assign .assign-detail{
+    cursor:pointer;
+    display: inline-block;
+    color:#0275d8;   
+}
+.assign .assign-detail:hover{
+    color: #014c8c;
+    text-decoration: underline;
+}
+.assign .alert-warning{
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    background-color:#eceeef;
+}
+.assign .detail-alert , .assign .assign-alert{
+    position: absolute;
+    width:100%;
+    height:100%;
+    background-color:rgba(41, 43, 44, 0.58);
+}
+.assign .form-check label{
+    display: block;
+   
+}
+.assign .assign-box{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    overflow: hidden;
+     background-color: #fff;
+}
+/*控制弹层的index值*/
+.assign .assign-box{
+    z-index:999
+}
+.assign .assign-alert{
+    z-index:998;
+}
+.assign .detail-alert{
+    z-index:996;
+}
+.assign .alert-warning{
+    z-index:997;
+}

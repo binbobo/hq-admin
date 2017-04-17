@@ -1,0 +1,161 @@
+<hq-alerter [service]="alerter"></hq-alerter>
+<div class="card">
+  <div class="card-header">
+    <span>创建工单</span>
+  </div>
+  <div class="card-block">
+    <form [formGroup]="createWorkSheetForm" (ngSubmit)="onSerarch()">
+      <!--工单基本筛选条件面板-->
+      <div class="form-group row">
+        <label for="carNo" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>车牌号</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control form-control-sm" formControlName="carNo" id="carNo" placeholder="车牌号">
+        </div>
+        <label for="carOwner" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>车主</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control form-control-sm" formControlName="carOwner" id="carOwner" placeholder="车主">
+        </div>
+        <label for="carOwnerPhone" class="col-sm-1 col-form-label col-form-label-sm">车主电话</label>
+        <div class="col-sm-2">
+          <input type="tel" class="form-control form-control-sm" formControlName="carOwnerPhone" id="carOwnerPhone" placeholder="车主电话">
+        </div>
+      </div>
+      <hr>
+      <div class="form-group row">
+        <label for="createOrderTime" class="col-sm-1 col-form-label col-form-label-sm">开单时间</label>
+        <div class="col-sm-2">
+          <input type="email" readonly class="form-control form-control-sm" formControlName="createOrderTime" id="createOrderTime">
+        </div>
+        <label for="sender" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>送修人</label>
+        <div class="col-sm-2">
+          <input type="email" class="form-control form-control-sm" formControlName="sender" id="sender" placeholder="送修人">
+        </div>
+        <label for="senderPhone" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>送修人电话</label>
+        <div class="col-sm-2">
+          <input type="tel" class="form-control form-control-sm" formControlName="senderPhone" id="senderPhone" placeholder="送修人电话">
+        </div>
+        <label for="serviceConsultant" class="col-sm-1 col-form-label col-form-label-sm">服务顾问</label>
+        <div class="col-sm-2">
+          <input type="text" readonly class="form-control form-control-sm" formControlName="serviceConsultant" id="serviceConsultant">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="carBrand" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>品牌</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control form-control-sm" formControlName="carBrand" id="carBrand" placeholder="品牌">
+        </div>
+        <label for="carSeries" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>车系</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control form-control-sm" formControlName="carSeries" id="carSeries" placeholder="车系">
+        </div>
+        <label for="carType" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>车型</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control form-control-sm" formControlName="carType" id="carType" placeholder="车型">
+        </div>
+        <label for="vin" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>VIN</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control form-control-sm" formControlName="vin" id="vin" placeholder="VIN">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="carCheckOutDate" class="col-sm-1 col-form-label col-form-label-sm">验车日期</label>
+        <div class="col-sm-2">
+          <input type="date" class="form-control form-control-sm" formControlName="carCheckOutDate" id="vin" placeholder="VIN">
+        </div>
+      </div>
+      <hr>
+      <div class="form-group row">
+        <label for="repairType" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>维修类型</label>
+        <div class="col-sm-2">
+          <select id="repairType" formControlName="repairType" class="form-control form-control-sm">
+                <option value="1" selected >一般维修</option>
+                <option value="2">保养</option>
+                <option value="3">事故</option>
+                <option value="4">索赔</option>
+                <option value="5">免费检测</option>
+              </select>
+        </div>
+        <label for="predictedFinishTime" class="col-sm-2 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>预计交车日期</label>
+        <div class="col-sm-3">
+          <input type="date" class="form-control form-control-sm" formControlName="predictedFinishTime" id="predictedFinishTime">
+        </div>
+        <label for="mileage" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>行驶里程</label>
+        <div class="input-group input-group-sm col-sm-2">
+          <input type="text" class="form-control form-control-sm" formControlName="mileage" id="mileage">
+          <span class="input-group-addon mileageUnit">&nbsp;KM</span>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="previousEntryTime" class="col-sm-1 col-form-label col-form-label-sm">上次进店时间</label>
+        <div class="col-sm-2">
+          <input type="text" readonly class="form-control form-control-sm" formControlName="previousEntryTime" id="previousEntryTime">
+        </div>
+        <label for="suggestedNextMaintenanceTime" class="col-sm-2 col-form-label col-form-label-sm">建议下次保养日期</label>
+        <div class="col-sm-3">
+          <input type="date" class="form-control form-control-sm" formControlName="suggestedNextMaintenanceTime" id="suggestedNextMaintenanceTime">
+        </div>
+        <label for="repairStation" class="col-sm-1 col-form-label col-form-label-sm">维修工位</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control form-control-sm" formControlName="repairStation" id="repairStation">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="previousEntryMileage" class="col-sm-1 col-form-label col-form-label-sm">上次进店里程</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control form-control-sm" formControlName="previousEntryMileage" id="previousEntryMileage">
+        </div>
+        <label for="suggestedNextMaintenanceMileage" class="col-sm-2 col-form-label col-form-label-sm">建议下次保养里程</label>
+        <div class="col-sm-3">
+          <input type="date" class="form-control form-control-sm" formControlName="suggestedNextMaintenanceMileage" id="suggestedNextMaintenanceMileage">
+        </div>
+      </div>
+    </form>
+    <hr>
+
+    <tabset #staticTabs>
+      <tab>
+        <template tabHeading>
+          <span class="asterisk">*&nbsp;</span>维修项目
+        </template>
+        <ng2-smart-table [settings]="maintanceItemSettings"></ng2-smart-table>
+      </tab>
+      <tab>
+        <template tabHeading>
+          <span class="asterisk">*&nbsp;</span>维修配件
+        </template>
+        <ng2-smart-table [settings]="maintanceFixingsSettings"></ng2-smart-table>
+      </tab>
+      <tab heading="附加项目">
+        <ng2-smart-table [settings]="addsOnItemSettings"></ng2-smart-table>
+      </tab>
+      <tab heading="建议维修项">
+        <ng2-smart-table [settings]="suggestedMaintanceSettings"></ng2-smart-table>
+      </tab>
+      <tab heading="历史维修记录">
+        <ng2-smart-table [settings]="maintanceItemSettings"></ng2-smart-table><br>
+        <ng2-smart-table [settings]="maintanceFixingsSettings"></ng2-smart-table><br>
+        <ng2-smart-table [settings]="addsOnItemSettings"></ng2-smart-table><br>
+        <ng2-smart-table [settings]="suggestedMaintanceSettings"></ng2-smart-table>
+      </tab>
+      <tab heading="客户回访记录">
+        <ng2-smart-table [settings]="returnVisitSettings"></ng2-smart-table>
+      </tab>
+    </tabset>
+
+    <!--只有前4个选项卡显示-->
+    <div *ngIf="true" class="card">
+      <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
+        折前费用: 工时费&nbsp;
+        <span>745</span>&nbsp;|&nbsp; 材料费&nbsp;
+        <span>1</span> &nbsp;|&nbsp; 套餐费&nbsp;
+        <span>45</span> &nbsp;|&nbsp; 附加项目费&nbsp;
+        <span>646</span> &nbsp;|&nbsp; 合计&nbsp;
+        <span>165655</span>&nbsp;|&nbsp;
+      </div>
+      <div class="card-block text-center">
+        <input type="text" readonly class="btn bnt-secondary textInputBtn" value="生产订单">
+        <input type="text" readonly class="btn bnt-secondary textInputBtn" value="挂单">
+      </div>
+    </div>
+
+  </div>
