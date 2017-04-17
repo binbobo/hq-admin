@@ -1,4 +1,4 @@
-import { Component, Injector, ElementRef, ViewChild, ContentChild } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { DataList } from '../../../shared/models/data-list';
 import { TreeviewItem, TreeviewConfig } from 'ng2-dropdown-treeview';
 import { OrderService, OrderListRequest, Order } from '../order.service';
@@ -15,8 +15,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class OrderListComponent extends DataList<Order> {
   // 用于日期组件
   public showDatePicker = false;
+  // 高级筛选条件面包是否折叠标志, 默认折叠
+  public isCollapsed = true;
 
-  public showAdvanceFilter = false;
 
   // 用于ng2-dropdown-treeview组件
   public items: TreeviewItem[];
@@ -26,8 +27,6 @@ export class OrderListComponent extends DataList<Order> {
     isShowCollapseExpand: true,
     maxHeight: 500
   };
-
-  @ContentChild('advanceFilter') advanceFilter: ElementRef;
 
   // 表单
   workSheetFilterForm: FormGroup;
@@ -71,7 +70,7 @@ export class OrderListComponent extends DataList<Order> {
       enterStoreTimeEnd: '',
       leaveFactoryTimeStart: '',
       leaveFactoryTimeEnd: '',
-    }); 
+    });
   }
 
 
@@ -86,13 +85,8 @@ export class OrderListComponent extends DataList<Order> {
     // 追加dropdown-treeview下
   }
 
-  toggleAdvanceFilter() {
-    this.showAdvanceFilter = this.showAdvanceFilter;
-    console.log(this.advanceFilter);
-  }
-
   // 重置为初始查询条件
-  revert() { 
+  revert() {
     this.workSheetFilterForm.reset();
   }
 }

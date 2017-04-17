@@ -25,7 +25,7 @@
 }
 /*生产订单,挂单按钮样式*/
 .textInputBtn {
-    border: 1px solid #eceeef;
+    border: 2px solid red;
 }
 
 /*mileage unit*/
@@ -38,4 +38,8 @@
 /*只读的文本框背景透明*/
 input[readonly]{
   background-color:transparent;
+}
+
+.list-group a {
+    cursor: pointer;
 }

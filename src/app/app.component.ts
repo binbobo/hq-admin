@@ -1,15 +1,18 @@
-import { Component, ViewEncapsulation, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TranslateService } from "@ngx-translate/core";
 import { EventDispatcher } from 'app/shared/services';
 import { StorageKeys } from "app/shared/models";
+
+declare var moment: any;
+moment.locale('zh-cn');
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit {
+  myDate=null;
   constructor(
     private translate: TranslateService,
     private dispatcher: EventDispatcher,

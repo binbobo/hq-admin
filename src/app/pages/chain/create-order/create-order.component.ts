@@ -7,15 +7,24 @@ import { TabsetComponent } from 'ngx-bootstrap';
 @Component({
   selector: 'app-create-order',
   templateUrl: './create-order.component.html',
-  styleUrls: ['./create-order.component.css']
+  styleUrls: ['./create-order.component.css'],
+  styles: [`
+    :host >>> .popover-content {
+      padding: 0;
+      margin: 0;
+    }
+     :host >>> .popover {
+      padding: 0;
+      max-width: 550px;
+    }
+  `]
 })
-export class CreateOrderComponent  extends DataList<Order> {
-  // 构建表单
+export class CreateOrderComponent extends DataList<Order> {
+  // 创建工单表单
   createWorkSheetForm: FormGroup;
-
   // ng2-smart-table
 
-  //维修项目表头
+  // 维修项目表头
   maintanceItemSettings = {
     columns: {
       name: {
@@ -61,8 +70,8 @@ export class CreateOrderComponent  extends DataList<Order> {
       },
       money: {
         title: '金额(元)'
-      } ,
-        operationTime: {
+      },
+      operationTime: {
         title: '操作时间'
       }
     }
@@ -81,7 +90,7 @@ export class CreateOrderComponent  extends DataList<Order> {
       },
       money: {
         title: '金额(元)'
-      } ,
+      },
       remark: {
         title: '备注'
       }
@@ -102,14 +111,14 @@ export class CreateOrderComponent  extends DataList<Order> {
       },
       operator: {
         title: '操作员'
-      } ,
+      },
       remark: {
         title: '备注'
       }
     }
   };
-   // 客户回访记录表头
-   returnVisitSettings = {
+  // 客户回访记录表头
+  returnVisitSettings = {
     columns: {
       dateTime: {
         title: '回访时间'
@@ -122,7 +131,7 @@ export class CreateOrderComponent  extends DataList<Order> {
       },
       attitude: {
         title: '服务态度'
-      } ,
+      },
       restEnvironment: {
         title: '休息环境'
       },
@@ -135,28 +144,56 @@ export class CreateOrderComponent  extends DataList<Order> {
       isCheckedCar: {
         title: '接车时是否验车'
       },
-      isPriceQuoted : {
+      isPriceQuoted: {
         title: '是否报价'
-      } ,
+      },
       hasSuggestedItem: {
         title: '有无建议项目'
       }
     }
   };
 
+  // 挂起的工单
+  public unsettledOrders;
+
   constructor(
     injector: Injector,
     protected service: OrderService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {
     super(injector, service);
     this.params = new OrderListRequest();
 
     // 构建表单
     this.createForm();
+
+    // 获取挂起的订单
+    this.unsettledOrders = this.getUnsettledOrders();
   }
 
-   createForm() {
+  getUnsettledOrders() {
+    return [{
+      carOwner: '蛋蛋',
+      carOwnerPhone: '13488618198',
+      carNo: '京AH11P9'
+    }, {
+      carOwner: '池子',
+      carOwnerPhone: '13488618198',
+      carNo: 'AH11P9'
+    }];
+  }
+
+  /**
+   * 点击挂单列表的时候, 载入挂单信息
+   * @memberOf CreateOrderComponent
+   */
+  loadOrderInfo(order, pop) {
+    // 隐藏popover
+    pop.hide();
+    console.log(order)
+  }
+
+  createForm() {
     this.createWorkSheetForm = this.fb.group({
       carNo: '',
       carOwner: '',
@@ -174,7 +211,7 @@ export class CreateOrderComponent  extends DataList<Order> {
       predictedFinishTime: '',
       mileage: '',
       previousEntryTime: '',
-      repairStation:'',
+      repairStation: '',
       suggestedNextMaintenanceTime: '',
       previousEntryMileage: '',
       suggestedNextMaintenanceMileage: ''
