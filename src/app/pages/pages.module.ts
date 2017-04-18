@@ -6,7 +6,7 @@ import { SharedModule } from 'app/shared/shared.module';
 import { LanguageService } from './locale/language/language.service';
 import { MenuService } from './settings/menu/menu.service';
 import { PagesService } from './pages.service';
-import { NguiDatetimePickerModule } from '@ngui/datetime-picker';
+import { NguiDatetimePickerModule, NguiDatetime  } from '@ngui/datetime-picker';
 
 @NgModule({
   imports: [

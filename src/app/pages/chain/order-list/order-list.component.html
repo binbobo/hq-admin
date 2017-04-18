@@ -80,38 +80,38 @@
       <!--高级筛选面板-->
       <fieldset>
         <legend class="col-form-legend p-0 text-center">
-          <a (click)="isCollapsed = !isCollapsed" >高级筛选</a>
+          <a (click)="isCollapsed = !isCollapsed">高级筛选</a>
           <i class="fa fa-angle-double-up" [hidden]="isCollapsed"></i>
           <i class="fa fa-angle-double-down" [hidden]="!isCollapsed"></i>
         </legend>
         <div [collapse]="isCollapsed" class="card mt-3 card-block">
           <div class="well well-lg">
-             <div class="form-group row">
-            <label for="carBrand" class="col-sm-1 col-form-label col-form-label-sm">品牌</label>
-            <div class="col-sm-4">
-              <input type="text" class="form-control form-control-sm" formControlName="carBrand" id="carBrand" placeholder="品牌">
+            <div class="form-group row">
+              <label for="carBrand" class="col-sm-1 col-form-label col-form-label-sm">品牌</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control form-control-sm" formControlName="carBrand" id="carBrand" placeholder="品牌">
+              </div>
+              <label for="carSeries" class="col-sm-1 col-form-label col-form-label-sm">车系</label>
+              <div class="col-sm-2">
+                <input type="text" class="form-control form-control-sm" formControlName="carSeries" id="carSeries" placeholder="车系">
+              </div>
+              <label for="orderNo" class="col-sm-1 col-form-label col-form-label-sm">工单号</label>
+              <div class="col-sm-3">
+                <input type="text" class="form-control form-control-sm" formControlName="orderNo" id="orderNo" placeholder="工单号">
+              </div>
             </div>
-            <label for="carSeries" class="col-sm-1 col-form-label col-form-label-sm">车系</label>
-            <div class="col-sm-2">
-              <input type="text" class="form-control form-control-sm" formControlName="carSeries" id="carSeries" placeholder="车系">
-            </div>
-            <label for="orderNo" class="col-sm-1 col-form-label col-form-label-sm">工单号</label>
-            <div class="col-sm-3">
-              <input type="text" class="form-control form-control-sm" formControlName="orderNo" id="orderNo" placeholder="工单号">
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="serviceConsultant" class="col-sm-1 col-form-label col-form-label-sm">服务顾问</label>
-            <div class="col-sm-4">
-              <input type="text" class="form-control form-control-sm" formControlName="serviceConsultant" id="serviceConsultant" placeholder="服务顾问">
-            </div>
-            <label for="carType" class="col-sm-1 col-form-label col-form-label-sm">车型</label>
-            <div class="col-sm-2">
-              <input type="text" class="form-control form-control-sm" formControlName="carType" id="carType" placeholder="车型">
-            </div>
-            <label for="repairType" class="col-sm-1 col-form-label col-form-label-sm">维修类型</label>
-            <div class="col-sm-3">
-              <select id="repairType" formControlName="repairType" class="form-control form-control-sm">
+            <div class="form-group row">
+              <label for="serviceConsultant" class="col-sm-1 col-form-label col-form-label-sm">服务顾问</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control form-control-sm" formControlName="serviceConsultant" id="serviceConsultant" placeholder="服务顾问">
+              </div>
+              <label for="carType" class="col-sm-1 col-form-label col-form-label-sm">车型</label>
+              <div class="col-sm-2">
+                <input type="text" class="form-control form-control-sm" formControlName="carType" id="carType" placeholder="车型">
+              </div>
+              <label for="repairType" class="col-sm-1 col-form-label col-form-label-sm">维修类型</label>
+              <div class="col-sm-3">
+                <select id="repairType" formControlName="repairType" class="form-control form-control-sm">
                 <option value="0" selected>保养</option>
                 <option value="1">保养及维修</option>
                 <option value="2">维修</option>
@@ -119,58 +119,57 @@
                 <option value="4">索赔</option>
                 <option value="5">免费检测</option>
               </select>
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="enterStoreTime" class="col-sm-1 col-form-label col-form-label-sm">进店时间</label>
-            <div class="input-group input-group-sm col-sm-3">
-              <input type="text" formControlName="enterStoreTimeStart" readonly class="form-control form-control-sm">
-              <span class="input-group-addon">
-                <i class="fa fa-calendar" aria-hidden="true"></i>
-              </span>
-            </div>
-            <span>至</span>
-            <div class="input-group input-group-sm col-sm-3">
-              <input type="text" formControlName="enterStoreTimeEnd" (focus)="showDatePicker=true;" readonly class="form-control form-control-sm"
-                value="{{dt | date:'yyyy-MM-dd HH:mm:ss'}}">
-              <span class="input-group-addon" (click)="toggleDatePicker()">
-                <i class="fa fa-calendar" aria-hidden="true"></i>
-              </span>
-
-              <div *ngIf="showDatePicker" style="position: absolute; z-index:10; top: 27px; min-height:290px;">
-                <datepicker></datepicker>
               </div>
             </div>
-          </div>
-          <div class="form-group row">
-            <label for="leaveFactoryTime" class="col-sm-1 col-form-label col-form-label-sm">出厂时间</label>
-            <div class="input-group input-group-sm col-sm-3">
-              <input type="text" formControlName="leaveFactoryTimeStart" readonly class="form-control form-control-sm">
-              <span class="input-group-addon">
+            <div class="form-group row">
+              <label for="enterStoreTime" class="col-sm-1 col-form-label col-form-label-sm">进店时间</label>
+              <div class="input-group input-group-sm col-sm-3">
+                <input class="form-control form-control-sm datetime-picker" type="text" readonly formControlName="enterStoreTimeStart" ngui-datetime-picker
+                  date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' close-on-select="false" />
+                <span class="input-group-addon">
                 <i class="fa fa-calendar" aria-hidden="true"></i>
               </span>
+              </div>
+              <span>至</span>
+              <div class="input-group input-group-sm col-sm-3">
+                <input class="form-control form-control-sm datetime-picker" type="text" readonly formControlName="enterStoreTimeEnd" ngui-datetime-picker
+                  date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' close-on-select="false" />
+                <span class="input-group-addon">
+                  <i class="fa fa-calendar" aria-hidden="true"></i>
+                </span>
+              </div>
             </div>
-            <span>至</span>
-            <div class="input-group input-group-sm col-sm-3">
-              <input type="text" formControlName="leaveFactoryTimeEnd" readonly class="form-control form-control-sm">
-              <span class="input-group-addon">
+            <div class="form-group row">
+              <label for="leaveFactoryTime" class="col-sm-1 col-form-label col-form-label-sm">出厂时间</label>
+              <div class="input-group input-group-sm col-sm-3">
+                <input class="form-control form-control-sm datetime-picker" type="text" readonly formControlName="leaveFactoryTimeStart"
+                  ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' close-on-select="false" />
+                <span class="input-group-addon">
                 <i class="fa fa-calendar" aria-hidden="true"></i>
               </span>
+              </div>
+              <span>至</span>
+              <div class="input-group input-group-sm col-sm-3">
+                <input class="form-control form-control-sm datetime-picker" type="text" readonly formControlName="leaveFactoryTimeEnd" ngui-datetime-picker
+                  date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' close-on-select="false" />
+                <span class="input-group-addon">
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+              </span>
+              </div>
             </div>
-          </div>
-          <div class="form-group row">
-            <label for="searchRange" class="col-sm-1 col-form-label col-form-label-sm">查询范围</label>
-            <div class="col-sm-3 ">
-              <leo-dropdown-treeview class="sm" [config]="config" [items]="items">
-              </leo-dropdown-treeview>
+            <div class="form-group row">
+              <label for="searchRange" class="col-sm-1 col-form-label col-form-label-sm">查询范围</label>
+              <div class="col-sm-3 ">
+                <leo-dropdown-treeview class="sm" [config]="config" [items]="items">
+                </leo-dropdown-treeview>
+              </div>
+              <div class="col-sm-3" *ngIf="!isCollapsed">
+                &nbsp;&nbsp;
+                <button type="submit" [disabled]="false" class="btn btn-sm btn-success mr-2">查询</button>
+                <button type="reset" (click)="revert()" [disabled]="false" class=" btn-sm btn btn-danger mr-2 mr-2">撤销</button>
+                <button type="button" (click)="export()" [disabled]="falsee" class=" btn-sm btn btn-info">导出</button>
+              </div>
             </div>
-            <div class="col-sm-3" *ngIf="!isCollapsed">
-              &nbsp;&nbsp;
-              <button type="submit" [disabled]="false" class="btn btn-sm btn-success mr-2">查询</button>
-              <button type="reset" (click)="revert()" [disabled]="false" class=" btn-sm btn btn-danger mr-2 mr-2">撤销</button>
-              <button type="button" (click)="export()" [disabled]="falsee" class=" btn-sm btn btn-info">导出</button>
-            </div>
-          </div>
           </div>
         </div>
       </fieldset>
@@ -207,8 +206,8 @@
       <tbody>
         <tr *ngFor="let item of list">
           <td width="50">
-            <a href="#">作废</a> |
-            <a href="#">详情</a>
+            <a>作废</a> |
+            <button (click)="selectedOrder=item;lgModal.show()">详情</button>
           </td>
           <td>{{item.storeName}}</td>
           <td>{{item.status}}</td>
@@ -234,5 +233,70 @@
       </tbody>
     </table>
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
-    <div class="card-block">
+
+    <!--Large modal-->
+    <div bsModal #lgModal="bs-modal" [class.show]="true" class="modal fade" tabindex="-1" role="document" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 class="modal-title">工单详情</h6>
+            <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+          </div>
+          <div class="modal-body">
+            <table class="table table-hover table-bordered table-sm">
+              <thead>
+                <tr>
+                  <th>操作</th>
+                  <th>店名</th>
+                  <th>状态</th>
+                  <th>维修类型</th>
+                  <th>工单号</th>
+                  <th>进店时间</th>
+                  <th>预计交车时间</th>
+                  <th>超时</th>
+                  <th>服务顾问</th>
+                  <th>品牌</th>
+                  <th>车型</th>
+                  <th>车牌号</th>
+                  <th>行驶里程</th>
+                  <th>购车时间</th>
+                  <th>车主</th>
+                  <th>送修人</th>
+                  <th>送修人电话</th>
+                  <th>介绍人</th>
+                  <th>介绍人电话</th>
+                  <th>维修技师</th>
+                  <th>出厂时间</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{selectedOrder?.storeName}}</td>
+                  <td>{{selectedOrder?.status}}</td>
+                  <td>{{selectedOrder?.type}}</td>
+                  <td>{{selectedOrder?.orderNo}}</td>
+                  <td>{{selectedOrder?.enterTime}}</td>
+                  <td>{{selectedOrder?.predictedTime}}</td>
+                  <td>{{selectedOrder?.outeOfDate}}</td>
+                  <td>{{selectedOrder?.serviceConsultant}}</td>
+                  <td>{{selectedOrder?.brand}}</td>
+                  <td>{{selectedOrder?.carType}}</td>
+                  <td>{{selectedOrder?.plateNumber}}</td>
+                  <td>{{selectedOrder?.mileage}}</td>
+                  <td>{{selectedOrder?.buyTime}}</td>
+                  <td>{{selectedOrder?.carOwner}}</td>
+                  <td>{{selectedOrder?.sender}}</td>
+                  <td>{{selectedOrder?.senderPhoneNumber}}</td>
+                  <td>{{selectedOrder?.introducer}}</td>
+                  <td>{{selectedOrder?.introducerPhoneNumber}}</td>
+                  <td>{{selectedOrder?.repairTechnician}}</td>
+                  <td>{{selectedOrder?.leaveFactoryTime}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>

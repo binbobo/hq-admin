@@ -8,9 +8,11 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { PopoverModule } from 'ngx-bootstrap/popover';
+import { NguiDatetimePickerModule} from '@ngui/datetime-picker';
+import { ModalModule } from 'ngx-bootstrap/modal';
+
 
 import { OrderService } from './order.service';
-
 
 @NgModule({
   imports: [
@@ -19,10 +21,12 @@ import { OrderService } from './order.service';
     CollapseModule.forRoot(),
     TabsModule.forRoot(),
     PopoverModule.forRoot(),
+    ModalModule.forRoot(),
     ChainRoutingModule,
     SharedModule,
     Ng2SmartTableModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NguiDatetimePickerModule
   ],
   declarations: [routedComponents],
   providers: [OrderService]
