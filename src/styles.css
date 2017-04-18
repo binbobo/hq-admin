@@ -1,8 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
-ngui-datetime-picker .ngui-datetime-picker .days{
-    width: 230px;
-}
-
 input.ng-touched.ng-invalid,select.ng-touched.ng-invalid{
     border:1px solid red;
 }
@@ -22,3 +18,21 @@ leo-dropdown-treeview.sm input.form-control{
     font-size: .875rem;
     border-radius: .2rem;
 }
+
+/*ngx-bootstrap popver 样式复写*/
+.popover-content {
+    padding: 0;
+    margin: 0;
+}
+.popover {
+    padding: 0;
+    max-width: 100%;
+}
+
+
+/*ng2-smart-table样式*/
+.inputFilter {
+    /*不显示过滤表单域*/
+    display: none;
+}
+

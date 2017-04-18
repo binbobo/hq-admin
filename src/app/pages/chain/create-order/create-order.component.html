@@ -1,13 +1,14 @@
 <hq-alerter [service]="alerter"></hq-alerter>
-<div class="creat card">
+<div class="card">
   <div class="card-header">
     创建工单
-    <input value="我的挂单 ({{unsettledOrders?.length}})" #pop="bs-popover" readonly type="text" placement="bottom" [popover]="popTemplate" class="pull-right btn btn-secondary btn-sm" style="margin-right: 55px;">
+    <input container="body" type="text" value="我的挂单 ({{unsettledOrders?.length}})" #pop="bs-popover" readonly placement="bottom"
+      [popover]="popTemplate" class="pull-right btn btn-sm textInputBtn" style="margin-right: 55px;">
     <!--挂单列模板-->
     <template #popTemplate>
       <div class="list-group">
         <a *ngFor="let order of unsettledOrders" (click)="loadOrderInfo(order, pop)" class="list-group-item list-group-item-action">
-          <span class="mr-2">{{order.carOwner}}</span>            
+          <span class="mr-2">{{order.carOwner}}</span>
           <span class="mr-2">{{order.carOwnerPhone}}</span>
           <span class="mr-2">{{order.carNo}}</span>
         </a>
@@ -30,18 +31,18 @@
         </div>
         <label for="carOwnerPhone" class="col-sm-1 col-form-label col-form-label-sm">车主电话</label>
         <div class="col-sm-2">
-          <input type="tel" class="form-control form-control-sm" formControlName="carOwnerPhone" id="carOwnerPhone" placeholder="车主电话">
+          <input type="text" class="form-control form-control-sm" formControlName="carOwnerPhone" id="carOwnerPhone" placeholder="车主电话">
         </div>
       </div>
       <hr>
       <div class="form-group row">
         <label for="createOrderTime" class="col-sm-1 col-form-label col-form-label-sm">开单时间</label>
         <div class="col-sm-2">
-          <input type="email" readonly class="form-control form-control-sm" formControlName="createOrderTime" id="createOrderTime">
+          <input type="text" readonly class="form-control form-control-sm" formControlName="createOrderTime" id="createOrderTime">
         </div>
         <label for="sender" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>送修人</label>
         <div class="col-sm-2">
-          <input type="email" class="form-control form-control-sm" formControlName="sender" id="sender" placeholder="送修人">
+          <input type="text" class="form-control form-control-sm" formControlName="sender" id="sender" placeholder="送修人">
         </div>
         <label for="senderPhone" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1"></span>送修人电话</label>
         <div class="col-sm-2">
@@ -53,6 +54,14 @@
         </div>
       </div>
       <div class="form-group row">
+        <label for="introducer" class="col-sm-1 col-form-label col-form-label-sm">介绍人</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control form-control-sm" formControlName="introducer" id="introducer" placeholder="介绍人">
+        </div>
+        <label for="introducerPhone" class="col-sm-1 col-form-label col-form-label-sm">介绍人电话</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control form-control-sm" formControlName="introducerPhone" id="introducerPhone" placeholder="介绍人电话">
+        </div>
         <label for="carBrand" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>品牌</label>
         <div class="col-sm-2">
           <input type="text" class="form-control form-control-sm" formControlName="carBrand" id="carBrand" placeholder="品牌">
@@ -61,6 +70,8 @@
         <div class="col-sm-2">
           <input type="text" class="form-control form-control-sm" formControlName="carSeries" id="carSeries" placeholder="车系">
         </div>
+      </div>
+      <div class="form-group row">
         <label for="carType" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车型</label>
         <div class="col-sm-2">
           <input type="text" class="form-control form-control-sm" formControlName="carType" id="carType" placeholder="车型">
@@ -69,11 +80,13 @@
         <div class="col-sm-2">
           <input type="text" class="form-control form-control-sm" formControlName="vin" id="vin" placeholder="VIN">
         </div>
-      </div>
-      <div class="form-group row">
         <label for="carCheckOutDate" class="col-sm-1 col-form-label col-form-label-sm">验车日期</label>
-        <div class="col-sm-2">
-          <input type="date" class="form-control form-control-sm" formControlName="carCheckOutDate" id="vin" placeholder="VIN">
+        <div class="input-group input-group-sm col-sm-2">
+          <input class="form-control form-control-sm datetime-picker" type="text" readonly formControlName="carCheckOutDate" ngui-datetime-picker
+            date-format="YYYY-MM-DD" date-only="true" />
+          <span class="input-group-addon">
+            <i class="fa fa-calendar" aria-hidden="true"></i>
+          </span>
         </div>
       </div>
       <hr>
@@ -81,21 +94,24 @@
         <label for="repairType" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>维修类型</label>
         <div class="col-sm-2">
           <select id="repairType" formControlName="repairType" class="form-control form-control-sm">
-                <option value="1" selected >一般维修</option>
-                <option value="2">保养</option>
-                <option value="3">事故</option>
-                <option value="4">索赔</option>
-                <option value="5">免费检测</option>
-              </select>
+            <option value="1" selected>一般维修</option>
+            <option value="2">保养</option>
+            <option value="3">事故</option>
+            <option value="4">索赔</option>
+            <option value="5">免费检测</option>
+          </select>
         </div>
-        <label for="predictedFinishTime" class="col-sm-2 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>预计交车日期</label>
-        <div class="col-sm-3">
-          <input type="date" class="form-control form-control-sm" formControlName="predictedFinishTime" id="predictedFinishTime">
+        <label for="predictedFinishTime" class="col-sm-2 col-form-label col-form-label-sm">预计交车日期</label>
+        <div class="input-group input-group-sm col-sm-3">
+          <input class="form-control form-control-sm datetime-picker" type="text" readonly formControlName="predictedFinishTime" ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' close-on-select="false" />
+          <span class="input-group-addon">
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+              </span>
         </div>
         <label for="mileage" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>行驶里程</label>
         <div class="input-group input-group-sm col-sm-2">
           <input type="text" class="form-control form-control-sm" formControlName="mileage" id="mileage">
-          <span class="input-group-addon mileageUnit">KM</span>
+          <span class="input-group-addon">KM</span>
         </div>
       </div>
       <div class="form-group row">
@@ -104,8 +120,11 @@
           <input type="text" readonly class="form-control form-control-sm" formControlName="previousEntryTime" id="previousEntryTime">
         </div>
         <label for="suggestedNextMaintenanceTime" class="col-sm-2 col-form-label col-form-label-sm">建议下次保养日期</label>
-        <div class="col-sm-3">
-          <input type="date" class="form-control form-control-sm" formControlName="suggestedNextMaintenanceTime" id="suggestedNextMaintenanceTime">
+        <div class="input-group input-group-sm col-sm-3">
+          <input class="form-control form-control-sm datetime-picker" type="text" readonly formControlName="suggestedNextMaintenanceTime" ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' close-on-select="false" />
+          <span class="input-group-addon">
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+              </span>
         </div>
         <label for="repairStation" class="col-sm-1 col-form-label col-form-label-sm">维修工位</label>
         <div class="col-sm-2">
@@ -114,12 +133,14 @@
       </div>
       <div class="form-group row">
         <label for="previousEntryMileage" class="col-sm-1 col-form-label col-form-label-sm">上次进店里程</label>
-        <div class="col-sm-2">
+        <div class="input-group input-group-sm col-sm-2">
           <input type="text" class="form-control form-control-sm" formControlName="previousEntryMileage" id="previousEntryMileage">
+          <span class="input-group-addon">KM</span>
         </div>
         <label for="suggestedNextMaintenanceMileage" class="col-sm-2 col-form-label col-form-label-sm">建议下次保养里程</label>
-        <div class="col-sm-3">
-          <input type="date" class="form-control form-control-sm" formControlName="suggestedNextMaintenanceMileage" id="suggestedNextMaintenanceMileage">
+       <div class="input-group input-group-sm col-sm-3">
+          <input type="text" class="form-control form-control-sm" formControlName="suggestedNextMaintenanceMileage" id="suggestedNextMaintenanceMileage">
+          <span class="input-group-addon">KM</span>
         </div>
       </div>
     </form>
@@ -130,13 +151,13 @@
         <template tabHeading>
           <span class="asterisk mr-1">*</span>维修项目
         </template>
-        <ng2-smart-table [settings]="maintanceItemSettings"></ng2-smart-table>
+        <ng2-smart-table [settings]="maintanceItemSettings" [source]="maintenanceProjectData" ></ng2-smart-table>
       </tab>
       <tab>
         <template tabHeading>
           <span class="asterisk mr-1">*</span>维修配件
         </template>
-        <ng2-smart-table [settings]="maintanceFixingsSettings"></ng2-smart-table>
+        <ng2-smart-table [settings]="maintanceFixingsSettings" [source]="maintenanceFixingsData"></ng2-smart-table>
       </tab>
       <tab heading="附加项目">
         <ng2-smart-table [settings]="addsOnItemSettings"></ng2-smart-table>
@@ -166,8 +187,8 @@
         <span class="ml-2 mr-2">165655</span>|
       </div>
       <div class="card-block text-center">
-        <input type="text" readonly class="btn btn-secondary textInputBtn" value="生成订单">
-        <input type="text" readonly class="btn btn-secondary textInputBtn" value="挂单">
+        <input type="text" readonly class="btn textInputBtn" value="生成订单">
+        <input type="text" readonly class="btn textInputBtn" value="挂单">
       </div>
     </div>
   </div>

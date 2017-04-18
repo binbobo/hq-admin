@@ -3,29 +3,10 @@
     padding: 0;
     text-align: center;
 }
-.col-form-label span {
-    color: red;
-}
-
-/*重写表格样式*/
-.table th, .table td {
-    text-align: center;
-    vertical-align: middle;
-    font-size: small;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-}
-.table th {
-    background: silver;
-}
 
 /*必选项前面的星号样式*/ 
 .asterisk {
     color: red;
-}
-/*生产订单,挂单按钮样式*/
-.textInputBtn {
-    border: 2px solid red;
 }
 
 /*mileage unit*/
@@ -34,12 +15,18 @@
     border:0;
 }
 
-
 /*只读的文本框背景透明*/
-input[readonly]{
+input[readonly] {
   background-color:transparent;
 }
 
-.list-group a {
-    cursor: pointer;
+.textInputBtn {
+    border: 1px solid #eed;
 }
+
+/*重写ngui-datetimer-picker表单input样式*/
+.datetime-picker {
+    width: 100%;
+    border-radius:0;
+}
+

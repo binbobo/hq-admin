@@ -7,17 +7,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-order-list',
   templateUrl: './order-list.component.html',
-  styleUrls: ['./order-list.component.css']
+  styleUrls: ['./order-list.component.css'],
 })
 
 // 此处不能实现 OnInit 接口, 因为父类已经实现了该接口, 会从父类中继承过来
 // 如果此处也实现 OnInit 接口（implements OnInit）, 会重写父类中的相应方法
 export class OrderListComponent extends DataList<Order> {
-  // 用于日期组件
-  public showDatePicker = false;
   // 高级筛选条件面包是否折叠标志, 默认折叠
   public isCollapsed = true;
-
 
   // 用于ng2-dropdown-treeview组件
   public items: TreeviewItem[];
@@ -28,17 +25,23 @@ export class OrderListComponent extends DataList<Order> {
     maxHeight: 500
   };
 
+  // 当前选择的工单
+  public selectedOrder: Order = null;
+
+
+
   // 表单
   workSheetFilterForm: FormGroup;
 
-
-   constructor(
+  constructor(
     injector: Injector,
     protected service: OrderService,
+
     private fb: FormBuilder
   ) {
     super(injector, service);
     this.params = new OrderListRequest();
+
 
     // 获取可以选择的店名, 用于查询范围筛选
     this.items = this.service.getSelectableStores();
@@ -47,7 +50,7 @@ export class OrderListComponent extends DataList<Order> {
     this.createForm();
   }
 
-   createForm() {
+  createForm() {
     this.workSheetFilterForm = this.fb.group({
       toBeAssigned: '',
       toBeChecked: '',
@@ -73,16 +76,12 @@ export class OrderListComponent extends DataList<Order> {
     });
   }
 
-
-  // 切换是否显示日期组件标志
-  toggleDatePicker() {
-    this.showDatePicker = !this.showDatePicker;
-  }
-
   onSerarch() {
     // 获取表单数据
     const workSheetFilterFormModel = this.workSheetFilterForm.value;
     // 追加dropdown-treeview下
+
+    console.log(workSheetFilterFormModel.value);
   }
 
   // 重置为初始查询条件

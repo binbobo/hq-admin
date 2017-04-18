@@ -11,7 +11,7 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
 import { AlertModule } from 'ngx-bootstrap';
 import { OrderService } from './order.service';
 import { ModalModule } from 'ngx-bootstrap';
-
+import { NguiDatetimePickerModule} from '@ngui/datetime-picker';
 
 @NgModule({
   imports: [
@@ -25,7 +25,8 @@ import { ModalModule } from 'ngx-bootstrap';
     ChainRoutingModule,
     SharedModule,
     Ng2SmartTableModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NguiDatetimePickerModule
   ],
   declarations: [routedComponents],
   providers: [OrderService]
