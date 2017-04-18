@@ -1,46 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild,Injector} from '@angular/core';
+import { DataList } from '../../../shared/models/data-list';
+import { AlerterService } from 'app/shared/services';
+import { OrderService, OrderListRequest, Order } from '../order.service';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-assign-order',
   templateUrl: './assign-order.component.html',
-  styleUrls: ['./assign-order.component.css']
+  styleUrls: ['./assign-order.component.css'],
 })
 
-export class AssignOrderComponent implements OnInit {
+export class AssignOrderComponent  extends DataList<Order> {
   public alerts: any = [];
-  private isShow=false;
-  private isShowPerson=false; 
-  // 指派工单表格详情点击事件
-  private OnClickDetail(){
-    this.isShow=true;
-  }
-    // 指派工单表格详情点击后的关闭事件
-  private OnClickClose(){
-    this.isShow=false;
-  }
-  // 指派工单指派以及更改指派人员事件
- private OnClickPerson(){
-    this.isShowPerson=true;
-  }
+
    // 指派工单指派以及更改指派人员关闭事件
   public OnClickPersonClose(){
-    this.isShowPerson=false;    
+
+     this.alerts.push({
+      type: 'info',
+      msg: `指派成功！`,
+      timeout: 3000
+    });
   }
 
-  MiddleBox(id:string){
-    let box=document.getElementById(id);
-    let w=box.offsetWidth;
-    let h=box.offsetHeight;  
-    box.style.marginLeft=-(w/2)+"px";
-    box.style.marginTop=-(h/2)+"px";
-  }
-  constructor() {
-   
+
+  constructor( injector: Injector,
+    protected service: OrderService) {
+   super(injector, service);
+    this.params = new OrderListRequest();
    }
 
-  ngOnInit() {
-     this.MiddleBox("alertDetail");
-     this.MiddleBox("assignBox");
-  }
+
 
 }

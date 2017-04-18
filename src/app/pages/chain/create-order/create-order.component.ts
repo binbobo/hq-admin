@@ -8,16 +8,6 @@ import { TabsetComponent } from 'ngx-bootstrap';
   selector: 'app-create-order',
   templateUrl: './create-order.component.html',
   styleUrls: ['./create-order.component.css'],
-  styles: [`
-    :host >>> .popover-content {
-      padding: 0;
-      margin: 0;
-    }
-     :host >>> .popover {
-      padding: 0;
-      max-width: 550px;
-    }
-  `]
 })
 export class CreateOrderComponent extends DataList<Order> {
   // 创建工单表单

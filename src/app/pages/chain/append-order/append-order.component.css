@@ -37,7 +37,7 @@
 
 /*只读的文本框背景透明*/
 .append-order input[readonly]{
-  background-color:transparent;
+  background-color:#ddd;
 }
 .append-order .form-group label{
 line-height: 2;

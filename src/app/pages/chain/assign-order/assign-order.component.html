@@ -1,3 +1,7 @@
+<div *ngFor="let alert of alerts">
+  <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+</div>
+
 <div class="assign card">
   <div _ngcontent-c11="" class="card-header">
     <span _ngcontent-c11="">指派工单</span>
@@ -8,10 +12,9 @@
         type="text" ng-reflect-name="title">
       <button _ngcontent-c5="" class="btn btn-primary mb-2 mr-2" translate="" type="submit" ng-reflect-translate="">搜索</button>
     </form>
-    <table class="table table-bordered table-sm table-striped">
+     <table class="table table-hover table-bordered table-sm">
       <thead>
-        <tr>
-         
+        <tr>         
           <th>指派维修技师</th>
           <th>状态</th>
           <th>维修类型</th>
@@ -32,102 +35,30 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-         
-          <td><span class='assign-detail' (click)="OnClickPerson()">指派</span></td>
-          <td>未指派</td>
-          <td>修车灯</td>
-          <td>12333333333312</td>
-          <td>2017-9-10</td>
-          <td>2017-10-10</td>
-          <td>90分钟</td>
-          <td>凡凡</td>
-          <td>丰田</td>
-          <td>suv</td>
-          <td>京A88888</td>
-          <td>2万公里</td>
-          <td>2016-6-6</td>
-          <td>凡凡</td>
-          <td>凡凡</td>
-          <td>13699117904</td>
-           <td><span class='assign-detail' (click)="OnClickDetail()">详情</span>
+        <tr *ngFor="let item of list">
+         <td>{{item.repairTechnician}}<span class='assign-detail'>{{(item.repairTechnician).length>0?"更改":"指派"}}</span></td>
+          <td>{{item.status}}</td>
+          <td>{{item.type}}</td>
+          <td>{{item.orderNo}}</td>
+          <td>{{item.enterTime}}</td>
+          <td>{{item.predictedTime}}</td>
+          <td>{{item.outeOfDate}}</td>
+          <td>{{item.serviceConsultant}}</td>
+          <td>{{item.brand}}</td>
+          <td>{{item.carType}}</td>
+          <td>{{item.plateNumber}}</td>
+          <td>{{item.mileage}}</td>
+          <td>{{item.buyTime}}</td>
+          <td>{{item.carOwner}}</td>
+          <td>{{item.sender}}</td>
+          <td>{{item.senderPhoneNumber}}</td>
+           <td width="50">
+           <span class='assign-detail'>详情</span>
           </td>
-        </tr>
-        <tr>
-         
-          <td>蛋蛋、池子<br><span class='assign-detail' (click)="OnClickPerson()">更改</span></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>13699117904</td>
-           <td><span class='assign-detail' (click)="OnClickDetail()">详情</span></td>
-        </tr>
-        <tr>
-          
-          <td><span class='assign-detail' (click)="OnClickPerson()">指派</span></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td><span class='assign-detail' (click)="OnClickDetail()">详情</span></td>
         </tr>
       </tbody>
     </table>
-    <!--分页-->
-    <ul class="pagination" ng-reflect-klass="pagination" ng-reflect-ng-class="">
-    <!--bindings={
-  "ng-reflect-ng-if": "true"
-}--><li class="pagination-first page-item disabled">
-      <a class="page-link" href="">首页</a>
-    </li>
-
-    <!--bindings={
-  "ng-reflect-ng-if": "true"
-}--><li class="pagination-prev page-item disabled">
-      <a class="page-link" href="">上一页</a>
-      </li>
-
-    <!--bindings={
-  "ng-reflect-ng-for-of": "[object Object],[object Object"
-}--><li class="pagination-page page-item active">
-      <a class="page-link" href="">1</a>
-    </li><li class="pagination-page page-item">
-      <a class="page-link" href="">2</a>
-    </li>
-
-    <!--bindings={
-  "ng-reflect-ng-if": "true"
-}--><li class="pagination-next page-item">
-      <a class="page-link" href="">下一页</a></li>
-
-    <!--bindings={
-  "ng-reflect-ng-if": "true"
-}--><li class="pagination-last page-item">
-      <a class="page-link" href="">尾页</a></li>
-  </ul>
-  <!--分页 end-->
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
 
 
      <div class="d-flex flex-row assign-total">
@@ -143,211 +74,7 @@
 
   </div>
 
-<!--详情点击弹出框 start-->
-    <div class="detail-alert" [hidden]="!isShow"></div>
-    <div class="alert alert-warning alert-dismissible fade show" role="alert" [hidden]="!isShow" id="alertDetail">
-     <div class="close" (click)="OnClickClose()"> <span aria-hidden="true">&times;</span></div>
- <!--tab头部切换 start-->
-    <ul class="nav nav-tabs" role="tablist">
-      <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#home" role="tab">维修项目</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#profile" role="tab">维修配件</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#messages" role="tab">附加项目</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#settings" role="tab">建议维修项</a>
-      </li>
-    </ul>
- <!--tab头部切换 end-->
- <!--tab内容切换 start-->
-    <div class="tab-content">
-      <!--维修项目-->
-  <div class="tab-pane active" id="home" role="tabpanel">
-     <table class="table table-bordered table-sm table-striped">
-        <thead>
-          <tr>
-            <th>操作</th>
-            <th>项目名称 </th>
-            <th>维修工时</th>
-            <th>工时单价</th>
-            <th>金额</th>
-            <th>折扣率</th>
-            <th>操作时间</th>
-            <th>操作员</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><span class='assign-detail' (click)="OnClickPerson()">指派</span></td>
-            <td>项目名称1</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-            </td>
-          </tr>
-          <tr>
-            <td><span class='assign-detail' (click)="OnClickPerson()">指派</span></td>
-            <td>项目名称2</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-            </td>
-          </tr>
-          <tr>
-            <td><span class='assign-detail' (click)="OnClickPerson()">指派</span></td>
-            <td>项目名称3</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-  </div>
-  <!--维修配件-->
-  <div class="tab-pane" id="profile" role="tabpanel">
-     <table class="table table-bordered table-sm table-striped">
-        <thead>
-          <tr>
-            <th>维修工项</th>
-            <th>附加项目</th>
-            <th>建议维修项</th>
-            <th>历史维修记录</th>
-            <th>客户回访记录</th>
-          
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>维修工项1</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-           
-          </tr>
-          <tr>
-            <td>维修工项2</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-            </td>
-          </tr>
-          <tr>
-           
-            <td>维修工项3</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-            </td>
-          </tr>
-        </tbody>
-      </table>
- 
-  </div>
-  <!--附加项目-->
-  <div class="tab-pane" id="messages" role="tabpanel">
-       <table class="table table-bordered table-sm table-striped">
-        <thead>
-          <tr>
-            <th>项目名称</th>
-            <th>数量</th>
-            <th>单价</th>
-            <th>金额</th>
-            <th>备注</th>
-          
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>项目名称1</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-           
-          </tr>
-          <tr>
-            <td>项目名称2</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-            </td>
-          </tr>
-          <tr>
-           
-            <td>项目名称3</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-  </div>
-  <!--建议维修项-->
-  <div class="tab-pane" id="settings" role="tabpanel">
-      <table class="table table-bordered table-sm table-striped">
-        <thead>
-          <tr>
-            <th>建议维修项目</th>
-            <th>是否修理</th>
-            <th>操作时间</th>
-            <th>操作员</th>
-            <th>备注</th>
-          
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>建议维修项目1</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-           
-          </tr>
-          <tr>
-            <td>建议维修项目2</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-            </td>
-          </tr>
-          <tr>
-           
-            <td>建议维修项目3</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-  </div>
-</div>
-<!--tab内容切换 end-->
-</div>
-<!--详情点击弹出框 end-->
+
 
 <!--指派或更改弹出框 start-->
  <div class="assign-alert" [hidden]="!isShowPerson"></div>

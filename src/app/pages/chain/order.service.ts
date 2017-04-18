@@ -51,11 +51,32 @@ export class OrderService implements BasicService<Order> {
                 mileage: '100公里', // 行驶里程
                 buyTime: '2013-4-15', // 购车时间
                 carOwner: 'xxx', // 车主
-                sender: 'gaofei', // 送修人
-                senderPhoneNumber: 'sfdfsdfsdfs dfdsfdsfdsfds', // 送修人电话
+                sender: '凡凡', // 送修人
+                senderPhoneNumber: '13699117904', // 送修人电话
                 introducer: 'gaofei', // 介绍人
                 introducerPhoneNumber: '13923421346', // 介绍人电话
-                repairTechnician: 'gaofei', // 维修技师
+                repairTechnician: '高飞', // 维修技师
+                leaveFactoryTime: '2017-4-16 11:35:22' // 出厂时间
+            },{
+                storeName: '总店', // 店名
+                status: '维修中', // 状态
+                type: '一般维修', // 维修类型
+                orderNo: '313523532523', // 工单号
+                enterTime: '2017-4-15 11:35:22', // 进店时间
+                predictedTime: '2017-4-16 11:35:22', // 预计交车时间
+                outeOfDate: '否', // 超时(期)
+                serviceConsultant: 'gaofei', // 服务顾问
+                brand: '奥迪', // 品牌
+                carType: '', // 车型
+                plateNumber: '京A324P', // 车牌号
+                mileage: '100公里', // 行驶里程
+                buyTime: '2013-4-15', // 购车时间
+                carOwner: 'xxx', // 车主
+                sender: 'fanfan', // 送修人
+                senderPhoneNumber: '13699117904', // 送修人电话
+                introducer: 'gaofei', // 介绍人
+                introducerPhoneNumber: '13923421346', // 介绍人电话
+                repairTechnician: '', // 维修技师
                 leaveFactoryTime: '2017-4-16 11:35:22' // 出厂时间
             }],
             total: 1,

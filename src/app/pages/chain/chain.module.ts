@@ -8,8 +8,9 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { PopoverModule } from 'ngx-bootstrap/popover';
-
+import { AlertModule } from 'ngx-bootstrap';
 import { OrderService } from './order.service';
+import { ModalModule } from 'ngx-bootstrap';
 
 
 @NgModule({
@@ -19,6 +20,8 @@ import { OrderService } from './order.service';
     CollapseModule.forRoot(),
     TabsModule.forRoot(),
     PopoverModule.forRoot(),
+    AlertModule.forRoot(),
+    ModalModule.forRoot(),
     ChainRoutingModule,
     SharedModule,
     Ng2SmartTableModule,
