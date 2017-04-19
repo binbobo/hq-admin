@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { PaginationModule, PopoverModule, AlertModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
 import { TranslateStore } from "@ngx-translate/core/src/translate.store";
+import { MultiSelectorDirective, MultiSelectorComponent } from 'app/shared/directives';
 
 const HQ_COMPONENTS = [
     AlerterComponent,
@@ -16,7 +17,9 @@ const HQ_COMPONENTS = [
     ControlErrorsComponent,
     ClippedWordComponent,
     MenuComponent,
-    LoadingComponent
+    LoadingComponent,
+    MultiSelectorComponent,
+    MultiSelectorDirective,
 ];
 
 const HQ_PIPES = [
@@ -24,8 +27,8 @@ const HQ_PIPES = [
 ];
 
 const HQ_SERVICES = [
-    UserService, 
-    requestOptionsProvider, 
+    UserService,
+    requestOptionsProvider,
     HttpService,
     EventDispatcher,
 ]
@@ -49,7 +52,8 @@ const HQ_SERVICES = [
         HQ_COMPONENTS,
         HQ_PIPES,
     ],
-    declarations: [HQ_COMPONENTS, HQ_PIPES],
+    declarations: [HQ_COMPONENTS, HQ_PIPES, MultiSelectorDirective],
+    entryComponents: [MultiSelectorComponent]
 })
 export class SharedModule {
     static forRoot() {

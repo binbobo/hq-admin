@@ -68,10 +68,13 @@ export class CreateOrderComponent extends DataList<Order> {
           },
         },
       },
+      
       manHours: {
         title: '维修工时(小时)',
-        // type: 'custom',
-        // renderComponent: CustomRenderComponent
+        // editor: {
+        //   type: 'custom',
+        //   component: CustomRenderComponent,
+        // },
       },
       usemanHourPrice: {
         title: '工时单价(元)'

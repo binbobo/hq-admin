@@ -2,9 +2,15 @@
     <h1 class="display-3">欢迎登录！</h1>
     <p class="lead">为了实现更好的体验，推荐使用以下浏览器操作当前系统：
     </p>
-    <input [(ngModel)]="myDate" 
-     ngui-datetime-picker class="form-control"
-      date-only="true"/>
+    <input [(ngModel)]="myDate" ngui-datetime-picker class="form-control" date-only="true" />
+    <div class="row">
+        <div class="col-6">
+            <input type="text" class="form-control" [mselector]="options" (onConfirm)="onConfirm()" (onChange)="onChange($event)" placeholder="点击弹出"/>
+        </div>
+        <div class="col-6">
+            <button type="button" class="btn btn-default" [mselector]="options" mTitle="title">点击弹出</button>
+        </div>
+    </div>
     <hr class="my-4">
     <table class="table">
         <tbody>

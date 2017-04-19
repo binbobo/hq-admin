@@ -13,6 +13,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 
 
 import { OrderService } from './order.service';
+import { CustomRenderComponent } from './create-order/render-datetime.component';
 
 @NgModule({
   imports: [
@@ -28,7 +29,7 @@ import { OrderService } from './order.service';
     ReactiveFormsModule,
     NguiDatetimePickerModule
   ],
-  declarations: [routedComponents],
+  declarations: [routedComponents,CustomRenderComponent],
   providers: [OrderService]
 })
 export class ChainModule { }

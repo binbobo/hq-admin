@@ -4,8 +4,7 @@ import { ViewCell } from 'ng2-smart-table';
 
 @Component({
   template: `
-    {{renderValue}}
-    <input type="date" >
+    {{value}}
     sdfdfsdfsdfds
   `,
 })
