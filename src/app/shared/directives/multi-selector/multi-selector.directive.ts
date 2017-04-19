@@ -4,8 +4,8 @@ import { MultiSelectorComponent } from './multi-selector.component';
 import { SelectOption } from 'app/shared/models';
 
 @Directive({
-  selector: '[mselector]', exportAs: 'mutil-selector',
-  inputs: ['mselector']
+  selector: '[mSelector]', exportAs: 'mutil-selector',
+  inputs: ['mSelector']
 })
 export class MultiSelectorDirective {
 
@@ -69,7 +69,7 @@ export class MultiSelectorDirective {
     this.onHidden = this._selector.onHidden;
   }
 
-  private set mselector(options: Array<SelectOption>) {
+  private set mSelector(options: Array<SelectOption>) {
     this.options = options;
   }
 

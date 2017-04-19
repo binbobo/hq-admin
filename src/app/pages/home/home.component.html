@@ -5,10 +5,10 @@
     <input [(ngModel)]="myDate" ngui-datetime-picker class="form-control" date-only="true" />
     <div class="row">
         <div class="col-6">
-            <input type="text" class="form-control" [mselector]="options" (onConfirm)="onConfirm()" (onChange)="onChange($event)" placeholder="点击弹出"/>
+            <input type="text" class="form-control" [mSelector]="options" (onConfirm)="onConfirm()" (onChange)="onChange($event)" placeholder="点击弹出"/>
         </div>
         <div class="col-6">
-            <button type="button" class="btn btn-default" [mselector]="options" mTitle="title">点击弹出</button>
+            <button type="button" class="btn btn-default" [mSelector]="options" mTitle="title">点击弹出</button>
         </div>
     </div>
     <hr class="my-4">
