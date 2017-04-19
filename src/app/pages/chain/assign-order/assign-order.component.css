@@ -16,8 +16,26 @@
     color: #014c8c;
     text-decoration: underline;
 }
-
-
 .assign .assign-total{
     margin-top:60px;
+}
+
+/*工单详情部分*/
+ .modal-content{
+     background-color: #eceeef;
+ }
+ table{
+     background-color: #fff;
+ }
+@media (min-width: 400px){
+.modal-lg {
+    max-width: 1200px;
+}
+}
+.triangle{
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-top: 20px solid red;
+    border-right: 20px solid transparent;
 }
