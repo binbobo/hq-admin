@@ -151,7 +151,7 @@
         <template tabHeading>
           <span class="asterisk mr-1">*</span>维修项目
         </template>
-        <ng2-smart-table [settings]="maintanceItemSettings" [source]="maintenanceProjectData" ></ng2-smart-table>
+        <ng2-smart-table (createConfirm)="addNewmaintanceItem($event)" [settings]="maintanceItemSettings" [source]="maintenanceProjectData" ></ng2-smart-table>
       </tab>
       <tab>
         <template tabHeading>

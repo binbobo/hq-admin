@@ -4,7 +4,7 @@ import { OrderService, OrderListRequest, Order } from '../order.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { ViewCell } from 'ng2-smart-table';
-import { CustomRenderComponent } from './render-datetime.component';
+import { CustomDatetimeEditorComponent } from './custom-datetime-editor.component';
 
 @Component({
   selector: 'app-create-order',
@@ -33,26 +33,34 @@ export class CreateOrderComponent extends DataList<Order> {
     operationTime: '2017-04-18 15:30'
   }];
 
+  // smart table 公共配置
+  private stAttr = {
+    class: 'table-hover'  // 作用于智能表单的类
+  };
+  private stFilter = {
+    inputClass: 'inputFilter'
+  };
+  private stActions = {
+    columnTitle: '操作',
+    edit: false,   // 不显示编辑按钮
+  };
+  private stAdd = {
+    addButtonContent: '新增维修项目',
+    createButtonContent: '添加',
+    cancelButtonContent: '取消',
+    confirmCreate: true    // 添加确认事件必须配置项
+  };
+  private stDelete = {
+    deleteButtonContent: '删除'
+  }
+
   // 维修项目表头
   maintanceItemSettings = {
-    attr: {
-      class: 'table-hover'  // 作用于智能表单的类
-    },
-    filter: {
-      inputClass: 'inputFilter'
-    },
-    actions: {
-      columnTitle: '操作',
-      edit: false,   // 不显示编辑按钮
-    },
-    add: {
-      addButtonContent: '新增维修项目',
-      createButtonContent: '添加',
-      cancelButtonContent: '取消'
-    },
-    delete: {
-      deleteButtonContent: '删除'
-    },
+    attr: this.stAttr,
+    filter: this.stFilter,
+    actions: this.stActions,
+    add: this.stAdd,
+    delete: this.stDelete,
     columns: {
       name: {
         title: '维修项目名称',
@@ -64,16 +72,15 @@ export class CreateOrderComponent extends DataList<Order> {
               searchFields: 'name',
               titleField: 'name',
               descriptionField: '', // 在候选列表项后面显示
+              placeholder: '请输入...'
             },
           },
         },
       },
       manHours: {
         title: '维修工时(小时)',
-        // type: 'custom',
-        // renderComponent: CustomRenderComponent
       },
-      usemanHourPrice: {
+      manHourPrice: {
         title: '工时单价(元)'
       },
       money: {
@@ -84,6 +91,11 @@ export class CreateOrderComponent extends DataList<Order> {
       },
       operationTime: {
         title: '操作时间',
+        type: 'html',
+        editor: {
+          type: 'custom',
+          component: CustomDatetimeEditorComponent,
+        },
       }
     }
   };
@@ -209,6 +221,19 @@ export class CreateOrderComponent extends DataList<Order> {
 
     // 获取挂起的订单
     this.unsettledOrders = this.getUnsettledOrders();
+  }
+
+  /**
+   * 通过智能表格新增维修项目, 创建事件处理程序
+   * @memberOf CreateOrderComponent
+   */
+  addNewmaintanceItem(evt) {
+    const newData = evt.newData;
+    const confirm = evt.confirm;
+
+    console.log(newData);
+
+    confirm.resolve();
   }
 
   getUnsettledOrders() {

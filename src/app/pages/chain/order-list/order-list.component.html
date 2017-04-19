@@ -207,7 +207,7 @@
         <tr *ngFor="let item of list">
           <td width="50">
             <a>作废</a> |
-            <button (click)="selectedOrder=item;lgModal.show()">详情</button>
+            <a (click)="selectedOrder=item;lgModal.show()">详情</a>
           </td>
           <td>{{item.storeName}}</td>
           <td>{{item.status}}</td>

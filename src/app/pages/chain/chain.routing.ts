@@ -5,7 +5,7 @@ import { AssignOrderComponent } from './assign-order/assign-order.component';
 import { BillOrderComponent } from './bill-order/bill-order.component';
 import { AppendOrderComponent } from './append-order/append-order.component';
 import { CreateOrderComponent } from './create-order/create-order.component';
-import { CustomRenderComponent } from './create-order/render-datetime.component';
+import { CustomDatetimeEditorComponent } from './create-order/custom-datetime-editor.component';
 
 const routes: Routes = [
     // 工单列表路由
@@ -26,5 +26,5 @@ const routes: Routes = [
 })
 export class ChainRoutingModule { }
 
-export const routedComponents = [CustomRenderComponent, OrderListComponent, AssignOrderComponent, CreateOrderComponent,BillOrderComponent,AppendOrderComponent];
+export const routedComponents = [CustomDatetimeEditorComponent, OrderListComponent, AssignOrderComponent, CreateOrderComponent,BillOrderComponent,AppendOrderComponent];
 
