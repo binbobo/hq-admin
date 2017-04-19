@@ -9,7 +9,6 @@ import { Subscription } from "rxjs/Subscription";
   styleUrls: ['./control-errors.component.css']
 })
 export class ControlErrorsComponent implements OnInit, OnDestroy, AfterContentInit {
-
   @Input()
   private control: string;
   @Input()
@@ -21,7 +20,6 @@ export class ControlErrorsComponent implements OnInit, OnDestroy, AfterContentIn
   constructor() { }
 
   ngOnInit() {
-
   }
 
   ngOnDestroy(): void {

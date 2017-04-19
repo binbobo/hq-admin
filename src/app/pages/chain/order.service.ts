@@ -13,7 +13,7 @@ export class OrderService implements BasicService<Order> {
      * 获取可以选择的门店，用于中查询范围下拉框
      * @memberOf OrderService
      */
-    getSelectableStores(): TreeviewItem[]  {
+    getSelectableStores(): TreeviewItem[] {
         const beijingStores = new TreeviewItem({
             text: '北京店',
             value: 9
@@ -21,7 +21,7 @@ export class OrderService implements BasicService<Order> {
         const neimengStores = new TreeviewItem({
             text: '内蒙总店',
             value: 9,
-            children: [ {
+            children: [{
                 text: '包头店', value: 91
             }]
         });
@@ -34,43 +34,64 @@ export class OrderService implements BasicService<Order> {
     }
 
     public getPagedList(params: PagedParams): Promise<PagedResult<Order>> {
-        const url = Urls.configuration.concat('/order?', params.serialize());
-        return Promise.resolve({
-            data: [{
-                storeName: '总店', // 店名
-                status: '维修中', // 状态
-                type: '一般维修', // 维修类型
-                orderNo: '313523532523', // 工单号
-                enterTime: '2017-4-15 11:35:22', // 进店时间
-                predictedTime: '2017-4-16 11:35:22', // 预计交车时间
-                outeOfDate: '否', // 超时(期)
-                serviceConsultant: 'gaofei', // 服务顾问
-                brand: '奥迪', // 品牌
-                carType: '', // 车型
-                plateNumber: '京A324P', // 车牌号
-                mileage: '100公里', // 行驶里程
-                buyTime: '2013-4-15', // 购车时间
-                carOwner: 'xxx', // 车主
-                sender: 'gaofei', // 送修人
-                senderPhoneNumber: 'sfdfsdfsdfs dfdsfdsfdsfds', // 送修人电话
-                introducer: 'gaofei', // 介绍人
-                introducerPhoneNumber: '13923421346', // 介绍人电话
-                repairTechnician: 'gaofei', // 维修技师
-                leaveFactoryTime: '2017-4-16 11:35:22' // 出厂时间
-            }],
-            total: 1,
-            totalCount: 1
-        }).then(result => {
-            return result;
-        }).catch(err => Promise.reject(`加载工单列表失败：${err}`));
-        // return this.httpService
-        //     .get<PagedResult<Order>>(url)
-        //     .then(result => {
-        //         result.data.forEach(m => {
-        //         });
-        //         return result;
-        //     })
-        //     .catch(err => Promise.reject(`加载工单列表失败：${err}`));
+        const url = Urls.configuration.concat('Maintenances?', params.serialize());
+        // return Promise.resolve({
+        //     data: [{
+        //         storeName: '总店', // 店名
+        //         status: '维修中', // 状态
+        //         type: '一般维修', // 维修类型
+        //         orderNo: '313523532523', // 工单号
+        //         enterTime: '2017-4-15 11:35:22', // 进店时间
+        //         predictedTime: '2017-4-16 11:35:22', // 预计交车时间
+        //         outeOfDate: '否', // 超时(期)
+        //         serviceConsultant: 'gaofei', // 服务顾问
+        //         brand: '奥迪', // 品牌
+        //         carType: '', // 车型
+        //         plateNumber: '京A324P', // 车牌号
+        //         mileage: '100公里', // 行驶里程
+        //         buyTime: '2013-4-15', // 购车时间
+        //         carOwner: 'xxx', // 车主
+        //         sender: '凡凡', // 送修人
+        //         senderPhoneNumber: '13699117904', // 送修人电话
+        //         introducer: 'gaofei', // 介绍人
+        //         introducerPhoneNumber: '13923421346', // 介绍人电话
+        //         repairTechnician: '高飞', // 维修技师
+        //         leaveFactoryTime: '2017-4-16 11:35:22' // 出厂时间
+        //     },{
+        //         storeName: '总店', // 店名
+        //         status: '维修中', // 状态
+        //         type: '一般维修', // 维修类型
+        //         orderNo: '313523532523', // 工单号
+        //         enterTime: '2017-4-15 11:35:22', // 进店时间
+        //         predictedTime: '2017-4-16 11:35:22', // 预计交车时间
+        //         outeOfDate: '否', // 超时(期)
+        //         serviceConsultant: 'gaofei', // 服务顾问
+        //         brand: '奥迪', // 品牌
+        //         carType: '', // 车型
+        //         plateNumber: '京A324P', // 车牌号
+        //         mileage: '100公里', // 行驶里程
+        //         buyTime: '2013-4-15', // 购车时间
+        //         carOwner: 'xxx', // 车主
+        //         sender: 'fanfan', // 送修人
+        //         senderPhoneNumber: '13699117904', // 送修人电话
+        //         introducer: 'gaofei', // 介绍人
+        //         introducerPhoneNumber: '13923421346', // 介绍人电话
+        //         repairTechnician: '', // 维修技师
+        //         leaveFactoryTime: '2017-4-16 11:35:22' // 出厂时间
+        //     }],
+        //     total: 1,
+        //     totalCount: 1
+        // }).then(result => {
+        //     return result;
+        // }).catch(err => Promise.reject(`加载工单列表失败：${err}`));
+        return this.httpService
+            .get<PagedResult<Order>>(url)
+            .then(result => {
+                result.data.forEach(m => {
+                });
+                return result;
+            })
+            .catch(err => Promise.reject(`加载工单列表失败：${err}`));
     }
 
     public get(id: string): Promise<Order> {
@@ -112,7 +133,21 @@ export class OrderService implements BasicService<Order> {
 // 工单请求参数类
 export class OrderListRequest extends PagedParams {
     constructor(
-        title?: string
+        // 工单列表页面查询参数
+        status?: string, // 工单状态
+        plateNo?: string, // 车牌号
+        customerName?: string, // 车主
+        phone?: string, // 车主电话
+        contactUser?: string, // 送修人
+        contactInfo?: string, // 送修人电话
+        brand?: string, // 品牌
+        series?: string, // 车系
+        model?: string, // 车型
+        billCode?: string, // 工单号
+        createdUserName?: string, // 服务顾问
+        type?: string, // 维修类型
+        createdOnUtc?: string, // 进店时间
+        leaveTime?: string // 出厂时间
     ) {
         super('OrderListRequestParams');
     }
@@ -121,26 +156,28 @@ export class OrderListRequest extends PagedParams {
 // 工单model类
 export class Order extends BasicModel {
     constructor(
-        public storeName: string, // 店名
+        public orgName: string, // 店名
         public status: string, // 状态
         public type: string, // 维修类型
-        public orderNo: string, // 工单号
-        public enterTime: string, // 进店时间
-        public predictedTime: string, // 预计交车时间
-        public outeOfDate: string, // 超时(期)
-        public serviceConsultant: string, // 服务顾问
+        public billCode: string, // 工单号
+        public createdOnUtc: Date, // 进店时间
+        public expectLeave: Date, // 预计交车时间
+        public overTime: number, // 超时(时间)
+        public createdUserName: string, // 服务顾问
         public brand: string, // 品牌
-        public carType: string, // 车型
-        public plateNumber: string, // 车牌号
+        public series: string, // 车系
+        public model: string, // 车型
+        public plateNo: string, // 车牌号
         public mileage: string, // 行驶里程
-        public buyTime: string, // 购车时间
-        public carOwner: string, // 车主
-        public sender: string, // 送修人
-        public senderPhoneNumber: string, // 送修人电话
+        public purchaseDate: Date, // 购车时间
+        public customerName: string, // 车主
+        public phone: string, // 车主电话
+        public contactUser: string, // 送修人
+        public contactInfo: string, // 送修人电话
         public introducer: string, // 介绍人
-        public introducerPhoneNumber: string, // 介绍人电话
-        public repairTechnician: string, // 维修技师
-        public leaveFactoryTime: string // 出厂时间
+        public introPhone: string, // 介绍人电话
+        public employeeNames: string, // 维修技师
+        public leaveTime: string // 出厂时间
     ) {
         super();
     }

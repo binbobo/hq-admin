@@ -15,115 +15,114 @@
       <div class="form-group row">
         <label for="carNo" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>车牌号:</label>
         <div class="col-sm-2">
-          <input type="text" class="form-control form-control-sm" formControlName="carNo" id="carNo" placeholder="车牌号">
+          <input type="text" readonly class="form-control readonly form-control-sm" formControlName="carNo" id="carNo" placeholder="">
         </div>
         <label for="carOwner" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>车主:</label>
         <div class="col-sm-2">
-          <input type="text" class="form-control form-control-sm" formControlName="carOwner" id="carOwner" placeholder="车主">
+          <input type="text" readonly class="form-control readonly form-control-sm" formControlName="carOwner" id="carOwner" placeholder="">
         </div>
         <label for="carOwnerPhone" class="col-sm-1 col-form-label col-form-label-sm">车主电话:</label>
         <div class="col-sm-2">
-          <input type="tel" class="form-control form-control-sm" formControlName="carOwnerPhone" id="carOwnerPhone" placeholder="车主电话">
+          <input type="tel" readonly class="form-control readonly form-control-sm" formControlName="carOwnerPhone" id="carOwnerPhone" placeholder="">
         </div>
       </div>
       <hr>
       <div class="form-group row">
         <label for="createOrderTime" class="col-sm-1 col-form-label col-form-label-sm">开单时间:</label>
         <div class="col-sm-2">
-          <input type="email" readonly class="form-control form-control-sm" formControlName="createOrderTime" id="createOrderTime">
+          <input type="text" readonly class="form-control readonly form-control-sm" formControlName="createOrderTime" id="createOrderTime">
         </div>
         <label for="sender" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>送修人:</label>
         <div class="col-sm-2">
-          <input type="email" class="form-control form-control-sm" formControlName="sender" id="sender" placeholder="送修人">
+          <input  type="text" readonly class="form-control readonly form-control-sm" formControlName="sender" id="sender" placeholder="">
         </div>
         <label for="senderPhone" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>送修人电话:</label>
         <div class="col-sm-2">
-          <input type="tel" class="form-control form-control-sm" formControlName="senderPhone" id="senderPhone" placeholder="送修人电话">
+          <input type="tel" readonly class="form-control readonly form-control-sm" formControlName="senderPhone" id="senderPhone" placeholder="">
         </div>
         <label for="serviceConsultant" class="col-sm-1 col-form-label col-form-label-sm">服务顾问:</label>
         <div class="col-sm-2">
-          <input type="text" readonly class="form-control form-control-sm" formControlName="serviceConsultant" id="serviceConsultant">
+          <input type="text" readonly class="form-control readonly form-control-sm" formControlName="serviceConsultant" id="serviceConsultant">
         </div>
       </div>
       <div class="form-group row">
         <label for="carBrand" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>品牌:</label>
         <div class="col-sm-2">
-          <input type="text" class="form-control form-control-sm" formControlName="carBrand" id="carBrand" placeholder="品牌">
+          <input type="text"  readonly class="form-control readonly form-control-sm" formControlName="carBrand" id="carBrand" placeholder="">
         </div>
         <label for="carSeries" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>车系:</label>
         <div class="col-sm-2">
-          <input type="text" class="form-control form-control-sm" formControlName="carSeries" id="carSeries" placeholder="车系">
+          <input type="text"  readonly class="form-control readonly form-control-sm" formControlName="carSeries" id="carSeries" placeholder="">
         </div>
         <label for="carType" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>车型:</label>
         <div class="col-sm-2">
-          <input type="text" class="form-control form-control-sm" formControlName="carType" id="carType" placeholder="车型">
+          <input type="text"  readonly class="form-control readonly form-control-sm" formControlName="carType" id="carType" placeholder="">
         </div>
         <label for="vin" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>VIN:</label>
         <div class="col-sm-2">
-          <input type="text" class="form-control form-control-sm" formControlName="vin" id="vin" placeholder="VIN">
+          <input type="text"  readonly class="form-control readonly form-control-sm" formControlName="vin" id="vin" placeholder="">
         </div>
       </div>
       <hr>
       <div class="form-group row">
-        <label for="repairType" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>维修类型：</label>
+        <label for="repairType" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>维修类型:</label>
         <div class="col-sm-2">
-          <select id="repairType" formControlName="repairType" class="form-control form-control-sm">
-                <option value="1" selected >一般维修</option>
-                <option value="2">保养</option>
-                <option value="3">事故</option>
-                <option value="4">索赔</option>
-                <option value="5">免费检测</option>
-              </select>
+                    <input readonly class="form-control readonly form-control-sm" formControlName="repairType" id="repairType">
         </div>
-        <label for="predictedFinishTime" class="col-sm-2 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>交车时间：</label>
-        <div class="col-sm-3">
-          <input type="date" class="form-control form-control-sm" formControlName="predictedFinishTime" id="predictedFinishTime">
+        <label for="predictedFinishTime" class="col-sm-2 col-form-label col-form-label-sm">预计交车日期:</label>
+        <div class="input-group input-group-sm col-sm-3">
+          <input readonly class="form-control readonly form-control-sm" type="text"  formControlName="predictedFinishTime"/>
+          
         </div>
-        <label for="mileage" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>行驶里程：</label>
+        <label for="mileage" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>行驶里程:</label>
         <div class="input-group input-group-sm col-sm-2">
-          <input type="text" class="form-control form-control-sm" formControlName="mileage" id="mileage">
-          <span class="input-group-addon mileageUnit">&nbsp;KM</span>
+          <input readonly class="form-control readonly form-control-sm" formControlName="mileage" id="mileage">
+          <span class="input-group-addon">KM</span>
         </div>
       </div>
       <div class="form-group row">
-        <label for="previousEntryTime" class="col-sm-1 col-form-label col-form-label-sm">上次进店时间：</label>
+        <label for="previousEntryTime" class="col-sm-1 col-form-label col-form-label-sm">上次进店时间:</label>
         <div class="col-sm-2">
-          <input type="text" readonly class="form-control form-control-sm" formControlName="previousEntryTime" id="previousEntryTime">
+          <input readonly class="form-control readonly form-control-sm" formControlName="previousEntryTime" id="previousEntryTime">
         </div>
-        <label for="suggestedNextMaintenanceTime" class="col-sm-2 col-form-label col-form-label-sm">建议下次保养日期：</label>
-        <div class="col-sm-3">
-          <input type="date" class="form-control form-control-sm" formControlName="suggestedNextMaintenanceTime" id="suggestedNextMaintenanceTime">
+        <label for="suggestedNextMaintenanceTime" class="col-sm-2 col-form-label col-form-label-sm">建议下次保养日期:</label>
+        <div class="input-group input-group-sm col-sm-3">
+          <input readonly class="form-control readonly form-control-sm" type="text" formControlName="suggestedNextMaintenanceTime"/>
+        
         </div>
-        <label for="repairStation" class="col-sm-1 col-form-label col-form-label-sm">维修工位：</label>
+        <label for="repairStation" class="col-sm-1 col-form-label col-form-label-sm">维修工位:</label>
         <div class="col-sm-2">
-          <input type="text" class="form-control form-control-sm" formControlName="repairStation" id="repairStation">
+          <input readonly class="form-control readonly form-control-sm" formControlName="repairStation" id="repairStation">
         </div>
       </div>
       <div class="form-group row">
-        <label for="previousEntryMileage" class="col-sm-1 col-form-label col-form-label-sm">上次进店里程：</label>
-        <div class="col-sm-2">
-          <input type="text" class="form-control form-control-sm" formControlName="previousEntryMileage" id="previousEntryMileage">
+        <label for="previousEntryMileage" class="col-sm-1 col-form-label  col-form-label-sm">上次进店里程:</label>
+        <div class="input-group input-group-sm col-sm-2">
+          <input type="text"readonly class="form-control readonly form-control-sm"  formControlName="previousEntryMileage" id="previousEntryMileage">
+          <span class="input-group-addon">KM</span>
         </div>
-        <label for="suggestedNextMaintenanceMileage" class="col-sm-2 col-form-label col-form-label-sm">建议下次保养里程：</label>
-        <div class="col-sm-3">
-          <input type="date" class="form-control form-control-sm" formControlName="suggestedNextMaintenanceMileage" id="suggestedNextMaintenanceMileage">
+        <label for="suggestedNextMaintenanceMileage" class="col-sm-2 col-form-label col-form-label-sm">建议下次保养里程:</label>
+       <div class="input-group input-group-sm col-sm-3">
+          <input type="text" readonly class="form-control readonly form-control-sm" formControlName="suggestedNextMaintenanceMileage" id="suggestedNextMaintenanceMileage">
+          <span class="input-group-addon">KM</span>
         </div>
       </div>
     </form>
     <hr>
 
+
     <tabset #staticTabs>
       <tab>
         <template tabHeading>
-          <span class="asterisk">*&nbsp;</span>维修项目
+          <span class="asterisk mr-1">*</span>维修项目
         </template>
-        <ng2-smart-table [settings]="maintanceItemSettings"></ng2-smart-table>
+        <ng2-smart-table [settings]="maintanceItemSettings" [source]="maintenanceProjectData" ></ng2-smart-table>
       </tab>
       <tab>
         <template tabHeading>
-          <span class="asterisk">*&nbsp;</span>维修配件
+          <span class="asterisk mr-1">*</span>维修配件
         </template>
-        <ng2-smart-table [settings]="maintanceFixingsSettings"></ng2-smart-table>
+        <ng2-smart-table [settings]="maintanceFixingsSettings" [source]="maintenanceFixingsData"></ng2-smart-table>
       </tab>
       <tab heading="附加项目">
         <ng2-smart-table [settings]="addsOnItemSettings"></ng2-smart-table>
@@ -158,3 +157,4 @@
     </div>
 
   </div>
+

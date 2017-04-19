@@ -30,3 +30,15 @@ input[readonly] {
     border-radius:0;
 }
 
+hr {
+    border-top:1px dotted #ccc;
+    /*Rest of stuff here*/
+}
+
+/*智能表格日期时间类型单元格样式*/
+.datetime-editor {
+    width: 100%;
+    line-height: normal;
+    padding: .375rem .75rem;
+}
+

@@ -1,19 +1,17 @@
 import { NgModule } from '@angular/core';
 import { ChainRoutingModule, routedComponents } from './chain.routing';
-import { SharedModule } from '../../shared/shared.module';
 import { DatepickerModule } from 'ngx-bootstrap/datepicker';
-import {DropdownTreeviewModule} from 'ng2-dropdown-treeview';
+import { DropdownTreeviewModule } from 'ng2-dropdown-treeview';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { PopoverModule } from 'ngx-bootstrap/popover';
-import { NguiDatetimePickerModule} from '@ngui/datetime-picker';
-import { ModalModule } from 'ngx-bootstrap/modal';
-
-
+import { AlertModule } from 'ngx-bootstrap';
 import { OrderService } from './order.service';
-import { CustomRenderComponent } from './create-order/render-datetime.component';
+import { ModalModule } from 'ngx-bootstrap';
+import { NguiDatetimePickerModule } from '@ngui/datetime-picker';
+import { SharedModule } from 'app/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -22,6 +20,7 @@ import { CustomRenderComponent } from './create-order/render-datetime.component'
     CollapseModule.forRoot(),
     TabsModule.forRoot(),
     PopoverModule.forRoot(),
+    AlertModule.forRoot(),
     ModalModule.forRoot(),
     ChainRoutingModule,
     SharedModule,
@@ -29,7 +28,8 @@ import { CustomRenderComponent } from './create-order/render-datetime.component'
     ReactiveFormsModule,
     NguiDatetimePickerModule
   ],
-  declarations: [routedComponents,CustomRenderComponent],
-  providers: [OrderService]
+  declarations: [routedComponents],
+  providers: [OrderService],
+  entryComponents: [routedComponents[0]], // 配置CustomDatetimeEditorComponent
 })
 export class ChainModule { }

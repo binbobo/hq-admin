@@ -13,15 +13,64 @@ import { TabsetComponent } from 'ngx-bootstrap';
 export class AppendOrderComponent extends DataList<Order> {
    createWorkSheetForm: FormGroup;
   // ng2-smart-table
+  // ng2-smart-table
 
-  //维修项目表头
+  // 维修项目数据
+  maintenanceProjectData = [{
+    name: 'Leanne Graham',
+    manHours: '5',
+    usemanHourPrice: '100',
+    money: '500',
+    discountRatio: '0',
+    operationTime: '2017-04-18 15:30'
+  }, {
+    name: 'Graham Leanne',
+    manHours: '5',
+    usemanHourPrice: '100',
+    money: '500',
+    discountRatio: '0',
+    operationTime: '2017-04-18 15:30'
+  }];
+
+  // 维修项目表头
   maintanceItemSettings = {
+    attr: {
+      class: 'table-hover'  // 作用于智能表单的类
+    },
+    filter: {
+      inputClass: 'inputFilter'
+    },
+    actions: {
+      columnTitle: '操作',
+      edit: false,   // 不显示编辑按钮
+    },
+    add: {
+      addButtonContent: '新增维修项目',
+      createButtonContent: '添加',
+      cancelButtonContent: '取消'
+    },
+    delete: {
+      deleteButtonContent: '删除'
+    },
     columns: {
       name: {
-        title: '维修项目名称'
+        title: '维修项目名称',
+        editor: {
+          type: 'completer',
+          config: {
+            completer: {
+              data: this.maintenanceProjectData,
+              searchFields: 'name',
+              titleField: 'name',
+              descriptionField: '', // 在候选列表项后面显示
+            },
+          },
+        },
       },
       manHours: {
-        title: '维修工时(小时)'
+        title: '维修工时(小时)',
+        // type: 'custom',
+        // renderComponent: CustomRenderComponent
       },
       usemanHourPrice: {
         title: '工时单价(元)'
@@ -33,7 +82,7 @@ export class AppendOrderComponent extends DataList<Order> {
         title: '折扣率'
       },
       operationTime: {
-        title: '操作时间'
+        title: '操作时间',
       }
     }
   };
@@ -60,8 +109,8 @@ export class AppendOrderComponent extends DataList<Order> {
       },
       money: {
         title: '金额(元)'
-      } ,
-        operationTime: {
+      },
+      operationTime: {
         title: '操作时间'
       }
     }
@@ -80,7 +129,7 @@ export class AppendOrderComponent extends DataList<Order> {
       },
       money: {
         title: '金额(元)'
-      } ,
+      },
       remark: {
         title: '备注'
       }
@@ -101,14 +150,14 @@ export class AppendOrderComponent extends DataList<Order> {
       },
       operator: {
         title: '操作员'
-      } ,
+      },
       remark: {
         title: '备注'
       }
     }
   };
-   // 客户回访记录表头
-   returnVisitSettings = {
+  // 客户回访记录表头
+  returnVisitSettings = {
     columns: {
       dateTime: {
         title: '回访时间'
@@ -121,7 +170,7 @@ export class AppendOrderComponent extends DataList<Order> {
       },
       attitude: {
         title: '服务态度'
-      } ,
+      },
       restEnvironment: {
         title: '休息环境'
       },
@@ -134,9 +183,9 @@ export class AppendOrderComponent extends DataList<Order> {
       isCheckedCar: {
         title: '接车时是否验车'
       },
-      isPriceQuoted : {
+      isPriceQuoted: {
         title: '是否报价'
-      } ,
+      },
       hasSuggestedItem: {
         title: '有无建议项目'
       }
