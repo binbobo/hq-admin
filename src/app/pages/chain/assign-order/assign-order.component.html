@@ -2,22 +2,6 @@
   <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
 </div>
 
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="assign card">
   <div _ngcontent-c11="" class="card-header">
     <span _ngcontent-c11="">指派工单</span>
@@ -52,7 +36,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of detailData">
-          <td>{{item.repairTechnician}}<span class='assign-detail'>{{(item.repairTechnician).length>0?"更改":"指派"}}</span></td>
+          <td>{{item.repairTechnician}}<button type="button" [mSelector]="options" mTitle="选择维修技师"   (onChange)="onChange($event)" (onConfirm)="onConfirm()" class='assign-detail btn-default'>{{(item.repairTechnician).length>0?"更改":"指派"}}</button></td>
           <td>{{item.status}}</td>
           <td>{{item.type}}</td>
           <td>{{item.orderNo}}</td>
