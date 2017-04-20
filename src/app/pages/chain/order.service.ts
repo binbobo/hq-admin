@@ -58,7 +58,7 @@ export class OrderService implements BasicService<Order> {
     }
 
     public getPagedList(params: PagedParams): Promise<PagedResult<Order>> {
-        const url = Urls.chain.concat('Maintenances?', params.serialize());
+        const url = Urls.chain.concat('/Maintenances?', params.serialize());
         // return Promise.resolve({
         //     data: [{
         //         storeName: '总店', // 店名

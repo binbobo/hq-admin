@@ -1,19 +1,19 @@
 import { Component, Injector } from '@angular/core';
 import { DataList } from '../../../shared/models/data-list';
 import { OrderService, OrderListRequest, Order, Vehicle } from '../order.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { ViewCell } from 'ng2-smart-table';
 import { CustomDatetimeEditorComponent } from './custom-datetime-editor.component';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-// Observable class extensions
 import 'rxjs/add/observable/of';
-// Observable operators
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/switchMap';
+
 
 
 @Component({
@@ -22,8 +22,9 @@ import 'rxjs/add/operator/distinctUntilChanged';
   styleUrls: ['./create-order.component.css'],
 })
 export class CreateOrderComponent extends DataList<Order> {
-  private searchTerms = new Subject<string>();
-  vehicles: Observable<Vehicle[]>;
+  // 用于保存搜索框中输入的关键字
+  private searchTerms: Subject<string>  = new Subject<string>();
+  vehicles: Vehicle[];
 
   // 创建工单表单
   createWorkSheetForm: FormGroup;
@@ -91,7 +92,7 @@ export class CreateOrderComponent extends DataList<Order> {
           },
         },
       },
-      
+
       manHours: {
         title: '维修工时(小时)',
       },
@@ -212,19 +213,12 @@ export class CreateOrderComponent extends DataList<Order> {
     // 获取挂起的订单
     this.unsettledOrders = this.getUnsettledOrders();
 
-    // this.vehicles = this.searchTerms
-    //   .debounceTime(300)        // wait 300ms after each keystroke before considering the term
-    //   .distinctUntilChanged()   // ignore if next search term is same as previous
-    //   .switchMap(term => term   // switch to new observable each time the term changes
-    //     // return the http search observable
-    //     ? this.service.doVehicleSearch(term)
-    //     // or the observable of empty heroes if there was no search term
-    //     : Observable.of<Vehicle[]>([]))
-    //   .catch(error => {
-    //     // TODO: add real error handling
-    //     console.log(error);
-    //     return Observable.of<Vehicle[]>([]);
-    //   });
+    this.searchTerms
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .switchMap(term => term ? this.service.doVehicleSearch(term) : Observable.of<Vehicle[]>([]))
+      .subscribe((val) => console.log(val));
+     ;
   }
 
 
