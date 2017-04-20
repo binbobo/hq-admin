@@ -42,3 +42,18 @@ hr {
     padding: .375rem .75rem;
 }
 
+
+/*重写表格样式*/
+.table th, .table td {
+    text-align: center;
+    vertical-align: middle;
+    font-size: small;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+.table th {
+    background: silver;
+}
+caption {
+    caption-side: top;
+}

@@ -11,6 +11,7 @@ import { AlertModule } from 'ngx-bootstrap';
 import { OrderService } from './order.service';
 import { ModalModule } from 'ngx-bootstrap';
 import { NguiDatetimePickerModule } from '@ngui/datetime-picker';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { SharedModule } from 'app/shared/shared.module';
 
 @NgModule({
@@ -21,6 +22,7 @@ import { SharedModule } from 'app/shared/shared.module';
     TabsModule.forRoot(),
     PopoverModule.forRoot(),
     AlertModule.forRoot(),
+    TypeaheadModule.forRoot(),
     ModalModule.forRoot(),
     ReceptionRoutingModule,
     SharedModule,
