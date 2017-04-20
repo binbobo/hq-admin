@@ -9,8 +9,9 @@
 }
 .assign .assign-detail{
     cursor:pointer;
-    display: inline-block;
+    display: block;
     color:#0275d8;   
+    font-size:.8rem;
 }
 .assign .assign-detail:hover{
     color: #014c8c;

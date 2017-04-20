@@ -21,7 +21,7 @@ export class AssignOrderComponent  extends DataList<Order> {
                 orderNo: '313523532523', // 工单号
                 enterTime: '2017-4-15 11:35:22', // 进店时间
                 predictedTime: '2017-4-16 11:35:22', // 预计交车时间
-                outeOfDate: '否', // 超时(期)
+                outeOfDate: '否', // 超时
                 serviceConsultant: 'gaofei', // 服务顾问
                 brand: '奥迪', // 品牌
                 carType: '', // 车型
@@ -132,15 +132,21 @@ export class AssignOrderComponent  extends DataList<Order> {
 
 
    // 指派工单指派以及更改指派人员关闭事件
- 
-  public OnClickPersonClose(){
+   options = [{ text: '小明', value: 'value1', selected: true }, { text: '小亮', value: 'value2', selected: true }, { text: '晓峰', value: 'value3' }];
+  
+  onChange(item) {
+  
+  console.log(item)
+  }
 
-     this.alerts.push({
+  onConfirm(){     
+    this.alerts.push({
       type: 'info',
       msg: `指派成功！`,
       timeout: 3000
     });
   }
+ 
  
 
   constructor( injector: Injector,

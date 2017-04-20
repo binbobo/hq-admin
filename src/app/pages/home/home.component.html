@@ -6,7 +6,9 @@
         <input [(ngModel)]="myDate" ngui-datetime-picker class="form-control" date-only="true" placeholder="点击选择日期" />
     </div>
     <div class="row">
+        <input type="text" class="form-control col-6" [mSelector]="options"  (onChange)="onChange($event)" placeholder="点击弹出选择框" />
         <input type="text" class="form-control col-6" [mSelector]="options" (onConfirm)="onConfirm()" (onChange)="onChange($event)" placeholder="点击弹出选择框" />
+
         <button type="button" class="btn btn-default col-6" [mSelector]="options" mTitle="title">点击弹出选择框</button>
     </div>
     <hr class="my-4">
