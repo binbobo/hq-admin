@@ -151,28 +151,28 @@
         <template tabHeading>
           <span class="asterisk mr-1">*</span>维修项目
         </template>
-        <ng2-smart-table (createConfirm)="addNewmaintanceItem($event)" [settings]="maintanceItemSettings" [source]="maintenanceProjectData" ></ng2-smart-table>
+        <smart-table (createConfirm)="addNewmaintanceItem($event)" [settings]="maintanceItemSettings" [source]="maintenanceProjectData" ></smart-table>
       </tab>
       <tab>
         <template tabHeading>
           <span class="asterisk mr-1">*</span>维修配件
         </template>
-        <ng2-smart-table [settings]="maintanceFixingsSettings" [source]="maintenanceFixingsData"></ng2-smart-table>
+        <smart-table [settings]="maintanceFixingsSettings" [source]="maintenanceFixingsData"></smart-table>
       </tab>
       <tab heading="附加项目">
-        <ng2-smart-table [settings]="addsOnItemSettings"></ng2-smart-table>
+        <smart-table [settings]="addsOnItemSettings"></smart-table>
       </tab>
       <tab heading="建议维修项">
-        <ng2-smart-table [settings]="suggestedMaintanceSettings"></ng2-smart-table>
+        <smart-table [settings]="suggestedMaintanceSettings"></smart-table>
       </tab>
       <tab heading="历史维修记录">
-        <ng2-smart-table [settings]="maintanceItemSettings"></ng2-smart-table><br>
-        <ng2-smart-table [settings]="maintanceFixingsSettings"></ng2-smart-table><br>
-        <ng2-smart-table [settings]="addsOnItemSettings"></ng2-smart-table><br>
-        <ng2-smart-table [settings]="suggestedMaintanceSettings"></ng2-smart-table>
+        <smart-table [settings]="maintanceItemSettings"></smart-table><br>
+        <smart-table [settings]="maintanceFixingsSettings"></smart-table><br>
+        <smart-table [settings]="addsOnItemSettings"></smart-table><br>
+        <smart-table [settings]="suggestedMaintanceSettings"></smart-table>
       </tab>
       <tab heading="客户回访记录">
-        <ng2-smart-table [settings]="returnVisitSettings"></ng2-smart-table>
+        <smart-table [settings]="returnVisitSettings"></smart-table>
       </tab>
     </tabset>
 

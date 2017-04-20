@@ -77,7 +77,7 @@ export class CreateOrderComponent extends DataList<Order> {
           },
         },
       },
-      
+
       manHours: {
         title: '维修工时(小时)',
       },
