@@ -1,7 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
 input.ng-touched.ng-invalid,select.ng-touched.ng-invalid{
-    border:1px solid red;
+    border:1px solid #a94442;
 }
+
+
+input.ng-valid[required], input.ng-valid.required  {
+  border-left: 5px solid #42A948 !important; /* green */
+}
+
+.ng-invalid:not(form), input.ng-touched.ng-invalid  {
+  border-left: 5px solid #a94442; /* red */
+}
+
 
 select.form-control{
     padding: 0 12px;

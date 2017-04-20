@@ -1,12 +1,12 @@
 /*重写表单下面的label样式*/
 .col-form-label {
     padding: 0;
-    text-align: center;
+    text-align: right;
 }
 
 /*必选项前面的星号样式*/ 
 .asterisk {
-    color: red;
+    color: #a94442;
 }
 
 /*mileage unit*/
@@ -57,3 +57,4 @@ hr {
 caption {
     caption-side: top;
 }
+

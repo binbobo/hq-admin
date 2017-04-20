@@ -7,7 +7,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { PopoverModule } from 'ngx-bootstrap/popover';
-import { AlertModule } from 'ngx-bootstrap';
+import { AlertModule } from 'ngx-bootstrap/alert';
 import { OrderService } from './order.service';
 import { ModalModule } from 'ngx-bootstrap';
 import { NguiDatetimePickerModule } from '@ngui/datetime-picker';

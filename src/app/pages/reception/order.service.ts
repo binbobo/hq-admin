@@ -13,6 +13,38 @@ export class OrderService implements BasicService<Order> {
     }
 
     /**
+     * 获取维修类型数据
+     * @memberOf OrderService
+     */
+    getMaintenanceTypes(): Observable<MaintenanceType[]> {
+        const url = Urls.chain.concat('/DictValues/GetOrderType');
+        return this.httpService
+            .request(url)
+            .map(response => {
+                console.log(response.json().data);
+                return response.json().data as MaintenanceType[];
+            });
+    }
+
+    /**
+     * 获取维修类型数据
+     * @memberOf OrderService
+     */
+    getMaintenanceItemsByName(name: string): Observable<MaintenanceItem[]> {
+        const url = Urls.chain.concat('/Services/GetByName');
+        return this.httpService
+            .request(url, {
+                params: {
+                    name: name
+                }
+            })
+            .map(response => {
+                console.log(response.json().data);
+                return response.json().data as MaintenanceItem[];
+            });
+    }
+
+    /**
      * 根据车牌号查询车辆信息
      * @param {string} term
      * @returns {Observable<Vehicle[]>} 
@@ -59,55 +91,6 @@ export class OrderService implements BasicService<Order> {
 
     public getPagedList(params: PagedParams): Promise<PagedResult<Order>> {
         const url = Urls.chain.concat('/Maintenances?', params.serialize());
-        // return Promise.resolve({
-        //     data: [{
-        //         storeName: '总店', // 店名
-        //         status: '维修中', // 状态
-        //         type: '一般维修', // 维修类型
-        //         orderNo: '313523532523', // 工单号
-        //         enterTime: '2017-4-15 11:35:22', // 进店时间
-        //         predictedTime: '2017-4-16 11:35:22', // 预计交车时间
-        //         outeOfDate: '否', // 超时(期)
-        //         serviceConsultant: 'gaofei', // 服务顾问
-        //         brand: '奥迪', // 品牌
-        //         carType: '', // 车型
-        //         plateNumber: '京A324P', // 车牌号
-        //         mileage: '100公里', // 行驶里程
-        //         buyTime: '2013-4-15', // 购车时间
-        //         carOwner: 'xxx', // 车主
-        //         sender: '凡凡', // 送修人
-        //         senderPhoneNumber: '13699117904', // 送修人电话
-        //         introducer: 'gaofei', // 介绍人
-        //         introducerPhoneNumber: '13923421346', // 介绍人电话
-        //         repairTechnician: '高飞', // 维修技师
-        //         leaveFactoryTime: '2017-4-16 11:35:22' // 出厂时间
-        //     },{
-        //         storeName: '总店', // 店名
-        //         status: '维修中', // 状态
-        //         type: '一般维修', // 维修类型
-        //         orderNo: '313523532523', // 工单号
-        //         enterTime: '2017-4-15 11:35:22', // 进店时间
-        //         predictedTime: '2017-4-16 11:35:22', // 预计交车时间
-        //         outeOfDate: '否', // 超时(期)
-        //         serviceConsultant: 'gaofei', // 服务顾问
-        //         brand: '奥迪', // 品牌
-        //         carType: '', // 车型
-        //         plateNumber: '京A324P', // 车牌号
-        //         mileage: '100公里', // 行驶里程
-        //         buyTime: '2013-4-15', // 购车时间
-        //         carOwner: 'xxx', // 车主
-        //         sender: 'fanfan', // 送修人
-        //         senderPhoneNumber: '13699117904', // 送修人电话
-        //         introducer: 'gaofei', // 介绍人
-        //         introducerPhoneNumber: '13923421346', // 介绍人电话
-        //         repairTechnician: '', // 维修技师
-        //         leaveFactoryTime: '2017-4-16 11:35:22' // 出厂时间
-        //     }],
-        //     total: 1,
-        //     totalCount: 1
-        // }).then(result => {
-        //     return result;
-        // }).catch(err => Promise.reject(`加载工单列表失败：${err}`));
         return this.httpService
             .get<PagedResult<Order>>(url)
             .then(result => {
@@ -195,9 +178,9 @@ export class Order extends BasicModel {
         public plateNo: string, // 车牌号
         public mileage: string, // 行驶里程
         public purchaseDate: Date, // 购车时间
+        public vin: string, // vin, 车辆唯一编码
         public customerName: string, // 车主
         public phone: string, // 车主电话
-        public vin: string, // vin, 车辆唯一编码
         public contactUser: string, // 送修人
         public contactInfo: string, // 送修人电话
         public introducer: string, // 介绍人
@@ -214,9 +197,40 @@ export class Order extends BasicModel {
     }
 }
 
-
+// 车辆model类
 export class Vehicle {
     constructor(
+        public plateNo: string, // 车牌号
+        public customerName: string, // 车主
+        public phone: string, // 车主电话
+        public series: string, // 车系
+        public model: string, // 车型
+        public brand: string, // 品牌
+        public mileage: string, // 行驶里程
+        public purchaseDate: Date, // 购车时间
+        public vin: string, // vin, 车辆唯一编码
+    ) {
+    }
+}
+
+// 维修项目model类
+export class MaintenanceItem {
+    constructor(
+        id: string, // 主键
+        name: string , // 名称
+        shortName: string, // 简称,
+        firstChar: string, // 首字母,
+        bopomofo: string,  // 拼音,
+        shortBopomofo: string  // 简拼,
+    ) {
+    }
+}
+
+// 维修类型model类
+export class MaintenanceType {
+    constructor(
+        public id: string, // id
+        public value: string, // 名称
     ) {
     }
 }
