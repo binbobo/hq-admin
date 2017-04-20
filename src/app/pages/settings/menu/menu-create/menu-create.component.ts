@@ -30,6 +30,10 @@ export class MenuCreateComponent extends FormHandle<Menu> implements OnInit {
         this.form.patchValue(this.model);
       }
     });
+    this.loadParentMenus();
+  }
+
+  private loadParentMenus(): void {
     this.menuService.getSelectOptions()
       .then(data => this.menus = data)
       .catch(err => this.alerter.error(err));
@@ -37,6 +41,10 @@ export class MenuCreateComponent extends FormHandle<Menu> implements OnInit {
 
   protected getModel(): Observable<Menu> {
     return Observable.of(new Menu());
+  }
+
+  protected onCreate() {
+    return super.onCreate().then(() => this.loadParentMenus());
   }
 
   protected buidForm(): FormGroup {
