@@ -1,0 +1,21 @@
+ .modal-content{
+     background-color: #eceeef;
+ }
+ table{
+     background-color: #fff;
+ }
+@media (min-width: 400px){
+.modal-lg {
+    max-width: 1200px;
+}
+}
+ .assign-detail{
+    cursor:pointer;
+    display: block;
+    color:#0275d8;   
+    font-size:.8rem;
+}
+ .assign-detail:hover{
+    color: #014c8c;
+    text-decoration: underline;
+}

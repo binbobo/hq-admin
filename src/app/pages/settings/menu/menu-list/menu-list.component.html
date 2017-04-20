@@ -32,7 +32,7 @@
           <td>
             <a [routerLink]="['create']" [queryParams]="{parentId:item.id}" class="btn btn-sm btn-secondary" title="添加子菜单"><i class="fa fa-plus"></i></a>
             <a [routerLink]="['edit',item.id]" class="btn btn-sm btn-success" title="编辑"><i class="fa fa-pencil-square-o"></i></a>
-            <a (click)="onRemove(item)" class="btn btn-sm btn-danger" title="删除"><i class="fa fa-trash-o"></i></a>
+            <a (click)="onDelete($event,item.id)" class="btn btn-sm btn-danger" title="删除"><i class="fa fa-trash-o"></i></a>
           </td>
         </tr>
       </tbody>
