@@ -58,7 +58,7 @@ export class OrderService implements BasicService<Order> {
     }
 
     public getPagedList(params: PagedParams): Promise<PagedResult<Order>> {
-        const url = Urls.chain.concat('/Maintenances?', params.serialize());
+        const url = Urls.chain.concat('Maintenances?', params.serialize());
         // return Promise.resolve({
         //     data: [{
         //         storeName: '总店', // 店名
@@ -119,7 +119,7 @@ export class OrderService implements BasicService<Order> {
     }
 
     public get(id: string): Promise<Order> {
-        const url = Urls.configuration.concat('/order/', id);
+        const url = Urls.chain.concat('/order/', id);
         return this.httpService
             .get<ApiResult<Order>>(url)
             .then(result => result.data)
@@ -128,14 +128,14 @@ export class OrderService implements BasicService<Order> {
     }
 
     public update(body: Order): Promise<void> {
-        const url = Urls.configuration.concat('/order/', body.id);
+        const url = Urls.chain.concat('/order/', body.id);
         return this.httpService.
             put<void>(url, body)
             .catch(err => Promise.reject(`更新菜单失败：${err}`));
     }
 
     public create(body: Order): Promise<Order> {
-        const url = Urls.configuration.concat('/order');
+        const url = Urls.chain.concat('/order');
         return this.httpService
             .post<ApiResult<Order>>(url, body)
             .then(m => m.data)
@@ -147,7 +147,7 @@ export class OrderService implements BasicService<Order> {
     }
 
     public delete(id: string): Promise<void> {
-        const url = Urls.configuration.concat('/order/', id);
+        const url = Urls.chain.concat('/order/', id);
         return this.httpService
             .delete(url)
             .catch(err => Promise.reject(`删除工单失败：${err}`));
