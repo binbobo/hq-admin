@@ -2,12 +2,36 @@ import { Injectable } from '@angular/core';
 import { HttpService, Urls } from 'app/shared/services';
 import { PagedParams, PagedResult, ApiResult, BasicModel, BasicService, ListResult, SelectOption } from 'app/shared/models';
 import { TreeviewItem } from 'ng2-dropdown-treeview';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 
 
 @Injectable()
 export class OrderService implements BasicService<Order> {
 
-    constructor(private httpService: HttpService) { }
+    constructor(private httpService: HttpService) {
+    }
+
+    /**
+     * 根据车牌号查询车辆信息
+     * @param {string} term
+     * @returns {Observable<Vehicle[]>} 
+     * 
+     * @memberOf OrderService
+     */
+    doVehicleSearch(term: string): Observable<Vehicle[]> {
+        const url = Urls.chain.concat('/CustomerVehicles/GetByPlateNo');
+        return this.httpService
+            .request(url, {
+                params: {
+                    'plateNo': term
+                }
+            })
+            .map(response => {
+                console.log(response.json().data);
+                return response.json().data as Vehicle[];
+            });
+    }
 
     /**
      * 获取可以选择的门店，用于中查询范围下拉框
@@ -34,7 +58,7 @@ export class OrderService implements BasicService<Order> {
     }
 
     public getPagedList(params: PagedParams): Promise<PagedResult<Order>> {
-        const url = Urls.chain.concat('Maintenances?', params.serialize());
+        const url = Urls.chain.concat('/Maintenances?', params.serialize());
         // return Promise.resolve({
         //     data: [{
         //         storeName: '总店', // 店名
@@ -160,25 +184,39 @@ export class Order extends BasicModel {
         public status: string, // 状态
         public type: string, // 维修类型
         public billCode: string, // 工单号
-        public createdOnUtc: Date, // 进店时间
+        // 进店时间 / 开单时间  使用父类的createdOnUtc字段
         public expectLeave: Date, // 预计交车时间
         public overTime: number, // 超时(时间)
         public createdUserName: string, // 服务顾问
         public brand: string, // 品牌
         public series: string, // 车系
         public model: string, // 车型
+        public validate: Date, // 验车日期
         public plateNo: string, // 车牌号
         public mileage: string, // 行驶里程
         public purchaseDate: Date, // 购车时间
         public customerName: string, // 车主
         public phone: string, // 车主电话
+        public vin: string, // vin, 车辆唯一编码
         public contactUser: string, // 送修人
         public contactInfo: string, // 送修人电话
         public introducer: string, // 介绍人
         public introPhone: string, // 介绍人电话
         public employeeNames: string, // 维修技师
-        public leaveTime: string // 出厂时间
+        public leaveTime: string, // 出厂时间
+        public location: string, // 维修工位
+        public lastEnter: Date, // 上次进店时间
+        public lastMileage: number, // 上次进店里程
+        public nextDate: Date, // 建议下次保养日期
+        public nextMileage: number, // 建议下次保养里程
     ) {
         super();
+    }
+}
+
+
+export class Vehicle {
+    constructor(
+    ) {
     }
 }

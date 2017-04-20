@@ -14,7 +14,7 @@ const routes: Routes = [
     { path: 'assign', component: AssignOrderComponent},
      // 结算单列表路由
     { path: 'bill', component: BillOrderComponent },
-    //增项路由
+    // 增项路由
     {path: 'append', component: AppendOrderComponent},
     // 创建工单列表路由
     { path: 'create', component: CreateOrderComponent },
@@ -24,7 +24,7 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
 })
-export class ChainRoutingModule { }
+export class ReceptionRoutingModule { }
 
 export const routedComponents = [CustomDatetimeEditorComponent, OrderListComponent, AssignOrderComponent, CreateOrderComponent,BillOrderComponent,AppendOrderComponent];
 

@@ -2,13 +2,15 @@ import { NgModule } from '@angular/core';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { ServerTranslateLoader, HttpService, requestOptionsProvider, UserService, EventDispatcher } from 'app/shared/services';
-import { AlerterComponent, PaginationComponent, ControlErrorComponent, ControlErrorsComponent, MenuComponent, LoadingComponent, ClippedWordComponent} from "./components";
+import { AlerterComponent, PaginationComponent, ControlErrorComponent, ControlErrorsComponent, MenuComponent, LoadingComponent, ClippedWordComponent, SmartTableComponent } from "./components";
 import { HtmlPipe } from './pipes';
 import { FormsModule } from '@angular/forms';
 import { PaginationModule, PopoverModule, AlertModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
 import { TranslateStore } from "@ngx-translate/core/src/translate.store";
 import { MultiSelectorDirective, MultiSelectorComponent } from 'app/shared/directives';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
+
 
 const HQ_COMPONENTS = [
     AlerterComponent,
@@ -19,6 +21,7 @@ const HQ_COMPONENTS = [
     MenuComponent,
     LoadingComponent,
     MultiSelectorComponent,
+    SmartTableComponent,
     MultiSelectorDirective,
 ];
 
@@ -41,6 +44,7 @@ const HQ_SERVICES = [
         PaginationModule.forRoot(),
         AlertModule.forRoot(),
         PopoverModule.forRoot(),
+        Ng2SmartTableModule,
         TranslateModule.forChild({
             loader: { provide: TranslateLoader, useClass: ServerTranslateLoader },
         }),
@@ -52,7 +56,7 @@ const HQ_SERVICES = [
         HQ_COMPONENTS,
         HQ_PIPES,
     ],
-    declarations: [HQ_COMPONENTS, HQ_PIPES, MultiSelectorDirective],
+    declarations: [HQ_COMPONENTS, HQ_PIPES, MultiSelectorDirective, SmartTableComponent],
     entryComponents: [MultiSelectorComponent]
 })
 export class SharedModule {

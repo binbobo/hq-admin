@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ChainRoutingModule, routedComponents } from './chain.routing';
+import { ReceptionRoutingModule, routedComponents } from './reception.routing';
 import { DatepickerModule } from 'ngx-bootstrap/datepicker';
 import { DropdownTreeviewModule } from 'ng2-dropdown-treeview';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -11,6 +11,7 @@ import { AlertModule } from 'ngx-bootstrap';
 import { OrderService } from './order.service';
 import { ModalModule } from 'ngx-bootstrap';
 import { NguiDatetimePickerModule } from '@ngui/datetime-picker';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { SharedModule } from 'app/shared/shared.module';
 
 @NgModule({
@@ -21,8 +22,9 @@ import { SharedModule } from 'app/shared/shared.module';
     TabsModule.forRoot(),
     PopoverModule.forRoot(),
     AlertModule.forRoot(),
+    TypeaheadModule.forRoot(),
     ModalModule.forRoot(),
-    ChainRoutingModule,
+    ReceptionRoutingModule,
     SharedModule,
     Ng2SmartTableModule,
     ReactiveFormsModule,
@@ -32,4 +34,4 @@ import { SharedModule } from 'app/shared/shared.module';
   providers: [OrderService],
   entryComponents: [routedComponents[0]], // 配置CustomDatetimeEditorComponent
 })
-export class ChainModule { }
+export class ReceptionModule { }

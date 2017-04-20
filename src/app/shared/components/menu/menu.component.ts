@@ -14,10 +14,8 @@ export class MenuComponent implements OnInit {
   private root: boolean = false;
   @Input()
   private parents: Array<string> = ["/"];
-  private level: number = 0;
-  private initCompleted: boolean;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.activeMenu(this.menus);
@@ -25,6 +23,10 @@ export class MenuComponent implements OnInit {
 
   private get spaceWidth(): number {
     return (this.parents.length - 1) * 8;
+  }
+
+  private getRouterLink(routes: Array<any>) {
+    return routes.filter(m => m && m.trim());
   }
 
   private activeMenu(menus: Array<any>) {

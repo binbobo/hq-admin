@@ -58,17 +58,17 @@ export class OrderListComponent extends DataList<Order> {
       toBeCheckedOut: '',
       finished: '',
       all: '',
-      carNo: '',
-      carOwner: '',
-      carOwnerPhone: '',
-      sender: '',
-      senderPhone: '',
-      carBrand: '',
-      carSeries: '',
-      orderNo: '',
-      serviceConsultant: '',
-      carType: '',
-      repairType: '',
+      plateNo: '', // 车牌号
+      customerName: '', // 车主
+      phone: '', // 车主电话
+      contactUser: '', // 送修人
+      contactInfo: '', // 送修人电话
+      brand: '', // 品牌
+      series: '', // 车系
+      billCode: '', // 工单号
+      createdUserName: '', // 服务顾问
+      model: '', // 车型
+      type: '', // 维修类型
       enterStoreTimeStart: '',
       enterStoreTimeEnd: '',
       leaveFactoryTimeStart: '',

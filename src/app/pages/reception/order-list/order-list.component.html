@@ -46,27 +46,27 @@
       <hr>
       <!--工单基本筛选条件面板-->
       <div class="form-group row">
-        <label for="carNo" class="col-sm-1 col-form-label col-form-label-sm">车牌号</label>
+        <label for="plateNo" class="col-sm-1 col-form-label col-form-label-sm">车牌号</label>
         <div class="col-sm-2">
-          <input type="text" class="form-control form-control-sm" formControlName="carNo" id="carNo" placeholder="车牌号">
+          <input type="text" class="form-control form-control-sm" formControlName="plateNo" id="plateNo" placeholder="车牌号">
         </div>
-        <label for="carOwner" class="col-sm-1 col-form-label col-form-label-sm">车主</label>
+        <label for="customerName" class="col-sm-1 col-form-label col-form-label-sm">车主</label>
         <div class="col-sm-2">
-          <input type="text" class="form-control form-control-sm" formControlName="carOwner" id="carOwner" placeholder="车主">
+          <input type="text" class="form-control form-control-sm" formControlName="customerName" id="customerName" placeholder="车主">
         </div>
-        <label for="carOwnerPhone" class="col-sm-1 col-form-label col-form-label-sm">车主电话</label>
+        <label for="phone" class="col-sm-1 col-form-label col-form-label-sm">车主电话</label>
         <div class="col-sm-2">
-          <input type="tel" class="form-control form-control-sm" formControlName="carOwnerPhone" id="carOwnerPhone" placeholder="车主电话">
+          <input type="tel" class="form-control form-control-sm" formControlName="phone" id="phone" placeholder="车主电话">
         </div>
-        <label for="sender" class="col-sm-1 col-form-label col-form-label-sm">送修人</label>
+        <label for="contactUser" class="col-sm-1 col-form-label col-form-label-sm">送修人</label>
         <div class="col-sm-2">
-          <input type="email" class="form-control form-control-sm" formControlName="sender" id="sender" placeholder="送修人">
+          <input type="email" class="form-control form-control-sm" formControlName="contactUser" id="contactUser" placeholder="送修人">
         </div>
       </div>
       <div class="form-group row">
-        <label for="senderPhone" class="col-sm-1 col-form-label col-form-label-sm">送修人电话</label>
+        <label for="contactInfo" class="col-sm-1 col-form-label col-form-label-sm">送修人电话</label>
         <div class="col-sm-2">
-          <input type="tel" class="form-control form-control-sm" formControlName="senderPhone" id="senderPhone" placeholder="送修人电话">
+          <input type="tel" class="form-control form-control-sm" formControlName="contactInfo" id="contactInfo" placeholder="送修人电话">
         </div>
 
         <div class="col-sm-3" *ngIf="isCollapsed">
@@ -87,31 +87,31 @@
         <div [collapse]="isCollapsed" class="card mt-3 card-block">
           <div class="well well-lg">
             <div class="form-group row">
-              <label for="carBrand" class="col-sm-1 col-form-label col-form-label-sm">品牌</label>
-              <div class="col-sm-4">
-                <input type="text" class="form-control form-control-sm" formControlName="carBrand" id="carBrand" placeholder="品牌">
-              </div>
-              <label for="carSeries" class="col-sm-1 col-form-label col-form-label-sm">车系</label>
-              <div class="col-sm-2">
-                <input type="text" class="form-control form-control-sm" formControlName="carSeries" id="carSeries" placeholder="车系">
-              </div>
-              <label for="orderNo" class="col-sm-1 col-form-label col-form-label-sm">工单号</label>
+              <label for="brand" class="col-sm-1 col-form-label col-form-label-sm">品牌</label>
               <div class="col-sm-3">
-                <input type="text" class="form-control form-control-sm" formControlName="orderNo" id="orderNo" placeholder="工单号">
+                <input type="text" class="form-control form-control-sm" formControlName="brand" id="brand" placeholder="品牌">
+              </div>
+              <label for="series" class="col-sm-1 col-form-label col-form-label-sm">车系</label>
+              <div class="col-sm-3">
+                <input type="text" class="form-control form-control-sm" formControlName="series" id="series" placeholder="车系">
+              </div>
+              <label for="billCode" class="col-sm-1 col-form-label col-form-label-sm">工单号</label>
+              <div class="col-sm-3">
+                <input type="text" class="form-control form-control-sm" formControlName="billCode" id="billCode" placeholder="工单号">
               </div>
             </div>
             <div class="form-group row">
-              <label for="serviceConsultant" class="col-sm-1 col-form-label col-form-label-sm">服务顾问</label>
-              <div class="col-sm-4">
-                <input type="text" class="form-control form-control-sm" formControlName="serviceConsultant" id="serviceConsultant" placeholder="服务顾问">
-              </div>
-              <label for="carType" class="col-sm-1 col-form-label col-form-label-sm">车型</label>
-              <div class="col-sm-2">
-                <input type="text" class="form-control form-control-sm" formControlName="carType" id="carType" placeholder="车型">
-              </div>
-              <label for="repairType" class="col-sm-1 col-form-label col-form-label-sm">维修类型</label>
+              <label for="createdUserName" class="col-sm-1 col-form-label col-form-label-sm">服务顾问</label>
               <div class="col-sm-3">
-                <select id="repairType" formControlName="repairType" class="form-control form-control-sm">
+                <input type="text" class="form-control form-control-sm" formControlName="createdUserName" id="createdUserName" placeholder="服务顾问">
+              </div>
+              <label for="model" class="col-sm-1 col-form-label col-form-label-sm">车型</label>
+              <div class="col-sm-3">
+                <input type="text" class="form-control form-control-sm" formControlName="model" id="model" placeholder="车型">
+              </div>
+              <label for="type" class="col-sm-1 col-form-label col-form-label-sm">维修类型</label>
+              <div class="col-sm-3">
+                <select id="type" formControlName="type" class="form-control form-control-sm">
                 <option value="0" selected>保养</option>
                 <option value="1">保养及维修</option>
                 <option value="2">维修</option>

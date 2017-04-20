@@ -1,0 +1,3 @@
+<ng2-smart-table [source]="source" [settings]="settings" (rowSelect)="rowSelect.emit($event)" (userRowSelect)="userRowSelect.emit($event)"
+  (delete)="delete.emit($event)" (edit)="edit.emit($event)" (create)="create.emit($event)" (deleteConfirm)="deleteConfirm.emit($event)"
+  (editConfirm)="editConfirm.emit($event)" (createConfirm)="createConfirm.emit($event)" (rowHover)="rowHover.emit($event)"></ng2-smart-table>

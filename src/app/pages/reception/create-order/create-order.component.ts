@@ -1,10 +1,20 @@
 import { Component, Injector } from '@angular/core';
 import { DataList } from '../../../shared/models/data-list';
-import { OrderService, OrderListRequest, Order } from '../order.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { OrderService, OrderListRequest, Order, Vehicle } from '../order.service';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { ViewCell } from 'ng2-smart-table';
 import { CustomDatetimeEditorComponent } from './custom-datetime-editor.component';
+
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/switchMap';
+
+
 
 @Component({
   selector: 'app-create-order',
@@ -12,6 +22,10 @@ import { CustomDatetimeEditorComponent } from './custom-datetime-editor.componen
   styleUrls: ['./create-order.component.css'],
 })
 export class CreateOrderComponent extends DataList<Order> {
+  // 用于保存搜索框中输入的关键字
+  private searchTerms: Subject<string>  = new Subject<string>();
+  vehicles: Vehicle[];
+
   // 创建工单表单
   createWorkSheetForm: FormGroup;
   // ng2-smart-table
@@ -45,14 +59,15 @@ export class CreateOrderComponent extends DataList<Order> {
     edit: false,   // 不显示编辑按钮
   };
   private stAdd = {
-    addButtonContent: '新增维修项目',
+    addButtonContent: '新增',
     createButtonContent: '添加',
     cancelButtonContent: '取消',
     confirmCreate: true    // 添加确认事件必须配置项
   };
   private stDelete = {
     deleteButtonContent: '删除'
-  }
+  };
+
 
   // 维修项目表头
   maintanceItemSettings = {
@@ -68,7 +83,7 @@ export class CreateOrderComponent extends DataList<Order> {
           type: 'completer',
           config: {
             completer: {
-              data: this.maintenanceProjectData,
+              data: this.maintenanceProjectData, // 从维修项目大查询库中选择
               searchFields: 'name',
               titleField: 'name',
               descriptionField: '', // 在候选列表项后面显示
@@ -77,7 +92,7 @@ export class CreateOrderComponent extends DataList<Order> {
           },
         },
       },
-      
+
       manHours: {
         title: '维修工时(小时)',
       },
@@ -100,11 +115,29 @@ export class CreateOrderComponent extends DataList<Order> {
       }
     }
   };
+
   // 维修配件表头
   maintanceFixingsSettings = {
+    attr: this.stAttr,
+    filter: this.stFilter,
+    actions: this.stActions,
+    add: this.stAdd,
+    delete: this.stDelete,
     columns: {
       item: {
-        title: '维修项目'
+        title: '维修项目',
+        editor: {
+          type: 'completer',
+          config: {
+            completer: {
+              data: [], // 新增的维修项目中选择
+              searchFields: 'name',
+              titleField: 'name',
+              descriptionField: '', // 在候选列表项后面显示
+              placeholder: '请输入...'
+            },
+          },
+        },
       },
       name: {
         title: '配件名称'
@@ -131,19 +164,12 @@ export class CreateOrderComponent extends DataList<Order> {
   };
   // 附加项目表头
   addsOnItemSettings = {
+    attr: this.stAttr,
+    filter: this.stFilter,
+    actions: this.stActions,
+    add: this.stAdd,
+    delete: this.stDelete,
     columns: {
-      name: {
-        title: '项目名称'
-      },
-      amount: {
-        title: '数量'
-      },
-      price: {
-        title: '单价(元)'
-      },
-      money: {
-        title: '金额(元)'
-      },
       remark: {
         title: '备注'
       }
@@ -152,56 +178,20 @@ export class CreateOrderComponent extends DataList<Order> {
 
   // 建议维修项目表头
   suggestedMaintanceSettings = {
+    attr: this.stAttr,
+    filter: this.stFilter,
+    actions: this.stActions,
+    add: this.stAdd,
+    delete: this.stDelete,
     columns: {
       name: {
         title: '建议维修项目'
       },
-      isRecieved: {
-        title: '是否修理'
-      },
       oprationTime: {
         title: '操作时间'
       },
-      operator: {
-        title: '操作员'
-      },
       remark: {
         title: '备注'
-      }
-    }
-  };
-  // 客户回访记录表头
-  returnVisitSettings = {
-    columns: {
-      dateTime: {
-        title: '回访时间'
-      },
-      visitor: {
-        title: '回访人'
-      },
-      quality: {
-        title: '维修质量'
-      },
-      attitude: {
-        title: '服务态度'
-      },
-      restEnvironment: {
-        title: '休息环境'
-      },
-      manHourPrice: {
-        title: '工时价格'
-      },
-      fixingsPrice: {
-        title: '配件价格'
-      },
-      isCheckedCar: {
-        title: '接车时是否验车'
-      },
-      isPriceQuoted: {
-        title: '是否报价'
-      },
-      hasSuggestedItem: {
-        title: '有无建议项目'
       }
     }
   };
@@ -222,6 +212,19 @@ export class CreateOrderComponent extends DataList<Order> {
 
     // 获取挂起的订单
     this.unsettledOrders = this.getUnsettledOrders();
+
+    this.searchTerms
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .switchMap(term => term ? this.service.doVehicleSearch(term) : Observable.of<Vehicle[]>([]))
+      .subscribe((val) => console.log(val));
+     ;
+  }
+
+
+  // Push a search term into the observable stream.
+  search(term: string): void {
+    this.searchTerms.next(term);
   }
 
   /**
@@ -261,28 +264,29 @@ export class CreateOrderComponent extends DataList<Order> {
 
   createForm() {
     this.createWorkSheetForm = this.fb.group({
-      carNo: '',
-      carOwner: '',
-      carOwnerPhone: '',
-      createOrderTime: '',
-      sender: '',
-      senderPhone: '',
-      serviceConsultant: '',
-      introducer: '',
-      introducerPhone: '',
-      carBrand: '',
-      carSeries: '',
-      carType: '',
+      billCode: '', // 工单号
+      customerName: '', // 车主
+      phone: '', // 车主电话
+      createdOnUtc: '', // 进店时间 / 开单时间
+      contactUser: '', // 送修人
+      contactInfo: '', // 送修人电话
+      createdUserName: '', // 服务顾问
+      introducer: '', // 介绍人
+      introPhone: '', // 介绍人电话
+      brand: '', // 品牌
+      series: '', // 车系
+      model: '', // 车型
+      plateNo: '', // 车牌号
       vin: '',
-      carCheckOutDate: '',
-      repairType: '',
-      predictedFinishTime: '',
-      mileage: '',
-      previousEntryTime: '',
-      repairStation: '',
-      suggestedNextMaintenanceTime: '',
-      previousEntryMileage: '',
-      suggestedNextMaintenanceMileage: ''
+      validate: '', // 验车日期
+      type: '', // 维修类型
+      expectLeave: '', // 预计交车时间
+      mileage: '', // 行驶里程
+      lastEnter: '', // 上次进店时间
+      location: '', // 维修工位
+      nextDate: '', // 建议下次保养日期
+      lastMileage: '', // 上次进店里程
+      nextMileage: '' // 建议下次保养里程
     });
   }
 
