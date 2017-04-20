@@ -1,3 +1,173 @@
-<p>
-  maintain-return works!
-</p>
+<div class="maintain card">
+  <div class="card-header">
+    <span>维修退料</span>
+    <input container="body" type="text" value="我的挂单" readonly placement="bottom" class="pull-right btn btn-sm textInputBtn" style="margin-right: 55px;">
+    <!--<template #popTemplate>
+      <div class="list-group">
+        <a *ngFor="let order of unsettledOrders" (click)="loadOrderInfo(order, pop)" class="list-group-item list-group-item-action">
+          <span class="mr-2">{{order.carOwner}}</span>
+          <span class="mr-2">{{order.carOwnerPhone}}</span>
+          <span class="mr-2">{{order.carNo}}</span>
+        </a>
+      </div>
+  </template>-->
+  </div>
+
+
+
+  <div class='card-block'>
+
+
+    <form>
+      <div class="form-group row">
+        <label for="carNo" class="col-sm-1 col-form-label col-form-label-sm">车牌号:</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control   form-control-sm" id="carNo" placeholder="">
+        </div>
+        <label for="carOwner" class="col-sm-1 col-form-label col-form-label-sm">工单号:</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control   form-control-sm" id="carOwner" placeholder="">
+        </div>
+
+        <button class='btn  btn-primary choose-order' (click)='OnChooseOrder()'>选择工单</button>
+
+        <!---选择工单列表 start-->
+        <table class="table table-hover" [hidden]='!isShowOrder'>
+          <thead>
+            <tr class='table-info'>
+              <th>工单号</th>
+              <th>维修类型</th>
+              <th>车主</th>
+              <th>品牌</th>
+              <th>车型</th>
+              <th>车牌号</th>
+              <th>行驶里程</th>
+              <th>开单时间</th>
+              <th>预计交车时间</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of orderlist">
+              <th scope="row">{{item.a}}</th>
+              <td>{{item.b}}</td>
+              <td>{{item.c}}</td>
+              <td>{{item.d}}</td>
+              <td>{{item.e}}</td>
+              <td>{{item.f}}</td>
+              <td>{{item.g}}</td>
+              <td>{{item.h}}</td>
+              <td>{{item.i}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <!---选择工单列表 end-->
+      </div>
+      <hr>
+      <div class="form-group row">
+        <label for="createOrderTime" class="col-sm-1 col-form-label col-form-label-sm">车主:</label>
+        <div class="col-sm-2">
+          <input type="text" readonly class="form-control readonly form-control-sm" id="createOrderTime">
+        </div>
+        <label for="sender" class="col-sm-1 col-form-label col-form-label-sm">VPN:</label>
+        <div class="col-sm-2">
+          <input type="text" readonly class="form-control readonly form-control-sm" id="sender" placeholder="">
+        </div>
+        <label for="senderPhone" class="col-sm-1 col-form-label col-form-label-sm">维修类型:</label>
+        <div class="col-sm-2">
+          <input type="tel" readonly class="form-control readonly form-control-sm" id="senderPhone" placeholder="">
+        </div>
+        <label for="serviceConsultant" class="col-sm-1 col-form-label col-form-label-sm">开单时间:</label>
+        <div class="col-sm-2">
+          <input type="text" readonly class="form-control readonly form-control-sm" id="serviceConsultant">
+        </div>
+      </div>
+    </form>
+
+    <hr>
+    <hr>
+    <hr>
+    <!--维修项目-->
+    <a href="#" class="btn btn-primary  disabled" role="button" aria-disabled="true">维修项目</a>
+    <table class="table table-hover">
+      <thead>
+        <tr class='table-info'>
+          <th>序号</th>
+          <th>维修项目</th>
+          <th>维修技师</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of repairorder">
+          <th scope="row">{{item.a}}</th>
+          <td>{{item.b}}</td>
+          <td>{{item.c}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!--维修退料-->
+    <a href="#" class="btn btn-primary disabled" role="button" aria-disabled="true">维修退料</a>
+    <table class="table table-hover">
+      <thead>
+        <tr class='table-info'>
+          <th>序号</th>
+          <th>维修项目</th>
+          <th>配件编码</th>
+          <th>配件名称</th>
+          <th>规格型号</th>
+          <th>车型</th>
+          <th>仓库</th>
+          <th>库位</th>
+          <th>数量</th>
+          <th>价格</th>
+          <th>金额</th>
+          <th>备注</th>
+          <th>领料人</th>
+          <th>退料人</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of returnpart">
+          <th scope="row">{{item.a}}</th>
+          <td>{{item.b}}</td>
+          <td>{{item.c}}</td>
+          <td>{{item.d}}</td>
+          <td>{{item.e}}</td>
+          <td>{{item.f}}</td>
+          <td>{{item.h}}</td>
+          <td>{{item.i}}</td>
+          <td>{{item.g}}</td>
+          <td>{{item.k}}</td>
+          <td>{{item.l}}</td>
+          <td>{{item.m}}</td>
+          <td>{{item.n}}</td>
+          <td>{{item.o}}</td>
+          <td><a href="#">退料</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+
+
+
+<!--提交按钮-->
+    <div class="maintain-btn">
+      <button class="btn btn-primary">生成退料单</button>
+      <button class="btn btn-secondary">取消</button>
+      <button class="btn btn-warning">挂单</button>
+      <button class="btn btn-outline-info">打印</button>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
