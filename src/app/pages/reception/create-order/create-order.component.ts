@@ -1,6 +1,6 @@
 import { Component, Injector } from '@angular/core';
 import { DataList } from '../../../shared/models/data-list';
-import { OrderService, OrderListRequest, Order, Vehicle } from '../order.service';
+import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType } from '../order.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { ViewCell } from 'ng2-smart-table';
@@ -23,29 +23,44 @@ import 'rxjs/add/operator/switchMap';
 })
 export class CreateOrderComponent extends DataList<Order> {
   // 用于保存搜索框中输入的关键字
-  private searchTerms: Subject<string>  = new Subject<string>();
-  vehicles: Vehicle[];
+  private searchTerms: Subject<string> = new Subject<string>();
+  // 车辆模糊查询结果数据集
+  public vehicles: Vehicle[];
 
-  // 创建工单表单
+  // 根据车牌号模糊查询后, 选择的车辆
+  selectedVehicle: Vehicle = {
+    plateNo: '',
+    customerName: '',
+    phone: '',
+    series: '',
+    model: '',
+    mileage: '',
+    purchaseDate: new Date(),
+    vin: '',
+    brand: ''
+  };
+
+  // 维修类型数据
+  public maintenanceTypeData: MaintenanceType[];
+
+
+  // 挂起的工单
+  public unsettledOrders; // Order[];
+  // 当前正在编辑的工单
+  public currentOrder: Order;
+
+
+  // 创建工单表单FormGroup
   createWorkSheetForm: FormGroup;
-  // ng2-smart-table
 
-  // 维修项目数据
-  maintenanceProjectData = [{
-    name: 'Leanne Graham',
-    manHours: '5',
-    usemanHourPrice: '100',
-    money: '500',
-    discountRatio: '0',
-    operationTime: '2017-04-18 15:30'
-  }, {
-    name: 'Graham Leanne',
-    manHours: '5',
-    usemanHourPrice: '100',
-    money: '500',
-    discountRatio: '0',
-    operationTime: '2017-04-18 15:30'
-  }];
+  // 新增维修项目数据（临时保存）
+  newMaintenanceItemData = [];
+  // 保存模糊查询的维修项目数据
+  maintenanceItemData: MaintenanceItem[];
+  // 从模糊查询列表中选择的维修项目
+  selectedMaintanceItem: MaintenanceItem;
+
+  // ng2-smart-table相关配置
 
   // smart table 公共配置
   private stAttr = {
@@ -65,7 +80,8 @@ export class CreateOrderComponent extends DataList<Order> {
     confirmCreate: true    // 添加确认事件必须配置项
   };
   private stDelete = {
-    deleteButtonContent: '删除'
+    deleteButtonContent: '删除',
+    confirmDelete: true
   };
 
 
@@ -77,135 +93,63 @@ export class CreateOrderComponent extends DataList<Order> {
     add: this.stAdd,
     delete: this.stDelete,
     columns: {
-      name: {
+      serviceName: {
         title: '维修项目名称',
-        editor: {
-          type: 'completer',
-          config: {
-            completer: {
-              data: this.maintenanceProjectData, // 从维修项目大查询库中选择
-              searchFields: 'name',
-              titleField: 'name',
-              descriptionField: '', // 在候选列表项后面显示
-              placeholder: '请输入...'
-            },
-          },
-        },
-      },
-
-      manHours: {
-        title: '维修工时(小时)',
-      },
-      manHourPrice: {
-        title: '工时单价(元)'
-      },
-      money: {
-        title: '金额(元)'
-      },
-      discountRatio: {
-        title: '折扣率'
-      },
-      operationTime: {
-        title: '操作时间',
         type: 'html',
         editor: {
           type: 'custom',
-          component: CustomDatetimeEditorComponent,
-        },
-      }
-    }
-  };
-
-  // 维修配件表头
-  maintanceFixingsSettings = {
-    attr: this.stAttr,
-    filter: this.stFilter,
-    actions: this.stActions,
-    add: this.stAdd,
-    delete: this.stDelete,
-    columns: {
-      item: {
-        title: '维修项目',
-        editor: {
-          type: 'completer',
-          config: {
-            completer: {
-              data: [], // 新增的维修项目中选择
-              searchFields: 'name',
-              titleField: 'name',
-              descriptionField: '', // 在候选列表项后面显示
-              placeholder: '请输入...'
-            },
-          },
+          component: CustomDatetimeEditorComponent
+          // type: 'completer',
+          // config: {
+          //   completer: {
+          //     data: this.maintenanceItemData, // 从维修项目大查询库中选择
+          //     searchFields: 'name',
+          //     titleField: 'name',
+          //     descriptionField: '', // 在候选列表项后面显示
+          //     placeholder: '请输入...'
+          //   },
+          // },
         },
       },
-      name: {
-        title: '配件名称'
-      },
-      brand: {
-        title: '品牌'
-      },
-      type: {
-        title: '规格型号'
-      },
-      amount: {
-        title: '数量'
+      workHour: {
+        title: '维修工时(小时)',
       },
       price: {
-        title: '单价(元)'
+        title: '工时单价(元)'
       },
       money: {
-        title: '金额(元)'
+        editable: false,
+        title: '金额(元)'  // 需要自己计算：工时 * 单价, 不需要传给后台
+      },
+      discount: {
+        title: '折扣率(%)'
       },
       operationTime: {
-        title: '操作时间'
-      }
-    }
-  };
-  // 附加项目表头
-  addsOnItemSettings = {
-    attr: this.stAttr,
-    filter: this.stFilter,
-    actions: this.stActions,
-    add: this.stAdd,
-    delete: this.stDelete,
-    columns: {
-      remark: {
-        title: '备注'
+        title: '操作时间', // 不需要传给后台
       }
     }
   };
 
-  // 建议维修项目表头
-  suggestedMaintanceSettings = {
-    attr: this.stAttr,
-    filter: this.stFilter,
-    actions: this.stActions,
-    add: this.stAdd,
-    delete: this.stDelete,
-    columns: {
-      name: {
-        title: '建议维修项目'
-      },
-      oprationTime: {
-        title: '操作时间'
-      },
-      remark: {
-        title: '备注'
-      }
-    }
-  };
 
-  // 挂起的工单
-  public unsettledOrders;
 
   constructor(
     injector: Injector,
     protected service: OrderService,
+
     private fb: FormBuilder,
   ) {
     super(injector, service);
     this.params = new OrderListRequest();
+
+    // 获取维修类型数据
+    this.service.getMaintenanceTypes()
+      .subscribe(data => this.maintenanceTypeData = data);
+
+    // 根据名称获取维修项目信息
+    this.service.getMaintenanceItemsByName('维修')
+      .subscribe(data => {
+        this.maintenanceItemData = data;
+      });
 
     // 构建表单
     this.createForm();
@@ -213,12 +157,13 @@ export class CreateOrderComponent extends DataList<Order> {
     // 获取挂起的订单
     this.unsettledOrders = this.getUnsettledOrders();
 
+    // 模糊查询车辆信息
     this.searchTerms
       .debounceTime(300)
       .distinctUntilChanged()
       .switchMap(term => term ? this.service.doVehicleSearch(term) : Observable.of<Vehicle[]>([]))
       .subscribe((val) => console.log(val));
-     ;
+    ;
   }
 
 
@@ -228,18 +173,50 @@ export class CreateOrderComponent extends DataList<Order> {
   }
 
   /**
-   * 通过智能表格新增维修项目, 创建事件处理程序
+   * 通过智能表格新增维修项目, 添加按钮点击事件处理程序
    * @memberOf CreateOrderComponent
    */
   addNewmaintanceItem(evt) {
+    // 获取新增的维修工项记录
     const newData = evt.newData;
-    const confirm = evt.confirm;
-
     console.log(newData);
 
-    confirm.resolve();
+    // 判断数据的合法性
+    const isValid = true;
+
+    if (isValid) {
+      // 数据合法, 允许添加
+      const confirm = evt.confirm;
+      confirm.resolve();
+
+      // 保存新增的维修项目
+      this.newMaintenanceItemData.push({
+        serviceName: newData.serviceName,
+        workHour: newData.serviceName,
+        price: newData.money,
+        discount: newData.money,
+      });
+    }
   }
 
+  /**
+  * 通过智能表格删除维修项目,事件处理程序
+  * @memberOf CreateOrderComponent
+  */
+  deleteMaintanceItem(evt) {
+    this.newMaintenanceItemData.forEach((item, index) => {
+      if (evt.data.serviceName === item.serviceName) {
+        // 将新增的维修项目从本地内存中移除
+        this.newMaintenanceItemData.splice(index, 1);
+        // 确认删除
+        evt.confirm.resolve();
+
+        return;
+      }
+    });
+  }
+
+  // 获取挂单数据
   getUnsettledOrders() {
     return [{
       carOwner: '蛋蛋',
@@ -265,23 +242,23 @@ export class CreateOrderComponent extends DataList<Order> {
   createForm() {
     this.createWorkSheetForm = this.fb.group({
       billCode: '', // 工单号
-      customerName: '', // 车主
-      phone: '', // 车主电话
+      customerName: [this.selectedVehicle.customerName, [Validators.required]], // 车主
+      phone: [this.selectedVehicle.phone, [Validators.required]], // 车主电话
       createdOnUtc: '', // 进店时间 / 开单时间
-      contactUser: '', // 送修人
-      contactInfo: '', // 送修人电话
+      contactUser: ['', [Validators.required]], // 送修人
+      contactInfo: ['', [Validators.required]], // 送修人电话
       createdUserName: '', // 服务顾问
       introducer: '', // 介绍人
       introPhone: '', // 介绍人电话
-      brand: '', // 品牌
-      series: '', // 车系
-      model: '', // 车型
-      plateNo: '', // 车牌号
-      vin: '',
+      brand: [this.selectedVehicle.brand, [Validators.required]], // 品牌
+      series: [this.selectedVehicle.series, [Validators.required]], // 车系
+      model: [this.selectedVehicle.model, [Validators.required]], // 车型
+      plateNo: [this.selectedVehicle.plateNo, [Validators.required]], // 车牌号
+      vin: [this.selectedVehicle.vin, [Validators.required]],
       validate: '', // 验车日期
-      type: '', // 维修类型
-      expectLeave: '', // 预计交车时间
-      mileage: '', // 行驶里程
+      type: ['', [Validators.required]], // 维修类型
+      expectLeave: ['', [Validators.required]], // 预计交车时间
+      mileage: ['', [Validators.required]], // 行驶里程
       lastEnter: '', // 上次进店时间
       location: '', // 维修工位
       nextDate: '', // 建议下次保养日期
@@ -290,4 +267,18 @@ export class CreateOrderComponent extends DataList<Order> {
     });
   }
 
+  // 创建工单按钮点击事件处理程序
+  createWorkSheet() {
+    console.log(this.createWorkSheetForm.valid);
+    console.log(this.createWorkSheetForm.value);
+    if (!this.createWorkSheetForm.valid) {
+      return;
+    }
+    // 组织接口参数
+    // 1.表单基础数据 this.createWorkSheetForm.value
+    // 2.新增维修项目数据 this.newMaintenanceItemData
+    // 3. 当前登陆用户信息数据(操作员，组织id, ...)
+    // 调用创建工单接口
+    this.service.create(this.createWorkSheetForm.value);
+  }
 }
