@@ -13,7 +13,7 @@ export abstract class RequestParams {
 
     private keyName: string;
 
-    constructor(keyName: string) {
+    constructor(keyName?: string) {
         this.keyName = keyName;
     }
 
@@ -42,8 +42,10 @@ export class PagedParams extends RequestParams {
     public pageIndex = 1;
     public pageSize = 10;
 
-    constructor(keyName: string) {
+    constructor(keyName?: string, pageIndex?: number, pageSize?: number) {
         super(keyName);
+        this.pageIndex = pageIndex || this.pageIndex;
+        this.pageSize = pageSize || this.pageSize;
     }
 
     public setPage(index: number, size?: number) {

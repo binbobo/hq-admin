@@ -4,6 +4,7 @@ import { ConfigComponent } from './config/config.component';
 
 const routes: Routes = [
     { path: 'menu', loadChildren: 'app/pages/settings/menu/menu.module#MenuModule' },
+    { path: 'application', loadChildren: 'app/pages/settings/application/application.module#ApplicationModule' },
     { path: 'config', component: ConfigComponent },
 ];
 
