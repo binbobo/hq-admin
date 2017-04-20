@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PagesRoutingModule, routedComponents } from 'app/pages/pages.routing';
 import { AuthGuard } from 'app/auth/auth.guard';
-import { BsDropdownModule, DatepickerModule, PopoverModule } from 'ngx-bootstrap';
+import { BsDropdownModule, DatepickerModule, PopoverModule, TypeaheadModule } from 'ngx-bootstrap';
 import { SharedModule } from 'app/shared/shared.module';
 import { LanguageService } from './locale/language/language.service';
 import { MenuService } from './settings/menu/menu.service';
@@ -12,6 +12,7 @@ import { NguiDatetimePickerModule, NguiDatetime  } from '@ngui/datetime-picker';
   imports: [
     PagesRoutingModule,
     SharedModule,
+    TypeaheadModule.forRoot(),
     BsDropdownModule.forRoot(),
     NguiDatetimePickerModule,
     PopoverModule.forRoot(),

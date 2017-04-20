@@ -8,7 +8,7 @@ export class ScopeService implements BasicService<Scope>{
   constructor(private httpService: HttpService) { }
 
   getOptions(): Promise<Array<SelectOption>> {
-    var params = new PagedParams(1, 1000);
+    var params = new PagedParams(null, 1, 1000);
     return this.getPagedList(params)
       .then(result => result.data)
       .then(data => data || Promise.reject('无效的数据！'))
