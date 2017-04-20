@@ -153,19 +153,19 @@
         <template tabHeading>
           <span class="asterisk mr-1">*</span>维修项目
         </template>
-        <ng2-smart-table (createConfirm)="addNewmaintanceItem($event)" [settings]="maintanceItemSettings" [source]="maintenanceProjectData"></ng2-smart-table>
+        <smart-table (createConfirm)="addNewmaintanceItem($event)" [settings]="maintanceItemSettings" [source]="maintenanceProjectData" ></smart-table>
       </tab>
       <tab>
         <template tabHeading>
           <span class="asterisk mr-1">*</span>维修配件
         </template>
-        <ng2-smart-table [settings]="maintanceFixingsSettings" [source]="maintenanceFixingsData"></ng2-smart-table>
+        <smart-table [settings]="maintanceFixingsSettings" [source]="maintenanceFixingsData"></smart-table>
       </tab>
       <tab heading="附加项目">
-        <ng2-smart-table [settings]="addsOnItemSettings"></ng2-smart-table>
+        <smart-table [settings]="addsOnItemSettings"></smart-table>
       </tab>
       <tab heading="建议维修项">
-        <ng2-smart-table [settings]="suggestedMaintanceSettings"></ng2-smart-table>
+        <smart-table [settings]="suggestedMaintanceSettings"></smart-table>
       </tab>
       <tab heading="历史维修记录">
         <table class="table table-hover table-bordered table-sm">
@@ -276,6 +276,4 @@
         </div>
       </div>
     </tabset>
-
-
   </div>

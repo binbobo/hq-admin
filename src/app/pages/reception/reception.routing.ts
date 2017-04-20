@@ -24,7 +24,7 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
 })
-export class ChainRoutingModule { }
+export class ReceptionRoutingModule { }
 
 export const routedComponents = [CustomDatetimeEditorComponent, OrderListComponent, AssignOrderComponent, CreateOrderComponent,BillOrderComponent,AppendOrderComponent];
 

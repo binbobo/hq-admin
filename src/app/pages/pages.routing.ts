@@ -16,7 +16,7 @@ const routes: Routes = [
             { path: 'logs', loadChildren: 'app/pages/logs/logs.module#LogsModule' },
             { path: 'settings', loadChildren: 'app/pages/settings/settings.module#SettingsModule' },
             { path: 'locale', loadChildren: 'app/pages/locale/locale.module#LocaleModule' },
-            { path: 'chain', loadChildren: 'app/pages/chain/chain.module#ChainModule' },
+            { path: 'reception', loadChildren: 'app/pages/reception/reception.module#ReceptionModule' },
         ]
     },
 ];
