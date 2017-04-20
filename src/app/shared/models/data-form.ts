@@ -41,7 +41,7 @@ export abstract class FormHandle<T> implements OnInit {
     protected onUpdate() {
         let model = this.form.value as T;
         this.submitting = true;
-        this.service
+        return this.service
             .update(model)
             .then(model => {
                 this.alerter.success('修改成功！');
@@ -57,7 +57,7 @@ export abstract class FormHandle<T> implements OnInit {
     protected onCreate() {
         let model = this.form.value as T;
         this.submitting = true;
-        this.service
+        return this.service
             .create(model)
             .then(model => {
                 this.alerter.success('添加成功！');
