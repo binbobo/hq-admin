@@ -12,7 +12,19 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 })
 
 export class AssignOrderComponent  extends DataList<Order> {
-  public alerts: any = [];
+  public   alerts: any = [];
+  private  isShowDetail=false;
+//   关闭按钮事件
+  OnClickClose(){
+      this.isShowDetail=false;
+  }
+
+//   详情点击
+  OnDetailClick(){
+        this.isShowDetail=true;
+    }
+
+
   // 详情数据
   public detailData:any= [{
                 storeName: '总店', // 店名

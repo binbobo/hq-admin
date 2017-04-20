@@ -1,4 +1,6 @@
-
+.assign{
+    position: relative;
+}
 .assign table th{
     font-size:.8rem;
     vertical-align: top;
@@ -7,20 +9,31 @@
 .assign table td{
     font-size:.8rem;
 }
-.assign .assign-detail{
+.assign .assign-person{
     cursor:pointer;
     display: block;
     color:#0275d8;   
     font-size:.8rem;
+        text-align: center;
 }
-.assign .assign-detail:hover{
-    color: #014c8c;
-    text-decoration: underline;
+.assign .assign-detail{
+position: absolute;
+     z-index:100; 
 }
 .assign .assign-total{
     margin-top:60px;
 }
-
+.assign .detail-alert{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+ background-color: rgba(41, 43, 44, 0.58);
+ z-index:99;   
+}
+.assign .detail-button{
+      cursor: pointer;
+      color:#0275d8;
+}
 /*工单详情部分*/
  .modal-content{
      background-color: #eceeef;
@@ -33,6 +46,7 @@
     max-width: 1200px;
 }
 }
+/*工单end*/
 .triangle{
     display: inline-block;
     width: 0;

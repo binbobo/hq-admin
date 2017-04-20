@@ -36,7 +36,8 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of detailData">
-          <td>{{item.repairTechnician}}<button type="button" [mSelector]="options" mTitle="选择维修技师"   (onChange)="onChange($event)" (onConfirm)="onConfirm()" class='assign-detail btn-default'>{{(item.repairTechnician).length>0?"更改":"指派"}}</button></td>
+          <td>{{item.repairTechnician}}<span type="button" [mSelector]="options" mTitle="选择维修技师" (onChange)="onChange($event)"
+              (onConfirm)="onConfirm()" class='assign-person btn-default'>{{(item.repairTechnician).length>0?"更改":"指派"}}</span></td>
           <td>{{item.status}}</td>
           <td>{{item.type}}</td>
           <td>{{item.orderNo}}</td>
@@ -53,7 +54,7 @@
           <td>{{item.sender}}</td>
           <td>{{item.senderPhoneNumber}}</td>
           <td width="50">
-            <span class='assign-detail' (click)='lgModal.show()'>详情</span>
+            <span class='detail-button' (click)='OnDetailClick()'>详情</span>
           </td>
         </tr>
       </tbody>
@@ -70,110 +71,34 @@
       <div class="p-2">合计：880</div>
     </div>
 
-
-
   </div>
 
 
-
-  <!--指派或更改弹出框 start-->
-  <div class="assign-alert" [hidden]="!isShowPerson"></div>
-  <div class="assign-box" [hidden]="!isShowPerson" id="assignBox">
-    <div class="close" (click)="OnClickPersonClose()"> <span aria-hidden="true">&times;</span></div>
-    <h5 class="popover-title">选择维修技师</h5>
-    <div class="form-check popover-content">
-      <label class="form-check-label">
-      <input type="checkbox" class="form-check-input">
-     小明
-    </label>
-      <label class="form-check-label">
-      <input type="checkbox" class="form-check-input">
-      小亮
-    </label>
-      <label class="form-check-label">
-      <input type="checkbox" class="form-check-input">
-      小凡
-    </label>
-      <label class="form-check-label">
-      <input type="checkbox" class="form-check-input">
-      晓峰
-    </label>
-      <button class='btn btn-primary mb-2 mr-2 assign-person-btn' (click)="OnClickPersonClose()">确定</button>
-    </div>
-  </div>
-  <!--指派或更改弹出框 end-->
- 
-<div bsModal #lgModal="bs-modal" class="modal" style='background-color: rgba(0, 0, 0, 0.47);' tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title pull-left">工单详情</h4>
-        <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" style='overflow: scroll;'>
-          <!--导出详情begin-->
-    <h3 style='text-align:center;'>详情</h3>
-    <hr>
-    <hr>
-    <!--工单详情 start-->
-    <table class="table table-hover table-bordered table-sm">
-      <thead>
-        <tr class='table-info'>
-          <th>店名</th>
-          <th>状态</th>
-          <th>维修类型</th>
-          <th>工单号</th>
-          <th>进店时间</th>
-          <th>预计交车时间</th>
-          <th>超时</th>
-          <th>服务顾问</th>
-          <th>品牌</th>
-          <th>车型</th>
-          <th>车牌号</th>
-          <th>行驶里程</th>
-          <th>购车时间</th>
-          <th>车主</th>
-          <th>送修人</th>
-          <th>送修人电话</th>
-          <th>介绍人</th>
-          <th>介绍人电话</th>
-          <th>维修技师</th>
-          <th>出厂时间</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of detailData">
-          <td>{{item.storeName}}</td>
-          <td>{{item.status}}</td>
-          <td>{{item.type}}</td>
-          <td>{{item.orderNo}}</td>
-          <td>{{item.enterTime}}</td>
-          <td>{{item.predictedTime}}</td>
-          <td>{{item.outeOfDate}}</td>
-          <td>{{item.serviceConsultant}}</td>
-          <td>{{item.brand}}</td>
-          <td>{{item.carType}}</td>
-          <td>{{item.plateNumber}}</td>
-          <td>{{item.mileage}}</td>
-          <td>{{item.buyTime}}</td>
-          <td>{{item.carOwner}}</td>
-          <td>{{item.sender}}</td>
-          <td>{{item.senderPhoneNumber}}</td>
-          <td>{{item.introducer}}</td>
-          <td>{{item.introducerPhoneNumber}}</td>
-          <td>{{item.repairTechnician}}</td>
-          <td>{{item.leaveFactoryTime}}</td>
-        </tr>
-      </tbody>
-    </table>
-    <!--工单详情 end-->
-    <!--维修项目 start-->
-    <h3 style='text-align:center;'>维修项目</h3>
-    <hr>
-    <hr>
-    <table class="table table-hover table-bordered table-sm">
+    <!--详情点击弹出框 start-->
+    <div class="detail-alert" [hidden]="!isShowDetail"></div>
+    <div class="alert alert-warning alert-dismissible fade show assign-detail" role="alert" [hidden]="!isShowDetail" id="alertDetail">
+      <div class="close" (click)="OnClickClose()"> <span aria-hidden="true">&times;</span></div>
+      <!--tab头部切换 start-->
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#home" role="tab">维修项目</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#profile" role="tab">维修配件</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#messages" role="tab">附加项目</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#settings" role="tab">建议维修项</a>
+        </li>
+      </ul>
+      <!--tab头部切换 end-->
+      <!--tab内容切换 start-->
+      <div class="tab-content">
+        <!--维修项目-->
+        <div class="tab-pane active" id="home" role="tabpanel">
+           <table class="table table-hover table-bordered table-sm">
       <thead>
         <tr class='table-success'>
           <th>指派维修技师</th>
@@ -187,7 +112,10 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of repairData">
-          <td><span class='triangle'></span>{{item.g}}<span class='assign-detail'>{{(item.g).length>0?"更改":"指派"}}</span></td>
+          <td>{{item.g}}
+            <span type="button" [mSelector]="options" mTitle="选择维修技师" (onChange)="onChange($event)"
+              (onConfirm)="onConfirm()" class='assign-person btn-default'>{{(item.g).length>0?"更改":"指派"}}</span>
+            </td>
           <td>{{item.a}}</td>
           <td>{{item.b}}</td>
           <td>{{item.c}}</td>
@@ -197,12 +125,10 @@
         </tr>
       </tbody>
     </table>
-    <!--维修项目 end-->
-        <!--维修配件 start-->
-    <h3 style='text-align:center;'>维修配件</h3>
-    <hr>
-    <hr>
-    <table class="table table-hover table-bordered table-sm">
+        </div>
+        <!--维修配件-->
+        <div class="tab-pane" id="profile" role="tabpanel">
+          <table class="table table-hover table-bordered table-sm">
       <thead>
         <tr class='table-warning'>
           <th>维修项目</th>
@@ -227,12 +153,11 @@
         </tr>
       </tbody>
     </table>
-    <!--维修配件 end-->
-       <!--附加项目 start-->
-    <h3 style='text-align:center;'>附加项目</h3>
-    <hr>
-    <hr>
-    <table class="table table-hover table-bordered table-sm">
+
+        </div>
+        <!--附加项目-->
+        <div class="tab-pane" id="messages" role="tabpanel">
+           <table class="table table-hover table-bordered table-sm">
       <thead>
         <tr class='table-danger'>
           <th>项目名称</th>
@@ -252,12 +177,10 @@
         </tr>
       </tbody>
     </table>
-    <!--附加项目 end-->
-           <!--建议维修项 start-->
-    <h3 style='text-align:center;'>建议维修项</h3>
-    <hr>
-    <hr>
-    <table class="table table-hover table-bordered table-sm">
+        </div>
+        <!--建议维修项-->
+        <div class="tab-pane" id="settings" role="tabpanel">
+         <table class="table table-hover table-bordered table-sm">
       <thead>
         <tr class='table-warning'>
           <th>建议维修项目</th>
@@ -279,12 +202,13 @@
         </tr>
       </tbody>
     </table>
-    <!--建议维修项 end-->
-  <!--导出详情end-->
+        </div>
       </div>
+      <!--tab内容切换 end-->
     </div>
-  </div>
-</div>
+    <!--详情点击弹出框 end-->
+
+
 
 
 
