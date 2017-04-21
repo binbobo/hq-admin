@@ -31,6 +31,7 @@ export class OrderService implements BasicService<Order> {
      * @memberOf OrderService
      */
     getMaintenanceItemsByName(name: string): Observable<MaintenanceItem[]> {
+        console.log(name);
         const url = Urls.chain.concat('/Services/GetByName');
         return this.httpService
             .request(url, {
@@ -45,23 +46,42 @@ export class OrderService implements BasicService<Order> {
     }
 
     /**
-     * 根据车牌号查询车辆信息
-     * @param {string} term
-     * @returns {Observable<Vehicle[]>} 
-     * 
+     * 根据车牌号模糊查询客户车辆信息
+     * @param {string} token
+     * @returns {Observable<CustomerVehicle[]>}
      * @memberOf OrderService
      */
-    doVehicleSearch(term: string): Observable<Vehicle[]> {
+    getCustomerVehicleByPlateNo(token: string): Observable<CustomerVehicle[]> {
         const url = Urls.chain.concat('/CustomerVehicles/GetByPlateNo');
         return this.httpService
             .request(url, {
                 params: {
-                    'plateNo': term
+                    'plateNo': token
                 }
             })
             .map(response => {
                 console.log(response.json().data);
-                return response.json().data as Vehicle[];
+                return response.json().data as CustomerVehicle[];
+            });
+    }
+
+      /**
+     * 根据车牌号模糊查询客户车辆信息
+     * @param {string} token
+     * @returns {Observable<CustomerVehicle[]>}
+     * @memberOf OrderService
+     */
+    getCustomerVehicleByCustomerName(token: string): Observable<CustomerVehicle[]> {
+        const url = Urls.chain.concat('/Customers/GetByName');
+        return this.httpService
+            .request(url, {
+                params: {
+                    'name': token
+                }
+            })
+            .map(response => {
+                console.log(response.json().data);
+                return response.json().data as CustomerVehicle[];
             });
     }
 
@@ -197,18 +217,28 @@ export class Order extends BasicModel {
     }
 }
 
+// 客户车辆关系model类
+export class CustomerVehicle {
+    constructor(
+        public plateNo: string = '', // 车牌号
+        public customerName: string = '', // 车主
+        public phone: string = '', // 车主电话
+        public series: string = '', // 车系
+        public model: string = '', // 车型
+        public brand: string = '', // 品牌
+        public mileage: string = '', // 行驶里程
+        public purchaseDate: Date = null, // 购车时间
+        public vin: string = '', // vin, 车辆唯一编码
+    ) {
+    }
+}
+
 // 车辆model类
 export class Vehicle {
     constructor(
-        public plateNo: string, // 车牌号
-        public customerName: string, // 车主
-        public phone: string, // 车主电话
         public series: string, // 车系
         public model: string, // 车型
         public brand: string, // 品牌
-        public mileage: string, // 行驶里程
-        public purchaseDate: Date, // 购车时间
-        public vin: string, // vin, 车辆唯一编码
     ) {
     }
 }
@@ -217,7 +247,7 @@ export class Vehicle {
 export class MaintenanceItem {
     constructor(
         id: string, // 主键
-        name: string , // 名称
+        name: string, // 名称
         shortName: string, // 简称,
         firstChar: string, // 首字母,
         bopomofo: string,  // 拼音,

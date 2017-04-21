@@ -9,15 +9,6 @@ input.ng-touched.ng-invalid,select.ng-touched.ng-invalid{
 }
 
 
-input.ng-valid[required], input.ng-valid.required  {
-  border-left: 5px solid #42A948 !important; /* green */
-}
-
-.ng-invalid:not(form), input.ng-touched.ng-invalid  {
-  border-left: 5px solid #a94442; /* red */
-}
-
-
 select.form-control{
     padding: 0 12px;
 }
@@ -34,20 +25,5 @@ leo-dropdown-treeview.sm input.form-control{
     border-radius: .2rem;
 }
 
-/*ngx-bootstrap popver 样式复写*/
-.popover-content {
-    padding: 0;
-    margin: 0;
-}
-.popover {
-    padding: 0;
-    max-width: 100%;
-}
 
-
-/*ng2-smart-table样式*/
-.inputFilter {
-    /*不显示过滤表单域*/
-    display: none;
-}
 

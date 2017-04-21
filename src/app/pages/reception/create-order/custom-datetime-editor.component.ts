@@ -37,11 +37,10 @@ export class CustomDatetimeEditorComponent extends DefaultEditor {
     // 根据名称获取维修项目信息
     this.dataSource = Observable
       .create((observer: any) => {
-        // Runs on every search
         observer.next(this.asyncSelected);
       })
       .debounceTime(300)
       .distinctUntilChanged()
-      .switchMap(term => term ? this.service.getMaintenanceItemsByName(term) : Observable.of<MaintenanceItem[]>([]));
+      .mergeMap((token: string) => this.service.getMaintenanceItemsByName(token) );
   }
 }
