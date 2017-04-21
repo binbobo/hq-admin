@@ -8,7 +8,7 @@ export class MenuService implements BasicService<Menu> {
     constructor(private httpService: HttpService) { }
 
     public getPagedList(params: PagedParams): Promise<PagedResult<Menu>> {
-        let url = Urls.platform.concat('/menus?', params.serialize());
+        let url = Urls.platform.concat('/navigations?', params.serialize());
         return this.httpService
             .get<PagedResult<Menu>>(url)
             .then(result => {
@@ -32,7 +32,7 @@ export class MenuService implements BasicService<Menu> {
     }
 
     public getSelectOptions(): Promise<Array<SelectOption>> {
-        let url = Urls.platform.concat('/menus/options');
+        let url = Urls.platform.concat('/navigations/options');
         return this.httpService
             .get<ListResult<SelectOption>>(url)
             .then(result => result.data)
@@ -41,7 +41,7 @@ export class MenuService implements BasicService<Menu> {
     }
 
     public get(id: string): Promise<Menu> {
-        let url = Urls.platform.concat('/menus/', id);
+        let url = Urls.platform.concat('/navigations/', id);
         return this.httpService
             .get<ApiResult<Menu>>(url)
             .then(result => result.data)
@@ -50,14 +50,14 @@ export class MenuService implements BasicService<Menu> {
     }
 
     public update(body: Menu): Promise<void> {
-        let url = Urls.platform.concat('/menus/', body.id);
+        let url = Urls.platform.concat('/navigations/', body.id);
         return this.httpService.
             put<void>(url, body)
             .catch(err => Promise.reject(`更新菜单失败：${err}`));
     }
 
     public create(body: Menu): Promise<Menu> {
-        let url = Urls.platform.concat('/menus');
+        let url = Urls.platform.concat('/navigations');
         return this.httpService
             .post<ApiResult<Menu>>(url, body)
             .then(m => m.data)
@@ -69,7 +69,7 @@ export class MenuService implements BasicService<Menu> {
     }
 
     public delete(id: string): Promise<void> {
-        let url = Urls.platform.concat('/menus/', id);
+        let url = Urls.platform.concat('/navigations/', id);
         return this.httpService
             .delete(url)
             .catch(err => Promise.reject(`删除菜单失败：${err}`));

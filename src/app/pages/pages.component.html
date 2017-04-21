@@ -1,27 +1,25 @@
 <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
   <a class="navbar-brand" href="/">华汽后台综合管理系统</a>
   <div class="navbar-right">
-    <div class="dropdown d-inline">
-      <a class="btn dropdown-toggle" data-toggle="dropdown">
+    <div dropdown class="dropdown d-inline">
+      <a dropdownToggle class="btn cursor-pointer">
         <span [hidden]="language" class="fa fa-globe" translate> language</span>
         <p *ngIf="language" class="d-inline">
-            <span class="flag-icon flag-icon-{{language.flag}}"></span>
-            {{language.name}}
+          <span class="flag-icon flag-icon-{{language.flag}}"></span> {{language.name}}
         </p>
       </a>
-      <div class="dropdown-menu dropdown-menu-right bg-inverse">
+      <div *dropdownMenu class="dropdown-menu dropdown-menu-right bg-inverse">
         <a class="dropdown-item" (click)="onSelectLanguage(item)" *ngFor="let item of languages">
-            <i *ngIf="item.selected||item.culture===language?.culture" class="fa fa-check"></i>
-            <span class="flag-icon flag-icon-{{item.flag}}"></span>
-            {{item.name}}
+          <i *ngIf="item.selected||item.culture===language?.culture" class="fa fa-check"></i>
+          <span class="flag-icon flag-icon-{{item.flag}}"></span> {{item.name}}
         </a>
       </div>
     </div>
-    <div class="dropdown d-inline">
-      <a class="btn dropdown-toggle"  data-toggle="dropdown">
+    <div dropdown class="dropdown d-inline">
+      <a dropdownToggle class="btn cursor-pointer">
         <a><i class="fa fa-user-circle"> {{userService?.user?.username}}</i></a>
       </a>
-      <div class="dropdown-menu dropdown-menu-right bg-inverse">
+      <div *dropdownMenu class="dropdown-menu dropdown-menu-right bg-inverse">
         <a class="dropdown-item" href="#">Action</a>
         <a class="dropdown-item" href="#">Another action</a>
         <div class="dropdown-divider"></div>
