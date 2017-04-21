@@ -23,11 +23,11 @@
       <div class="form-group row">
         <label for="plateNo" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车牌号</label>
         <div class="col-sm-2">
-          <input (typeaheadOnSelect)="typeaheadOnSelect($event)" [typeahead]="plateNoDataSource" typeaheadOptionField="plateNo" required   type="text" class="form-control form-control-sm" formControlName="plateNo" id="plateNo" placeholder="车牌号">
+          <input (typeaheadOnSelect)="plateNoTypeaheadOnSelect($event)" [typeahead]="plateNoDataSource" typeaheadOptionField="plateNo" required   type="text" class="form-control form-control-sm" formControlName="plateNo" id="plateNo" placeholder="车牌号">
         </div>
         <label for="customerName" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车主</label>
         <div class="col-sm-2">
-          <input (typeaheadOnSelect)="typeaheadOnSelect($event)" [typeahead]="customerNameDataSource" typeaheadOptionField="name" type="text" required class="form-control form-control-sm" formControlName="customerName" id="customerName" placeholder="车主">
+          <input (typeaheadOnSelect)="customerNameTypeaheadOnSelect($event)" [typeahead]="customerNameDataSource" typeaheadOptionField="name" type="text" required class="form-control form-control-sm" formControlName="customerName" id="customerName" placeholder="车主">
         </div>
         <label for="phone" class="col-sm-1 col-form-label col-form-label-sm">车主电话</label>
         <div class="col-sm-2">
