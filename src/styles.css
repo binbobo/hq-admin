@@ -13,13 +13,24 @@ select.form-control{
     padding: 0 12px;
 }
 
-leo-dropdown-treeview.sm button.dropdown-toggle{
+
+/*解决bs4单选下拉框 form-control-sm 高度不匹配bug*/
+select.form-control-sm {
+    padding: .25rem .5rem;
+    font-size: .875rem;
+    border-radius: .2rem;
+}
+select.form-control:not([size]):not([multiple]) {
+    height: auto;
+}
+
+ngx-dropdown-treeview.sm button.dropdown-toggle{
     padding: .25rem .5rem;
     font-size: .875rem;
     border-radius: .2rem;
 }
 
-leo-dropdown-treeview.sm input.form-control{
+ngx-dropdown-treeview.sm input.form-control{
     padding: .25rem .5rem;
     font-size: .875rem;
     border-radius: .2rem;

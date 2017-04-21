@@ -1,3 +1,4 @@
+import {TypeaheadMatch} from 'ngx-bootstrap/typeahead';
 import { Component, Injector } from '@angular/core';
 import { DataList } from '../../../shared/models/data-list';
 import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType, CustomerVehicle } from '../order.service';
@@ -33,16 +34,13 @@ export class CreateOrderComponent extends DataList<Order> {
   // 客户车辆模糊查询  用于带出在本店维修过项目的客户车辆信息
 
   // 结果集
-  public customerVehicles: CustomerVehicle[];
+  public customerVehicles: CustomerVehicle[] = [];
   // 当前选择的客户车辆对象
   public selectedCustomerVehicle: CustomerVehicle = new CustomerVehicle();
   // 通过车牌号查询异步数据源
   public plateNoDataSource: Observable<CustomerVehicle>;
-  //
-  plateNoSelected: string;
   // 通过车主姓名查询异步数据源
   public customerNameDataSource: Observable<CustomerVehicle>;
-  customerNameSelected: string;
 
 
   // 维修类型数据
@@ -152,26 +150,44 @@ export class CreateOrderComponent extends DataList<Order> {
     // 获取挂起的订单
     this.unsettledOrders = this.getUnsettledOrders();
 
-    // 根据名称获取维修项目信息
+    // 根据车牌号获取客户车辆信息数据源初始化
     this.plateNoDataSource = Observable
       .create((observer: any) => {
-        observer.next(this.plateNoSelected);
+        observer.next(this.createWorkSheetForm.value.plateNo);
       })
       .debounceTime(300)
       .distinctUntilChanged()
       .mergeMap((token: string) => this.service.getCustomerVehicleByPlateNo(token))
-      .catch(err => console.log(err)) ;
+      .catch(err => console.log(err));
 
-    // 根据名称获取维修项目信息
+    // 根据车主名称获取客户车辆信息数据源初始化
     this.customerNameDataSource = Observable
       .create((observer: any) => {
-        observer.next(this.customerNameSelected);
+        observer.next(this.createWorkSheetForm.value.customerName);
       })
       .debounceTime(300)
       .distinctUntilChanged()
       .mergeMap((token: string) => this.service.getCustomerVehicleByCustomerName(token))
-      .catch(err => console.log(err)) ;
-}
+      .catch(err => console.log(err));
+  }
+
+  /**
+   * @memberOf CreateOrderComponent
+   */
+  plateNoTypeaheadOnSelect(evt: TypeaheadMatch) {
+    console.log('selected: ', evt);
+    // 车牌号对应唯一客户车辆记录
+    this.selectedCustomerVehicle = evt.item;
+  }
+
+   /**
+   * @memberOf CreateOrderComponent
+   */
+  customerNameTypeaheadOnSelect(evt: TypeaheadMatch) {
+    console.log('selected: ', evt);
+    // 一个车主下面可能有多条客户车辆记录
+    this.selectedCustomerVehicle = evt.item;
+  }
 
   /**
    * 通过智能表格新增维修项目, 添加按钮点击事件处理程序
