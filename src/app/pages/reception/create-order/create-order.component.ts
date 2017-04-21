@@ -1,6 +1,6 @@
 import { Component, Injector } from '@angular/core';
 import { DataList } from '../../../shared/models/data-list';
-import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType } from '../order.service';
+import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType, CustomerVehicle } from '../order.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { ViewCell } from 'ng2-smart-table';
@@ -12,7 +12,6 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/switchMap';
 
 
 
@@ -23,22 +22,28 @@ import 'rxjs/add/operator/switchMap';
 })
 export class CreateOrderComponent extends DataList<Order> {
   // 用于保存搜索框中输入的关键字
-  private searchTerms: Subject<string> = new Subject<string>();
-  // 车辆模糊查询结果数据集
-  public vehicles: Vehicle[];
+  private searchTerms: Subject<any> = new Subject<any>();
 
-  // 根据车牌号模糊查询后, 选择的车辆
-  selectedVehicle: Vehicle = {
-    plateNo: '',
-    customerName: '',
-    phone: '',
-    series: '',
-    model: '',
-    mileage: '',
-    purchaseDate: new Date(),
-    vin: '',
-    brand: ''
-  };
+  // 车辆模糊查询  用于自动带出车型，车系，品牌信息
+  // 结果数据集，
+  public vehicles: Vehicle[];
+  // 当前选择的车辆对象
+  public selectedVehicle: Vehicle;
+
+  // 客户车辆模糊查询  用于带出在本店维修过项目的客户车辆信息
+
+  // 结果集
+  public customerVehicles: CustomerVehicle[];
+  // 当前选择的客户车辆对象
+  public selectedCustomerVehicle: CustomerVehicle = new CustomerVehicle();
+  // 通过车牌号查询异步数据源
+  public plateNoDataSource: Observable<CustomerVehicle>;
+  //
+  plateNoSelected: string;
+  // 通过车主姓名查询异步数据源
+  public customerNameDataSource: Observable<CustomerVehicle>;
+  customerNameSelected: string;
+
 
   // 维修类型数据
   public maintenanceTypeData: MaintenanceType[];
@@ -99,16 +104,6 @@ export class CreateOrderComponent extends DataList<Order> {
         editor: {
           type: 'custom',
           component: CustomDatetimeEditorComponent
-          // type: 'completer',
-          // config: {
-          //   completer: {
-          //     data: this.maintenanceItemData, // 从维修项目大查询库中选择
-          //     searchFields: 'name',
-          //     titleField: 'name',
-          //     descriptionField: '', // 在候选列表项后面显示
-          //     placeholder: '请输入...'
-          //   },
-          // },
         },
       },
       workHour: {
@@ -157,20 +152,26 @@ export class CreateOrderComponent extends DataList<Order> {
     // 获取挂起的订单
     this.unsettledOrders = this.getUnsettledOrders();
 
-    // 模糊查询车辆信息
-    this.searchTerms
+    // 根据名称获取维修项目信息
+    this.plateNoDataSource = Observable
+      .create((observer: any) => {
+        observer.next(this.plateNoSelected);
+      })
       .debounceTime(300)
       .distinctUntilChanged()
-      .switchMap(term => term ? this.service.doVehicleSearch(term) : Observable.of<Vehicle[]>([]))
-      .subscribe((val) => console.log(val));
-    ;
-  }
+      .mergeMap((token: string) => this.service.getCustomerVehicleByPlateNo(token))
+      .catch(err => console.log(err)) ;
 
-
-  // Push a search term into the observable stream.
-  search(term: string): void {
-    this.searchTerms.next(term);
-  }
+    // 根据名称获取维修项目信息
+    this.customerNameDataSource = Observable
+      .create((observer: any) => {
+        observer.next(this.customerNameSelected);
+      })
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .mergeMap((token: string) => this.service.getCustomerVehicleByCustomerName(token))
+      .catch(err => console.log(err)) ;
+}
 
   /**
    * 通过智能表格新增维修项目, 添加按钮点击事件处理程序
@@ -242,19 +243,19 @@ export class CreateOrderComponent extends DataList<Order> {
   createForm() {
     this.createWorkSheetForm = this.fb.group({
       billCode: '', // 工单号
-      customerName: [this.selectedVehicle.customerName, [Validators.required]], // 车主
-      phone: [this.selectedVehicle.phone, [Validators.required]], // 车主电话
+      customerName: [this.selectedCustomerVehicle.customerName, [Validators.required]], // 车主
+      phone: [this.selectedCustomerVehicle.phone, [Validators.required]], // 车主电话
       createdOnUtc: '', // 进店时间 / 开单时间
       contactUser: ['', [Validators.required]], // 送修人
       contactInfo: ['', [Validators.required]], // 送修人电话
       createdUserName: '', // 服务顾问
       introducer: '', // 介绍人
       introPhone: '', // 介绍人电话
-      brand: [this.selectedVehicle.brand, [Validators.required]], // 品牌
-      series: [this.selectedVehicle.series, [Validators.required]], // 车系
-      model: [this.selectedVehicle.model, [Validators.required]], // 车型
-      plateNo: [this.selectedVehicle.plateNo, [Validators.required]], // 车牌号
-      vin: [this.selectedVehicle.vin, [Validators.required]],
+      brand: [this.selectedCustomerVehicle.brand, [Validators.required]], // 品牌
+      series: [this.selectedCustomerVehicle.series, [Validators.required]], // 车系
+      model: [this.selectedCustomerVehicle.model, [Validators.required]], // 车型
+      plateNo: [this.selectedCustomerVehicle.plateNo, [Validators.required]], // 车牌号
+      vin: [this.selectedCustomerVehicle.vin, [Validators.required]],
       validate: '', // 验车日期
       type: ['', [Validators.required]], // 维修类型
       expectLeave: ['', [Validators.required]], // 预计交车时间
