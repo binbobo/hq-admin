@@ -23,12 +23,18 @@
       <div class="form-group row">
         <label for="plateNo" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车牌号</label>
         <div class="col-sm-2">
-          <input (typeaheadOnSelect)="plateNoTypeaheadOnSelect($event)" [typeahead]="plateNoDataSource" typeaheadOptionField="plateNo" required   type="text" class="form-control form-control-sm" formControlName="plateNo" id="plateNo" placeholder="车牌号">
+          <input (typeaheadOnSelect)="plateNoTypeaheadOnSelect($event)" [typeahead]="plateNoDataSource" typeaheadOptionField="plateNo"
+            required type="text" class="form-control form-control-sm" formControlName="plateNo" id="plateNo" placeholder="车牌号">
         </div>
         <label for="customerName" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车主</label>
         <div class="col-sm-2">
-          <input (typeaheadOnSelect)="customerNameTypeaheadOnSelect($event)" [typeahead]="customerNameDataSource" typeaheadOptionField="name" type="text" required class="form-control form-control-sm" formControlName="customerName" id="customerName" placeholder="车主">
+          <input typeaheadOptionField="customerName" [typeaheadItemTemplate]="customCustomerVehicleTemplate" (typeaheadOnSelect)="customerNameTypeaheadOnSelect($event)" [typeahead]="customerNameDataSource" type="text" required
+            class="form-control form-control-sm" formControlName="customerName" id="customerName" placeholder="车主">
         </div>
+        <!--根据车主查询客户车辆信息下拉列表，自定义显示模板 let-model="item"遍历集合, 引用记录 -->
+        <template #customCustomerVehicleTemplate let-model="item" let-index="index">
+          车主: {{model?.customerName}} -- 车牌号: {{ model?.plateNo }}
+        </template>
         <label for="phone" class="col-sm-1 col-form-label col-form-label-sm">车主电话</label>
         <div class="col-sm-2">
           <input type="text" class="form-control form-control-sm" formControlName="phone" id="phone" placeholder="车主电话">
@@ -44,7 +50,7 @@
         <div class="col-sm-2">
           <input type="text" required class="form-control form-control-sm" formControlName="contactUser" id="contactUser" placeholder="送修人">
         </div>
-        <label for="contactInfo" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1"></span>送修人电话</label>
+        <label for="contactInfo" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>送修人电话</label>
         <div class="col-sm-2">
           <input required type="text" class="form-control form-control-sm" formControlName="contactInfo" id="contactInfo" placeholder="送修人电话">
         </div>
@@ -100,7 +106,7 @@
         <label for="expectLeave" class="col-sm-2 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>预计交车时间</label>
         <div class="input-group input-group-sm col-sm-3">
           <input class="form-control form-control-sm datetime-picker" type="text" readonly formControlName="expectLeave" ngui-datetime-picker
-            date-format="YYYY-MM-DD hh:mm" hour="23" minute='59'/>
+            date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' />
           <span class="input-group-addon">
                 <i class="fa fa-calendar" aria-hidden="true"></i>
               </span>
@@ -149,7 +155,8 @@
         <template tabHeading>
           <span class="asterisk mr-1">*</span>维修项目
         </template>
-        <smart-table (deleteConfirm)="deleteMaintanceItem($event)" (createConfirm)="addNewmaintanceItem($event)" [settings]="maintanceItemSettings" [source]="maintenanceProjectData" ></smart-table>
+        <smart-table (deleteConfirm)="deleteMaintanceItem($event)" (createConfirm)="addNewmaintanceItem($event)" [settings]="maintanceItemSettings"
+          [source]="maintenanceProjectData"></smart-table>
       </tab>
       <!--<tab>
         <template tabHeading>
@@ -267,7 +274,7 @@
           <span class="ml-2 mr-2">165655</span>|
         </div>
         <div class="card-block text-center">
-          <input type="text" readonly class="btn textInputBtn" (click)="createWorkSheet()" value="生成工单" >
+          <input type="text" readonly class="btn textInputBtn" [disabled]="!enableCreateWorkSheet" (click)="createWorkSheet()" value="生成工单">
           <input type="text" readonly class="btn textInputBtn" value="挂单">
         </div>
       </div>

@@ -36,5 +36,22 @@ ngx-dropdown-treeview.sm input.form-control{
     border-radius: .2rem;
 }
 
+/*ng2-smart-table样式*/
+.inputFilter {
+    /*不显示过滤表单域*/
+    display: none;
+}
+
+/*ngx-bootstrap popver 样式复写*/
+.popover-content {
+    padding: 0;
+    margin: 0;
+}
+.popover {
+    padding: 0;
+    max-width: 100%;
+}
+
+
 
 

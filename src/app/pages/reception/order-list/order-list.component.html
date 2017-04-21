@@ -80,9 +80,11 @@
       <!--高级筛选面板-->
       <fieldset>
         <legend class="col-form-legend p-0 text-center">
-          <a (click)="isCollapsed = !isCollapsed">高级筛选</a>
-          <i class="fa fa-angle-double-up" [hidden]="isCollapsed"></i>
-          <i class="fa fa-angle-double-down" [hidden]="!isCollapsed"></i>
+          <a (click)="isCollapsed = !isCollapsed">
+            高级筛选
+            <i class="fa fa-angle-double-up" [hidden]="isCollapsed"></i>
+            <i class="fa fa-angle-double-down" [hidden]="!isCollapsed"></i>
+          </a>
         </legend>
         <div [collapse]="isCollapsed" class="card mt-3 card-block">
           <div class="well well-lg">

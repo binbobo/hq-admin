@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { Cell, DefaultEditor, Editor } from 'ng2-smart-table';
 
 import { Observable } from 'rxjs/Observable';
@@ -9,6 +9,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { MaintenanceItem, OrderService } from '../order.service';
+import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
 
 @Component({
   template: `
@@ -16,17 +17,20 @@ import { MaintenanceItem, OrderService } from '../order.service';
             [(ngModel)]="asyncSelected"
             [typeahead]="dataSource"
             typeaheadOptionField="name"
-            class="form-control"
+            class="form-control form-control-sm"
             [name]="cell.getId()"
             [disabled]="!cell.isEditable()"
-            [placeholder]="cell.getTitle()" >
+            [placeholder]="cell.getTitle()"
+            (typeaheadOnSelect)="typeaheadOnSelect($event)"
+             >
   `,
   styleUrls: ['./create-order.component.css']
 })
-export class CustomDatetimeEditorComponent extends DefaultEditor {
+export class CustomMaintanceItemEditorComponent extends DefaultEditor implements AfterViewInit {
   // 保存模糊查询的维修项目数据
   dataSource: Observable<MaintenanceItem>;
   asyncSelected: string;
+
   /**
    * 调用父类构造方法
    * @memberOf CustomEditorComponent
@@ -41,6 +45,15 @@ export class CustomDatetimeEditorComponent extends DefaultEditor {
       })
       .debounceTime(300)
       .distinctUntilChanged()
-      .mergeMap((token: string) => this.service.getMaintenanceItemsByName(token) );
+      .mergeMap((token: string) => this.service.getMaintenanceItemsByName(token));
+  }
+
+  ngAfterViewInit() {
+    // 设置表格单元格的初始值
+    //  this.cell.setValue(new Date().toLocaleString());
+  }
+
+  typeaheadOnSelect(evt: TypeaheadMatch) {
+    this.cell.setValue(evt.value);
   }
 }

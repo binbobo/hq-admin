@@ -21,7 +21,7 @@ export class OrderService implements BasicService<Order> {
         return this.httpService
             .request(url)
             .map(response => {
-                console.log(response.json().data);
+                console.log('查询维修类型数据：', response.json().data);
                 return response.json().data as MaintenanceType[];
             });
     }
@@ -60,17 +60,17 @@ export class OrderService implements BasicService<Order> {
                 }
             })
             .map(response => {
-                console.log(response.json().data);
+                console.log('根据车牌号查询客户车辆信息：', response.json().data);
                 return response.json().data as CustomerVehicle[];
             });
     }
 
-      /**
-     * 根据车牌号模糊查询客户车辆信息
-     * @param {string} token
-     * @returns {Observable<CustomerVehicle[]>}
-     * @memberOf OrderService
-     */
+    /**
+   * 根据车牌号模糊查询客户车辆信息
+   * @param {string} token
+   * @returns {Observable<CustomerVehicle[]>}
+   * @memberOf OrderService
+   */
     getCustomerVehicleByCustomerName(token: string): Observable<CustomerVehicle[]> {
         const url = Urls.chain.concat('/Customers/GetByName');
         return this.httpService
@@ -80,8 +80,27 @@ export class OrderService implements BasicService<Order> {
                 }
             })
             .map(response => {
-                console.log(response.json().data);
-                return response.json().data as CustomerVehicle[];
+                console.log('根据车主名称查询客户车辆信息：', response.json().data);
+                // 每个车主下面可能有多个车辆信息
+                const data = response.json().data;
+                const customerVehicles: CustomerVehicle[] = [];
+                data.forEach((customer) => {
+                    customer.customerVehicle.forEach(vehicle => {
+                        const customerVehicle = new CustomerVehicle(
+                            vehicle.plateNo,
+                            customer.name, // 车主姓名
+                            customer.phone, // 车主电话
+                            vehicle.series,
+                            vehicle.model,
+                            vehicle.brand,
+                            vehicle.mileage,
+                            vehicle.purchaseDate,
+                            vehicle.vin,  // 底盘号
+                        );
+                        customerVehicles.push(customerVehicle);
+                    });
+                });
+                return customerVehicles;
             });
     }
 

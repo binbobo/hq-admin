@@ -39,6 +39,7 @@ const SmartTableSetting = {
   noDataMessage: '没有数据',
   actions: {
     columnTitle: '操作',
+    edit: false,   // 不显示编辑按钮
   },
   edit: {
     editButtonContent: '编辑',
@@ -49,6 +50,7 @@ const SmartTableSetting = {
     addButtonContent: '添加',
     createButtonContent: '创建',
     cancelButtonContent: '取消',
+    confirmCreate: true    // 添加确认事件必须配置项
   },
   delete: {
     confirmDelete: true,
