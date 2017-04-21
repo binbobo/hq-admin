@@ -1,0 +1,61 @@
+<hq-alerter [service]="alerter"></hq-alerter>
+<div class="card">
+  <div class="card-header">
+    <span>编辑客户端</span>
+    <div class="pull-right">
+      <a routerLink="../../" class="btn btn-sm btn-info">返回</a>
+      <a routerLink="../../create" class="btn btn-sm btn-secondary">添加</a>
+    </div>
+  </div>
+  <form *ngIf="form" class="card-block" [formGroup]="form" (ngSubmit)="onUpdate()">
+    <div class="form-group">
+      <label class="form-control-label">客户端名称</label>
+      <input type="text" formControlName="name" class="form-control" placeholder="客户端名称">
+      <control-errors control="name" [form]="form">
+        <control-error code="required">客户端名称不能为空</control-error>
+        <control-error code="maxlength">客户端名称要求不能超过30位字符</control-error>
+      </control-errors>
+    </div>
+    <div class="form-group">
+      <label class="form-control-label">客户端标识</label>
+      <input type="text" formControlName="culture" class="form-control" placeholder="客户端唯一标识名称">
+      <control-errors control="culture" [form]="form">
+        <control-error code="required">客户端标识不能为空</control-error>
+        <control-error code="maxlength">客户端标识要求不能超过32位字符</control-error>
+      </control-errors>
+    </div>
+    <div class="form-group">
+      <label class="form-control-label">Logo</label>
+      <input type="text" formControlName="code" class="form-control">
+    </div>
+    <div class="form-group">
+      <label class="form-control-label">所属应用程序</label>
+      <select formControlName="applicationId" class="form-control">
+        <option value>应用程序</option>
+        <option *ngFor="let item of applications" value="{{item.value}}">{{item.text}}</option>
+      </select>
+      <control-errors control="applicationId" [form]="form">
+        <control-error code="required">应用程序不能为空</control-error>
+      </control-errors>
+    </div>
+    <div class="form-group">
+      <label class="form-control-label">描述</label>
+      <textarea formControlName="description" class="form-control" placeholder="客户端描述信息">
+      </textarea>
+      <control-errors control="description" [form]="form">
+        <control-error code="maxlength">描述要求不能超过200位字符</control-error>
+      </control-errors>
+    </div>
+    <div class="form-group">
+      <label class="custom-control custom-checkbox">
+        <input type="checkbox" formControlName="enabled" class="custom-control-input">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description">可用的</span>
+      </label>
+    </div>
+    <div class="form-group">
+      <button type="submit" [disabled]="form.invalid||submitting" class="btn btn-primary mr-3">提交</button>
+      <button type="button" (click)="form.reset(model)" class="btn btn-secondary mr-3">重置</button>
+    </div>
+  </form>
+</div>

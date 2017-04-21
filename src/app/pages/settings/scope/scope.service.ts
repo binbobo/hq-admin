@@ -7,7 +7,7 @@ export class ScopeService implements BasicService<Scope>{
 
   constructor(private httpService: HttpService) { }
 
-  getOptions(): Promise<Array<SelectOption>> {
+  getSelectOptions(): Promise<Array<SelectOption>> {
     var params = new PagedParams(null, 1, 1000);
     return this.getPagedList(params)
       .then(result => result.data)

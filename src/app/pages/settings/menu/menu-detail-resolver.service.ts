@@ -18,6 +18,7 @@ export class MenuDetailResolver implements Resolve<Menu>{
             .get(id)
             .then(m => {
                 m.parentId = m.parentId || "";
+                m.scopes = m.scopes || [];
                 return m;
             })
     }

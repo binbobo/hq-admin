@@ -1,7 +1,7 @@
 <hq-alerter [service]="alerter"></hq-alerter>
 <div class="card">
   <div class="card-header">
-    <span>编辑语言</span>
+    <span>编辑菜单</span>
     <div class="pull-right">
       <button routerLink="../../" class="btn btn-sm btn-info">返回</button>
       <button routerLink="../../create" class="btn btn-sm btn-secondary">添加</button>
@@ -36,11 +36,34 @@
       <input type="number" formControlName="displayOrder" class="form-control" placeholder="请输入菜单显示顺序">
     </div>
     <div class="form-group">
+      <label class="form-control-label">所属客户端</label>
+      <select formControlName="clientId" (change)="onClientChange($event)" class="form-control">
+        <option *ngFor="let item of clients" value="{{item.value}}">{{item.text}}</option>
+      </select>
+    </div>
+    <div class="form-group">
       <label class="form-control-label">上级菜单</label>
       <select formControlName="parentId" class="form-control">
         <option value>顶级菜单</option>
         <option *ngFor="let item of menus" value="{{item.value}}">{{item.text}}</option>
       </select>
+    </div>
+    <div class="form-group">
+      <label class="form-control-label">菜单分组</label>
+      <div class="form-control">
+        <div class="form-check form-check-inline" *ngFor="let item of scopes">
+          <label class="form-check-label">
+            <input class="form-check-input" (change)="onScopeSelect($event)" [attr.checked]="item.selected" type="checkbox" [value]="item.value"> {{item.text}}
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="custom-control custom-checkbox">
+        <input type="checkbox" formControlName="autoRun" class="custom-control-input">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description">自动运行</span>
+      </label>
     </div>
     <div class="form-group">
       <label class="custom-control custom-checkbox">
