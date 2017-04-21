@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpService, Urls } from 'app/shared/services';
 import { PagedParams, PagedResult, ApiResult, BasicModel, BasicService, ListResult, SelectOption } from 'app/shared/models';
-import { TreeviewItem } from 'ng2-dropdown-treeview';
+import { TreeviewItem } from 'ngx-treeview';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 

@@ -1,6 +1,6 @@
 import { Component, Injector } from '@angular/core';
 import { DataList } from '../../../shared/models/data-list';
-import { TreeviewItem, TreeviewConfig } from 'ng2-dropdown-treeview';
+import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
 import { OrderService, OrderListRequest, Order } from '../order.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -16,7 +16,7 @@ export class OrderListComponent extends DataList<Order> {
   // 高级筛选条件面包是否折叠标志, 默认折叠
   public isCollapsed = true;
 
-  // 用于ng2-dropdown-treeview组件
+  // 用于ngx-treeview组件
   public items: TreeviewItem[];
   public config: TreeviewConfig = {
     isShowAllCheckBox: true,

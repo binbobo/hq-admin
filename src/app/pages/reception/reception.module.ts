@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ReceptionRoutingModule, routedComponents } from './reception.routing';
 import { DatepickerModule } from 'ngx-bootstrap/datepicker';
-import { DropdownTreeviewModule } from 'ng2-dropdown-treeview';
+import { TreeviewModule  } from 'ngx-treeview';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
@@ -16,7 +16,7 @@ import { SharedModule } from 'app/shared/shared.module';
 
 @NgModule({
   imports: [
-    DropdownTreeviewModule.forRoot(),
+    TreeviewModule .forRoot(),
     DatepickerModule.forRoot(),
     CollapseModule.forRoot(),
     TabsModule.forRoot(),
