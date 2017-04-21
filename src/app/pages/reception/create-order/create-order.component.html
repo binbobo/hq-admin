@@ -23,15 +23,11 @@
       <div class="form-group row">
         <label for="plateNo" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车牌号</label>
         <div class="col-sm-2">
-          <input [(ngModel)]="plateNoSelected"
-       [typeahead]="plateNoDataSource"
-       typeaheadOptionField="plateNo" required   type="text" class="form-control form-control-sm" formControlName="plateNo" id="plateNo" placeholder="车牌号">
+          <input (typeaheadOnSelect)="typeaheadOnSelect($event)" [typeahead]="plateNoDataSource" typeaheadOptionField="plateNo" required   type="text" class="form-control form-control-sm" formControlName="plateNo" id="plateNo" placeholder="车牌号">
         </div>
         <label for="customerName" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车主</label>
         <div class="col-sm-2">
-          <input [(ngModel)]="customerNameSelected"
-       [typeahead]="customerNameDataSource"
-       typeaheadOptionField="name" type="text" required class="form-control form-control-sm" formControlName="customerName" id="customerName" placeholder="车主">
+          <input (typeaheadOnSelect)="typeaheadOnSelect($event)" [typeahead]="customerNameDataSource" typeaheadOptionField="name" type="text" required class="form-control form-control-sm" formControlName="customerName" id="customerName" placeholder="车主">
         </div>
         <label for="phone" class="col-sm-1 col-form-label col-form-label-sm">车主电话</label>
         <div class="col-sm-2">
@@ -103,8 +99,8 @@
         </div>
         <label for="expectLeave" class="col-sm-2 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>预计交车时间</label>
         <div class="input-group input-group-sm col-sm-3">
-          <input required class="form-control form-control-sm datetime-picker" type="text" readonly formControlName="expectLeave" ngui-datetime-picker
-            date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' close-on-select="false" />
+          <input class="form-control form-control-sm datetime-picker" type="text" readonly formControlName="expectLeave" ngui-datetime-picker
+            date-format="YYYY-MM-DD hh:mm" hour="23" minute='59'/>
           <span class="input-group-addon">
                 <i class="fa fa-calendar" aria-hidden="true"></i>
               </span>
@@ -112,7 +108,7 @@
         <label for="mileage" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>行驶里程</label>
         <div class="input-group input-group-sm col-sm-2">
           <input required type="text" class="form-control form-control-sm" formControlName="mileage" id="mileage">
-          <span class="input-group-addon">KM</span>
+          <span class="input-group-addon"><i>KM</i></span>
         </div>
       </div>
       <div class="form-group row">
@@ -137,12 +133,12 @@
         <label for="lastMileage" class="col-sm-1 col-form-label col-form-label-sm">上次进店里程</label>
         <div class="input-group input-group-sm col-sm-2">
           <input type="text" class="form-control form-control-sm" formControlName="lastMileage" id="lastMileage">
-          <span class="input-group-addon">KM</span>
+          <span class="input-group-addon"><i>KM</i></span>
         </div>
         <label for="nextMileage" class="col-sm-2 col-form-label col-form-label-sm">建议下次保养里程</label>
         <div class="input-group input-group-sm col-sm-3">
           <input type="text" class="form-control form-control-sm" formControlName="nextMileage" id="nextMileage">
-          <span class="input-group-addon">KM</span>
+          <span class="input-group-addon"><i>KM</i></span>
         </div>
       </div>
     </form>

@@ -75,12 +75,11 @@ caption {
     /*不显示过滤表单域*/
     display: none;
 }
-
 input.ng-valid[required], input.ng-valid.required  {
   border-left: 5px solid #42A948 !important; /* green */
 }
-
-.ng-invalid:not(form), input.ng-touched.ng-invalid  {
+input.ng-touched.ng-invalid  {
   border-left: 5px solid #a94442; /* red */
+  border-radius: .2rem
 }
 
