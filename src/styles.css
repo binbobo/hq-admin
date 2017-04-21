@@ -9,7 +9,7 @@ select.form-control{
 }
 
 
-/*解决单选下拉框 form-control-sm 高度不匹配bug*/
+/*解决bs4单选下拉框 form-control-sm 高度不匹配bug*/
 select.form-control-sm {
     padding: .25rem .5rem;
     font-size: .875rem;
