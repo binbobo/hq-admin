@@ -29,7 +29,7 @@ export class PropertyService implements BasicService<Property> {
     let url = Urls.localization.concat('/properties/', body.id);
     return this.httpService
       .put<void>(url, body)
-      .catch(err => Promise.reject(`语言属性失败：${err}`));
+      .catch(err => Promise.reject(`语言修改失败：${err}`));
   }
 
   public create(body: Property): Promise<Property> {
