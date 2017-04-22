@@ -10,6 +10,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { MaintenanceItem, OrderService } from '../order.service';
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
+import { StorageKeys } from '../../../shared/models/storage-keys';
 
 @Component({
   template: `
@@ -26,10 +27,12 @@ import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
   `,
   styleUrls: ['./create-order.component.css']
 })
-export class CustomMaintanceItemEditorComponent extends DefaultEditor implements AfterViewInit {
+export class CustomMaintanceItemEditorComponent extends DefaultEditor{
   // 保存模糊查询的维修项目数据
   dataSource: Observable<MaintenanceItem>;
   asyncSelected: string;
+
+  // 是否从下拉列表中选择维修项目
 
   /**
    * 调用父类构造方法
@@ -48,12 +51,10 @@ export class CustomMaintanceItemEditorComponent extends DefaultEditor implements
       .mergeMap((token: string) => this.service.getMaintenanceItemsByName(token));
   }
 
-  ngAfterViewInit() {
-    // 设置表格单元格的初始值
-    //  this.cell.setValue(new Date().toLocaleString());
-  }
-
   typeaheadOnSelect(evt: TypeaheadMatch) {
+    // console.log(evt)
     this.cell.setValue(evt.value);
+    // 保存维修项目Id
+    sessionStorage.setItem(StorageKeys.MaintanceItemId, evt.item.id);
   }
 }

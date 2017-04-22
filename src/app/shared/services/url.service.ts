@@ -8,6 +8,6 @@ export class Urls {
     public static readonly validate = !Urls.debug ? Urls.base.concat('validate/') : "http://localhost:8019/api/";
     public static readonly media = !Urls.debug ? Urls.base.concat('media/') : "http://api.sinoauto.com/media/";
     public static readonly platform = !Urls.debug ? Urls.base.concat('platform/') : Urls.base.concat('platform/');
-    public static readonly chain = !Urls.debug ? Urls.base.concat('chain') : "http://localhost:10239/api/";
-    // public static readonly chain = 'http://192.168.59.154:8028/api';
+    // public static readonly chain = !Urls.debug ? Urls.base.concat('chain') : "http://localhost:10239/api/";
+    public static readonly chain = 'http://192.168.59.154:8022/api';
 }
