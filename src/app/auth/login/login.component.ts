@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService, LoginRequestModel } from '../auth.service';
-import { AlerterService, UserService, User } from "app/shared/services";
+import { UserService, User } from "app/shared/services";
+import { HqAlerter } from 'app/shared/directives';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,8 @@ import { AlerterService, UserService, User } from "app/shared/services";
 export class LoginComponent implements OnInit {
 
   private form: FormGroup;
-  private alerter: AlerterService = new AlerterService;
+  @ViewChild(HqAlerter)
+  private alerter: HqAlerter;
 
   constructor(
     private formBuilder: FormBuilder,

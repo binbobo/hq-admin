@@ -3,13 +3,11 @@ import { ModalDirective } from "ngx-bootstrap";
 import { HttpLogService, HttpLog, HttpLogListRequest } from './http-log.service';
 import { PagedParams, PagedResult } from 'app/shared/models';
 import { DataList } from "app/shared/models";
-import { AlerterService } from "app/shared/services";
 
 @Component({
   selector: 'app-http-log',
   templateUrl: './http-log.component.html',
   styleUrls: ['./http-log.component.css'],
-  providers: [AlerterService],
 })
 export class HttpLogComponent extends DataList<HttpLog> {
 

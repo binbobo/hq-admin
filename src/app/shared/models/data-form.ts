@@ -1,9 +1,9 @@
-import { OnInit, Injector } from '@angular/core';
+import { OnInit, Injector, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { AlerterService } from 'app/shared/services';
 import { Location } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { BasicService } from 'app/shared/models';
+import { HqAlerter } from 'app/shared/directives';
 
 export abstract class FormHandle<T> implements OnInit {
 
@@ -11,8 +11,9 @@ export abstract class FormHandle<T> implements OnInit {
     protected form: FormGroup;
     protected submitting: boolean;
     protected model: T;
-    protected alerter: AlerterService;
     protected location: Location;
+    @ViewChild(HqAlerter)
+    protected alerter: HqAlerter;
 
     ngOnInit() {
         this.getModel()
@@ -26,7 +27,6 @@ export abstract class FormHandle<T> implements OnInit {
         injector: Injector,
         protected service: BasicService<T>,
     ) {
-        this.alerter = new AlerterService();
         this.location = injector.get(Location);
         this.formBuilder = injector.get(FormBuilder);
     }

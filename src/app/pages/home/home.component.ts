@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { HqAlerter } from "app/shared/directives";
 
 @Component({
   selector: 'app-home',
@@ -9,10 +10,13 @@ export class HomeComponent implements OnInit {
 
   constructor() { }
 
+  @ViewChild(HqAlerter)
+  alerter: HqAlerter;
+
   showSelector: boolean;
 
   ngOnInit() {
-
+    this.alerter.info('12345!', true, 0);
   }
 
   options = [{ text: 'text1', value: 'value1', selected: true }, { text: 'text2', value: 'value2', selected: true }, { text: 'text3', value: 'value3' }];
