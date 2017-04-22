@@ -99,7 +99,7 @@
       <div class="form-group row">
         <label for="type" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>维修类型</label>
         <div class="col-sm-2">
-          <select required id="type" formControlName="type" class="form-control form-control-sm">
+          <select required id="type" formControlName="type" class="form-control sm">
             <option *ngFor="let type of maintenanceTypeData" value="{{type.id}}">{{type.value}}</option>
           </select>
         </div>
