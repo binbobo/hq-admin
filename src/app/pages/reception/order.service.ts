@@ -21,7 +21,7 @@ export class OrderService implements BasicService<Order> {
         return this.httpService
             .request(url)
             .map(response => {
-                console.log('查询维修类型数据：', response.json().data);
+                // console.log('查询维修类型数据：', response.json().data);
                 return response.json().data as MaintenanceType[];
             });
     }
@@ -46,17 +46,18 @@ export class OrderService implements BasicService<Order> {
     }
 
     /**
-     * 根据车牌号模糊查询客户车辆信息
+     * 根据车牌号,Vin模糊查询客户车辆信息
      * @param {string} token
      * @returns {Observable<CustomerVehicle[]>}
      * @memberOf OrderService
      */
-    getCustomerVehicleByPlateNo(token: string): Observable<CustomerVehicle[]> {
-        const url = Urls.chain.concat('/CustomerVehicles/GetByPlateNo');
+    getCustomerVehicleByPlateNoOrVin(token: string): Observable<CustomerVehicle[]> {
+        const url = Urls.chain.concat('/CustomerVehicles/Search');
+        console.log('token: ', token);
         return this.httpService
             .request(url, {
                 params: {
-                    'plateNo': token
+                    'keyWord': token
                 }
             })
             .map(response => {
@@ -65,8 +66,71 @@ export class OrderService implements BasicService<Order> {
             });
     }
 
+     /**
+     * 根据车型模糊查询车辆信息
+     * @param {string} token
+     * @returns {Observable<Vehicle[]>}
+     * @memberOf OrderService
+     */
+    getVehicleByModel(vehicleName: string, brandId: string, seriesId: string): Observable<Vehicle[]> {
+        const url = Urls.chain.concat('/Vehicles/search');
+        return this.httpService
+            .request(url, {
+                params: {
+                    'vehicleName': vehicleName,
+                    'brandId': brandId,
+                    'seriesId': seriesId
+                }
+            })
+            .map(response => {
+                console.log('根据车型模糊查询车辆信息：', response.json().data);
+                return response.json().data as Vehicle[];
+            });
+    }
+
+     /**
+     * 根据车型模糊查询车辆信息
+     * @param {string} token
+     * @returns {Observable<Vehicle[]>}
+     * @memberOf OrderService
+     */
+    getVehicleByBrand(brandName: string): Observable<Vehicle[]> {
+        const url = Urls.chain.concat('/Brands/search');
+        return this.httpService
+            .request(url, {
+                params: {
+                    'brandName': brandName
+                }
+            })
+            .map(response => {
+                // console.log('根据品牌模糊查询车辆信息：', response.json().data);
+                return response.json().data as Vehicle[];
+            });
+    }
+
+     /**
+     * 根据车型模糊查询车辆信息
+     * @param {string} token
+     * @returns {Observable<Vehicle[]>}
+     * @memberOf OrderService
+     */
+    getVehicleBySerias(serieName: string, brandId: string): Observable<Vehicle[]> {
+        const url = Urls.chain.concat('/VehicleSeries/search');
+        return this.httpService
+            .request(url, {
+                params: {
+                    'serieName': serieName,
+                    'brandId': brandId
+                }
+            })
+            .map(response => {
+                console.log('根据车系模糊查询车辆信息：', response.json().data);
+                return response.json().data as Vehicle[];
+            });
+    }
+
     /**
-   * 根据车牌号模糊查询客户车辆信息
+   * 根据车主模糊查询客户车辆信息
    * @param {string} token
    * @returns {Observable<CustomerVehicle[]>}
    * @memberOf OrderService
@@ -157,7 +221,7 @@ export class OrderService implements BasicService<Order> {
     }
 
     public create(body: Order): Promise<Order> {
-        const url = Urls.chain.concat('/order');
+        const url = Urls.chain.concat('/Maintenances');
         return this.httpService
             .post<ApiResult<Order>>(url, body)
             .then(m => m.data)
