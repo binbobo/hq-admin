@@ -1,7 +1,16 @@
 
         .choose-order{
             cursor: pointer;
+           
+        }
+        .choose-table{
+            background-color: rgb(198, 233, 217);
+            box-shadow: 0px 6px 23px #c6e9d9;
         }
         .maintain .maintain-btn{
             text-align:center;
+        }
+        table{
+                border-radius: 24px;
+                background-color:#d0e9c6;
         }

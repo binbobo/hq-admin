@@ -107,7 +107,7 @@ export class OrderService implements BasicService<Order> {
         });
 
         return [beijingStores, shanghaiStores, neimengStores];
-    }
+    }    
 
     public getPagedList(params: PagedParams): Promise<PagedResult<Order>> {
         const url = Urls.chain.concat('/Maintenances?', params.serialize());
@@ -155,6 +155,11 @@ export class OrderService implements BasicService<Order> {
             .delete(url)
             .catch(err => Promise.reject(`删除工单失败：${err}`));
     }
+
+
+
+
+
 }
 
 // 工单请求参数类
@@ -263,4 +268,16 @@ export class MaintenanceType {
         public value: string, // 名称
     ) {
     }
+}
+
+// 增项页面根据工单号或者车牌号搜索工单
+export class AppendOrderSearch{
+    constructor(
+        public plateNo: string = '', // 车牌号
+        public customerName: string = '', // 车主
+        public phone: string = '', // 车主电话
+        public series: string = '', // 车系
+        public model: string = '', // 车型
+        public brand: string = '', // 品牌
+   ){ }   
 }

@@ -1,143 +1,192 @@
-
 <div class="card append-order">
   <div class="card-header">
     <span>增项</span>
   </div>
   <div class="card-block">
-        <form _ngcontent-c5="" class="form-inline mb-2 ng-pristine ng-valid ng-touched assign-form" novalidate="">
-      <input _ngcontent-c5="" class="form-control mb-2 mr-2 ng-pristine ng-valid ng-touched" name="title" placeholder="请输入车牌号/工单号"
-        type="text" ng-reflect-name="title">
-      <button _ngcontent-c5="" class="btn btn-primary mb-2 mr-2" translate="" type="submit" ng-reflect-translate="">搜索</button>
+
+
+    <form [formGroup]="myForm" class='form-inline mb-2 ng-pristine ng-valid assign-form ng-untouched'>
+      <input formControlName="state" [typeahead]="plateNoData" typeaheadOptionField="plateNo" (typeaheadOnSelect)="OnSearchClick($event)"
+        placeholder="请输入工单号/车牌号" class="form-control   mr-2">
+      <button class="btn btn-primary " translate="" type="submit" ng-reflect-translate="">搜索</button>
     </form>
-    <hr>
-    <form [formGroup]="createWorkSheetForm" (ngSubmit)="onSerarch()">
-      <!--工单基本筛选条件面板-->
-      <div class="form-group row">
-        <label for="carNo" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>车牌号:</label>
-        <div class="col-sm-2">
-          <input type="text" readonly class="form-control readonly form-control-sm" formControlName="carNo" id="carNo" placeholder="">
-        </div>
-        <label for="carOwner" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>车主:</label>
-        <div class="col-sm-2">
-          <input type="text" readonly class="form-control readonly form-control-sm" formControlName="carOwner" id="carOwner" placeholder="">
-        </div>
-        <label for="carOwnerPhone" class="col-sm-1 col-form-label col-form-label-sm">车主电话:</label>
-        <div class="col-sm-2">
-          <input type="tel" readonly class="form-control readonly form-control-sm" formControlName="carOwnerPhone" id="carOwnerPhone" placeholder="">
-        </div>
-      </div>
-      <hr>
-      <div class="form-group row">
-        <label for="createOrderTime" class="col-sm-1 col-form-label col-form-label-sm">开单时间:</label>
-        <div class="col-sm-2">
-          <input type="text" readonly class="form-control readonly form-control-sm" formControlName="createOrderTime" id="createOrderTime">
-        </div>
-        <label for="sender" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>送修人:</label>
-        <div class="col-sm-2">
-          <input  type="text" readonly class="form-control readonly form-control-sm" formControlName="sender" id="sender" placeholder="">
-        </div>
-        <label for="senderPhone" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>送修人电话:</label>
-        <div class="col-sm-2">
-          <input type="tel" readonly class="form-control readonly form-control-sm" formControlName="senderPhone" id="senderPhone" placeholder="">
-        </div>
-        <label for="serviceConsultant" class="col-sm-1 col-form-label col-form-label-sm">服务顾问:</label>
-        <div class="col-sm-2">
-          <input type="text" readonly class="form-control readonly form-control-sm" formControlName="serviceConsultant" id="serviceConsultant">
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="carBrand" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>品牌:</label>
-        <div class="col-sm-2">
-          <input type="text"  readonly class="form-control readonly form-control-sm" formControlName="carBrand" id="carBrand" placeholder="">
-        </div>
-        <label for="carSeries" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>车系:</label>
-        <div class="col-sm-2">
-          <input type="text"  readonly class="form-control readonly form-control-sm" formControlName="carSeries" id="carSeries" placeholder="">
-        </div>
-        <label for="carType" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>车型:</label>
-        <div class="col-sm-2">
-          <input type="text"  readonly class="form-control readonly form-control-sm" formControlName="carType" id="carType" placeholder="">
-        </div>
-        <label for="vin" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk">*&nbsp;</span>VIN:</label>
-        <div class="col-sm-2">
-          <input type="text"  readonly class="form-control readonly form-control-sm" formControlName="vin" id="vin" placeholder="">
-        </div>
-      </div>
-      <hr>
-      <div class="form-group row">
-        <label for="repairType" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>维修类型:</label>
-        <div class="col-sm-2">
-                    <input readonly class="form-control readonly form-control-sm" formControlName="repairType" id="repairType">
-        </div>
-        <label for="predictedFinishTime" class="col-sm-2 col-form-label col-form-label-sm">预计交车日期:</label>
-        <div class="input-group input-group-sm col-sm-3">
-          <input readonly class="form-control readonly form-control-sm" type="text"  formControlName="predictedFinishTime"/>
-          
-        </div>
-        <label for="mileage" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>行驶里程:</label>
-        <div class="input-group input-group-sm col-sm-2">
-          <input readonly class="form-control readonly form-control-sm" formControlName="mileage" id="mileage">
-          <span class="input-group-addon">KM</span>
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="previousEntryTime" class="col-sm-1 col-form-label col-form-label-sm">上次进店时间:</label>
-        <div class="col-sm-2">
-          <input readonly class="form-control readonly form-control-sm" formControlName="previousEntryTime" id="previousEntryTime">
-        </div>
-        <label for="suggestedNextMaintenanceTime" class="col-sm-2 col-form-label col-form-label-sm">建议下次保养日期:</label>
-        <div class="input-group input-group-sm col-sm-3">
-          <input readonly class="form-control readonly form-control-sm" type="text" formControlName="suggestedNextMaintenanceTime"/>
-        
-        </div>
-        <label for="repairStation" class="col-sm-1 col-form-label col-form-label-sm">维修工位:</label>
-        <div class="col-sm-2">
-          <input readonly class="form-control readonly form-control-sm" formControlName="repairStation" id="repairStation">
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="previousEntryMileage" class="col-sm-1 col-form-label  col-form-label-sm">上次进店里程:</label>
-        <div class="input-group input-group-sm col-sm-2">
-          <input type="text"readonly class="form-control readonly form-control-sm"  formControlName="previousEntryMileage" id="previousEntryMileage">
-          <span class="input-group-addon">KM</span>
-        </div>
-        <label for="suggestedNextMaintenanceMileage" class="col-sm-2 col-form-label col-form-label-sm">建议下次保养里程:</label>
-       <div class="input-group input-group-sm col-sm-3">
-          <input type="text" readonly class="form-control readonly form-control-sm" formControlName="suggestedNextMaintenanceMileage" id="suggestedNextMaintenanceMileage">
-          <span class="input-group-addon">KM</span>
-        </div>
-      </div>
-    </form>
-    <hr>
+
+
+
+    <table class="table search-table">
+      <tr>
+        <td>车牌号:</td>
+        <td>{{SearchappendList.plateNo}}</td>
+        <td>车主:</td>
+        <td>{{SearchappendList.customerName}}</td>
+        <td>车主电话:</td>
+        <td>{{SearchappendList.phone}}</td>
+        <td>验车时间</td>
+        <td>{{SearchappendList.validate}}</td>
+      </tr>
+      <tr>
+        <td>开单时间:</td>
+        <td></td>
+        <td>送修人:</td>
+        <td>{{SearchappendList.contactUser}}</td>
+        <td>送修人电话:</td>
+        <td>{{SearchappendList.contactInfo}}</td>
+        <td>服务顾问</td>
+        <td>{{SearchappendList.createdUserName}}</td>
+      </tr>
+      <tr>
+        <td>品牌:</td>
+        <td>{{SearchappendList.brand}}</td>
+        <td>车系:</td>
+        <td>{{SearchappendList.series}}</td>
+        <td>车型:</td>
+        <td>{{SearchappendList.model}}</td>
+        <td>VIN:</td>
+        <td>{{SearchappendList.vin}}</td>
+      </tr>
+      <tr>
+        <td>维修类型:</td>
+        <td>{{SearchappendList.typeName}}</td>
+        <td>预计交车时间:</td>
+        <td>{{SearchappendList.expectLeave}}</td>
+        <td>行驶里程(KM):</td>
+        <td>{{SearchappendList.mileage}}</td>
+        <td>上次进店时间:</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>维修工位:</td>
+        <td>{{SearchappendList.location}}</td>
+        <td>建议下次保养日期:</td>
+        <td>{{SearchappendList.nextDate}}</td>
+        <td>建议下次保养里程(KM):</td>
+        <td>{{SearchappendList.nextMileage}}</td>
+        <td>上次进店里程:</td>
+        <td></td>
+      </tr>
+    </table>
 
 
     <tabset #staticTabs>
+
+      <!--维修项目-->
       <tab>
         <template tabHeading>
-          <span class="asterisk mr-1">*</span>维修项目
+          维修项目
         </template>
-        <ng2-smart-table [settings]="maintanceItemSettings" [source]="maintenanceProjectData" ></ng2-smart-table>
+        <smart-table (deleteConfirm)="deleteMaintanceItem($event)" (createConfirm)="addNewmaintanceItem($event)" [settings]="maintanceItemSettings"
+          [source]="maintenanceProjectData"></smart-table>
       </tab>
-      <tab>
+
+      <!--附加项目-->
+      <tab heading=''>
         <template tabHeading>
-          <span class="asterisk mr-1">*</span>维修配件
+          附加项目
         </template>
-        <ng2-smart-table [settings]="maintanceFixingsSettings" [source]="maintenanceFixingsData"></ng2-smart-table>
+        <smart-table (deleteConfirm)="deleteMaintanceItem($event)" (createConfirm)="addNewmaintanceItem($event)" [settings]="addItemSettings"
+          [source]="maintenanceProjectData"></smart-table>
+
       </tab>
-      <tab heading="附加项目">
-        <ng2-smart-table [settings]="addsOnItemSettings"></ng2-smart-table>
-      </tab>
+
+
+      <!--建议维修项-->
       <tab heading="建议维修项">
-        <ng2-smart-table [settings]="suggestedMaintanceSettings"></ng2-smart-table>
+        <smart-table (deleteConfirm)="deleteMaintanceItem($event)" (createConfirm)="addNewmaintanceItem($event)" [settings]="suggestedMaintanceSettings"></smart-table>
       </tab>
-      <tab heading="历史维修记录">
-        <ng2-smart-table [settings]="maintanceItemSettings"></ng2-smart-table><br>
-        <ng2-smart-table [settings]="maintanceFixingsSettings"></ng2-smart-table><br>
-        <ng2-smart-table [settings]="addsOnItemSettings"></ng2-smart-table><br>
-        <ng2-smart-table [settings]="suggestedMaintanceSettings"></ng2-smart-table>
+
+      <!--上次维修记录-->
+      <tab heading="上次维修记录">
+        <table class="table table-hover table-bordered table-sm">
+          <caption>维修项目</caption>
+          <thead>
+            <tr>
+              <th>项目名称</th>
+              <th>维修工时</th>
+              <th>工时单价(元)</th>
+              <th>金额(元)</th>
+              <th>折扣率</th>
+              <th>操作时间</th>
+              <th>操作员</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let record of list">
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <table class="table table-hover table-bordered table-sm">
+          <caption>维修配件</caption>
+          <thead>
+            <tr>
+              <th>维修工项</th>
+              <th>配件名称</th>
+              <th>品牌</th>
+              <th>规格型号</th>
+              <th>数量</th>
+              <th>单价(元)</th>
+              <th>金额(元)</th>
+              <th>操作时间</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let record of list">
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <table class="table table-hover table-bordered table-sm">
+          <caption>附加项目</caption>
+          <thead>
+            <tr>
+              <th>备注</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let record of list">
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <table class="table table-hover table-bordered table-sm">
+          <caption>建议维修项目</caption>
+          <thead>
+            <tr>
+              <th>建议维修项目</th>
+              <th>操作时间</th>
+              <th>备注</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let record of list">
+            </tr>
+          </tbody>
+        </table>
       </tab>
+
+      <!--客户回访记录-->
       <tab heading="客户回访记录">
-        <ng2-smart-table [settings]="returnVisitSettings"></ng2-smart-table>
+        <table class="table table-hover table-bordered table-sm">
+          <caption>客户回访记录</caption>
+          <thead>
+            <tr>
+              <th>回访时间</th>
+              <th>回访人</th>
+              <th>维修质量</th>
+              <th>服务态度</th>
+              <th>休息环境</th>
+              <th>工时价格</th>
+              <th>配件价格</th>
+              <th>接车时是否验车</th>
+              <th>是否报价</th>
+              <th>有无建议项目</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let record of list">
+            </tr>
+          </tbody>
+        </table>
       </tab>
     </tabset>
 
@@ -157,4 +206,4 @@
     </div>
 
   </div>
-
+</div>
