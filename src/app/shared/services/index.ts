@@ -1,4 +1,3 @@
-export * from './alerter.service';
 export * from './http.service';
 export * from './request.options.service';
 export * from './url.service';

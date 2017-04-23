@@ -31,8 +31,8 @@ export class MenuService implements BasicService<Menu> {
         }
     }
 
-    public getSelectOptions(): Promise<Array<SelectOption>> {
-        let url = Urls.platform.concat('/navigations/options');
+    public getSelectOptions(clientId?: string): Promise<Array<SelectOption>> {
+        let url = Urls.platform.concat('/navigations/options?clientId=', clientId);
         return this.httpService
             .get<ListResult<SelectOption>>(url)
             .then(result => result.data)
@@ -78,7 +78,8 @@ export class MenuService implements BasicService<Menu> {
 
 export class MenuListRequest extends PagedParams {
     constructor(
-        title?: string
+        public clientId: string = "",
+        public name?: string,
     ) {
         super('MenuListRequestParams');
     }
@@ -86,13 +87,13 @@ export class MenuListRequest extends PagedParams {
 
 export class Menu extends BasicModel {
     constructor(
+        public autoRun: boolean = false,
         public scopes: Array<string> = [],
         public parentId: string = '',
         public clientId: string = '',
         public title?: string,
         public path?: string,
         public icon?: string,
-        public autoRun?: boolean,
         public parent?: Menu,
     ) {
         super();

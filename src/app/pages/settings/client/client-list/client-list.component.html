@@ -1,0 +1,50 @@
+<ng-template hqAlerter></ng-template>
+<div class="card">
+  <div class="card-header">
+    <span>客户端列表</span>
+    <div class="pull-right">
+      <a routerLink="create" class="btn btn-sm btn-secondary">添加</a>
+    </div>
+  </div>
+  <div class="card-block">
+    <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
+      <select name="applicationId" class="form-control mb-2 mr-2">
+        <option value="">请选择应用程序</option>
+        <option *ngFor="let item of applications" [value]="item.value">{{item.text}}</option>
+      </select>
+      <input type="text" name="name" [(ngModel)]="params.name" class="form-control mb-2 mr-2" placeholder="请输入客户端名称">
+      <input type="text" name="key" [(ngModel)]="params.key" class="form-control mb-2 mr-2" placeholder="请输入客户端标识">
+      <button type="submit" class="btn btn-primary mb-2 mr-2" translate>search</button>
+    </form>
+    <table class="table table-bordered table-sm table-striped">
+      <thead>
+        <tr>
+          <th translate>application.name</th>
+          <th translate>key</th>
+          <th translate>name</th>
+          <th translate>logo</th>
+          <th translate>description</th>
+          <th translate>display.order</th>
+          <th translate>status</th>
+          <th translate>operator</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of list">
+          <td>{{ item.applicationName }}</td>
+          <td>{{ item.key }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.logo }}</td>
+          <td>{{ item.description }}</td>
+          <td>{{ item.displayOrder }}</td>
+          <td><i class="fa fa-{{ item.enabled?'check':'times' }}"></i></td>
+          <td>
+            <a [routerLink]="['edit',item.id]" class="btn btn-sm btn-success" title="编辑"><i class="fa fa-pencil-square-o"></i></a>
+            <a (click)="onDelete($event,item.id)" class="btn btn-sm btn-danger" title="删除"><i class="fa fa-trash-o"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+  </div>
+</div>

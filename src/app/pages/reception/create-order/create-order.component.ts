@@ -1,19 +1,19 @@
-import {TypeaheadMatch} from 'ngx-bootstrap/typeahead';
+import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
 import { Component, Injector } from '@angular/core';
 import { DataList } from '../../../shared/models/data-list';
 import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType, CustomerVehicle } from '../order.service';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { ViewCell } from 'ng2-smart-table';
-import { CustomDatetimeEditorComponent } from './custom-datetime-editor.component';
+import { CustomMaintanceItemEditorComponent } from './custom-maintance-item-editor.component';
 
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
-
+import 'rxjs/add/operator/switchMap';
+import { StorageKeys } from '../../../shared/models/storage-keys';
 
 
 @Component({
@@ -22,14 +22,14 @@ import 'rxjs/add/operator/distinctUntilChanged';
   styleUrls: ['./create-order.component.css'],
 })
 export class CreateOrderComponent extends DataList<Order> {
-  // 用于保存搜索框中输入的关键字
-  private searchTerms: Subject<any> = new Subject<any>();
-
   // 车辆模糊查询  用于自动带出车型，车系，品牌信息
   // 结果数据集，
   public vehicles: Vehicle[];
   // 当前选择的车辆对象
   public selectedVehicle: Vehicle;
+
+  // 生产工单按钮是否可用
+  public enableCreateWorkSheet = false;
 
   // 客户车辆模糊查询  用于带出在本店维修过项目的客户车辆信息
 
@@ -39,8 +39,25 @@ export class CreateOrderComponent extends DataList<Order> {
   public selectedCustomerVehicle: CustomerVehicle = new CustomerVehicle();
   // 通过车牌号查询异步数据源
   public plateNoDataSource: Observable<CustomerVehicle>;
+  // 通过VIN查询异步数据源
+  public vinDataSource: Observable<CustomerVehicle>;
   // 通过车主姓名查询异步数据源
   public customerNameDataSource: Observable<CustomerVehicle>;
+  // 根据车型获取车辆信息异步数据源
+  public vehicleDataSource: Observable<Vehicle>;
+  // 根据品牌获取车辆信息异步数据源
+  public brandDataSource: Observable<any>; // 可以加品牌model类：Brand
+  // 根据车系获取车辆信息异步数据源
+  public seriesDataSource: Observable<any>; // 可以加车系model类：Series
+  // 根据车型获取车辆信息异步数据源
+  public modelDataSource: Observable<any>; // 可以加车型model类：Model
+
+  // 品牌是否选择标识, 用来记录当前选择的品牌id
+  public selectedBrandId = null;
+  // 车系是否选择标识, 用来记录当前选择的车系id
+  public selectedSeriesId = null;
+  // 当前选择的车型id
+  public selectedModelId = null;
 
 
   // 维修类型数据
@@ -54,54 +71,21 @@ export class CreateOrderComponent extends DataList<Order> {
 
 
   // 创建工单表单FormGroup
-  createWorkSheetForm: FormGroup;
+  workSheetForm: FormGroup;
 
   // 新增维修项目数据（临时保存）
   newMaintenanceItemData = [];
-  // 保存模糊查询的维修项目数据
-  maintenanceItemData: MaintenanceItem[];
-  // 从模糊查询列表中选择的维修项目
-  selectedMaintanceItem: MaintenanceItem;
 
   // ng2-smart-table相关配置
-
-  // smart table 公共配置
-  private stAttr = {
-    class: 'table-hover'  // 作用于智能表单的类
-  };
-  private stFilter = {
-    inputClass: 'inputFilter'
-  };
-  private stActions = {
-    columnTitle: '操作',
-    edit: false,   // 不显示编辑按钮
-  };
-  private stAdd = {
-    addButtonContent: '新增',
-    createButtonContent: '添加',
-    cancelButtonContent: '取消',
-    confirmCreate: true    // 添加确认事件必须配置项
-  };
-  private stDelete = {
-    deleteButtonContent: '删除',
-    confirmDelete: true
-  };
-
-
   // 维修项目表头
   maintanceItemSettings = {
-    attr: this.stAttr,
-    filter: this.stFilter,
-    actions: this.stActions,
-    add: this.stAdd,
-    delete: this.stDelete,
     columns: {
       serviceName: {
         title: '维修项目名称',
         type: 'html',
         editor: {
           type: 'custom',
-          component: CustomDatetimeEditorComponent
+          component: CustomMaintanceItemEditorComponent
         },
       },
       workHour: {
@@ -111,7 +95,6 @@ export class CreateOrderComponent extends DataList<Order> {
         title: '工时单价(元)'
       },
       money: {
-        editable: false,
         title: '金额(元)'  // 需要自己计算：工时 * 单价, 不需要传给后台
       },
       discount: {
@@ -136,13 +119,7 @@ export class CreateOrderComponent extends DataList<Order> {
 
     // 获取维修类型数据
     this.service.getMaintenanceTypes()
-      .subscribe(data => this.maintenanceTypeData = data);
-
-    // 根据名称获取维修项目信息
-    this.service.getMaintenanceItemsByName('维修')
-      .subscribe(data => {
-        this.maintenanceItemData = data;
-      });
+      .subscribe(data => this.maintenanceTypeData = data)
 
     // 构建表单
     this.createForm();
@@ -151,39 +128,128 @@ export class CreateOrderComponent extends DataList<Order> {
     this.unsettledOrders = this.getUnsettledOrders();
 
     // 根据车牌号获取客户车辆信息数据源初始化
-    this.plateNoDataSource = Observable
+    this.plateNoDataSource = this.initFuzzySerarchDataSource(
+      this.workSheetForm.controls.plateNo,
+      this.service.getCustomerVehicleByPlateNoOrVin
+    );
+    // 根据VIN获取客户车辆信息数据源初始化
+    this.vinDataSource = this.initFuzzySerarchDataSource(
+      this.workSheetForm.controls.vin,
+      this.service.getCustomerVehicleByPlateNoOrVin
+    );
+    // 根据车主名称获取客户车辆信息数据源初始化
+    this.customerNameDataSource = this.initFuzzySerarchDataSource(
+      this.workSheetForm.controls.customerName,
+      this.service.getCustomerVehicleByCustomerName
+    );
+    // // 根据车型获取车辆信息异步数据源初始化
+    this.vehicleDataSource = this.initFuzzySerarchDataSource(
+      this.workSheetForm.controls.model,
+      this.service.getVehicleByModel
+    );
+    // 根据品牌获取车辆信息异步数据源初始化
+    this.brandDataSource = this.initFuzzySerarchDataSource(
+      this.workSheetForm.controls.brand,
+      this.service.getVehicleByBrand
+    );
+    // 根据车系获取车辆信息异步数据源初始化
+    this.seriesDataSource = Observable
       .create((observer: any) => {
-        observer.next(this.createWorkSheetForm.value.plateNo);
+        observer.next(this.workSheetForm.controls.series.value);
       })
       .debounceTime(300)
       .distinctUntilChanged()
-      .mergeMap((token: string) => this.service.getCustomerVehicleByPlateNo(token))
+      .mergeMap((token: string) => this.service.getVehicleBySerias(token, this.selectedBrandId)) // 绑定this
       .catch(err => console.log(err));
 
-    // 根据车主名称获取客户车辆信息数据源初始化
-    this.customerNameDataSource = Observable
+    // 根据车系获取车辆信息异步数据源初始化
+    this.modelDataSource = Observable
       .create((observer: any) => {
-        observer.next(this.createWorkSheetForm.value.customerName);
+        observer.next(this.workSheetForm.controls.model.value);
       })
       .debounceTime(300)
       .distinctUntilChanged()
-      .mergeMap((token: string) => this.service.getCustomerVehicleByCustomerName(token))
+      .mergeMap((token: string) => this.service.getVehicleByModel(token, this.selectedBrandId, this.selectedSeriesId)) // 绑定this
       .catch(err => console.log(err));
+  }
+
+  /**
+  * @param {string} nextValue
+  * @param {Function} service
+  * @returns
+  * @memberOf CreateOrderComponent
+  */
+  initFuzzySerarchDataSource(formControl: AbstractControl, service: Function) {
+    return Observable
+      .create((observer: any) => {
+        observer.next(formControl.value);
+      })
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .mergeMap((token: string) => service.call(this.service, token)) // 绑定this
+      .catch(err => console.log(err));
+  }
+
+  // 品牌输入框失去焦点事件监听
+  onBrandBlur() {
+    if (!this.selectedBrandId) {
+      // 重置品牌输入框，只允许从下拉列表中选择
+      this.workSheetForm.controls.brand.reset();
+      this.selectedBrandId = null;
+    }
+  }
+  // 从模糊查询下拉列表中选择一个品牌事件处理程序
+  onBrandSelect(evt: TypeaheadMatch) {
+    // 设置当前选择的品牌id
+    this.selectedBrandId = evt.item.id;
+    // enable车系选择
+    this.workSheetForm.controls.series.enable();
+  }
+
+  // 车系输入框失去焦点事件监听
+  onSeriesBlur() {
+    if (!this.selectedSeriesId) {
+      // 重置车系输入框，只允许从下拉列表中选择
+      this.workSheetForm.controls.series.reset();
+      this.selectedSeriesId = null;
+    }
+  }
+
+  // 从模糊查询下拉列表中选择一个车系事件处理程序
+  onSeriesSelect(evt: TypeaheadMatch) {
+    // 设置当前选择的车系id
+    this.selectedSeriesId = evt.item.id;
+    // enable车型选择
+    this.workSheetForm.controls.model.enable();
+  }
+
+  // 从模糊查询下拉列表中选择一个车型事件处理程序
+  onModelSelect(evt: TypeaheadMatch) {
+    // 设置当前选择的车系id
+    this.selectedModelId = evt.item.id;
   }
 
   /**
    * @memberOf CreateOrderComponent
    */
-  plateNoTypeaheadOnSelect(evt: TypeaheadMatch) {
+  plateNoOnSelect(evt: TypeaheadMatch) {
+    console.log('selected: ', evt);
+    // 车牌号对应唯一客户车辆记录
+    this.selectedCustomerVehicle = evt.item;
+  }
+  /**
+   * @memberOf CreateOrderComponent
+   */
+  vinOnSelect(evt: TypeaheadMatch) {
     console.log('selected: ', evt);
     // 车牌号对应唯一客户车辆记录
     this.selectedCustomerVehicle = evt.item;
   }
 
-   /**
-   * @memberOf CreateOrderComponent
-   */
-  customerNameTypeaheadOnSelect(evt: TypeaheadMatch) {
+  /**
+  * @memberOf CreateOrderComponent
+  */
+  customerNameOnSelect(evt: TypeaheadMatch) {
     console.log('selected: ', evt);
     // 一个车主下面可能有多条客户车辆记录
     this.selectedCustomerVehicle = evt.item;
@@ -208,11 +274,23 @@ export class CreateOrderComponent extends DataList<Order> {
 
       // 保存新增的维修项目
       this.newMaintenanceItemData.push({
+        // 添加维修项目id
+        serviceId: sessionStorage.getItem(StorageKeys.MaintanceItemId),
+        // 维修项目名称
         serviceName: newData.serviceName,
-        workHour: newData.serviceName,
-        price: newData.money,
-        discount: newData.money,
+        // 工时
+        workHour: newData.workHour,
+        // 单价
+        price: newData.price,
+        // 金额
+        money: newData.money,
+        // 折扣率
+        discount: newData.discount,
+        // 类型 1表示维修项目
+        type: '1'
       });
+      // 判断生成工单按钮是否可用
+      this.enableCreateWorkSheet = this.workSheetForm.valid;
     }
   }
 
@@ -227,6 +305,10 @@ export class CreateOrderComponent extends DataList<Order> {
         this.newMaintenanceItemData.splice(index, 1);
         // 确认删除
         evt.confirm.resolve();
+
+        // 如果新增项目为0 设置生成工单按钮不可用
+        this.enableCreateWorkSheet = (this.newMaintenanceItemData.length > 0) && this.workSheetForm.valid;
+        console.log('添加维修项目, 是否存在维修项目：', this.newMaintenanceItemData.length);
 
         return;
       }
@@ -250,52 +332,95 @@ export class CreateOrderComponent extends DataList<Order> {
    * 点击挂单列表的时候, 载入挂单信息
    * @memberOf CreateOrderComponent
    */
-  loadOrderInfo(order, pop) {
+  loadUnsettledOrderInfo(order, pop) {
     // 隐藏popover
     pop.hide();
     console.log(order);
   }
 
   createForm() {
-    this.createWorkSheetForm = this.fb.group({
+    this.workSheetForm = this.fb.group({
       billCode: '', // 工单号
       customerName: [this.selectedCustomerVehicle.customerName, [Validators.required]], // 车主
-      phone: [this.selectedCustomerVehicle.phone, [Validators.required]], // 车主电话
-      createdOnUtc: '', // 进店时间 / 开单时间
+      phone: [this.selectedCustomerVehicle.phone], // 车主电话
+      createdOnUtc: [{ value: '', disabled: true }], // 进店时间 / 开单时间
       contactUser: ['', [Validators.required]], // 送修人
       contactInfo: ['', [Validators.required]], // 送修人电话
-      createdUserName: '', // 服务顾问
+      createdUserName: [{ value: '', disabled: true }], // 服务顾问
       introducer: '', // 介绍人
       introPhone: '', // 介绍人电话
       brand: [this.selectedCustomerVehicle.brand, [Validators.required]], // 品牌
-      series: [this.selectedCustomerVehicle.series, [Validators.required]], // 车系
-      model: [this.selectedCustomerVehicle.model, [Validators.required]], // 车型
+      series: [{ value: this.selectedCustomerVehicle.series, disabled: true }, [Validators.required]], // 车系
+      model: [{ value: this.selectedCustomerVehicle.model, disabled: true }, [Validators.required]], // 车型
       plateNo: [this.selectedCustomerVehicle.plateNo, [Validators.required]], // 车牌号
-      vin: [this.selectedCustomerVehicle.vin, [Validators.required]],
+      vin: [this.selectedCustomerVehicle.vin, [Validators.required]], // vin  底盘号
       validate: '', // 验车日期
       type: ['', [Validators.required]], // 维修类型
       expectLeave: ['', [Validators.required]], // 预计交车时间
       mileage: ['', [Validators.required]], // 行驶里程
-      lastEnter: '', // 上次进店时间
+      lastEnter: [{ value: '', disabled: true }], // 上次进店时间
       location: '', // 维修工位
       nextDate: '', // 建议下次保养日期
-      lastMileage: '', // 上次进店里程
+      lastMileage: [{ value: '', disabled: true }], // 上次进店里程
       nextMileage: '' // 建议下次保养里程
+    });
+
+    // 表单域中的值改变事件监听
+    this.workSheetForm.valueChanges.subscribe(data => {
+      // 只有表单域合法并且有新增维修项目数据的时候， 生成订单按钮才可用
+      this.enableCreateWorkSheet = this.workSheetForm.valid && this.newMaintenanceItemData.length > 0;
+      // console.log('表单域改变, 表单是否合法：', this.workSheetForm.valid);
+    });
+
+    // 品牌表单域值改变事件监听
+    this.workSheetForm.controls.brand.valueChanges.subscribe((newValue) => {
+      this.selectedBrandId = null;
+
+      // 重置车系选择域
+      this.workSheetForm.controls.series.reset();
+      this.workSheetForm.controls.series.disable();
+      this.selectedSeriesId = null;
+
+      // 重置车型选择域
+      this.workSheetForm.controls.model.reset();
+      this.workSheetForm.controls.model.disable();
+    });
+    // 车系表单域值改变事件监听
+    this.workSheetForm.controls.series.valueChanges.subscribe((newValue) => {
+      this.selectedSeriesId = null;
+
+      // 重置车型选择域
+      this.workSheetForm.controls.model.reset();
+      this.workSheetForm.controls.model.disable();
+    });
+    // 车型表单域值改变事件监听
+    this.workSheetForm.controls.model.valueChanges.subscribe((newValue) => {
     });
   }
 
   // 创建工单按钮点击事件处理程序
   createWorkSheet() {
-    console.log(this.createWorkSheetForm.valid);
-    console.log(this.createWorkSheetForm.value);
-    if (!this.createWorkSheetForm.valid) {
-      return;
-    }
     // 组织接口参数
-    // 1.表单基础数据 this.createWorkSheetForm.value
+    // 1.表单基础数据 this.workSheetForm.value
+    const workSheet = this.workSheetForm.value;
+    // 添加车型id 必填
+    workSheet.vehicleId = this.selectedModelId;
     // 2.新增维修项目数据 this.newMaintenanceItemData
+    workSheet.maintenanceItems = this.newMaintenanceItemData;
+
     // 3. 当前登陆用户信息数据(操作员，组织id, ...)
+    const user = sessionStorage.getItem(StorageKeys.Identity);
+    workSheet.user = JSON.parse(user);
+    workSheet.orgId = '1941566D-0CED-46FC-A3E4-8A09507E3E3A';
+
     // 调用创建工单接口
-    this.service.create(this.createWorkSheetForm.value);
+
+    console.log(workSheet);
+    this.service.create(workSheet).then(data => console.log(data));
+
+    // 创建订单成功之后  表单重置，新增维修项目数据清空
+    // this.workSheetForm.reset();
+    // this.selectedBrandId = this.selectedSeriesId = null;
+    // this.newMaintenanceItemData = [];
   }
 }

@@ -1,6 +1,5 @@
 import { Component, OnInit,ViewChild,Injector} from '@angular/core';
 import { DataList } from '../../../shared/models/data-list';
-import { AlerterService } from 'app/shared/services';
 import { OrderService, OrderListRequest, Order } from '../order.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 

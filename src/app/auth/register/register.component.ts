@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { AlerterService } from "app/shared/services";
 import { AuthService, RegisterRequestModel } from "app/auth/auth.service";
 import { CustomValidators } from 'ng2-validation';
 import { Router } from '@angular/router';
+import { HqAlerter } from 'app/shared/directives';
 
 @Component({
   selector: 'app-register',
@@ -13,7 +13,8 @@ import { Router } from '@angular/router';
 export class RegisterComponent implements OnInit {
 
   private form: FormGroup;
-  private alerter: AlerterService = new AlerterService();
+  @ViewChild(HqAlerter)
+  private alerter: HqAlerter;
 
   constructor(
     private formBuilder: FormBuilder,

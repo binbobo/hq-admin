@@ -1,7 +1,6 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { Group, GroupService, GroupListRequest } from '../group.service';
 import { DataList } from 'app/shared/models';
-import { AlerterService } from 'app/shared/services';
 
 @Component({
   selector: 'app-group-list',

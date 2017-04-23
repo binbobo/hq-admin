@@ -1,13 +1,14 @@
 import { PagedParams, PagedResult, BasicService } from 'app/shared/models';
-import { AlerterService } from "app/shared/services";
 import { OnInit, ViewChild, Injector } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
 import { ActivatedRoute, Params } from '@angular/router';
+import { HqAlerter } from 'app/shared/directives';
 
 export abstract class DataList<T> implements OnInit {
 
   protected route: ActivatedRoute;
-  protected alerter: AlerterService;
+  @ViewChild(HqAlerter)
+  protected alerter: HqAlerter;
   protected params: PagedParams;
 
   ngOnInit(): void {
@@ -29,7 +30,6 @@ export abstract class DataList<T> implements OnInit {
     protected service: BasicService<T>
   ) {
     this.route = injector.get(ActivatedRoute);
-    this.alerter = new AlerterService();
   }
 
   @ViewChild("detailModal")
