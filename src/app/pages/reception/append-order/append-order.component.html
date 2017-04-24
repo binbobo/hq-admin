@@ -4,14 +4,11 @@
   </div>
   <div class="card-block">
 
-
     <form [formGroup]="myForm" class='form-inline mb-2 ng-pristine ng-valid assign-form ng-untouched'>
-      <input formControlName="state" [typeahead]="plateNoData" typeaheadOptionField="plateNo" (typeaheadOnSelect)="OnSearchClick($event)"
-        placeholder="请输入工单号/车牌号" class="form-control   mr-2">
+      <input #search formControlName="state" [typeahead]="plateNoData" typeaheadOptionField="plateNo" (typeaheadOnSelect)="OnSearchClick($event)"
+        placeholder="请输入工单号/车牌号" class="form-control  mr-2">
       <button class="btn btn-primary " translate="" type="submit" ng-reflect-translate="">搜索</button>
     </form>
-
-
 
     <table class="table search-table">
       <tr>
@@ -26,7 +23,7 @@
       </tr>
       <tr>
         <td>开单时间:</td>
-        <td></td>
+        <td>{{SearchappendList.createdOnUtc}} </td>
         <td>送修人:</td>
         <td>{{SearchappendList.contactUser}}</td>
         <td>送修人电话:</td>
@@ -52,7 +49,7 @@
         <td>行驶里程(KM):</td>
         <td>{{SearchappendList.mileage}}</td>
         <td>上次进店时间:</td>
-        <td></td>
+        <td>{{SearchappendList.lastEnterDate}}</td>
       </tr>
       <tr>
         <td>维修工位:</td>
@@ -62,36 +59,30 @@
         <td>建议下次保养里程(KM):</td>
         <td>{{SearchappendList.nextMileage}}</td>
         <td>上次进店里程:</td>
-        <td></td>
+        <td>{{SearchappendList.lastMileage}}</td>
       </tr>
     </table>
 
 
     <tabset #staticTabs>
-
       <!--维修项目-->
-      <tab>
-        <template tabHeading>
-          维修项目
-        </template>
+      <tab heading="维修项目" customClass="customClass">
         <smart-table (deleteConfirm)="deleteMaintanceItem($event)" (createConfirm)="addNewmaintanceItem($event)" [settings]="maintanceItemSettings"
           [source]="maintenanceProjectData"></smart-table>
       </tab>
 
       <!--附加项目-->
-      <tab heading=''>
-        <template tabHeading>
-          附加项目
-        </template>
+      <tab heading="附加项目">
         <smart-table (deleteConfirm)="deleteMaintanceItem($event)" (createConfirm)="addNewmaintanceItem($event)" [settings]="addItemSettings"
-          [source]="maintenanceProjectData"></smart-table>
+          [source]="attachServiceOutputs"></smart-table>
 
       </tab>
 
 
       <!--建议维修项-->
       <tab heading="建议维修项">
-        <smart-table (deleteConfirm)="deleteMaintanceItem($event)" (createConfirm)="addNewmaintanceItem($event)" [settings]="suggestedMaintanceSettings"></smart-table>
+        <smart-table (deleteConfirm)="deleteMaintanceItem($event)" (createConfirm)="addNewmaintanceItem($event)" [settings]="suggestedMaintanceSettings"
+        [source]="suggestServiceOutputs"></smart-table>
       </tab>
 
       <!--上次维修记录-->
@@ -110,7 +101,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let record of list">
+            <tr *ngFor="let item of lastDataProjectList ">
+              <td>{{item.name}}</td>
+              <td>{{item.workingHour}}</td>
+              <td>{{item.price}}</td>
+              <td></td>
+              <td>{{item.discount}}</td>
+              <td>{{item.operateDateTime}}</td>
+              <td>{{item.operatorName}}</td>
             </tr>
           </tbody>
         </table>
@@ -130,7 +128,15 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let record of list">
+            <tr *ngFor="let item of lastRepairList">
+              <td>{{item.serviceName}}</td>
+              <td>{{item.productName}}</td>
+              <td>{{item.brandName}}</td>
+              <td>{{item.specification}}</td>
+              <td>{{item.count}}</td>
+              <td>{{item.price}}</td>
+              <td></td>
+              <td>{{item.operateDateTime}}</td>
             </tr>
           </tbody>
         </table>
@@ -143,7 +149,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let record of list">
+            <tr *ngFor="let item of lastAddList">
+              <td>{{item.remark}}</td>
             </tr>
           </tbody>
         </table>
@@ -158,7 +165,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let record of list">
+            <tr *ngFor="let item of lastSuggestList">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
             </tr>
           </tbody>
         </table>
