@@ -1,7 +1,7 @@
 /*重写表单下面的label样式*/
 .col-form-label {
     padding: 0;
-    text-align: center;
+    text-align: right;
 }
 
 /*重写表格样式*/
