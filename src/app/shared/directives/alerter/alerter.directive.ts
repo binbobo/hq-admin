@@ -1,8 +1,8 @@
 import { Directive, ViewContainerRef, EventEmitter, Output, ComponentFactoryResolver } from '@angular/core';
-import { HqAlerterComponent } from './hq-alerter.component';
+import { HqAlerterComponent } from './alerter.component';
 
 @Directive({
-  selector: '[hqAlerter]'
+  selector: '[hq-alerter]'
 })
 export class HqAlerter {
 

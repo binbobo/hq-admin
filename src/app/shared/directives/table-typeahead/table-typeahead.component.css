@@ -1,0 +1,13 @@
+.hq-table-typeahead{
+    background-color: #fff;
+    padding: 6px 10px;
+    font-size: 14px;
+    border-radius: 4px;
+}
+table{
+    margin: 2px;
+}
+
+tbody tr{
+    cursor: pointer;
+}

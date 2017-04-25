@@ -8,8 +8,9 @@ import { FormsModule } from '@angular/forms';
 import { PaginationModule, PopoverModule, AlertModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
 import { TranslateStore } from "@ngx-translate/core/src/translate.store";
-import { MultiSelectorDirective, MultiSelectorComponent, HqAlerterComponent, HqAlerter } from 'app/shared/directives';
+import { MultiSelectorDirective, MultiSelectorComponent, HqAlerterComponent, HqAlerter, TableTypeaheadComponent, TableTypeaheadDirective } from 'app/shared/directives';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { NgPipesModule } from 'ngx-pipes';
 
 
 const HQ_COMPONENTS = [
@@ -22,11 +23,16 @@ const HQ_COMPONENTS = [
     SmartTableComponent,
 ];
 
-const HQ_DIRECTIVES = [
+const HQ_DIRECTIVE_COMPONENTS = [
     MultiSelectorComponent,
+    HqAlerterComponent,
+    TableTypeaheadComponent,
+];
+
+const HQ_DIRECTIVES = [
     MultiSelectorDirective,
     HqAlerter,
-    HqAlerterComponent
+    TableTypeaheadDirective
 ]
 
 const HQ_PIPES = [
@@ -44,6 +50,7 @@ const HQ_SERVICES = [
     imports: [
         CommonModule,
         FormsModule,
+        NgPipesModule,
         RouterModule,
         PaginationModule.forRoot(),
         AlertModule.forRoot(),
@@ -61,8 +68,8 @@ const HQ_SERVICES = [
         HQ_PIPES,
         HQ_DIRECTIVES,
     ],
-    declarations: [HQ_COMPONENTS, HQ_PIPES, HQ_DIRECTIVES],
-    entryComponents: [MultiSelectorComponent, HqAlerterComponent]
+    declarations: [HQ_COMPONENTS, HQ_PIPES, HQ_DIRECTIVE_COMPONENTS, HQ_DIRECTIVES],
+    entryComponents: [HQ_DIRECTIVE_COMPONENTS]
 })
 export class SharedModule {
     static forRoot() {

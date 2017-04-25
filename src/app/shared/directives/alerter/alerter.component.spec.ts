@@ -8,9 +8,9 @@ describe('HqAlerterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HqAlerterComponent ]
+      declarations: [HqAlerterComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

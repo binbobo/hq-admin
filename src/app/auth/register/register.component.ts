@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { AuthService, RegisterRequestModel } from "app/auth/auth.service";
 import { CustomValidators } from 'ng2-validation';
 import { Router } from '@angular/router';
-import { HqAlerter } from 'app/shared/directives';
+import { HqAlerter }  from 'app/shared/directives';
 
 @Component({
   selector: 'app-register',

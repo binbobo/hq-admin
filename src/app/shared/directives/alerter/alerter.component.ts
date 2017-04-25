@@ -2,8 +2,8 @@ import { Component, OnInit, Input, ElementRef, EventEmitter } from '@angular/cor
 
 @Component({
   selector: 'hq-alerter',
-  templateUrl: './hq-alerter.component.html',
-  styleUrls: ['./hq-alerter.component.css'],
+  templateUrl: './alerter.component.html',
+  styleUrls: ['./alerter.component.css'],
 })
 export class HqAlerterComponent implements OnInit {
 

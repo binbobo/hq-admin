@@ -2,7 +2,7 @@ import { Component, OnInit, Host, ViewChild } from '@angular/core';
 import { ConfigService } from "./config.service";
 import { Tree, NodeSelectedEvent, FoldingType, TreeModel, TreeModelSettings } from 'ng2-tree';
 import { TreeStatus } from "ng2-tree/src/tree.types";
-import { HqAlerter } from 'app/shared/directives';
+import { HqAlerter }  from 'app/shared/directives';
 
 @Component({
   selector: 'app-config',
