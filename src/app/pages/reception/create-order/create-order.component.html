@@ -171,7 +171,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let record of list">
+            <tr *ngFor="let maintanceItem of lastOrderData?.serviceOutputs">
+              <td>{{maintanceItem.name}}</td>
+              <td>{{maintanceItem.workingHour }}</td>
+              <td>{{maintanceItem.price}}</td>
+              <td>{{maintanceItem.workingHour * maintanceItem.price}}</td>
+              <td>{{maintanceItem.discount}}</td>
+              <td>{{maintanceItem.operateDateTime}}</td>
+              <td>{{user.username}}</td>
             </tr>
           </tbody>
         </table>
@@ -191,7 +198,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let record of list">
+            <tr *ngFor="let record of lastOrderData?.productOutputs">
             </tr>
           </tbody>
         </table>

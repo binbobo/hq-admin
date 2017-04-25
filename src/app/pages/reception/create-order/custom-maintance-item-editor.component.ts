@@ -17,7 +17,7 @@ import { StorageKeys } from '../../../shared/models/storage-keys';
     <input [ngClass]="inputClass"
             [(ngModel)]="asyncSelected"
             (blur) = "onBlur(maintanceItem)"
-            (change) = "onChange()"
+            (change) = "onChange(maintanceItem)"
             #maintanceItem
             [typeahead]="dataSource"
             typeaheadOptionField="name"
@@ -58,13 +58,14 @@ export class CustomMaintanceItemEditorComponent extends DefaultEditor{
   }
 
   onBlur(maintanceItem) {
-    if (!this.slectedMaintanceItemId) {
-      maintanceItem.value = '';
-      this.slectedMaintanceItemId = null;
-    }
+    // if (!this.slectedMaintanceItemId) {
+    //   maintanceItem.value = '';
+    //   this.slectedMaintanceItemId = null;
+    // }
   }
-  onChange() {
-    this.slectedMaintanceItemId = null;
+  onChange(maintanceItem) {
+    // console.log('input value', maintanceItem.value);
+    // this.slectedMaintanceItemId = null;
   }
 
   typeaheadOnSelect(evt: TypeaheadMatch) {
@@ -73,6 +74,6 @@ export class CustomMaintanceItemEditorComponent extends DefaultEditor{
     // 保存维修项目Id
     sessionStorage.setItem(StorageKeys.MaintanceItemId, evt.item.id);
 
-    this.slectedMaintanceItemId = evt.item.id;
+    // this.slectedMaintanceItemId = evt.item.id;
   }
 }
