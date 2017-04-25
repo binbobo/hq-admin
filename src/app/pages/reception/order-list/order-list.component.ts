@@ -60,6 +60,16 @@ export class OrderListComponent extends DataList<Order> {
     this.createForm();
   }
 
+  /**
+   * 工单状态选择
+   * @param {any} cb 
+   * 
+   * @memberOf OrderListComponent
+   */
+  toggleCheckbox(cb) {
+    console.log('工单状态选择', cb);
+  }
+
   createForm() {
     this.workSheetFilterForm = this.fb.group({
       unchecked: '', // 待验收

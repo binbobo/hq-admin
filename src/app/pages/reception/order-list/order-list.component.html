@@ -9,7 +9,7 @@
       <div class="form-group">
          <div class="form-check form-check-inline" *ngFor="let status of orderStatusData">
           <label class="form-check-label">
-            <input class="form-check-input" formControlName="{{status.key}}" type="checkbox" value="{{status.id}}"> {{status.value}}
+            <input (onchange)='toggleCheckbox(this)' class="form-check-input" formControlName="{{status.key}}" type="checkbox" value="{{status.id}}"> {{status.value}}
           </label>
         </div>
       </div>
