@@ -20,8 +20,14 @@
 .append-order table tr th{
 border-top:0;
 }
-inputFilter{
+.append-order inputFilter{
     width: 200px;
     background-color: #ddd;
     border-color: red;
 }
+.append-order .nav-tabs .nav-item{
+    border-bottom: 1px solid #ddd !important;
+    background-color: #f0ad4e !important;
+    }
+
+ 

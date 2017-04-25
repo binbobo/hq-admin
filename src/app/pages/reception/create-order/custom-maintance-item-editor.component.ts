@@ -16,13 +16,16 @@ import { StorageKeys } from '../../../shared/models/storage-keys';
   template: `
     <input [ngClass]="inputClass"
             [(ngModel)]="asyncSelected"
+            (blur) = "onBlur(maintanceItem)"
+            (change) = "onChange(maintanceItem)"
+            #maintanceItem
             [typeahead]="dataSource"
             typeaheadOptionField="name"
             class="form-control form-control-sm"
             [name]="cell.getId()"
             [disabled]="!cell.isEditable()"
             [placeholder]="cell.getTitle()"
-            (typeaheadOnSelect)="typeaheadOnSelect($event)"
+            (typeaheadOnSelect)="typeaheadOnSelect($event, maintanceItem)"
              >
   `,
   styleUrls: ['./create-order.component.css']
@@ -31,6 +34,9 @@ export class CustomMaintanceItemEditorComponent extends DefaultEditor{
   // 保存模糊查询的维修项目数据
   dataSource: Observable<MaintenanceItem>;
   asyncSelected: string;
+
+  // 当前选择的维修项目id
+  slectedMaintanceItemId = null;
 
   // 是否从下拉列表中选择维修项目
 
@@ -51,10 +57,23 @@ export class CustomMaintanceItemEditorComponent extends DefaultEditor{
       .mergeMap((token: string) => this.service.getMaintenanceItemsByName(token));
   }
 
+  onBlur(maintanceItem) {
+    // if (!this.slectedMaintanceItemId) {
+    //   maintanceItem.value = '';
+    //   this.slectedMaintanceItemId = null;
+    // }
+  }
+  onChange(maintanceItem) {
+    // console.log('input value', maintanceItem.value);
+    // this.slectedMaintanceItemId = null;
+  }
+
   typeaheadOnSelect(evt: TypeaheadMatch) {
     // console.log(evt)
     this.cell.setValue(evt.value);
     // 保存维修项目Id
     sessionStorage.setItem(StorageKeys.MaintanceItemId, evt.item.id);
+
+    // this.slectedMaintanceItemId = evt.item.id;
   }
 }

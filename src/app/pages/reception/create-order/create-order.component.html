@@ -2,7 +2,7 @@
 <div class="card">
   <div class="card-header">
     创建工单
-    <input container="body" type="text" value="我的挂单 ({{unsettledOrders?.length}})" #pop="bs-popover" disabled placement="bottom"
+    <input container="body" type="text" value="我的挂单 ({{unsettledOrders?.length}})" #pop="bs-popover" readonly placement="bottom"
       [popover]="popTemplate" class="pull-right btn btn-sm textInputBtn" style="margin-right: 55px;">
     <!--挂单列模板-->
     <template #popTemplate>
@@ -18,7 +18,7 @@
 
   <!--填写工单信息表单-->
   <div class="card-block">
-    <form [formGroup]="workSheetForm" (ngSubmit)="onSerarch()">
+    <form [formGroup]="workSheetForm" autocomplete="off" (ngSubmit)="onSerarch()">
       <!--工单基本筛选条件面板-->
       <div class="form-group row">
         <label for="plateNo" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车牌号</label>
@@ -103,8 +103,8 @@
             <option *ngFor="let type of maintenanceTypeData" value="{{type.id}}">{{type.value}}</option>
           </select>
         </div>
-        <label for="expectLeave" class="col-sm-2 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>预计交车时间</label>
-        <div class="input-group input-group-sm col-sm-3">
+        <label for="expectLeave" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>预计交车时间</label>
+        <div class="input-group input-group-sm col-sm-2">
           <input class="form-control form-control-sm datetime-picker" type="text" formControlName="expectLeave" ngui-datetime-picker
             date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' />
           <span class="input-group-addon">
@@ -116,14 +116,15 @@
           <input required type="text" class="form-control form-control-sm" formControlName="mileage" id="mileage">
           <span class="input-group-addon"><i>KM</i></span>
         </div>
-      </div>
-      <div class="form-group row">
-        <label for="lastEnter" class="col-sm-1 col-form-label col-form-label-sm">上次进店时间</label>
+         <label for="lastEnter" class="col-sm-1 col-form-label col-form-label-sm">上次进店时间</label>
         <div class="col-sm-2">
           <input type="text" class="form-control form-control-sm" formControlName="lastEnter" id="lastEnter">
         </div>
-        <label for="nextDate" class="col-sm-2 col-form-label col-form-label-sm">建议下次保养日期</label>
-        <div class="input-group input-group-sm col-sm-3">
+      </div>
+      <div class="form-group row">
+       
+        <label for="nextDate" class="col-sm-1 col-form-label col-form-label-sm">建议下次保养日期</label>
+        <div class="input-group input-group-sm col-sm-2">
           <input class="form-control form-control-sm datetime-picker" type="text" formControlName="nextDate" ngui-datetime-picker
             date-format="YYYY-MM-DD" date-only="true" />
           <span class="input-group-addon">
@@ -134,15 +135,13 @@
         <div class="col-sm-2">
           <input type="text" class="form-control form-control-sm" formControlName="location" id="location">
         </div>
-      </div>
-      <div class="form-group row">
         <label for="lastMileage" class="col-sm-1 col-form-label col-form-label-sm">上次进店里程</label>
         <div class="input-group input-group-sm col-sm-2">
           <input type="text" class="form-control form-control-sm" formControlName="lastMileage" id="lastMileage">
           <span class="input-group-addon"><i>KM</i></span>
         </div>
-        <label for="nextMileage" class="col-sm-2 col-form-label col-form-label-sm">建议下次保养里程</label>
-        <div class="input-group input-group-sm col-sm-3">
+        <label for="nextMileage" class="col-sm-1 col-form-label col-form-label-sm">建议下次保养里程</label>
+        <div class="input-group input-group-sm col-sm-2">
           <input type="text" class="form-control form-control-sm" formControlName="nextMileage" id="nextMileage">
           <span class="input-group-addon"><i>KM</i></span>
         </div>
@@ -155,8 +154,7 @@
         <template tabHeading>
           <span class="asterisk mr-1">*</span>维修项目
         </template>
-        <smart-table #stTable (deleteConfirm)="deleteMaintanceItem($event)" (createConfirm)="addNewmaintanceItem($event)" [settings]="maintanceItemSettings"
-          [source]="maintenanceProjectData"></smart-table>
+        <smart-table  (deleteConfirm)="deleteMaintanceItem($event)" (createConfirm)="addNewmaintanceItem($event)" [settings]="maintanceItemSettings"></smart-table>
       </tab>
       <tab heading="上次维修记录">
         <table class="table table-hover table-bordered table-sm">
@@ -173,7 +171,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let record of list">
+            <tr *ngFor="let maintanceItem of lastOrderData?.serviceOutputs">
+              <td>{{maintanceItem.name}}</td>
+              <td>{{maintanceItem.workingHour }}</td>
+              <td>{{maintanceItem.price}}</td>
+              <td>{{maintanceItem.workingHour * maintanceItem.price}}</td>
+              <td>{{maintanceItem.discount}}</td>
+              <td>{{maintanceItem.operateDateTime}}</td>
+              <td>{{user.username}}</td>
             </tr>
           </tbody>
         </table>
@@ -193,7 +198,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let record of list">
+            <tr *ngFor="let record of lastOrderData?.productOutputs">
             </tr>
           </tbody>
         </table>
@@ -255,11 +260,10 @@
       <div *ngIf="true" class="card">
         <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
           折前费用: 工时费
-          <span class="ml-2 mr-2">745</span> | 材料费
-          <span class="ml-2 mr-2">1</span> | 套餐费
-          <span class="ml-2 mr-2">45</span> | 附加项目费
-          <span class="ml-2 mr-2">646</span> | 合计
-          <span class="ml-2 mr-2">165655</span>|
+          <span class="ml-2 mr-2">{{workHourFee}}</span> | 材料费
+          <span class="ml-2 mr-2">{{materialFee}}</span> | 其它
+          <span class="ml-2 mr-2">{{otherFee}}</span> | 合计
+          <span class="ml-2 mr-2">{{sumFee}}</span>|
         </div>
         <div class="card-block text-center">
           <input type="text" class="btn textInputBtn" readonly [disabled]="!enableCreateWorkSheet" (click)="createWorkSheet()" value="生成工单">

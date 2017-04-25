@@ -168,6 +168,24 @@ export class OrderService implements BasicService<Order> {
             });
     }
 
+     /**
+   *  根据客户车辆id查询上一次工单信息
+   * @param {string} id 
+   * @returns {Observable<CustomerVehicle[]>}
+   * @memberOf OrderService
+   */
+    getLastOrderInfo(id: string): Observable<Order[]> {
+        const url = Urls.chain.concat('/Maintenances/search/last/' + id);
+        return this.httpService
+            .request(url)
+            .map(response => {
+                console.log('根据客户车辆id查询上一次工单信息：', response.json().data);
+                // 每个车主下面可能有多个车辆信息
+                return response.json().data as Order[];
+            });
+    }
+
+
     /**
      * 获取可以选择的门店，用于中查询范围下拉框
      * @memberOf OrderService
