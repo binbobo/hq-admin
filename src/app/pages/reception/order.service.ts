@@ -27,11 +27,24 @@ export class OrderService implements BasicService<Order> {
     }
 
     /**
+    * 获取维修类型数据
+    * @memberOf OrderService
+    */
+    getOrderStatus(): Observable<any[]> {
+        const url = Urls.chain.concat('/DictValues/MaintenanceStateType');
+        return this.httpService
+            .request(url)
+            .map(response => {
+                console.log('查询工单状态数据：', response.json().data);
+                return response.json().data as any[];
+            });
+    }
+
+    /**
      * 获取维修类型数据
      * @memberOf OrderService
      */
     getMaintenanceItemsByName(name: string): Observable<MaintenanceItem[]> {
-        console.log(name);
         const url = Urls.chain.concat('/Services/GetByName');
         return this.httpService
             .request(url, {
@@ -66,12 +79,12 @@ export class OrderService implements BasicService<Order> {
             });
     }
 
-     /**
-     * 根据车型模糊查询车辆信息
-     * @param {string} token
-     * @returns {Observable<Vehicle[]>}
-     * @memberOf OrderService
-     */
+    /**
+    * 根据车型模糊查询车辆信息
+    * @param {string} token
+    * @returns {Observable<Vehicle[]>}
+    * @memberOf OrderService
+    */
     getVehicleByModel(vehicleName: string, brandId: string, seriesId: string): Observable<Vehicle[]> {
         const url = Urls.chain.concat('/Vehicles/search');
         return this.httpService
@@ -88,12 +101,12 @@ export class OrderService implements BasicService<Order> {
             });
     }
 
-     /**
-     * 根据车型模糊查询车辆信息
-     * @param {string} token
-     * @returns {Observable<Vehicle[]>}
-     * @memberOf OrderService
-     */
+    /**
+    * 根据车型模糊查询车辆信息
+    * @param {string} token
+    * @returns {Observable<Vehicle[]>}
+    * @memberOf OrderService
+    */
     getVehicleByBrand(brandName: string): Observable<Vehicle[]> {
         const url = Urls.chain.concat('/Brands/search');
         return this.httpService
@@ -108,12 +121,12 @@ export class OrderService implements BasicService<Order> {
             });
     }
 
-     /**
-     * 根据车型模糊查询车辆信息
-     * @param {string} token
-     * @returns {Observable<Vehicle[]>}
-     * @memberOf OrderService
-     */
+    /**
+    * 根据车型模糊查询车辆信息
+    * @param {string} token
+    * @returns {Observable<Vehicle[]>}
+    * @memberOf OrderService
+    */
     getVehicleBySerias(serieName: string, brandId: string): Observable<Vehicle[]> {
         const url = Urls.chain.concat('/VehicleSeries/search');
         return this.httpService
@@ -168,12 +181,12 @@ export class OrderService implements BasicService<Order> {
             });
     }
 
-     /**
-   *  根据客户车辆id查询上一次工单信息
-   * @param {string} id 
-   * @returns {Observable<CustomerVehicle[]>}
-   * @memberOf OrderService
-   */
+    /**
+  *  根据客户车辆id查询上一次工单信息
+  * @param {string} id 
+  * @returns {Observable<CustomerVehicle[]>}
+  * @memberOf OrderService
+  */
     getLastOrderInfo(id: string): Observable<Order[]> {
         const url = Urls.chain.concat('/Maintenances/search/last/' + id);
         return this.httpService
@@ -185,38 +198,64 @@ export class OrderService implements BasicService<Order> {
             });
     }
 
-
     /**
-     * 获取可以选择的门店，用于中查询范围下拉框
-     * @memberOf OrderService
-     */
-    getSelectableStores(): TreeviewItem[] {
-        const beijingStores = new TreeviewItem({
-            text: '北京店',
-            value: 9
-        });
-        const neimengStores = new TreeviewItem({
-            text: '内蒙总店',
-            value: 9,
-            children: [{
-                text: '包头店', value: 91
-            }]
-        });
-        const shanghaiStores = new TreeviewItem({
-            text: '上海店',
-            value: 9
-        });
+ *  获取可以选择的门店，用于中查询范围下拉框
+ * @param {string} id 
+ * @returns {Observable<CustomerVehicle[]>}
+ * @memberOf OrderService
+ */
+    getSelectableStores(): Observable<TreeviewItem[]> {
+        const url = Urls.chain.concat('/Organizations');
+        return this.httpService
+            .request(url)
+            .map(response => {
+                console.log('获取可以选择的门店，用于中查询范围下拉框：', response.json().data);
 
-        return [beijingStores, shanghaiStores, neimengStores];
-    }    
+                // 每个车主下面可能有多个车辆信息
+                return [new TreeviewItem(this.orgsRecursion(response.json().data))];
+            });
+    }
+    // 递归组织列表
+    private orgsRecursion(orgObj) {
+        const treeviewItem = {
+            text: orgObj.name,
+            value: orgObj.id
+        };
+
+        return treeviewItem;
+    }
+
+
+    // /**
+    //  * 获取可以选择的门店，用于中查询范围下拉框
+    //  * @memberOf OrderService
+    //  */
+    // getSelectableStores(): TreeviewItem[] {
+    //     const beijingStores = new TreeviewItem({
+    //         text: '北京店',
+    //         value: 9
+    //     });
+    //     const neimengStores = new TreeviewItem({
+    //         text: '内蒙总店',
+    //         value: 9,
+    //         children: [{
+    //             text: '包头店', value: 91
+    //         }]
+    //     });
+    //     const shanghaiStores = new TreeviewItem({
+    //         text: '上海店',
+    //         value: 9
+    //     });
+
+    //     return [beijingStores, shanghaiStores, neimengStores];
+    // }
 
     public getPagedList(params: PagedParams): Promise<PagedResult<Order>> {
         const url = Urls.chain.concat('/Maintenances?', params.serialize());
         return this.httpService
             .get<PagedResult<Order>>(url)
             .then(result => {
-                result.data.forEach(m => {
-                });
+                console.log('工单列表数据', result);
                 return result;
             })
             .catch(err => Promise.reject(`加载工单列表失败：${err}`));
@@ -256,31 +295,33 @@ export class OrderService implements BasicService<Order> {
             .delete(url)
             .catch(err => Promise.reject(`删除工单失败：${err}`));
     }
+}
 
-
-
-
-
+export interface MyTreeviewItem {
+    text: string;
+    value: string;
+    children?: Array<MyTreeviewItem>;
 }
 
 // 工单请求参数类
 export class OrderListRequest extends PagedParams {
     constructor(
         // 工单列表页面查询参数
-        status?: string, // 工单状态
-        plateNo?: string, // 车牌号
-        customerName?: string, // 车主
-        phone?: string, // 车主电话
-        contactUser?: string, // 送修人
-        contactInfo?: string, // 送修人电话
-        brand?: string, // 品牌
-        series?: string, // 车系
-        model?: string, // 车型
-        billCode?: string, // 工单号
-        createdUserName?: string, // 服务顾问
-        type?: string, // 维修类型
-        createdOnUtc?: string, // 进店时间
-        leaveTime?: string // 出厂时间
+        public status?: Array<string>, // 工单状态
+        public plateNo?: string, // 车牌号
+        public customerName?: string, // 车主
+        public phone?: string, // 车主电话
+        public contactUser?: string, // 送修人
+        public contactInfo?: string, // 送修人电话
+        public brand?: string, // 品牌
+        public series?: string, // 车系
+        public model?: string, // 车型
+        public billCode?: string, // 工单号
+        public createdUserName?: string, // 服务顾问
+        public type?: string, // 维修类型
+        public createdOnUtc?: string, // 进店时间
+        public leaveTime?: string, // 出厂时间
+        public orgIds?: Array<string> // 查询范围
     ) {
         super('OrderListRequestParams');
     }
@@ -372,7 +413,7 @@ export class MaintenanceType {
 }
 
 // 增项页面根据工单号或者车牌号搜索工单
-export class AppendOrderSearch{
+export class AppendOrderSearch {
     constructor(
         public plateNo: string = '', // 车牌号
         public customerName: string = '', // 车主
@@ -380,5 +421,5 @@ export class AppendOrderSearch{
         public series: string = '', // 车系
         public model: string = '', // 车型
         public brand: string = '', // 品牌
-   ){ }   
+    ) { }
 }
