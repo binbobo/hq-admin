@@ -1,0 +1,19 @@
+<div class="hq-table-typeahead" (blur)="result=null" [hidden]="!result?.data?.length">
+  <table class="table table-sm table-hover table-responsive">
+    <thead>
+      <tr>
+        <th *ngFor="let col of columns">{{col.title||col.name}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of result?.data" (click)="onItemSelect(item)">
+        <td *ngFor="let col of columns">
+          {{item[col.name]|shorten:col.maxLength||20:'...'}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <pagination [hidden]="size>=result?.totalCount" class="pagination-sm" [maxSize]="3" [boundaryLinks]="true" [itemsPerPage]="size"
+    previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" [totalItems]="result?.totalCount" [(ngModel)]="index"
+    (pageChanged)="pageChanged($event)"></pagination>
+</div>

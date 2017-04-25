@@ -2,13 +2,29 @@
     <h1 class="display-3">欢迎登录！</h1>
     <p class="lead">为了实现更好的体验，推荐使用以下浏览器操作当前系统：
     </p>
-    <div hqAlerter></div>
     <div class="row">
-        <input [(ngModel)]="myDate" ngui-datetime-picker class="form-control" date-only="true" placeholder="点击选择日期" />
+        <div class="col-2">弹出框:</div>
+        <div class="col-10">
+            <div class="" hq-alerter></div>
+        </div>
     </div>
     <div class="row">
-        <input type="text" class="form-control col-6" [mSelector]="options" (onChange)="onChange($event)" placeholder="点击弹出选择框" />
-        <button type="button" class="btn btn-default col-6" [mSelector]="options" mTitle="title">点击弹出选择框</button>
+        <div class="col-2">预先输入:</div>
+        <div class="col-10">
+            <input [hq-table-typeahead]="typeaheadSource" [pageSize]="3" [columns]="typeaheadColumns" valueSelector="name" (onSelect)="onTypeaheadSelect($event)"
+                class="form-control" placeholder="预先输入..." />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-2">日期控件:</div>
+        <div class="col-10">
+            <input [(ngModel)]="myDate" ngui-datetime-picker class="form-control" date-only="true" placeholder="点击选择日期" />
+        </div>
+    </div>
+    <div class="row">
+        <input type="text" class="form-control col-6" [hq-mutil-selector]="options" (onChange)="onChange($event)" placeholder="点击弹出选择框"
+        />
+        <button type="button" class="btn btn-default col-6" [hq-mutil-selector]="options" mTitle="title">点击弹出选择框</button>
     </div>
     <div class="row">
         <pre class="card card-block card-header">Model: {{selected | json}}</pre>

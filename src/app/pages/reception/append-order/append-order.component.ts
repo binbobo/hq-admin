@@ -29,6 +29,7 @@ export class AppendOrderComponent extends DataList<Order> {
   ) {
     super(injector, service);
     this.params = new OrderListRequest();
+
     // 搜索模糊查询
 
     this.plateNoData = Observable
@@ -40,11 +41,10 @@ export class AppendOrderComponent extends DataList<Order> {
       .mergeMap((token: string) => this.service1.getAppendOrderParma(token));
 
     // 根据项目名称获取维修项目
-
   }
 
   maintenanceProjectData;
-  attachServiceOutputs;
+  attachServiceOutputs=[];
   suggestServiceOutputs;
   lastManufactureDetailOutput;
   lastDataProjectList;
@@ -67,27 +67,30 @@ export class AppendOrderComponent extends DataList<Order> {
     this.listId = (e.item)["id"];
     this.service1.get(this.listId)
       .then(data => {
+        console.log(data);
         //维修项目
-        this.maintenanceProjectData = new LocalDataSource(data.serviceOutputs);
-        // //附加项目
-        this.attachServiceOutputs = new LocalDataSource(data.attachServiceOutputs);
-        // //建议维修项
-        this.suggestServiceOutputs = new LocalDataSource(data.suggestServiceOutputs);
-        // // 上次维修记录
-        this.lastManufactureDetailOutput = data.lastManufactureDetailOutput;
-        this.lastDataProjectList = data.lastManufactureDetailOutput.serviceOutputs;
-        this.lastRepairList = data.lastManufactureDetailOutput.productOutputs;
-        this.lastAddList = data.lastManufactureDetailOutput.attachServiceOutputs;
-        this.lastSuggestList = data.lastManufactureDetailOutput.suggestServiceOutputs;
-        // 客户回访记录
-        this.feedBackInfosOutput = new LocalDataSource(data.feedBackInfosOutput);
+        //this.maintenanceProjectData = data.serviceOutputs;
+        //附加项目
+        //this.attachServiceOutputs = [];
+        // // //建议维修项
+        // this.suggestServiceOutputs =data.suggestServiceOutputs;
+        // // // 上次维修记录
+        // this.lastManufactureDetailOutput = data.lastManufactureDetailOutput;
+        // this.lastDataProjectList = data.lastManufactureDetailOutput.serviceOutputs;
+        // this.lastRepairList = data.lastManufactureDetailOutput.productOutputs;
+        // this.lastAddList = data.lastManufactureDetailOutput.attachServiceOutputs;
+        // this.lastSuggestList = data.lastManufactureDetailOutput.suggestServiceOutputs;
+        // // 客户回访记录
+        // this.feedBackInfosOutput = data.feedBackInfosOutput;
         console.log(this.maintenanceProjectData, this.attachServiceOutputs, this.suggestServiceOutputs)
       });
+
+
   }
 
   private SearchappendList = {}
 
-  newMaintenanceItemData=[];
+  newMaintenanceItemData = [];
 
 
   /**
@@ -112,7 +115,8 @@ export class AppendOrderComponent extends DataList<Order> {
         price: newData.money,
         discount: newData.money,
       });
-    }
+    };
+    console.log(this.newMaintenanceItemData)
   }
 
   // 维修项目 
@@ -144,6 +148,7 @@ export class AppendOrderComponent extends DataList<Order> {
         title: '折扣率(%)'
       },
       operationTime: {
+        editable: false,
         title: '操作时间', // 不需要传给后台
       }
     }

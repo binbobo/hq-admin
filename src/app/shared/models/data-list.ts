@@ -2,7 +2,7 @@ import { PagedParams, PagedResult, BasicService } from 'app/shared/models';
 import { OnInit, ViewChild, Injector } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
 import { ActivatedRoute, Params } from '@angular/router';
-import { HqAlerter } from 'app/shared/directives';
+import { HqAlerter }  from 'app/shared/directives';
 
 export abstract class DataList<T> implements OnInit {
 

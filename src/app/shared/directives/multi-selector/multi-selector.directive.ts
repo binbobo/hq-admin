@@ -4,14 +4,13 @@ import { MultiSelectorComponent } from './multi-selector.component';
 import { SelectOption } from 'app/shared/models';
 
 @Directive({
-  selector: '[mSelector]', exportAs: 'mutil-selector',
-  inputs: ['mSelector']
+  selector: '[hq-mutil-selector]'
 })
 export class MultiSelectorDirective {
 
   private _selector: ComponentLoader<MultiSelectorComponent>;
 
-  @Input()
+  @Input('hq-mutil-selector')
   public options: Array<SelectOption>;
   @Output()
   public onChange = new EventEmitter<SelectOption>();
