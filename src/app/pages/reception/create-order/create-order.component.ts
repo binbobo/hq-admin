@@ -38,8 +38,8 @@ export class CreateOrderComponent extends DataList<Order> {
 
   // 结果集
   public customerVehicles: CustomerVehicle[] = [];
-  // 当前选择的客户车辆对象
-  public selectedCustomerVehicle: CustomerVehicle = new CustomerVehicle();
+  // 上次维修工单信息
+  public lastOrderData = null;
   // 通过车牌号查询异步数据源
   public plateNoDataSource: Observable<CustomerVehicle>;
   // 通过VIN查询异步数据源
@@ -86,7 +86,7 @@ export class CreateOrderComponent extends DataList<Order> {
   sumFee = 0; // 总计
 
   // 当前登录用户信息
-  private user = null;
+  public user = null;
 
   // ng2-smart-table相关配置
   // 维修项目表头
@@ -191,7 +191,7 @@ export class CreateOrderComponent extends DataList<Order> {
       .catch(err => console.log(err));
 
 
-      console.log('moment', moment());
+    console.log('moment', moment());
   }
 
   /**
@@ -254,11 +254,30 @@ export class CreateOrderComponent extends DataList<Order> {
    * @memberOf CreateOrderComponent
    */
   plateNoOnSelect(evt: TypeaheadMatch) {
-    console.log('selected: ', evt);
+    console.log('selected: ', JSON.stringify(evt.item));
     // 车牌号对应唯一客户车辆记录
-    this.selectedCustomerVehicle = evt.item;
-    // 根据选择的车牌号带出客户车辆信息
-    this.loadCustomerVehicleInfo(evt.item);
+
+    this.service.getLastOrderInfo(evt.item.id).subscribe(lastOrder => {
+      console.log('上次工单信息：', lastOrder);
+      // 根据选择的车牌号带出客户车辆信息
+      this.loadCustomerVehicleInfo(evt.item);
+      this.loadLastOrderInfo(lastOrder);
+
+      // 保存上次工单记录
+      this.lastOrderData = lastOrder;
+    });
+  }
+
+  // 根据车牌号， 车主， vin 自动带出客户车辆信息
+  loadLastOrderInfo(lastOrder) {
+    this.workSheetForm.controls.type.setValue(lastOrder.type);
+    this.workSheetForm.controls.expectLeave.setValue(lastOrder.expectLeave);
+    this.workSheetForm.controls.lastEnter.setValue(moment(lastOrder.lastEnter).format('YYYY-MM-DD hh:mm:ss'));
+    this.workSheetForm.controls.nextDate .setValue(lastOrder.nextDate);
+    this.workSheetForm.controls.location.setValue(lastOrder.location);
+    this.workSheetForm.controls.lastMileage.setValue(lastOrder.mileage);
+    this.workSheetForm.controls.nextMileage .setValue(lastOrder.nextMileage);
+    this.workSheetForm.controls.validate.setValue(moment(lastOrder.validate).format('YYYY-MM-DD'));
   }
 
   // 根据车牌号， 车主， vin 自动带出客户车辆信息
@@ -269,9 +288,7 @@ export class CreateOrderComponent extends DataList<Order> {
     this.workSheetForm.controls.phone.setValue(customerVehicle.customer.phone);
     this.workSheetForm.controls.vin.setValue(customerVehicle.vin);
     this.workSheetForm.controls.series.setValue(customerVehicle.series);
-    this.workSheetForm.controls.lastEnter.setValue(moment(customerVehicle.lastEnter).format('YYYY-MM-DD hh:mm:ss'));
     this.workSheetForm.controls.model.setValue(customerVehicle.model);
-    this.workSheetForm.controls.validate.setValue(moment(customerVehicle.validate).format('YYYY-MM-DD'));
   }
 
   /**
@@ -280,7 +297,6 @@ export class CreateOrderComponent extends DataList<Order> {
   vinOnSelect(evt: TypeaheadMatch) {
     console.log('selected: ', evt);
     // 车牌号对应唯一客户车辆记录
-    this.selectedCustomerVehicle = evt.item;
   }
 
   /**
@@ -289,7 +305,6 @@ export class CreateOrderComponent extends DataList<Order> {
   customerNameOnSelect(evt: TypeaheadMatch) {
     console.log('selected: ', evt);
     // 一个车主下面可能有多条客户车辆记录
-    this.selectedCustomerVehicle = evt.item;
   }
 
   /**
@@ -400,19 +415,19 @@ export class CreateOrderComponent extends DataList<Order> {
   createForm() {
     this.workSheetForm = this.fb.group({
       billCode: '', // 工单号
-      customerName: [this.selectedCustomerVehicle.customerName, [Validators.required]], // 车主
-      phone: [this.selectedCustomerVehicle.phone], // 车主电话
+      customerName: ['', [Validators.required]], // 车主
+      phone: [''], // 车主电话
       createdOnUtc: [{ value: moment().format('YYYY-MM-DD hh:mm:ss'), disabled: true }], // 进店时间 / 开单时间
       contactUser: ['', [Validators.required]], // 送修人
       contactInfo: ['', [Validators.required]], // 送修人电话
       createdUserName: [{ value: this.user.username, disabled: true }], // 服务顾问
       introducer: '', // 介绍人
       introPhone: '', // 介绍人电话
-      brand: [this.selectedCustomerVehicle.brand, [Validators.required]], // 品牌
-      series: [{ value: this.selectedCustomerVehicle.series, disabled: true }, [Validators.required]], // 车系
-      model: [{ value: this.selectedCustomerVehicle.model, disabled: true }, [Validators.required]], // 车型
-      plateNo: [this.selectedCustomerVehicle.plateNo, [Validators.required]], // 车牌号
-      vin: [this.selectedCustomerVehicle.vin, [Validators.required]], // vin  底盘号
+      brand: ['', [Validators.required]], // 品牌
+      series: [{ value: '', disabled: true }, [Validators.required]], // 车系
+      model: [{ value: '', disabled: true }, [Validators.required]], // 车型
+      plateNo: ['', [Validators.required]], // 车牌号
+      vin: ['', [Validators.required]], // vin  底盘号
       validate: '', // 验车日期
       type: ['', [Validators.required]], // 维修类型
       expectLeave: ['', [Validators.required]], // 预计交车时间
