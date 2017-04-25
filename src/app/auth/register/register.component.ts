@@ -55,7 +55,7 @@ export class RegisterComponent implements OnInit {
       .register(model)
       .then(() => {
         this.alerter.success('用户注册成功！');
-        setTimeout(() => this.route.navigate(['/login']), 1000);
+        setTimeout(() => this.route.navigate(['/auth/login']), 1000);
       })
       .catch(err => this.alerter.error(err));
   }
