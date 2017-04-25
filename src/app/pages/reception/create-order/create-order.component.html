@@ -28,7 +28,7 @@
         </div>
         <label for="customerName" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车主</label>
         <div class="col-sm-2">
-          <input typeaheadOptionField="customerName" [typeaheadItemTemplate]="customCustomerVehicleTemplate" (typeaheadOnSelect)="customerNameOnSelect($event)" [typeahead]="customerNameDataSource" type="text" required
+          <input typeaheadOptionField="customerName" [typeaheadItemTemplate]="customCustomerVehicleTemplate" (typeaheadOnSelect)="onCustomerNameSelect($event)" [typeahead]="customerNameDataSource" type="text" required
             class="form-control form-control-sm" formControlName="customerName" id="customerName" placeholder="输入字母 ll 测试">
         </div>
         <!--根据车主查询客户车辆信息下拉列表，自定义显示模板 let-model="item"遍历集合, 引用记录 -->
@@ -84,7 +84,7 @@
         </div>
         <label for="vin" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>VIN</label>
         <div class="col-sm-2">
-          <input (typeaheadOnSelect)="vinOnSelect($event)" [typeahead]="vinDataSource" typeaheadOptionField="vin" type="text" class="form-control form-control-sm" formControlName="vin" id="vin" placeholder="VIN">
+          <input (typeaheadOnSelect)="onVinSelect($event)" [typeahead]="vinDataSource" typeaheadOptionField="vin" type="text" class="form-control form-control-sm" formControlName="vin" id="vin" placeholder="VIN">
         </div>
         <label for="validate" class="col-sm-1 col-form-label col-form-label-sm">验车日期</label>
         <div class="input-group input-group-sm col-sm-2">
@@ -171,13 +171,13 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let maintanceItem of lastOrderData?.serviceOutputs">
-              <td>{{maintanceItem.name}}</td>
-              <td>{{maintanceItem.workingHour }}</td>
-              <td>{{maintanceItem.price}}</td>
-              <td>{{maintanceItem.workingHour * maintanceItem.price}}</td>
-              <td>{{maintanceItem.discount}}</td>
-              <td>{{maintanceItem.operateDateTime}}</td>
+            <tr *ngFor="let record of lastOrderData?.serviceOutputs">
+              <td>{{record?.name}}</td>
+              <td>{{record?.workingHour }}</td>
+              <td>{{record?.price}}</td>
+              <td>{{record?.workingHour * record?.price}}</td>
+              <td>{{record?.discount}}</td>
+              <td>{{record?.operateDateTime}}</td>
               <td>{{user.username}}</td>
             </tr>
           </tbody>
@@ -199,6 +199,14 @@
           </thead>
           <tbody>
             <tr *ngFor="let record of lastOrderData?.productOutputs">
+              <td>{{record?.serviceName}}</td>
+              <td>{{record?.productName}}</td>
+              <td>{{record?.brandName}}</td>
+              <td>{{record?.specification}}</td>
+              <td>{{record?.count}}</td>
+              <td>{{record?.price}}</td>
+              <td>{{record?.price * record?.count}}</td>
+              <td>{{record?.operateDateTime}}</td>
             </tr>
           </tbody>
         </table>
@@ -211,7 +219,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let record of list">
+            <tr *ngFor="let record of lastOrderData?.attachServiceOutputs">
+              <td>{{record?.description}}</td>
             </tr>
           </tbody>
         </table>
@@ -226,7 +235,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let record of list">
+            <tr *ngFor="let record of lastOrderData?.SuggestServiceDetailOutput">
+              <td>{{record?.content}}</td>
+              <td>{{record?.operateDateTime}}</td>
+              <td>{{record?.description}}</td>
             </tr>
           </tbody>
         </table>

@@ -59,9 +59,8 @@ export class CreateOrderComponent extends DataList<Order> {
   public selectedBrandId = null;
   // 车系是否选择标识, 用来记录当前选择的车系id
   public selectedSeriesId = null;
-  // 当前选择的车型id
-  public selectedModelId = null;
-
+  // 当前选择的客户车辆记录
+  private selectedCustomerVehicle = null;
 
   // 维修类型数据
   public maintenanceTypeData: MaintenanceType[];
@@ -247,7 +246,10 @@ export class CreateOrderComponent extends DataList<Order> {
   // 从模糊查询下拉列表中选择一个车型事件处理程序
   onModelSelect(evt: TypeaheadMatch) {
     // 设置当前选择的车系id
-    this.selectedModelId = evt.item.id;
+    console.log('选择车型', evt);
+
+    // 如果手动选择了车型  以该车型id为准
+    this.selectedCustomerVehicle.vehicleId = evt.item.id;
   }
 
   /**
@@ -257,11 +259,18 @@ export class CreateOrderComponent extends DataList<Order> {
     console.log('selected: ', JSON.stringify(evt.item));
     // 车牌号对应唯一客户车辆记录
 
+    this.getLastOrderByCustomerVechileId(evt);
+  }
+
+  // 根据客户车辆Id查询上次工单信息
+  getLastOrderByCustomerVechileId(evt) {
     this.service.getLastOrderInfo(evt.item.id).subscribe(lastOrder => {
       console.log('上次工单信息：', lastOrder);
       // 根据选择的车牌号带出客户车辆信息
       this.loadCustomerVehicleInfo(evt.item);
-      this.loadLastOrderInfo(lastOrder);
+      if (lastOrder) {
+        this.loadLastOrderInfo(lastOrder);
+      }
 
       // 保存上次工单记录
       this.lastOrderData = lastOrder;
@@ -271,17 +280,22 @@ export class CreateOrderComponent extends DataList<Order> {
   // 根据车牌号， 车主， vin 自动带出客户车辆信息
   loadLastOrderInfo(lastOrder) {
     this.workSheetForm.controls.type.setValue(lastOrder.type);
-    this.workSheetForm.controls.expectLeave.setValue(lastOrder.expectLeave);
+    this.workSheetForm.controls.expectLeave.setValue(moment(lastOrder.expectLeave).format('YYYY-MM-DD hh:mm:ss'));
     this.workSheetForm.controls.lastEnter.setValue(moment(lastOrder.lastEnter).format('YYYY-MM-DD hh:mm:ss'));
-    this.workSheetForm.controls.nextDate .setValue(lastOrder.nextDate);
+    this.workSheetForm.controls.nextDate.setValue(moment(lastOrder.nextDate).format('YYYY-MM-DD'));
     this.workSheetForm.controls.location.setValue(lastOrder.location);
+    this.workSheetForm.controls.mileage.setValue(lastOrder.mileage);
     this.workSheetForm.controls.lastMileage.setValue(lastOrder.mileage);
-    this.workSheetForm.controls.nextMileage .setValue(lastOrder.nextMileage);
+    this.workSheetForm.controls.nextMileage.setValue(lastOrder.nextMileage);
     this.workSheetForm.controls.validate.setValue(moment(lastOrder.validate).format('YYYY-MM-DD'));
   }
 
   // 根据车牌号， 车主， vin 自动带出客户车辆信息
   loadCustomerVehicleInfo(customerVehicle) {
+    // 记录当前选择的车型Id
+    this.selectedCustomerVehicle = customerVehicle;
+    console.log('当前选中的车俩信息:', this.selectedCustomerVehicle);
+
     this.workSheetForm.controls.plateNo.setValue(customerVehicle.plateNo);
     this.workSheetForm.controls.brand.setValue(customerVehicle.brand);
     this.workSheetForm.controls.customerName.setValue(customerVehicle.customer.name);
@@ -294,17 +308,21 @@ export class CreateOrderComponent extends DataList<Order> {
   /**
    * @memberOf CreateOrderComponent
    */
-  vinOnSelect(evt: TypeaheadMatch) {
+  onVinSelect(evt: TypeaheadMatch) {
     console.log('selected: ', evt);
-    // 车牌号对应唯一客户车辆记录
+    // vin对应唯一客户车辆记录
+
+    this.getLastOrderByCustomerVechileId(evt);
   }
 
   /**
   * @memberOf CreateOrderComponent
   */
-  customerNameOnSelect(evt: TypeaheadMatch) {
+  onCustomerNameSelect(evt: TypeaheadMatch) {
     console.log('selected: ', evt);
     // 一个车主下面可能有多条客户车辆记录
+
+    this.getLastOrderByCustomerVechileId(evt);
   }
 
   /**
@@ -477,23 +495,37 @@ export class CreateOrderComponent extends DataList<Order> {
     // 组织接口参数
     // 1.表单基础数据 this.workSheetForm.value
     const workSheet = this.workSheetForm.value;
-    // 添加车型id 必填
-    workSheet.vehicleId = this.selectedModelId;
+    // 添加客户车辆id 客户id 必填
+    if (this.selectedCustomerVehicle && this.selectedCustomerVehicle.id) {
+      workSheet.customerVehicleId = this.selectedCustomerVehicle.id; // 有才传
+    }
+    if (this.selectedCustomerVehicle && this.selectedCustomerVehicle.id) {
+      workSheet.customerId = this.selectedCustomerVehicle.customerId; // 有才传
+    }
+    workSheet.vehicleId = this.selectedCustomerVehicle.vehicleId; // 必传
+
     // 2.新增维修项目数据 this.newMaintenanceItemData
     workSheet.maintenanceItems = this.newMaintenanceItemData;
 
     // 3. 当前登陆用户信息数据(操作员，组织id, ...)
-    workSheet.user = this.user;
+    // workSheet.user = this.user;
     workSheet.orgId = '1941566D-0CED-46FC-A3E4-8A09507E3E3A';
 
     // 调用创建工单接口
-    console.log('提交的工单对象： ', workSheet);
+    console.log('提交的工单对象： ', JSON.stringify(workSheet));
     this.service.create(workSheet).then(data => {
       console.log('创建工单成功之后， 返回的工单对象：', data);
-      // 创建订单成功之后  表单重置，新增维修项目数据清空
-      // this.workSheetForm.reset();
-      // this.selectedBrandId = this.selectedSeriesId = null;
-      // this.newMaintenanceItemData = [];
+      // 创建订单成功之后  做一些重置操作
+
+      // 表单重置
+      this.workSheetForm.reset();
+
+      this.selectedBrandId = this.selectedSeriesId = null;
+      // 新增维修项目数据清空
+      this.newMaintenanceItemData = [];
+      // 清空上次维修工单数据
+      this.lastOrderData = [];
+      // 清空智能表格中的数据
     }).catch(err => console.log(err));
   }
 }
