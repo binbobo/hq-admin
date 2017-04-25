@@ -63,24 +63,17 @@
         <!---选择工单列表 end-->
       </div>
       <hr>
-      <div class="form-group row">
-        <label for="createOrderTime" class="col-sm-1 col-form-label col-form-label-sm">车主:</label>
-        <div class="col-sm-2">
-          <input type="text" readonly class="form-control readonly form-control-sm" id="createOrderTime">
-        </div>
-        <label for="sender" class="col-sm-1 col-form-label col-form-label-sm">VPN:</label>
-        <div class="col-sm-2">
-          <input type="text" readonly class="form-control readonly form-control-sm" id="sender" placeholder="">
-        </div>
-        <label for="senderPhone" class="col-sm-1 col-form-label col-form-label-sm">维修类型:</label>
-        <div class="col-sm-2">
-          <input type="tel" readonly class="form-control readonly form-control-sm" id="senderPhone" placeholder="">
-        </div>
-        <label for="serviceConsultant" class="col-sm-1 col-form-label col-form-label-sm">开单时间:</label>
-        <div class="col-sm-2">
-          <input type="text" readonly class="form-control readonly form-control-sm" id="serviceConsultant">
-        </div>
-      </div>
+      <table class="table search-result">
+      <tr>
+        <td>车牌号:</td>
+        <td></td>
+        <td>车主:</td>
+        <td></td>
+        <td>车主电话:</td>
+        <td></td>
+      </tr>
+      </table>
+
     </form>
 
     <hr>
@@ -151,7 +144,7 @@
 
 
 
-<!--提交按钮-->
+    <!--提交按钮-->
     <div class="maintain-btn">
       <button class="btn btn-primary">生成退料单</button>
       <button class="btn btn-secondary">取消</button>
