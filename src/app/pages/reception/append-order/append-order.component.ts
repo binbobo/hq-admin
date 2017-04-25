@@ -44,7 +44,7 @@ export class AppendOrderComponent extends DataList<Order> {
   }
 
   maintenanceProjectData;
-  attachServiceOutputs=[];
+  attachServiceOutputs;
   suggestServiceOutputs;
   lastManufactureDetailOutput;
   lastDataProjectList;
@@ -69,11 +69,11 @@ export class AppendOrderComponent extends DataList<Order> {
       .then(data => {
         console.log(data);
         //维修项目
-        //this.maintenanceProjectData = data.serviceOutputs;
+        this.maintenanceProjectData = data.serviceOutputs;
         //附加项目
-        //this.attachServiceOutputs = [];
+        this.attachServiceOutputs = new LocalDataSource(data.attachServiceOutputs);
         // // //建议维修项
-        // this.suggestServiceOutputs =data.suggestServiceOutputs;
+        this.suggestServiceOutputs =new LocalDataSource(data.suggestServiceOutputs);
         // // // 上次维修记录
         // this.lastManufactureDetailOutput = data.lastManufactureDetailOutput;
         // this.lastDataProjectList = data.lastManufactureDetailOutput.serviceOutputs;

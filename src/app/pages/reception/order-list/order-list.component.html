@@ -4,42 +4,12 @@
     工单列表
   </div>
   <div class="card-block">
-    <form [formGroup]="workSheetFilterForm" (ngSubmit)="onSerarch()">
+    <form [formGroup]="workSheetFilterForm" (ngSubmit)="onLoadList()">
       <!--不同工单状态工单复选框部分-->
       <div class="form-group">
-        <div class="form-check form-check-inline">
+         <div class="form-check form-check-inline" *ngFor="let status of orderStatusData">
           <label class="form-check-label">
-            <input class="form-check-input" formControlName="toBeAssigned" type="checkbox" value="toBeAssigned"> 待派工
-          </label>
-        </div>
-        <div class="form-check form-check-inline">
-          <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" formControlName="toBeAssigned" value="assigned"> 已派工
-          </label>
-        </div>
-        <div class="form-check form-check-inline">
-          <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" formControlName="toBeChecked" value="toBeChecked"> 待验收
-          </label>
-        </div>
-        <div class="form-check form-check-inline">
-          <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" formControlName="toBeBalanced" value="toBeBalanced"> 待结算
-          </label>
-        </div>
-        <div class="form-check form-check-inline">
-          <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" formControlName="toBeCheckedOut" value="toBeCheckedOut"> 待收银
-          </label>
-        </div>
-        <div class="form-check form-check-inline">
-          <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" formControlName="finished" value="finished"> 已完工
-          </label>
-        </div>
-        <div class="form-check form-check-inline">
-          <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" formControlName="all" value="all"> 全部工单
+            <input (onchange)='toggleCheckbox(this)' class="form-check-input" formControlName="{{status.key}}" type="checkbox" value="{{status.id}}"> {{status.value}}
           </label>
         </div>
       </div>
@@ -48,32 +18,36 @@
       <div class="form-group row">
         <label for="plateNo" class="col-sm-1 col-form-label col-form-label-sm">车牌号</label>
         <div class="col-sm-2">
-          <input type="text" class="form-control form-control-sm" formControlName="plateNo" id="plateNo" placeholder="车牌号">
+          <input type="text" [(ngModel)]="params.plateNo" class="form-control form-control-sm" formControlName="plateNo" id="plateNo"
+            placeholder="车牌号">
         </div>
         <label for="customerName" class="col-sm-1 col-form-label col-form-label-sm">车主</label>
         <div class="col-sm-2">
-          <input type="text" class="form-control form-control-sm" formControlName="customerName" id="customerName" placeholder="车主">
+          <input type="text" [(ngModel)]="params.customerName" class="form-control form-control-sm" formControlName="customerName"
+            id="customerName" placeholder="车主">
         </div>
         <label for="phone" class="col-sm-1 col-form-label col-form-label-sm">车主电话</label>
         <div class="col-sm-2">
-          <input type="tel" class="form-control form-control-sm" formControlName="phone" id="phone" placeholder="车主电话">
+          <input type="tel" [(ngModel)]="params.phone" class="form-control form-control-sm" formControlName="phone" id="phone" placeholder="车主电话">
         </div>
         <label for="contactUser" class="col-sm-1 col-form-label col-form-label-sm">送修人</label>
         <div class="col-sm-2">
-          <input type="email" class="form-control form-control-sm" formControlName="contactUser" id="contactUser" placeholder="送修人">
+          <input type="email" [(ngModel)]="params.contactUser" class="form-control form-control-sm" formControlName="contactUser" id="contactUser"
+            placeholder="送修人">
         </div>
       </div>
       <div class="form-group row">
         <label for="contactInfo" class="col-sm-1 col-form-label col-form-label-sm">送修人电话</label>
         <div class="col-sm-2">
-          <input type="tel" class="form-control form-control-sm" formControlName="contactInfo" id="contactInfo" placeholder="送修人电话">
+          <input type="tel" [(ngModel)]="params.contactInfo" class="form-control form-control-sm" formControlName="contactInfo" id="contactInfo"
+            placeholder="送修人电话">
         </div>
 
         <div class="col-sm-3" *ngIf="isCollapsed">
           &nbsp;&nbsp;
           <button type="submit" [disabled]="false" class="btn btn-sm btn-success">查&nbsp;&nbsp;询</button>&nbsp;&nbsp;
-          <button type="reset" (click)="revert()" [disabled]="false" class=" btn-sm btn btn-danger">撤销</button>&nbsp;&nbsp;
-          <button type="button" (click)="export()" [disabled]="falsee" class=" btn-sm btn btn-info">导出</button>
+          <button type="reset" (click)="revert()" [disabled]="false" class="btn-sm btn btn-danger">撤销</button>&nbsp;&nbsp;
+          <!--<button type="button" (click)="export()" [disabled]="falsee" class=" btn-sm btn btn-info">导出</button>-->
         </div>
       </div>
       <hr>
@@ -91,37 +65,35 @@
             <div class="form-group row">
               <label for="brand" class="col-sm-1 col-form-label col-form-label-sm">品牌</label>
               <div class="col-sm-2">
-                <input type="text" class="form-control form-control-sm" formControlName="brand" id="brand" placeholder="品牌">
+                <input type="text" [(ngModel)]="params.brand" class="form-control form-control-sm" formControlName="brand" id="brand" placeholder="品牌">
               </div>
               <label for="series" class="col-sm-1 col-form-label col-form-label-sm">车系</label>
               <div class="col-sm-2">
-                <input type="text" class="form-control form-control-sm" formControlName="series" id="series" placeholder="车系">
+                <input type="text" [(ngModel)]="params.series" class="form-control form-control-sm" formControlName="series" id="series"
+                  placeholder="车系">
               </div>
               <label for="billCode" class="col-sm-1 col-form-label col-form-label-sm">工单号</label>
               <div class="col-sm-2">
-                <input type="text" class="form-control form-control-sm" formControlName="billCode" id="billCode" placeholder="工单号">
+                <input type="text" [(ngModel)]="params.billCode" class="form-control form-control-sm" formControlName="billCode" id="billCode"
+                  placeholder="工单号">
               </div>
               <label for="createdUserName" class="col-sm-1 col-form-label col-form-label-sm">服务顾问</label>
               <div class="col-sm-2">
-                <input type="text" class="form-control form-control-sm" formControlName="createdUserName" id="createdUserName" placeholder="服务顾问">
+                <input type="text" [(ngModel)]="params.createdUserName" class="form-control form-control-sm" formControlName="createdUserName"
+                  id="createdUserName" placeholder="服务顾问">
               </div>
             </div>
             <div class="form-group row">
 
               <label for="model" class="col-sm-1 col-form-label col-form-label-sm">车型</label>
               <div class="col-sm-2">
-                <input type="text" class="form-control form-control-sm" formControlName="model" id="model" placeholder="车型">
+                <input type="text" [(ngModel)]="params.model" class="form-control form-control-sm" formControlName="model" id="model" placeholder="车型">
               </div>
               <label for="type" class="col-sm-1 col-form-label col-form-label-sm">维修类型</label>
               <div class="col-sm-2">
-                <select id="type" formControlName="type" class="form-control form-control-sm">
-                <option value="0" selected>保养</option>
-                <option value="1">保养及维修</option>
-                <option value="2">维修</option>
-                <option value="3">事故</option>
-                <option value="4">索赔</option>
-                <option value="5">免费检测</option>
-              </select>
+                <select id="type" [(ngModel)]="params.type" formControlName="type" class="form-control form-control-sm">
+                  <option *ngFor="let type of maintenanceTypeData" value="{{type.id}}">{{type.value}}</option>
+                </select>
               </div>
               <label for="enterStoreTime" class="col-sm-1 col-form-label col-form-label-sm">进店时间</label>
               <div class="input-group input-group-sm col-sm-2">
@@ -140,7 +112,7 @@
                 </span>
               </div>
             </div>
-  
+
             <div class="form-group row">
               <label for="leaveFactoryTime" class="col-sm-1 col-form-label col-form-label-sm">出厂时间</label>
               <div class="input-group input-group-sm col-sm-2">
@@ -158,16 +130,16 @@
                 <i class="fa fa-calendar" aria-hidden="true"></i>
               </span>
               </div>
-               <label for="searchRange" class="col-sm-1 col-form-label col-form-label-sm">查询范围</label>
+              <label for="searchRange" class="col-sm-1 col-form-label col-form-label-sm">查询范围</label>
               <div class="col-sm-2">
-                <ngx-dropdown-treeview class="sm" [config]="config" [items]="items">
+                <ngx-dropdown-treeview class="sm" [config]="config" [items]="items" (selectedChange)="onSelectedChange($event)"> >
                 </ngx-dropdown-treeview>
               </div>
               <div class="col-sm-3" *ngIf="!isCollapsed">
                 &nbsp;&nbsp;
                 <button type="submit" [disabled]="false" class="btn btn-sm btn-success mr-2">查询</button>
                 <button type="reset" (click)="revert()" [disabled]="false" class=" btn-sm btn btn-danger mr-2 mr-2">撤销</button>
-                <button type="button" (click)="export()" [disabled]="falsee" class=" btn-sm btn btn-info">导出</button>
+                <!--<button type="button" (click)="export()" [disabled]="falsee" class=" btn-sm btn btn-info">导出</button>-->
               </div>
             </div>
           </div>
@@ -205,50 +177,56 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of list">
-          <td width="50">
+          <td width="75">
             <a>作废</a> |
             <a (click)="selectedOrder=item;lgModal.show()">详情</a>
           </td>
-          <td>{{item.storeName}}</td>
-          <td>{{item.status}}</td>
-          <td>{{item.type}}</td>
-          <td>{{item.orderNo}}</td>
-          <td>{{item.enterTime}}</td>
-          <td>{{item.predictedTime}}</td>
-          <td>{{item.outeOfDate}}</td>
-          <td>{{item.serviceConsultant}}</td>
+          <td>{{item.orgName}}</td>
+          <td>{{item.statusName}}</td>
+          <td>{{item.typeName}}</td>
+          <td>{{item.billCode}}</td>
+          <td>{{item.createdOnUtc}}</td>
+          <td>{{item.expectLeave}}</td>
+          <td>{{item.overTime}}</td>
+          <td>{{item.createdUserName}}</td>
           <td>{{item.brand}}</td>
-          <td>{{item.carType}}</td>
-          <td>{{item.plateNumber}}</td>
+          <td>{{item.model}}</td>
+          <td>{{item.plateNo}}</td>
           <td>{{item.mileage}}</td>
-          <td>{{item.buyTime}}</td>
-          <td>{{item.carOwner}}</td>
-          <td>{{item.sender}}</td>
-          <td>{{item.senderPhoneNumber}}</td>
+          <td>{{item.purchaseDate}}</td>
+          <td>{{item.customerName}}</td>
+          <td>{{item.contactUser}}</td>
+          <td>{{item.contactInfo}}</td>
           <td>{{item.introducer}}</td>
-          <td>{{item.introducerPhoneNumber}}</td>
-          <td>{{item.repairTechnician}}</td>
-          <td>{{item.leaveFactoryTime}}</td>
+          <td>{{item.introPhone}}</td>
+          <td>{{item.employeeNames}}</td>
+          <td>{{item.leaveTime }}</td>
         </tr>
       </tbody>
     </table>
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
 
-    <!--Large modal-->
-    <div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="document" aria-hidden="true">
-      <div class="modal-dialog">
+
+    <!--详情 begin-->
+    <div bsModal #lgModal="bs-modal" class="modal" style='background-color: rgba(0, 0, 0, 0.47);' tabindex="-1" role="dialog"
+      aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h6 class="modal-title">工单详情</h6>
+            <h4 class="modal-title pull-left">工单详情</h4>
             <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
           </div>
-          <div class="modal-body">
+          <div class="modal-body" style='overflow: scroll;'>
+            <!--导出详情begin-->
+            <h3 style='text-align:center;'>详情</h3>
+            <hr>
+            <hr>
+            <!--工单详情 start-->
             <table class="table table-hover table-bordered table-sm">
               <thead>
-                <tr>
-                  <th>操作</th>
+                <tr class='table-info'>
                   <th>店名</th>
                   <th>状态</th>
                   <th>维修类型</th>
@@ -272,31 +250,145 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>{{selectedOrder?.storeName}}</td>
-                  <td>{{selectedOrder?.status}}</td>
-                  <td>{{selectedOrder?.type}}</td>
-                  <td>{{selectedOrder?.orderNo}}</td>
-                  <td>{{selectedOrder?.enterTime}}</td>
-                  <td>{{selectedOrder?.predictedTime}}</td>
-                  <td>{{selectedOrder?.outeOfDate}}</td>
-                  <td>{{selectedOrder?.serviceConsultant}}</td>
-                  <td>{{selectedOrder?.brand}}</td>
-                  <td>{{selectedOrder?.carType}}</td>
-                  <td>{{selectedOrder?.plateNumber}}</td>
-                  <td>{{selectedOrder?.mileage}}</td>
-                  <td>{{selectedOrder?.buyTime}}</td>
-                  <td>{{selectedOrder?.carOwner}}</td>
-                  <td>{{selectedOrder?.sender}}</td>
-                  <td>{{selectedOrder?.senderPhoneNumber}}</td>
-                  <td>{{selectedOrder?.introducer}}</td>
-                  <td>{{selectedOrder?.introducerPhoneNumber}}</td>
-                  <td>{{selectedOrder?.repairTechnician}}</td>
-                  <td>{{selectedOrder?.leaveFactoryTime}}</td>
+                <tr *ngFor="let item of detailData">
+                  <td>{{item.storeName}}</td>
+                  <td>{{item.status}}</td>
+                  <td>{{item.type}}</td>
+                  <td>{{item.orderNo}}</td>
+                  <td>{{item.enterTime}}</td>
+                  <td>{{item.predictedTime}}</td>
+                  <td>{{item.outeOfDate}}</td>
+                  <td>{{item.serviceConsultant}}</td>
+                  <td>{{item.brand}}</td>
+                  <td>{{item.carType}}</td>
+                  <td>{{item.plateNumber}}</td>
+                  <td>{{item.mileage}}</td>
+                  <td>{{item.buyTime}}</td>
+                  <td>{{item.carOwner}}</td>
+                  <td>{{item.sender}}</td>
+                  <td>{{item.senderPhoneNumber}}</td>
+                  <td>{{item.introducer}}</td>
+                  <td>{{item.introducerPhoneNumber}}</td>
+                  <td>{{item.repairTechnician}}</td>
+                  <td>{{item.leaveFactoryTime}}</td>
                 </tr>
               </tbody>
             </table>
+            <!--工单详情 end-->
+            <!--维修项目 start-->
+            <h3 style='text-align:center;'>维修项目</h3>
+            <hr>
+            <hr>
+            <table class="table table-hover table-bordered table-sm">
+              <thead>
+                <tr class='table-success'>
+                  <th>指派维修技师</th>
+                  <th>项目名称</th>
+                  <th>维修工时</th>
+                  <th>工时单价</th>
+                  <th>金额</th>
+                  <th>折扣率</th>
+                  <th>操作时间</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of repairData">
+                  <td><span class='triangle'></span>{{item.g}}<span class='assign-detail'>{{(item.g).length>0?"更改":"指派"}}</span></td>
+                  <td>{{item.a}}</td>
+                  <td>{{item.b}}</td>
+                  <td>{{item.c}}</td>
+                  <td>{{item.d}}</td>
+                  <td>{{item.e}}</td>
+                  <td>{{item.f}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <!--维修项目 end-->
+            <!--维修配件 start-->
+            <h3 style='text-align:center;'>维修配件</h3>
+            <hr>
+            <hr>
+            <table class="table table-hover table-bordered table-sm">
+              <thead>
+                <tr class='table-warning'>
+                  <th>维修项目</th>
+                  <th>配件名称</th>
+                  <th>品牌</th>
+                  <th>规格型号</th>
+                  <th>数量</th>
+                  <th>单价（元）</th>
+                  <th>金额（元）</th>
+                  <th>操作时间</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of repairPartsData">
+                  <td>{{item.a}}</td>
+                  <td>{{item.b}}</td>
+                  <td>{{item.c}}</td>
+                  <td>{{item.d}}</td>
+                  <td>{{item.e}}</td>
+                  <td>{{item.f}}</td>
+                  <td>{{item.f}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <!--维修配件 end-->
+            <!--附加项目 start-->
+            <h3 style='text-align:center;'>附加项目</h3>
+            <hr>
+            <hr>
+            <table class="table table-hover table-bordered table-sm">
+              <thead>
+                <tr class='table-danger'>
+                  <th>项目名称</th>
+                  <th>数量</th>
+                  <th>单价（元）</th>
+                  <th>金额（元）</th>
+                  <th>备注</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of addPartsData">
+                  <td>{{item.a}}</td>
+                  <td>{{item.b}}</td>
+                  <td>{{item.c}}</td>
+                  <td>{{item.d}}</td>
+                  <td>{{item.e}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <!--附加项目 end-->
+            <!--建议维修项 start-->
+            <h3 style='text-align:center;'>建议维修项</h3>
+            <hr>
+            <hr>
+            <table class="table table-hover table-bordered table-sm">
+              <thead>
+                <tr class='table-warning'>
+                  <th>建议维修项目</th>
+                  <th>是否修理</th>
+                  <th>操作时间</th>
+                  <th>操作员</th>
+                  <th>折扣率</th>
+                  <th>备注</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of addvicePartsData">
+                  <td>{{item.a}}</td>
+                  <td>{{item.b}}</td>
+                  <td>{{item.c}}</td>
+                  <td>{{item.d}}</td>
+                  <td>{{item.e}}</td>
+                  <td>{{item.f}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <!--建议维修项 end-->
+            <!--导出详情end-->
           </div>
         </div>
       </div>
     </div>
+    <!--详情 end-->

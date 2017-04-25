@@ -1,7 +1,7 @@
 import { Component, Injector } from '@angular/core';
 import { DataList } from '../../../shared/models/data-list';
 import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
-import { OrderService, OrderListRequest, Order } from '../order.service';
+import { OrderService, OrderListRequest, Order, MaintenanceType } from '../order.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -25,13 +25,16 @@ export class OrderListComponent extends DataList<Order> {
     maxHeight: 500
   };
 
-  // 当前选择的工单
-  public selectedOrder: Order = null;
-
-
+  // 维修类型数据
+  public maintenanceTypeData: MaintenanceType[];
+  // 工单状态数据
+  public orderStatusData;
 
   // 表单
   workSheetFilterForm: FormGroup;
+
+  // 定义OrderListRequest类型的参数对象， 覆盖父类的
+  params: OrderListRequest;
 
   constructor(
     injector: Injector,
@@ -42,22 +45,43 @@ export class OrderListComponent extends DataList<Order> {
     super(injector, service);
     this.params = new OrderListRequest();
 
-
+    // 获取维修类型数据
+    this.service.getMaintenanceTypes()
+      .subscribe(data => this.maintenanceTypeData = data);
+    // 获取工单状态数据
+    this.service.getOrderStatus()
+      .subscribe(data => this.orderStatusData = data);
     // 获取可以选择的店名, 用于查询范围筛选
-    this.items = this.service.getSelectableStores();
+    this.service.getSelectableStores().subscribe(data => {
+      this.items = data;
+    });
 
     // 构建表单
     this.createForm();
   }
 
+  /**
+   * 工单状态选择
+   * @param {any} cb 
+   * 
+   * @memberOf OrderListComponent
+   */
+  toggleCheckbox(cb) {
+    console.log('工单状态选择', cb);
+  }
+
   createForm() {
     this.workSheetFilterForm = this.fb.group({
-      toBeAssigned: '',
-      toBeChecked: '',
-      toBeBalanced: '',
-      toBeCheckedOut: '',
-      finished: '',
-      all: '',
+      unchecked: '', // 待验收
+      unstarted: '', // 待开工
+      started: '', // 已完工
+      uncheckout: '', // 待收银
+      assigned: '', // 已派工
+      checked: '', // 已验收
+      unassigned: '', // 未派工
+      unsettlemented: '', // 待结算
+      checkouted: '', // 已收银
+
       plateNo: '', // 车牌号
       customerName: '', // 车主
       phone: '', // 车主电话
@@ -76,12 +100,14 @@ export class OrderListComponent extends DataList<Order> {
     });
   }
 
-  onSerarch() {
-    // 获取表单数据
-    const workSheetFilterFormModel = this.workSheetFilterForm.value;
-    // 追加dropdown-treeview下
-
-    console.log(workSheetFilterFormModel.value);
+  /**
+   * 查询范围下拉框选择事件
+   * @param {any} evt 
+   * 
+   * @memberOf OrderListComponent
+   */
+  onSelectedChange(evt) {
+    console.log('当前选择的查询范围列表：', evt);
   }
 
   // 重置为初始查询条件
