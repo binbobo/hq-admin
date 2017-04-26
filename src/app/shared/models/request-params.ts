@@ -7,7 +7,7 @@ export abstract class RequestParams {
                 if (self[key] === '' || self[key] === null || self[key] === undefined) return null;
                 if (Array.isArray(self[key])) {
                     let arr = self[key] as Array<any>;
-                    return arr.map(val => 'key=' + val).join('&');
+                    return arr.map(val => key + '=' + val).join('&');
                 }
                 return key + "=" + self[key];
             })

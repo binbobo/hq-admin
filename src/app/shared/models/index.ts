@@ -6,3 +6,4 @@ export * from './data-list';
 export * from './basic-service.interface';
 export * from './basic-model';
 export * from './storage-keys';
+export * from './bootstrap';

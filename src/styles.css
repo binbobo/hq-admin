@@ -13,6 +13,9 @@ select.form-control{
     padding: 0 12px;
 }
 
+.card-block table th,.card-block table td{
+    text-align: center;
+}
 
 /*解决bs4单选下拉框 form-control-sm 高度不匹配bug*/
 select.sm {

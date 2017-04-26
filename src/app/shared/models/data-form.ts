@@ -1,19 +1,22 @@
-import { OnInit, Injector, ViewChild } from '@angular/core';
+import { OnInit, Injector, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Location } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { BasicService } from 'app/shared/models';
-import { HqAlerter }  from 'app/shared/directives';
+import { HqAlerter } from 'app/shared/directives';
 
 export abstract class FormHandle<T> implements OnInit {
 
     protected formBuilder: FormBuilder;
     protected form: FormGroup;
     protected submitting: boolean;
+    @Input()
     protected model: T;
     protected location: Location;
     @ViewChild(HqAlerter)
     protected alerter: HqAlerter;
+    @Output()
+    protected onSubmit = new EventEmitter<T>();
 
     ngOnInit() {
         this.getModel()
@@ -43,17 +46,17 @@ export abstract class FormHandle<T> implements OnInit {
         this.submitting = true;
         return this.service
             .update(model)
-            .then(model => {
+            .then(data => {
                 this.alerter.success('修改成功！');
-                this.location.back();
                 this.submitting = false;
+                this.onSubmit.emit(model);
             })
             .catch(err => {
                 this.alerter.error(err);
                 this.submitting = false;
             });
     }
-
+    @Output()
     protected onCreate() {
         let model = this.form.value as T;
         this.submitting = true;
@@ -63,6 +66,7 @@ export abstract class FormHandle<T> implements OnInit {
                 this.alerter.success('添加成功！');
                 this.form.reset(this.model);
                 this.submitting = false;
+                this.onSubmit.emit(model);
             })
             .catch(err => {
                 this.alerter.error(err);
