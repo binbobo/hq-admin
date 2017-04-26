@@ -5,6 +5,10 @@ export abstract class RequestParams {
             .filter(key => key !== "keyName")
             .map(function (key) {
                 if (self[key] === '' || self[key] === null || self[key] === undefined) return null;
+                if (Array.isArray(self[key])) {
+                    let arr = self[key] as Array<any>;
+                    return arr.map(val => 'key=' + val).join('&');
+                }
                 return key + "=" + self[key];
             })
             .filter(m => m != null)

@@ -34,7 +34,7 @@ export class MenuComponent implements OnInit {
     menus.forEach(m => {
       m.routes = this.parents.concat(m.path);
       if (!m.children || !Array.isArray(m.children)) return;
-      let urlTree = this.router.createUrlTree(m.routes);
+      let urlTree = this.router.createUrlTree(this.getRouterLink(m.routes));
       m.expand = this.router.isActive(urlTree, false);
       this.activeMenu(m.children);
     });

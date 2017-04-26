@@ -12,6 +12,13 @@ export class PagedResult<T> implements ApiResult<Array<T>>{
         public total: number,
         public totalCount: number
     ) { }
+
+    public nullCheck(): PagedResult<T> {
+        this.data = this.data || [];
+        this.total = this.total || 0;
+        this.totalCount = this.totalCount || 0;
+        return this;
+    }
 }
 
 export class SuccessResult implements ApiResult<boolean>{

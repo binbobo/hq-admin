@@ -1,0 +1,87 @@
+<ng-template hq-alerter></ng-template>
+<div class="card">
+  <div class="card-header">
+    库存管理
+  </div>
+  <div class="card-block">
+    <form class="form-inline mb-2">
+      <div class="form-group mb-2">
+        <label for="inlineFormCustomSelect">仓库：</label>
+        <select class="form-control mx-sm-3" name="storehouseId" [(ngModel)]="params.storehouseId">
+          <option value="">全部仓库</option>
+          <option *ngFor="let item of warehouses" value="{{item.value}}">{{item.text}}</option>
+        </select>
+      </div>
+      <div class="form-group mb-2">
+        <label class="mr-sm-2" for="inlineFormCustomSelect">库位：</label>
+        <input type="text" class="form-control mx-sm-3" name="storageLocationName" [(ngModel)]="params.storageLocationName" placeholder="库位">
+      </div>
+      <div class="form-group mb-2">
+        <label class="mr-sm-2" for="inlineFormCustomSelect">配件编码：</label>
+        <input type="text" class="form-control mx-sm-3" name="code" [(ngModel)]="params.code" placeholder="配件编码">
+      </div>
+      <div class="form-group mb-2">
+        <label class="mr-sm-2" for="inlineFormCustomSelect">配件名称：</label>
+        <input type="text" class="form-control mx-sm-3" name="name" [(ngModel)]="params.name" placeholder="配件名称">
+      </div>
+      <div class="form-group mb-2">
+        <label class="mr-sm-2" for="inlineFormCustomSelect">配件车型：</label>
+        <input type="text" class="form-control mx-sm-3" name="vehicleName" [(ngModel)]="params.vehicleName" placeholder="配件车型">
+      </div>
+      <div class="form-group mb-2">
+        <label class="mr-sm-2" for="inlineFormCustomSelect">类别：</label>
+        <input type="text" class="form-control mx-sm-3" name="categoryName" [(ngModel)]="params.categoryName" placeholder="类别">
+      </div>
+      <div class="form-group mb-2">
+        <button type="submit" class="btn btn-primary mx-sm-3" translate>search</button>
+      </div>
+    </form>
+    <table class="table table-bordered table-sm table-striped">
+      <thead>
+        <tr>
+          <th translate><input type="checkbox"></th>
+          <th translate>序号</th>
+          <th translate>库位</th>
+          <th translate>类别</th>
+          <th translate>品牌</th>
+          <th translate>配件编码</th>
+          <th translate>配件名称</th>
+          <th translate>库存量</th>
+          <th translate>车型</th>
+          <th translate>单位</th>
+          <th translate>销售价</th>
+          <th translate>最新进价</th>
+          <th translate>最大库存</th>
+          <th translate>最小库存</th>
+          <th translate>包装规格</th>
+          <th translate>产地</th>
+          <th translate>属性</th>
+          <th translate>备注</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of list">
+          <td><input type="checkbox"></td>
+          <td>{{item.logLevel}}</td>
+          <td>{{ item.databaseName}}</td>
+          <td>{{item.environmentName}}</td>
+          <td>{{item.logLevel}}</td>
+          <td>{{ item.databaseName}}</td>
+          <td>{{item.environmentName}}</td>
+          <td>{{item.logLevel}}</td>
+          <td>{{ item.databaseName}}</td>
+          <td>{{item.environmentName}}</td>
+          <td>{{item.logLevel}}</td>
+          <td>{{ item.databaseName}}</td>
+          <td>{{item.environmentName}}</td>
+          <td>{{item.logLevel}}</td>
+          <td>{{ item.databaseName}}</td>
+          <td>{{item.environmentName}}</td>
+          <td>{{item.logLevel}}</td>
+          <td>{{ item.databaseName}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+  </div>
+</div>
