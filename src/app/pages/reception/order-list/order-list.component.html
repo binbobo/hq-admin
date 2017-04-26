@@ -4,12 +4,12 @@
     工单列表
   </div>
   <div class="card-block">
-    <form [formGroup]="workSheetFilterForm" (ngSubmit)="onLoadList()">
+    <form [formGroup]="workSheetFilterForm" (ngSubmit)="onSearch()">
       <!--不同工单状态工单复选框部分-->
       <div class="form-group">
-         <div class="form-check form-check-inline" *ngFor="let status of orderStatusData">
+        <div class="form-check form-check-inline" *ngFor="let status of orderStatusData">
           <label class="form-check-label">
-            <input (onchange)='toggleCheckbox(this)' class="form-check-input" formControlName="{{status.key}}" type="checkbox" value="{{status.id}}"> {{status.value}}
+            <input (change)='status.checked = !status.checked' [checked]="status.checked" class="form-check-input"  type="checkbox" value="{{status.id}}"> {{status.value}}
           </label>
         </div>
       </div>
@@ -97,16 +97,17 @@
               </div>
               <label for="enterStoreTime" class="col-sm-1 col-form-label col-form-label-sm">进店时间</label>
               <div class="input-group input-group-sm col-sm-2">
-                <input class="form-control form-control-sm datetime-picker" type="text" readonly formControlName="enterStoreTimeStart" ngui-datetime-picker
-                  date-format="YYYY-MM-DD hh:mm" hour="2" minute='59' close-on-select="false" />
+                <input [(ngModel)]="params.enterStartTimeDate" class="form-control form-control-sm datetime-picker" type="text" readonly
+                  formControlName="enterStoreTimeStart" ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="2" minute='59'
+                  close-on-select="false" />
                 <span class="input-group-addon">
                 <i class="fa fa-calendar" aria-hidden="true"></i>
               </span>
               </div>
               <label class="col-sm-1 col-form-label col-form-label-sm">至</label>
               <div class="input-group input-group-sm col-sm-2">
-                <input class="form-control form-control-sm datetime-picker" type="text" readonly formControlName="enterStoreTimeEnd" ngui-datetime-picker
-                  date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' close-on-select="false" />
+                <input [(ngModel)]="params.enterEndTimeDate" class="form-control form-control-sm datetime-picker" type="text" readonly formControlName="enterStoreTimeEnd"
+                  ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' close-on-select="false" />
                 <span class="input-group-addon">
                   <i class="fa fa-calendar" aria-hidden="true"></i>
                 </span>
@@ -116,23 +117,24 @@
             <div class="form-group row">
               <label for="leaveFactoryTime" class="col-sm-1 col-form-label col-form-label-sm">出厂时间</label>
               <div class="input-group input-group-sm col-sm-2">
-                <input class="form-control form-control-sm datetime-picker" type="text" readonly formControlName="leaveFactoryTimeStart"
-                  ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' close-on-select="false" />
+                <input [(ngModel)]="params.leaveStartTimeDate" class="form-control form-control-sm datetime-picker" type="text" readonly
+                  formControlName="leaveFactoryTimeStart" ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="23" minute='59'
+                  close-on-select="false" />
                 <span class="input-group-addon">
                 <i class="fa fa-calendar" aria-hidden="true"></i>
               </span>
               </div>
               <label class="col-sm-1 col-form-label col-form-label-sm">至</label>
               <div class="input-group input-group-sm col-sm-2">
-                <input class="form-control form-control-sm datetime-picker" type="text" readonly formControlName="leaveFactoryTimeEnd" ngui-datetime-picker
-                  date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' close-on-select="false" />
+                <input [(ngModel)]="params.leaveEndTimeDate" class="form-control form-control-sm datetime-picker" type="text" readonly formControlName="leaveFactoryTimeEnd"
+                  ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' close-on-select="false" />
                 <span class="input-group-addon">
                 <i class="fa fa-calendar" aria-hidden="true"></i>
               </span>
               </div>
               <label for="searchRange" class="col-sm-1 col-form-label col-form-label-sm">查询范围</label>
               <div class="col-sm-2">
-                <ngx-dropdown-treeview class="sm" [config]="config" [items]="items" (selectedChange)="onSelectedChange($event)"> >
+                <ngx-dropdown-treeview class="sm" [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)"> >
                 </ngx-dropdown-treeview>
               </div>
               <div class="col-sm-3" *ngIf="!isCollapsed">
@@ -178,15 +180,15 @@
       <tbody>
         <tr *ngFor="let item of list">
           <td width="75">
-            <a>作废</a> |
-            <a (click)="selectedOrder=item;lgModal.show()">详情</a>
+            <a href="#" (click)="nullifyHandler($event, item.id)">作废</a> |
+            <a href="#" (click)="orderDetailsHandler($event, item.id, lgModal)">详情</a>
           </td>
           <td>{{item.orgName}}</td>
           <td>{{item.statusName}}</td>
           <td>{{item.typeName}}</td>
           <td>{{item.billCode}}</td>
-          <td>{{item.createdOnUtc}}</td>
-          <td>{{item.expectLeave}}</td>
+          <td>{{item.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+          <td>{{item.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</td>
           <td>{{item.overTime}}</td>
           <td>{{item.createdUserName}}</td>
           <td>{{item.brand}}</td>
@@ -200,7 +202,7 @@
           <td>{{item.introducer}}</td>
           <td>{{item.introPhone}}</td>
           <td>{{item.employeeNames}}</td>
-          <td>{{item.leaveTime }}</td>
+          <td>{{item.leaveTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
         </tr>
       </tbody>
     </table>
@@ -213,18 +215,17 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title pull-left">工单详情</h4>
+            <button type="button" class="btn btn-secondary pull-left" aria-label="Close">打印</button>
             <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
           </div>
           <div class="modal-body" style='overflow: scroll;'>
             <!--导出详情begin-->
-            <h3 style='text-align:center;'>详情</h3>
-            <hr>
-            <hr>
+
             <!--工单详情 start-->
             <table class="table table-hover table-bordered table-sm">
+              <caption>工单详情</caption>
               <thead>
                 <tr class='table-info'>
                   <th>店名</th>
@@ -250,141 +251,131 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of detailData">
-                  <td>{{item.storeName}}</td>
-                  <td>{{item.status}}</td>
-                  <td>{{item.type}}</td>
-                  <td>{{item.orderNo}}</td>
-                  <td>{{item.enterTime}}</td>
-                  <td>{{item.predictedTime}}</td>
-                  <td>{{item.outeOfDate}}</td>
-                  <td>{{item.serviceConsultant}}</td>
-                  <td>{{item.brand}}</td>
-                  <td>{{item.carType}}</td>
-                  <td>{{item.plateNumber}}</td>
-                  <td>{{item.mileage}}</td>
-                  <td>{{item.buyTime}}</td>
-                  <td>{{item.carOwner}}</td>
-                  <td>{{item.sender}}</td>
-                  <td>{{item.senderPhoneNumber}}</td>
-                  <td>{{item.introducer}}</td>
-                  <td>{{item.introducerPhoneNumber}}</td>
-                  <td>{{item.repairTechnician}}</td>
-                  <td>{{item.leaveFactoryTime}}</td>
+                <tr>
+                  <td>{{selectedOrder?.orgName}}</td>
+                  <td>{{selectedOrder?.statusName}}</td>
+                  <td>{{selectedOrder?.typeName}}</td>
+                  <td>{{selectedOrder?.billCode}}</td>
+                  <td>{{selectedOrder?.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                  <td>{{selectedOrder?.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                  <td>{{selectedOrder?.overTime}}</td>
+                  <td>{{selectedOrder?.createdUserName}}</td>
+                  <td>{{selectedOrder?.brand}}</td>
+                  <td>{{selectedOrder?.model}}</td>
+                  <td>{{selectedOrder?.plateNo}}</td>
+                  <td>{{selectedOrder?.mileage}}</td>
+                  <td>{{selectedOrder?.purchaseDate|date:"yyyy/MM/dd"}}</td>
+                  <td>{{selectedOrder?.customerName}}</td>
+                  <td>{{selectedOrder?.contactUser}}</td>
+                  <td>{{selectedOrder?.contactInfo}}</td>
+                  <td>{{selectedOrder?.introducer}}</td>
+                  <td>{{selectedOrder?.introPhone}}</td>
+                  <td>{{selectedOrder?.employeeNames}}</td>
+                  <td>{{selectedOrder?.leaveTim|date:"yyyy/MM/dd HH:mm:ss" }}</td>
                 </tr>
               </tbody>
             </table>
-            <!--工单详情 end-->
-            <!--维修项目 start-->
-            <h3 style='text-align:center;'>维修项目</h3>
-            <hr>
-            <hr>
-            <table class="table table-hover table-bordered table-sm">
-              <thead>
-                <tr class='table-success'>
-                  <th>指派维修技师</th>
-                  <th>项目名称</th>
-                  <th>维修工时</th>
-                  <th>工时单价</th>
-                  <th>金额</th>
-                  <th>折扣率</th>
-                  <th>操作时间</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of repairData">
-                  <td><span class='triangle'></span>{{item.g}}<span class='assign-detail'>{{(item.g).length>0?"更改":"指派"}}</span></td>
-                  <td>{{item.a}}</td>
-                  <td>{{item.b}}</td>
-                  <td>{{item.c}}</td>
-                  <td>{{item.d}}</td>
-                  <td>{{item.e}}</td>
-                  <td>{{item.f}}</td>
-                </tr>
-              </tbody>
-            </table>
-            <!--维修项目 end-->
-            <!--维修配件 start-->
-            <h3 style='text-align:center;'>维修配件</h3>
-            <hr>
-            <hr>
-            <table class="table table-hover table-bordered table-sm">
-              <thead>
-                <tr class='table-warning'>
-                  <th>维修项目</th>
-                  <th>配件名称</th>
-                  <th>品牌</th>
-                  <th>规格型号</th>
-                  <th>数量</th>
-                  <th>单价（元）</th>
-                  <th>金额（元）</th>
-                  <th>操作时间</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of repairPartsData">
-                  <td>{{item.a}}</td>
-                  <td>{{item.b}}</td>
-                  <td>{{item.c}}</td>
-                  <td>{{item.d}}</td>
-                  <td>{{item.e}}</td>
-                  <td>{{item.f}}</td>
-                  <td>{{item.f}}</td>
-                </tr>
-              </tbody>
-            </table>
-            <!--维修配件 end-->
-            <!--附加项目 start-->
-            <h3 style='text-align:center;'>附加项目</h3>
-            <hr>
-            <hr>
-            <table class="table table-hover table-bordered table-sm">
-              <thead>
-                <tr class='table-danger'>
-                  <th>项目名称</th>
-                  <th>数量</th>
-                  <th>单价（元）</th>
-                  <th>金额（元）</th>
-                  <th>备注</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of addPartsData">
-                  <td>{{item.a}}</td>
-                  <td>{{item.b}}</td>
-                  <td>{{item.c}}</td>
-                  <td>{{item.d}}</td>
-                  <td>{{item.e}}</td>
-                </tr>
-              </tbody>
-            </table>
-            <!--附加项目 end-->
-            <!--建议维修项 start-->
-            <h3 style='text-align:center;'>建议维修项</h3>
-            <hr>
-            <hr>
-            <table class="table table-hover table-bordered table-sm">
-              <thead>
-                <tr class='table-warning'>
-                  <th>建议维修项目</th>
-                  <th>是否修理</th>
-                  <th>操作时间</th>
-                  <th>操作员</th>
-                  <th>折扣率</th>
-                  <th>备注</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of addvicePartsData">
-                  <td>{{item.a}}</td>
-                  <td>{{item.b}}</td>
-                  <td>{{item.c}}</td>
-                  <td>{{item.d}}</td>
-                  <td>{{item.e}}</td>
-                  <td>{{item.f}}</td>
-                </tr>
-              </tbody>
-            </table>
+
+            <br>
+            <tabset>
+              <tab heading=" 维修项目">
+                <table class="table table-hover table-bordered table-sm">
+                  <thead>
+                    <tr>
+                      <th>项目名称</th>
+                      <th>维修工时</th>
+                      <th>工时单价(元)</th>
+                      <th>金额(元)</th>
+                      <th>折扣率</th>
+                      <th>操作时间</th>
+                      <th>操作员</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let record of selectedOrder?.serviceOutputs">
+                      <td>{{record?.name}}</td>
+                      <td>{{record?.workHour}}</td>
+                      <td>{{record?.price}}</td>
+                      <td>{{record?.workHour * record?.price}}</td>
+                      <td>{{record?.discount}}</td>
+                      <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                      <td>{{user.username}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </tab>
+              <tab heading="维修配件">
+                <table class="table table-hover table-bordered table-sm">
+                  <thead>
+                    <tr>
+                      <th>维修工项</th>
+                      <th>配件名称</th>
+                      <th>品牌</th>
+                      <th>规格型号</th>
+                      <th>数量</th>
+                      <th>单价(元)</th>
+                      <th>金额(元)</th>
+                      <th>操作时间</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let record of selectedOrder?.productOutputs">
+                      <td>{{record?.serviceName}}</td>
+                      <td>{{record?.productName}}</td>
+                      <td>{{record?.brandName}}</td>
+                      <td>{{record?.specification}}</td>
+                      <td>{{record?.count}}</td>
+                      <td>{{record?.price}}</td>
+                      <td>{{record?.price * record?.count}}</td>
+                      <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </tab>
+              <tab heading="附加项目">
+                <table class="table table-hover table-bordered table-sm">
+                  <thead>
+                    <tr>
+                      <th>备注</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let record of selectedOrder?.attachServiceOutputs">
+                      <td>{{record?.description}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </tab>
+
+              <tab heading="建议维修项目">
+                <table class="table table-hover table-bordered table-sm">
+                  <thead>
+                    <tr>
+                      <th>建议维修项目</th>
+                      <th>操作时间</th>
+                      <th>备注</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let record of selectedOrder?.SuggestServiceDetailOutput">
+                      <td>{{record?.content}}</td>
+                      <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                      <td>{{record?.description}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </tab>
+              <!--只有前4个选项卡显示-->
+              <div *ngIf="true" class="card">
+                <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
+                  折前费用: 工时费
+                  <span class="ml-2 mr-2">{{selectedOrder?.workHourFee}}</span> | 材料费
+                  <span class="ml-2 mr-2">{{selectedOrder?.materialFee}}</span> | 其它
+                  <span class="ml-2 mr-2">{{selectedOrder?.otherFee}}</span> | 合计
+                  <span class="ml-2 mr-2">{{selectedOrder?.sumFee}}</span>|
+                </div>
+              </div>
+            </tabset>
             <!--建议维修项 end-->
             <!--导出详情end-->
           </div>

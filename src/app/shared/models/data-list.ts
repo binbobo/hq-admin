@@ -63,7 +63,6 @@ export abstract class DataList<T> implements OnInit {
   }
 
   protected onLoadList() {
-    console.log('test:', this.params);
     this.params.setPage(1);
     this.loadList();
   }

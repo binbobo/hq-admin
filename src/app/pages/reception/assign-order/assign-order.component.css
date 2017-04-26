@@ -1,14 +1,28 @@
-.assign{
-    position: relative;
+/*重写表格样式*/
+.table th, .table td {
+    text-align: center;
+    vertical-align: middle;
+    font-size: small;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
-.assign table th{
-    font-size:.8rem;
-    vertical-align: top;
-    min-width: 40px;
+.table th {
+    background: silver;
 }
-.assign table td{
-    font-size:.8rem;
+@media (min-width: 992px) {
+    .modal-lg {
+        max-width: 1000px;
+    }
 }
+
+caption {
+    caption-side: top;
+    text-align: center;
+}
+
+
+
+
 .assign .assign-person{
     cursor:pointer;
     display: block;
@@ -36,11 +50,9 @@ position: absolute;
 }
 /*工单详情部分*/
  .modal-content{
-     background-color: #eceeef;
+     /*background-color: #eceeef;*/
  }
- table{
-     background-color: #fff;
- }
+
 @media (min-width: 400px){
 .modal-lg {
     max-width: 1200px;
