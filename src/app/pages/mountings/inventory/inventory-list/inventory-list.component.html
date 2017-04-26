@@ -39,7 +39,7 @@
     <table class="table table-bordered table-sm table-striped">
       <thead>
         <tr>
-          <th translate><input type="checkbox"></th>
+          <th translate><input (change)="onCheckChange($event)" type="checkbox"></th>
           <th translate>序号</th>
           <th translate>库位</th>
           <th translate>类别</th>
@@ -61,7 +61,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of list">
-          <td><input type="checkbox"></td>
+          <td><input [(ngModel)]="item.checked" type="checkbox"></td>
           <td>{{item.logLevel}}</td>
           <td>{{ item.databaseName}}</td>
           <td>{{item.environmentName}}</td>
@@ -83,5 +83,10 @@
       </tbody>
     </table>
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+  </div>
+  <div class="card-footer text-muted">
+    <button class="btn btn-primary" (click)="createModal.show()">新增</button>
+    <button class="btn btn-warning" [disabled]="!selectedItems?.length" (click)="enabled()">启用/停用</button>
+    <button class="btn btn-secondary" (click)="export()">导出</button>
   </div>
 </div>

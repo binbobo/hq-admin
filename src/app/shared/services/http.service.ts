@@ -92,8 +92,11 @@ export class HttpService {
             } else if (error.status == 403) {
                 errMsg = '请求没有权限！';
             } else if (error.status === 0) {
-                errMsg = '网络连接失败！'
-            } else {
+                errMsg = '远程连接失败！';
+            } else if (error.status == 404) {
+                errMsg = '没有找到请求的资源！';
+            }
+            else {
                 const body = error.json() || '';
                 if (body) {
                     errMsg = body.error || this.handleModelValidateError(body) || JSON.stringify(body);
