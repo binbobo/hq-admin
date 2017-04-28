@@ -3,6 +3,7 @@ import { SharedModule } from "app/shared/shared.module";
 import { MountingsRoutingModule, routedComponents } from "./mountings.routing";
 import { PriceCheckService } from './price-check/price-check.service';
 import { MountingsService } from './mountings.service';
+import { StockListCreateService } from './take-stock/stock-list-create/stock-list-create.service';
 
 
 @NgModule({
@@ -10,7 +11,7 @@ import { MountingsService } from './mountings.service';
     SharedModule,
     MountingsRoutingModule
   ],
-  providers: [PriceCheckService, MountingsService],
+  providers: [PriceCheckService, MountingsService, StockListCreateService],
   declarations: [routedComponents]
 })
 export class MountingsModule { }

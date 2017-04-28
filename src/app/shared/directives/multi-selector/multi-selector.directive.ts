@@ -15,11 +15,13 @@ export class MultiSelectorDirective {
   @Output()
   public onChange = new EventEmitter<SelectOption>();
   @Output()
-  public onConfirm = new EventEmitter<SelectOption>();
+  public onConfirm = new EventEmitter<Array<SelectOption>>();
+  @Output()
+  public onCancel = new EventEmitter();
   /**
    * Title of a popover.
    */
-  @Input() public mTitle: string;
+  @Input() public title: string;
   /**
    * Placement of a popover. Accepts: "top", "bottom", "left", "right"
    */
@@ -66,6 +68,7 @@ export class MultiSelectorDirective {
     Object.assign(this, _config);
     this.onShown = this._selector.onShown;
     this.onHidden = this._selector.onHidden;
+    this.onCancel.subscribe(() => this.hide());
   }
 
   private set mSelector(options: Array<SelectOption>) {
@@ -83,10 +86,11 @@ export class MultiSelectorDirective {
       .position({ attachment: this.placement })
       .show({
         placement: this.placement,
-        title: this.mTitle,
+        title: this.title,
         options: this.options,
         onChange: this.onChange,
-        onConfirm: this.onConfirm
+        onConfirm: this.onConfirm,
+        onCancel: this.onCancel
       });
     this.isOpen = true;
   }

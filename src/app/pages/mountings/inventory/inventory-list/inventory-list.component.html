@@ -4,7 +4,7 @@
     库存管理
   </div>
   <div class="card-block">
-    <form class="form-inline mb-2">
+    <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
       <div class="form-group mb-2">
         <label for="inlineFormCustomSelect">仓库：</label>
         <select class="form-control mx-sm-3" name="storehouseId" [(ngModel)]="params.storehouseId">
@@ -39,7 +39,7 @@
     <table class="table table-bordered table-sm table-striped">
       <thead>
         <tr>
-          <th translate><input (change)="onCheckChange($event)" type="checkbox"></th>
+          <th><input (change)="onCheckChange($event)" type="checkbox"></th>
           <th translate>序号</th>
           <th translate>库位</th>
           <th translate>类别</th>
@@ -62,18 +62,18 @@
       <tbody>
         <tr *ngFor="let item of list">
           <td><input [(ngModel)]="item.checked" type="checkbox"></td>
+          <td>{{item.number}}</td>
+          <td>{{ item.storageLocationName}}</td>
+          <td>{{item.category}}</td>
           <td>{{item.logLevel}}</td>
+          <td>{{ item.code}}</td>
+          <td>{{item.name}}</td>
+          <td>{{item.count}}</td>
+          <td>{{ item.vehicleName}}</td>
+          <td>{{item.unit}}</td>
+          <td>{{item.price}}</td>
           <td>{{ item.databaseName}}</td>
-          <td>{{item.environmentName}}</td>
-          <td>{{item.logLevel}}</td>
-          <td>{{ item.databaseName}}</td>
-          <td>{{item.environmentName}}</td>
-          <td>{{item.logLevel}}</td>
-          <td>{{ item.databaseName}}</td>
-          <td>{{item.environmentName}}</td>
-          <td>{{item.logLevel}}</td>
-          <td>{{ item.databaseName}}</td>
-          <td>{{item.environmentName}}</td>
+          <td>{{item.maxCount}}</td>
           <td>{{item.logLevel}}</td>
           <td>{{ item.databaseName}}</td>
           <td>{{item.environmentName}}</td>

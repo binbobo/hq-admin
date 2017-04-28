@@ -1,0 +1,54 @@
+<ng-template hq-alerter></ng-template>
+<div class="card">
+  <div class="card-header">
+    盘点清单详情
+  </div>
+  <div class="card-block">
+    <div id="printpage">
+      <div class="mb-2">
+        <span>盘点单号：{{'A1-2222'}}</span>
+        <span>生成时间：{{'2017-04-18 12:09:08'}}</span>
+      </div>
+      <table class="table table-bordered table-sm table-striped">
+        <thead>
+          <tr>
+            <th translate>序号</th>
+            <th translate>品牌</th>
+            <th translate>配件编码</th>
+            <th translate>配件名称</th>
+            <th translate>规格型号</th>
+            <th translate>数量</th>
+            <th translate>仓库</th>
+            <th translate>库位</th>
+            <th translate>成本</th>
+            <th translate>账面库存</th>
+            <th translate>清点数</th>
+            <th translate>操作人</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of list">
+            <td>{{item.number}}</td>
+            <td>{{ item.productBrand }}</td>
+            <td>{{item.productCode }}</td>
+            <td>{{item.productName }}</td>
+            <td>{{ item.productSpecification }}</td>
+            <td>{{item.count }}</td>
+            <td>{{item.houseName}}</td>
+            <td>{{ item.locationName}}</td>
+            <td>{{item.price }}</td>
+            <td>{{item.stock}}</td>
+            <td>{{item.stock}}</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table><button class="btn btn-primary" (click)="print()">打印</button>
+    </div>
+
+  </div>
+  <div class="card-footer text-muted">
+    <button class="btn btn-secondary" (click)="location.back()">退出页面</button>
+    <button class="btn btn-primary" (click)="print()">打印</button>
+    <button class="btn btn-info" (click)="export()">导出</button>
+  </div>
+</div>

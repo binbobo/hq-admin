@@ -7,6 +7,7 @@ const routes: Routes = [
     { path: 'inbound', loadChildren: 'app/pages/mountings/inbound/inbound.module#InboundModule' },
     { path: 'inventory', loadChildren: 'app/pages/mountings/inventory/inventory.module#InventoryModule' },
     { path: 'provider', loadChildren: 'app/pages/mountings/provider/provider.module#ProviderModule' },
+    { path: 'inventory-list', loadChildren: 'app/pages/mountings/take-stock/take-stock.module#TakeStockModule' },
     { path: 'price', component: PriceCheckComponent },
 ];
 
