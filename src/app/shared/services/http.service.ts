@@ -91,8 +91,6 @@ export class HttpService {
                 this.refresh();
             } else if (error.status == 403) {
                 errMsg = '请求没有权限！';
-            } else if (error.status === 0) {
-                errMsg = '远程连接失败！';
             } else if (error.status == 404) {
                 errMsg = '没有找到请求的资源！';
             }

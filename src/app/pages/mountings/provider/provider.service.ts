@@ -45,8 +45,8 @@ export class ProviderService implements BasicService<Provider> {
   }
   enable(ids: Array<string>): Promise<void> {
     let params = new EnableRequest(ids);
-    let url = Urls.chain.concat('/suppliers/setEnable?', params.serialize());
-    return this.httpService.put<void>(url, {})
+    let url = Urls.chain.concat('/suppliers/setEnable');
+    return this.httpService.put<void>(url, params)
       .catch(err => Promise.reject(`供应商状态更新失败：${err}`));
   }
 }
@@ -78,10 +78,9 @@ export class Provider extends BasicModel {
   }
 }
 
-export class EnableRequest extends RequestParams {
+export class EnableRequest {
   constructor(
     public ids: Array<string>
   ) {
-    super();
   }
 }

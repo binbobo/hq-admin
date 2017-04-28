@@ -23,7 +23,9 @@ export class MultiSelectorComponent implements OnInit {
   @Output()
   public onChange = new EventEmitter<SelectOption>();
   @Output()
-  public onConfirm = new EventEmitter();
+  public onConfirm = new EventEmitter<Array<SelectOption>>();
+  @Output()
+  public onCancel = new EventEmitter();
 
   constructor(config: PopoverConfig) {
     Object.assign(this, config);
@@ -35,8 +37,13 @@ export class MultiSelectorComponent implements OnInit {
     this.onChange.emit(item);
   }
 
-  onSubmit() {
-    this.onConfirm.emit();
+  submit() {
+    let items = this.options.filter(m => m.selected);
+    this.onConfirm.emit(items);
+  }
+
+  cancel() {
+    this.onCancel.emit();
   }
 
   ngOnInit() {
