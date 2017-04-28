@@ -5,10 +5,10 @@
   <div class="card-block">
  <div class="" hq-alerter></div>
     <form [formGroup]="myForm" class='form-in mb-2 ng-pristine ng-valid assign-form ng-untouched'>
-      <input #search formControlName="state" [typeahead]="plateNoData" typeaheadOptionField="plateNo" (typeaheadOnSelect)="OnSearchClick($event)"
-        placeholder="请输入工单号/车牌号" class="form-control mr-2">
-      <!--<input [hq-table-typeahead]="typeaheadSource" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)" class="form-control"
-        placeholder="请输入工单号/车牌号"/>-->
+      <!--<input #search formControlName="state" [typeahead]="plateNoData" typeaheadOptionField="plateNo" (typeaheadOnSelect)="OnSearchClick($event)"
+        placeholder="请输入工单号/车牌号" class="form-control mr-2">-->
+      <input [hq-table-typeahead]="typeaheadSource" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)" class="form-control"
+        placeholder="请输入工单号/车牌号"/>
     </form>
 
     <table class="table search-table">
@@ -251,7 +251,7 @@
         <span class="ml-2 mr-2">{{sumFee}}</span>|
       </div>
       <div class="card-block text-center">
-        <input type="text" readonly class="btn btn-primary" (click)="submitAddOrder()" value='提交增项'>
+        <input type="text" readonly class="btn btn-primary"  (click)="submitAddOrder()" value='提交增项'>
         <input type="text" readonly class="btn btn-primary" value='挂单'>
       </div>
     </div>

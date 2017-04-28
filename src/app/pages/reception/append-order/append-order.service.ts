@@ -9,24 +9,12 @@ export class AppendOrderService {
   constructor(private httpService: HttpService) {
   }
 
-  // getAppendOrderParma(params: AppendOrderSearch):Observable<PagedResult<ReturnData>> {
-  //   let url = Urls.chain.concat("/Maintenances/increase/search");
-  //   return Observable.fromPromise(this.httpService.get<PagedResult<ReturnData>>(url, params.serialize()))
-  // }
-
   //  根据工单或者车牌号搜索
-  getAppendOrderParma(keyword?: string): Observable<SearchReturnData[]> {
+  getAppendOrderParma(params: AppendItemSearchRequest): Promise<PagedResult<SearchReturnData>> {
+    let search = params.serialize();
     const url = Urls.chain.concat('/Maintenances/increase/search');
     return this.httpService
-      .request(url, {
-        params: {
-          'Keyword': keyword
-        }
-      })
-      .map(response => {    
-        return response.json().data as SearchReturnData[];
-
-      });
+      .get<PagedResult<SearchReturnData>>(url, search);
   }
 
 
@@ -35,20 +23,20 @@ export class AppendOrderService {
     const url = Urls.chain.concat('/Maintenances/', id);
     return this.httpService
       .get<ApiResult<DetailData>>(url)
-      .then(result =>{ 
-        return result.data})
+      .then(result => {
+        return result.data
+      })
       .then(data => data || Promise.reject('获取数据无效！'))
       .catch(err => Promise.reject(`加载失败：${err}`));
   }
 
   // 新增维修项目及附加项目
-  public post(body:any): Promise<any> {
+  public post(body: any): Promise<any> {
     const url = Urls.chain.concat('/MaintenanceItems/list');
     return this.httpService
       .post<ApiResult<any>>(url, body)
       .catch(err => Promise.reject(`${err}`));
   }
-
 
   // 新增建议维修项目
   public suggestpost(body: any): Promise<any> {
@@ -94,7 +82,7 @@ export class SearchReturnData {
 
 export class DetailData {
   constructor(
-    public id:any,
+    public id: any,
     public serviceOutputs: any = [],//维修项目
     public attachServiceOutputs: Array<any> = [],//附加项目
     public suggestServiceOutputs: any = [],//建议维修项
@@ -103,4 +91,8 @@ export class DetailData {
   ) { }
 }
 
-
+export class AppendItemSearchRequest extends PagedParams {
+  constructor(
+    public keyword?: string
+  ) { super(); }
+}
