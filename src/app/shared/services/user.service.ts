@@ -21,7 +21,7 @@ export class UserService {
             this._user = null;
             this.clearStorage();
             this.redirectUrl = this.router.url;
-            this.router.navigateByUrl('/login');
+            this.router.navigateByUrl('/auth/login');
         });
         let user = this.user;
         if (user && user.token) {

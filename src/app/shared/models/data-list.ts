@@ -2,7 +2,7 @@ import { PagedParams, PagedResult, BasicService } from 'app/shared/models';
 import { OnInit, ViewChild, Injector } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
 import { ActivatedRoute, Params } from '@angular/router';
-import { HqAlerter }  from 'app/shared/directives';
+import { HqAlerter } from 'app/shared/directives';
 
 export abstract class DataList<T> implements OnInit {
 
@@ -46,6 +46,16 @@ export abstract class DataList<T> implements OnInit {
     this.loadList();
   }
 
+  protected onCheckChange($event: Event) {
+    let el = $event.target as HTMLInputElement;
+    this.list.forEach(m => m['checked'] = el.checked);
+  }
+
+  protected get selectedItems(): Array<T> {
+    if (!this.list) return null;
+    return this.list.filter(m => m['checked'] === true);
+  }
+
   protected loadList() {
     this.loading = true;
     this.list = null;
@@ -63,7 +73,6 @@ export abstract class DataList<T> implements OnInit {
   }
 
   protected onLoadList() {
-    console.log('test:', this.params);
     this.params.setPage(1);
     this.loadList();
   }

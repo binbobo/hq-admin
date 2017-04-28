@@ -27,7 +27,7 @@ export class OrderService implements BasicService<Order> {
     }
 
     /**
-    * 获取维修类型数据
+    * 获取工单状态数据  用于工单列表条件过滤
     * @memberOf OrderService
     */
     getOrderStatus(): Observable<any[]> {
@@ -211,45 +211,34 @@ export class OrderService implements BasicService<Order> {
             .map(response => {
                 console.log('获取可以选择的门店，用于中查询范围下拉框：', response.json().data);
 
+                let orgs = null;
+                if (this.orgsRecursion([response.json().data])) {
+                    orgs = <any>this.orgsRecursion([response.json().data])[0];
+                }
                 // 每个车主下面可能有多个车辆信息
-                return [new TreeviewItem(this.orgsRecursion(response.json().data))];
+                return [new TreeviewItem(orgs)];
             });
     }
-    // 递归组织列表
-    private orgsRecursion(orgObj) {
-        const treeviewItem = {
-            text: orgObj.name,
-            value: orgObj.id
-        };
 
-        return treeviewItem;
+    // 递归组织(门店)树结构
+    private orgsRecursion(orgsArr: Array<any>) {
+        if (!orgsArr) {
+            return null;
+        };
+        return orgsArr.map((value, index, array) => {
+            const obj = { text: value.name, value: value.id };
+            // 如果有子组织, 递归遍历
+            if (value.children && value.children.length > 0) {
+                obj['children'] = this.orgsRecursion(value.children);
+            }
+            return obj;
+        });
     }
 
-
-    // /**
-    //  * 获取可以选择的门店，用于中查询范围下拉框
-    //  * @memberOf OrderService
-    //  */
-    // getSelectableStores(): TreeviewItem[] {
-    //     const beijingStores = new TreeviewItem({
-    //         text: '北京店',
-    //         value: 9
-    //     });
-    //     const neimengStores = new TreeviewItem({
-    //         text: '内蒙总店',
-    //         value: 9,
-    //         children: [{
-    //             text: '包头店', value: 91
-    //         }]
-    //     });
-    //     const shanghaiStores = new TreeviewItem({
-    //         text: '上海店',
-    //         value: 9
-    //     });
-
-    //     return [beijingStores, shanghaiStores, neimengStores];
-    // }
-
+    /**
+     * 分页获取工单列表信息
+     * @param params
+     */
     public getPagedList(params: PagedParams): Promise<PagedResult<Order>> {
         const url = Urls.chain.concat('/Maintenances?', params.serialize());
         return this.httpService
@@ -261,10 +250,18 @@ export class OrderService implements BasicService<Order> {
             .catch(err => Promise.reject(`加载工单列表失败：${err}`));
     }
 
-    public get(id: string): Promise<Order> {
-        const url = Urls.chain.concat('/order/', id);
+    /**
+     * 根据工单id查询工单详细信息
+     * 
+     * @param {string} id 
+     * @returns {Promise<Order>} 
+     * 
+     * @memberOf OrderService
+     */
+    public get(id: string): Promise<any> {
+        const url = Urls.chain.concat('/Maintenances/', id);
         return this.httpService
-            .get<ApiResult<Order>>(url)
+            .get<ApiResult<any>>(url)
             .then(result => result.data)
             .then(data => data || Promise.reject('获取数据无效！'))
             .catch(err => Promise.reject(`加载菜单失败：${err}`));
@@ -289,25 +286,26 @@ export class OrderService implements BasicService<Order> {
         throw new Error('Method not implemented.');
     }
 
+    /**
+     * 根据工单Id, 删除一条工单记录 作废
+     * @param {string} id 
+     * @returns {Promise<void>} 
+     * 
+     * @memberOf OrderService
+     */
     public delete(id: string): Promise<void> {
-        const url = Urls.chain.concat('/order/', id);
+        const url = Urls.chain.concat('/Maintenances/', id);
         return this.httpService
             .delete(url)
             .catch(err => Promise.reject(`删除工单失败：${err}`));
     }
 }
 
-export interface MyTreeviewItem {
-    text: string;
-    value: string;
-    children?: Array<MyTreeviewItem>;
-}
-
 // 工单请求参数类
 export class OrderListRequest extends PagedParams {
     constructor(
         // 工单列表页面查询参数
-        public status?: Array<string>, // 工单状态
+        public states?: Array<string>, // 工单状态
         public plateNo?: string, // 车牌号
         public customerName?: string, // 车主
         public phone?: string, // 车主电话
@@ -319,8 +317,10 @@ export class OrderListRequest extends PagedParams {
         public billCode?: string, // 工单号
         public createdUserName?: string, // 服务顾问
         public type?: string, // 维修类型
-        public createdOnUtc?: string, // 进店时间
-        public leaveTime?: string, // 出厂时间
+        public enterStartTimeDate?: string, // 进店开始时间
+        public enterEndTimeDate?: string, // 进店结束时间
+        public leaveStartTimeDate?: string, // 出厂开始时间
+        public leaveEndTimeDate?: string, // 出厂结束时间
         public orgIds?: Array<string> // 查询范围
     ) {
         super('OrderListRequestParams');

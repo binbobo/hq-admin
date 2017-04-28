@@ -1,0 +1,97 @@
+<ng-template hq-alerter></ng-template>
+<div class="card">
+  <div class="card-header">
+    <span>供应商管理</span>
+  </div>
+  <div class="card-block">
+    <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
+      <div class="form-group mb-2">
+        <label for="inlineFormCustomSelect">供应商名称：</label>
+        <input type="text" class="form-control mx-sm-3" name="name" [(ngModel)]="params.name" placeholder="供应商名称">
+      </div>
+      <div class="form-group mb-2">
+        <label class="mr-sm-2" for="inlineFormCustomSelect">联系人：</label>
+        <input type="text" class="form-control mx-sm-3" name="contactUser" [(ngModel)]="params.contactUser" placeholder="联系人">
+      </div>
+      <div class="form-group mb-2">
+        <label class="mr-sm-2" for="inlineFormCustomSelect">联系人电话：</label>
+        <input type="text" class="form-control mx-sm-3" name="tel" [(ngModel)]="params.tel" placeholder="联系人电话">
+      </div>
+      <div class="form-group mb-2">
+        <button type="submit" class="btn btn-primary mx-sm-1" translate>search</button>
+      </div>
+    </form>
+    <table class="table table-bordered table-sm table-striped">
+      <thead>
+        <tr>
+          <th translate><input (change)="onCheckChange($event)" type="checkbox"></th>
+          <th translate>序号</th>
+          <th translate>代码</th>
+          <th translate>名称</th>
+          <th translate>简称</th>
+          <th translate>联系人</th>
+          <th translate>联系人电话</th>
+          <th translate>地址</th>
+          <th translate>邮编</th>
+          <th translate>传真</th>
+          <th translate>备注</th>
+          <th translate>状态</th>
+          <th translate>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of list">
+          <td><input [(ngModel)]="item.checked" type="checkbox"></td>
+          <td>{{item.number}}</td>
+          <td>{{item.code}}</td>
+          <td>{{item.name}}</td>
+          <td>{{item.shortName}}</td>
+          <td>{{item.contactUser}}</td>
+          <td>{{item.tel}}</td>
+          <td>{{item.address}}</td>
+          <td>{{item.postal}}</td>
+          <td>{{item.fax}}</td>
+          <td>{{item.description}}</td>
+          <td>{{item.status}}</td>
+          <td>
+            <button (click)="onProviderEdit(item)" class="btn btn-sm btn-success">编辑</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+  </div>
+  <div class="card-footer text-muted">
+    <button class="btn btn-primary" (click)="createModal.show()">新增</button>
+    <button class="btn btn-warning" [disabled]="!selectedItems?.length" (click)="enabled()">启用/停用</button>
+    <button class="btn btn-secondary" (click)="export()">导出</button>
+  </div>
+</div>
+
+<div class="modal fade" bsModal #createModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">新增供应商</h5>
+        <button class="close pull-right" (click)="createModal.hide()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <hq-provider-create (onSubmit)="onProviderCreate($event)"></hq-provider-create>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" bsModal #editModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">修改供应商</h5>
+        <button class="close pull-right" (click)="editModal.hide()">&times;</button>
+      </div>
+      <div *ngIf="provider" class="modal-body">
+        <hq-provider-edit (onSubmit)="onProviderUpdate($event)" [model]="provider"></hq-provider-edit>
+      </div>
+    </div>
+  </div>
+</div>

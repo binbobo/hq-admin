@@ -16,6 +16,17 @@
     background: silver;
 }
 
+@media (min-width: 992px) {
+    .modal-lg {
+        max-width: 1000px;
+    }
+}
+
+caption {
+    caption-side: top;
+    text-align: center;
+}
+
 
 /*只读的文本框背景透明*/
 input[readonly]{

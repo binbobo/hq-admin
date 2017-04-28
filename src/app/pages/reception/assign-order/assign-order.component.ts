@@ -1,172 +1,167 @@
-import { Component, OnInit,ViewChild,Injector} from '@angular/core';
+import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { DataList } from '../../../shared/models/data-list';
-import { OrderService, OrderListRequest, Order } from '../order.service';
-import { ModalDirective } from 'ngx-bootstrap/modal';
+import { AssignService, AssignListRequest } from '../assign.service';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { StorageKeys } from 'app/shared/models';
+import { Observable } from 'rxjs/Observable';
 
 
 @Component({
-  selector: 'app-assign-order',
-  templateUrl: './assign-order.component.html',
-  styleUrls: ['./assign-order.component.css'],
+    selector: 'app-assign-order',
+    templateUrl: './assign-order.component.html',
+    styleUrls: ['./assign-order.component.css'],
 })
 
-export class AssignOrderComponent  extends DataList<Order> {
-  public   alerts: any = [];
-  private  isShowDetail=false;
-//   关闭按钮事件
-  OnClickClose(){
-      this.isShowDetail=false;
-  }
+export class AssignOrderComponent extends DataList<any> {
+    // 用于保存提示消息
+    public alerts: any = [];
 
-//   详情点击
-  OnDetailClick(){
-        this.isShowDetail=true;
+    // 表单
+    assignOrderForm: FormGroup;
+
+    // 查询参数对象
+    params: AssignListRequest;
+
+    // 保存维修指派类型数据
+    public maintenanceAssignTypes;
+
+    // 当前选择的工单记录   用于查看工单详情  执行作废等功能
+    selectedOrder = null;
+
+    // 当前登录用户信息
+    public user = null;
+
+
+    constructor(injector: Injector,
+        protected service: AssignService,
+        private fb: FormBuilder) {
+        super(injector, service);
+        this.params = new AssignListRequest();
+
+        // 获取当前登录用户信息
+        this.user = JSON.parse(sessionStorage.getItem(StorageKeys.Identity));
+        console.log('当前登陆用户: ', this.user);
+
+        // 创建表单
+        this.createForm();
+
+        // 初始化维修指派类型数据
+        this.service.getMaintenanceAssignTypes()
+            .subscribe(data => {
+                this.maintenanceAssignTypes = data;
+
+                // 初始时 要加入所有的工单状态
+                this.params.states = this.maintenanceAssignTypes.map(item => item.id);
+            });
+    }
+
+    createForm() {
+        this.assignOrderForm = this.fb.group({
+            keyword: '', // 车牌号
+        });
     }
 
 
-  // 详情数据
-  public detailData:any= [{
-                storeName: '总店', // 店名
-                status: '维修中', // 状态
-                type: '一般维修', // 维修类型
-                orderNo: '313523532523', // 工单号
-                enterTime: '2017-4-15 11:35:22', // 进店时间
-                predictedTime: '2017-4-16 11:35:22', // 预计交车时间
-                outeOfDate: '否', // 超时
-                serviceConsultant: 'gaofei', // 服务顾问
-                brand: '奥迪', // 品牌
-                carType: '', // 车型
-                plateNumber: '京A324P', // 车牌号
-                mileage: '100公里', // 行驶里程
-                buyTime: '2013-4-15', // 购车时间
-                carOwner: 'xxx', // 车主
-                sender: '凡凡', // 送修人
-                senderPhoneNumber: '13699117904', // 送修人电话
-                introducer: 'gaofei', // 介绍人
-                introducerPhoneNumber: '13923421346', // 介绍人电话
-                repairTechnician: '高飞', // 维修技师
-                leaveFactoryTime: '2017-4-16 11:35:22' // 出厂时间
-            },{
-                storeName: '总店', // 店名
-                status: '维修中', // 状态
-                type: '一般维修', // 维修类型
-                orderNo: '313523532523', // 工单号
-                enterTime: '2017-4-15 11:35:22', // 进店时间
-                predictedTime: '2017-4-16 11:35:22', // 预计交车时间
-                outeOfDate: '否', // 超时(期)
-                serviceConsultant: 'gaofei', // 服务顾问
-                brand: '奥迪', // 品牌
-                carType: '', // 车型
-                plateNumber: '京A324P', // 车牌号
-                mileage: '100公里', // 行驶里程
-                buyTime: '2013-4-15', // 购车时间
-                carOwner: 'xxx', // 车主
-                sender: 'fanfan', // 送修人
-                senderPhoneNumber: '13699117904', // 送修人电话
-                introducer: 'gaofei', // 介绍人
-                introducerPhoneNumber: '13923421346', // 介绍人电话
-                repairTechnician: '', // 维修技师
-                leaveFactoryTime: '2017-4-16 11:35:22' // 出厂时间
-            }]
+    /**
+   * 根据条件查询工单数据
+   * @memberOf OrderListComponent
+   */
+    onSearch() {
+        // 组织工单状态数据
+        let checkedStatus = this.maintenanceAssignTypes.filter(item => {
+            return item.checked;
+        });
+        // 没选查询所有
+        if (checkedStatus.length === 0) {
+            checkedStatus = this.maintenanceAssignTypes;
+        }
+        this.params.states = checkedStatus.map(item => item.id);
 
-  // 维修项目
-     public repairData=[{
-                a: '项目名称1', // 项目名称
-                b: '20', // 维修工时
-                c: '200', // 工时单价
-                d: '4000', // 金额
-                e: '8折', // 折扣率
-                f: '2017-4-16 11:35:22', //操作时间
-                g:"gaofei"// 指派人
-            },{
-               a: '项目名称1', // 项目名称
-                b: '20', // 维修工时
-                c: '200', // 工时单价
-                d: '4000', // 金额
-                e: '8折', // 折扣率
-                f: '2017-4-16 11:35:22', //操作时间
-                g:""// 指派人
-            }];
+        console.log('当前选择的工单状态为：', this.params.states);
 
-// 维修配件
-     public repairPartsData=[{
-                a: '项目1', // 维修项目
-                b: '轮胎', // 配件名称
-                c: '品牌1', // 品牌
-                d: '型号1', // 规格型号
-                e: '2个', // 数量
-                f: '100', //单价（元）
-                g: '200', // 金额（元）
-                h: '2017-4-16 11:35:22', // 操作时间
-            },{
-                a: '项目1', // 维修项目
-                b: '轮胎', // 配件名称
-                c: '品牌1', // 品牌
-                d: '型号1', // 规格型号
-                e: '2个', // 数量
-                f: '100', //单价（元）
-                g: '200', // 金额（元）
-                h: '2017-4-16 11:35:22', // 操作时间
-            }];
+        // 执行查询
+        this.onLoadList();
+    }
 
-// 附加项目
-     public addPartsData=[{
-                a: '项目名称1', // 项目名称
-                b: '', // 
-                c: '一般维修', // 
-                d: '313523532523', // 
-                e: '2017-4-15 11:35:22', // 
-            },{
-                a: '总店', // 
-                b: '维修中', // 
-                c: '一般维修', // 
-                d: '313523532523', // 
-                e: '2017-4-15 11:35:22', // 
-            }];
-// 建议维修项
-     public addvicePartsData=[{
-                a: '建议维修项目1', // 建议维修项目
-                b: '否', // 是否修理
-                c: '2017-4-15 11:35:22', // 操作时间
-                d: '小明', // 操作员
-                e: '2017-4-15 11:35:22', // 备注
-            },{
-                a: '建议维修项目1', // 建议维修项目
-                b: '否', // 是否修理
-                c: '2017-4-15 11:35:22', // 操作时间
-                d: '小明', // 操作员
-                e: '2017-4-15 11:35:22', // 备注
-            }];
+    /**
+ * 点击工单详情按钮处理程序
+ * @param {any} id 
+ * @param {any} modalDialog 
+ * 
+ * @memberOf OrderListComponent
+ */
+    orderDetailsHandler(evt, id, modalDialog) {
+        evt.preventDefault();
+
+        // 根据id获取工单详细信息
+        this.service.get(id).then(data => {
+            console.log('根据工单id获取工单详情数据：', data);
+
+            // 记录当前操作的工单记录
+            this.selectedOrder = data;
+
+            // 统计各项费用
+
+            // 工时费： 维修项目金额总和
+            this.selectedOrder.workHourFee = data.serviceOutputs.reduce((accumulator, currentValue) => {
+                return accumulator + (currentValue.workHour * currentValue.price);
+            }, 0);
+            // 材料费： 维修配件金额总和
+            this.selectedOrder.materialFee = data.productOutputs.reduce((accumulator, currentValue) => {
+                return accumulator + (currentValue.count * currentValue.price);
+            }, 0);
+            // 其它费： 0
+            this.selectedOrder.otherFee = 0;
+            // 总计费： 
+            this.selectedOrder.sumFee = this.selectedOrder.workHourFee + this.selectedOrder.materialFee + this.selectedOrder.otherFee;
+            // 显示窗口
+            modalDialog.show();
+        });
+    }
+
+    /**
+     * 点击完工按钮处理程序
+     * @param evt 
+     * @param id 
+     */
+    finishedOrder(evt, id, confirmModal) {
+        evt.preventDefault();
+        // 显示确认框
+        confirmModal.show();
+
+        // 记录id
+        confirmModal.id = id;
+    }
+
+    /**
+     * 点击完工按钮处理程序
+     * 
+     * @param {any} confirmModal 
+     * 
+     * @memberOf AssignOrderComponent
+     */
+    onConfirmFinished(confirmModal) {
+        // 调用完工接口
+        this.service.update({ id: confirmModal.id }).then(() => {
+            this.alerts.push({
+                type: 'info',
+                msg: `执行完工操作成功！`,
+                timeout: 2000
+            });
+        });
+        // 隐藏确认框
+        confirmModal.hide();
+    }
 
 
-
-
-
-   // 指派工单指派以及更改指派人员关闭事件
-   options = [{ text: '小明', value: 'value1', selected: true }, { text: '小亮', value: 'value2', selected: true }, { text: '晓峰', value: 'value3' }];
-  
-  onChange(item) {
-  
-  console.log(item)
-  }
-
-  onConfirm(){     
-    this.alerts.push({
-      type: 'info',
-      msg: `指派成功！`,
-      timeout: 3000
-    });
-  }
- 
- 
-
-  constructor( injector: Injector,
-    protected service: OrderService) {
-   
-   super(injector, service);
-    this.params = new OrderListRequest();
-   }
-
-
-
+    // onChange(item) {
+    //     console.log(item);
+    // }
+    // onConfirm() {
+    //     this.alerts.push({
+    //         type: 'info',
+    //         msg: `指派成功！`,
+    //         timeout: 3000
+    //     });
+    // }
 }

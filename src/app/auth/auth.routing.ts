@@ -4,15 +4,17 @@ import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
 import { AuthComponent } from './auth.component';
 import { RegisterComponent } from './register/register.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 const routes: Routes = [
     {
-        path: '',
+        path: 'auth',
         component: AuthComponent,
         children: [
             { path: 'login', component: LoginComponent },
             { path: 'logout', component: LogoutComponent },
-            { path: 'register', component: RegisterComponent }
+            { path: 'register', component: RegisterComponent },
+            { path: 'change_pwd', component: ChangePasswordComponent },
         ]
     },
 
@@ -24,4 +26,4 @@ const routes: Routes = [
 })
 export class AuthRoutingModule { }
 
-export const routedComponents = [AuthComponent, LoginComponent, LogoutComponent, RegisterComponent];
+export const routedComponents = [AuthComponent, LoginComponent, LogoutComponent, RegisterComponent, ChangePasswordComponent];

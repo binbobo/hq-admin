@@ -9,6 +9,7 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { OrderService } from './order.service';
+import { AssignService } from './assign.service';
 import { ModalModule } from 'ngx-bootstrap';
 import { NguiDatetimePickerModule } from '@ngui/datetime-picker';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
@@ -17,7 +18,7 @@ import { SharedModule } from 'app/shared/shared.module';
 @NgModule({
   imports: [
     TreeviewModule .forRoot(),
-    DatepickerModule.forRoot(),
+    // DatepickerModule.forRoot(),
     CollapseModule.forRoot(),
     TabsModule.forRoot(),
     PopoverModule.forRoot(),
@@ -31,7 +32,7 @@ import { SharedModule } from 'app/shared/shared.module';
     NguiDatetimePickerModule
   ],
   declarations: [routedComponents],
-  providers: [OrderService],
+  providers: [OrderService, AssignService],
   entryComponents: [routedComponents[0]], // 配置CustomDatetimeEditorComponent
 })
 export class ReceptionModule { }
