@@ -334,12 +334,9 @@ export class CreateOrderComponent extends DataList<Order> {
     const newData = evt.newData;
     console.log(newData);
 
-    // 报错错我信息
-    let errorMsg = '';
-
     // 检查维修项目合法性
     if (!newData.serviceName) {
-      errorMsg = '请选择一个维修项目';
+      this.alerter.warn('请选择一个维修项目');
       return;
     }
 
@@ -347,23 +344,23 @@ export class CreateOrderComponent extends DataList<Order> {
     const reg = /^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/;
     // 检查工时合法性
     if (!newData.workHour || !reg.test(newData.workHour)) {
-      errorMsg = '工时只能输入数字';
+      this.alerter.warn('工时只能输入数字');
       return;
     }
     // 检查单价合法性
     if (!newData.price || !reg.test(newData.price)) {
-      errorMsg = '单价只能输入数字';
+      this.alerter.warn('单价只能输入数字');
       return;
     }
     // 检查折扣率合法性
-    if (!newData.discount || !reg.test(newData.discount)) {
-      errorMsg = '折扣率只能输入数字';
+    if (!newData.discount || !/^[0-9][0-9]?$|^100$/.test(newData.discount)) {
+      this.alerter.warn('折扣率只能0~100之间的整数');
       return;
     }
 
     // 处理维修项目数据
     newData.serviceId = sessionStorage.getItem(StorageKeys.MaintanceItemId); // 维修项目id
-    newData.money = newData.workHour * newData.price; // 金额 = 工时*单价
+    newData.money = newData.workHour * newData.price * (1 - newData.discount / 100); // 金额 = 工时*单价
     newData.operationTime = moment().format('YYYY-MM-DD hh:mm:ss'); // 默认为当前时间
     newData.type = '1';  // 类型 1表示维修项目
 
@@ -492,6 +489,9 @@ export class CreateOrderComponent extends DataList<Order> {
 
   // 创建工单按钮点击事件处理程序
   createWorkSheet() {
+    // 设置按钮不可用
+    this.enableCreateWorkSheet = false;
+
     // 组织接口参数
     // 1.表单基础数据 this.workSheetForm.value
     const workSheet = this.workSheetForm.value;
@@ -509,12 +509,13 @@ export class CreateOrderComponent extends DataList<Order> {
 
     // 3. 当前登陆用户信息数据(操作员，组织id, ...)
     // workSheet.user = this.user;
-    workSheet.orgId = '1941566D-0CED-46FC-A3E4-8A09507E3E3A';
+    workSheet.orgId = '53113BFB-D2CF-43A8-A0D0-C5B5A61D0C07';
 
     // 调用创建工单接口
     console.log('提交的工单对象： ', JSON.stringify(workSheet));
     this.service.create(workSheet).then(data => {
       console.log('创建工单成功之后， 返回的工单对象：', data);
+      this.alerter.success('创建工单成功！');
       // 创建订单成功之后  做一些重置操作
 
       // 表单重置
@@ -526,6 +527,29 @@ export class CreateOrderComponent extends DataList<Order> {
       // 清空上次维修工单数据
       this.lastOrderData = [];
       // 清空智能表格中的数据
-    }).catch(err => console.log(err));
+    }).catch(err => {
+      console.log(err);
+      // 出错的话  允许再次提交
+      this.enableCreateWorkSheet = true;
+    });
   }
+
+
+  // // 定义要显示的列
+  // public get typeaheadColumns() {
+  //   return [
+  //     { name: 'plateNo', title: '车牌号' },
+  //     { name: 'id', title: '工单号' }
+  //   ];
+  // }
+  // // 从模糊查询下拉框中选择一条记录
+  // public onTypeaheadSelect($event) {
+  //   alert(JSON.stringify($event));
+  // }
+  // // 设置数据源
+  // public get typeaheadSource() {
+  //   return (params: TypeaheadRequestParams) => {
+  //     return this.service.getAppendOrderParma(params.text).toPromise()
+  //   };
+  // }
 }

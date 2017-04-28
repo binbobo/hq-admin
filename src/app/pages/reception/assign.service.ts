@@ -29,6 +29,26 @@ export class AssignService implements BasicService<any> {
             });
     }
 
+    /**
+     * 
+     * 获取维修技师列表
+     * 
+     * @memberOf AssignService
+     */
+    getMaintenanceTechnicians(): Observable<any[]> {
+        const url = Urls.chain.concat('/Employees/GetByKey');
+        return this.httpService
+            .request(url, {
+                params: {
+                    'key': 'ST'  // ST 代表维修技师
+                }
+            })
+            .map(response => {
+                console.log('查询维修技师列表数据：', response.json().data);
+                return response.json().data as any[];
+            });
+    }
+
 
     /**
      * 分页获取工单列表信息
@@ -36,6 +56,7 @@ export class AssignService implements BasicService<any> {
      */
     public getPagedList(params: PagedParams): Promise<PagedResult<any>> {
         const url = Urls.chain.concat('/Maintenances/team/search?', params.serialize());
+        console.log(url)
         return this.httpService
             .get<PagedResult<any>>(url)
             .then(result => {
@@ -44,6 +65,18 @@ export class AssignService implements BasicService<any> {
             })
             .catch(err => Promise.reject(`加载工单列表失败：${err}`));
     }
+
+    /**
+     * 指派 转派工单
+     * @param body 
+     */
+    public assignOrder(body: any): Promise<any> {
+        const url = Urls.chain.concat('/MaintenanceTeams/Maintenances');
+        return this.httpService
+            .post<ApiResult<any>>(url, body)
+            .catch(err => Promise.reject(`派工失败：${err}`));
+    }
+
 
     /**
      * 根据工单id查询工单详细信息
@@ -59,7 +92,7 @@ export class AssignService implements BasicService<any> {
             .get<ApiResult<any>>(url)
             .then(result => result.data)
             .then(data => data || Promise.reject('获取数据无效！'))
-            .catch(err => Promise.reject(`加载菜单失败：${err}`));
+            .catch(err => Promise.reject(`获取工单详情数据失败：${err}`));
     }
 
     // 完工操作
@@ -69,6 +102,7 @@ export class AssignService implements BasicService<any> {
             put<void>(url, body)
             .catch(err => Promise.reject(`执行完工操作失败：${err}`));
     }
+    
 
     public create(body: any): Promise<any> {
         const url = Urls.chain.concat('/Maintenances');

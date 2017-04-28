@@ -53,7 +53,7 @@ export class OrderService implements BasicService<Order> {
                 }
             })
             .map(response => {
-                console.log(response.json().data);
+                // console.log(response.json().data);
                 return response.json().data as MaintenanceItem[];
             });
     }
@@ -74,7 +74,7 @@ export class OrderService implements BasicService<Order> {
                 }
             })
             .map(response => {
-                console.log('根据车牌号查询客户车辆信息：', response.json().data);
+                // console.log('根据车牌号查询客户车辆信息：', response.json().data);
                 return response.json().data as CustomerVehicle[];
             });
     }
@@ -264,7 +264,7 @@ export class OrderService implements BasicService<Order> {
             .get<ApiResult<any>>(url)
             .then(result => result.data)
             .then(data => data || Promise.reject('获取数据无效！'))
-            .catch(err => Promise.reject(`加载菜单失败：${err}`));
+            .catch(err => Promise.reject(`获取工单详情数据失败：${err}`));
     }
 
     public update(body: Order): Promise<void> {

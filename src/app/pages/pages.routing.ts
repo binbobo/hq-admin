@@ -19,6 +19,7 @@ const routes: Routes = [
             { path: 'reception', loadChildren: 'app/pages/reception/reception.module#ReceptionModule' },
             { path: 'mountings', loadChildren: 'app/pages/mountings/mountings.module#MountingsModule' },
             { path: 'workshop', loadChildren: 'app/pages/workshop/workshop.module#WorkshopModule' },
+            { path: 'customer', loadChildren: 'app/pages/customer/customer.module#CustomerModule' },
         ]
     },
 ];

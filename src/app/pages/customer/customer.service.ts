@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpService, Urls } from 'app/shared/services';
 import { PagedParams, PagedResult, ApiResult, BasicModel, BasicService, ListResult, SelectOption } from 'app/shared/models';
-import { TreeviewItem } from 'ngx-treeview';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
 
 @Injectable()
-export class WorkshopService implements BasicService<any> {
+export class CustomerService implements BasicService<any> {
 
 
     constructor(private httpService: HttpService) {
@@ -17,22 +16,6 @@ export class WorkshopService implements BasicService<any> {
         throw new Error('Method not implemented.');
     }
 
-      /**
-     * 获取维修验收类型数据 用于维修指派
-     * 
-     * @returns {Observable<any[]>} 
-     * 
-     * @memberOf OrderService
-     */
-    getMaintenanceCheckTypes(): Observable<any[]> {
-        const url = Urls.chain.concat('/DictValues/MaintainCheckedType');
-        return this.httpService
-            .request(url)
-            .map(response => {
-                console.log('查询维修验收类型数据：', response.json().data);
-                return response.json().data as any[];
-            });
-    }
 
     /**
      * 分页获取工单列表信息
@@ -97,14 +80,14 @@ export class WorkshopService implements BasicService<any> {
 }
 
 // 维修派工请求参数类
-export class WorkshopListRequest extends PagedParams {
+export class CustomerListRequest extends PagedParams {
     constructor(
-        // 工单列表页面查询参数
-        public states?: Array<string>, // 工单状态
         public plateNo?: string, // 车牌号
-        public billCode?: string, // 工单号
-        public keyword?: string // 车牌号或者工单号
+        public customerName?: string, // 车主
+        public phone?: string, // 车主电话
+        public startTimeDate?: string, // 建档开始时间
+        public endTimeDate?: string, // 建档结束时间
     ) {
-        super('WorkshopListRequestParams');
+        super('CustomerListRequestParams');
     }
 }
