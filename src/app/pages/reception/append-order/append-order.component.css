@@ -4,6 +4,9 @@
 .append-order .search-table td{
     font-size:.9rem;
 }
+.append-order .form-in{
+    width:60%;
+}
 .append-order .search-table td:nth-child(2n-1){
     text-align: right;
     font-weight: bold;
@@ -30,4 +33,9 @@ border-top:0;
     background-color: #f0ad4e !important;
     }
 
- 
+.append-order .table-tab{
+    font-size:.9rem;
+}
+.append-order .text-center input{
+    cursor: pointer;
+}
