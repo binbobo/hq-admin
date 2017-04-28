@@ -15,7 +15,7 @@ export class AppendOrderService {
   // }
 
   //  根据工单或者车牌号搜索
-  getAppendOrderParma(keyword: string): Observable<SearchReturnData[]> {
+  getAppendOrderParma(keyword?: string): Observable<SearchReturnData[]> {
     const url = Urls.chain.concat('/Maintenances/increase/search');
     return this.httpService
       .request(url, {
@@ -23,37 +23,41 @@ export class AppendOrderService {
           'Keyword': keyword
         }
       })
-      .map(response => {
+      .map(response => {    
         return response.json().data as SearchReturnData[];
+
       });
   }
+
 
   // 根据id查询(维修项目、附加项目、建议维修项)
   public get(id: string): Promise<DetailData> {
     const url = Urls.chain.concat('/Maintenances/', id);
     return this.httpService
       .get<ApiResult<DetailData>>(url)
-      .then(result => result.data)
+      .then(result =>{ 
+        return result.data})
       .then(data => data || Promise.reject('获取数据无效！'))
       .catch(err => Promise.reject(`加载失败：${err}`));
   }
 
   // 新增维修项目及附加项目
-  public post(body: MainItems): Promise<MainItems> {
-    const url = Urls.chain.concat('/MaintenanceItemOutput/');
+  public post(body:any): Promise<any> {
+    const url = Urls.chain.concat('/MaintenanceItems/list');
     return this.httpService
-      .post<ApiResult<MainItems>>(url, body)
-      .then(result => result.data)
-      .catch(err => Promise.reject(`添加增项失败：${err}`));
+      .post<ApiResult<any>>(url, body)
+      .catch(err => Promise.reject(`${err}`));
   }
 
 
   // 新增建议维修项目
-
-
-
+  public suggestpost(body: any): Promise<any> {
+    const url = Urls.chain.concat('/MaintenanceRecommends/list');
+    return this.httpService
+      .post<ApiResult<any>>(url, body)
+      .catch(err => Promise.reject(`${err}`));
+  }
 }
-
 
 export class AppendOrderSearch extends PagedParams {
   public Keyword: string;
@@ -90,28 +94,12 @@ export class SearchReturnData {
 
 export class DetailData {
   constructor(
+    public id:any,
     public serviceOutputs: any = [],//维修项目
     public attachServiceOutputs: Array<any> = [],//附加项目
     public suggestServiceOutputs: any = [],//建议维修项
     public lastManufactureDetailOutput: any = [],//上次维修记录
     public feedBackInfosOutput: any = [],// 客户回访记录
-
-  ) { }
-}
-
-//提交维修项目及附加项目
-export class MainItems {
-  constructor(
-    public id: string,
-    public maintenanceId: string, //维修工单（Maintenances表-Id字段） ,
-    public itemId: string,//关联维修工项Id 返工单需要此字段 ,
-    public serviceId: string,//维修项目（Services表-Id字段） ,
-    public discount: any,// 折扣率 ,
-    public serviceName: string,// 附加或维修项目名称 ,
-    public type: string,//明细类型 1：维修项目2：附加项目,
-    public workHour: any,//工时（维修项目） ,
-    public price: any,// 金额（工时费或附加产品金额） 单位分 ,
-    public amount: any, //工时*单价=总金额 单位分 ,
   ) { }
 }
 
