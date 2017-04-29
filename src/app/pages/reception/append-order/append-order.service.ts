@@ -1,10 +1,25 @@
 import { Injectable } from '@angular/core';
 import { HttpService, Urls } from "app/shared/services";
-import { PagedParams, PagedResult, ApiResult } from "app/shared/models";
+import { PagedParams, PagedResult, ApiResult, BasicService } from "app/shared/models";
 import { Observable } from "rxjs/Observable";
 
 @Injectable()
-export class AppendOrderService {
+export class AppendOrderService implements BasicService<any> {
+    getPagedList(body: any): Promise<any> {
+    throw new Error('Method not implemented.');
+  }
+  create(body: any): Promise<any> {
+    throw new Error('Method not implemented.');
+  }
+  update(body: any): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+  patch(body: any): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+  delete(id: string): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
 
   constructor(private httpService: HttpService) {
   }
@@ -19,6 +34,21 @@ export class AppendOrderService {
 
 
   // 根据id查询(维修项目、附加项目、建议维修项)
+
+  // 有分页的
+  // public getPagedList(params: PagedParams): Promise<PagedResult<DetailData>> {
+  //   const url = Urls.chain.concat('/Maintenances/', params.serialize());
+  //   console.log(url)
+  //   return this.httpService
+  //     .get<PagedResult<DetailData>>(url)
+  //     .then(result => {
+  //       console.log('工单列表数据', result);
+  //       return result;
+  //     })
+  //     .catch(err => Promise.reject(`加载工单列表失败：${err}`));
+  // }
+
+
   public get(id: string): Promise<DetailData> {
     const url = Urls.chain.concat('/Maintenances/', id);
     return this.httpService
@@ -90,6 +120,13 @@ export class DetailData {
     public feedBackInfosOutput: any = [],// 客户回访记录
   ) { }
 }
+// export class AppendListData extends PagedParams {
+//   constructor(
+//     public id?: string
+//   ) {
+//     super('AppendListData');
+//   }
+// }
 
 export class AppendItemSearchRequest extends PagedParams {
   constructor(
