@@ -1,8 +1,8 @@
-import { PagedParams, PagedResult, BasicService } from 'app/shared/models';
+import { PagedParams, PagedResult } from 'app/shared/models';
 import { OnInit, ViewChild, Injector } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap';
 import { ActivatedRoute, Params } from '@angular/router';
 import { HqAlerter } from 'app/shared/directives';
+import { PagedService } from './basic-service.interface';
 
 export abstract class DataList<T> implements OnInit {
 
@@ -27,14 +27,11 @@ export abstract class DataList<T> implements OnInit {
 
   constructor(
     injector: Injector,
-    protected service: BasicService<T>
+    protected service: PagedService<T>
   ) {
     this.route = injector.get(ActivatedRoute);
   }
 
-  @ViewChild("detailModal")
-  protected detailModal: ModalDirective;
-  protected model: T;
   protected total: number = 0;
   protected index: number = 1;
   protected size: number = 10;
@@ -75,29 +72,5 @@ export abstract class DataList<T> implements OnInit {
   protected onLoadList() {
     this.params.setPage(1);
     this.loadList();
-  }
-
-  protected showModal(id: string): void {
-    this.service.get(id)
-      .then(log => {
-        this.model = log;
-        this.detailModal.show();
-      })
-      .catch(err => this.alerter.error(err))
-  }
-
-  protected onDelete($event: Event, id: string) {
-    if (!confirm('确定要删除？')) return false;
-    let el = $event.target as HTMLInputElement;
-    el.disabled = true;
-    this.service.delete(id)
-      .then(() => {
-        this.alerter.success('删除成功！');
-        this.loadList();
-      })
-      .catch(err => {
-        this.alerter.error(err);
-        el.disabled = false;
-      });
   }
 }

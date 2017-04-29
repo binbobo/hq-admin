@@ -23,7 +23,7 @@
     </form>
     <table class="table table-bordered table-sm table-striped">
       <thead>
-        <tr>
+        <tr *ngIf="!loading">
           <th translate><input (change)="onCheckChange($event)" type="checkbox"></th>
           <th translate>序号</th>
           <th translate>代码</th>

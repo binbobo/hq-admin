@@ -1,4 +1,6 @@
-<ng-template hq-alerter></ng-template>
+<div id="alerter">
+  <ng-template hq-alerter></ng-template>
+</div>
 <div class="card">
   <!--<div class="card-header">
     <span>新增供应商</span>
@@ -6,7 +8,7 @@
       <button routerLink="../" class="btn btn-sm btn-info">返回</button>
     </div>
   </div>-->
-  <form *ngIf="form" class="card-block" [formGroup]="form" (ngSubmit)="onCreate()">
+  <form *ngIf="form" class="card-block" [formGroup]="form" (ngSubmit)="onUpdate()">
     <div class="form-group">
       <label class="form-control-label">*名称</label>
       <input type="text" formControlName="name" class="form-control" placeholder="请输入供应商名称">

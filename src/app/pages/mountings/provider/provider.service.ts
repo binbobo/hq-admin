@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BasicModel, BasicService, PagedParams, PagedResult, ApiResult } from 'app/shared/models';
+import { BasicModel, BasicService, PagedParams, PagedResult, ApiResult, RequestParams } from 'app/shared/models';
 import { HttpService, Urls } from 'app/shared/services';
-import { RequestParams } from '../../../shared/models/request-params';
 
 @Injectable()
 export class ProviderService implements BasicService<Provider> {
@@ -10,10 +9,16 @@ export class ProviderService implements BasicService<Provider> {
     private httpService: HttpService,
   ) { }
 
+  export(params: RequestParams): Promise<void> {
+    let url = Urls.chain.concat('/suppliers/exportToExcel');
+    return this.httpService.download(url, params.serialize())
+      .catch(err => `供应商列表导出失败：${err}`);
+  }
+
   getPagedList(params: PagedParams): Promise<PagedResult<Provider>> {
-    let url = Urls.chain.concat('/suppliers/getPageList?', params.serialize());
+    let url = Urls.chain.concat('/suppliers/getPageList');
     return this.httpService
-      .get<PagedResult<Provider>>(url)
+      .get<PagedResult<Provider>>(url, params.serialize())
       .catch(err => Promise.reject(`供应商列表加载失败：${err}`));
   }
   get(id: string): Promise<Provider> {

@@ -22,6 +22,7 @@ export class PriceCheckComponent extends DataList<PriceCheckListModel> implement
   }
 
   ngOnInit() {
+    super.ngOnInit();
     this.moutingsService.getWarehouseOptions()
       .then(options => this.warehouses = options)
       .catch(err => this.alerter.warn(err));

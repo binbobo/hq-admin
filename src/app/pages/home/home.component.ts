@@ -18,6 +18,8 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.alerter.info('12345!', true, 0);
+    this.alerter.error('12345!', true, 5000);
+    setTimeout(() => this.alerter.success('12345!', true, 5000), 3000);
   }
 
   options = [{ text: 'text1', value: 'value1', selected: true }, { text: 'text2', value: 'value2', selected: true }, { text: 'text3', value: 'value3' }];
