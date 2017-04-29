@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { PaginationModule, PopoverModule, AlertModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
 import { TranslateStore } from "@ngx-translate/core/src/translate.store";
-import { MultiSelectorDirective, MultiSelectorComponent, HqAlerterComponent, HqAlerter, TableTypeaheadComponent, TableTypeaheadDirective } from 'app/shared/directives';
+import { MultiSelectorDirective, MultiSelectorComponent, HqAlerterComponent, HqAlerter, TableTypeaheadComponent, TableTypeaheadDirective, PrintDirective } from 'app/shared/directives';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgPipesModule } from 'ngx-pipes';
 
@@ -32,7 +32,8 @@ const HQ_DIRECTIVE_COMPONENTS = [
 const HQ_DIRECTIVES = [
     MultiSelectorDirective,
     HqAlerter,
-    TableTypeaheadDirective
+    TableTypeaheadDirective,
+    PrintDirective,
 ]
 
 const HQ_PIPES = [
@@ -68,7 +69,7 @@ const HQ_SERVICES = [
         HQ_PIPES,
         HQ_DIRECTIVES,
     ],
-    declarations: [HQ_COMPONENTS, HQ_PIPES, HQ_DIRECTIVE_COMPONENTS, HQ_DIRECTIVES],
+    declarations: [HQ_COMPONENTS, HQ_PIPES, HQ_DIRECTIVE_COMPONENTS, HQ_DIRECTIVES, PrintDirective],
     entryComponents: [HQ_DIRECTIVE_COMPONENTS]
 })
 export class SharedModule {
