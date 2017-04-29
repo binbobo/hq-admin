@@ -1,54 +1,72 @@
 import { Injectable } from '@angular/core';
 import { HttpService, Urls } from "app/shared/services";
-import { PagedParams, PagedResult, ApiResult } from "app/shared/models";
+import { PagedParams, PagedResult, ApiResult, BasicService } from "app/shared/models";
 import { Observable } from "rxjs/Observable";
 
 @Injectable()
-export class AppendOrderService {
+export class AppendOrderService implements BasicService<any> {
+    getPagedList(body: any): Promise<any> {
+    throw new Error('Method not implemented.');
+  }
+  create(body: any): Promise<any> {
+    throw new Error('Method not implemented.');
+  }
+  update(body: any): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+  patch(body: any): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+  delete(id: string): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
 
   constructor(private httpService: HttpService) {
   }
 
-  // getAppendOrderParma(params: AppendOrderSearch):Observable<PagedResult<ReturnData>> {
-  //   let url = Urls.chain.concat("/Maintenances/increase/search");
-  //   return Observable.fromPromise(this.httpService.get<PagedResult<ReturnData>>(url, params.serialize()))
-  // }
-
   //  根据工单或者车牌号搜索
-  getAppendOrderParma(keyword?: string): Observable<SearchReturnData[]> {
+  getAppendOrderParma(params: AppendItemSearchRequest): Promise<PagedResult<SearchReturnData>> {
+    let search = params.serialize();
     const url = Urls.chain.concat('/Maintenances/increase/search');
     return this.httpService
-      .request(url, {
-        params: {
-          'Keyword': keyword
-        }
-      })
-      .map(response => {    
-        return response.json().data as SearchReturnData[];
-
-      });
+      .get<PagedResult<SearchReturnData>>(url, search);
   }
 
 
   // 根据id查询(维修项目、附加项目、建议维修项)
+
+  // 有分页的
+  // public getPagedList(params: PagedParams): Promise<PagedResult<DetailData>> {
+  //   const url = Urls.chain.concat('/Maintenances/', params.serialize());
+  //   console.log(url)
+  //   return this.httpService
+  //     .get<PagedResult<DetailData>>(url)
+  //     .then(result => {
+  //       console.log('工单列表数据', result);
+  //       return result;
+  //     })
+  //     .catch(err => Promise.reject(`加载工单列表失败：${err}`));
+  // }
+
+
   public get(id: string): Promise<DetailData> {
     const url = Urls.chain.concat('/Maintenances/', id);
     return this.httpService
       .get<ApiResult<DetailData>>(url)
-      .then(result =>{ 
-        return result.data})
+      .then(result => {
+        return result.data
+      })
       .then(data => data || Promise.reject('获取数据无效！'))
       .catch(err => Promise.reject(`加载失败：${err}`));
   }
 
   // 新增维修项目及附加项目
-  public post(body:any): Promise<any> {
+  public post(body: any): Promise<any> {
     const url = Urls.chain.concat('/MaintenanceItems/list');
     return this.httpService
       .post<ApiResult<any>>(url, body)
       .catch(err => Promise.reject(`${err}`));
   }
-
 
   // 新增建议维修项目
   public suggestpost(body: any): Promise<any> {
@@ -94,7 +112,7 @@ export class SearchReturnData {
 
 export class DetailData {
   constructor(
-    public id:any,
+    public id: any,
     public serviceOutputs: any = [],//维修项目
     public attachServiceOutputs: Array<any> = [],//附加项目
     public suggestServiceOutputs: any = [],//建议维修项
@@ -102,5 +120,16 @@ export class DetailData {
     public feedBackInfosOutput: any = [],// 客户回访记录
   ) { }
 }
+// export class AppendListData extends PagedParams {
+//   constructor(
+//     public id?: string
+//   ) {
+//     super('AppendListData');
+//   }
+// }
 
-
+export class AppendItemSearchRequest extends PagedParams {
+  constructor(
+    public keyword?: string
+  ) { super(); }
+}

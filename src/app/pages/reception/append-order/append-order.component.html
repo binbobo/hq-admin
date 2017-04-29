@@ -3,14 +3,14 @@
     <span>增项</span>
   </div>
   <div class="card-block">
- <div class="" hq-alerter></div>
+    <div class="" hq-alerter></div>
     <form [formGroup]="myForm" class='form-in mb-2 ng-pristine ng-valid assign-form ng-untouched'>
-      <input #search formControlName="state" [typeahead]="plateNoData" typeaheadOptionField="plateNo" (typeaheadOnSelect)="OnSearchClick($event)"
-        placeholder="请输入工单号/车牌号" class="form-control mr-2">
-      <!--<input [hq-table-typeahead]="typeaheadSource" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)" class="form-control"
-        placeholder="请输入工单号/车牌号"/>-->
+      <!--<input #search formControlName="state" [typeahead]="plateNoData" typeaheadOptionField="plateNo" (typeaheadOnSelect)="OnSearchClick($event)"
+        placeholder="请输入工单号/车牌号" class="form-control mr-2">-->
+      <input [hq-table-typeahead]="typeaheadSource" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)" class="form-control"
+        placeholder="请输入工单号/车牌号" />
     </form>
-
+    
     <table class="table search-table">
       <tr>
         <td>车牌号:</td>
@@ -68,7 +68,7 @@
       <tabset #staticTabs>
         <!--维修项目-->
         <tab heading="维修项目">
-          <smart-table (deleteConfirm)="deleteMaintanceItem($event)" (createConfirm)="addNewmaintanceItem($event)" [settings]="maintanceItemSettings"></smart-table>
+          <smart-table [source]="stDataSource" (deleteConfirm)="deleteMaintanceItem($event)" (createConfirm)="addNewmaintanceItem($event)" [settings]="maintanceItemSettings"></smart-table>
           <table class='table table-bordered table-tab table-sm'>
             <thead class="thead-default">
               <tr>
@@ -89,16 +89,15 @@
               <td>{{item.operateDateTime}}</td>
             </tr>
           </table>
+          
         </tab>
-
         <!--附加项目-->
         <tab heading="附加项目">
-
           <smart-table (deleteConfirm)="deleteAttachItem($event)" (createConfirm)="addAttachItem($event)" [settings]="addItemSettings"></smart-table>
           <table class='table table-tab'>
-            <thead>
+            <thead class="thead-default">
               <tr>
-                <th>备注</th>
+                <th>已有附加项目备注</th>
               </tr>
             </thead>
             <tr *ngFor="let item of attachServiceOutputs">
@@ -108,12 +107,11 @@
 
         </tab>
 
-
         <!--建议维修项-->
         <tab heading="建议维修项">
           <smart-table (deleteConfirm)="deletsuggestItem($event)" (createConfirm)="suggestItem($event)" [settings]="suggestedMaintanceSettings"></smart-table>
           <table class='table table-tab'>
-            <thead>
+            <thead class="thead-default">
               <tr>
                 <th>已增加建议维修项目</th>
                 <th>操作时间</th>
@@ -132,7 +130,7 @@
         <tab heading="上次维修记录">
           <table class="table table-hover table-bordered table-sm table-tab">
             <caption>维修项目</caption>
-            <thead>
+            <thead class="thead-default">
               <tr>
                 <th>项目名称</th>
                 <th>维修工时</th>
@@ -185,7 +183,7 @@
 
           <table class="table table-hover table-bordered table-sm table-tab">
             <caption>附加项目</caption>
-            <thead>
+            <thead class="thead-default">
               <tr>
                 <th>备注</th>
               </tr>
@@ -199,7 +197,7 @@
 
           <table class="table table-hover table-bordered table-sm table-tab">
             <caption>建议维修项目</caption>
-            <thead>
+            <thead class="thead-default">
               <tr>
                 <th>建议维修项目</th>
                 <th>操作时间</th>
@@ -251,8 +249,9 @@
         <span class="ml-2 mr-2">{{sumFee}}</span>|
       </div>
       <div class="card-block text-center">
-        <input type="text" readonly class="btn btn-primary" (click)="submitAddOrder()" value='提交增项'>
-        <input type="text" readonly class="btn btn-primary" value='挂单'>
+        <button type="button" class="btn  btn-primary" (click)="submitAddOrder()"  [disabled]="!isableAppend">提交增项</button>
+        <!--<input type="text" readonly class="btn btn-primary" (click)="submitAddOrder()" value='提交增项'>-->
+               <button type="button" class="btn  btn-primary" (click)="submitAddOrder()"  disabled>挂单</button>
       </div>
     </div>
 
