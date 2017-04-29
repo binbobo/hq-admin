@@ -18,18 +18,18 @@ export class CustomerService implements BasicService<any> {
 
 
     /**
-     * 分页获取工单列表信息
+     * 分页获取客户列表信息
      * @param params
      */
     public getPagedList(params: PagedParams): Promise<PagedResult<any>> {
-        const url = Urls.chain.concat('/Maintenances?', params.serialize());
+        const url = Urls.chain.concat('/Customers?', params.serialize());
         return this.httpService
             .get<PagedResult<any>>(url)
             .then(result => {
-                console.log('维修验收工单列表数据', result);
+                console.log('客户列表数据', result);
                 return result;
             })
-            .catch(err => Promise.reject(`加载维修验收工单列表失败：${err}`));
+            .catch(err => Promise.reject(`加载客户列表数据失败：${err}`));
     }
 
     /**
@@ -41,7 +41,7 @@ export class CustomerService implements BasicService<any> {
      * @memberOf OrderService
      */
     public get(id: string): Promise<any> {
-        const url = Urls.chain.concat('/Maintenances/', id);
+        const url = Urls.chain.concat('/Customers/', id);
         return this.httpService
             .get<ApiResult<any>>(url)
             .then(result => result.data)
@@ -50,14 +50,14 @@ export class CustomerService implements BasicService<any> {
     }
 
     public update(body: any): Promise<void> {
-        const url = Urls.chain.concat('/order/', body.id);
+        const url = Urls.chain.concat('/Customers/', body.id);
         return this.httpService.
             put<void>(url, body)
             .catch(err => Promise.reject(`更新菜单失败：${err}`));
     }
 
     public create(body: any): Promise<any> {
-        const url = Urls.chain.concat('/Maintenances');
+        const url = Urls.chain.concat('/Customers');
         return this.httpService
             .post<ApiResult<any>>(url, body)
             .then(m => m.data)
@@ -72,7 +72,7 @@ export class CustomerService implements BasicService<any> {
      * @memberOf OrderService
      */
     public delete(id: string): Promise<void> {
-        const url = Urls.chain.concat('/Maintenances/', id);
+        const url = Urls.chain.concat('/Customers/', id);
         return this.httpService
             .delete(url)
             .catch(err => Promise.reject(`删除工单失败：${err}`));

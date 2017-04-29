@@ -4,6 +4,7 @@ import { AssignService, AssignListRequest } from '../assign.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { StorageKeys, SelectOption } from 'app/shared/models';
 import { Observable } from 'rxjs/Observable';
+import * as fileSaver from 'file-saver';
 
 
 @Component({
@@ -49,6 +50,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
 
     constructor(injector: Injector,
         protected service: AssignService,
+
         private fb: FormBuilder) {
         super(injector, service);
         this.params = new AssignListRequest();
@@ -105,6 +107,53 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         this.onLoadList();
     }
 
+
+    /**
+     * 维修派工全选/反选事件处理程序
+     * @param evt 
+     */
+    assignToggleCheckboxAll(cb) {
+        console.log('维修派工切换全选复选框', cb.checked);
+        // 更新全选复选框状态
+        this.selectedOrder.serviceOutputs.checkedAll = cb.checked;
+        // 更新维修工项复选框状态
+        if (cb.checked) {
+            this.selectedOrder.serviceOutputs.map(item => {
+                // 如果没有转派  也就是复选框可用 设置为选中状态
+                if (true) {
+                    item.checked = true;
+                }
+            });
+        } else {
+            // 全部设置为未选中
+            this.selectedOrder.serviceOutputs.map(item => {
+                item.checked = false;
+            });
+        }
+        // 指派  转派按钮是否可用
+        this.selectedOrder.serviceOutputs.enableAssignment = this.selectedOrder.serviceOutputs.filter(item => item.checked).length > 0;
+    }
+
+    /**
+     * 复选框切换事件
+     * @param record 
+     */
+    assignToggleCheckbox(record) {
+        // 更新当前操作的维修工项复选框状态
+        record.checked = !record.checked;
+
+        // 更新全选复选框状态
+        const tmp = this.selectedOrder.serviceOutputs;
+        // 选中的维修项目
+        const checked = tmp.filter(item => item.checked).length;
+        // 转派过的维修项目
+        const disabled = tmp.filter(item => item.teamType === '10').length;
+
+        this.selectedOrder.serviceOutputs.checkedAll = (checked + disabled) === tmp.length;
+        // 指派  转派按钮是否可用
+        this.selectedOrder.serviceOutputs.enableAssignment = this.selectedOrder.serviceOutputs.filter(item => item.checked).length > 0;
+    }
+
     /**
  * 点击工单详情按钮处理程序
  * @param {any} id 
@@ -121,12 +170,16 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
 
             // 记录当前操作的工单记录
             this.selectedOrder = data;
+            // 指派按钮是否可用标志
+            this.selectedOrder.serviceOutputs.enableAssignment = false;
+            // 全选复选框是否选中标志
+            this.selectedOrder.serviceOutputs.checkedAll = false;
 
             // 统计各项费用
 
             // 工时费： 维修项目金额总和
             this.selectedOrder.workHourFee = data.serviceOutputs.reduce((accumulator, currentValue) => {
-                return accumulator + (currentValue.workHour * currentValue.price);
+                return accumulator + currentValue.amount;
             }, 0);
             // 材料费： 维修配件金额总和
             this.selectedOrder.materialFee = data.productOutputs.reduce((accumulator, currentValue) => {
@@ -163,10 +216,13 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
      * @memberOf AssignOrderComponent
      */
     onConfirmFinished(confirmModal) {
+        console.log('要确认完工的工单id为：', confirmModal.id);
         // 调用完工接口
         this.service.update({ id: confirmModal.id }).then(() => {
             // 完工操作成功提示
-            this.alerter.success('执行完工操作成功！')
+            this.alerter.success('执行完工操作成功！');
+
+            this.onLoadList();
         });
         // 隐藏确认框
         confirmModal.hide();
@@ -178,34 +234,43 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
      * @param id  工单id
      * @param id 派工类型 1.指派 2.更改 3.转派 默认1
      */
-    assignOrderHandler(id, type) {
+    assignOrderHandler(type) {
+        // 获取选择的工项列表
+        const maintenanceItemIds = this.selectedOrder.serviceOutputs.filter(item => item.checked).map(item => item.id);
+        console.log('选择的维修工单为：', maintenanceItemIds);
+        // 判断是否选择维修工项
+        if (maintenanceItemIds.length === 0) {
+            this.alerter.warn('请选择维修工项！');
+            return;
+        }
+
         // 获取选中的维修技师
         const employeeIds = this.maintenanceTechnicians.filter(item => item.selected).map(item => item.value);
         console.log('选择的维修技师为：', employeeIds);
-
+        // 判断是否选择维修技师
         if (employeeIds.length === 0) {
             this.alerter.warn('请选择维修技师！');
             return;
         }
         // 执行 派工操作
-        this.service.assignOrder({
-            maintenanceId: id,
-            type: type,
-            employeeIds: employeeIds
-        }).then(() => {
-            let msg = '';
-            if (type === 1) {
-                msg = '指派';
-            } else if (type === 2) {
-                msg = '指派';
-            } else if (type === 3) {
-                msg = '更改';
-            }
-            this.alerter.success(msg);
-        });
+        // this.service.assignOrder({
+        //     maintenanceId: this.selectedOrder.id,
+        //     type: type,
+        //     employeeIds: employeeIds
+        // }).then(() => {
+        //     let msg = '';
+        //     if (type === 1) {
+        //         msg = '指派';
+        //     } else if (type === 2) {
+        //         msg = '转派';
+        //     } else if (type === 3) {
+        //         msg = '更改';
+        //     }
+        //     this.alerter.success('执行' + msg + '操作成功！');
 
-        // 刷新页面
-        this.onLoadList();
+        //     // 刷新页面
+        //     this.onLoadList();
+        // });
     }
 
     /**
@@ -224,14 +289,14 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
     /**
      * 确认指派给哪些维修技师
      * 
-     * @param {any} id   工单id
+     * @param {any} type   指派类型
      * 
      * @memberOf AssignOrderComponent
      */
-    onConfirmTechnicians(id, type) {
-        console.log('onConfirmTechnicians', id);
+    onConfirmTechnicians(type) {
+        console.log('onConfirmTechnicians', this.selectedOrder.id);
 
-        this.assignOrderHandler(id, type);
+        this.assignOrderHandler(type);
     }
 
     // 初始化维修技师数据

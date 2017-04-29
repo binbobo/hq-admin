@@ -102,7 +102,7 @@ export class AssignService implements BasicService<any> {
             put<void>(url, body)
             .catch(err => Promise.reject(`执行完工操作失败：${err}`));
     }
-    
+
 
     public create(body: any): Promise<any> {
         const url = Urls.chain.concat('/Maintenances');

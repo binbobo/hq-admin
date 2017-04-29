@@ -4,6 +4,7 @@ import { PagedParams, PagedResult, ApiResult, BasicModel, BasicService, ListResu
 import { TreeviewItem } from 'ngx-treeview';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import { RequestParams } from '../../shared/models/request-params';
 
 
 @Injectable()
@@ -56,6 +57,13 @@ export class OrderService implements BasicService<Order> {
                 // console.log(response.json().data);
                 return response.json().data as MaintenanceItem[];
             });
+    }
+
+    getCustomerVehicleByPlateNoOrVin2(params: FuzzySearchRequest): Promise<PagedResult<CustomerVehicle>> {
+        const search = params.serialize();
+        const url = Urls.chain.concat('/CustomerVehicles/Search');
+        return this.httpService
+            .get<PagedResult<CustomerVehicle>>(url, search);
     }
 
     /**
@@ -324,6 +332,15 @@ export class OrderListRequest extends PagedParams {
         public orgIds?: Array<string> // 查询范围
     ) {
         super('OrderListRequestParams');
+    }
+}
+
+export class FuzzySearchRequest extends PagedParams {
+    constructor(
+        public keyword: string, // 模糊搜索关键字
+    ) {
+        // super('FuzzySearchRequestParams');
+        super();
     }
 }
 
