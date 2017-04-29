@@ -125,7 +125,7 @@ export class AppendOrderComponent {
     this.newSuggestData = [];        //新增建议维修项目
     this.alerter.info('增项成功!', true, 2000);
     this.stDataSource.load([]);//清空只能表单数据
-
+    this.isableAppend = false;
   }
   // 提交维修项目
   appendOrderSheet() {

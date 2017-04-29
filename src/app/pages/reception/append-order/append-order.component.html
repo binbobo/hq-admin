@@ -10,7 +10,7 @@
       <input [hq-table-typeahead]="typeaheadSource" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)" class="form-control"
         placeholder="请输入工单号/车牌号" />
     </form>
-    
+
     <table class="table search-table">
       <tr>
         <td>车牌号:</td>
@@ -68,8 +68,9 @@
       <tabset #staticTabs>
         <!--维修项目-->
         <tab heading="维修项目">
-          <smart-table [source]="stDataSource" (deleteConfirm)="deleteMaintanceItem($event)" (createConfirm)="addNewmaintanceItem($event)" [settings]="maintanceItemSettings"></smart-table>
-          <table class='table table-bordered table-tab table-sm'>
+          <smart-table [source]="stDataSource" (deleteConfirm)="deleteMaintanceItem($event)" (createConfirm)="addNewmaintanceItem($event)"
+            [settings]="maintanceItemSettings"></smart-table>
+          <table class='table table-bordered table-tab table-sm table-hover'>
             <thead class="thead-default">
               <tr>
                 <th>已添加维修项目名称</th>
@@ -89,7 +90,7 @@
               <td>{{item.operateDateTime}}</td>
             </tr>
           </table>
-          
+
         </tab>
         <!--附加项目-->
         <tab heading="附加项目">
@@ -110,7 +111,7 @@
         <!--建议维修项-->
         <tab heading="建议维修项">
           <smart-table (deleteConfirm)="deletsuggestItem($event)" (createConfirm)="suggestItem($event)" [settings]="suggestedMaintanceSettings"></smart-table>
-          <table class='table table-tab'>
+          <table class='table table-tab '>
             <thead class="thead-default">
               <tr>
                 <th>已增加建议维修项目</th>
@@ -241,18 +242,18 @@
       </tabset>
     </div>
     <!--只有前4个选项卡显示-->
-    <div *ngIf="true" class="card">
+     <div class="card-block text-center">
+        <button type="button" class="btn  btn-primary" (click)="submitAddOrder()" [disabled]="!isableAppend">提交增项</button>
+        <!--<input type="text" readonly class="btn btn-primary" (click)="submitAddOrder()" value='提交增项'>-->
+        <button type="button" class="btn  btn-primary" (click)="submitAddOrder()" disabled>挂单</button>
+      </div>
+    <div class="card">
       <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
         折前费用: 工时费<span class="ml-2 mr-2">{{workHourFee}}</span> | 材料费
         <span class="ml-2 mr-2">{{materialFee}}</span> | 其它
         <span class="ml-2 mr-2">{{otherFee}}</span> | 合计
         <span class="ml-2 mr-2">{{sumFee}}</span>|
-      </div>
-      <div class="card-block text-center">
-        <button type="button" class="btn  btn-primary" (click)="submitAddOrder()"  [disabled]="!isableAppend">提交增项</button>
-        <!--<input type="text" readonly class="btn btn-primary" (click)="submitAddOrder()" value='提交增项'>-->
-               <button type="button" class="btn  btn-primary" (click)="submitAddOrder()"  disabled>挂单</button>
-      </div>
+      </div>     
     </div>
 
   </div>
