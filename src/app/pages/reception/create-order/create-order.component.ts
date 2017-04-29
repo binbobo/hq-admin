@@ -1,10 +1,10 @@
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
 import { Component, Injector, ViewChild, ElementRef } from '@angular/core';
 import { DataList } from '../../../shared/models/data-list';
-import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType, CustomerVehicle } from '../order.service';
+import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType, CustomerVehicle, FuzzySearchRequest } from '../order.service';
 import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { TabsetComponent } from 'ngx-bootstrap';
-import { ViewCell } from 'ng2-smart-table';
+import { ViewCell, LocalDataSource } from 'ng2-smart-table';
 import { CustomMaintanceItemEditorComponent } from './custom-maintance-item-editor.component';
 
 import { Observable } from 'rxjs/Observable';
@@ -16,6 +16,7 @@ import 'rxjs/add/operator/switchMap';
 import { StorageKeys } from '../../../shared/models/storage-keys';
 
 import * as moment from 'moment';
+import { TypeaheadRequestParams } from "app/shared/directives";
 
 
 @Component({
@@ -77,6 +78,8 @@ export class CreateOrderComponent extends DataList<Order> {
 
   // 新增维修项目数据（临时保存）
   newMaintenanceItemData = [];
+
+  stDataSource: LocalDataSource;
 
   // 费用计算相关
   workHourFee = 0;  // 工时费
@@ -140,6 +143,9 @@ export class CreateOrderComponent extends DataList<Order> {
 
     // 构建表单
     this.createForm();
+
+    // 初始化只能表单数据源
+    this.stDataSource = new LocalDataSource();
 
     // 获取挂起的订单
     this.unsettledOrders = this.getUnsettledOrders();
@@ -490,7 +496,7 @@ export class CreateOrderComponent extends DataList<Order> {
   // 创建工单按钮点击事件处理程序
   createWorkSheet() {
     // 设置按钮不可用
-    this.enableCreateWorkSheet = false;
+    // this.enableCreateWorkSheet = false;
 
     // 组织接口参数
     // 1.表单基础数据 this.workSheetForm.value
@@ -513,6 +519,7 @@ export class CreateOrderComponent extends DataList<Order> {
 
     // 调用创建工单接口
     console.log('提交的工单对象： ', JSON.stringify(workSheet));
+
     this.service.create(workSheet).then(data => {
       console.log('创建工单成功之后， 返回的工单对象：', data);
       this.alerter.success('创建工单成功！');
@@ -523,6 +530,7 @@ export class CreateOrderComponent extends DataList<Order> {
 
       this.selectedBrandId = this.selectedSeriesId = null;
       // 新增维修项目数据清空
+      this.stDataSource.load([]);
       this.newMaintenanceItemData = [];
       // 清空上次维修工单数据
       this.lastOrderData = [];
@@ -535,11 +543,10 @@ export class CreateOrderComponent extends DataList<Order> {
   }
 
 
-  // // 定义要显示的列
+  // 定义要显示的列
   // public get typeaheadColumns() {
   //   return [
   //     { name: 'plateNo', title: '车牌号' },
-  //     { name: 'id', title: '工单号' }
   //   ];
   // }
   // // 从模糊查询下拉框中选择一条记录
@@ -549,7 +556,9 @@ export class CreateOrderComponent extends DataList<Order> {
   // // 设置数据源
   // public get typeaheadSource() {
   //   return (params: TypeaheadRequestParams) => {
-  //     return this.service.getAppendOrderParma(params.text).toPromise()
+  //     const p = new FuzzySearchRequest(params.text);
+  //     p.setPage(params.pageIndex, params.pageSize);
+  //     return this.service.getCustomerVehicleByPlateNoOrVin2(p);
   //   };
   // }
 }

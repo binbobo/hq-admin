@@ -86,7 +86,7 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h6 class="modal-title pull-left"></h6>
+          <h6 class="modal-title pull-left">维修验收详情</h6>
           <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -113,7 +113,7 @@
                       <a *ngIf="true" href="#" (click)="onMultiSelectorClick($event)">通过</a>
                       <span *ngIf="false">通过</span>
                     </td>
-                    <td>{{record?.name}}</td>
+                    <td>{{record?.serviceName}}</td>
                     <td>{{record?.workHour }}</td>
                     <td>{{record?.price}}</td>
                     <td>{{record?.amount}}</td>

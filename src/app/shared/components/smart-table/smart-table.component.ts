@@ -41,6 +41,9 @@ const SmartTableSetting = {
     columnTitle: '操作',
     edit: false,   // 不显示编辑按钮
   },
+  filter: {
+    inputClass: 'inputFilter'
+  },
   edit: {
     editButtonContent: '编辑',
     saveButtonContent: '更新',
