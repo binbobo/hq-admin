@@ -25,3 +25,9 @@
 .textInputBtn {
     border: 1px solid #eed;
 }
+
+@media (min-width: 992px) {
+    .modal-lg {
+        max-width: 1000px;
+    }
+}

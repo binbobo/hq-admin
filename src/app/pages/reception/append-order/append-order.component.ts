@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit, Injector } from '@angular/core';
-import { DataList } from '../../../shared/models/data-list';
 import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType } from '../order.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { HqAlerter } from 'app/shared/directives';
 import { TabsetComponent } from 'ngx-bootstrap';
 import 'rxjs/add/observable/of';
 import { AppendOrderService, AppendOrderSearch, SearchReturnData, AppendItemSearchRequest } from "./append-order.service";
@@ -21,20 +21,20 @@ import * as moment from 'moment';
   providers: [AppendOrderService]
 })
 
-export class AppendOrderComponent extends DataList<Order> {
+export class AppendOrderComponent {
   otherFee = 0;
   materialFee = 0;
   sumFee = 0;
   workHourFee = 0;
   isShowAppend = false;
-
+  isableAppend = false;
+  stDataSource: LocalDataSource;
+  @ViewChild(HqAlerter)
+  protected alerter: HqAlerter;
   constructor(
-    injector: Injector,
-    protected service: OrderService,
     protected service1: AppendOrderService
   ) {
-    super(injector, service);
-    this.params = new OrderListRequest();
+    this.stDataSource = new LocalDataSource();
   }
 
   maintenanceProjectData;
@@ -67,15 +67,18 @@ export class AppendOrderComponent extends DataList<Order> {
     this.isShowAppend = true;
     this.SearchappendList = $event;
     this.listId = $event.id;
+
+    // this.params.id = $event.id;
+    // this.onLoadList();
     this.service1.get(this.listId)
       .then(data => {
         this.maintenanceId = data.id;
         //维修项目
         this.maintenanceProjectData = data.serviceOutputs;
         (this.maintenanceProjectData).forEach((item, index) => {
-            this.workHourFee += item.amount;
-            this.sumFee += this.workHourFee;
-          
+          this.workHourFee += item.amount;
+          this.sumFee += this.workHourFee;
+
         })
         //附加项目
         this.attachServiceOutputs = data.attachServiceOutputs;
@@ -108,15 +111,26 @@ export class AppendOrderComponent extends DataList<Order> {
   newSuggestData = [];        //新增建议维修项目
 
   submitAddOrder() {
-    this.appendOrderSheet();
-    this.appendAttachSheet();
-    this.appendSuggestSheet()
+    if (this.newMaintenanceItemData.length > 0) {
+      this.appendOrderSheet();
+    }
+    if (this.newAttachData.length > 0) {
+      this.appendAttachSheet();
+    }
+    if (this.newSuggestData.length > 0) {
+      this.appendSuggestSheet()
+    }
+    this.newMaintenanceItemData = [];  //新增维修项目
+    this.newAttachData = [];          //新增附加项目
+    this.newSuggestData = [];        //新增建议维修项目
+    this.alerter.info('增项成功!', true, 2000);
+    this.stDataSource.load([]);//清空只能表单数据
+
   }
   // 提交维修项目
   appendOrderSheet() {
     const addData: any = {};
     addData.maintenanceItems = this.newMaintenanceItemData;
-    console.log(addData.maintenanceItems)
     this.service1.post(addData).then(() => {
       console.log('添加维修项目成功');
     }).catch(err => console.log("添加维修项目失败" + err));
@@ -125,10 +139,10 @@ export class AppendOrderComponent extends DataList<Order> {
   appendAttachSheet() {
     const attachData: any = {};
     attachData.maintenanceItems = this.newAttachData;
-    console.log(attachData.maintenanceItems)
     this.service1.post(attachData).then(() => {
       console.log('添加附加项目成功');
     }).catch(err => console.log("添加附加项目失败" + err));
+
   }
   // 提交建议维修项
   appendSuggestSheet() {
@@ -137,6 +151,7 @@ export class AppendOrderComponent extends DataList<Order> {
     this.service1.suggestpost(suggestData).then(() => {
       console.log('添加建议维修项成功');
     }).catch(err => console.log(err));
+
   }
   /**
  * 通过智能表格新增维修项目, 添加按钮点击事件处理程序
@@ -179,11 +194,15 @@ export class AppendOrderComponent extends DataList<Order> {
     newData.type = '3';  // 类型 3表示维修新增
     // 添加维修项目
     this.newMaintenanceItemData.push(newData);
+    this.maintenanceProjectData.push(newData);
     // 计算工时费
     this.workHourFee += newData.money;
     this.sumFee = this.workHourFee + this.materialFee + this.otherFee;
     // 数据合法, 允许添加
     evt.confirm.resolve(newData);
+    if (this.newMaintenanceItemData.length > 0) {
+      this.isableAppend = true;
+    }
   }
 
   /**
@@ -213,14 +232,18 @@ export class AppendOrderComponent extends DataList<Order> {
     if (!newData.description) {
       return;
     }
-    newData.maintenanceId = this.maintenanceId; //工单id
+    newData.serviceName = newData.description;
     newData.serviceId = sessionStorage.getItem(StorageKeys.MaintanceItemId); // 维修项目id
+    newData.maintenanceId = this.maintenanceId; //工单id
     newData.type = '2';  // 类型2表示附加项目
-    console.log(newData)
     // 添加维修项目
     this.newAttachData.push(newData);
+    this.attachServiceOutputs.push(newData);
     // 数据合法, 允许添加
     evt.confirm.resolve(newData);
+    if (this.newAttachData.length > 0) {
+      this.isableAppend = true;
+    }
   }
   /**
   * 通过智能表格删除附加项目
@@ -242,10 +265,13 @@ export class AppendOrderComponent extends DataList<Order> {
     }
     newData.operateDateTime = moment().format('YYYY-MM-DD hh:mm:ss'); // 默认为当前时间
     newData.maintenanceId = this.maintenanceId; //工单id
-    console.log(newData)
     this.newSuggestData.push(newData);
+    this.suggestServiceOutputs.push(newData)
     // 数据合法, 允许添加
     evt.confirm.resolve(newData);
+    if (this.newSuggestData.length > 0) {
+      this.isableAppend = true;
+    }
   }
   /**
   * 通过智能表格删除建议维修项目

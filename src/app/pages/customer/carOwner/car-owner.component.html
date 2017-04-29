@@ -7,8 +7,8 @@
       <div class="form-group row">
         <label for="customerName" class="col-sm-1 col-form-label col-form-label-sm">车主</label>
         <div class="col-sm-2">
-          <input type="text" [(ngModel)]="params.customerName" class="form-control form-control-sm" formControlName="customerName"
-            id="customerName" placeholder="车主">
+          <input type="text" [(ngModel)]="params.customerName" class="form-control form-control-sm" formControlName="plateNo" id="customerName"
+            placeholder="车主">
         </div>
         <label for="plateNo" class="col-sm-1 col-form-label col-form-label-sm">车牌号</label>
         <div class="col-sm-2">
@@ -17,13 +17,13 @@
         </div>
         <label for="phone" class="col-sm-1 col-form-label col-form-label-sm">车主电话</label>
         <div class="col-sm-2">
-          <input type="tel" [(ngModel)]="params.phone" class="form-control form-control-sm" formControlName="phone" id="phone" placeholder="车主电话">
+          <input type="tel" [(ngModel)]="params.phone" class="form-control form-control-sm" formControlName="plateNo" id="phone" placeholder="车主电话">
         </div>
       </div>
       <div class="form-group row">
         <label for="enterStoreTime" class="col-sm-1 col-form-label col-form-label-sm">建档日期</label>
         <div class="input-group input-group-sm col-sm-2">
-          <input [(ngModel)]="params.enterStartTimeDate" class="form-control form-control-sm datetime-picker" type="text" formControlName="enterStoreTimeStart"
+          <input [(ngModel)]="params.enterStartTimeDate" class="form-control form-control-sm datetime-picker" type="text" formControlName="plateNo"
             ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="2" minute='59' close-on-select="false" />
           <span class="input-group-addon">
                 <i class="fa fa-calendar" aria-hidden="true"></i>
@@ -31,7 +31,7 @@
         </div>
         <label class="col-sm-1 col-form-label col-form-label-sm">至</label>
         <div class="input-group input-group-sm col-sm-2">
-          <input [(ngModel)]="params.enterEndTimeDate" class="form-control form-control-sm datetime-picker" type="text" formControlName="enterStoreTimeEnd"
+          <input [(ngModel)]="params.enterEndTimeDate" class="form-control form-control-sm datetime-picker" type="text" formControlName="plateNo"
             ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' close-on-select="false" />
           <span class="input-group-addon">
                   <i class="fa fa-calendar" aria-hidden="true"></i>
@@ -84,8 +84,114 @@
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
 
     <div class="card-block text-center">
-      <input type="text" class="btn textInputBtn" readonly (click)="createWorkSheet()" value="新增">
+      <input type="text" class="btn textInputBtn" readonly (click)="lgModal.show();" value="新增">
       <input type="text" class="btn textInputBtn" readonly value="导出">
+    </div>
+  </div>
+</div>
+
+<!--新增车主信息-->
+<div bsModal #lgModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title pull-left">车主信息</h6>
+        <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style='overflow: scroll;'>
+        <form [formGroup]="carOwnerForm" autocomplete="off" (ngSubmit)="addCarOwner()">
+          <div class="form-group row">
+            <label for="customerName" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车主</label>
+            <div class="col-sm-2">
+              <input type="text" required class="form-control form-control-sm" formControlName="plateNo" id="customerName" placeholder="车主">
+            </div>
+            <label for="phone" class="col-sm-1 col-form-label col-form-label-sm">性别</label>
+            <div class="col-sm-2">
+              <select required id="type" formControlName="plateNo" class="form-control sm">
+                <option value="0" [selected]="true">男</option>
+                <option value="1">女</option>
+              </select>
+            </div>
+            <label for="phone" class="col-sm-1 col-form-label col-form-label-sm">生日</label>
+            <div class="col-sm-2">
+              <input class="form-control form-control-sm datetime-picker" type="text" formControlName="plateNo" ngui-datetime-picker date-format="YYYY-MM-DD"
+                date-only="true" />
+            </div>
+            <label for="phone" class="col-sm-1 col-form-label col-form-label-sm">身份证号</label>
+            <div class="col-sm-2">
+              <input type="text" required class="form-control form-control-sm" formControlName="plateNo" id="customerName" placeholder="身份证号">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="phone" class="col-sm-1 col-form-label col-form-label-sm">会员卡号</label>
+            <div class="col-sm-2">
+              <input type="text" required class="form-control form-control-sm" formControlName="plateNo" id="customerName" placeholder="会员卡号">
+            </div>
+          </div>
+          <hr>
+          <div class="form-group row">
+            <label for="contactUser" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>手机号</label>
+            <div class="col-sm-2">
+              <input type="text" required class="form-control form-control-sm" formControlName="plateNo" id="contactUser" placeholder="手机号">
+            </div>
+            <label for="contactInfo" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>电话</label>
+            <div class="col-sm-2">
+              <input required type="text" class="form-control form-control-sm" formControlName="plateNo" id="contactInfo" placeholder="电话">
+            </div>
+            <label for="createdUserName" class="col-sm-1 col-form-label col-form-label-sm">传真</label>
+            <div class="col-sm-2">
+              <input type="text" class="form-control form-control-sm" formControlName="plateNo" id="createdUserName">
+            </div>
+            <label for="introducer" class="col-sm-1 col-form-label col-form-label-sm">Email</label>
+            <div class="col-sm-2">
+              <input type="text" class="form-control form-control-sm" formControlName="plateNo" id="introducer" placeholder="Email">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="phone" class="col-sm-1 col-form-label col-form-label-sm">省份</label>
+            <div class="col-sm-2">
+              <select required id="type" formControlName="plateNo" class="form-control sm">
+                <option value="0" [selected]="true">男</option>
+                <option value="1">女</option>
+              </select>
+            </div>
+            <label for="phone" class="col-sm-1 col-form-label col-form-label-sm">城市</label>
+            <div class="col-sm-2">
+              <select required id="type" formControlName="plateNo" class="form-control sm">
+                <option value="0" [selected]="true">男</option>
+                <option value="1">女</option>
+              </select>
+            </div>
+            <label for="phone" class="col-sm-1 col-form-label col-form-label-sm">区县</label>
+            <div class="col-sm-2">
+              <select required id="type" formControlName="plateNo" class="form-control sm">
+                <option value="0" [selected]="true">男</option>
+                <option value="1">女</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="nextMileage" class="col-sm-1 col-form-label col-form-label-sm">详细地址</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control form-control-sm" formControlName="plateNo" id="nextMileage">
+            </div>
+          </div>
+        </form>
+        <hr>
+        <tabset>
+          <tab heading="车辆信息">
+            <smart-table (deleteConfirm)="deleteMaintanceItem($event)" [source]="stDataSource" (createConfirm)="addNewmaintanceItem($event)"
+              [settings]="maintanceItemSettings">
+            </smart-table>
+          </tab>
+        </tabset>
+        <br>
+        <div style="text-align:center">
+          <button type="button" class="btn btn-secondary">保存</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

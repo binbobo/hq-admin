@@ -161,7 +161,8 @@ placeholder="请输入工单号/车牌号" />-->
         <template tabHeading>
           <span class="asterisk mr-1">*</span>维修项目
         </template>
-        <smart-table (deleteConfirm)="deleteMaintanceItem($event)" (createConfirm)="addNewmaintanceItem($event)" [settings]="maintanceItemSettings"></smart-table>
+        <smart-table (deleteConfirm)="deleteMaintanceItem($event)" [source]="stDataSource" (createConfirm)="addNewmaintanceItem($event)"
+          [settings]="maintanceItemSettings"></smart-table>
       </tab>
       <tab heading="上次维修记录">
         <table class="table table-hover table-bordered table-sm">

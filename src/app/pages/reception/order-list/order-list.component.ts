@@ -100,6 +100,8 @@ export class OrderListComponent extends DataList<Order> {
     this.service.delete(id).then(res => {
       console.log('根据工单id删除/作废工单：', res);
 
+      this.alerter.success('执行作废操作成功');
+
       // 重新加载页面
       this.onLoadList();
     });
