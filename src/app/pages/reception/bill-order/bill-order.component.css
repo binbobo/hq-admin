@@ -19,3 +19,27 @@
     color: #014c8c;
     text-decoration: underline;
 }
+.bill .search-input{
+    display: table-cell;
+}
+.bill .row{
+    margin-left: 0;
+}
+.bill .card-block{
+    font-size:.9rem;
+}
+.bill .search-button{
+    text-align: center;
+}
+.bill .search-button button{
+    display: inline-block;
+}
+.bill label{
+    line-height: 2;
+}
+.bill .form-check-label{
+    width: 90px;
+}
+.bill table th{
+    vertical-align:text-bottom;
+}
