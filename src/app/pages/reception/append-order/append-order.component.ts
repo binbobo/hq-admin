@@ -4,7 +4,7 @@ import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, Mainte
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TabsetComponent } from 'ngx-bootstrap';
 import 'rxjs/add/observable/of';
-import { AppendOrderService, AppendOrderSearch, SearchReturnData } from "./append-order.service";
+import { AppendOrderService, AppendOrderSearch, SearchReturnData, AppendItemSearchRequest } from "./append-order.service";
 import { PagedResult, StorageKeys } from "app/shared/models";
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/operator/catch';
@@ -35,17 +35,6 @@ export class AppendOrderComponent extends DataList<Order> {
   ) {
     super(injector, service);
     this.params = new OrderListRequest();
-    // 搜索模糊查询
-
-    this.plateNoData = Observable
-      .create((observer: any) => {
-        observer.next(this.myForm.controls.state.value);
-      })
-      .debounceTime(100)
-      .distinctUntilChanged()
-      .mergeMap((token: string) => this.service1.getAppendOrderParma(token))
-
-    // 根据项目名称获取维修项目
   }
 
   maintenanceProjectData;
@@ -67,27 +56,32 @@ export class AppendOrderComponent extends DataList<Order> {
   public plateNoData: Observable<SearchReturnData>;
   private listId: string;
   private maintenanceId: any;
-  OnSearchClick(e) {
+  public get typeaheadColumns() {
+    return [
+      { name: 'plateNo', title: '车牌号' },
+      { name: 'id', title: '工单号' }
+    ];
+  }
+
+  public onTypeaheadSelect($event) {
     this.isShowAppend = true;
-    this.SearchappendList = e.item;
-    this.listId = (e.item)["id"];
+    this.SearchappendList = $event;
+    this.listId = $event.id;
     this.service1.get(this.listId)
       .then(data => {
-        console.log(data);
         this.maintenanceId = data.id;
-
         //维修项目
         this.maintenanceProjectData = data.serviceOutputs;
-        (this.maintenanceProjectData).forEach((item, index) => {          
-          this.workHourFee += item.amount;
-          this.sumFee += this.workHourFee;
+        (this.maintenanceProjectData).forEach((item, index) => {
+            this.workHourFee += item.amount;
+            this.sumFee += this.workHourFee;
+          
         })
         //附加项目
         this.attachServiceOutputs = data.attachServiceOutputs;
         // // //建议维修项
         this.suggestServiceOutputs = data.suggestServiceOutputs;
         // // 上次维修记录
-
         this.lastManufactureDetailOutput = data.lastManufactureDetailOutput;
         this.lastDataProjectList = data.lastManufactureDetailOutput.serviceOutputs;
         this.lastRepairList = data.lastManufactureDetailOutput.productOutputs;
@@ -99,40 +93,19 @@ export class AppendOrderComponent extends DataList<Order> {
       });
   }
 
-  // public get typeaheadColumns() {
-  //   return [
-  //     { name: 'plateNo', title: '车牌号' },
-  //     { name: 'id', title: '工单号' }
-  //   ];
-  // }
-
-  // private typeaheadList;
-
-  // public onTypeaheadSelect($event) {
-  //   alert(JSON.stringify($event));
-  // }
-
-  // public get typeaheadSource() {      
-  //   return (params: TypeaheadRequestParams) => {
-  //     this.plateNoData.subscribe(sdata => {
-  //       console.log(sdata);
-  //       this.typeaheadList=sdata;
-  //     let start = (params.pageIndex - 1) * params.pageSize;
-  //     let end = params.pageSize + start;
-  //     let data = this.typeaheadList.filter(m => m.plateNo.includes(params.text)).slice(start, end);
-  //     let total = this.typeaheadList.filter(m => m.plateNo.includes(params.text)).length;
-  //     return Promise.resolve(new PagedResult<any>(data, total, total))
-  //   });
-  //   };
-  // }
-
-
+  public get typeaheadSource() {
+    return (params: TypeaheadRequestParams) => {
+      let p = new AppendItemSearchRequest(params.text);
+      p.setPage(params.pageIndex, params.pageSize);
+      return this.service1.getAppendOrderParma(p);
+    };
+  }
 
   private SearchappendList = {}
 
   newMaintenanceItemData = [];  //新增维修项目
   newAttachData = [];          //新增附加项目
-  newSuggestData=[];        //新增建议维修项目
+  newSuggestData = [];        //新增建议维修项目
 
   submitAddOrder() {
     this.appendOrderSheet();
@@ -160,8 +133,7 @@ export class AppendOrderComponent extends DataList<Order> {
   // 提交建议维修项
   appendSuggestSheet() {
     const suggestData: any = {};
-    suggestData.maintenanceRecommends= this.newSuggestData;
-    console.log(suggestData.maintenanceRecommends)
+    suggestData.maintenanceRecommends = this.newSuggestData;
     this.service1.suggestpost(suggestData).then(() => {
       console.log('添加建议维修项成功');
     }).catch(err => console.log(err));
@@ -173,7 +145,6 @@ export class AppendOrderComponent extends DataList<Order> {
   addNewmaintanceItem(evt) {
     // 获取新增的维修工项记录
     const newData = evt.newData;
-
     // 报错错我信息
     let errorMsg = '';
 
@@ -182,7 +153,6 @@ export class AppendOrderComponent extends DataList<Order> {
       errorMsg = '请选择一个维修项目';
       return;
     }
-
     // 浮点数正则表达式
     const reg = /^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/;
     // 检查工时合法性
@@ -204,7 +174,6 @@ export class AppendOrderComponent extends DataList<Order> {
     // 处理维修项目数据
     newData.serviceId = sessionStorage.getItem(StorageKeys.MaintanceItemId); // 维修项目id
     newData.maintenanceId = this.maintenanceId;
-    console.log(this.maintenanceId)
     newData.amount = newData.workHour * newData.price * (newData.discount / 100); // 金额 = 工时*单价*折扣率
     newData.operationTime = moment().format('YYYY-MM-DD hh:mm:ss'); // 默认为当前时间
     newData.type = '3';  // 类型 3表示维修新增
@@ -224,7 +193,6 @@ export class AppendOrderComponent extends DataList<Order> {
   deleteMaintanceItem(evt) {
     // 确认删除
     evt.confirm.resolve();
-
     // 移除维修项目
     this.newMaintenanceItemData.forEach((item, index) => {
       if (evt.data.serviceName === item.serviceName) {
@@ -244,7 +212,7 @@ export class AppendOrderComponent extends DataList<Order> {
     const newData = evt.newData;
     if (!newData.description) {
       return;
-    }   
+    }
     newData.maintenanceId = this.maintenanceId; //工单id
     newData.serviceId = sessionStorage.getItem(StorageKeys.MaintanceItemId); // 维修项目id
     newData.type = '2';  // 类型2表示附加项目
@@ -275,7 +243,7 @@ export class AppendOrderComponent extends DataList<Order> {
     newData.operateDateTime = moment().format('YYYY-MM-DD hh:mm:ss'); // 默认为当前时间
     newData.maintenanceId = this.maintenanceId; //工单id
     console.log(newData)
-    this.newSuggestData = newData;
+    this.newSuggestData.push(newData);
     // 数据合法, 允许添加
     evt.confirm.resolve(newData);
   }

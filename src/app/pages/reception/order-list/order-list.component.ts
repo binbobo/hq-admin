@@ -4,6 +4,7 @@ import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
 import { OrderService, OrderListRequest, Order, MaintenanceType } from '../order.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StorageKeys } from 'app/shared/models';
+import { TypeaheadRequestParams } from '../../../shared/directives/table-typeahead/table-typeahead.directive';
 
 @Component({
   selector: 'app-order-list',
@@ -175,10 +176,6 @@ export class OrderListComponent extends DataList<Order> {
     this.params.orgIds = evt;
 
     console.log('当前选择的查询范围列表：', this.params.orgIds);
-
-    // evt.map(item => this.params.orgIds.push(item));
-
-    // console.log(this.params.orgIds)
   }
 
   // 重置为初始查询条件
@@ -188,4 +185,5 @@ export class OrderListComponent extends DataList<Order> {
     this.params.states = [];
     this.params.orgIds = [];
   }
+
 }

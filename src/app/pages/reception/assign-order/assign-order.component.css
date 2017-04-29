@@ -23,7 +23,7 @@ caption {
 
 
 
-.assign .assign-person{
+/*.assign .assign-person{
     cursor:pointer;
     display: block;
     color:#0275d8;   
@@ -48,16 +48,12 @@ position: absolute;
       cursor: pointer;
       color:#0275d8;
 }
-/*工单详情部分*/
- .modal-content{
-     /*background-color: #eceeef;*/
- }
 
 @media (min-width: 400px){
 .modal-lg {
     max-width: 1200px;
 }
-}
+}*/
 /*工单end*/
 .triangle{
     display: inline-block;

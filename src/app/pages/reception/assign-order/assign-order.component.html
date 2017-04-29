@@ -1,6 +1,5 @@
-<div *ngFor="let alert of alerts">
-  <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
-</div>
+<ng-template hq-alerter></ng-template>
+
 
 <div class="card">
   <div class="card-header">
@@ -29,7 +28,9 @@
         <tr>
           <th>操作</th>
           <th>指派维修技师</th>
+          <!-- 待派工状态下面的可以指派 -->
           <th>转派</th>
+          <!-- 已经指派的(待开工, 待完工)才可以转派 -->
           <th>维修类型</th>
           <th>工单号</th>
           <th>进店时间</th>
@@ -52,8 +53,15 @@
             <a href="#" (click)="orderDetailsHandler($event, item.id, lgModal)">详情</a> |
             <a href="#" (click)="finishedOrder($event, item.id, confirmModal)">完工</a>
           </td>
-          <td><a (click)="orderDetailsHandler(item.id, lgModal)">转派</a></td>
-          <td>{{item.employees?.join(',')}}</td>
+          <td>
+            <a *ngIf="item.statusName === '待派工'" href="#" [hq-mutil-selector]="maintenanceTechnicians" mTitle="选择维修技师" placement="right"
+              (onChange)="onChangeTechnicians($event)" (onConfirm)="onConfirmTechnicians(item.id, 1)" (click)="onMultiSelectorClick($event)">指派</a>
+            <span *ngIf="item.statusName !== '待派工'">{{item.employees?.join(',')}}</span>
+          </td>
+          <td width="40">
+            <a *ngIf="item.statusName !== '待派工'" href="#" [hq-mutil-selector]="maintenanceTechnicians" mTitle="选择维修技师" placement="right"
+              (onConfirm)="onConfirmTechnicians(item.id, 2)" (click)="onMultiSelectorClick($event)">转派</a>
+          </td>
           <td>{{item.typeName}}</td>
           <td>{{item.billCode}}</td>
           <td>{{item.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
@@ -88,123 +96,52 @@
 
 
   <!--详情 begin-->
-  <div bsModal #lgModal="bs-modal" class="modal" style='background-color: rgba(0, 0, 0, 0.47);' tabindex="-1" role="dialog"
-    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div bsModal #lgModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="btn btn-secondary pull-left" aria-label="Close">打印</button>
+          <h6 class="modal-title pull-left"></h6>
           <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
         </div>
         <div class="modal-body" style='overflow: scroll;'>
           <!--导出详情begin-->
-
-          <!--工单详情 start-->
-          <table class="table table-hover table-bordered table-sm">
-            <caption>工单详情</caption>
-            <thead>
-              <tr class='table-info'>
-                <th>店名</th>
-                <th>状态</th>
-                <th>维修类型</th>
-                <th>工单号</th>
-                <th>进店时间</th>
-                <th>预计交车时间</th>
-                <th>超时</th>
-                <th>服务顾问</th>
-                <th>品牌</th>
-                <th>车型</th>
-                <th>车牌号</th>
-                <th>行驶里程</th>
-                <th>购车时间</th>
-                <th>车主</th>
-                <th>送修人</th>
-                <th>送修人电话</th>
-                <th>介绍人</th>
-                <th>介绍人电话</th>
-                <th>维修技师</th>
-                <th>出厂时间</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{{selectedOrder?.orgName}}</td>
-                <td>{{selectedOrder?.statusName}}</td>
-                <td>{{selectedOrder?.typeName}}</td>
-                <td>{{selectedOrder?.billCode}}</td>
-                <td>{{selectedOrder?.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-                <td>{{selectedOrder?.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-                <td>{{selectedOrder?.overTime}}</td>
-                <td>{{selectedOrder?.createdUserName}}</td>
-                <td>{{selectedOrder?.brand}}</td>
-                <td>{{selectedOrder?.model}}</td>
-                <td>{{selectedOrder?.plateNo}}</td>
-                <td>{{selectedOrder?.mileage}}</td>
-                <td>{{selectedOrder?.purchaseDate|date:"yyyy/MM/dd"}}</td>
-                <td>{{selectedOrder?.customerName}}</td>
-                <td>{{selectedOrder?.contactUser}}</td>
-                <td>{{selectedOrder?.contactInfo}}</td>
-                <td>{{selectedOrder?.introducer}}</td>
-                <td>{{selectedOrder?.introPhone}}</td>
-                <td>{{selectedOrder?.employeeNames}}</td>
-                <td>{{selectedOrder?.leaveTim|date:"yyyy/MM/dd HH:mm:ss" }}</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <br>
           <tabset>
-            <tab heading=" 维修项目">
+            <tab heading="维修项目">
               <table class="table table-hover table-bordered table-sm">
                 <thead>
                   <tr>
+                    <th>指派维修技师</th>
+                    <!--<th>转派</th>-->
                     <th>项目名称</th>
                     <th>维修工时</th>
                     <th>工时单价(元)</th>
                     <th>金额(元)</th>
                     <th>折扣率</th>
                     <th>操作时间</th>
-                    <th>操作员</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let record of selectedOrder?.serviceOutputs">
+                    <td>
+                      <a *ngIf="record.employees?.length <= 0" href="#" [hq-mutil-selector]="maintenanceTechnicians" mTitle="选择维修技师" placement="right"
+                        (onConfirm)="onConfirmTechnicians(record.id)" (click)="onMultiSelectorClick($event)">指派</a>
+                      <span *ngIf="record.employees?.length > 0">{{record.employees?.join(',')}}
+                        <a  (onConfirm)="onConfirmTechnicians(record.id)" [hq-mutil-selector]="maintenanceTechnicians" mTitle="选择维修技师" href="#" (click)="onMultiSelectorClick($event)">
+                          更改
+                        </a>
+                      </span>
+                    </td>
+                    <!--<td width="40">
+                      <a *ngIf="record.itemstatusName !== '待派工'" href="#" [hq-mutil-selector]="maintenanceTechnicians" mTitle="选择维修技师" placement="right"
+                        (onConfirm)="onConfirmTechnicians($event, record.id)" (click)="$event.preventDefault();">转派</a>
+                    </td>-->
                     <td>{{record?.name}}</td>
                     <td>{{record?.workHour }}</td>
                     <td>{{record?.price}}</td>
-                    <td>{{record?.workHour * record?.price}}</td>
+                    <td>{{record?.amount}}</td>
                     <td>{{record?.discount}}</td>
-                    <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-                    <td>{{user.username}}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </tab>
-            <tab heading="维修配件">
-              <table class="table table-hover table-bordered table-sm">
-                <thead>
-                  <tr>
-                    <th>维修工项</th>
-                    <th>配件名称</th>
-                    <th>品牌</th>
-                    <th>规格型号</th>
-                    <th>数量</th>
-                    <th>单价(元)</th>
-                    <th>金额(元)</th>
-                    <th>操作时间</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let record of selectedOrder?.productOutputs">
-                    <td>{{record?.serviceName}}</td>
-                    <td>{{record?.productName}}</td>
-                    <td>{{record?.brandName}}</td>
-                    <td>{{record?.specification}}</td>
-                    <td>{{record?.count}}</td>
-                    <td>{{record?.price}}</td>
-                    <td>{{record?.price * record?.count}}</td>
                     <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
                   </tr>
                 </tbody>
@@ -283,9 +220,5 @@
       </div>
     </div>
   </div>
-
-
-
-
 
 </div>

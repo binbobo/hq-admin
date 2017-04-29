@@ -1,4 +1,3 @@
-<ng-template hq-alerter></ng-template>
 <div class="card">
   <div class="card-header">
     工单列表
@@ -42,12 +41,10 @@
           <input type="tel" [(ngModel)]="params.contactInfo" class="form-control form-control-sm" formControlName="contactInfo" id="contactInfo"
             placeholder="送修人电话">
         </div>
-
+        <label class="col-sm-1 col-form-label col-form-label-sm"></label>
         <div class="col-sm-3" *ngIf="isCollapsed">
-          &nbsp;&nbsp;
-          <button type="submit" [disabled]="false" class="btn btn-sm btn-success">查&nbsp;&nbsp;询</button>&nbsp;&nbsp;
-          <button type="reset" (click)="revert()" [disabled]="false" class="btn-sm btn btn-danger">撤销</button>&nbsp;&nbsp;
-          <!--<button type="button" (click)="export()" [disabled]="falsee" class=" btn-sm btn btn-info">导出</button>-->
+          <button type="submit" [disabled]="false" class="btn btn-sm btn-secondary">查询</button>&nbsp;&nbsp;
+          <button type="reset" (click)="revert()" [disabled]="false" class="btn-sm btn btn-secondary">撤销</button>&nbsp;&nbsp;
         </div>
       </div>
       <hr>
@@ -138,10 +135,8 @@
                 </ngx-dropdown-treeview>
               </div>
               <div class="col-sm-3" *ngIf="!isCollapsed">
-                &nbsp;&nbsp;
-                <button type="submit" [disabled]="false" class="btn btn-sm btn-success mr-2">查询</button>
-                <button type="reset" (click)="revert()" [disabled]="false" class=" btn-sm btn btn-danger mr-2 mr-2">撤销</button>
-                <!--<button type="button" (click)="export()" [disabled]="falsee" class=" btn-sm btn btn-info">导出</button>-->
+                <button type="submit" [disabled]="false" class="btn btn-sm btn-secondary mr-2">查询</button>
+                <button type="reset" (click)="revert()" [disabled]="false" class=" btn-sm btn btn-secondary mr-2 mr-2">撤销</button>
               </div>
             </div>
           </div>
@@ -278,7 +273,7 @@
 
             <br>
             <tabset>
-              <tab heading=" 维修项目">
+              <tab heading="维修项目">
                 <table class="table table-hover table-bordered table-sm">
                   <thead>
                     <tr>
@@ -296,7 +291,7 @@
                       <td>{{record?.name}}</td>
                       <td>{{record?.workHour}}</td>
                       <td>{{record?.price}}</td>
-                      <td>{{record?.workHour * record?.price}}</td>
+                      <td>{{record?.amount}}</td>
                       <td>{{record?.discount}}</td>
                       <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
                       <td>{{user.username}}</td>
@@ -326,7 +321,7 @@
                       <td>{{record?.specification}}</td>
                       <td>{{record?.count}}</td>
                       <td>{{record?.price}}</td>
-                      <td>{{record?.price * record?.count}}</td>
+                      <td>{{record?.amount}}</td>
                       <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
                     </tr>
                   </tbody>

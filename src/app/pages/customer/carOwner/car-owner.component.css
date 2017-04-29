@@ -1,0 +1,27 @@
+/*重写表单下面的label样式*/
+.col-form-label {
+    padding: 0;
+    text-align: right;
+}
+
+/*重写ngui-datetimer-picker表单input样式*/
+.datetime-picker {
+    width: 100%;
+    border-radius:0;
+}
+
+/*重写表格样式*/
+.table th, .table td {
+    text-align: center;
+    vertical-align: middle;
+    font-size: small;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+.table th {
+    background: silver;
+}
+
+.textInputBtn {
+    border: 1px solid #eed;
+}

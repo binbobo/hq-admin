@@ -23,13 +23,16 @@
       <div class="form-group row">
         <label for="plateNo" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车牌号</label>
         <div class="col-sm-2">
-          <input (typeaheadOnSelect)="plateNoOnSelect($event)" [typeahead]="plateNoDataSource" typeaheadOptionField="plateNo"
-            required type="text" class="form-control form-control-sm" formControlName="plateNo" id="plateNo" placeholder="输入 12 测试">
+          <!--<input [hq-table-typeahead]="typeaheadSource" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)" class="form-control"
+placeholder="请输入工单号/车牌号" />-->
+          <input (typeaheadOnSelect)="plateNoOnSelect($event)" [typeahead]="plateNoDataSource" typeaheadOptionField="plateNo" required
+            type="text" class="form-control form-control-sm" formControlName="plateNo" id="plateNo" placeholder="输入 12 测试">
         </div>
         <label for="customerName" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车主</label>
         <div class="col-sm-2">
-          <input typeaheadOptionField="customerName" [typeaheadItemTemplate]="customCustomerVehicleTemplate" (typeaheadOnSelect)="onCustomerNameSelect($event)" [typeahead]="customerNameDataSource" type="text" required
-            class="form-control form-control-sm" formControlName="customerName" id="customerName" placeholder="输入字母 ll 测试">
+          <input typeaheadOptionField="customerName" [typeaheadItemTemplate]="customCustomerVehicleTemplate" (typeaheadOnSelect)="onCustomerNameSelect($event)"
+            [typeahead]="customerNameDataSource" type="text" required class="form-control form-control-sm" formControlName="customerName"
+            id="customerName" placeholder="输入字母 ll 测试">
         </div>
         <!--根据车主查询客户车辆信息下拉列表，自定义显示模板 let-model="item"遍历集合, 引用记录 -->
         <template #customCustomerVehicleTemplate let-model="item" let-index="index">
@@ -70,26 +73,30 @@
         </div>
         <label for="brand" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>品牌</label>
         <div class="col-sm-2">
-          <input (typeaheadOnSelect)="onBrandSelect($event)" [typeahead]="brandDataSource" typeaheadOptionField="name" required type="text" class="form-control form-control-sm" formControlName="brand" id="brand" placeholder="输入 奥迪/大众  测试">
+          <input (typeaheadOnSelect)="onBrandSelect($event)" [typeahead]="brandDataSource" typeaheadOptionField="name" required type="text"
+            class="form-control form-control-sm" formControlName="brand" id="brand" placeholder="输入 奥迪/大众  测试">
         </div>
         <label for="series" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车系</label>
         <div class="col-sm-2">
-          <input (typeaheadOnSelect)="onSeriesSelect($event)" [typeahead]="seriesDataSource" typeaheadOptionField="name" (blur)="onSeriesBlur()" required type="text" class="form-control form-control-sm" formControlName="series" id="series" placeholder="输入 奥迪/大众  测试">
+          <input (typeaheadOnSelect)="onSeriesSelect($event)" [typeahead]="seriesDataSource" typeaheadOptionField="name" (blur)="onSeriesBlur()"
+            required type="text" class="form-control form-control-sm" formControlName="series" id="series" placeholder="输入 奥迪/大众  测试">
         </div>
       </div>
       <div class="form-group row">
         <label for="model" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车型</label>
         <div class="col-sm-2">
-          <input (typeaheadOnSelect)="onModelSelect($event)" [typeahead]="vehicleDataSource" typeaheadOptionField="name" required type="text" class="form-control form-control-sm" formControlName="model" id="model" placeholder="输入 加长 测试">
+          <input (typeaheadOnSelect)="onModelSelect($event)" [typeahead]="vehicleDataSource" typeaheadOptionField="name" required type="text"
+            class="form-control form-control-sm" formControlName="model" id="model" placeholder="输入 加长 测试">
         </div>
         <label for="vin" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>VIN</label>
         <div class="col-sm-2">
-          <input (typeaheadOnSelect)="onVinSelect($event)" [typeahead]="vinDataSource" typeaheadOptionField="vin" type="text" class="form-control form-control-sm" formControlName="vin" id="vin" placeholder="VIN">
+          <input (typeaheadOnSelect)="onVinSelect($event)" [typeahead]="vinDataSource" typeaheadOptionField="vin" type="text" class="form-control form-control-sm"
+            formControlName="vin" id="vin" placeholder="VIN">
         </div>
         <label for="validate" class="col-sm-1 col-form-label col-form-label-sm">验车日期</label>
         <div class="input-group input-group-sm col-sm-2">
-          <input class="form-control form-control-sm datetime-picker" type="text" formControlName="validate" ngui-datetime-picker
-            date-format="YYYY-MM-DD" date-only="true" />
+          <input class="form-control form-control-sm datetime-picker" type="text" formControlName="validate" ngui-datetime-picker date-format="YYYY-MM-DD"
+            date-only="true" />
           <span class="input-group-addon">
             <i class="fa fa-calendar" aria-hidden="true"></i>
           </span>
@@ -116,17 +123,17 @@
           <input required type="text" class="form-control form-control-sm" formControlName="mileage" id="mileage">
           <span class="input-group-addon"><i>KM</i></span>
         </div>
-         <label for="lastEnter" class="col-sm-1 col-form-label col-form-label-sm">上次进店时间</label>
+        <label for="lastEnter" class="col-sm-1 col-form-label col-form-label-sm">上次进店时间</label>
         <div class="col-sm-2">
           <input type="text" class="form-control form-control-sm" formControlName="lastEnter" id="lastEnter">
         </div>
       </div>
       <div class="form-group row">
-       
+
         <label for="nextDate" class="col-sm-1 col-form-label col-form-label-sm">建议下次保养日期</label>
         <div class="input-group input-group-sm col-sm-2">
-          <input class="form-control form-control-sm datetime-picker" type="text" formControlName="nextDate" ngui-datetime-picker
-            date-format="YYYY-MM-DD" date-only="true" />
+          <input class="form-control form-control-sm datetime-picker" type="text" formControlName="nextDate" ngui-datetime-picker date-format="YYYY-MM-DD"
+            date-only="true" />
           <span class="input-group-addon">
                 <i class="fa fa-calendar" aria-hidden="true"></i>
               </span>
@@ -154,7 +161,7 @@
         <template tabHeading>
           <span class="asterisk mr-1">*</span>维修项目
         </template>
-        <smart-table  (deleteConfirm)="deleteMaintanceItem($event)" (createConfirm)="addNewmaintanceItem($event)" [settings]="maintanceItemSettings"></smart-table>
+        <smart-table (deleteConfirm)="deleteMaintanceItem($event)" (createConfirm)="addNewmaintanceItem($event)" [settings]="maintanceItemSettings"></smart-table>
       </tab>
       <tab heading="上次维修记录">
         <table class="table table-hover table-bordered table-sm">
