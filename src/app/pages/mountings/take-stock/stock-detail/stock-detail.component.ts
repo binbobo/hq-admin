@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { TakeStockService } from '../take-stock.service';
+import { element } from 'protractor';
+import { PrintDirective } from 'app/shared/directives';
 
 @Component({
   selector: 'hq-stock-detail',
@@ -9,7 +11,9 @@ import { TakeStockService } from '../take-stock.service';
 })
 export class StockDetailComponent implements OnInit {
 
-  private list: Array<any>;
+  private list: Array<any> = [];
+  private printing: boolean = false;
+  @ViewChild('printer') public printer:PrintDirective;
 
   constructor(
     private location: Location,
@@ -17,22 +21,13 @@ export class StockDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
+    for (var i = 0; i <= 40; i++) {
+      this.list.push({ number: i });
+    }
   }
 
   print() {
-    console.log('print..');
-    var headstr = "<html><head><title></title></head><body>";
-    var footstr = "</body>";
-    var newstr = document.body.innerHTML;
-    var oldstr = document.body.innerHTML;
-   // document.body.innerHTML = headstr + newstr + footstr;
-    var myWindow = window.open()
-    myWindow.document.write('<link href="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.6/css/bootstrap-grid.css" rel="stylesheet">');
-    myWindow.document.write(newstr);
-    myWindow.focus()
-    myWindow.print();
-    return false;
+    this.printer.print();
   }
 
   export() {
