@@ -56,7 +56,6 @@ export class AssignService implements BasicService<any> {
      */
     public getPagedList(params: PagedParams): Promise<PagedResult<any>> {
         const url = Urls.chain.concat('/Maintenances/team/search?', params.serialize());
-        console.log(url)
         return this.httpService
             .get<PagedResult<any>>(url)
             .then(result => {
@@ -71,7 +70,7 @@ export class AssignService implements BasicService<any> {
      * @param body 
      */
     public assignOrder(body: any): Promise<any> {
-        const url = Urls.chain.concat('/MaintenanceTeams/Maintenances');
+        const url = Urls.chain.concat('/MaintenanceTeams');
         return this.httpService
             .post<ApiResult<any>>(url, body)
             .catch(err => Promise.reject(`派工失败：${err}`));

@@ -41,5 +41,16 @@
     width: 90px;
 }
 .bill table th{
-    vertical-align:text-bottom;
+    vertical-align:text-top;
+}
+caption {
+    caption-side: top;
+    text-align: center;
+}
+.table th, .table td {
+    text-align: center;
+    vertical-align: middle;
+    font-size: small;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }

@@ -25,7 +25,6 @@
       <thead>
         <tr>
           <th>操作</th>
-          <th>验收</th>
           <th>状态</th>
           <th>维修技师</th>
           <th>转派</th>
@@ -49,10 +48,6 @@
         <tr *ngFor="let item of list">
           <td width="40">
             <a href="#" (click)="orderDetailsHandler($event, item.id, lgModal)">详情</a>
-          </td>
-          <td width="40">
-            <a *ngIf="true" href="#" (click)="onMultiSelectorClick($event)">通过</a>
-            <span *ngIf="false">通过</span>
           </td>
           <td>{{item.statusName}}</td>
           <td>{{item.employees}}</td>
@@ -81,8 +76,7 @@
 
 
   <!--详情 begin-->
-  <div bsModal #lgModal="bs-modal" class="modal" tabindex="-1" role="dialog"
-    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div bsModal #lgModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -98,7 +92,8 @@
               <table class="table table-hover table-bordered table-sm">
                 <thead>
                   <tr>
-                    <th>操作</th>
+                    <th><input value="all" #checkAll (change)="toggleCheckboxAll(checkAll)" [checked]="selectedOrder?.serviceOutputs?.checkedAll"
+                        type="checkbox" /></th>
                     <th>项目名称</th>
                     <th>维修工时</th>
                     <th>工时单价(元)</th>
@@ -108,12 +103,16 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let record of selectedOrder?.serviceOutputs">
-                    <td>
-                      <a *ngIf="true" href="#" (click)="onMultiSelectorClick($event)">通过</a>
-                      <span *ngIf="false">通过</span>
+                  <tr *ngFor="let record of selectedOrder?.serviceOutputs" [class.checked]="record.checked" (click)="$event.stopPropagation();toggleCheckbox(record)">
+                    <td width="30">
+                      <!--已经同意之后, 不可以再次操作-->
+                      <input [disabled]="false" value="{{record.id}}" (click)="$event.stopPropagation();toggleCheckbox(record)" [checked]="record.checked" type="checkbox" />
                     </td>
-                    <td>{{record?.serviceName}}</td>
+                    <td>
+                      {{record?.serviceName}}
+                      <!--已通过的打个标记-->
+                      <span [class.triangle]="true"></span>
+                    </td>
                     <td>{{record?.workHour }}</td>
                     <td>{{record?.price}}</td>
                     <td>{{record?.amount}}</td>
@@ -122,6 +121,9 @@
                   </tr>
                 </tbody>
               </table>
+              <div>
+                <button class="btn btn-sm btn-secondary" [disabled]="!selectedOrder?.serviceOutputs?.enableCheck">同意</button>
+              </div>
             </tab>
             <tab heading="维修配件">
               <table class="table table-hover table-bordered table-sm">
@@ -184,7 +186,7 @@
                 </tbody>
               </table>
             </tab>
-
+            <hr>
             <div *ngIf="true" class="card">
               <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
                 折前费用: 工时费

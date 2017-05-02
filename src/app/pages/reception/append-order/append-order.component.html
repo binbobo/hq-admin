@@ -20,11 +20,11 @@
         <td>车主电话:</td>
         <td>{{SearchappendList.phone}}</td>
         <td>验车时间</td>
-        <td>{{SearchappendList.validate}}</td>
+        <td>{{SearchappendList.validate |date:"yyyy/MM/dd HH:mm:ss"}}</td>
       </tr>
       <tr>
         <td>开单时间:</td>
-        <td>{{SearchappendList.createdOnUtc}} </td>
+        <td>{{SearchappendList.createdOnUtc |date:"yyyy/MM/dd HH:mm:ss"}} </td>
         <td>送修人:</td>
         <td>{{SearchappendList.contactUser}}</td>
         <td>送修人电话:</td>
@@ -46,11 +46,11 @@
         <td>维修类型:</td>
         <td>{{SearchappendList.typeName}}</td>
         <td>预计交车时间:</td>
-        <td>{{SearchappendList.expectLeave}}</td>
+        <td>{{SearchappendList.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</td>
         <td>行驶里程(KM):</td>
         <td>{{SearchappendList.mileage}}</td>
         <td>上次进店时间:</td>
-        <td>{{SearchappendList.lastEnterDate}}</td>
+        <td>{{SearchappendList.lastEnterDate|date:"yyyy/MM/dd HH:mm:ss"}}</td>
       </tr>
       <tr>
         <td>维修工位:</td>
@@ -87,7 +87,7 @@
               <td>{{item.price}}</td>
               <td>{{item.amount}}</td>
               <td>{{item.discount}}</td>
-              <td>{{item.operateDateTime}}</td>
+              <td>{{item.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
             </tr>
           </table>
 
@@ -149,7 +149,7 @@
                 <td>{{item.price}}</td>
                 <td>{{item.amount}}</td>
                 <td>{{item.discount}}</td>
-                <td>{{item.operateDateTime}}</td>
+                <td>{{item.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
                 <td>{{item.operatorName}}</td>
               </tr>
             </tbody>
@@ -208,7 +208,7 @@
             <tbody>
               <tr *ngFor="let item of lastSuggestList">
                 <td>{{item.content}}</td>
-                <td>{{item.operateDateTime}}</td>
+                <td>{{item.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
                 <td>{{item.description}}</td>
               </tr>
             </tbody>

@@ -65,6 +65,52 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
   }
 
   /**
+    * 维修验收全选/反选事件处理程序
+    * @param evt 
+    */
+  toggleCheckboxAll(cb) {
+    console.log('维修验收切换全选复选框', cb.checked);
+    // 更新全选复选框状态
+    this.selectedOrder.serviceOutputs.checkedAll = cb.checked;
+    // 更新维修工项复选框状态
+    if (cb.checked) {
+      this.selectedOrder.serviceOutputs.map(item => {
+        // 如果没有验收  也就是复选框可用 设置为选中状态
+        if (true) {
+          item.checked = true;
+        }
+      });
+    } else {
+      // 全部设置为未选中
+      this.selectedOrder.serviceOutputs.map(item => {
+        item.checked = false;
+      });
+    }
+    // 指派  转派按钮是否可用
+    this.selectedOrder.serviceOutputs.enableCheck = this.selectedOrder.serviceOutputs.filter(item => item.checked).length > 0;
+  }
+
+  /**
+ * 复选框切换事件
+ * @param record 
+ */
+  toggleCheckbox(record) {
+    // 更新当前操作的维修工项复选框状态
+    record.checked = !record.checked;
+
+    // 更新全选复选框状态
+    const tmp = this.selectedOrder.serviceOutputs;
+    // 选中的维修项目
+    const checked = tmp.filter(item => item.checked).length;
+    // 验收过的维修项目
+    const disabled = tmp.filter(item => item.teamType === '10').length;
+
+    this.selectedOrder.serviceOutputs.checkedAll = (checked + disabled) === tmp.length;
+    // 指派  转派按钮是否可用
+    this.selectedOrder.serviceOutputs.enableCheck = this.selectedOrder.serviceOutputs.filter(item => item.checked).length > 0;
+  }
+
+  /**
    * 维修验收  通过按钮处理程序
    * 
    * @param {any} id
@@ -109,6 +155,10 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
 
       // 记录当前操作的工单记录
       this.selectedOrder = data;
+      // 指派按钮是否可用标志
+      this.selectedOrder.serviceOutputs.enableCheck = false;
+      // 全选复选框是否选中标志
+      this.selectedOrder.serviceOutputs.checkedAll = false;
 
       // 统计各项费用
 
