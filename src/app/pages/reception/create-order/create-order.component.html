@@ -157,12 +157,54 @@ placeholder="请输入工单号/车牌号" />-->
     <hr>
 
     <tabset>
-      <tab>
-        <template tabHeading>
+      <tab heading="维修项目">
+        <table class="table table-hover table-bordered table-sm">
+          <thead>
+            <tr>
+              <th>操作</th>
+              <th>维修项目名称</th>
+              <th>维修工时(小时)</th>
+              <th>工时单价(元)</th>
+              <th>折扣率(%)</th>
+              <th>金额(元)</th>
+              <th>操作时间</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of newMaintenanceItemData2">
+              <td width="40">
+                <a href="#" (click)="onDelNewMaintenanceItem($event, item.serviceId)">删除</a>
+              </td>
+              <td>{{item.serviceName}}</td>
+              <td>{{item.workHour}}</td>
+              <td>{{item.price}}</td>
+              <td>{{item.discount}}</td>
+              <td>{{item.money}}</td>
+              <td>{{item.operationTime}}</td>
+            </tr>
+            <tr *ngIf="addNewMaintenanceItem">
+              <td width="75">
+                <a href="#" (click)="onConfirmAddNewMaintenanceItem($event)">确定</a> |
+                <a href="#" (click)="addNewMaintenanceItem = false">取消</a>
+              </td>
+              <td><input (blur) = "onServiceBlur(maintanceItem)"
+            (change) = "onServiceChange()" (typeaheadOnSelect)="serviceTypeaheadOnSelect($event)" [typeahead]="serviceDataSource" typeaheadOptionField="name" [(ngModel)]="newMaintenanceItem.serviceName" type="text" class="form-control form-control-sm" required></td>
+              <td><input (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.workHour" (keyup)="onWorkHourChange()" type="text" class="form-control form-control-sm" required></td>
+              <td><input (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.price" (keyup)="onPriceChange()" type="text" class="form-control form-control-sm" required></td>
+              <td><input (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.discount" (keyup)="onDiscountChange()" type="text" class="form-control form-control-sm" required></td>
+              <td><input [value]="newMaintenanceItem.money" type="text" class="form-control form-control-sm" [disabled]="true"></td>
+              <td><input [value]="newMaintenanceItem.operationTime" type="text" class="form-control form-control-sm" [disabled]="true"></td>
+            </tr>
+          </tbody>
+        </table>
+        <div>
+          <button class="btn btn-sm btn-secondary mr-2" (click)="addNewmaintanceItem2()" placement="right">新增</button>
+        </div>
+        <!--<template tabHeading>
           <span class="asterisk mr-1">*</span>维修项目
         </template>
         <smart-table (deleteConfirm)="deleteMaintanceItem($event)" [source]="stDataSource" (createConfirm)="addNewmaintanceItem($event)"
-          [settings]="maintanceItemSettings"></smart-table>
+          [settings]="maintanceItemSettings"></smart-table>-->
       </tab>
       <tab heading="上次维修记录">
         <table class="table table-hover table-bordered table-sm">
@@ -279,10 +321,10 @@ placeholder="请输入工单号/车牌号" />-->
       <div *ngIf="true" class="card">
         <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
           折前费用: 工时费
-          <span class="ml-2 mr-2">{{workHourFee}}</span> | 材料费
-          <span class="ml-2 mr-2">{{materialFee}}</span> | 其它
-          <span class="ml-2 mr-2">{{otherFee}}</span> | 合计
-          <span class="ml-2 mr-2">{{sumFee}}</span>|
+          <span class="ml-2 mr-2">{{fee.workHour|number}}</span> | 材料费
+          <span class="ml-2 mr-2">{{fee.material|number}}</span> | 其它
+          <span class="ml-2 mr-2">{{fee.other|number}}</span> | 合计
+          <span class="ml-2 mr-2">{{fee.workHour+fee.material+fee.other|number}}</span>|
         </div>
         <div class="card-block text-center">
           <input type="text" class="btn textInputBtn" readonly [disabled]="!enableCreateWorkSheet" (click)="createWorkSheet()" value="生成工单">

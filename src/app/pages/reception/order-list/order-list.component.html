@@ -266,7 +266,11 @@
                   <td>{{selectedOrder?.contactInfo}}</td>
                   <td>{{selectedOrder?.introducer}}</td>
                   <td>{{selectedOrder?.introPhone}}</td>
-                  <td>{{selectedOrder?.employeeNames}}</td>
+                  <td>
+                    <!-- teamType (string, optional): 工单指派类型 0.没指派 1.指派 2.转派 -->
+                    <span *ngIf="teamType === 1">{{selectedOrder?.employeeNames.join(',')}}</span>
+                    <span *ngIf="teamType === 2">{{selectedOrder?.turnEmployeeNames.join(',')}}</span>
+                  </td>
                   <td>{{selectedOrder?.leaveTim|date:"yyyy/MM/dd HH:mm:ss" }}</td>
                 </tr>
               </tbody>

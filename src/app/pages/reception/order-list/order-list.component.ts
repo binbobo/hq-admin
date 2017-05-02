@@ -38,7 +38,7 @@ export class OrderListComponent extends DataList<Order> {
   // 当前选择的工单记录   用于查看工单详情  执行作废等功能
   selectedOrder = null;
 
-  // 定义OrderListRequest类型的参数对象， 覆盖父类的
+  // 定义OrderListRequest类型的参数对 象， 覆盖父类的
   params: OrderListRequest;
 
   // 当前登录用户信息

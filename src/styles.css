@@ -65,6 +65,6 @@ ngx-dropdown-treeview.sm input.form-control{
     max-width: 100%;
 }
 
-
-
-
+.card {
+    height: 100%;
+}

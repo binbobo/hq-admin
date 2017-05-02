@@ -19,3 +19,14 @@ caption {
     caption-side: top;
     text-align: center;
 }
+
+.checked {
+    background: #e09f27;
+}
+
+/*增项标志*/
+.triangle{
+    border-top: 10px solid blue;
+    border-left: 10px solid transparent;
+    float: right;
+}
