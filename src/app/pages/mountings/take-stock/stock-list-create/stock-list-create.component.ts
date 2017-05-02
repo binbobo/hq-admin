@@ -1,8 +1,9 @@
-import { Component, OnInit, EventEmitter, Output, Injector } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Injector, ViewChild } from '@angular/core';
 import { DataList, SelectOption } from 'app/shared/models';
 import { TakeStockService } from '../take-stock.service';
 import { MountingsService } from '../../mountings.service';
 import { CreateStock, StockListCreateService, CreateStockListRequest } from './stock-list-create.service';
+import { MultiSelectConfirmEvent, MultiSelectorDirective } from 'app/shared/directives';
 
 @Component({
   selector: 'hq-stock-list-create',
@@ -15,13 +16,14 @@ export class StockListCreateComponent extends DataList<CreateStock> implements O
   private onSubmit = new EventEmitter<void>();
   @Output()
   private onCancel = new EventEmitter<void>();
-
+  protected params: CreateStockListRequest;
   private houses: Array<SelectOption>;
   private locations: Array<SelectOption>;
 
   constructor(
     injector: Injector,
     service: StockListCreateService,
+    private takeStockService: TakeStockService,
     private moutingsService: MountingsService,
   ) {
     super(injector, service);
@@ -33,7 +35,12 @@ export class StockListCreateComponent extends DataList<CreateStock> implements O
     this.moutingsService.getWarehouseOptions()
       .then(data => data && data.length ? data : Promise.reject('没有可用的仓库信息！'))
       .then(data => this.houses = data)
-      .then(data => this.loadLocations(data[0].value))
+      .then(data => {
+        if (!this.params.inventoryId) {
+          this.params.inventoryId = data[0].value;
+        }
+      })
+      .then(data => this.loadLocations(this.params.inventoryId))
       .catch(err => this.alerter.error(err))
   }
 
@@ -50,12 +57,19 @@ export class StockListCreateComponent extends DataList<CreateStock> implements O
       .catch(err => this.alerter.error(err));
   }
 
+  onSelectLocation(event: MultiSelectConfirmEvent) {
+    this.params.locationId = event.value;
+    this.loadList();
+  }
+
   cancel() {
     this.onCancel.emit();
   }
 
   generator() {
-    this.onSubmit.emit();
+    this.takeStockService.create(this.params.locationId)
+      .then(() => this.onSubmit.emit())
+      .catch(err => this.alerter.error(err));
   }
 
 }

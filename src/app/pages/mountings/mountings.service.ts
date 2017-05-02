@@ -20,14 +20,14 @@ export class MountingsService {
     }
 
     /**
-     * 根据仓库id获取枯萎选项
+     * 根据仓库id获取库位选项
      * @param id 仓库id
      */
     public getLocationByHouseId(id: string): Promise<Array<SelectOption>> {
-        let url = Urls.chain.concat('/storageLocations/getByHouseId?storeId', id);
+        let url = Urls.chain.concat('/storageLocations/getByHouseId?storeId=', id);
         return this.httpService.get<ListResult<any>>(url)
             .then(result => result.data)
-            .then(data => data.map(m => new SelectOption(m.text, m.value)))
+            .then(data => data.map(m => new SelectOption(m.name, m.id)))
             .catch(err => Promise.reject(`获取库位选项失败：${err}`));
     }
 

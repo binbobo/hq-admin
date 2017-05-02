@@ -1,20 +1,20 @@
 <form class="form-inline mb-2">
   <div class="form-group mb-2">
-    <label for="inlineFormCustomSelect">配件编码：</label>
-    <div class>
-      <input [hqTableTypeahead]="codeSource" [columns]="columns" valueSelector="code" (onSelect)="onItemSelect($event)" class="form-control mx-sm-3"
+    <label>配件编码：</label>
+    <div>
+      <input #code [hqTableTypeahead]="codeSource" [columns]="columns" valueSelector="code" (onSelect)="onItemSelect($event)" class="form-control mx-sm-3"
         placeholder="配件编码">
     </div>
   </div>
   <div class="form-group mb-2">
-    <label class="mr-sm-2" for="inlineFormCustomSelect">配件名称：</label>
-    <div class>
-      <input [hqTableTypeahead]="nameSource" [columns]="columns" valueSelector="name" (onSelect)="onItemSelect($event)" class="form-control mx-sm-3"
+    <label class="mr-sm-2">配件名称：</label>
+    <div>
+      <input #name [hqTableTypeahead]="nameSource" [columns]="columns" valueSelector="name" (onSelect)="onItemSelect($event)" class="form-control mx-sm-3"
         placeholder="配件名称">
     </div>
   </div>
   <div class="form-group mb-2">
-    <button type="submit" class="btn btn-primary mx-sm-1" translate>搜索</button>
+    <button (click)="onSearch()" class="btn btn-primary mx-sm-1" translate>搜索</button>
   </div>
 </form>
 <table class="table table-bordered table-sm table-striped">

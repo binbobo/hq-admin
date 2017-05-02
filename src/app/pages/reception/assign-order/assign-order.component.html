@@ -53,7 +53,7 @@
             <a href="#" (click)="finishedOrder($event, item.id, confirmModal)">完工</a>
           </td>
           <!--<td>
-            <a *ngIf="item.teamType === '0'" href="#" [hq-mutil-selector]="maintenanceTechnicians" mTitle="选择维修技师" placement="right"
+            <a *ngIf="item.teamType === '0'" href="#" [hqMutilSelect]="maintenanceTechnicians" mTitle="选择维修技师" placement="right"
               (onChange)="onChangeTechnicians($event)" (onConfirm)="onConfirmTechnicians(item.id, 1)" (click)="onMultiSelectorClick($event)">指派</a>
             <span *ngIf="item.teamType !== '0'">{{item.employeeNames?.join(',')}}</span>
           </td>
@@ -61,7 +61,7 @@
             <span *ngIf="item.teamType === '2'">
               {{item.turnEmployeeNames?.join(',')}}
               </span>
-            <a *ngIf="item.teamType !== '0'" href="#" [hq-mutil-selector]="maintenanceTechnicians" mTitle="选择维修技师" placement="right"
+            <a *ngIf="item.teamType !== '0'" href="#" [hqMutilSelect]="maintenanceTechnicians" mTitle="选择维修技师" placement="right"
               (onConfirm)="onConfirmTechnicians(item.id, 2)" (click)="onMultiSelectorClick($event)">转派</a>
           </td>-->
           <td>
@@ -158,10 +158,10 @@
                 </tbody>
               </table>
               <div>
-                <button class="btn btn-sm btn-secondary mr-2" (onConfirm)="onConfirmTechnicians(1)" [hq-mutil-selector]="maintenanceTechnicians"
+                <button class="btn btn-sm btn-secondary mr-2" (onConfirm)="onConfirmTechnicians(1)" [hqMutilSelect]="maintenanceTechnicians"
                   mTitle="选择维修技师" href="#" [disabled]="!selectedOrder?.serviceOutputs?.enableAssignment" (click)="onMultiSelectorClick($event)"
                   placement="right">指派</button>
-                <button class="btn btn-sm btn-secondary" (onConfirm)="onConfirmTechnicians(2)" [hq-mutil-selector]="maintenanceTechnicians"
+                <button class="btn btn-sm btn-secondary" (onConfirm)="onConfirmTechnicians(2)" [hqMutilSelect]="maintenanceTechnicians"
                   mTitle="选择维修技师" href="#" [disabled]="!selectedOrder?.serviceOutputs?.enableAssignment" (click)="onMultiSelectorClick($event)"
                   placement="right">转派</button>
               </div>

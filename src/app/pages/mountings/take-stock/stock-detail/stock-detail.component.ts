@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { TakeStockService } from '../take-stock.service';
 import { element } from 'protractor';
-import { PrintDirective } from 'app/shared/directives';
+import { PrintDirective, HqAlerter } from 'app/shared/directives';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'hq-stock-detail',
@@ -11,27 +12,41 @@ import { PrintDirective } from 'app/shared/directives';
 })
 export class StockDetailComponent implements OnInit {
 
+  @ViewChild(HqAlerter)
+  protected alerter: HqAlerter;
   private list: Array<any> = [];
   private printing: boolean = false;
-  @ViewChild('printer') public printer:PrintDirective;
+  @ViewChild('printer')
+  public printer: PrintDirective;
 
   constructor(
     private location: Location,
+    private route: ActivatedRoute,
     private service: TakeStockService
   ) { }
 
   ngOnInit() {
-    for (var i = 0; i <= 40; i++) {
-      this.list.push({ number: i });
-    }
+    this.route.params.subscribe((params: Params) => {
+      let code = params['code'];
+      this.service.get(code)
+        .then(data => this.list = data)
+        .catch(err => this.alerter.error(err));
+    })
   }
 
   print() {
     this.printer.print();
   }
 
-  export() {
-
+  export(event: Event) {
+    let btn = event.target as HTMLButtonElement;
+    btn.disabled = true;
+    this.service.export()
+      .then(() => btn.disabled = true)
+      .catch(err => {
+        btn.disabled = true;
+        this.alerter.error(err);
+      })
   }
 
 }

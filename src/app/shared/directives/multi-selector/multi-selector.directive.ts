@@ -4,18 +4,20 @@ import { MultiSelectorComponent } from './multi-selector.component';
 import { SelectOption } from 'app/shared/models';
 
 @Directive({
-  selector: '[hq-mutil-selector]'
+  selector: '[hqMutilSelect]',
+  exportAs: 'hq-mutil-select'
 })
 export class MultiSelectorDirective {
 
   private _selector: ComponentLoader<MultiSelectorComponent>;
 
-  @Input('hq-mutil-selector')
+  @Input('hqMutilSelect')
   public options: Array<SelectOption>;
   @Output()
   public onChange = new EventEmitter<SelectOption>();
   @Output()
-  public onConfirm = new EventEmitter<Array<SelectOption>>();
+  public onConfirm = new EventEmitter<MultiSelectConfirmEvent>();
+  private onSubmit = new EventEmitter<Array<string>>();
   @Output()
   public onCancel = new EventEmitter();
   /**
@@ -56,7 +58,7 @@ export class MultiSelectorDirective {
   @Output() public onHidden: EventEmitter<any>;
 
   constructor(
-    _elementRef: ElementRef,
+    private _elementRef: ElementRef,
     _renderer: Renderer,
     _viewContainerRef: ViewContainerRef,
     _config: PopoverConfig,
@@ -69,10 +71,16 @@ export class MultiSelectorDirective {
     this.onShown = this._selector.onShown;
     this.onHidden = this._selector.onHidden;
     this.onCancel.subscribe(() => this.hide());
-  }
-
-  private set mSelector(options: Array<SelectOption>) {
-    this.options = options;
+    this.onSubmit.subscribe(value => {
+      let event = new MultiSelectConfirmEvent(_elementRef, value, this.options);
+      this.onConfirm.emit(event);
+      if (_elementRef.nativeElement instanceof HTMLInputElement) {
+        let input = _elementRef.nativeElement as HTMLInputElement;
+        input.readOnly = true;
+        let text = `选择了${value.length}项数据`;
+        input.value = text;
+      }
+    })
   }
 
   public show(): void {
@@ -89,7 +97,7 @@ export class MultiSelectorDirective {
         title: this.title,
         options: this.options,
         onChange: this.onChange,
-        onConfirm: this.onConfirm,
+        onConfirm: this.onSubmit,
         onCancel: this.onCancel
       });
     this.isOpen = true;
@@ -126,4 +134,12 @@ export class MultiSelectorDirective {
     this._selector.dispose();
   }
 
+}
+
+export class MultiSelectConfirmEvent {
+  constructor(
+    public el: ElementRef,
+    public value: Array<string>,
+    public source: Array<SelectOption>
+  ) { }
 }

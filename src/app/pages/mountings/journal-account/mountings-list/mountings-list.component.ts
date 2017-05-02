@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
 import { JournalAccountService, MountingListRequest } from '../journal-account.service';
 import { TypeaheadRequestParams } from "app/shared/directives";
 
@@ -7,11 +7,17 @@ import { TypeaheadRequestParams } from "app/shared/directives";
   templateUrl: './mountings-list.component.html',
   styleUrls: ['./mountings-list.component.css']
 })
-export class MountingsListComponent implements OnInit {
+export class MountingsListComponent {
+
+  constructor(private service: JournalAccountService) { }
 
   private item: any;
   @Output()
   private selectItem: EventEmitter<any> = new EventEmitter<any>();
+  @ViewChild('code')
+  private code: ElementRef;
+  @ViewChild('name')
+  private name: ElementRef;
 
   private columns = [
     { name: 'code', title: '编码' },
@@ -40,9 +46,7 @@ export class MountingsListComponent implements OnInit {
     };
   }
 
-  constructor(private service: JournalAccountService) { }
+  private onSearch() {
 
-  ngOnInit() {
   }
-
 }

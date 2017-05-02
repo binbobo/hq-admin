@@ -54,6 +54,6 @@ export class PagedParams extends RequestParams {
 
     public setPage(index: number, size?: number) {
         this.pageIndex = index;
-        this.pageSize = size || this.pageSize;
+        this.pageSize = size;
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { SelectOption } from 'app/shared/models';
 import { PopoverConfig } from 'ngx-bootstrap';
 
@@ -23,7 +23,7 @@ export class MultiSelectorComponent implements OnInit {
   @Output()
   public onChange = new EventEmitter<SelectOption>();
   @Output()
-  public onConfirm = new EventEmitter<Array<SelectOption>>();
+  public onConfirm = new EventEmitter<Array<string>>();
   @Output()
   public onCancel = new EventEmitter();
 
@@ -37,8 +37,18 @@ export class MultiSelectorComponent implements OnInit {
     this.onChange.emit(item);
   }
 
+  onSelectAll(event: Event) {
+    let el = event.target as HTMLInputElement;
+    this.options.forEach(m => {
+      m.selected = el.checked;
+      this.onChange.emit(m);
+    });
+  }
+
   submit() {
-    let items = this.options.filter(m => m.selected);
+    let items = this.options
+      .filter(m => m.selected)
+      .map(m => m.value);
     this.onConfirm.emit(items);
   }
 

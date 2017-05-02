@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { PagedParams, BasicService, PagedResult } from 'app/shared/models';
+import { PagedParams, PagedResult, PagedService } from 'app/shared/models';
 import { Urls, HttpService } from 'app/shared/services';
 
 @Injectable()
-export class StockListCreateService implements BasicService<CreateStock> {
+export class StockListCreateService implements PagedService<CreateStock> {
 
   constructor(private httpService: HttpService) { }
 
@@ -13,29 +13,13 @@ export class StockListCreateService implements BasicService<CreateStock> {
     return this.httpService.get<PagedResult<CreateStock>>(url, search)
       .catch(err => Promise.reject(`获取配件列表失败：${err}`));
   }
-
-  get(id: string): Promise<CreateStock> {
-    throw new Error('Method not implemented.');
-  }
-  create(body: CreateStock): Promise<CreateStock> {
-    throw new Error('Method not implemented.');
-  }
-  update(body: CreateStock): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-  patch(body: CreateStock): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-  delete(id: string): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
 }
 
 export class CreateStockListRequest extends PagedParams {
   constructor(
-    public locationId?: string,
-    public inventoryId?: string
-  ) { super('CreateStockListRequest'); }
+    public inventoryId: string = '',
+    public locationId?: Array<string>
+  ) { super(); }
 }
 
 export class CreateStock {

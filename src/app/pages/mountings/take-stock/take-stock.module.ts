@@ -12,7 +12,7 @@ import { ModalModule } from 'ngx-bootstrap';
 
 const routes: Routes = [
   { path: '', component: StockListComponent },
-  { path: 'detail/:id', component: StockDetailComponent }
+  { path: 'detail/:code', component: StockDetailComponent }
 ]
 
 @NgModule({

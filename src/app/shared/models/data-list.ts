@@ -56,12 +56,13 @@ export abstract class DataList<T> implements OnInit {
   protected loadList() {
     this.loading = true;
     this.list = null;
-    this.service.getPagedList(this.params)
+    return this.service.getPagedList(this.params)
       .then(m => {
         this.loading = false;
         this.list = m.data;
         this.total = m.totalCount;
         this.params.save();
+        return m;
       })
       .catch(err => {
         this.alerter.error(err);
