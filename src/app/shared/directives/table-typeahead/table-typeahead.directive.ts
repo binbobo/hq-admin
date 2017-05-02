@@ -7,12 +7,13 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/debounceTime';
 
 @Directive({
-  selector: '[hq-table-typeahead]'
+  selector: '[hqTableTypeahead]',
+  exportAs: 'hq-table-typeahead'
 })
 export class TableTypeaheadDirective implements OnInit {
 
   private component: TableTypeaheadComponent;
-  @Input("hq-table-typeahead")
+  @Input("hqTableTypeahead")
   private source: (params: TypeaheadRequestParams) => Promise<PagedResult<any>>;
   @Input()
   private delay: number = 600;

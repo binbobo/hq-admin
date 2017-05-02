@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { PriceCheckComponent } from "app/pages/mountings/price-check";
 
-
 const routes: Routes = [
     { path: 'inbound', loadChildren: 'app/pages/mountings/inbound/inbound.module#InboundModule' },
     { path: 'inventory', loadChildren: 'app/pages/mountings/inventory/inventory.module#InventoryModule' },
     { path: 'provider', loadChildren: 'app/pages/mountings/provider/provider.module#ProviderModule' },
     { path: 'inventory-list', loadChildren: 'app/pages/mountings/take-stock/take-stock.module#TakeStockModule' },
+    { path: 'journal-account', loadChildren: 'app/pages/mountings/journal-account/journal-account.module#JournalAccountModule' },
     { path: 'price', component: PriceCheckComponent },
 ];
 

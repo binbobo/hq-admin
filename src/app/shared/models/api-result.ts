@@ -8,9 +8,9 @@ export class ListResult<T> implements ApiResult<Array<T>>{
 
 export class PagedResult<T> implements ApiResult<Array<T>>{
     constructor(
-        public data: Array<T>,
-        public total: number,
-        public totalCount: number
+        public data: Array<T> = [],
+        public total: number = 0,
+        public totalCount: number = 0,
     ) { }
 
     public nullCheck(): PagedResult<T> {

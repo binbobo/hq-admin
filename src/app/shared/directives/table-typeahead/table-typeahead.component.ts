@@ -3,10 +3,10 @@ import { TableTypeaheadColumn } from './table-typeahead.directive';
 import { PagedParams, PagedResult } from 'app/shared/models';
 
 @Component({
-  selector: 'hq-table-typeahead',
+  selector: 'hqTableTypeahead',
   templateUrl: './table-typeahead.component.html',
   host: {
-    style: 'position:absolute;z-index:99999999;',
+    style: 'position:absolute;z-index:99999999;display:table-column',
   },
   styleUrls: ['./table-typeahead.component.css']
 })

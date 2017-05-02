@@ -34,9 +34,26 @@ export class MenuComponent implements OnInit {
     menus.forEach(m => {
       m.routes = this.parents.concat(m.path);
       if (!m.children || !Array.isArray(m.children)) return;
-      let urlTree = this.router.createUrlTree(this.getRouterLink(m.routes));
-      m.expand = this.router.isActive(urlTree, false);
+      m.expand = this.activable(m);
       this.activeMenu(m.children);
     });
+  }
+
+  private activable(menu: any): boolean {
+    let isActive = false;
+    if (!menu.path && menu.children && menu.children.length) {
+      for (var index = 0; index < menu.children.length; index++) {
+        var element = menu.children[index];
+        let arr = menu.routes.slice(0);
+        arr.push(element.path);
+        element.routes = arr;
+        isActive = this.activable(element);
+        if (isActive) break;
+      }
+    } else {
+      let urlTree = this.router.createUrlTree(this.getRouterLink(menu.routes));
+      isActive = this.router.isActive(urlTree, false);
+    }
+    return isActive;
   }
 }

@@ -20,7 +20,6 @@ export class ProviderListComponent extends DataList<Provider> implements OnInit 
     if (!items) return;
     let ids = items.map(m => m.id).filter(m => m && m.trim());
     if (!ids || !ids.length) return;
-    console.log(ids);
     this.providerService.enable(ids)
       .then(() => this.loadList())
       .catch(err => this.alerter.error(err));
@@ -42,16 +41,23 @@ export class ProviderListComponent extends DataList<Provider> implements OnInit 
   }
 
   private onProviderEdit($event: Provider) {
-    this.service.get($event.id)
+    this.providerService.get($event.id)
       .then(data => this.provider = data)
       .then(data => this.editModal.show());
   }
 
   private onProviderCreate($event) {
     this.createModal.hide();
+    this.loadList();
   }
 
   private onProviderUpdate($event) {
     this.editModal.hide();
+    this.loadList();
+  }
+
+  private export() {
+    this.providerService.export(this.params)
+      .catch(err => this.alerter.error(err));
   }
 }
