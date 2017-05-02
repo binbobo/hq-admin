@@ -28,6 +28,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
 
     // 当前选择的工单记录   用于查看工单详情  执行作废等功能
     selectedOrder = null;
+    isDetailModalShown = false; // 详情弹框是否可见
 
     // 当前登录用户信息
     public user = null;
@@ -119,8 +120,8 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         // 更新维修工项复选框状态
         if (cb.checked) {
             this.selectedOrder.serviceOutputs.map(item => {
-                // 如果没有转派  也就是复选框可用 设置为选中状态
-                if (true) {
+                // 如果没有转派过或者没有完工  也就是复选框可用 设置为选中状态
+                if (item.teamType !== 4 && item.teamType !== 5) {
                     item.checked = true;
                 }
             });
@@ -139,6 +140,10 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
      * @param record 
      */
     assignToggleCheckbox(record) {
+        if (record.teamType === 4 || record.teamType === 5) {
+            // 已转派或者已完工的不可以再操作
+            return false;
+        }
         // 更新当前操作的维修工项复选框状态
         record.checked = !record.checked;
 
@@ -147,7 +152,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         // 选中的维修项目
         const checked = tmp.filter(item => item.checked).length;
         // 转派过的维修项目
-        const disabled = tmp.filter(item => item.teamType === '10').length;
+        const disabled = tmp.filter(item => item.teamType === 4).length;
 
         this.selectedOrder.serviceOutputs.checkedAll = (checked + disabled) === tmp.length;
         // 指派  转派按钮是否可用
@@ -191,6 +196,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             this.selectedOrder.sumFee = this.selectedOrder.workHourFee + this.selectedOrder.materialFee + this.selectedOrder.otherFee;
             // 显示窗口
             modalDialog.show();
+            this.isDetailModalShown = true;
         });
     }
 
@@ -231,12 +237,30 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
     /**
      * 指派或者转派处理程序
      * @param event 
-     * @param id  工单id
-     * @param id 派工类型 1.指派 2.更改 3.转派 默认1
+     * @param type  
      */
     assignOrderHandler(type) {
         // 获取选择的工项列表
-        const maintenanceItemIds = this.selectedOrder.serviceOutputs.filter(item => item.checked).map(item => item.id);
+        const maintenanceItems = this.selectedOrder.serviceOutputs.filter(item => item.checked);
+        // 执行指派操作时候  判断是否有已开工的工项
+        if (type === 1) {
+            // teamType (integer, optional): 工项状态 1.待派工 2.待开工 3.已开工 4.已转派 5.已完工 = ['1', '2', '3', '4', '5'],
+            let started = maintenanceItems.filter((item, index) => {
+                if (item.teamType === 3) {
+                    // 过滤掉已开工的工项
+                    maintenanceItems.splice(index, 1);
+                }
+            });
+            // 判断是否有已开工的工项  如果有给出提示
+            if (started.length > 0) {
+                started = started.map(item => item.serviceName);
+                // 给出提示
+                this.alerter.warn(started.join(',') + ' 已开工, 不可以再指派， 只能转派');
+            }
+        }
+        // 获取可以选择的工项id列表
+        const maintenanceItemIds = maintenanceItems.map(item => item.id);
+
         console.log('选择的维修工单为：', maintenanceItemIds);
         // 判断是否选择维修工项
         if (maintenanceItemIds.length === 0) {
@@ -252,25 +276,26 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             this.alerter.warn('请选择维修技师！');
             return;
         }
+        let msg = '';
         // 执行 派工操作
-        // this.service.assignOrder({
-        //     maintenanceId: this.selectedOrder.id,
-        //     type: type,
-        //     employeeIds: employeeIds
-        // }).then(() => {
-        //     let msg = '';
-        //     if (type === 1) {
-        //         msg = '指派';
-        //     } else if (type === 2) {
-        //         msg = '转派';
-        //     } else if (type === 3) {
-        //         msg = '更改';
-        //     }
-        //     this.alerter.success('执行' + msg + '操作成功！');
+        this.service.assignOrder({
+            type: type,
+            employeeIds: employeeIds,
+            maintenanceItemIds: maintenanceItemIds
+        }).then(data => {
+            if (type === 1) {
+                msg = '指派';
+            } else if (type === 2) {
+                msg = '转派';
+            }
+            // 更新页面
+            console.log('执行指派转派操作之后返回的数据为：', data);
 
-        //     // 刷新页面
-        //     this.onLoadList();
-        // });
+            // 给出操作成功提示employeeNames
+            this.alerter.success('执行' + msg + '操作成功！');
+        }).catch(err => {
+            this.alerter.error('执行' + msg + '操作成功！' + err);
+        });
     }
 
     /**
@@ -289,7 +314,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
     /**
      * 确认指派给哪些维修技师
      * 
-     * @param {any} type   指派类型
+     * @param {any} type   type (integer, optional): 派工类型 1.指派 2.转派 默认1.指派 = ['1', '2']
      * 
      * @memberOf AssignOrderComponent
      */
@@ -301,7 +326,8 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
 
     // 初始化维修技师数据
     resetMaintenanceTechnicians() {
-        return this.maintenanceTechnicians.map(item => {
+        this.selectedOrder.serviceOutputs.checkedAll = false;
+        this.maintenanceTechnicians.map(item => {
             if (item.selected) {
                 item.selected = false;
             }
