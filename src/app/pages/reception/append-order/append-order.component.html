@@ -7,8 +7,8 @@
     <form [formGroup]="myForm" class='form-in mb-2 ng-pristine ng-valid assign-form ng-untouched'>
       <!--<input #search formControlName="state" [typeahead]="plateNoData" typeaheadOptionField="plateNo" (typeaheadOnSelect)="OnSearchClick($event)"
         placeholder="请输入工单号/车牌号" class="form-control mr-2">-->
-      <input [hq-table-typeahead]="typeaheadSource" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)" class="form-control"
-        placeholder="请输入工单号/车牌号" />
+      <input [hqTableTypeahead]="typeaheadSource" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)" class="form-control"
+        placeholder="请输入工单号/车牌号"/>
     </form>
 
     <table class="table search-table">

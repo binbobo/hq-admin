@@ -1,8 +1,8 @@
-import { Directive, ViewContainerRef, EventEmitter, Output, ComponentFactoryResolver } from '@angular/core';
+import { Directive, ViewContainerRef, EventEmitter, Output, ComponentFactoryResolver, ElementRef } from '@angular/core';
 import { HqAlerterComponent } from './alerter.component';
 
 @Directive({
-  selector: '[hq-alerter]'
+  selector: '[hq-alerter]',
 })
 export class HqAlerter {
 
@@ -14,13 +14,13 @@ export class HqAlerter {
     let componentRef = viewContainerRef.createComponent(componentFactory);
     let component = (<HqAlerterComponent>componentRef.instance);
     component.alerts = this.alerts;
-    component.onShow.subscribe
+    component.onShow = this.onShow;
   }
 
   private alerts: Array<Object> = [];
   private onShow = new EventEmitter();
 
-  private show(msg: string, type?: AlerterType, dismissible?: boolean, dismissOnTimeout?: number): ClosableAlerter {
+  private show(msg: string, type: AlerterType, dismissible: boolean = false, dismissOnTimeout: number = 3000): ClosableAlerter {
     var alertType = type || AlerterType.Info;
     var model = {
       msg: msg,
@@ -30,23 +30,48 @@ export class HqAlerter {
       onClose: null
     };
     this.alerts.push(model);
-    this.onShow.emit();
+    setTimeout(() => this.onShow.emit(), 100);
     return new ClosableAlerter(model);
   }
-
-  public warn(msg: string, dismissible?: boolean, dismissOnTimeout?: number): ClosableAlerter {
+  /**
+   * 显示警告消息
+   * @param msg 消息内容
+   * @param dismissible 是否允许可关闭，默认false 
+   * @param dismissOnTimeout 显示时间，单位毫秒，为0时一直显示，默认3000
+   */
+  public warn(msg: string, dismissible: boolean = false, dismissOnTimeout: number = 3000): ClosableAlerter {
+    console.warn(msg);
     return this.show(msg, AlerterType.Warning, dismissible, dismissOnTimeout);
   }
-
-  public info(msg: string, dismissible?: boolean, dismissOnTimeout?: number): ClosableAlerter {
+  /**
+   * 显示提示消息
+   * @param msg 消息内容
+   * @param dismissible 是否允许可关闭，默认false 
+   * @param dismissOnTimeout 显示时间，单位毫秒，为0时一直显示，默认3000
+   */
+  public info(msg: string, dismissible: boolean = false, dismissOnTimeout: number = 3000): ClosableAlerter {
+    console.info(msg);
     return this.show(msg, AlerterType.Info, dismissible, dismissOnTimeout);
   }
-
-  public success(msg: string, dismissible?: boolean, dismissOnTimeout?: number): ClosableAlerter {
+  /**
+   * 显示成功消息
+   * @param msg 消息内容
+   * @param dismissible 是否允许可关闭，默认false 
+   * @param dismissOnTimeout 显示时间，单位毫秒，为0时一直显示，默认3000
+   */
+  public success(msg: string, dismissible: boolean = false, dismissOnTimeout: number = 3000): ClosableAlerter {
+    console.log(msg);
     return this.show(msg, AlerterType.Success, dismissible, dismissOnTimeout);
   }
 
-  public error(msg: string, dismissible?: boolean, dismissOnTimeout?: number): ClosableAlerter {
+  /**
+   * 显示错误消息
+   * @param msg 消息内容
+   * @param dismissible 是否允许可关闭，默认false 
+   * @param dismissOnTimeout 显示时间，单位毫秒，为0时一直显示，默认3000
+   */
+  public error(msg: string, dismissible: boolean = false, dismissOnTimeout: number = 3000): ClosableAlerter {
+    console.error(msg);
     return this.show(msg, AlerterType.Danger, dismissible, dismissOnTimeout);
   }
 

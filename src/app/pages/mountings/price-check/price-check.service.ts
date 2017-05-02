@@ -24,21 +24,35 @@ export class PriceCheckService implements BasicService<PriceCheckListModel> {
   }
 
   public getPagedList(params: PriceCheckListRequest): Promise<PagedResult<PriceCheckListModel>> {
-    let url = Urls.chain.concat('');
-    return this.httpService.get<PagedResult<PriceCheckListModel>>(url)
-      .then(result => result.nullCheck())
+    let url = Urls.chain.concat('/Products/GetProductPriceList');
+    return this.httpService.get<PagedResult<PriceCheckListModel>>(url, params.serialize())
       .catch(err => `获取列表失败：${err}`);
   }
 }
 
 export class PriceCheckListRequest extends PagedParams {
   constructor(
-
+    public storeHouseId: string = "",
+    public storageLocationName?: string,
+    public code?: string,
+    public name?: string,
+    public vehicleName?: string,
+    public categoryName?: string,
   ) {
     super('PriceCheckListRequest')
   }
 }
 
 export class PriceCheckListModel {
-
+  constructor(
+    public number?: number,
+    public storeHouseName?: string,
+    public brand?: string,
+    public code?: string,
+    public name?: string,
+    public count?: number,
+    public vehicleName?: string,
+    public category?: string,
+    public price?: string,
+  ) { }
 }

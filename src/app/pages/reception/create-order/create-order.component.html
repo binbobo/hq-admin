@@ -23,8 +23,8 @@
       <div class="form-group row">
         <label for="plateNo" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车牌号</label>
         <div class="col-sm-2">
-          <!--<input [hq-table-typeahead]="typeaheadSource" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)"  required
-            type="text" class="form-control form-control-sm" formControlName="plateNo" id="plateNo" placeholder="请输入车牌号" />-->
+          <!--<input [hqTableTypeahead]="typeaheadSource" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)" class="form-control"
+placeholder="请输入工单号/车牌号" />-->
           <input (typeaheadOnSelect)="plateNoOnSelect($event)" [typeahead]="plateNoDataSource" typeaheadOptionField="plateNo" required
             type="text" class="form-control form-control-sm" formControlName="plateNo" id="plateNo" placeholder="输入 12 测试">
         </div>

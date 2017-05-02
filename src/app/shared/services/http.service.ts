@@ -56,19 +56,45 @@ export class HttpService {
             .catch(resp => this.handleError(resp));
     }
 
-    public download(url: string, search?: string, fileName?: string): void {
+    public download(url: string, search?: string, fileName?: string): Promise<void> {
         let option = new RequestOptions({
             search: search,
             responseType: ResponseContentType.Blob,
             method: RequestMethod.Get
         });
-        this.promise(url, option)
+        return this.promise(url, option)
             .then(resp => {
                 let data = resp.blob();
-                fileSaver.saveAs(data, fileName);
+                let name = fileName || this.getFileName(resp);
+                fileSaver.saveAs(data, name);
             })
             .catch(error => console.error(error))
 
+    }
+
+    private getFileName(response: Response) {
+        let filename: string;
+        let disposition = response.headers.get('Content-Disposition');
+        if (disposition && ~disposition.indexOf('attachment')) {
+            let array = disposition.split(';')
+                .map(m => m.trim())
+                .filter(m => m.includes('filename'))
+            if (!array.length) return filename;
+            filename = array.find(m => m.startsWith('filename*='));
+            if (filename) {
+                let index = filename.indexOf("''");
+                if (~index) {
+                    filename = filename.substr(index + 2);
+                    filename = decodeURI(filename);
+                } else {
+                    filename = filename.substr('filename*='.length);
+                }
+            } else {
+                filename = array.find(m => m.startsWith('filename='));
+                filename = filename.substr('filename='.length);
+            }
+        }
+        return filename;
     }
 
     public extractData<TResult>(res: Response): TResult {
@@ -96,7 +122,10 @@ export class HttpService {
             }
             else {
                 const body = error.json() || '';
-                if (body) {
+                if (body instanceof ProgressEvent) {
+                    errMsg = '服务端请求错误！'
+                }
+                else if (body) {
                     errMsg = body.error || this.handleModelValidateError(body) || JSON.stringify(body);
                 }
             }

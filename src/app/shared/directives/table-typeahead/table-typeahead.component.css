@@ -1,6 +1,7 @@
-.hq-table-typeahead{
+.hqTableTypeahead{
     background-color: #fff;
-    padding: 6px 10px;
+    margin: 0 10px;
+    padding: 6px 5px;
     font-size: 14px;
     border-radius: 4px;
 }
