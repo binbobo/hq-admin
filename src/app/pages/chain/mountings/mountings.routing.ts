@@ -7,8 +7,8 @@ const routes: Routes = [
     { path: 'inbound', loadChildren: 'app/pages/chain/mountings/inbound/inbound.module#InboundModule' },
     { path: 'inventory', loadChildren: 'app/pages/chain/mountings/inventory/inventory.module#InventoryModule' },
     { path: 'provider', loadChildren: 'app/pages/chain/mountings/provider/provider.module#ProviderModule' },
-    { path: 'inventory-list', loadChildren: 'app/pages/mountings/chain/take-stock/take-stock.module#TakeStockModule' },
-    { path: 'journal-account', loadChildren: 'app/pages/mountings/chain/journal-account/journal-account.module#JournalAccountModule' },
+    { path: 'inventory-list', loadChildren: 'app/pages/chain/mountings/take-stock/take-stock.module#TakeStockModule' },
+    { path: 'journal-account', loadChildren: 'app/pages/chain/mountings/journal-account/journal-account.module#JournalAccountModule' },
     { path: 'price', component: PriceCheckComponent },
 ];
 
