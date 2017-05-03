@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { WorkshopService } from './workshop.service';
-import { AssignService } from '../reception/assign.service';
 import { WorkshopRoutingModule, routedComponents  } from './workshop.routing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AlertModule } from 'ngx-bootstrap/alert';
@@ -22,6 +21,6 @@ import { SharedModule } from 'app/shared/shared.module';
     NguiDatetimePickerModule
   ],
   declarations: [routedComponents],
-  providers: [WorkshopService, AssignService],
+  providers: [WorkshopService],
 })
 export class WorkshopModule { }
