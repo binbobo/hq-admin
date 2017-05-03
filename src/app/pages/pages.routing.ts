@@ -16,10 +16,7 @@ const routes: Routes = [
             { path: 'logs', loadChildren: 'app/pages/logs/logs.module#LogsModule' },
             { path: 'settings', loadChildren: 'app/pages/settings/settings.module#SettingsModule' },
             { path: 'locale', loadChildren: 'app/pages/locale/locale.module#LocaleModule' },
-            { path: 'reception', loadChildren: 'app/pages/reception/reception.module#ReceptionModule' },
-            { path: 'mountings', loadChildren: 'app/pages/mountings/mountings.module#MountingsModule' },
-            { path: 'workshop', loadChildren: 'app/pages/workshop/workshop.module#WorkshopModule' },
-            { path: 'customer', loadChildren: 'app/pages/customer/customer.module#CustomerModule' },
+            { path: 'chain', loadChildren: 'app/pages/chain/chain.module#ChainModule' },
         ]
     },
 ];

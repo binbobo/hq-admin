@@ -1,6 +1,5 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { Cell, DefaultEditor, Editor } from 'ng2-smart-table';
-
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/observable/of';
@@ -10,7 +9,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { MaintenanceItem, OrderService } from '../order.service';
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
-import { StorageKeys } from '../../../shared/models/storage-keys';
+import { StorageKeys } from 'app/shared/models';
 
 @Component({
   template: `

@@ -11,9 +11,9 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import { LocalDataSource } from "ng2-smart-table";
-import { CustomMaintanceItemEditorComponent } from "app/pages/reception/create-order/custom-maintance-item-editor.component";
 import { TypeaheadRequestParams } from "app/shared/directives";
 import * as moment from 'moment';
+import { CustomMaintanceItemEditorComponent } from "app/pages/chain/reception/create-order/custom-maintance-item-editor.component";
 @Component({
   selector: 'app-append-order',
   templateUrl: './append-order.component.html',

@@ -1,6 +1,5 @@
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
 import { Component, Injector, ViewChild, ElementRef, OnInit } from '@angular/core';
-import { DataList } from '../../../shared/models/data-list';
 import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType, CustomerVehicle, FuzzySearchRequest } from '../order.service';
 import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { TabsetComponent } from 'ngx-bootstrap';
@@ -13,10 +12,10 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
-import { StorageKeys } from '../../../shared/models/storage-keys';
 
 import * as moment from 'moment';
 import { TypeaheadRequestParams } from "app/shared/directives";
+import { DataList, StorageKeys } from 'app/shared/models';
 
 
 @Component({
