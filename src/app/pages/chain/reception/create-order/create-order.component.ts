@@ -67,7 +67,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   // 车系是否选择标识, 用来记录当前选择的车系id
   public selectedSeriesId = null;
   // 当前选择的客户车辆记录
-  private selectedCustomerVehicle = null;
+  private selectedCustomerVehicle: any = {};
 
   // 维修类型数据
   public maintenanceTypeData: MaintenanceType[];
@@ -208,7 +208,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       })
       .debounceTime(300)
       .distinctUntilChanged()
-      .mergeMap((token: string) => this.service.getVehicleByModel(token, this.selectedBrandId, this.selectedSeriesId)) // 绑定this
+      .mergeMap((token: string) => this.service.getVehicleByModel(token, this.selectedBrandId, this.selectedSeriesId))
       .catch(err => console.log(err));
 
 
@@ -228,18 +228,15 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       })
       .debounceTime(300)
       .distinctUntilChanged()
-      .mergeMap((token: string) => service.call(this.service, token)) // 绑定this
+      .mergeMap((token: string) => {
+        // if (!token) {
+        //   return Observable.of([]);
+        // }
+        return service.call(this.service, token);
+      }) // 绑定this
       .catch(err => console.log(err));
   }
 
-  // 品牌输入框失去焦点事件监听
-  onBrandBlur() {
-    if (!this.selectedBrandId) {
-      // 重置品牌输入框，只允许从下拉列表中选择
-      this.workSheetForm.controls.brand.reset();
-      this.selectedBrandId = null;
-    }
-  }
   // 从模糊查询下拉列表中选择一个品牌事件处理程序
   onBrandSelect(evt: TypeaheadMatch) {
     // 设置当前选择的品牌id
@@ -247,16 +244,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // enable车系选择
     this.workSheetForm.controls.series.enable();
   }
-
-  // 车系输入框失去焦点事件监听
-  onSeriesBlur() {
-    if (!this.selectedSeriesId) {
-      // 重置车系输入框，只允许从下拉列表中选择
-      this.workSheetForm.controls.series.reset();
-      this.selectedSeriesId = null;
-    }
-  }
-
   // 从模糊查询下拉列表中选择一个车系事件处理程序
   onSeriesSelect(evt: TypeaheadMatch) {
     // 设置当前选择的车系id
@@ -286,6 +273,11 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   // 根据客户车辆Id查询上次工单信息
   getLastOrderByCustomerVechileId(evt) {
+    console.log('test', evt);
+    if (!evt.item.id) {
+      this.alerter.error('加载客户车辆信息失败！缺少客户车辆ID');
+      return;
+    }
     this.service.getLastOrderInfo(evt.item.id).subscribe(lastOrder => {
       console.log('上次工单信息：', lastOrder);
       // 根据选择的车牌号带出客户车辆信息
@@ -373,7 +365,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       this.addNewMaintenanceItem = false;
 
       // 费用计算
-      this.fee.workHour += this.newMaintenanceItem.money;
+      this.fee.workHour += parseFloat(this.newMaintenanceItem.money);
 
       // 判断生成工单按钮是否可用
       this.enableCreateWorkSheet = this.workSheetForm.valid;
@@ -390,7 +382,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       if (item.serviceId === serviceId) {
         this.newMaintenanceItemData2.splice(index, 1);
         // 费用计算
-        this.fee.workHour -= item.money;
+        this.fee.workHour -= parseFloat(item.money);
         // 如果新增项目为0 设置生成工单按钮不可用
         this.enableCreateWorkSheet = (this.newMaintenanceItemData2.length > 0) && this.workSheetForm.valid;
         return;
@@ -677,15 +669,19 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       // 初始化开单时间和服务顾问
       this.workSheetForm.controls.createdOnUtc.setValue(moment().format('YYYY-MM-DD hh:mm:ss'));
       this.workSheetForm.controls.createdUserName.setValue(this.user.username);
-
+      // 清空上次选择的品牌id和车系id
       this.selectedBrandId = this.selectedSeriesId = null;
       // 新增维修项目数据清空
       // this.stDataSource.load([]);  smart-table-add
       // this.newMaintenanceItemData = [];  smart-table-add
       this.newMaintenanceItemData2 = [];
+      // 重置费用
+      this.fee.workHour = 0;
+      this.fee.material = 0;
+      this.fee.other = 0;
+
       // 清空上次维修工单数据
-      this.lastOrderData = [];
-      // 清空智能表格中的数据
+      this.lastOrderData = null;
     }).catch(err => {
       console.log(err);
       // 出错的话  允许再次提交

@@ -24,6 +24,8 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
 
     // 保存维修技师列表数据  用于派工/转派
     public maintenanceTechnicians: SelectOption[];
+    // 保存当前选择的维修技师列表
+    selectedTechnicians = [];
 
     // 当前选择的工单记录   用于查看工单详情  执行作废等功能
     selectedOrder = null;
@@ -79,7 +81,10 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
     // 点击多选框处理程序
     onMultiSelectorClick(evt) {
         evt.preventDefault();
-        this.resetMaintenanceTechnicians();
+        // 设置全选复选框不可用
+        this.selectedOrder.serviceOutputs.checkedAll = false;
+        // 初始化当前选择的维修技师列表
+        this.selectedTechnicians = [];
     }
 
     createForm() {
@@ -90,9 +95,9 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
 
 
     /**
-   * 根据条件查询工单数据
-   * @memberOf OrderListComponent
-   */
+    * 根据条件查询工单数据
+    * @memberOf OrderListComponent
+    */
     onSearch() {
         // 组织工单状态数据
         let checkedStatus = this.maintenanceAssignTypes.filter(item => item.checked);
@@ -160,12 +165,12 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
     }
 
     /**
- * 点击工单详情按钮处理程序
- * @param {any} id 
- * @param {any} modalDialog 
- * 
- * @memberOf OrderListComponent
- */
+    * 点击工单详情按钮处理程序
+    * @param {any} id 
+    * @param {any} modalDialog 
+    * 
+    * @memberOf OrderListComponent
+    */
     orderDetailsHandler(evt, id, modalDialog) {
         evt.preventDefault();
 
@@ -246,8 +251,10 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         // 执行指派操作时候  判断是否有已开工的工项
         if (type === 1) {
             // teamType (integer, optional): 工项状态 1.待派工 2.待开工 3.已开工 4.已转派 5.已完工 = ['1', '2', '3', '4', '5'],
-            let started = maintenanceItems.filter((item, index) => {
+            let started = [];
+            maintenanceItems.filter((item, index) => {
                 if (item.teamType === 3) {
+                    started.push(item);
                     // 过滤掉已开工的工项
                     maintenanceItems.splice(index, 1);
                 }
@@ -290,7 +297,8 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         }
 
         // 获取选中的维修技师
-        const employeeIds = this.maintenanceTechnicians.filter(item => item.selected).map(item => item.value);
+        // const employeeIds = this.maintenanceTechnicians.filter(item => item.selected).map(item => item.value);
+        const employeeIds = this.selectedTechnicians;
         console.log('选择的维修技师为：', employeeIds);
         // 判断是否选择维修技师
         if (employeeIds.length === 0) {
@@ -333,38 +341,14 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
     }
 
     /**
-     * 多选框选择更改事件处理程序
-     * @param evt 
-     */
-    onChangeTechnicians(evt) {
-        // console.log(evt);
-        this.maintenanceTechnicians.map(item => {
-            if (item.value === evt.value) {
-                item.selected = evt.selected;
-            }
-        });
-    }
-
-    /**
      * 确认指派给哪些维修技师
      * 
      * @param {any} type   type (integer, optional): 派工类型 1.指派 2.转派 默认1.指派 = ['1', '2']
      * 
      * @memberOf AssignOrderComponent
      */
-    onConfirmTechnicians(type) {
-        console.log('onConfirmTechnicians', this.selectedOrder.id);
-
+    onConfirmTechnicians(evt, type) {
+        this.selectedTechnicians = evt.value;
         this.assignOrderHandler(type);
-    }
-
-    // 初始化维修技师数据
-    resetMaintenanceTechnicians() {
-        this.selectedOrder.serviceOutputs.checkedAll = false;
-        this.maintenanceTechnicians.map(item => {
-            if (item.selected) {
-                item.selected = false;
-            }
-        });
     }
 }

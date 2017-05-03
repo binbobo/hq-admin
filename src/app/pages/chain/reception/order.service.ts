@@ -73,7 +73,6 @@ export class OrderService implements BasicService<Order> {
      */
     getCustomerVehicleByPlateNoOrVin(token: string): Observable<CustomerVehicle[]> {
         const url = Urls.chain.concat('/CustomerVehicles/Search');
-        console.log('token: ', token);
         return this.httpService
             .request(url, {
                 params: {
@@ -81,7 +80,7 @@ export class OrderService implements BasicService<Order> {
                 }
             })
             .map(response => {
-                // console.log('根据车牌号查询客户车辆信息：', response.json().data);
+                console.log('根据VIN查询客户车辆信息：', response.json().data);
                 return response.json().data as CustomerVehicle[];
             });
     }

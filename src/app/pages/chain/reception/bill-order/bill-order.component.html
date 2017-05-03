@@ -24,6 +24,9 @@
         </div>
         <label for="createdTime">进店时间：</label>
         <div class="col-sm-2">
+
+
+
           <input class="form-control form-control-sm datetime-picker" [(ngModel)]="params.starttime" id="starttime" formControlName="starttime"
             type="text" ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
         </div>
@@ -39,7 +42,7 @@
     <hr>
 
     <table class='table'>
-      <thead>
+      <thead class="thead-default">
         <tr>
           <th>操作</th>
           <th>状态</th>
@@ -59,9 +62,9 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of list">
-          <td *ngIf="!item.updateOnUtc"><a href="javascript:void(0)" (click)='orderDetailsDialog($event, item.id,lgModal)'>结算</a> |<a href="javascript:void(0)"
+          <td *ngIf="!item.updateOnUtc"><a href="javascript:void(0)" (click)='orderDetailsDialog($event, item.id,lgModal)'>结算</a> | <a href="javascript:void(0)"
               (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
-          <td *ngIf="item.updateOnUtc"><a href="javascript:void(0)" (click)='unBill($event,item.id)'>撤销结算</a> |<a href="javascript:void(0)" (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
+          <td *ngIf="item.updateOnUtc"><a href="javascript:void(0)" (click)='unBill($event,item.id)'>撤销结算</a> | <a href="javascript:void(0)" (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
           <td>{{item.statusName}}</td>
           <td>{{item.typeName}}</td>
           <td>{{item.billCode}}</td>
@@ -73,7 +76,7 @@
           <td>{{item.mileage}}</td>
           <td>{{item.purchaseDate|date:"yyyy/MM/dd HH:mm:ss"}}</td>
           <td>{{item.customerName}}</td>
-          <td>{{item.amount}}</td>
+          <td>{{item.amount/100}}</td>
           <td>{{item.updateOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
 
         </tr>
@@ -88,7 +91,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="btn btn-secondary pull-left" aria-label="Close">打印</button>
+        <button type="button" class="btn btn-secondary pull-left" aria-label="Close" [hidden]="!isShowPrint" (click)='OnPrintClick()'>打印</button>
         <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -164,8 +167,8 @@
                 <tr *ngFor="let record of selectedOrder?.serviceOutputs">
                   <td>{{record?.serviceName}}</td>
                   <td>{{record?.workHour}}</td>
-                  <td>{{record?.price}}</td>
-                  <td>{{record?.amount}}</td>
+                  <td>{{record?.price/100}}</td>
+                  <td>{{record?.amount/100}}</td>
                   <td>{{record?.discount}}</td>
                   <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
                   <td>{{user.username}}</td>
@@ -194,8 +197,8 @@
                   <td>{{record?.brandName}}</td>
                   <td>{{record?.specification}}</td>
                   <td>{{record?.count}}</td>
-                  <td>{{record?.price}}</td>
-                  <td>{{record?.amount}}</td>
+                  <td>{{record?.price/100}}</td>
+                  <td>{{record?.amount/100}}</td>
                   <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
                 </tr>
               </tbody>

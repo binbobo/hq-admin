@@ -153,10 +153,10 @@
                 </tbody>
               </table>
               <div>
-                <button class="btn btn-sm btn-secondary mr-2" (onConfirm)="onConfirmTechnicians(1)" [hqMutilSelect]="maintenanceTechnicians"
+                <button class="btn btn-sm btn-secondary mr-2" (onConfirm)="onConfirmTechnicians($event, 1)" [hqMutilSelect]="maintenanceTechnicians"
                   mTitle="选择维修技师" href="#" [disabled]="!selectedOrder?.serviceOutputs?.enableAssignment" (click)="onMultiSelectorClick($event)"
                   placement="right">指派</button>
-                <button class="btn btn-sm btn-secondary" (onConfirm)="onConfirmTechnicians(2)" [hqMutilSelect]="maintenanceTechnicians"
+                <button class="btn btn-sm btn-secondary" (onConfirm)="onConfirmTechnicians($event, 2)" [hqMutilSelect]="maintenanceTechnicians"
                   mTitle="选择维修技师" href="#" [disabled]="!selectedOrder?.serviceOutputs?.enableAssignment" (click)="onMultiSelectorClick($event)"
                   placement="right">转派</button>
               </div>
@@ -221,7 +221,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <p class="modal-title">温馨提示</p>
-          <button type="button" class="close pull-right" aria-label="Close" (click)="confirmModal.hide();isDetailModalShown=false;">
+          <button type="button" class="close pull-right" aria-label="Close" (click)="confirmModal.hide();">
           <span aria-hidden="true">&times;</span>
         </button>
         </div>
@@ -229,7 +229,7 @@
           <p>您确定要完工吗</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-sm" data-dismiss="confirmModal" (click)="confirmModal.hide();isDetailModalShown=false;">取消</button>
+          <button type="button" class="btn btn-sm" data-dismiss="confirmModal" (click)="confirmModal.hide();">取消</button>
           <button type="button" class="btn btn-sm" data-dismiss="modal" (click)="onConfirmFinished(confirmModal)">确定</button>
         </div>
       </div>

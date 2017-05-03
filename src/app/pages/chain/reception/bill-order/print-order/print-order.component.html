@@ -1,43 +1,46 @@
-<div class="bill card">
+<div class="print card">
   <div class="card-header">
-    <span>维修结算单</span>
+
   </div>
   <div class='card-block'>
 
-
-    <h3></h3>
-    <table class="table search-table">
+    <table class="table search-table table-bordered">
+      <tr>
+        <td colspan="10">
+          <h4>维修结算单</h4>
+        </td>
+      </tr>
       <tr>
         <td>车牌号:</td>
-        <td> </td>
+        <td> {{data?.plateNo}}</td>
         <td>车型描述:</td>
-        <td> </td>
+        <td>{{data?.model}} </td>
         <td>VIN:</td>
-        <td> </td>
+        <td>{{data?.vin}} </td>
         <td>送修人：</td>
-        <td> </td>
+        <td>{{data?.contactUser}}</td>
         <td>送修人手机：</td>
-        <td> </td>
+        <td>{{data?.contactInfo}}</td>
       </tr>
       <tr>
         <td>结算单号:</td>
-        <td> </td>
+        <td>{{data?.settlementId}}</td>
         <td>工单号:</td>
-        <td> </td>
+        <td>{{data?.id}}</td>
         <td>结算员:</td>
-        <td> </td>
+        <td>{{data?.updateUser}}</td>
         <td>结算时间：</td>
-        <td> </td>
+        <td>{{data?.updateOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
         <td>结算方：</td>
-        <td> </td>
+        <td>{{data?.contactUser}}</td>
       </tr>
       <tr>
         <td>服务顾问:</td>
-        <td> </td>
+        <td>{{data?.createdUserName}}</td>
         <td>发票类型:</td>
-        <td></td>
+        <td>{{data?.invoiceType}}</td>
         <td>发票号码:</td>
-        <td> </td>
+        <td>{{data?.invoiceCode}}</td>
         <td></td>
         <td></td>
         <td></td>
@@ -45,16 +48,127 @@
       </tr>
       <tr>
         <td>维修类型:</td>
-        <td> </td>
+        <td>{{data?.typeName}}</td>
         <td>进店时间:</td>
-        <td></td>
+        <td>{{data?.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
         <td>进店里程(KM):</td>
-        <td></td>
+        <td>{{data?.mileage}}</td>
         <td>出厂时间:</td>
         <td></td>
-         <td>出厂里程(KM):</td>
-        <td></td>
+        <td>出厂里程(KM):</td>
+        <td>{{data?.leaveMileage}}</td>
       </tr>
     </table>
+
+    <table class="table table-bordered">
+      <tr>
+        <td colspan="4">
+          <h5>表一：收费结算单</h5>
+        </td>
+      </tr>
+      <tr class="table-active">
+        <td>序号</td>
+        <td>名称</td>
+        <td>金额</td>
+        <td>备注</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>材料费</td>
+        <td> </td>
+        <td> </td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>工时费</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>其他费用</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>合计：</td>
+        <td>应收金额：{{totalCost?.receivableCost }}</td>
+        <td>折扣金额：{{totalCost?.discountCost }}</td>
+        <td> </td>
+      </tr>
+    </table>
+
+
+    <table class="table table-bordered">
+      <tr>
+        <td colspan="7">
+          <h5>表二：工时明细</h5>
+        </td>
+      </tr>
+      <tr class="table-active">
+        <td>序号</td>
+        <td>维修项目</td>
+        <td>结算工时</td>
+        <td>单价(元/个)</td>
+        <td>折扣率</td>
+        <td>金额</td>
+        <td>备注</td>
+      </tr>
+      <tr *ngFor="let item of workHourData">
+        <td>1</td>
+        <td>{{item?.serviceName }}</td>
+        <td>{{item?.workHour}}</td>
+        <td>{{item?.price/100}}</td>
+        <td>{{item?.discount}}</td>
+        <td>{{item?.amount/100}}</td>
+        <td>{{item?.description}}</td>
+      </tr>
+      <tr>
+        <td>合计：</td>
+        <td>应收金额：</td>
+        <td>折扣金额：</td>
+        <td colspan="3"></td>
+      </tr>
+    </table>
+
+    <table class="table table-bordered">
+      <tr>
+        <td colspan="8">
+          <h5>表三：配件明细</h5>
+        </td>
+      </tr>
+      <tr class="table-active">
+        <td>序号</td>
+        <td>配件编码</td>
+        <td>配件名称</td>
+        <td>单位</td>
+        <td>数量</td>
+        <td>单价(元/工时)</td>
+        <td>金额</td>
+        <td>备注</td>
+      </tr>
+      <tr *ngFor="let item of materialData">
+        <td>1</td>
+        <td>{{item?.productCode}}</td>
+        <td>{{item?.productName}}</td>
+        <td>{{item?.unit}}</td>
+        <td>{{item?.count/100}}</td>
+        <td>{{item?.price}}</td>
+        <td>{{item?.description}}</td>
+      </tr>
+      <tr>
+        <td>合计：</td>
+        <td>应收金额：</td>
+        <td>折扣金额：</td>
+        <td colspan="5"></td>
+      </tr>
+    </table>
+    <hr>
+    <div>
+      第1页，共5页 打印时间：{{data?.printOnUtc|date:"yyyy/MM/dd HH:mm:ss"}} 操作人： 客户签名： 日期： 年 月 日
+    </div>
+    <div class="center">
+      <button type="button" class="btn btn-secondary">打印</button>
+    </div>
   </div>
 </div>

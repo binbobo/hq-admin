@@ -23,6 +23,7 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
 
   // 当前选择的工单记录   用于查看工单详情  执行作废等功能
   selectedOrder = null;
+  isDetailModalShown = false; // 详情弹框是否可见
 
   // 当前登录用户信息
   public user = null;
@@ -77,7 +78,7 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
     if (cb.checked) {
       this.selectedOrder.serviceOutputs.map(item => {
         // 如果没有验收  也就是复选框可用 设置为选中状态
-        if (true) {
+        if (item.teamType !== 6) {
           item.checked = true;
         }
       });
@@ -96,6 +97,10 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
  * @param record 
  */
   toggleCheckbox(record) {
+    if (record.teamType === 6) {
+      // 已验收的不可以再操作
+      return false;
+    }
     // 更新当前操作的维修工项复选框状态
     record.checked = !record.checked;
 
@@ -118,7 +123,37 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
    * 
    * @memberOf MaintenanceCheckComponent
    */
-  onOrderCheckPass(id) { }
+  onOrderCheckPass() {
+    // 获取选择的工项列表
+    const maintenanceItemIds = this.selectedOrder.serviceOutputs.filter(item => item.checked).map(item => item.id);
+    console.log('选择的维修工单为：', maintenanceItemIds);
+    // 判断是否选择维修工项
+    if (maintenanceItemIds.length === 0) {
+      this.alerter.warn('请选择维修工项！');
+      return;
+    }
+    // 调用接口  执行通过验收动作
+    this.service.update({ ids: maintenanceItemIds }).then(() => {
+      // 修改操作记录的teamType为6
+      for (let j = 0; j < maintenanceItemIds.length; j++) {
+        for (let i = 0; i < this.selectedOrder.serviceOutputs.length; i++) {
+          if (this.selectedOrder.serviceOutputs[i].id === maintenanceItemIds[j]) {
+            // 设置工项的状态为 已验收
+            this.selectedOrder.serviceOutputs[i].teamType = 6;
+            // 取消已选中的工项的选中状态
+            this.selectedOrder.serviceOutputs[i].checked = false;
+            break;
+          }
+        }
+      }
+
+      // 设置验收操作按钮不可用
+      this.selectedOrder.serviceOutputs.checkedAll = false;
+      this.selectedOrder.serviceOutputs.enableCheck = false;
+      // 验收通过
+      this.alerter.success('执行验收通过操作成功！');
+    }).catch(err => this.alerter.error(err));
+  }
 
 
   /**
@@ -177,6 +212,7 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
       this.selectedOrder.sumFee = this.selectedOrder.workHourFee + this.selectedOrder.materialFee + this.selectedOrder.otherFee;
       // 显示窗口
       modalDialog.show();
+      this.isDetailModalShown = true;
     }).catch(err => this.alerter.error(err));
   }
 }

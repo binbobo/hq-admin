@@ -1,4 +1,4 @@
-<ng-template hq-alerter></ng-template>
+<ng-template *ngIf="!isDetailModalShown" hq-alerter></ng-template>
 <div class="card">
   <div class="card-header">
     维修验收
@@ -50,9 +50,13 @@
             <a href="#" (click)="orderDetailsHandler($event, item.id, lgModal)">详情</a>
           </td>
           <td>{{item.statusName}}</td>
-          <td>{{item.employees}}</td>
+          <td>
+            <span *ngIf="item.teamType === 1 || item.teamType === 2"> {{item.employeeNames?.join(',')}}</span>
+          </td>
           <!-- 指派的人或者最后更改人 -->
-          <td>转派的人</td>
+          <td>
+            <span *ngIf="item.teamType === 2"> {{item.turnEmployeeNames?.join(',')}}</span>
+          </td>
           <!-- 转派的人-->
           <td>{{item.typeName}}</td>
           <td>{{item.billCode}}</td>
@@ -79,9 +83,10 @@
   <div bsModal #lgModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
+        <ng-template *ngIf="isDetailModalShown" hq-alerter></ng-template>
         <div class="modal-header">
           <h6 class="modal-title pull-left">维修验收详情</h6>
-          <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
+          <button type="button" class="close pull-right" (click)="lgModal.hide();isDetailModalShown=false;" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
         </div>
@@ -106,12 +111,13 @@
                   <tr *ngFor="let record of selectedOrder?.serviceOutputs" [class.checked]="record.checked" (click)="$event.stopPropagation();toggleCheckbox(record)">
                     <td width="30">
                       <!--已经同意之后, 不可以再次操作-->
-                      <input [disabled]="false" value="{{record.id}}" (click)="$event.stopPropagation();toggleCheckbox(record)" [checked]="record.checked" type="checkbox" />
+                      <input [disabled]="record.teamType === 6" value="{{record.id}}" (click)="$event.stopPropagation();toggleCheckbox(record)"
+                        [checked]="record.checked" type="checkbox" />
                     </td>
                     <td>
                       {{record?.serviceName}}
                       <!--已通过的打个标记-->
-                      <span [class.triangle]="true"></span>
+                      <span [class.triangle]="record.teamType === 6"></span>
                     </td>
                     <td>{{record?.workHour }}</td>
                     <td>{{record?.price}}</td>
@@ -122,7 +128,7 @@
                 </tbody>
               </table>
               <div>
-                <button class="btn btn-sm btn-secondary" [disabled]="!selectedOrder?.serviceOutputs?.enableCheck">同意</button>
+                <button class="btn btn-sm btn-secondary" [disabled]="!selectedOrder?.serviceOutputs?.enableCheck" (click)="onOrderCheckPass()">同意</button>
               </div>
             </tab>
             <tab heading="维修配件">
