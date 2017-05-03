@@ -65,18 +65,25 @@ export class BillOrderService implements BasicService<any>{
     const url = Urls.chain.concat('/Settlements/MaintenanceBill/', id);
     return this.httpService
       .post<void>(url, body)
-      .then(m => {
-        return m
-      })
       .catch(err => Promise.reject(`${err}`));
   }
 
   // 撤销结算单
-  public put(body: any): Promise<void> {
-    const url = Urls.chain.concat('/Settlements/UnMaintenanceBill/', body.id);
+  public put(id: string): Promise<void> {
+    const url = Urls.chain.concat('/Settlements/UnMaintenanceBill/', id);
     return this.httpService.
-      put<void>(url, body)
+      put<void>(url, {})
       .catch(err => Promise.reject(`更新菜单失败：${err}`));
+  }
+  //根据工单id获取打印详情
+  public getPrintDetail(id: string): Promise<any> {
+    const url = Urls.chain.concat('/Settlements/PrintDetail/', id);
+    return this.httpService
+      .get<ApiResult<any>>(url)
+      .then(result => result.data)
+      .then(data => data || Promise.reject('获取打印数据无效'))
+      .catch(err => Promise.reject(`获取打印数据失败：${err}`))
+
   }
 
 }
