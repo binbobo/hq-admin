@@ -67,11 +67,15 @@ export class WorkshopService implements BasicService<any> {
             .catch(err => Promise.reject(`加载菜单失败：${err}`));
     }
 
+    /**
+     * 验收操作  同意
+     * @param body
+     */
     public update(body: any): Promise<void> {
-        const url = Urls.chain.concat('/order/', body.id);
+        const url = Urls.chain.concat('/MaintenanceTeams/CheckedByItemIds');
         return this.httpService.
             put<void>(url, body)
-            .catch(err => Promise.reject(`更新菜单失败：${err}`));
+            .catch(err => Promise.reject(`执行维修验收操作失败：${err}`));
     }
 
     public create(body: any): Promise<any> {

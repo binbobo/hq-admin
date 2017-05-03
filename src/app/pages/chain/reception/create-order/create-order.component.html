@@ -78,7 +78,7 @@ placeholder="请输入工单号/车牌号" />-->
         </div>
         <label for="series" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车系</label>
         <div class="col-sm-2">
-          <input (typeaheadOnSelect)="onSeriesSelect($event)" [typeahead]="seriesDataSource" typeaheadOptionField="name" (blur)="onSeriesBlur()"
+          <input (typeaheadOnSelect)="onSeriesSelect($event)" [typeahead]="seriesDataSource" typeaheadOptionField="name"
             required type="text" class="form-control form-control-sm" formControlName="series" id="series" placeholder="输入 奥迪/大众  测试">
         </div>
       </div>
@@ -321,10 +321,10 @@ placeholder="请输入工单号/车牌号" />-->
       <div *ngIf="true" class="card">
         <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
           折前费用: 工时费
-          <span class="ml-2 mr-2">{{fee.workHour|number}}</span> | 材料费
-          <span class="ml-2 mr-2">{{fee.material|number}}</span> | 其它
-          <span class="ml-2 mr-2">{{fee.other|number}}</span> | 合计
-          <span class="ml-2 mr-2">{{fee.workHour+fee.material+fee.other|number}}</span>|
+          <span class="ml-2 mr-2">{{fee.workHour}}</span> | 材料费
+          <span class="ml-2 mr-2">{{fee.material}}</span> | 其它
+          <span class="ml-2 mr-2">{{fee.other}}</span> | 合计
+          <span class="ml-2 mr-2">{{fee.workHour+fee.material+fee.other}}</span>|
         </div>
         <div class="card-block text-center">
           <input type="text" class="btn textInputBtn" readonly [disabled]="!enableCreateWorkSheet" (click)="createWorkSheet()" value="生成工单">
