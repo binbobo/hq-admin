@@ -5,7 +5,7 @@ import { HqAlerter } from 'app/shared/directives';
 import { PagedService } from './basic-service.interface';
 
 export abstract class DataList<T> implements OnInit {
-
+  protected lazyLoad = false;
   protected route: ActivatedRoute;
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
@@ -22,7 +22,9 @@ export abstract class DataList<T> implements OnInit {
         }
       });
     });
-    this.loadList();
+    if (!this.lazyLoad) {
+      this.loadList();
+    }
   }
 
   constructor(

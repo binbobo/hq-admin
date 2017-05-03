@@ -356,7 +356,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       serviceName: '',
       workHour: '',
       price: '',
-      discount: '',
+      discount: 100,
       money: '',
       operationTime: moment().format('YYYY-MM-DD hh:mm:ss')
     };
@@ -675,6 +675,9 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
       // 表单重置
       this.workSheetForm.reset();
+      // 初始化开单时间和服务顾问
+      this.workSheetForm.controls.createdOnUtc.setValue(moment().format('YYYY-MM-DD hh:mm:ss'));
+      this.workSheetForm.controls.createdUserName.setValue(this.user.username);
 
       this.selectedBrandId = this.selectedSeriesId = null;
       // 新增维修项目数据清空
