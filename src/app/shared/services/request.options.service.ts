@@ -16,7 +16,6 @@ export class DefaultRequestOptions extends BaseRequestOptions {
         this.setAuthorization(user);
         userService.onUserLogin.subscribe(user=>this.setAuthorization(user));
         this.dispatcher.subscribe('LanguageChanged', lang => this.setAcceptLanguage(lang))
-        this.headers.set('Content-Type', 'application/json');
     }
 
     private setAcceptLanguage(lang){

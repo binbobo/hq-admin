@@ -1,0 +1,260 @@
+<div class="card append-order">
+  <div class="card-header">
+    <span>增项</span>
+  </div>
+  <div class="card-block">
+    <div class="" hq-alerter></div>
+    <form [formGroup]="myForm" class='form-in mb-2 ng-pristine ng-valid assign-form ng-untouched'>
+      <!--<input #search formControlName="state" [typeahead]="plateNoData" typeaheadOptionField="plateNo" (typeaheadOnSelect)="OnSearchClick($event)"
+        placeholder="请输入工单号/车牌号" class="form-control mr-2">-->
+      <input [hqTableTypeahead]="typeaheadSource" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)" class="form-control"
+        placeholder="请输入工单号/车牌号"/>
+    </form>
+
+    <table class="table search-table">
+      <tr>
+        <td>车牌号:</td>
+        <td>{{SearchappendList.plateNo}}</td>
+        <td>车主:</td>
+        <td>{{SearchappendList.customerName}}</td>
+        <td>车主电话:</td>
+        <td>{{SearchappendList.phone}}</td>
+        <td>验车时间</td>
+        <td>{{SearchappendList.validate |date:"yyyy/MM/dd HH:mm:ss"}}</td>
+      </tr>
+      <tr>
+        <td>开单时间:</td>
+        <td>{{SearchappendList.createdOnUtc |date:"yyyy/MM/dd HH:mm:ss"}} </td>
+        <td>送修人:</td>
+        <td>{{SearchappendList.contactUser}}</td>
+        <td>送修人电话:</td>
+        <td>{{SearchappendList.contactInfo}}</td>
+        <td>服务顾问</td>
+        <td>{{SearchappendList.createdUserName}}</td>
+      </tr>
+      <tr>
+        <td>品牌:</td>
+        <td>{{SearchappendList.brand}}</td>
+        <td>车系:</td>
+        <td>{{SearchappendList.series}}</td>
+        <td>车型:</td>
+        <td>{{SearchappendList.model}}</td>
+        <td>VIN:</td>
+        <td>{{SearchappendList.vin}}</td>
+      </tr>
+      <tr>
+        <td>维修类型:</td>
+        <td>{{SearchappendList.typeName}}</td>
+        <td>预计交车时间:</td>
+        <td>{{SearchappendList.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+        <td>行驶里程(KM):</td>
+        <td>{{SearchappendList.mileage}}</td>
+        <td>上次进店时间:</td>
+        <td>{{SearchappendList.lastEnterDate|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+      </tr>
+      <tr>
+        <td>维修工位:</td>
+        <td>{{SearchappendList.location}}</td>
+        <td>建议下次保养日期:</td>
+        <td>{{SearchappendList.nextDate}}</td>
+        <td>建议下次保养里程(KM):</td>
+        <td>{{SearchappendList.nextMileage}}</td>
+        <td>上次进店里程:</td>
+        <td>{{SearchappendList.lastMileage}}</td>
+      </tr>
+    </table>
+
+    <div [hidden]="!isShowAppend">
+      <tabset #staticTabs>
+        <!--维修项目-->
+        <tab heading="维修项目">
+          <smart-table [source]="stDataSource" (deleteConfirm)="deleteMaintanceItem($event)" (createConfirm)="addNewmaintanceItem($event)"
+            [settings]="maintanceItemSettings"></smart-table>
+          <table class='table table-bordered table-tab table-sm table-hover'>
+            <thead class="thead-default">
+              <tr>
+                <th>已添加维修项目名称</th>
+                <th>维修工时（小时）</th>
+                <th>工时单价（元）</th>
+                <th>金额（元）</th>
+                <th>折扣率（%）</th>
+                <th>操作时间</th>
+              </tr>
+            </thead>
+            <tr *ngFor="let item of maintenanceProjectData">
+              <td>{{item.serviceName}}</td>
+              <td>{{item.workHour}}</td>
+              <td>{{item.price}}</td>
+              <td>{{item.amount}}</td>
+              <td>{{item.discount}}</td>
+              <td>{{item.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+            </tr>
+          </table>
+
+        </tab>
+        <!--附加项目-->
+        <tab heading="附加项目">
+          <smart-table (deleteConfirm)="deleteAttachItem($event)" (createConfirm)="addAttachItem($event)" [settings]="addItemSettings"></smart-table>
+          <table class='table table-tab'>
+            <thead class="thead-default">
+              <tr>
+                <th>已有附加项目备注</th>
+              </tr>
+            </thead>
+            <tr *ngFor="let item of attachServiceOutputs">
+              <td>{{item.description}}</td>
+            </tr>
+          </table>
+
+        </tab>
+
+        <!--建议维修项-->
+        <tab heading="建议维修项">
+          <smart-table (deleteConfirm)="deletsuggestItem($event)" (createConfirm)="suggestItem($event)" [settings]="suggestedMaintanceSettings"></smart-table>
+          <table class='table table-tab '>
+            <thead class="thead-default">
+              <tr>
+                <th>已增加建议维修项目</th>
+                <th>操作时间</th>
+                <th>备注</th>
+              </tr>
+            </thead>
+            <tr *ngFor="let item of suggestServiceOutputs">
+              <td>{{item.content}}</td>
+              <td>{{item.operateDateTime}}</td>
+              <td>{{item.description}}</td>
+            </tr>
+          </table>
+        </tab>
+
+        <!--上次维修记录-->
+        <tab heading="上次维修记录">
+          <table class="table table-hover table-bordered table-sm table-tab">
+            <caption>维修项目</caption>
+            <thead class="thead-default">
+              <tr>
+                <th>项目名称</th>
+                <th>维修工时</th>
+                <th>工时单价(元)</th>
+                <th>金额(元)</th>
+                <th>折扣率</th>
+                <th>操作时间</th>
+                <th>操作员</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of lastDataProjectList ">
+                <td>{{item.serviceName}}</td>
+                <td>{{item.workHour}}</td>
+                <td>{{item.price}}</td>
+                <td>{{item.amount}}</td>
+                <td>{{item.discount}}</td>
+                <td>{{item.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                <td>{{item.operatorName}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <!--<table class="table table-hover table-bordered table-sm table-tab">
+            <caption>维修配件</caption>
+            <thead>
+              <tr>
+                <th>维修工项</th>
+                <th>配件名称</th>
+                <th>品牌</th>
+                <th>规格型号</th>
+                <th>数量</th>
+                <th>单价(元)</th>
+                <th>金额(元)</th>
+                <th>操作时间</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of lastRepairList">
+                <td>{{item.serviceName}}</td>
+                <td>{{item.productName}}</td>
+                <td>{{item.brandName}}</td>
+                <td>{{item.specification}}</td>
+                <td>{{item.count}}</td>
+                <td>{{item.price}}</td>
+                <td></td>
+                <td>{{item.operateDateTime}}</td>
+              </tr>
+            </tbody>
+          </table>-->
+
+          <table class="table table-hover table-bordered table-sm table-tab">
+            <caption>附加项目</caption>
+            <thead class="thead-default">
+              <tr>
+                <th>备注</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of lastAddList">
+                <td>{{item.description}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table table-hover table-bordered table-sm table-tab">
+            <caption>建议维修项目</caption>
+            <thead class="thead-default">
+              <tr>
+                <th>建议维修项目</th>
+                <th>操作时间</th>
+                <th>备注</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of lastSuggestList">
+                <td>{{item.content}}</td>
+                <td>{{item.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                <td>{{item.description}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </tab>
+
+        <!--客户回访记录
+        <tab heading="客户回访记录">
+          <table class="table table-hover table-bordered table-sm table-tab">
+            <caption>客户回访记录</caption>
+            <thead>
+              <tr>
+                <th>回访时间</th>
+                <th>回访人</th>
+                <th>维修质量</th>
+                <th>服务态度</th>
+                <th>休息环境</th>
+                <th>工时价格</th>
+                <th>配件价格</th>
+                <th>接车时是否验车</th>
+                <th>是否报价</th>
+                <th>有无建议项目</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let record of list">
+              </tr>
+            </tbody>
+          </table>
+        </tab>-->
+      </tabset>
+    </div>
+    <!--只有前4个选项卡显示-->
+     <div class="card-block text-center">
+        <button type="button" class="btn  btn-primary" (click)="submitAddOrder()" [disabled]="!isableAppend">提交增项</button>
+        <!--<input type="text" readonly class="btn btn-primary" (click)="submitAddOrder()" value='提交增项'>-->
+        <button type="button" class="btn  btn-primary" (click)="submitAddOrder()" disabled>挂单</button>
+      </div>
+    <div class="card">
+      <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
+        折前费用: 工时费<span class="ml-2 mr-2">{{workHourFee}}</span> | 材料费
+        <span class="ml-2 mr-2">{{materialFee}}</span> | 其它
+        <span class="ml-2 mr-2">{{otherFee}}</span> | 合计
+        <span class="ml-2 mr-2">{{sumFee}}</span>|
+      </div>     
+    </div>
+
+  </div>
+</div>

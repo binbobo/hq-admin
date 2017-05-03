@@ -1,0 +1,239 @@
+<ng-template *ngIf="!isDetailModalShown" hq-alerter></ng-template>
+<div class="card">
+  <div class="card-header">
+    维修派工
+  </div>
+  <div class='card-block'>
+    <form [formGroup]="assignOrderForm" (ngSubmit)="onSearch()">
+      <div class="input-group col-8 offset-2">
+        <input style="border-radius: 5px;" [(ngModel)]="params.keyword" formControlName="keyword" placeholder="请输入车牌号/工单号" class="form-control mr-3">
+        <span class="input-group-btn">
+          <button class="btn btn-secondary" type="submit">搜索</button>
+        </span>
+      </div>
+      <hr>
+      <div class="form-group">
+        <div class="form-check form-check-inline" *ngFor="let type of maintenanceAssignTypes">
+          <label class="form-check-label">
+            <input class="form-check-input" (change)='type.checked = !type.checked' [checked]="type.checked"  type="checkbox" value="{{type.id}}"> {{type.value}}
+          </label>
+        </div>
+      </div>
+    </form>
+    <hr>
+    <table class="table table-hover table-bordered table-sm">
+      <thead>
+        <tr>
+          <th>操作</th>
+          <th>维修类型</th>
+          <th>工单号</th>
+          <th>进店时间</th>
+          <th>预计交车时间</th>
+          <th>超时</th>
+          <th>服务顾问</th>
+          <th>品牌</th>
+          <th>车型</th>
+          <th>车牌号</th>
+          <th>行驶里程</th>
+          <th>购车时间</th>
+          <th>车主</th>
+          <th>送修人</th>
+          <th>电话</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of list">
+          <td width="75">
+            <a href="#" (click)="orderDetailsHandler($event, item.id, lgModal)">详情</a> |
+            <a href="#" (click)="finishedOrder($event, item.id, confirmModal)">完工</a>
+          </td>
+          <!--<td>
+            <a *ngIf="item.teamType === '0'" href="#" [hqMutilSelect]="maintenanceTechnicians" mTitle="选择维修技师" placement="right"
+              (onChange)="onChangeTechnicians($event)" (onConfirm)="onConfirmTechnicians(item.id, 1)" (click)="onMultiSelectorClick($event)">指派</a>
+            <span *ngIf="item.teamType !== '0'">{{item.employeeNames?.join(',')}}</span>
+          </td>
+          <td width="40">
+            <span *ngIf="item.teamType === '2'">
+              {{item.turnEmployeeNames?.join(',')}}
+              </span>
+            <a *ngIf="item.teamType !== '0'" href="#" [hqMutilSelect]="maintenanceTechnicians" mTitle="选择维修技师" placement="right"
+              (onConfirm)="onConfirmTechnicians(item.id, 2)" (click)="onMultiSelectorClick($event)">转派</a>
+          </td>-->
+          <td>
+            {{item.typeName}}
+          </td>
+          <td>{{item.billCode}}</td>
+          <td>{{item.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+          <td>{{item.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+          <td>{{item.overTime}}</td>
+          <td>{{item.createdUserName}}</td>
+          <td>{{item.brand}}</td>
+          <td>{{item.model}}</td>
+          <td>{{item.plateNo}}</td>
+          <td>{{item.mileage}}</td>
+          <td>{{item.purchaseDate}}</td>
+          <td>{{item.customerName}}</td>
+          <td>{{item.contactUser}}</td>
+          <td>{{item.contactInfo}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+
+    <!--费用统计区域-->
+    <div *ngIf="false" class="card">
+      <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
+        折前费用: 工时费
+        <span class="ml-2 mr-2">{{workHourFee}}</span> | 材料费
+        <span class="ml-2 mr-2">{{materialFee}}</span> | 其它
+        <span class="ml-2 mr-2">{{otherFee}}</span> | 合计
+        <span class="ml-2 mr-2">{{sumFee}}</span>|
+      </div>
+    </div>
+
+  </div>
+
+
+  <!--详情 begin-->
+  <div bsModal #lgModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <ng-template *ngIf="isDetailModalShown" hq-alerter></ng-template>
+        <div class="modal-header">
+          <h6 class="modal-title pull-left">维修派工详情</h6>
+          <button type="button" class="close pull-right" (click)="lgModal.hide();isDetailModalShown=false;" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body" style='overflow: scroll;'>
+          <!--导出详情begin-->
+          <tabset>
+            <tab heading="维修项目">
+              <table class="table table-hover table-bordered table-sm">
+                <thead>
+                  <tr>
+                    <th><input value="all" #checkAll (change)="assignToggleCheckboxAll(checkAll)" [checked]="selectedOrder?.serviceOutputs?.checkedAll" type="checkbox" /></th>
+                    <th>指派维修技师</th>
+                    <th>转派</th>
+                    <th>项目名称</th>
+                    <th>维修工时</th>
+                    <th>工时单价(元)</th>
+                    <th>金额(元)</th>
+                    <th>折扣率</th>
+                    <th>操作时间</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let record of selectedOrder?.serviceOutputs" [class.checked]="record.checked" (click)="$event.stopPropagation();assignToggleCheckbox(record)">
+                    <td width="30">
+                      <!--teamType (integer, optional): 工项状态 1.待派工 2.待开工 3.已开工 4.已转派 5.已完工 = ['1', '2', '3', '4', '5'],-->
+                      <!--只能转派一次 转派之后  不再可以指派和转派-->
+                      <input [disabled]="record.teamType === 4 || record.teamType === 5" value="{{record.id}}"  (click)="$event.stopPropagation();assignToggleCheckbox(record)" [checked]="record.checked" type="checkbox" />
+                    </td>
+                    <td>
+                      <span *ngIf="record.teamType !== 1">
+                        {{record?.employeeNames.join(',')}}
+                      </span>
+                    </td>
+                    <td width="40">
+                      <span *ngIf="record.teamType === 4 || record.teamType === 5">
+                        {{record?.turnEmployeeNames.join(',')}}
+                      </span>
+                    </td>
+                    <td>{{record?.serviceName}}
+                      <!-- 类型3表示增项 -->
+                      <span [class.triangle]="record.type === 3"></span>
+                    </td>
+                    <td>{{record?.workHour }}</td>
+                    <td>{{record?.price}}</td>
+                    <td>{{record?.amount}}</td>
+                    <td>{{record?.discount}}</td>
+                    <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div>
+                <button class="btn btn-sm btn-secondary mr-2" (onConfirm)="onConfirmTechnicians(1)" [hqMutilSelect]="maintenanceTechnicians"
+                  mTitle="选择维修技师" href="#" [disabled]="!selectedOrder?.serviceOutputs?.enableAssignment" (click)="onMultiSelectorClick($event)"
+                  placement="right">指派</button>
+                <button class="btn btn-sm btn-secondary" (onConfirm)="onConfirmTechnicians(2)" [hqMutilSelect]="maintenanceTechnicians"
+                  mTitle="选择维修技师" href="#" [disabled]="!selectedOrder?.serviceOutputs?.enableAssignment" (click)="onMultiSelectorClick($event)"
+                  placement="right">转派</button>
+              </div>
+            </tab>
+            <tab heading="附加项目">
+              <table class="table table-hover table-bordered table-sm">
+                <thead>
+                  <tr>
+                    <th>备注</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let record of selectedOrder?.attachServiceOutputs">
+                    <td>{{record?.description}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </tab>
+
+            <tab heading="建议维修项目">
+              <table class="table table-hover table-bordered table-sm">
+                <thead>
+                  <tr>
+                    <th>建议维修项目</th>
+                    <th>操作时间</th>
+                    <th>备注</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let record of selectedOrder?.SuggestServiceDetailOutput">
+                    <td>{{record?.content}}</td>
+                    <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                    <td>{{record?.description}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </tab>
+            <hr>
+            <!--只有前4个选项卡显示-->
+            <div *ngIf="true" class="card">
+              <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
+                折前费用: 工时费
+                <span class="ml-2 mr-2">{{selectedOrder?.workHourFee}}</span> | 材料费
+                <span class="ml-2 mr-2">{{selectedOrder?.materialFee}}</span> | 其它
+                <span class="ml-2 mr-2">{{selectedOrder?.otherFee}}</span> | 合计
+                <span class="ml-2 mr-2">{{selectedOrder?.sumFee}}</span>|
+              </div>
+            </div>
+          </tabset>
+          <!--建议维修项 end-->
+          <!--导出详情end-->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--详情 end-->
+
+  <!--完工操作确认框-->
+  <div bsModal #confirmModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p class="modal-title">温馨提示</p>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="confirmModal.hide();isDetailModalShown=false;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+          <p>您确定要完工吗</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm" data-dismiss="confirmModal" (click)="confirmModal.hide();isDetailModalShown=false;">取消</button>
+          <button type="button" class="btn btn-sm" data-dismiss="modal" (click)="onConfirmFinished(confirmModal)">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
