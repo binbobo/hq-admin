@@ -36,7 +36,7 @@ export class BillOrderComponent extends DataList<any>{
         this.user = JSON.parse(sessionStorage.getItem(StorageKeys.Identity));
         // 构建表单
         this.createForm();
-        this.onLoadList();
+        // this.onLoadList();
     }
 
 
@@ -83,6 +83,14 @@ export class BillOrderComponent extends DataList<any>{
             this.billPrice = this.sumFee;
         })
     }
+        // 点击撤销结算事件
+    unBill(evt,id) {
+        evt.preventDefault();
+        this.service.put(id).then(() => {
+            console.log("撤销结算成功")
+        }).catch(err => console.log("撤销结算失败" + err))
+    }
+
     // 点击详情事件
     DetailsDialog(evt, id, dialog) {
         this.isShowCost = false;
@@ -126,13 +134,6 @@ export class BillOrderComponent extends DataList<any>{
             console.log('生成结算单成功');
         }).catch(err => console.log("添加维修项目失败" + err));
         this.onLoadList();
-    }
-    // 点击撤销结算事件
-    unBill(evt, id) {
-        evt.preventDefault();
-        this.service.put(this.billId).then(() => {
-            console.log("撤销结算成功")
-        }).catch(err => console.log("撤销结算失败" + err))
     }
 
     createForm() {

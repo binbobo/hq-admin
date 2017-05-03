@@ -47,7 +47,6 @@ export class BillOrderService implements BasicService<any>{
     return this.httpService
       .request(url)
       .map(response => {
-        console.log(response.json().data)
         return response.json().data as any[];
       });
   }

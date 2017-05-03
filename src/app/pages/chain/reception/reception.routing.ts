@@ -6,7 +6,6 @@ import { BillOrderComponent } from './bill-order/bill-order.component';
 import { AppendOrderComponent } from './append-order/append-order.component';
 import { CreateOrderComponent } from './create-order/create-order.component';
 import { CustomMaintanceItemEditorComponent } from './create-order/custom-maintance-item-editor.component';
-import { PrintOrderComponent } from "app/pages/reception/bill-order/print-order/print-order.component";
 
 const routes: Routes = [
     // 工单列表路由
@@ -15,8 +14,6 @@ const routes: Routes = [
     { path: 'assign', component: AssignOrderComponent },
     // 结算单列表路由
     { path: 'bill', component: BillOrderComponent },
-    //结算单打印路由
-    { path: 'bill/print', component: PrintOrderComponent },
     // 增项路由
     { path: 'append', component: AppendOrderComponent },
     // 创建工单列表路由
@@ -29,5 +26,5 @@ const routes: Routes = [
 })
 export class ReceptionRoutingModule { }
 
-export const routedComponents = [CustomMaintanceItemEditorComponent, OrderListComponent, AssignOrderComponent, CreateOrderComponent, BillOrderComponent, AppendOrderComponent,PrintOrderComponent];
+export const routedComponents = [CustomMaintanceItemEditorComponent, OrderListComponent, AssignOrderComponent, CreateOrderComponent, BillOrderComponent, AppendOrderComponent];
 

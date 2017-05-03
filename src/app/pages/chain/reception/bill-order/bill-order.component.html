@@ -61,7 +61,7 @@
         <tr *ngFor="let item of list">
           <td *ngIf="!item.updateOnUtc"><a href="javascript:void(0)" (click)='orderDetailsDialog($event, item.id,lgModal)'>结算</a> |<a href="javascript:void(0)"
               (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
-          <td *ngIf="item.updateOnUtc"><a href="javascript:void(0)" (click)='unBill($event, item.id)'>撤销结算</a> |<a href="javascript:void(0)" (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
+          <td *ngIf="item.updateOnUtc"><a href="javascript:void(0)" (click)='unBill($event,item.id)'>撤销结算</a> |<a href="javascript:void(0)" (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
           <td>{{item.statusName}}</td>
           <td>{{item.typeName}}</td>
           <td>{{item.billCode}}</td>
