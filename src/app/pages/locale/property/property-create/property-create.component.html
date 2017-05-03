@@ -9,47 +9,25 @@
   <form *ngIf="form" class="card-block" [formGroup]="form" (ngSubmit)="onCreate()">
     <div class="form-group">
       <label class="form-control-label">实体类型</label>
-      <input type="text" formControlName="groupName" class="form-control" placeholder="请输入属性名称">
-      <control-errors control="groupName" [form]="form">
-        <control-error code="required">实体类型不能为空</control-error>
-        <control-error code="maxlength">实体类型要求不能超过60位字符</control-error>
-      </control-errors>
+      <input hqError="实体类型" type="text" formControlName="groupName" class="form-control" placeholder="请输入属性名称">
     </div>
     <div class="form-group">
       <label class="form-control-label">实体Id</label>
-      <input type="text" formControlName="entityId" class="form-control" placeholder="请输入属性名称">
-      <control-errors control="entityId" [form]="form">
-        <control-error code="required">实体Id不能为空</control-error>
-        <control-error code="minlength">实体Id要求36位字符</control-error>
-        <control-error code="maxlength">实体Id要求36位字符</control-error>
-        <control-error code="pattern">无效的Guid(ABCDEF01-1234-1234-1234-ABCDEF012345)</control-error>
-      </control-errors>
+      <input hqError="实体Id" type="text" formControlName="entityId" class="form-control" placeholder="请输入属性名称">
     </div>
     <div class="form-group">
       <label class="form-control-label">属性名称</label>
-      <input type="text" formControlName="key" class="form-control" placeholder="请输入属性名称">
-      <control-errors control="key" [form]="form">
-        <control-error code="required">属性名称不能为空</control-error>
-        <control-error code="maxlength">属性名称要求不能超过30位字符</control-error>
-      </control-errors>
+      <input hqError="属性名称" type="text" formControlName="key" class="form-control" placeholder="请输入属性名称">
     </div>
     <div class="form-group">
       <label class="form-control-label">属性值</label>
-      <input type="text" formControlName="value" class="form-control" placeholder="请输入属性值">
-      <control-errors control="value" [form]="form">
-        <control-error code="required">属性值不能为空</control-error>
-        <control-error code="maxlength">属性值要求不能超过100位字符</control-error>
-      </control-errors>
+      <input hqError="属性值" type="text" formControlName="value" class="form-control" placeholder="请输入属性值">
     </div>
     <div class="form-group">
       <label class="form-control-label">属性语言</label>
-      <select name="languageId" class="form-control" formControlName="languageId">
+      <select hqError="属性语言" name="languageId" class="form-control" formControlName="languageId">
         <option *ngFor="let item of languages" value="{{item.id}}">{{item.name}}</option>
       </select>
-      <control-errors control="languageId" [form]="form">
-        <control-error code="required">属性语言不能为空</control-error>
-        <control-error code="maxlength">属性语言不能超过36个字符</control-error>
-      </control-errors>
     </div>
     <div class="form-group">
       <button type="submit" [disabled]="form.invalid||submitting" class="btn btn-primary mr-3">提交</button>

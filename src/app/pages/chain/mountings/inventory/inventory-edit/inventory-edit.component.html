@@ -1,3 +1,73 @@
-<p>
-  inventory-edit works!
-</p>
+<ng-template hq-alerter></ng-template>
+<div class="card">
+  <!--<div class="card-header">
+    <span>新增配件</span>
+    <div class="pull-right">
+      <button routerLink="../" class="btn btn-sm btn-info">返回</button>
+    </div>
+  </div>-->
+  <form *ngIf="form" class="card-block row" [formGroup]="form" (ngSubmit)="onCreate()">
+    <div class="col-6">
+      <div class="form-group">
+        <label class="form-control-label">*仓库</label>
+        <select hqError="仓库" formControlName="storeId" (change)="onClientChange($event)" class="form-control">
+          <option *ngFor="let item of warehouses" value="{{item.value}}">{{item.text}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">库位</label>
+        <input type="text" hqError="库位" formControlName="locationName" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*品牌</label>
+        <input type="text" hqError="品牌" formControlName="brand" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*配件编码</label>
+        <input type="text" hqError="配件编码" formControlName="code" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*配件名称</label>
+        <input type="text" hqError="配件名称" formControlName="name" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*包装规格</label>
+        <input type="text" hqError='包装规格' formControlName="packageInfo" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">备注</label>
+        <input type="text" hqError='备注' formControlName="description" class="form-control">
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="form-group">
+        <label class="form-control-label">*车型</label>
+        <input type="text" hqError='车型' formControlName="vehicleName" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*单位</label>
+        <input type="text" hqError='单位' formControlName="unit" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">类别</label>
+        <input type="text" hqError='类别' formControlName="categoryName" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">最大库存</label>
+        <input type="number" hqError='最大库存' formControlName="maxCount" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">最小库存</label>
+        <input type="number" hqError='最小库存' formControlName="minCount" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">产地</label>
+        <input type="text" hqError='产地' formControlName="madeIn" class="form-control">
+      </div>
+    </div>
+    <div class="col-12">
+      <button type="submit" [disabled]="form.invalid||submitting" class="btn btn-primary mr-3">提交</button>
+      <button type="button" (click)="form.reset(model)" class="btn btn-secondary mr-3">重置</button>
+    </div>
+  </form>
+</div>

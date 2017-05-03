@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Injector, ViewChild } from '@angular/core';
 import { DataList, SelectOption } from 'app/shared/models';
-import { TakeStockService } from '../take-stock.service';
+import { TakeStockService, GenerateStockListRequest } from '../take-stock.service';
 import { MountingsService } from '../../mountings.service';
 import { CreateStock, StockListCreateService, CreateStockListRequest } from './stock-list-create.service';
 import { MultiSelectConfirmEvent, MultiSelectorDirective } from 'app/shared/directives';
@@ -31,6 +31,7 @@ export class StockListCreateComponent extends DataList<CreateStock> implements O
   }
 
   ngOnInit() {
+    this.lazyLoad = true;
     super.ngOnInit();
     this.moutingsService.getWarehouseOptions()
       .then(data => data && data.length ? data : Promise.reject('没有可用的仓库信息！'))
@@ -66,10 +67,17 @@ export class StockListCreateComponent extends DataList<CreateStock> implements O
     this.onCancel.emit();
   }
 
-  generator() {
-    this.takeStockService.create(this.params.locationId)
+  generate(event: Event) {
+    let el = event.target as HTMLButtonElement;
+    el.disabled = true;
+    let request = new GenerateStockListRequest(this.params.inventoryId, this.params.locationId);
+    this.takeStockService.create(request)
+      .then(() => el.disabled = false)
       .then(() => this.onSubmit.emit())
-      .catch(err => this.alerter.error(err));
+      .catch(err => {
+        el.disabled = false;
+        this.alerter.error(err);
+      });
   }
 
 }

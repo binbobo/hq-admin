@@ -14,10 +14,11 @@ export class StockDetailComponent implements OnInit {
 
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
-  private list: Array<any> = [];
+  private item: any;
   private printing: boolean = false;
   @ViewChild('printer')
   public printer: PrintDirective;
+  private code: string;
 
   constructor(
     private location: Location,
@@ -27,9 +28,9 @@ export class StockDetailComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
-      let code = params['code'];
-      this.service.get(code)
-        .then(data => this.list = data)
+      this.code = params['code'];
+      this.service.get(this.code)
+        .then(data => this.item = data)
         .catch(err => this.alerter.error(err));
     })
   }
@@ -41,10 +42,10 @@ export class StockDetailComponent implements OnInit {
   export(event: Event) {
     let btn = event.target as HTMLButtonElement;
     btn.disabled = true;
-    this.service.export()
-      .then(() => btn.disabled = true)
+    this.service.export(this.code)
+      .then(() => btn.disabled = false)
       .catch(err => {
-        btn.disabled = true;
+        btn.disabled = false;
         this.alerter.error(err);
       })
   }

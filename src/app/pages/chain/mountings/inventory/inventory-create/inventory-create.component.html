@@ -1,99 +1,71 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
-  <div class="card-header">
+  <!--<div class="card-header">
     <span>新增配件</span>
     <div class="pull-right">
       <button routerLink="../" class="btn btn-sm btn-info">返回</button>
     </div>
-  </div>
-  <form *ngIf="form" class="card-block" [formGroup]="form" (ngSubmit)="onCreate()">
-    <div class="form-group">
-      <label class="form-control-label">*仓库</label>
-      <select formControlName="clientId" (change)="onClientChange($event)" class="form-control">
-        <option *ngFor="let item of clients" value="{{item.value}}">{{item.text}}</option>
-      </select>
-      <control-errors control="title" [form]="form">
-        <control-error code="required">仓库不能为空</control-error>
-      </control-errors>
-    </div>
-    <div class="form-group">
-      <label class="form-control-label">*车型</label>
-      <input type="text" formControlName="path" class="form-control" placeholder="请输入菜单路径">
-      <control-errors control="path" [form]="form">
-        <control-error code="maxlength">菜单路径要求不能超过20位字符</control-error>
-      </control-errors>
-    </div>
-    <div class="form-group">
-      <label class="form-control-label">*单位</label>
-      <input type="number" formControlName="displayOrder" class="form-control" placeholder="请输入菜单显示顺序">
-    </div>
-    <div class="form-group">
-      <label class="form-control-label">*品牌</label>
-      <select formControlName="clientId" (change)="onClientChange($event)" class="form-control">
-        <option *ngFor="let item of clients" value="{{item.value}}">{{item.text}}</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-control-label">*配件编码</label>
-      <div class="form-control">
-        <div class="form-check form-check-inline" *ngFor="let item of scopes">
-          <label class="form-check-label">
-            <input class="form-check-input" (change)="onScopeSelect($event)" type="checkbox" [value]="item.value"> {{item.text}}
-          </label>
-        </div>
+  </div>-->
+  <form *ngIf="form" class="card-block row" [formGroup]="form" (ngSubmit)="onCreate()">
+    <div class="col-6">
+      <div class="form-group">
+        <label class="form-control-label">*仓库</label>
+        <select hqError="仓库" formControlName="storeId" (change)="onClientChange($event)" class="form-control">
+          <option *ngFor="let item of warehouses" value="{{item.value}}">{{item.text}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">库位</label>
+        <input type="text" hqError="库位" formControlName="locationName" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*品牌</label>
+        <input type="text" hqError="品牌" formControlName="brand" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*配件编码</label>
+        <input type="text" hqError="配件编码" formControlName="code" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*配件名称</label>
+        <input type="text" hqError="配件名称" formControlName="name" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*包装规格</label>
+        <input type="text" hqError='包装规格' formControlName="packageInfo" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">备注</label>
+        <input type="text" hqError='备注' formControlName="description" class="form-control">
       </div>
     </div>
-    <div class="form-group">
-      <label class="form-control-label">*单位</label>
-      <input type="number" formControlName="displayOrder" class="form-control" placeholder="请输入菜单显示顺序">
+    <div class="col-6">
+      <div class="form-group">
+        <label class="form-control-label">*车型</label>
+        <input type="text" hqError='车型' formControlName="vehicleName" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*单位</label>
+        <input type="text" hqError='单位' formControlName="unit" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">类别</label>
+        <input type="text" hqError='类别' formControlName="categoryName" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">最大库存</label>
+        <input type="number" hqError='最大库存' formControlName="maxCount" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">最小库存</label>
+        <input type="number" hqError='最小库存' formControlName="minCount" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">产地</label>
+        <input type="text" hqError='产地' formControlName="madeIn" class="form-control">
+      </div>
     </div>
-    <div class="form-group">
-      <label class="form-control-label">*配件编码</label>
-      <input type="number" formControlName="displayOrder" class="form-control" placeholder="请输入菜单显示顺序">
-    </div>
-    <div class="form-group">
-      <label class="form-control-label">*配件名称</label>
-      <input type="number" formControlName="displayOrder" class="form-control" placeholder="请输入菜单显示顺序">
-    </div>
-    <div class="form-group">
-      <label class="form-control-label">*包装规格</label>
-      <input type="number" formControlName="displayOrder" class="form-control" placeholder="请输入菜单显示顺序">
-    </div>
-    <div class="form-group">
-      <label class="form-control-label">库位</label>
-      <input type="text" formControlName="icon" class="form-control" placeholder="请输入菜单图标">
-      <control-errors control="icon" [form]="form">
-        <control-error code="maxlength">菜单图标要求不能超过30位字符</control-error>
-      </control-errors>
-    </div>
-    <div class="form-group">
-      <label class="form-control-label">类别</label>
-      <select formControlName="parentId" class="form-control">
-        <option value>顶级菜单</option>
-        <option *ngFor="let item of menus" value="{{item.value}}">{{item.text}}</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-control-label">类别</label>
-      <input type="number" formControlName="displayOrder" class="form-control" placeholder="请输入菜单显示顺序">
-    </div>
-    <div class="form-group">
-      <label class="form-control-label">最大库存</label>
-      <input type="number" formControlName="displayOrder" class="form-control" placeholder="请输入菜单显示顺序">
-    </div>
-    <div class="form-group">
-      <label class="form-control-label">最小库存</label>
-      <input type="number" formControlName="displayOrder" class="form-control" placeholder="请输入菜单显示顺序">
-    </div>
-    <div class="form-group">
-      <label class="form-control-label">产地</label>
-      <input type="number" formControlName="displayOrder" class="form-control" placeholder="请输入菜单显示顺序">
-    </div>
-    <div class="form-group">
-      <label class="form-control-label">备注</label>
-      <input type="number" formControlName="displayOrder" class="form-control" placeholder="请输入菜单显示顺序">
-    </div>
-    <div class="form-group">
+    <div class="col-12">
       <button type="submit" [disabled]="form.invalid||submitting" class="btn btn-primary mr-3">提交</button>
       <button type="button" (click)="form.reset(model)" class="btn btn-secondary mr-3">重置</button>
     </div>

@@ -13,6 +13,7 @@ export class PrintDirective {
     let html = el.innerHTML;
     this.hideOthers();
     let div = document.createElement("div");
+    div.id = 'hq-printing';
     div.innerHTML = html;
     document.body.appendChild(div);
     window.print();

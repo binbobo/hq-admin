@@ -7,35 +7,19 @@
     <div class="form-group row">
       <label for="username" class="col-sm-3 col-form-label">用户名</label>
       <div class="col-sm-9">
-        <input type="email" formControlName="username" class="form-control" id="username" placeholder="请输入用户名">
-        <control-errors control="username" [form]="form">
-          <control-error code="required">用户名不能为空</control-error>
-          <control-error code="minlength">用户名要求最少6位字符</control-error>
-          <control-error code="maxlength">用户名要求不能超过20位字符</control-error>
-        </control-errors>
+        <input hqError="用户名" type="email" formControlName="username" class="form-control" id="username">
       </div>
     </div>
     <div class="form-group row">
       <label for="password" class="col-sm-3 col-form-label">密码</label>
       <div class="col-sm-9">
-        <input type="password" formControlName="password" class="form-control" id="password" placeholder="请输入用户密码">
-        <control-errors control="password" [form]="form">
-          <control-error code="required">密码不能为空</control-error>
-          <control-error code="minlength">密码要求最少6位字符</control-error>
-          <control-error code="maxlength">密码要求不能超过20位字符</control-error>
-        </control-errors>
+        <input hqError="密码" type="password" formControlName="password" class="form-control" id="password">
       </div>
     </div>
     <div class="form-group row">
       <label for="certainPassword" class="col-sm-3 col-form-label">确认密码</label>
       <div class="col-sm-9">
-        <input type="password" formControlName="certainPassword" class="form-control" id="certainPassword" placeholder="请再次输入密码">
-        <control-errors control="certainPassword" [form]="form">
-          <control-error code="required">确认密码不能为空</control-error>
-          <control-error code="minlength">确认密码要求最少6位字符</control-error>
-          <control-error code="maxlength">确认密码要求不能超过20位字符</control-error>
-          <control-error code="equalTo">前后密码输入不一致</control-error>
-        </control-errors>
+        <input hqError="密码" type="password" formControlName="certainPassword" class="form-control" id="certainPassword" placeholder="请再次输入密码">
       </div>
     </div>
     <div class="text-center">

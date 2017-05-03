@@ -7,9 +7,9 @@ export class StockListCreateService implements PagedService<CreateStock> {
 
   constructor(private httpService: HttpService) { }
 
-  getPagedList(params: PagedParams): Promise<PagedResult<CreateStock>> {
+  getPagedList(params: CreateStockListRequest): Promise<PagedResult<CreateStock>> {
     let search = params.serialize();
-    let url = Urls.chain.concat('/inventoryDetails/getList');
+    let url = Urls.chain.concat('/inventoryDetails/getCreateList');
     return this.httpService.get<PagedResult<CreateStock>>(url, search)
       .catch(err => Promise.reject(`获取配件列表失败：${err}`));
   }

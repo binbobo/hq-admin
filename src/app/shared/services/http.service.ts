@@ -68,7 +68,7 @@ export class HttpService {
                 let name = fileName || this.getFileName(resp);
                 fileSaver.saveAs(data, name);
             })
-            .catch(error => console.error(error))
+            .catch(resp => this.handleError(resp))
 
     }
 
