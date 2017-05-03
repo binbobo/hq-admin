@@ -1,0 +1,6 @@
+.print .search-table{
+        border: 1px solid #ddd;
+}
+.print .search-table td{
+    font-size:.9rem;
+}

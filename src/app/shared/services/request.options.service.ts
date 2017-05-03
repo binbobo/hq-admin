@@ -14,11 +14,12 @@ export class DefaultRequestOptions extends BaseRequestOptions {
         super();
         let user = userService.user;
         this.setAuthorization(user);
-        userService.onUserLogin.subscribe(user=>this.setAuthorization(user));
+        this.headers.append('Content-Type', 'application/json');
+        userService.onUserLogin.subscribe(user => this.setAuthorization(user));
         this.dispatcher.subscribe('LanguageChanged', lang => this.setAcceptLanguage(lang))
     }
 
-    private setAcceptLanguage(lang){
+    private setAcceptLanguage(lang) {
         this.headers.set('Accept-Language', lang.culture || navigator.language);
     }
 

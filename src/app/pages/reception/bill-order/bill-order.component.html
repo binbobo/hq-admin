@@ -59,7 +59,9 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of list">
-          <td><a href="javascript:void(0)" (click)='orderDetailsDialog($event, item.id,lgModal)'>结算</a> </td>
+          <td *ngIf="!item.updateOnUtc"><a href="javascript:void(0)" (click)='orderDetailsDialog($event, item.id,lgModal)'>结算</a> |<a href="javascript:void(0)"
+              (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
+          <td *ngIf="item.updateOnUtc"><a href="javascript:void(0)" (click)='unBill($event, item.id)'>撤销结算</a> |<a href="javascript:void(0)" (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
           <td>{{item.statusName}}</td>
           <td>{{item.typeName}}</td>
           <td>{{item.billCode}}</td>
@@ -232,21 +234,29 @@
               </tbody>
             </table>
           </tab>
-          <!--只有前4个选项卡显示-->
-          <div *ngIf="true" class="card">
+          <!--结算费用-->
+          <div class="card" [hidden]="!isShowCost">
             <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
               折前费用: 工时费
-              <span class="ml-2 mr-2">{{selectedOrder?.workHourFee}}</span> | 材料费
-              <span class="ml-2 mr-2">{{selectedOrder?.materialFee}}</span> | 其它
-              <span class="ml-2 mr-2">{{selectedOrder?.otherFee}}</span> | 合计
-              <span class="ml-2 mr-2">{{selectedOrder?.sumFee}}</span>|
+              <span class="ml-2 mr-2">{{workHourFee}}</span> | 材料费
+              <span class="ml-2 mr-2">{{materialFee}}</span> | 其它
+              <span class="ml-2 mr-2">{{otherFee}}</span> | 合计
+              <span class="ml-2 mr-2">{{sumFee}}</span>|
               <span class="ml-2 mr-2">实收金额：
                 <input type="text" placeholder="{{selectedOrder?.sumFee}}"  [(ngModel)]="billPrice"></span>
-              <button type="button" class="btn btn-primary" aria-label="Close" 
-                (click)="BillClick($event,lgModal)">确定</button>
+              <button type="button" class="btn btn-primary" aria-label="Close" (click)="BillClick($event,lgModal)">确定</button>
             </div>
-
-
+          </div>
+          <!--详情费用-->
+          <div class="card" [hidden]="!isShowCostDetail">
+            <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
+              折前费用: 工时费
+              <span class="ml-2 mr-2">{{workHourFee}}</span> | 材料费
+              <span class="ml-2 mr-2">{{materialFee}}</span> | 其它
+              <span class="ml-2 mr-2">{{otherFee}}</span> | 合计
+              <span class="ml-2 mr-2">{{sumFee}}</span>|
+              <span class="ml-2 mr-2">实收金额：{{billPrice}}</span>
+            </div>
           </div>
         </tabset>
         <!--建议维修项 end-->

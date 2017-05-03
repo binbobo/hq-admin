@@ -30,16 +30,16 @@ export class BillOrderService implements BasicService<any>{
       .catch(err => Promise.reject(`获取工单详情数据失败：${err}`));
   }
   // 获取维修结算列表
- public getPagedList(params: PagedParams): Promise<PagedResult<OrderListSearch>> {
-        const url = Urls.chain.concat('/Settlements?', params.serialize());
-        return this.httpService
-            .get<PagedResult<OrderListSearch>>(url)
-            .then(result => {
-                console.log('工单列表数据', result);
-                return result;
-            })
-            .catch(err => Promise.reject(`加载工单列表失败：${err}`));
-    }
+  public getPagedList(params: PagedParams): Promise<PagedResult<OrderListSearch>> {
+    const url = Urls.chain.concat('/Settlements?', params.serialize());
+    return this.httpService
+      .get<PagedResult<OrderListSearch>>(url)
+      .then(result => {
+        console.log('工单列表数据', result);
+        return result;
+      })
+      .catch(err => Promise.reject(`加载工单列表失败：${err}`));
+  }
 
   // 获取维修结算查询状态
   public getOrderStatus(): Observable<any[]> {
@@ -51,25 +51,34 @@ export class BillOrderService implements BasicService<any>{
         return response.json().data as any[];
       });
   }
+  // 根据id查询工单的材料费和工时费用
+  public getCost(id: string): Promise<any> {
+    const url = Urls.chain.concat('/Settlements/MaintenanceCost/', id);
+    return this.httpService
+      .get<ApiResult<any>>(url)
+      .then(result => result.data)
+      .then(data => data || Promise.reject('获取费用数据无效'))
+      .catch(err => Promise.reject(`获取费用数据失败：${err}`))
+  }
 
   // 生成结算单
-  public post(body:any,id:any): Promise<any>{
-    const url = Urls.chain.concat('/Settlements/MaintenanceBill/',id);
+  public post(body: any, id: any): Promise<any> {
+    const url = Urls.chain.concat('/Settlements/MaintenanceBill/', id);
     return this.httpService
-      .post<ApiResult<any>>(url, body)
+      .post<void>(url, body)
       .then(m => {
-        console.log(m)
-        return m})
+        return m
+      })
       .catch(err => Promise.reject(`${err}`));
   }
 
   // 撤销结算单
-    public put(body: any): Promise<void> {
-        const url = Urls.chain.concat('//Settlements/UnMaintenanceBill//', body.id);
-        return this.httpService.
-            put<void>(url, body)
-            .catch(err => Promise.reject(`更新菜单失败：${err}`));
-    }
+  public put(body: any): Promise<void> {
+    const url = Urls.chain.concat('/Settlements/UnMaintenanceBill/', body.id);
+    return this.httpService.
+      put<void>(url, body)
+      .catch(err => Promise.reject(`更新菜单失败：${err}`));
+  }
 
 }
 
