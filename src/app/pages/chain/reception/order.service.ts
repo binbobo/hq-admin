@@ -4,7 +4,6 @@ import { PagedParams, PagedResult, ApiResult, BasicModel, BasicService, ListResu
 import { TreeviewItem } from 'ngx-treeview';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import { RequestParams } from '../../shared/models/request-params';
 
 
 @Injectable()

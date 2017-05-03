@@ -1,7 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
-import { BillOrderService, OrderListSearch } from "app/pages/reception/bill-order/bill-order.service";
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DataList, StorageKeys } from "app/shared/models";
+import { BillOrderService, OrderListSearch } from "./bill-order.service";
 
 @Component({
     selector: 'app-bill-order',

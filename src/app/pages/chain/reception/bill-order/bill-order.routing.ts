@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { PrintOrderComponent } from "app/pages/reception/bill-order/print-order/print-order.component";
+import { PrintOrderComponent } from "app/pages/chain/reception/bill-order/print-order/print-order.component";
 
 const routes: Routes = [
     // 工单列表路由

@@ -1,8 +1,8 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { DataList } from '../../../shared/models/data-list';
 import { CustomerListRequest } from '../../customer/customer.service';
 import { CustomerService } from '../customer.service';
+import { DataList } from 'app/shared/models';
 
 @Component({
   selector: 'app-car-owner',

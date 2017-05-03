@@ -1,10 +1,8 @@
 import { Component, Injector } from '@angular/core';
-import { DataList } from '../../../shared/models/data-list';
 import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
 import { OrderService, OrderListRequest, Order, MaintenanceType } from '../order.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { StorageKeys } from 'app/shared/models';
-import { TypeaheadRequestParams } from '../../../shared/directives/table-typeahead/table-typeahead.directive';
+import { StorageKeys, DataList } from 'app/shared/models';
 
 @Component({
   selector: 'app-order-list',

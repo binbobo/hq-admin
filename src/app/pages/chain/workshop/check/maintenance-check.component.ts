@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
-import { DataList } from '../../../shared/models/data-list';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { StorageKeys, SelectOption } from 'app/shared/models';
+import { StorageKeys, SelectOption, DataList } from 'app/shared/models';
 import { Observable } from 'rxjs/Observable';
 import { WorkshopListRequest, WorkshopService } from '../workshop.service';
 
