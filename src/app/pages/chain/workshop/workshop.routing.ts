@@ -1,15 +1,18 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AssignOrderComponent } from '../reception/assign-order/assign-order.component';
 import { MaintenanceCheckComponent } from './check/maintenance-check.component';
 
 
-const routes: Routes = [
+const routes: Routes = [{
     // 维修派工路由
-    { path: 'assign', component: AssignOrderComponent },
-    // 维修验收路由
-    { path: 'check', component: MaintenanceCheckComponent},
-];
+    path: '',
+    children: [
+        // 维修验收路由
+        { path: 'check', component: MaintenanceCheckComponent },
+        { path: 'assign', redirectTo: '/chain/reception/assign' },
+    ]
+
+}];
 
 @NgModule({
     imports: [RouterModule.forChild(routes)],
@@ -17,5 +20,5 @@ const routes: Routes = [
 })
 export class WorkshopRoutingModule { }
 
-export const routedComponents = [AssignOrderComponent, MaintenanceCheckComponent];
+export const routedComponents = [MaintenanceCheckComponent];
 
