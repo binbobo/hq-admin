@@ -5,7 +5,7 @@ import {CarOwnerComponent} from './carOwner/car-owner.component';
 
 const routes: Routes = [
     // 车主管理路由
-    { path: 'carOwner', component: CarOwnerComponent },
+    { path: 'owner', component: CarOwnerComponent },
 ];
 
 @NgModule({

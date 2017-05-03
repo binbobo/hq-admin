@@ -254,7 +254,7 @@ export class OrderService implements BasicService<Order> {
                 console.log('工单列表数据', result);
                 return result;
             })
-            .catch(err => Promise.reject(`加载工单列表失败：${err}`));
+            .catch(err => Promise.reject(`列表失败：${err}`));
     }
 
     /**

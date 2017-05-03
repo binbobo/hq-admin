@@ -187,11 +187,11 @@ placeholder="请输入工单号/车牌号" />-->
                 <a href="#" (click)="onConfirmAddNewMaintenanceItem($event)">确定</a> |
                 <a href="#" (click)="addNewMaintenanceItem = false">取消</a>
               </td>
-              <td><input (blur) = "onServiceBlur(maintanceItem)"
+              <td><input placeholder="输入 更换  进行测试" (blur) = "onServiceBlur(maintanceItem)"
             (change) = "onServiceChange()" (typeaheadOnSelect)="serviceTypeaheadOnSelect($event)" [typeahead]="serviceDataSource" typeaheadOptionField="name" [(ngModel)]="newMaintenanceItem.serviceName" type="text" class="form-control form-control-sm" required></td>
-              <td><input (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.workHour" (keyup)="onWorkHourChange()" type="text" class="form-control form-control-sm" required></td>
-              <td><input (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.price" (keyup)="onPriceChange()" type="text" class="form-control form-control-sm" required></td>
-              <td><input (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.discount" (keyup)="onDiscountChange()" type="text" class="form-control form-control-sm" required></td>
+              <td><input placeholder="请输入数字" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.workHour" (keyup)="onWorkHourChange()" type="text" class="form-control form-control-sm" required></td>
+              <td><input placeholder="请输入数字" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.price" (keyup)="onPriceChange()" type="text" class="form-control form-control-sm" required></td>
+              <td><input placeholder="请输入0~100之间的整数" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.discount" (keyup)="onDiscountChange()" type="text" class="form-control form-control-sm" required></td>
               <td><input [value]="newMaintenanceItem.money" type="text" class="form-control form-control-sm" [disabled]="true"></td>
               <td><input [value]="newMaintenanceItem.operationTime" type="text" class="form-control form-control-sm" [disabled]="true"></td>
             </tr>

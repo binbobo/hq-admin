@@ -40,6 +40,7 @@ export class WorkshopService implements BasicService<any> {
      */
     public getPagedList(params: PagedParams): Promise<PagedResult<any>> {
         const url = Urls.chain.concat('/Maintenances?', params.serialize());
+        console.log('查询维修验收数据列表url: ', url);
         return this.httpService
             .get<PagedResult<any>>(url)
             .then(result => {

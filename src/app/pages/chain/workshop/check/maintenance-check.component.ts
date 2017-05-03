@@ -43,16 +43,18 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
   }
 
   ngOnInit() {
+    // 解决参数缓存的问题
+    this.lazyLoad = true;
+    // 调用父类的初始化方法
+    super.ngOnInit();
     // 初始化维修验收类型数据
     this.service.getMaintenanceCheckTypes()
       .subscribe(data => {
         this.maintenanceCheckTypes = data;
-
-        // 初始时 要加入所有的工单状态
+        // 页面初始化的时候  就要加入状态参数
         this.params.states = this.maintenanceCheckTypes.map(item => item.id);
-
-        // 调用父类的初始化方法  页面初始化的时候  就要加入状态参数
-        super.ngOnInit();
+        // 加载列表
+        this.loadList();
       });
 
   }
@@ -175,7 +177,7 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
       this.selectedOrder.sumFee = this.selectedOrder.workHourFee + this.selectedOrder.materialFee + this.selectedOrder.otherFee;
       // 显示窗口
       modalDialog.show();
-    });
+    }).catch(err => this.alerter.error(err));
   }
 }
 
