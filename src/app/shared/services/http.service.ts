@@ -33,25 +33,19 @@ export class HttpService {
     }
 
     post<TResult>(url: string, body: any): Promise<TResult> {
-        let header = new Headers();
-        header.set('Content-Type', 'application/json');
-        return this.promise(url, { method: RequestMethod.Post, body: body, headers: header })
+        return this.promise(url, { method: RequestMethod.Post, body: body })
             .then(resp => this.extractData<TResult>(resp))
             .catch(resp => this.handleError(resp));
     }
 
     put<TResult>(url: string, body: any): Promise<TResult> {
-        let header = new Headers();
-        header.set('Content-Type', 'application/json');
-        return this.promise(url, { method: RequestMethod.Put, body: body, headers: header })
+        return this.promise(url, { method: RequestMethod.Put, body: body })
             .then(resp => this.extractData<TResult>(resp))
             .catch(resp => this.handleError(resp));
     }
 
     patch<TResult>(url: string, body: any): Promise<TResult> {
-        let header = new Headers();
-        header.set('Content-Type', 'application/json');
-        return this.promise(url, { method: RequestMethod.Patch, body: body, headers: header })
+        return this.promise(url, { method: RequestMethod.Patch, body: body })
             .then(resp => this.extractData<TResult>(resp))
             .catch(resp => this.handleError(resp));
     }
