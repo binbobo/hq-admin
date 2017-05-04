@@ -48,7 +48,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   // 通过车主姓名查询异步数据源
   public customerNameDataSource: Observable<CustomerVehicle>;
   // 根据车型获取车辆信息异步数据源
-  public vehicleDataSource: Observable<Vehicle>;
+  // public vehicleDataSource: Observable<Vehicle>;
   // 根据品牌获取车辆信息异步数据源
   public brandDataSource: Observable<any>; // 可以加品牌model类：Brand
   // 根据车系获取车辆信息异步数据源
@@ -63,9 +63,9 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
 
   // 品牌是否选择标识, 用来记录当前选择的品牌id
-  public selectedBrandId = null;
+  // public selectedBrandId = null;
   // 车系是否选择标识, 用来记录当前选择的车系id
-  public selectedSeriesId = null;
+  // public selectedSeriesId = null;
   // 当前选择的客户车辆记录
   private selectedCustomerVehicle: any = {};
 
@@ -174,10 +174,10 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       this.service.getCustomerVehicleByCustomerName
     );
     // // 根据车型获取车辆信息异步数据源初始化
-    this.vehicleDataSource = this.initFuzzySerarchDataSource(
-      this.workSheetForm.controls.model,
-      this.service.getVehicleByModel
-    );
+    // this.vehicleDataSource = this.initFuzzySerarchDataSource(
+    //   this.workSheetForm.controls.model,
+    //   this.service.getVehicleByModel
+    // );
     // 根据品牌获取车辆信息异步数据源初始化
     this.brandDataSource = this.initFuzzySerarchDataSource(
       this.workSheetForm.controls.brand,
@@ -198,7 +198,12 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       })
       .debounceTime(300)
       .distinctUntilChanged()
-      .mergeMap((token: string) => this.service.getVehicleBySerias(token, this.selectedBrandId)) // 绑定this
+      .mergeMap((token: string) => {
+        if (!token) {
+          return Observable.of([]);
+        }
+        return this.service.getVehicleBySerias(token, this.selectedCustomerVehicle.selectedBrandId);
+      }) // 绑定this
       .catch(err => console.log(err));
 
     // 根据车系获取车辆信息异步数据源初始化
@@ -208,7 +213,12 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       })
       .debounceTime(300)
       .distinctUntilChanged()
-      .mergeMap((token: string) => this.service.getVehicleByModel(token, this.selectedBrandId, this.selectedSeriesId))
+      .mergeMap((token: string) => {
+        if (!token) {
+          return Observable.of([]);
+        }
+        return this.service.getVehicleByModel(token, this.selectedCustomerVehicle.selectedBrandId, this.selectedCustomerVehicle.selectedSeriesId)
+      })
       .catch(err => console.log(err));
 
 
@@ -229,9 +239,9 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       .debounceTime(300)
       .distinctUntilChanged()
       .mergeMap((token: string) => {
-        // if (!token) {
-        //   return Observable.of([]);
-        // }
+        if (!token) {
+          return Observable.of([]);
+        }
         return service.call(this.service, token);
       }) // 绑定this
       .catch(err => console.log(err));
@@ -240,14 +250,14 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   // 从模糊查询下拉列表中选择一个品牌事件处理程序
   onBrandSelect(evt: TypeaheadMatch) {
     // 设置当前选择的品牌id
-    this.selectedBrandId = evt.item.id;
+    this.selectedCustomerVehicle.selectedBrandId = evt.item.id;
     // enable车系选择
     this.workSheetForm.controls.series.enable();
   }
   // 从模糊查询下拉列表中选择一个车系事件处理程序
   onSeriesSelect(evt: TypeaheadMatch) {
     // 设置当前选择的车系id
-    this.selectedSeriesId = evt.item.id;
+    this.selectedCustomerVehicle.selectedSeriesId = evt.item.id;
     // enable车型选择
     this.workSheetForm.controls.model.enable();
   }
@@ -261,25 +271,15 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.selectedCustomerVehicle.vehicleId = evt.item.id;
   }
 
-  /**
-   * @memberOf CreateOrderComponent
-   */
-  plateNoOnSelect(evt: TypeaheadMatch) {
-    console.log('selected: ', JSON.stringify(evt.item));
-    // 车牌号对应唯一客户车辆记录
-
-    this.getLastOrderByCustomerVechileId(evt);
-  }
 
   // 根据客户车辆Id查询上次工单信息
   getLastOrderByCustomerVechileId(evt) {
-    console.log('test', evt);
     if (!evt.item.id) {
       this.alerter.error('加载客户车辆信息失败！缺少客户车辆ID');
       return;
     }
     this.service.getLastOrderInfo(evt.item.id).subscribe(lastOrder => {
-      console.log('上次工单信息：', lastOrder);
+      console.log('根据客户车辆id自动带出的上次工单信息：', lastOrder);
       // 根据选择的车牌号带出客户车辆信息
       this.loadCustomerVehicleInfo(evt.item);
       if (lastOrder) {
@@ -306,9 +306,9 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   // 根据车牌号， 车主， vin 自动带出客户车辆信息
   loadCustomerVehicleInfo(customerVehicle) {
-    // 记录当前选择的车型Id
+    // 记录当前选择的客户车辆记录
     this.selectedCustomerVehicle = customerVehicle;
-    console.log('当前选中的车俩信息:', this.selectedCustomerVehicle);
+    console.log('模糊查询后, 当前选中的客户车俩信息为:', this.selectedCustomerVehicle);
 
     this.workSheetForm.controls.plateNo.setValue(customerVehicle.plateNo);
     this.workSheetForm.controls.brand.setValue(customerVehicle.brand);
@@ -320,10 +320,19 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   }
 
   /**
+  * @memberOf CreateOrderComponent
+  */
+  plateNoOnSelect(evt: TypeaheadMatch) {
+    console.log('根据车牌号模糊查询客户车辆信息selected: ', JSON.stringify(evt.item));
+    // 车牌号对应唯一客户车辆记录
+
+    this.getLastOrderByCustomerVechileId(evt);
+  }
+  /**
    * @memberOf CreateOrderComponent
    */
   onVinSelect(evt: TypeaheadMatch) {
-    console.log('selected: ', evt);
+    console.log('根据VIN模糊查询客户车辆信息selected: ', JSON.stringify(evt.item));
     // vin对应唯一客户车辆记录
 
     this.getLastOrderByCustomerVechileId(evt);
@@ -332,7 +341,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   * @memberOf CreateOrderComponent
   */
   onCustomerNameSelect(evt: TypeaheadMatch) {
-    console.log('selected: ', evt);
+    console.log('根据车主姓名模糊查询客户车辆信息selected: ', JSON.stringify(evt.item));
     // 一个车主下面可能有多条客户车辆记录
 
     this.getLastOrderByCustomerVechileId(evt);
@@ -607,12 +616,14 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
     // 品牌表单域值改变事件监听
     this.workSheetForm.controls.brand.valueChanges.subscribe((newValue) => {
-      this.selectedBrandId = null;
+      // 设置当前选择的品牌id为null
+      this.selectedCustomerVehicle.selectedBrandId = null;
 
       // 重置车系选择域
       this.workSheetForm.controls.series.reset();
       this.workSheetForm.controls.series.disable();
-      this.selectedSeriesId = null;
+      // 设置当前选择的车系id为null
+      this.selectedCustomerVehicle.selectedSeriesId = null;
 
       // 重置车型选择域
       this.workSheetForm.controls.model.reset();
@@ -620,7 +631,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     });
     // 车系表单域值改变事件监听
     this.workSheetForm.controls.series.valueChanges.subscribe((newValue) => {
-      this.selectedSeriesId = null;
+      // 设置当前选择的车系id为null
+      this.selectedCustomerVehicle.selectedSeriesId = null;
 
       // 重置车型选择域
       this.workSheetForm.controls.model.reset();
@@ -639,14 +651,17 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 组织接口参数
     // 1.表单基础数据 this.workSheetForm.value
     const workSheet = this.workSheetForm.value;
-    // 添加客户车辆id 客户id 必填
-    if (this.selectedCustomerVehicle && this.selectedCustomerVehicle.id) {
-      workSheet.customerVehicleId = this.selectedCustomerVehicle.id; // 有才传
+
+    // 判断是否存在客户车辆id
+    if (this.selectedCustomerVehicle.id) {
+      workSheet.customerVehicleId = this.selectedCustomerVehicle.id; // 有才传 (只有从模糊查询结果集中选择时才有值)
     }
-    if (this.selectedCustomerVehicle && this.selectedCustomerVehicle.id) {
-      workSheet.customerId = this.selectedCustomerVehicle.customerId; // 有才传
+    // 判断是否存在客户id
+    if (this.selectedCustomerVehicle.customerId) {
+      workSheet.customerId = this.selectedCustomerVehicle.customerId; // 有才传  (只有从模糊查询结果集中选择时才有值)
     }
-    workSheet.vehicleId = this.selectedCustomerVehicle.vehicleId; // 必传
+    // 添加车型id
+    workSheet.vehicleId = this.selectedCustomerVehicle.vehicleId; // 必传 (从模糊查询结果集中选择或者手动选择车型)
 
     // 2.新增维修项目数据 this.newMaintenanceItemData
     // workSheet.maintenanceItems = this.newMaintenanceItemData;   smart-table-add
@@ -660,7 +675,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     console.log('提交的工单对象： ', JSON.stringify(workSheet));
 
     this.service.create(workSheet).then(data => {
-      console.log('创建工单成功之后， 返回的工单对象：', data);
+      // console.log('创建工单成功之后， 返回的工单对象：', data);
       this.alerter.success('创建工单成功！');
       // 创建订单成功之后  做一些重置操作
 
@@ -669,12 +684,13 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       // 初始化开单时间和服务顾问
       this.workSheetForm.controls.createdOnUtc.setValue(moment().format('YYYY-MM-DD hh:mm:ss'));
       this.workSheetForm.controls.createdUserName.setValue(this.user.username);
-      // 清空上次选择的品牌id和车系id
-      this.selectedBrandId = this.selectedSeriesId = null;
-      // 新增维修项目数据清空
+      // 清空客户车辆信息数据   上次选择的品牌id和车系id,车型id
+      this.selectedCustomerVehicle = {};
+      // 清空新增维修项目数据
+      this.newMaintenanceItemData2 = [];
       // this.stDataSource.load([]);  smart-table-add
       // this.newMaintenanceItemData = [];  smart-table-add
-      this.newMaintenanceItemData2 = [];
+
       // 重置费用
       this.fee.workHour = 0;
       this.fee.material = 0;

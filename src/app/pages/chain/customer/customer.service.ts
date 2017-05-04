@@ -16,6 +16,35 @@ export class CustomerService implements BasicService<any> {
         throw new Error('Method not implemented.');
     }
 
+    /**
+    * 获取维修类型数据
+    * @memberOf OrderService
+    */
+    getProvincesData(): Observable<any[]> {
+        const url = Urls.location.concat('Areas/provinces');
+        return this.httpService
+            .request(url)
+            .map(response => {
+                console.log('查询省份数据：', response.json().data);
+                return response.json().data as any[];
+            });
+    }
+
+    /**
+     * 根据省份id获取其下面的城市列表
+     * 或者根据城市id获取其下面的区县列表
+     * @memberOf OrderService
+     */
+    getChildrenData(parentId: string): Observable<any[]> {
+        const url = Urls.location.concat('Areas/' + parentId + '/children');
+        return this.httpService
+            .request(url)
+            .map(response => {
+                console.log('查询省份数据：', response.json().data);
+                return response.json().data as any[];
+            });
+    }
+
 
     /**
      * 分页获取客户列表信息
@@ -23,6 +52,7 @@ export class CustomerService implements BasicService<any> {
      */
     public getPagedList(params: PagedParams): Promise<PagedResult<any>> {
         const url = Urls.chain.concat('/Customers?', params.serialize());
+        console.log('查询客户车主列表数据url: ', url);
         return this.httpService
             .get<PagedResult<any>>(url)
             .then(result => {
@@ -83,10 +113,10 @@ export class CustomerService implements BasicService<any> {
 export class CustomerListRequest extends PagedParams {
     constructor(
         public plateNo?: string, // 车牌号
-        public customerName?: string, // 车主
+        public name?: string, // 车主
         public phone?: string, // 车主电话
-        public startTimeDate?: string, // 建档开始时间
-        public endTimeDate?: string, // 建档结束时间
+        public createdStartDate?: string, // 建档开始时间
+        public createdEndDate?: string, // 建档结束时间
     ) {
         super('CustomerListRequestParams');
     }

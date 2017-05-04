@@ -9,6 +9,7 @@ const routes: Routes = [
             { path: 'mountings', loadChildren: 'app/pages/chain/mountings/mountings.module#MountingsModule' },
             { path: 'workshop', loadChildren: 'app/pages/chain/workshop/workshop.module#WorkshopModule' },
             { path: 'customer', loadChildren: 'app/pages/chain/customer/customer.module#CustomerModule' },
+            { path: 'settlement', loadChildren: 'app/pages/chain/settlement/settlement.module#SettlementModule' },
         ]
     },
 ];

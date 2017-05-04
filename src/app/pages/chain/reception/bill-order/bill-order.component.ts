@@ -50,7 +50,7 @@ export class BillOrderComponent extends DataList<any>{
         });
         this.params.statekey = checkedStatus.map(item => item.key);
 
-        this.params.endtime += " 23:59:59";
+        // this.params.endtime += " 23:59:59";
         // 执行查询
         this.onLoadList();
     }
@@ -80,8 +80,8 @@ export class BillOrderComponent extends DataList<any>{
             // 其它费： 0
             this.otherFee = 0;
             // 总计费： 
-            this.sumFee = data.amount/100;
-            this.billPrice = this.sumFee;           
+            this.sumFee =(data.workHourCost+data.materialCost+this.otherFee)/100;
+            // this.billPrice = this.sumFee;           
         })
        
     }
@@ -125,9 +125,9 @@ export class BillOrderComponent extends DataList<any>{
             // 其它费： 0
             this.otherFee = 0;
             // 总计费： 
-            this.sumFee =data.amount/100;
+            this.sumFee =(data.workHourCost+data.materialCost+this.otherFee)/100;
             
-            this.billPrice = this.sumFee;
+            // this.billPrice = this.sumFee;
         })
     }
     private billData = {};

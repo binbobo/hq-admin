@@ -80,7 +80,7 @@ export class OrderService implements BasicService<Order> {
                 }
             })
             .map(response => {
-                console.log('根据VIN查询客户车辆信息：', response.json().data);
+                console.log('根据车牌号或者VIN模糊查询客户车辆信息：', response.json().data);
                 return response.json().data as CustomerVehicle[];
             });
     }
@@ -93,6 +93,7 @@ export class OrderService implements BasicService<Order> {
     */
     getVehicleByModel(vehicleName: string, brandId: string, seriesId: string): Observable<Vehicle[]> {
         const url = Urls.chain.concat('/Vehicles/search');
+        // console.log('根据车型模糊查询车辆信息参数', vehicleName, brandId, seriesId);
         return this.httpService
             .request(url, {
                 params: {
@@ -170,9 +171,16 @@ export class OrderService implements BasicService<Order> {
                 data.forEach((customer) => {
                     customer.customerVehicle.forEach(vehicle => {
                         const customerVehicle = new CustomerVehicle(
+                            vehicle.id, // 客户车辆id
+                            vehicle.vehicleId,  // 车辆id
+                            vehicle.customerId, // 客户id
+                            {
+                                name: customer.name, // 车主姓名
+                                phone: customer.phone // 车主电话
+                            },
                             vehicle.plateNo,
-                            customer.name, // 车主姓名
-                            customer.phone, // 车主电话
+                            customer.name,
+                            customer.phone,
                             vehicle.series,
                             vehicle.model,
                             vehicle.brand,
@@ -382,6 +390,10 @@ export class Order extends BasicModel {
 // 客户车辆关系model类
 export class CustomerVehicle {
     constructor(
+        public id: string = '', // 客户车辆id
+        public vehicleId: string = '', // 车辆id
+        public customerId: string = '', // 客户id
+        public customer: any, // 车主和电话
         public plateNo: string = '', // 车牌号
         public customerName: string = '', // 车主
         public phone: string = '', // 车主电话

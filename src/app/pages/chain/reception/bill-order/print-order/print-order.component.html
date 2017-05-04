@@ -1,9 +1,8 @@
 <div class="print card">
   <div class="card-header">
-
+     <span>维修结算单</span>
   </div>
-  <div class='card-block'>
-
+  <div class='card-block' hqPrint #printer="hq-print">
     <table class="table search-table table-bordered">
       <tr>
         <td colspan="10">
@@ -72,29 +71,14 @@
         <td>金额</td>
         <td>备注</td>
       </tr>
-      <tr>
-        <td>1</td>
-        <td>材料费</td>
-        <td> </td>
-        <td> </td>
+      <tr *ngFor="let item of costData;let index=index">
+        <td>{{index+1}}</td>
+        <td>{{item?.name}}</td>
+        <td>{{item?.discountCost/100}}</td>
+        <td>{{item?.description}}</td>
       </tr>
       <tr>
-        <td>2</td>
-        <td>工时费</td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>其他费用</td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>合计：</td>
-        <td>应收金额：{{totalCost?.receivableCost }}</td>
-        <td>折扣金额：{{totalCost?.discountCost }}</td>
-        <td> </td>
+        <td colspan="4">合计：应收金额：{{moneyObj?.costMoney}}折扣金额：{{moneyObj?.costCountMoney}}</td>
       </tr>
     </table>
 
@@ -110,24 +94,21 @@
         <td>维修项目</td>
         <td>结算工时</td>
         <td>单价(元/个)</td>
-        <td>折扣率</td>
+        <td>折扣率(%)</td>
         <td>金额</td>
         <td>备注</td>
       </tr>
-      <tr *ngFor="let item of workHourData">
-        <td>1</td>
-        <td>{{item?.serviceName }}</td>
+      <tr *ngFor="let item of workHourData;let index=index">
+        <td>{{index+1}}</td>
+        <td>{{item?.serviceName}}</td>
         <td>{{item?.workHour}}</td>
         <td>{{item?.price/100}}</td>
         <td>{{item?.discount}}</td>
-        <td>{{item?.amount/100}}</td>
+        <td>{{item?.workItemMoney}}</td>
         <td>{{item?.description}}</td>
       </tr>
       <tr>
-        <td>合计：</td>
-        <td>应收金额：</td>
-        <td>折扣金额：</td>
-        <td colspan="3"></td>
+        <td colspan="7">合计：应收金额：{{moneyObj?.workCostMoney}}折扣金额：{{moneyObj?.discountMoney}}</td>
       </tr>
     </table>
 
@@ -147,8 +128,8 @@
         <td>金额</td>
         <td>备注</td>
       </tr>
-      <tr *ngFor="let item of materialData">
-        <td>1</td>
+      <tr *ngFor="let item of materialData;let index=index;">
+        <td>{{index+1}}</td>
         <td>{{item?.productCode}}</td>
         <td>{{item?.productName}}</td>
         <td>{{item?.unit}}</td>
@@ -157,18 +138,16 @@
         <td>{{item?.description}}</td>
       </tr>
       <tr>
-        <td>合计：</td>
-        <td>应收金额：</td>
-        <td>折扣金额：</td>
-        <td colspan="5"></td>
+        <td colspan="8">合计：应收金额：{{moneyObj?.materialMoney}}</td>
       </tr>
     </table>
     <hr>
-    <div>
-      第1页，共5页 打印时间：{{data?.printOnUtc|date:"yyyy/MM/dd HH:mm:ss"}} 操作人： 客户签名： 日期： 年 月 日
+    <div class="print-bot">
+      <div class="pull-left"> 打印时间：{{data?.printOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</div>
+      <div class="pull-right">操作人：<span class='nbspx'></span> 客户签名： <span class='nbspx'></span>日期：<span class="nbspx-sm"></span> 年 <span class="nbspx-sm"></span>月<span class="nbspx-sm"></span>日</div>
     </div>
-    <div class="center">
-      <button type="button" class="btn btn-secondary">打印</button>
+    <div class="center" >
+      <button type="button" class="btn btn-primary" (click)="print()">打印</button>
     </div>
   </div>
 </div>
