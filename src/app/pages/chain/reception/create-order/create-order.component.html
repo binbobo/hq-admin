@@ -85,12 +85,13 @@ placeholder="请输入工单号/车牌号" />-->
       <div class="form-group row">
         <label for="model" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车型</label>
         <div class="col-sm-2">
-          <input (typeaheadOnSelect)="onModelSelect($event)" [typeahead]="vehicleDataSource" typeaheadOptionField="name" required type="text"
+          <input (typeaheadOnSelect)="onModelSelect($event)" [typeahead]="modelDataSource" typeaheadOptionField="name" required type="text"
             class="form-control form-control-sm" formControlName="model" id="model" placeholder="输入 加长 测试">
         </div>
         <label for="vin" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>VIN</label>
         <div class="col-sm-2">
-          <input (typeaheadOnSelect)="onVinSelect($event)" [typeahead]="vinDataSource" typeaheadOptionField="vin" type="text" class="form-control form-control-sm"
+          <!--(typeaheadOnSelect)="onVinSelect($event)" [typeahead]="vinDataSource" typeaheadOptionField="vin"-->
+          <input type="text" class="form-control form-control-sm"
             formControlName="vin" id="vin" placeholder="VIN">
         </div>
         <label for="validate" class="col-sm-1 col-form-label col-form-label-sm">验车日期</label>
@@ -293,29 +294,6 @@ placeholder="请输入工单号/车牌号" />-->
           </tbody>
         </table>
       </tab>
-      <!--<tab heading="客户回访记录">
-        <table class="table table-hover table-bordered table-sm">
-          <thead>
-            <tr>
-              <th>回访时间</th>
-              <th>回访人</th>
-              <th>维修质量</th>
-              <th>服务态度</th>
-              <th>休息环境</th>
-              <th>工时价格</th>
-              <th>配件价格</th>
-              <th>接车时是否验车</th>
-              <th>是否报价</th>
-              <th>有无建议项目</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let record of list">
-            </tr>
-          </tbody>
-        </table>
-      </tab>-->
-
       <br>
       <!--只有前4个选项卡显示-->
       <div *ngIf="true" class="card">
