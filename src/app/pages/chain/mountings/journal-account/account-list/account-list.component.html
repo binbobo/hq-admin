@@ -23,7 +23,7 @@
         </div>
       </form>
       <div>
-        <button *ngFor="let item of tags" (click)="onSelectTag(item)" class="btn mr-1" [class.btn-primary]="item.selected">
+        <button *ngFor="let item of tags" (click)="onSelectTag(item)" class="btn mr-1" [class.btn-primary]="item.checked">
           <span>{{item.name}}</span>
           <span class="badge badge-default">{{item.count}}</span>
         </button>

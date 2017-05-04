@@ -34,7 +34,15 @@ export abstract class FormHandle<T> implements OnInit {
         this.formBuilder = injector.get(FormBuilder);
     }
 
+    protected patchValue(name: string, value: any) {
+        this.model[name] = value;
+        let obj = {};
+        obj[name] = value;
+        this.form.patchValue(obj);
+    }
+
     protected onReset() {
+        this.form=this.buidForm();
         this.form.reset(this.model);
         let f = this.form;
         this.form = null;
@@ -56,8 +64,9 @@ export abstract class FormHandle<T> implements OnInit {
                 this.submitting = false;
             });
     }
-    @Output()
+
     protected onCreate() {
+        alert();
         let model = this.form.value as T;
         this.submitting = true;
         return this.service

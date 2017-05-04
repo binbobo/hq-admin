@@ -15,7 +15,7 @@ export class JournalAccountService implements PagedService<JournalAccount> {
     return this.httpService.get<JournalAccountListResponse>(url, search)
       .then(result => {
         if (result.tabList) {
-          result.tabList.forEach(m => m.selected = m.type === params.type);
+          result.tabList.forEach(m => m.checked = m.type === params.type);
         }
         return result;
       })
@@ -65,7 +65,7 @@ export class JournalAcountType {
     public name?: string,
     public count?: string,
     public type?: string,
-    public selected?: boolean
+    public checked?: boolean
   ) { }
 }
 

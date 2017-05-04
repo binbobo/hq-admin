@@ -33,21 +33,21 @@ export class MultiSelectorComponent implements OnInit {
 
   onStateChange(event: Event, item: SelectOption) {
     var ele = event.target as HTMLInputElement;
-    item.selected = ele.checked;
+    item.checked = ele.checked;
     this.onChange.emit(item);
   }
 
   onSelectAll(event: Event) {
     let el = event.target as HTMLInputElement;
     this.options.forEach(m => {
-      m.selected = el.checked;
+      m.checked = el.checked;
       this.onChange.emit(m);
     });
   }
 
   submit() {
     let items = this.options
-      .filter(m => m.selected)
+      .filter(m => m.checked)
       .map(m => m.value);
     this.onConfirm.emit(items);
   }

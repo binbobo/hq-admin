@@ -1,12 +1,14 @@
-<div class="hqTableTypeahead" (blur)="result=null" [hidden]="!result?.data?.length">
-  <table class="table table-sm table-hover table-responsive">
+<div class="hqTableTypeahead" (blur)="result=null" [hidden]="!visible">
+  <table class="table table-sm table-bordered table-hover table-responsive">
     <thead>
       <tr>
+        <th [hidden]="!multiple"><input type="checkbox"/></th>
         <th *ngFor="let col of columns">{{col.title||col.name}}</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let item of result?.data" (click)="onItemSelect(item)">
+        <th [hidden]="!multiple"><input type="checkbox"/></th>
         <td *ngFor="let col of columns">
           {{item[col.name]|shorten:col.maxLength||20:'...'}}
         </td>

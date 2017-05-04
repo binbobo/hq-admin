@@ -3,7 +3,7 @@
 <div class="popover-content">
   <div class="form-check" *ngFor="let item of options">
     <label class="form-check-label">
-      <input class="form-check-input" type="checkbox" [checked]="item.selected" (change)="onStateChange($event,item)" [value]="item.value">
+      <input class="form-check-input" type="checkbox" [checked]="item.checked" (change)="onStateChange($event,item)" [value]="item.value">
       {{item.text}}
     </label>
   </div>

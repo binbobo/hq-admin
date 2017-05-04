@@ -7,7 +7,9 @@ import { SharedModule } from 'app/shared/shared.module';
 import { Routes, RouterModule } from '@angular/router';
 import { InventoryService } from './inventory.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ModalModule } from 'ngx-bootstrap';
+import { ModalModule, TypeaheadModule } from 'ngx-bootstrap';
+import { TreeviewModule } from 'ngx-treeview';
+import { SelectModule } from 'ng2-select';
 
 const routes: Routes = [
   { path: '', component: InventoryListComponent },
@@ -21,6 +23,9 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     ModalModule,
+    SelectModule,
+    TreeviewModule.forRoot(),
+    TypeaheadModule.forRoot(),
     RouterModule.forChild(routes)
   ],
   providers: [InventoryService],

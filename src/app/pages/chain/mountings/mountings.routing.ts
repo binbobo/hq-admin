@@ -5,6 +5,7 @@ import { PriceCheckComponent } from "app/pages/chain/mountings/price-check";
 
 const routes: Routes = [
     { path: 'inbound', loadChildren: 'app/pages/chain/mountings/inbound/inbound.module#InboundModule' },
+    { path: 'outbound', loadChildren: 'app/pages/chain/mountings/outbound/outbound.module#OutboundModule' },
     { path: 'inventory', loadChildren: 'app/pages/chain/mountings/inventory/inventory.module#InventoryModule' },
     { path: 'provider', loadChildren: 'app/pages/chain/mountings/provider/provider.module#ProviderModule' },
     { path: 'inventory-list', loadChildren: 'app/pages/chain/mountings/take-stock/take-stock.module#TakeStockModule' },

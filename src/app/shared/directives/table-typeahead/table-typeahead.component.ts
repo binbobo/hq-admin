@@ -27,6 +27,9 @@ export class TableTypeaheadComponent implements OnInit {
   public onPageChange: EventEmitter<PagedParams> = new EventEmitter<PagedParams>();
   @Input()
   public result: PagedResult<any>;
+  @Input()
+  public multiple: boolean;
+  public hidden: boolean = true;
 
   private onItemSelect(item: any) {
     this.onSelect.emit(item);
@@ -37,6 +40,10 @@ export class TableTypeaheadComponent implements OnInit {
     let param = new PagedParams();
     param.setPage($event.page, $event.itemsPerPage);
     this.onPageChange.emit(param);
+  }
+
+  private get visible(): boolean {
+    return !this.hidden && this.result && this.result.data && this.result.data.length > 0;
   }
 
   constructor() { }

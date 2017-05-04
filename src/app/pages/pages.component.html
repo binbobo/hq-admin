@@ -10,7 +10,7 @@
       </a>
       <div *dropdownMenu class="dropdown-menu dropdown-menu-right bg-inverse">
         <a class="dropdown-item" (click)="onSelectLanguage(item)" *ngFor="let item of languages">
-          <i *ngIf="item.selected||item.culture===language?.culture" class="fa fa-check"></i>
+          <i *ngIf="item.checked||item.culture===language?.culture" class="fa fa-check"></i>
           <span class="flag-icon flag-icon-{{item.flag}}"></span> {{item.name}}
         </a>
       </div>

@@ -1,9 +1,12 @@
 import { Component, OnInit, Injector } from '@angular/core';
-import { FormHandle, SelectOption } from 'app/shared/models';
+import { FormHandle, SelectOption, PagedResult } from 'app/shared/models';
 import { Inventory, InventoryService } from '../inventory.service';
 import { Observable } from 'rxjs/Observable';
 import { FormGroup, Validators } from '@angular/forms';
-import { MountingsService } from '../../../mountings/mountings.service';
+import { MountingsService, GetMountingsListRequest } from '../../../mountings/mountings.service';
+import { TypeaheadMatch } from "ngx-bootstrap";
+import { TypeaheadRequestParams } from 'app/shared/directives';
+import { TreeviewItem } from 'ngx-treeview';
 
 @Component({
   selector: 'hq-inventory-create',
@@ -13,6 +16,10 @@ import { MountingsService } from '../../../mountings/mountings.service';
 export class InventoryCreateComponent extends FormHandle<Inventory> implements OnInit {
 
   private warehouses: Array<SelectOption>;
+  private units: Array<SelectOption>;
+  private categories: Array<TreeviewItem>;
+  private brands: Array<SelectOption>;
+  public items: Array<any> = [];
 
   constructor(
     injector: Injector,
@@ -30,13 +37,14 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
       locationName: [this.model.locationName, [Validators.maxLength(50)]],
       storeId: [this.model.storeId, [Validators.required, Validators.maxLength(36)]],
       vehicleName: [this.model.vehicleName, [Validators.required, Validators.maxLength(30)]],
-      unit: [this.model.unit, [Validators.required, Validators.maxLength(20)]],
-      brand: [this.model.brand, [Validators.required, Validators.maxLength(50)]],
-      categoryName: [this.model.category, [Validators.maxLength(60)]],
+      unit: [this.model.unit, [Validators.required, Validators.maxLength(36)]],
+      brandName: [this.model.brandName, [Validators.required, Validators.maxLength(50)]],
+      categoryId: [this.model.categoryId],
       code: [this.model.code, [Validators.required, Validators.maxLength(36)]],
       name: [this.model.name, [Validators.required, Validators.maxLength(60)]],
       maxCount: [this.model.maxCount],
       minCount: [this.model.minCount],
+      brandId: [this.model.brandId],
       packageInfo: [this.model.packageInfo, [Validators.maxLength(20)]],
       madeIn: [this.model.madeIn, [Validators.maxLength(100)]],
       description: [this.model.description, [Validators.maxLength(200)]],
@@ -48,8 +56,100 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
     this.moutingsService.getWarehouseOptions()
       .then(options => this.warehouses = options)
       .then(options => options.length ? options[0].value : '')
-      .then(id => this.form.patchValue({ storeId: id }))
+      .then(id => this.patchValue('storeId', id))
+      .catch(err => this.alerter.warn(err));
+    this.moutingsService.getCategoryOptions()
+      .then(options => options.map(m => new TreeviewItem(m)))
+      .then(options => this.categories = options)
+      .then(options => options.length ? options[0].value : '')
+      .then(id => this.patchValue('categoryId', id))
+      .catch(err => this.alerter.warn(err));
+    this.moutingsService.getUnitOptions()
+      .then(options => this.units = options)
+      .then(options => options.length ? options[0].value : '')
+      .then(id => this.patchValue('unit', id))
+      .catch(err => this.alerter.warn(err));
+    this.moutingsService.getBrands()
+      .then(options => this.brands = options)
       .catch(err => this.alerter.warn(err));
   }
 
+  onBrandSelect(event: TypeaheadMatch) {
+    this.form.patchValue({ brandId: event.item.value });
+  }
+
+  onBrandChange(event: Event) {
+    this.form.patchValue({ brandId: undefined });
+  }
+
+  public get vehicleColumns() {
+    return [
+      { name: 'brandName', title: '品牌' },
+      { name: 'seriesName', title: '车系' },
+      { name: 'name', title: '车型', checked: true },
+    ];
+  }
+
+  public get vehicleSource() {
+    return (params: TypeaheadRequestParams) => {
+      return this.moutingsService.get(params.text);
+    };
+  }
+
+  public get itemColumns() {
+    return [
+      { name: 'name', title: '名称' },
+      { name: 'code', title: '编码' },
+      { name: 'brand', title: '品牌' },
+    ];
+  }
+
+  onItemChange(event) {
+    this.disableItem(false);
+  }
+
+  public onItemSelect(event) {
+    let item = {
+      code: event.code,
+      name: event.name,
+      packageInfo: event.packageInfo,
+      madeIn: event.madeIn,
+      brandName: event.brand,
+      brandId: event.brandId
+    }
+    this.form.patchValue(item);
+    this.disableItem(true);
+  }
+
+  private disableItem(disabled: boolean) {
+    let keys = ['packageInfo', 'madeIn', 'brandName'];
+    if (disabled) {
+      keys.forEach(key => this.form.controls[key].disable());
+    } else {
+      keys.forEach(key => {
+        this.form.controls[key].enable();
+        this.form.controls[key].setValue('');
+      });
+    }
+  }
+
+  public get codeSource() {
+    return (params: TypeaheadRequestParams) => {
+      let p = new GetMountingsListRequest(params.text);
+      p.setPage(params.pageIndex, params.pageSize);
+      return this.moutingsService.getListByCodeOrName(p);
+    };
+  }
+
+  public get nameSource() {
+    return (params: TypeaheadRequestParams) => {
+      let p = new GetMountingsListRequest(undefined, params.text);
+      p.setPage(params.pageIndex, params.pageSize);
+      return this.moutingsService.getListByCodeOrName(p);
+    };
+  }
+
+  onCategorySelect(event) {
+    this.form.patchValue({ categoryId: event });
+  }
 }

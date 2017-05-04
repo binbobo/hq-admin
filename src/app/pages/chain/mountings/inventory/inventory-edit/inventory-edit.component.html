@@ -19,19 +19,22 @@
         <input type="text" hqError="库位" formControlName="locationName" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*品牌</label>
-        <input type="text" hqError="品牌" formControlName="brand" class="form-control">
-      </div>
-      <div class="form-group">
         <label class="form-control-label">*配件编码</label>
-        <input type="text" hqError="配件编码" formControlName="code" class="form-control">
+        <input hqError="配件编码" (input)="onItemChange($event)" [hqTableTypeahead]="codeSource" valueSelector="code" [columns]="columns"
+          (onSelect)="onItemSelect($event)" formControlName="code" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*配件名称</label>
-        <input type="text" hqError="配件名称" formControlName="name" class="form-control">
+        <input hqError="配件名称" (input)="onItemChange($event)" [hqTableTypeahead]="nameSource" valueSelector="name" [columns]="columns"
+          (onSelect)="onItemSelect($event)" formControlName="name" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*包装规格</label>
+        <label class="form-control-label">*品牌</label>
+        <input hqError="品牌" (input)="onBrandChange($event)" (typeaheadOnSelect)="onBrandSelect($event)" [typeahead]="brands" typeaheadOptionField="text"
+          formControlName="brandName" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">包装规格</label>
         <input type="text" hqError='包装规格' formControlName="packageInfo" class="form-control">
       </div>
       <div class="form-group">
@@ -46,11 +49,15 @@
       </div>
       <div class="form-group">
         <label class="form-control-label">*单位</label>
-        <input type="text" hqError='单位' formControlName="unit" class="form-control">
+        <select hqError="单位" formControlName="unit" class="form-control">
+          <option *ngFor="let item of units" value="{{item.value}}">{{item.text}}</option>
+        </select>
       </div>
       <div class="form-group">
         <label class="form-control-label">类别</label>
-        <input type="text" hqError='类别' formControlName="categoryName" class="form-control">
+        <select multiple="multiple" hqError="类别" formControlName="categoryId" class="form-control">
+          <option *ngFor="let item of categories" value="{{item.value}}">{{item.text}}</option>
+        </select>
       </div>
       <div class="form-group">
         <label class="form-control-label">最大库存</label>
@@ -67,7 +74,7 @@
     </div>
     <div class="col-12">
       <button type="submit" [disabled]="form.invalid||submitting" class="btn btn-primary mr-3">提交</button>
-      <button type="button" (click)="form.reset(model)" class="btn btn-secondary mr-3">重置</button>
+      <button type="button" (click)="onReset(model)" class="btn btn-secondary mr-3">重置</button>
     </div>
   </form>
 </div>
