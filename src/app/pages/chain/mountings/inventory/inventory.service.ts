@@ -5,7 +5,7 @@ import { HttpService, Urls } from 'app/shared/services';
 @Injectable()
 export class InventoryService implements BasicService<Inventory> {
 
-  getPagedList(params: PagedParams): Promise<PagedResult<Inventory>> {
+  getPagedList(params: InventoryListRequest): Promise<PagedResult<Inventory>> {
     let search = params.serialize();
     let url = Urls.chain.concat('/products/getproductlist?', search);
     return this.httpService.get<PagedResult<Inventory>>(url)
@@ -25,6 +25,20 @@ export class InventoryService implements BasicService<Inventory> {
   }
   delete(id: string): Promise<void> {
     throw new Error('Method not implemented.');
+  }
+
+  export(params: InventoryListRequest): Promise<void> {
+    let url = Urls.chain.concat('/Products/ExportToExcel');
+    let search = params.serialize();
+    return this.httpService.download(url, search)
+      .catch(err => Promise.reject(`库存列表导出失败：${err}`));
+  }
+
+  enable(ids: Array<string>): Promise<void> {
+    let params = new EnableRequest(ids);
+    let url = Urls.chain.concat('/Products/SetEnable');
+    return this.httpService.put<void>(url, params)
+      .catch(err => Promise.reject(`库存状态更新失败：${err}`));
   }
 
   constructor(
@@ -49,19 +63,35 @@ export class InventoryListRequest extends PagedParams {
 
 export class Inventory extends BasicModel {
   constructor(
+    public number?: number,
+    public storeId?: string,
+    public locationName?: string,
     public storageLocationName?: string,
     public category?: string,
+    public brand?: string,
     public code?: string,
     public name?: string,
     public count?: string,
     public vehicleName?: string,
     public unit?: string,
     public price?: string,
+    public newPrice?: string,
+    public packageInfo?: string,
+    public madeIn?: string,
+    public properties?: Array<string>,
+    public description?: string,
     public inCount?: string,
     public outCount?: string,
     public maxCount?: string,
     public minCount?: string
   ) {
     super();
+  }
+}
+
+export class EnableRequest {
+  constructor(
+    public ids: Array<string>
+  ) {
   }
 }

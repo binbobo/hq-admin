@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PagedParams, BasicService, PagedResult, PagedService, ListResult } from 'app/shared/models';
+import { PagedParams, BasicService, PagedResult, PagedService, ListResult, ApiResult } from 'app/shared/models';
 import { Urls, HttpService } from 'app/shared/services';
 
 @Injectable()
@@ -14,25 +14,32 @@ export class TakeStockService implements PagedService<Stock> {
       .catch(err => Promise.reject(`获取盘点列表失败：${err}`));
   }
 
-  get(id: string): Promise<Array<any>> {
-    let url = Urls.chain.concat('/InventoryDetails/GetPageListByBillCode?billCode=', id);
-    return this.httpService.get<ListResult<any>>(url)
+  get(id: string): Promise<any> {
+    let url = Urls.chain.concat('/InventoryDetails/GetListByBillCode?billCode=', id);
+    return this.httpService.get<ApiResult<any>>(url)
       .then(result => result.data)
       .catch(err => Promise.reject(`获取详情失败：${err}`));
   }
 
-  create(body: Array<string>): Promise<void> {
+  create(body: GenerateStockListRequest): Promise<void> {
     let url = Urls.chain.concat('/InventoryDetails/CreateInventory');
-    return this.httpService.post<void>(url, {})
+    return this.httpService.post<void>(url, body)
       .catch(err => Promise.reject(`清单生成失败：${err}`));
   }
 
-  export(): Promise<void> {
-    let url = '';
+  export(code: string): Promise<void> {
+    let url = Urls.chain.concat('/InventoryDetails/ExportToExcel?billcode=', code);
     return this.httpService.download(url)
-      .catch(err => `盘点清单导出失败：${err}`);
+      .catch(err => Promise.reject(`盘点清单导出失败：${err}`));
   }
 
+}
+
+export class GenerateStockListRequest {
+  constructor(
+    public storeId?: string,
+    public locationId?: Array<string>,
+  ) { }
 }
 
 export class StockListRequest extends PagedParams {

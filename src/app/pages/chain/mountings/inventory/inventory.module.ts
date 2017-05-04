@@ -7,6 +7,7 @@ import { SharedModule } from 'app/shared/shared.module';
 import { Routes, RouterModule } from '@angular/router';
 import { InventoryService } from './inventory.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ModalModule } from 'ngx-bootstrap';
 
 const routes: Routes = [
   { path: '', component: InventoryListComponent },
@@ -19,6 +20,7 @@ const routes: Routes = [
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
+    ModalModule,
     RouterModule.forChild(routes)
   ],
   providers: [InventoryService],

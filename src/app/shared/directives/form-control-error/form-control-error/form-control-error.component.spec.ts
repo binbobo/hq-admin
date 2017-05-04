@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ControlErrorsComponent } from './control-errors.component';
+import { FormControlErrorComponent } from './form-control-error.component';
 
-describe('ControlErrorsComponent', () => {
-  let component: ControlErrorsComponent;
-  let fixture: ComponentFixture<ControlErrorsComponent>;
+describe('FormControlErrorComponent', () => {
+  let component: FormControlErrorComponent;
+  let fixture: ComponentFixture<FormControlErrorComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ControlErrorsComponent ]
+      declarations: [ FormControlErrorComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ControlErrorsComponent);
+    fixture = TestBed.createComponent(FormControlErrorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

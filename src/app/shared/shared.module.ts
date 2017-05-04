@@ -2,21 +2,18 @@ import { NgModule } from '@angular/core';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { ServerTranslateLoader, HttpService, requestOptionsProvider, UserService, EventDispatcher } from 'app/shared/services';
-import { PaginationComponent, ControlErrorComponent, ControlErrorsComponent, MenuComponent, LoadingComponent, ClippedWordComponent, SmartTableComponent } from "./components";
+import { PaginationComponent, MenuComponent, LoadingComponent, ClippedWordComponent, SmartTableComponent } from "./components";
 import { HtmlPipe } from './pipes';
 import { FormsModule } from '@angular/forms';
 import { PaginationModule, PopoverModule, AlertModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
 import { TranslateStore } from "@ngx-translate/core/src/translate.store";
-import { MultiSelectorDirective, MultiSelectorComponent, HqAlerterComponent, HqAlerter, TableTypeaheadComponent, TableTypeaheadDirective, PrintDirective } from 'app/shared/directives';
+import { MultiSelectorDirective, MultiSelectorComponent, HqAlerterComponent, HqAlerter, TableTypeaheadComponent, TableTypeaheadDirective, PrintDirective, FormControlErrorDirective, FormControlErrorComponent } from 'app/shared/directives';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgPipesModule } from 'ngx-pipes';
 
-
 const HQ_COMPONENTS = [
     PaginationComponent,
-    ControlErrorComponent,
-    ControlErrorsComponent,
     ClippedWordComponent,
     MenuComponent,
     LoadingComponent,
@@ -27,6 +24,7 @@ const HQ_DIRECTIVE_COMPONENTS = [
     MultiSelectorComponent,
     HqAlerterComponent,
     TableTypeaheadComponent,
+    FormControlErrorComponent,
 ];
 
 const HQ_DIRECTIVES = [
@@ -34,6 +32,7 @@ const HQ_DIRECTIVES = [
     HqAlerter,
     TableTypeaheadDirective,
     PrintDirective,
+    FormControlErrorDirective,
 ]
 
 const HQ_PIPES = [
@@ -69,7 +68,7 @@ const HQ_SERVICES = [
         HQ_PIPES,
         HQ_DIRECTIVES,
     ],
-    declarations: [HQ_COMPONENTS, HQ_PIPES, HQ_DIRECTIVE_COMPONENTS, HQ_DIRECTIVES, PrintDirective],
+    declarations: [HQ_COMPONENTS, HQ_PIPES, HQ_DIRECTIVE_COMPONENTS, HQ_DIRECTIVES],
     entryComponents: [HQ_DIRECTIVE_COMPONENTS]
 })
 export class SharedModule {
