@@ -107,7 +107,7 @@ export class CheckoutComponent extends DataList<any> {
     dialog.hide();
     this.payData.forEach(item => {
       this.payChecoutData.paymentMethod = item.id;
-      this.payChecoutData.amount =Number(item.amount*100);
+      this.payChecoutData.amount = Number(item.amount * 100);
       this.payCheckArr.push(this.payChecoutData)
       this.payChecoutData = {
         paymentMethod: '',
@@ -119,8 +119,11 @@ export class CheckoutComponent extends DataList<any> {
 
     this.service.postPay(this.payCheckSingle, this.billId).then(() => {
       console.log("收银成功"); this.onLoadList();
-    }).catch(err => console.log("收银失败" + err))
+    }).catch(err => alert("收银失败" + err))
 
+    this.payData.forEach(item => {
+      item.amount = null;
+    })
   }
   createForm() {
     // 初始化数组类型参数
