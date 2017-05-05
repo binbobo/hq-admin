@@ -59,7 +59,7 @@ export class AppendOrderComponent {
   public get typeaheadColumns() {
     return [
       { name: 'plateNo', title: '车牌号' },
-      { name: 'id', title: '工单号' }
+      { name: 'billCode', title: '工单号' }
     ];
   }
 

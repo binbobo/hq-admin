@@ -1,14 +1,14 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
   <div class="card-header">
-    <span>维修领料</span>
+    <span>维修发料</span>
   </div>
   <div class="card-block">
     <form class="form-inline mb-2">
       <div class="form-group mb-2">
         <label>车牌号：</label>
         <div>
-          <input #code [hqTableTypeahead]="codeSource" [columns]="columns" valueSelector="code" (onSelect)="onItemSelect($event)" class="form-control mx-sm-3"
+          <input #code [hqTableTypeahead]="codeSource" [columns]="columns" valueSelector="code" (onSelect)="onnpmSelect($event)" class="form-control mx-sm-3"
             placeholder="车牌号">
         </div>
       </div>
@@ -16,31 +16,26 @@
         <label class="mr-sm-2">工单号：</label>
         <div>
           <input #name [hqTableTypeahead]="nameSource" [columns]="columns" valueSelector="name" (onSelect)="onItemSelect($event)" class="form-control mx-sm-3"
-            placeholder="配件名称">
+            placeholder="工单号">
         </div>
       </div>
       <div class="form-group mb-2">
-        <button (click)="onSearch()" class="btn btn-primary mx-sm-1" translate>选择工单</button>
+        <button class="btn btn-primary mx-sm-1" (click)='OnChooseOrder($event, lgModal)'>选择工单</button>
       </div>
+      <table class="table search-result">
+        <tr>
+          <td>车主:</td>
+          <td></td>
+          <td>VIN:</td>
+          <td></td>
+          <td>维修类型:</td>
+          <td></td>
+          <td>开单时间：</td>
+          <td></td>
+        </tr>
+      </table>
     </form>
-    <form class="form-inline mb-2">
-      <div class="form-group mb-2">
-        <label>车主：</label>
-        <input class="form-control mx-sm-3" [value]="" placeholder="车主">
-      </div>
-      <div class="form-group mb-2">
-        <label>VIN：</label>
-        <input class="form-control mx-sm-3" [value]="" placeholder="VIN">
-      </div>
-      <div class="form-group mb-2">
-        <label>维修类型：</label>
-        <input class="form-control mx-sm-3" [value]="" placeholder="维修类型">
-      </div>
-      <div class="form-group mb-2">
-        <label>开单时间：</label>
-        <input class="form-control mx-sm-3" [value]="" placeholder="开单时间">
-      </div>
-    </form>
+
     <table class="table table-bordered table-sm table-striped">
       <thead>
         <tr>
@@ -51,11 +46,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of list">
-          <td>{{item.number}}</td>
-          <td>{{item.brand }}</td>
-          <td>{{item.code }}</td>
-          <td>{{item.name}}</td>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><a href="#">发料</a></td>
         </tr>
       </tbody>
     </table>
@@ -80,22 +75,22 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of list">
-          <td>{{item.number}}</td>
-          <td>{{item.brand }}</td>
-          <td>{{item.code }}</td>
-          <td>{{item.name}}</td>
-          <td>{{item.number}}</td>
-          <td>{{item.brand }}</td>
-          <td>{{item.code }}</td>
-          <td>{{item.name}}</td>
-          <td>{{item.number}}</td>
-          <td>{{item.brand }}</td>
-          <td>{{item.code }}</td>
-          <td>{{item.name}}</td>
-          <td>{{item.number}}</td>
-          <td>{{item.brand }}</td>
-          <td>{{item.code }}</td>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
         </tr>
       </tbody>
     </table>
@@ -105,5 +100,61 @@
     <button class="btn btn-warning" [disabled]="!selectedItems?.length" (click)="enabled()">取消</button>
     <button class="btn btn-success" (click)="export()">挂单</button>
     <button class="btn btn-info" (click)="export()">打印</button>
+  </div>
+</div>
+
+<div bsModal #lgModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <ng-template *ngIf="isDetailModalShown" hq-alerter></ng-template>
+      <div class="modal-header">
+        <h6 class="modal-title pull-left">选择工单</h6>
+        <button type="button" class="close pull-right" (click)="lgModal.hide();isDetailModalShown=false;" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style='overflow: scroll;'>
+        <!--导出详情begin-->
+        <!---选择工单列表 start-->
+        <form >
+          <div class="search-order">
+            <input class="form-control" placeholder="请输入工单号/车牌号"/>
+            <button class="btn btn-info">查询</button>
+          </div>
+        </form>
+
+        <table class="table table-hover">
+          <thead class="thead-default">
+            <tr>
+              <th>工单号</th>
+              <th>维修类型</th>
+              <th>车主</th>
+              <th>品牌</th>
+              <th>车型</th>
+              <th>车牌号</th>
+              <th>行驶里程(KM)</th>
+              <th>开单时间</th>
+              <th>预计交车时间</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of list">
+              <th scope="row">{{item.billCode}}</th>
+              <td>{{item.typeName}}</td>
+              <td>{{item.customerName}}</td>
+              <td>{{item.brand}}</td>
+              <td>{{item.model}}</td>
+              <td>{{item.plateNo}}</td>
+              <td>{{item.mileage}}</td>
+              <td>{{item.createdOnUtc}}</td>
+              <td>{{item.expectLeave}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+        <!---选择工单列表 end-->
+        <!--导出详情end-->
+      </div>
+    </div>
   </div>
 </div>

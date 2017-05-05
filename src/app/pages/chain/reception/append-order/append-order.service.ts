@@ -113,6 +113,7 @@ export class SearchReturnData {
 export class DetailData {
   constructor(
     public id: any,
+    public billCode:any,
     public serviceOutputs: any = [],//维修项目
     public attachServiceOutputs: Array<any> = [],//附加项目
     public suggestServiceOutputs: any = [],//建议维修项

@@ -9,7 +9,7 @@
 }
 .append-order .search-table td:nth-child(2n-1){
     text-align: right;
-    font-weight: bold;
+    font-size:1rem;
 }
 .append-order .search-table td:nth-child(2n){
     background-color:rgba(221, 221, 221, 0.29);

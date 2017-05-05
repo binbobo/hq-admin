@@ -1,28 +1,38 @@
-
-        .maintain .choose-order{
-            cursor: pointer;
-           
-        }
-        .maintain .choose-table{
-            background-color: rgb(198, 233, 217);
-            box-shadow: 0px 6px 23px #c6e9d9;
-        }
-        .maintain .maintain-btn{
-            text-align:center;
-        }
-        .maintain table{
-                border-radius: 24px;
-                background-color:rgba(208, 233, 198, 0.17)
-        }
-        .maintain .search-table td{
-                font-size:.9rem;
-                background-color:#fff;
-            }
-        .maintain .search-table td:nth-child(2n-1){
-                text-align: right;
-                font-weight: bold;
-            }
-        .maintain .search-table td:nth-child(2n){
-                background-color:rgba(221, 221, 221, 0.29);
-            }
-                
+.maintain td,.maintain th,.maintain a{
+    font-size:.9rem;
+}
+.maintain .choose-order{
+   cursor: pointer;           
+ }
+.maintain .maintain-btn{
+    text-align:center;
+}
+.maintain table{
+   border-radius: 24px;
+}
+.maintain .search-table td{
+  font-size:.9rem;
+  background-color:#fff;
+}
+.maintain .search-table td:nth-child(2n-1){
+  text-align: right;
+  font-weight: bold;
+}
+.maintain .search-table td:nth-child(2n){
+  background-color:rgba(221, 221, 221, 0.29);
+}
+.search-order{
+    text-align:center;
+    clear: both;
+    height:50px;
+}
+.search-order input{
+    display: inline-block;
+    float: left;
+    width: 50%;
+}
+.search-order button{
+    display: inline-block;
+    margin-left:5px;
+    float: left;
+} 
