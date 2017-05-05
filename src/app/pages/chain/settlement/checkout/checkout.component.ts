@@ -118,8 +118,8 @@ export class CheckoutComponent extends DataList<any> {
     console.log(this.payCheckSingle)
 
     this.service.postPay(this.payCheckSingle, this.billId).then(() => {
-      console.log("收银成功"); this.onLoadList();
-    }).catch(err => alert("收银失败" + err))
+      this.alerter.info('收银成功!', true, 2000);; this.onLoadList();
+    }).catch(err => this.alerter.error(err, true, 2000))
 
     this.payData.forEach(item => {
       item.amount = null;

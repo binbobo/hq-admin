@@ -133,7 +133,7 @@ export class AppendOrderComponent {
     addData.maintenanceItems = this.newMaintenanceItemData;
     this.service1.post(addData).then(() => {
       console.log('添加维修项目成功');
-    }).catch(err => console.log("添加维修项目失败" + err));
+    }).catch(err => this.alerter.error(err, true, 2000));
   }
   // 提交附加项目
   appendAttachSheet() {
@@ -141,7 +141,7 @@ export class AppendOrderComponent {
     attachData.maintenanceItems = this.newAttachData;
     this.service1.post(attachData).then(() => {
       console.log('添加附加项目成功');
-    }).catch(err => console.log("添加附加项目失败" + err));
+    }).catch(err => this.alerter.error(err, true, 2000));
 
   }
   // 提交建议维修项
@@ -150,7 +150,7 @@ export class AppendOrderComponent {
     suggestData.maintenanceRecommends = this.newSuggestData;
     this.service1.suggestpost(suggestData).then(() => {
       console.log('添加建议维修项成功');
-    }).catch(err => console.log(err));
+    }).catch(err =>this.alerter.error(err, true, 2000));
 
   }
   /**
