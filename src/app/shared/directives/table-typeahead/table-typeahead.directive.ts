@@ -27,6 +27,8 @@ export class TableTypeaheadDirective implements OnInit {
   private multiple: boolean;
   @Output()
   private onSelect = new EventEmitter<any>();
+  @Output()
+  private onRemove = new EventEmitter();
 
   constructor(
     private el: ElementRef,
@@ -37,33 +39,28 @@ export class TableTypeaheadDirective implements OnInit {
   @HostListener('blur', ['$event'])
   onBlur(event) {
     let result = this.component.result;
-    if (result && result.data && result.data.length) {
-      setTimeout(() => this.component.hidden = true, 500);
+    if (!this.multiple && result && result.data && result.data.length) {
+      setTimeout(() => this.component.hide(), 500);
     }
   }
 
   @HostListener('focus', ['$event'])
   onFocus(event) {
-    let result = this.component.result;
-    if (result && result.data && result.data.length) {
-      this.component.hidden = false;
-    }
+    this.component.show();
   }
 
   private search(pageIndex = 1) {
-    this.component.hidden = true;
+    this.component.hide();
     this.component.result = null;
     let el = this.el.nativeElement as HTMLInputElement;
-    if (!el.value) {
-      return;
-    }
+    if (!el.value) return;
     let param = new TypeaheadRequestParams(el.value);
     param.setPage(pageIndex, this.pageSize);
     if (this.source) {
       this.source(param)
         .then(result => {
-          this.component.hidden = false;
           this.component.result = result;
+          this.component.show();
         })
         .catch(err => console.error(err));
     }
@@ -82,6 +79,7 @@ export class TableTypeaheadDirective implements OnInit {
     this.component = (<TableTypeaheadComponent>componentRef.instance);
     this.component.columns = this.columns;
     this.component.onSelect = this.onSelect;
+    this.component.onRemove = this.onRemove;
     this.component.size = this.pageSize;
     this.component.multiple = this.multiple;
     this.component.onPageChange.subscribe(params => {
@@ -94,7 +92,9 @@ export class TableTypeaheadDirective implements OnInit {
       .subscribe(value => this.search());
     this.onSelect.subscribe((item) => {
       if (this.valueSelector) {
-        el.value = item[this.valueSelector];
+        if (!this.multiple) {
+          el.value = item[this.valueSelector];
+        }
       }
     })
   }

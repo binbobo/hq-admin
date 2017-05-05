@@ -103,7 +103,7 @@
   <div class="card-footer text-muted">
     <button class="btn btn-primary" (click)="createModal.show()">生成发料单</button>
     <button class="btn btn-warning" [disabled]="!selectedItems?.length" (click)="enabled()">取消</button>
-    <button class="btn btn-success" (click)="export()">挂单</button>
+    <button class="btn btn-success" (click)="suspend()">挂单</button>
     <button class="btn btn-info" (click)="export()">打印</button>
   </div>
 </div>

@@ -66,14 +66,13 @@ export abstract class FormHandle<T> implements OnInit {
     }
 
     protected onCreate() {
-        alert();
         let model = this.form.value as T;
         this.submitting = true;
         return this.service
             .create(model)
             .then(model => {
                 this.alerter.success('添加成功！');
-                this.form.reset(this.model);
+                this.onReset();
                 this.submitting = false;
                 this.onSubmit.emit(model);
             })

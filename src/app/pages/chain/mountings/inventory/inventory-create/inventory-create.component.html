@@ -7,6 +7,19 @@
     </div>
   </div>-->
   <form *ngIf="form" class="card-block row" [formGroup]="form" (ngSubmit)="onCreate()">
+    <div class="col-12">
+      <div class="form-group">
+        <label class="form-control-label">*车型</label>
+        <div>
+          <div *ngFor="let item of vehicles" class="btn btn-secondary btn-sm mr-1 mb-1">
+            <span>{{item.brandName}} {{item.seriesName}} {{item.name}}</span>
+            <i class="cursor-pointer fa fa-times" (click)="onVehicleRemove(item)"></i>
+          </div>
+        </div>
+        <input type="text" [hqTableTypeahead]="vehicleSource" (onSelect)="onVehicleSelect($event)" (onRemove)="onVehicleRemove($event)"
+          [columns]="vehicleColumns" multiple="true" class="form-control" placeholder="请输入车型">
+      </div>
+    </div>
     <div class="col-6">
       <div class="form-group">
         <label class="form-control-label">*仓库</label>
@@ -37,16 +50,8 @@
         <label class="form-control-label">包装规格</label>
         <input type="text" hqError='包装规格' formControlName="packageInfo" class="form-control">
       </div>
-      <div class="form-group">
-        <label class="form-control-label">备注</label>
-        <input type="text" hqError='备注' formControlName="description" class="form-control">
-      </div>
     </div>
     <div class="col-6">
-      <div class="form-group">
-        <label class="form-control-label">*车型</label>
-        <input type="text" hqError='车型' [hqTableTypeahead]="vehicleSource" [columns]="vehicleColumns" multiple="true" formControlName="vehicleName" class="form-control">
-      </div>
       <div class="form-group">
         <label class="form-control-label">*单位</label>
         <select hqError="单位" formControlName="unit" class="form-control">
@@ -70,10 +75,14 @@
         <label class="form-control-label">产地</label>
         <input type="text" hqError='产地' formControlName="madeIn" class="form-control">
       </div>
+      <div class="form-group">
+        <label class="form-control-label">备注</label>
+        <input type="text" hqError='备注' formControlName="description" class="form-control">
+      </div>
     </div>
     <div class="col-12">
       <button type="submit" [disabled]="form.invalid||submitting" class="btn btn-primary mr-3">提交</button>
-      <button type="button" (click)="onReset(model)" class="btn btn-secondary mr-3">重置</button>
+      <button type="button" (click)="onReset()" class="btn btn-secondary mr-3">重置</button>
     </div>
   </form>
 </div>

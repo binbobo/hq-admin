@@ -24,7 +24,7 @@ export class InventoryService implements BasicService<Inventory> {
       .catch(err => Promise.reject(`配件添加失败：${err}`));
   }
   update(body: Inventory): Promise<void> {
-    let url = Urls.chain.concat('/Products');
+    let url = Urls.chain.concat('/Products/', body.id);
     return this.httpService.put<void>(url, body)
       .catch(err => Promise.reject(`配件修改失败：${err}`));
   }
@@ -72,6 +72,7 @@ export class InventoryListRequest extends PagedParams {
 export class Inventory extends BasicModel {
   constructor(
     public categoryId: Array<string> = [],
+    public vehicleId: Array<string> = [],
     public number?: number,
     public storeId?: string,
     public locationName?: string,
