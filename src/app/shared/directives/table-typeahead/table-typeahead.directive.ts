@@ -20,8 +20,6 @@ export class TableTypeaheadDirective implements OnInit {
   @Input()
   private columns: Array<TableTypeaheadColumn>;
   @Input()
-  private valueSelector: string = 'id';
-  @Input()
   private pageSize: number = 10;
   @Input()
   private multiple: boolean;
@@ -30,17 +28,29 @@ export class TableTypeaheadDirective implements OnInit {
   @Output()
   private onRemove = new EventEmitter();
 
+  private paging = false;
+  private sortedKeys: Array<string> = [];
+
   constructor(
     private el: ElementRef,
     private viewContainerRef: ViewContainerRef,
     private componentFactoryResolver: ComponentFactoryResolver
-  ) { }
+  ) {
+  }
 
   @HostListener('blur', ['$event'])
   onBlur(event) {
     let result = this.component.result;
     if (!this.multiple && result && result.data && result.data.length) {
-      setTimeout(() => this.component.hide(), 500);
+      setTimeout(() => {
+        if (this.paging) {
+          this.paging = false;
+          let el = this.el.nativeElement as HTMLInputElement;
+          el.focus();
+        } else {
+          this.component.hide();
+        }
+      }, 500);
     }
   }
 
@@ -50,8 +60,6 @@ export class TableTypeaheadDirective implements OnInit {
   }
 
   private search(pageIndex = 1) {
-    this.component.hide();
-    this.component.result = null;
     let el = this.el.nativeElement as HTMLInputElement;
     if (!el.value) return;
     let param = new TypeaheadRequestParams(el.value);
@@ -68,10 +76,13 @@ export class TableTypeaheadDirective implements OnInit {
 
   ngOnInit(): void {
     if (this.columns) {
-      let selectedItem = this.columns.find(m => m.checked);
-      if (this.valueSelector === 'id' && selectedItem) {
-        this.valueSelector = selectedItem.name;
-      }
+      this.sortedKeys = this.columns
+        .sort((m, n) => {
+          m.weight = m.weight || 0;
+          n.weight = n.weight || 0;
+          return m.weight === n.weight ? 0 : n.weight - m.weight
+        })
+        .map(m => m.name);
     }
     let el = this.el.nativeElement as HTMLInputElement;
     let componentFactory = this.componentFactoryResolver.resolveComponentFactory(TableTypeaheadComponent);
@@ -83,17 +94,26 @@ export class TableTypeaheadDirective implements OnInit {
     this.component.size = this.pageSize;
     this.component.multiple = this.multiple;
     this.component.onPageChange.subscribe(params => {
+      this.paging = true;
       this.search(params.pageIndex);
     });
     Observable.fromEvent(this.el.nativeElement, 'input')
       .map((e: any) => e.target.value)
       .debounceTime(this.delay)
       .distinctUntilChanged()
-      .subscribe(value => this.search());
+      .subscribe(value => {
+        this.component.hide();
+        this.search();
+      });
     this.onSelect.subscribe((item) => {
-      if (this.valueSelector) {
-        if (!this.multiple) {
-          el.value = item[this.valueSelector];
+      let originValue = el.value;
+      if (!this.multiple) {
+        let selectedValue = this.sortedKeys
+          .filter(key => item[key])
+          .map(key => item[key].toString())
+          .find(value => value.includes(originValue));
+        if (selectedValue) {
+          el.value = selectedValue;
         }
       }
     })
@@ -103,9 +123,9 @@ export class TableTypeaheadDirective implements OnInit {
 export class TableTypeaheadColumn {
   constructor(
     public name: string,
+    public weight: number = 0,
     public title?: string,
     public maxLength?: number,
-    public checked?: boolean
   ) { }
 }
 

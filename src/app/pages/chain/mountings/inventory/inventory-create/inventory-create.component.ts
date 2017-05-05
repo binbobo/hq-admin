@@ -122,10 +122,10 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
     };
   }
 
-  public get itemColumns() {
+  public itemColumns(isName: boolean) {
     return [
-      { name: 'name', title: '名称' },
-      { name: 'code', title: '编码' },
+      { name: 'name', title: '名称', weight: isName ? 1 : 0 },
+      { name: 'code', title: '编码', weight: isName ? 0 : 1 },
       { name: 'brand', title: '品牌' },
     ];
   }
