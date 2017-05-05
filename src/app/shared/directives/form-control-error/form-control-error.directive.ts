@@ -28,18 +28,15 @@ export class FormControlErrorDirective implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    let input = this.el.nativeElement as HTMLInputElement;
     if (!this.placeholder && this.name && (this.el.nativeElement instanceof HTMLInputElement)) {
-      let input = this.el.nativeElement as HTMLInputElement;
       input.placeholder = `请输入${this.name}`;
     }
     this.name = this.name || this.formControl.name;
     let control = this.formControl;
     this.valueChange = control.valueChanges.subscribe(data => {
       this.component.errors = [];
-      if (control.invalid && (control.dirty || control.touched)) {
-        let keys = Object.keys(control.errors);
-        this.component.errors = keys.map(m => this.getError(m, control.errors));
-      }
+      this.validate(false);
     });
   }
 
@@ -47,6 +44,15 @@ export class FormControlErrorDirective implements OnInit, OnDestroy {
     if (this.valueChange) {
       this.valueChange.unsubscribe();
     }
+  }
+
+  public validate(compulsive = true): boolean {
+    let control = this.formControl;
+    if (control.invalid && (compulsive || control.dirty || control.touched)) {
+      let keys = Object.keys(control.errors);
+      this.component.errors = keys.map(m => this.getError(m, control.errors));
+    }
+    return control.valid;
   }
 
   private getError(key: string, errors: Object): string {

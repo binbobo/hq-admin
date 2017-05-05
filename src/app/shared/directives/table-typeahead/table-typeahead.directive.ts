@@ -77,6 +77,7 @@ export class TableTypeaheadDirective implements OnInit {
   ngOnInit(): void {
     if (this.columns) {
       this.sortedKeys = this.columns
+        .slice(0)
         .sort((m, n) => {
           m.weight = m.weight || 0;
           n.weight = n.weight || 0;
