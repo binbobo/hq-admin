@@ -116,6 +116,7 @@ export class OrderService implements BasicService<Order> {
     */
     getVehicleByBrand(brandName: string): Observable<Vehicle[]> {
         const url = Urls.chain.concat('/Brands/search');
+        console.log('根据品牌模糊查询车辆信息brandName:', brandName);
         return this.httpService
             .request(url, {
                 params: {
@@ -123,7 +124,7 @@ export class OrderService implements BasicService<Order> {
                 }
             })
             .map(response => {
-                // console.log('根据品牌模糊查询车辆信息：', response.json().data);
+                console.log('根据品牌模糊查询车辆信息：', response.json().data);
                 return response.json().data as Vehicle[];
             });
     }

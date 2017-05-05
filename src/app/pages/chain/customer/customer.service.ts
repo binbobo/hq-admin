@@ -25,7 +25,7 @@ export class CustomerService implements BasicService<any> {
         return this.httpService
             .request(url)
             .map(response => {
-                console.log('查询省份数据：', response.json().data);
+                // console.log('查询省份数据：', response.json().data);
                 return response.json().data as any[];
             });
     }
@@ -40,7 +40,7 @@ export class CustomerService implements BasicService<any> {
         return this.httpService
             .request(url)
             .map(response => {
-                console.log('查询省份数据：', response.json().data);
+                // console.log('查询城市或者区县数据：', response.json().data);
                 return response.json().data as any[];
             });
     }
@@ -76,7 +76,7 @@ export class CustomerService implements BasicService<any> {
             .get<ApiResult<any>>(url)
             .then(result => result.data)
             .then(data => data || Promise.reject('获取数据无效！'))
-            .catch(err => Promise.reject(`加载菜单失败：${err}`));
+            .catch(err => Promise.reject(`获取客户详情失败：${err}`));
     }
 
     public update(body: any): Promise<void> {
@@ -86,12 +86,80 @@ export class CustomerService implements BasicService<any> {
             .catch(err => Promise.reject(`更新菜单失败：${err}`));
     }
 
+    /**
+   * 根据车型模糊查询车辆信息
+   * @param {string} token
+   * @returns {Observable<Vehicle[]>}
+   * @memberOf OrderService
+   */
+    getVehicleByBrand(brandName: string): Observable<any[]> {
+        const url = Urls.chain.concat('/Brands/search');
+        console.log('根据品牌模糊查询车辆信息brandName:', brandName);
+        return this.httpService
+            .request(url, {
+                params: {
+                    'brandName': brandName
+                }
+            })
+            .map(response => {
+                console.log('根据品牌模糊查询车辆信息：', response.json().data);
+                return response.json().data as any[];
+            });
+    }
+    /**
+     * 根据车型模糊查询车辆信息
+     * @param {string} token
+     * @returns {Observable<Vehicle[]>}
+     * @memberOf OrderService
+     */
+    getVehicleBySerias(serieName: string, brandId: string): Observable<any[]> {
+        const url = Urls.chain.concat('/VehicleSeries/search');
+        return this.httpService
+            .request(url, {
+                params: {
+                    'serieName': serieName,
+                    'brandId': brandId
+                }
+            })
+            .map(response => {
+                console.log('根据车系模糊查询车辆信息：', response.json().data);
+                return response.json().data as any[];
+            });
+    }
+
+    /**
+   * 根据车型模糊查询车辆信息
+   * @param {string} token
+   * @returns {Observable<Vehicle[]>}
+   * @memberOf OrderService
+   */
+    getVehicleByModel(vehicleName: string, brandId: string, seriesId: string): Observable<any[]> {
+        const url = Urls.chain.concat('/Vehicles/search');
+        // console.log('根据车型模糊查询车辆信息参数', vehicleName, brandId, seriesId);
+        return this.httpService
+            .request(url, {
+                params: {
+                    'vehicleName': vehicleName,
+                    'brandId': brandId,
+                    'seriesId': seriesId
+                }
+            })
+            .map(response => {
+                console.log('根据车型模糊查询车辆信息：', response.json().data);
+                return response.json().data as any[];
+            });
+    }
+
+    /**
+     * 创建车主
+     * @param body 
+     */
     public create(body: any): Promise<any> {
-        const url = Urls.chain.concat('/Customers');
+        const url = Urls.chain.concat('/Customers/Vehicle');
         return this.httpService
             .post<ApiResult<any>>(url, body)
             .then(m => m.data)
-            .catch(err => Promise.reject(`添加工单失败：${err}`));
+            .catch(err => Promise.reject(`添加车主失败：${err}`));
     }
 
     /**

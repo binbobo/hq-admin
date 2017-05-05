@@ -4,7 +4,6 @@ import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, Mainte
 import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { ViewCell, LocalDataSource } from 'ng2-smart-table';
-// import { CustomMaintanceItemEditorComponent } from './custom-maintance-item-editor.component';  smart-table-add
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
@@ -14,7 +13,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 
 import * as moment from 'moment';
-import { TypeaheadRequestParams } from "app/shared/directives";
+import { TypeaheadRequestParams } from 'app/shared/directives';
 import { DataList, StorageKeys } from 'app/shared/models';
 
 
@@ -173,11 +172,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       this.workSheetForm.controls.customerName,
       this.service.getCustomerVehicleByCustomerName
     );
-    // // 根据车型获取车辆信息异步数据源初始化
-    // this.vehicleDataSource = this.initFuzzySerarchDataSource(
-    //   this.workSheetForm.controls.model,
-    //   this.service.getVehicleByModel
-    // );
+
     // 根据品牌获取车辆信息异步数据源初始化
     this.brandDataSource = this.initFuzzySerarchDataSource(
       this.workSheetForm.controls.brand,
@@ -640,6 +635,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     });
     // 车型表单域值改变事件监听
     this.workSheetForm.controls.model.valueChanges.subscribe((newValue) => {
+       // 设置当前选择的车型id为null
+      this.selectedCustomerVehicle.vehicleId = null;
     });
   }
 
@@ -699,11 +696,11 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       // 清空上次维修工单数据
       this.lastOrderData = null;
     }).catch(err => {
-      console.log(err);
+      console.log('创建车主失败：' + err);
       // 出错的话  允许再次提交
       this.enableCreateWorkSheet = true;
 
-      this.alerter.error(err);
+      this.alerter.error('创建车主失败');
     });
   }
 
