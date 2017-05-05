@@ -1,0 +1,109 @@
+<ng-template hq-alerter></ng-template>
+<div class="card">
+  <div class="card-header">
+    <span>维修领料</span>
+  </div>
+  <div class="card-block">
+    <form class="form-inline mb-2">
+      <div class="form-group mb-2">
+        <label>车牌号：</label>
+        <div>
+          <input #code [hqTableTypeahead]="codeSource" [columns]="columns" valueSelector="code" (onSelect)="onItemSelect($event)" class="form-control mx-sm-3"
+            placeholder="车牌号">
+        </div>
+      </div>
+      <div class="form-group mb-2">
+        <label class="mr-sm-2">工单号：</label>
+        <div>
+          <input #name [hqTableTypeahead]="nameSource" [columns]="columns" valueSelector="name" (onSelect)="onItemSelect($event)" class="form-control mx-sm-3"
+            placeholder="配件名称">
+        </div>
+      </div>
+      <div class="form-group mb-2">
+        <button (click)="onSearch()" class="btn btn-primary mx-sm-1" translate>选择工单</button>
+      </div>
+    </form>
+    <form class="form-inline mb-2">
+      <div class="form-group mb-2">
+        <label>车主：</label>
+        <input class="form-control mx-sm-3" [value]="" placeholder="车主">
+      </div>
+      <div class="form-group mb-2">
+        <label>VIN：</label>
+        <input class="form-control mx-sm-3" [value]="" placeholder="VIN">
+      </div>
+      <div class="form-group mb-2">
+        <label>维修类型：</label>
+        <input class="form-control mx-sm-3" [value]="" placeholder="维修类型">
+      </div>
+      <div class="form-group mb-2">
+        <label>开单时间：</label>
+        <input class="form-control mx-sm-3" [value]="" placeholder="开单时间">
+      </div>
+    </form>
+    <table class="table table-bordered table-sm table-striped">
+      <thead>
+        <tr>
+          <th translate>序号</th>
+          <th translate>维修项目</th>
+          <th translate>维修技师</th>
+          <th translate>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of list">
+          <td>{{item.number}}</td>
+          <td>{{item.brand }}</td>
+          <td>{{item.code }}</td>
+          <td>{{item.name}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="table table-bordered table-sm table-striped">
+      <thead>
+        <tr>
+          <th translate>流水号</th>
+          <th translate>序号</th>
+          <th translate>维修项目</th>
+          <th translate>品牌</th>
+          <th translate>配件编码</th>
+          <th translate>配件名称</th>
+          <th translate>规格型号</th>
+          <th translate>车型</th>
+          <th translate>仓库</th>
+          <th translate>库位</th>
+          <th translate>数量（个）</th>
+          <th translate>单价（元/个）</th>
+          <th translate>金额（元）</th>
+          <th translate>备注</th>
+          <th translate>领料人</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of list">
+          <td>{{item.number}}</td>
+          <td>{{item.brand }}</td>
+          <td>{{item.code }}</td>
+          <td>{{item.name}}</td>
+          <td>{{item.number}}</td>
+          <td>{{item.brand }}</td>
+          <td>{{item.code }}</td>
+          <td>{{item.name}}</td>
+          <td>{{item.number}}</td>
+          <td>{{item.brand }}</td>
+          <td>{{item.code }}</td>
+          <td>{{item.name}}</td>
+          <td>{{item.number}}</td>
+          <td>{{item.brand }}</td>
+          <td>{{item.code }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card-footer text-muted">
+    <button class="btn btn-primary" (click)="createModal.show()">生成发料单</button>
+    <button class="btn btn-warning" [disabled]="!selectedItems?.length" (click)="enabled()">取消</button>
+    <button class="btn btn-success" (click)="export()">挂单</button>
+    <button class="btn btn-info" (click)="export()">打印</button>
+  </div>
+</div>

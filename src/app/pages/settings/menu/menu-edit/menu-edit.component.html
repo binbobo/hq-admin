@@ -42,7 +42,7 @@
       <div class="form-control">
         <div class="form-check form-check-inline" *ngFor="let item of scopes">
           <label class="form-check-label">
-            <input class="form-check-input" (change)="onScopeSelect($event)" [attr.checked]="item.selected" type="checkbox" [value]="item.value"> {{item.text}}
+            <input class="form-check-input" (change)="onScopeSelect($event)" [attr.checked]="item.checked" type="checkbox" [value]="item.value"> {{item.text}}
           </label>
         </div>
       </div>

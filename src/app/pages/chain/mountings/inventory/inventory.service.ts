@@ -1,5 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
-import { BasicService, BasicModel, PagedParams, PagedResult } from 'app/shared/models';
+import { BasicService, BasicModel, PagedParams, PagedResult, ApiResult } from 'app/shared/models';
 import { HttpService, Urls } from 'app/shared/services';
 
 @Injectable()
@@ -12,13 +12,21 @@ export class InventoryService implements BasicService<Inventory> {
       .catch(err => Promise.reject(`获取配件列表失败：${err}`));
   }
   get(id: string): Promise<Inventory> {
-    throw new Error('Method not implemented.');
+    let url = Urls.chain.concat('/Products/', id);
+    return this.httpService.get<ApiResult<Inventory>>(url)
+      .then(result => result.data)
+      .catch(err => `获取配件详情信息失败：${err}`);
   }
   create(body: Inventory): Promise<Inventory> {
-    throw new Error('Method not implemented.');
+    let url = Urls.chain.concat('/Products');
+    return this.httpService.post<ApiResult<Inventory>>(url, body)
+      .then(result => result.data)
+      .catch(err => Promise.reject(`配件添加失败：${err}`));
   }
   update(body: Inventory): Promise<void> {
-    throw new Error('Method not implemented.');
+    let url = Urls.chain.concat('/Products');
+    return this.httpService.put<void>(url, body)
+      .catch(err => Promise.reject(`配件修改失败：${err}`));
   }
   patch(body: Inventory): Promise<void> {
     throw new Error('Method not implemented.');
@@ -63,12 +71,15 @@ export class InventoryListRequest extends PagedParams {
 
 export class Inventory extends BasicModel {
   constructor(
+    public categoryId: Array<string> = [],
     public number?: number,
     public storeId?: string,
     public locationName?: string,
     public storageLocationName?: string,
     public category?: string,
     public brand?: string,
+    public brandId?: string,
+    public brandName?: string,
     public code?: string,
     public name?: string,
     public count?: string,

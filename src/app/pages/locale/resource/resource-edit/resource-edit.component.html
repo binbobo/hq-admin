@@ -27,7 +27,7 @@
       <div class="form-control">
         <div class="form-check form-check-inline" *ngFor="let item of groups">
           <label class="form-check-label">
-            <input class="form-check-input" [attr.checked]="item.selected" (change)="onSelectGroup($event)" type="checkbox" [value]="item.value"> {{item.text}}
+            <input class="form-check-input" [attr.checked]="item.checked" (change)="onSelectGroup($event)" type="checkbox" [value]="item.value"> {{item.text}}
           </label>
         </div>
       </div>

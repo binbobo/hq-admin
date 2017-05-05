@@ -47,7 +47,7 @@ export class PagesComponent implements OnInit {
 
   onSelectLanguage(item: any) {
     if (this.language && item.culture === this.language.culture) return;
-    this.languages.forEach(m => m.selected = m === item);
+    this.languages.forEach(m => m.checked = m === item);
     this.language = item;
     this.dispatcher.emit('LanguageChanged', item);
     this.translate.use(item.culture);

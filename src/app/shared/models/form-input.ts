@@ -2,7 +2,7 @@ export class SelectOption {
     constructor(
         public text?: string,
         public value?: string,
-        public selected?: boolean
+        public checked?: boolean
     ) {
     }
 }

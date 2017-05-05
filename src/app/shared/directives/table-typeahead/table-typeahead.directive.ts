@@ -23,16 +23,10 @@ export class TableTypeaheadDirective implements OnInit {
   private valueSelector: string = 'id';
   @Input()
   private pageSize: number = 10;
+  @Input()
+  private multiple: boolean;
   @Output()
   private onSelect = new EventEmitter<any>();
-
-  @HostListener('window:scroll', ['$event'])
-  setPosition(event?) {
-    let el = this.el.nativeElement as HTMLInputElement;
-    let rect = el.getClientRects().item(0);
-    this.component.top = rect.bottom + rect.height + 4;
-    this.component.left = rect.left;
-  }
 
   constructor(
     private el: ElementRef,
@@ -40,10 +34,27 @@ export class TableTypeaheadDirective implements OnInit {
     private componentFactoryResolver: ComponentFactoryResolver
   ) { }
 
+  @HostListener('blur', ['$event'])
+  onBlur(event) {
+    let result = this.component.result;
+    if (result && result.data && result.data.length) {
+      setTimeout(() => this.component.hidden = true, 500);
+    }
+  }
+
+  @HostListener('focus', ['$event'])
+  onFocus(event) {
+    let result = this.component.result;
+    if (result && result.data && result.data.length) {
+      this.component.hidden = false;
+    }
+  }
+
   private search(pageIndex = 1) {
+    this.component.hidden = true;
+    this.component.result = null;
     let el = this.el.nativeElement as HTMLInputElement;
     if (!el.value) {
-      this.component.result = null;
       return;
     }
     let param = new TypeaheadRequestParams(el.value);
@@ -51,6 +62,7 @@ export class TableTypeaheadDirective implements OnInit {
     if (this.source) {
       this.source(param)
         .then(result => {
+          this.component.hidden = false;
           this.component.result = result;
         })
         .catch(err => console.error(err));
@@ -58,6 +70,12 @@ export class TableTypeaheadDirective implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.columns) {
+      let selectedItem = this.columns.find(m => m.checked);
+      if (this.valueSelector === 'id' && selectedItem) {
+        this.valueSelector = selectedItem.name;
+      }
+    }
     let el = this.el.nativeElement as HTMLInputElement;
     let componentFactory = this.componentFactoryResolver.resolveComponentFactory(TableTypeaheadComponent);
     let componentRef = this.viewContainerRef.createComponent(componentFactory);
@@ -65,7 +83,7 @@ export class TableTypeaheadDirective implements OnInit {
     this.component.columns = this.columns;
     this.component.onSelect = this.onSelect;
     this.component.size = this.pageSize;
-    this.setPosition();
+    this.component.multiple = this.multiple;
     this.component.onPageChange.subscribe(params => {
       this.search(params.pageIndex);
     });
@@ -76,8 +94,7 @@ export class TableTypeaheadDirective implements OnInit {
       .subscribe(value => this.search());
     this.onSelect.subscribe((item) => {
       if (this.valueSelector) {
-        let val = item[this.valueSelector];
-        el.value = val;
+        el.value = item[this.valueSelector];
       }
     })
   }
@@ -88,6 +105,7 @@ export class TableTypeaheadColumn {
     public name: string,
     public title?: string,
     public maxLength?: number,
+    public checked?: boolean
   ) { }
 }
 

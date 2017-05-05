@@ -34,7 +34,7 @@ export class ResourceEditComponent extends FormHandle<Resource> implements OnIni
       .then(data => {
         data.forEach(m => {
           let index = this.model.groups.indexOf(m.value);
-          m.selected = ~index ? true : undefined;
+          m.checked = ~index ? true : undefined;
         });
         this.groups = data;
       })
