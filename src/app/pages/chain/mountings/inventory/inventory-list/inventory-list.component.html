@@ -101,7 +101,7 @@
         <button class="close pull-right" (click)="createModal.hide()">&times;</button>
       </div>
       <div class="modal-body">
-        <hq-inventory-create (onSubmit)="onProviderCreate($event)"></hq-inventory-create>
+        <hq-inventory-create (onSubmit)="onInventoryCreate($event)"></hq-inventory-create>
       </div>
     </div>
   </div>
@@ -114,8 +114,8 @@
         <h5 class="modal-title pull-left">编辑配件信息</h5>
         <button class="close pull-right" (click)="editModal.hide()">&times;</button>
       </div>
-      <div class="modal-body">
-        <hq-inventory-edit (onSubmit)="onProviderUpdate($event)"></hq-inventory-edit>
+      <div class="modal-body" *ngIf="model">
+        <hq-inventory-edit [model]="model" (onSubmit)="onInventoryUpdate($event)"></hq-inventory-edit>
       </div>
     </div>
   </div>

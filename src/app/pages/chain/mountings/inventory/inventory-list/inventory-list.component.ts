@@ -11,10 +11,13 @@ import { ModalDirective } from 'ngx-bootstrap';
 })
 export class InventoryListComponent extends DataList<Inventory> implements OnInit {
 
+  @ViewChild('createModal')
+  private createModal: ModalDirective;
   @ViewChild('editModal')
   private editModal: ModalDirective;
   private warehouses: Array<SelectOption>;
   protected params: InventoryListRequest;
+  private model: Inventory;
 
   constructor(
     injector: Injector,
@@ -62,7 +65,25 @@ export class InventoryListComponent extends DataList<Inventory> implements OnIni
   onEdit(event: Event, item: Inventory) {
     let btn = event.target as HTMLButtonElement;
     btn.disabled = true;
-    this.editModal.show();
+    this.inventoryService.get(item.id)
+      .then(data => this.model = data)
+      .then(data => this.editModal.show())
+      .then(data => btn.disabled = false)
+      .catch(err => {
+        btn.disabled = false;
+        this.alerter.error(err);
+      });
+  }
+
+  onInventoryCreate(event) {
+    this.createModal.hide();
+    this.loadList();
+  }
+
+  onInventoryUpdate(event) {
+    this.editModal.hide();
+    this.model = null;
+    this.loadList();
   }
 
 }

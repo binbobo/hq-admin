@@ -6,7 +6,7 @@ import { FormGroup, Validators } from '@angular/forms';
 import { MountingsService, GetMountingsListRequest } from '../../../mountings/mountings.service';
 import { TypeaheadMatch } from "ngx-bootstrap";
 import { TypeaheadRequestParams } from 'app/shared/directives';
-import { TreeviewItem } from 'ngx-treeview';
+import { TreeviewItem, TreeItem } from 'ngx-treeview';
 
 @Component({
   selector: 'hq-inventory-create',
@@ -36,7 +36,7 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
     return this.formBuilder.group({
       locationName: [this.model.locationName, [Validators.maxLength(50)]],
       storeId: [this.model.storeId, [Validators.required, Validators.maxLength(36)]],
-      vehicleName: [this.model.vehicleName, [Validators.required, Validators.maxLength(30)]],
+      vehicleId: [this.model.vehicleId],
       unit: [this.model.unit, [Validators.required, Validators.maxLength(36)]],
       brandName: [this.model.brandName, [Validators.required, Validators.maxLength(50)]],
       categoryId: [this.model.categoryId],
@@ -59,7 +59,7 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
       .then(id => this.patchValue('storeId', id))
       .catch(err => this.alerter.warn(err));
     this.moutingsService.getCategoryOptions()
-      .then(options => options.map(m => new TreeviewItem(m)))
+      .then(options => options.map(m => new TreeviewItem(m as TreeItem)))
       .then(options => this.categories = options)
       .then(options => options.length ? options[0].value : '')
       .then(id => this.patchValue('categoryId', id))
@@ -82,6 +82,27 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
     this.form.patchValue({ brandId: undefined });
   }
 
+  public vehicles: Array<any> = [];
+  private _vehicles: Array<any> = [];
+
+  onVehicleSelect(event) {
+    let index = this.vehicles.findIndex(m => m.id === event.id);
+    if (!~index) {
+      this.vehicles.push(event);
+    }
+  }
+
+  onVehicleRemove(event) {
+    let index = this.vehicles.findIndex(m => m.id === event.id);
+    if (~index) {
+      this.vehicles.splice(index, 1);
+    }
+    let item = this._vehicles.find(m => m.id === event.id);
+    if (item) {
+      item.checked = false;
+    }
+  }
+
   public get vehicleColumns() {
     return [
       { name: 'brandName', title: '品牌' },
@@ -92,14 +113,19 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
 
   public get vehicleSource() {
     return (params: TypeaheadRequestParams) => {
-      return this.moutingsService.get(params.text);
+      return this.moutingsService.get(params.text)
+        .then(result => {
+          result.data.forEach(m => m.checked = this.vehicles.some(n => m.id === n.id))
+          this._vehicles = result.data;
+          return result;
+        });
     };
   }
 
-  public get itemColumns() {
+  public itemColumns(isName: boolean) {
     return [
-      { name: 'name', title: '名称' },
-      { name: 'code', title: '编码' },
+      { name: 'name', title: '名称', weight: isName ? 1 : 0 },
+      { name: 'code', title: '编码', weight: isName ? 0 : 1 },
       { name: 'brand', title: '品牌' },
     ];
   }
@@ -151,5 +177,16 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
 
   onCategorySelect(event) {
     this.form.patchValue({ categoryId: event });
+  }
+
+  onReset() {
+    this.vehicles = [];
+    super.onReset();
+  }
+
+  onCreate() {
+    let vehicles = this.vehicles.map(m => m.id);
+    this.form.patchValue({ vehicleId: vehicles });
+    return super.onCreate();
   }
 }
