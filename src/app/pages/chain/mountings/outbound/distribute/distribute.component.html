@@ -8,8 +8,9 @@
       <div class="form-group mb-2">
         <label>车牌号：</label>
         <div>
-          <input #code [hqTableTypeahead]="codeSource" [columns]="columns" valueSelector="code" (onSelect)="onnpmSelect($event)" class="form-control mx-sm-3"
-            placeholder="车牌号">
+          <!--<input #code [hqTableTypeahead]="codeSource" [columns]="columns" valueSelector="code" (onSelect)="onnpmSelect($event)" class="form-control mx-sm-3">-->
+
+            <input #code [hqTableTypeahead]="codeSource" [columns]="columns" (onSelect)="onItemSelect($event)" class="form-control mx-sm-3" placeholder="车牌号">
         </div>
       </div>
       <div class="form-group mb-2">
@@ -17,6 +18,9 @@
         <div>
           <input #name [hqTableTypeahead]="nameSource" [columns]="columns" valueSelector="name" (onSelect)="onItemSelect($event)" class="form-control mx-sm-3"
             placeholder="工单号">
+
+          <!--<input #name [hqTableTypeahead]="nameSource" [columns]="columns" (onSelect)="onItemSelect($event)" class="form-control mx-sm-3"
+            placeholder="配件名称">-->
         </div>
       </div>
       <div class="form-group mb-2">
@@ -98,7 +102,7 @@
   <div class="card-footer text-muted">
     <button class="btn btn-primary" (click)="createModal.show()">生成发料单</button>
     <button class="btn btn-warning" [disabled]="!selectedItems?.length" (click)="enabled()">取消</button>
-    <button class="btn btn-success" (click)="export()">挂单</button>
+    <button class="btn btn-success" (click)="suspend()">挂单</button>
     <button class="btn btn-info" (click)="export()">打印</button>
   </div>
 </div>
@@ -116,9 +120,9 @@
       <div class="modal-body" style='overflow: scroll;'>
         <!--导出详情begin-->
         <!---选择工单列表 start-->
-        <form >
+        <form>
           <div class="search-order">
-            <input class="form-control" placeholder="请输入工单号/车牌号"/>
+            <input class="form-control" placeholder="请输入工单号/车牌号" />
             <button class="btn btn-info">查询</button>
           </div>
         </form>

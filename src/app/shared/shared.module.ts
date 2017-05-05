@@ -11,6 +11,7 @@ import { TranslateStore } from "@ngx-translate/core/src/translate.store";
 import { MultiSelectorDirective, MultiSelectorComponent, HqAlerterComponent, HqAlerter, TableTypeaheadComponent, TableTypeaheadDirective, PrintDirective, FormControlErrorDirective, FormControlErrorComponent } from 'app/shared/directives';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgPipesModule } from 'ngx-pipes';
+import { SplitPipe } from './pipes/split.pipe';
 
 const HQ_COMPONENTS = [
     PaginationComponent,
@@ -36,7 +37,8 @@ const HQ_DIRECTIVES = [
 ]
 
 const HQ_PIPES = [
-    HtmlPipe
+    HtmlPipe,
+    SplitPipe
 ];
 
 const HQ_SERVICES = [
@@ -68,7 +70,7 @@ const HQ_SERVICES = [
         HQ_PIPES,
         HQ_DIRECTIVES,
     ],
-    declarations: [HQ_COMPONENTS, HQ_PIPES, HQ_DIRECTIVE_COMPONENTS, HQ_DIRECTIVES],
+    declarations: [HQ_COMPONENTS, HQ_PIPES, HQ_DIRECTIVE_COMPONENTS, HQ_DIRECTIVES, SplitPipe],
     entryComponents: [HQ_DIRECTIVE_COMPONENTS]
 })
 export class SharedModule {
