@@ -44,5 +44,7 @@ export class SalesListItem {
     public storeId?: string,
     public locationId?: string,
     public description?: string,
+    public locationName?: string,
+    public houseName?: string
   ) { }
 }

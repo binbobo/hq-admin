@@ -14,7 +14,7 @@ export class FormControlErrorDirective implements OnInit, OnDestroy {
   private placeholder: string;
   private valueChange: Subscription;
   private component: FormControlErrorComponent;
-  
+
   @HostListener('blur', ['$event'])
   private onblur(event: Event) {
     this.validate();
@@ -71,6 +71,11 @@ export class FormControlErrorDirective implements OnInit, OnDestroy {
     } else if (key === 'equalTo') {
       return `${this.name}输入不一致`;
     } else if (key === 'pattern') {
+      return `无效的${this.name}`;
+    } else if (key === 'digits') {
+      return `${this.name}必须是整数`;
+    } else {
+      console.log(key, errors);
       return `无效的${this.name}`;
     }
   }

@@ -7,8 +7,9 @@ import { SharedModule } from 'app/shared/shared.module';
 import { SalesService } from './sales/sales.service';
 import { SalesListComponent } from './sales/sales-list/sales-list.component';
 import { SalesCreateComponent } from './sales/sales-create/sales-create.component';
-import { ModalModule } from 'ngx-bootstrap';
+import { ModalModule, BsDropdownModule } from 'ngx-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CustomFormsModule } from "ng2-validation/dist";
 
 const routes: Routes = [
   { path: 'maintain-distribute', component: DistributeComponent },
@@ -22,8 +23,10 @@ const routes: Routes = [
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
+    CustomFormsModule,
     ModalModule.forRoot(),
     RouterModule.forChild(routes),
+    BsDropdownModule.forRoot(),
   ],
   exports: [RouterModule],
   providers: [SalesService],

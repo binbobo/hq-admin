@@ -10,14 +10,16 @@ export class PrintDirective {
 
   public print() {
     let el = this.el.nativeElement as HTMLElement;
-    let html = el.innerHTML;
+    let copy = el.cloneNode(true) as HTMLElement;
+    copy.classList.add('hq-visible');
+    copy.style.display = 'contents';
     this.hideOthers();
-    let div = document.createElement("div");
-    div.id = 'hq-printing';
-    div.innerHTML = html;
-    document.body.appendChild(div);
+    let container = document.createElement("div");
+    container.id = 'hq-printing';
+    container.appendChild(copy);
+    document.body.appendChild(container);
     window.print();
-    div.remove();
+    container.remove();
     this.showOthers();
   }
 

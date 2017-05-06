@@ -1,11 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
-.dropdown.open .dropdown-menu {
-  display: block;
-}
-
 #hq-printing .no-print{
     display: none;
+}
+
+#hq-printing .hq-visible{
+    visibility: visible!important;
 }
 
 .cursor-pointer{
@@ -21,7 +21,7 @@ select.form-control{
     padding: 0 12px;
 }
 
-.card-block table th,.card-block table td{
+.card-block table th{
     text-align: center;
 }
 

@@ -2,6 +2,31 @@
 <div class="card">
   <div class="card-header">
     <span>配件销售</span>
+    <div class="btn-group pull-right" dropdown>
+      <button dropdownToggle class="btn btn-sm btn-secondary dropdown-toggle">
+        <span>挂单信息 <span class="badge badge-default">0</span></span> 
+        <span class="caret"></span>
+      </button>
+      <div *dropdownMenu class="p-0 dropdown-menu dropdown-menu-right" role="menu">
+        <table class="m-0 table table-sm table-hover">
+          <tr>
+            <th>客户名称</th>
+            <th>开单时间</th>
+            <th>操作人</th>
+          </tr>
+          <tr (click)="alert()">
+            <td>11111111111111</td>
+            <td>22222222222222222222</td>
+            <td>333333333</td>
+          </tr>
+          <tr>
+            <td><a href="##">111111</a></td>
+            <td>22</td>
+            <td>33</td>
+          </tr>
+        </table>
+      </div>
+    </div>
   </div>
   <div class="card-block">
     <form class="form-inline mb-2">
@@ -15,15 +40,15 @@
       </div>
       <div class="form-group mb-2">
         <label class="mr-sm-2">销售员：</label>
-        <select class="form-control mx-sm-3">
-          <option *ngFor="let item of salesmen" value=""></option>
+        <select class="form-control mx-sm-3" (change)="onSellerSelect($event)">
+          <option *ngFor="let item of salesmen" [value]="item.value">{{item.text}}</option>
         </select>
       </div>
       <div class="form-group mb-2">
         <button (click)="createModal.show()" class="btn btn-primary mx-sm-1" translate>新增</button>
       </div>
     </form>
-    <table class="table table-bordered table-sm table-striped">
+    <table hqPrint #printer="hq-print" class="table table-bordered table-sm table-striped">
       <thead>
         <tr>
           <th translate>序号</th>
@@ -41,7 +66,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of items;let i=index">
-          <td>{{i+1}}</td>
+          <td class="text-center">{{i+1}}</td>
           <td>{{item.brand }}</td>
           <td>{{item.productCode }}</td>
           <td>{{item.productName}}</td>
@@ -59,7 +84,7 @@
   <div class="card-footer text-muted">
     <button class="btn btn-primary" (click)="generate($event)">生成销售出库单</button>
     <button class="btn btn-warning" (click)="cancel($event)">取消</button>
-    <button class="btn btn-info" (click)="export($event)">挂单</button>
+    <button class="btn btn-info" (click)="suspend($event)">挂单</button>
   </div>
 </div>
 
@@ -76,4 +101,3 @@
     </div>
   </div>
 </div>
-

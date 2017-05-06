@@ -3,7 +3,9 @@ import { FormHandle } from 'app/shared/models';
 import { SalesListItem } from '../sales.service';
 import { Observable } from "rxjs/Rx";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { FormControlErrorDirective } from 'app/shared/directives';
+import { FormControlErrorDirective, TypeaheadRequestParams } from 'app/shared/directives';
+import { GetMountingsListRequest, MountingsService } from '../../../mountings.service';
+import { CustomValidators } from 'ng2-validation';
 
 @Component({
   selector: 'hq-sales-create',
@@ -20,7 +22,8 @@ export class SalesCreateComponent implements OnInit {
   private controls: QueryList<FormControlErrorDirective>;
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private moutingsService: MountingsService,
   ) { }
 
   ngOnInit() {
@@ -29,17 +32,19 @@ export class SalesCreateComponent implements OnInit {
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      brand: [this.model.brand, [Validators.required]],
-      productCode: [this.model.productCode, [Validators.required]],
-      productName: [this.model.productName, [Validators.required, Validators.maxLength(50)]],
-      productId: [this.model.productId, []],//[Validators.required, Validators.maxLength(36)]],
-      productSpecification: [this.model.productSpecification, [Validators.required]],
-      storeId: [this.model.storeId, [Validators.required, Validators.maxLength(36)]],
-      locationId: [this.model.locationId, [Validators.required, Validators.maxLength(36)]],
-      count: [this.model.count, [Validators.required]],
-      price: [this.model.price, [Validators.required]],
-      amount: [this.model.amount, [Validators.required]],
-      stockCount: [this.model.stockCount, [Validators.required]],
+      brand: [this.model.brand],
+      productCode: [this.model.productCode],
+      productName: [this.model.productName],
+      productId: [this.model.productId, [Validators.required, Validators.maxLength(36)]],
+      productSpecification: [this.model.productSpecification],
+      storeId: [this.model.storeId],
+      locationId: [this.model.locationId],
+      count: [this.model.count, [Validators.required, CustomValidators.digits]],
+      price: [this.model.price],
+      amount: [this.model.amount],
+      stockCount: [this.model.stockCount],
+      locationName: [this.model.locationName],
+      houseName: [this.model.houseName],
     })
   }
 
@@ -54,6 +59,64 @@ export class SalesCreateComponent implements OnInit {
       this.formSubmit.emit(this.form.value);
       this.form.reset(this.model);
     }
+  }
+
+  public onReset() {
+    this.form = null;
+    setTimeout(() => this.buildForm(), 1);
+    return false;
+  }
+
+  public itemColumns(isName: boolean) {
+    return [
+      { name: 'name', title: '名称', weight: isName ? 1 : 0 },
+      { name: 'code', title: '编码', weight: isName ? 0 : 1 },
+      { name: 'brand', title: '品牌' },
+      { name: 'houseName', title: '仓库' },
+      { name: 'locationName', title: '库位' },
+    ];
+  }
+
+  public onItemSelect(event) {
+    let item = {
+      productCode: event.code,
+      productName: event.name,
+      productSpecification: event.specification,
+      productId: event.productId,
+      brand: event.brand,
+      brandId: event.brandId,
+      storeId: event.storeId,
+      locationId: event.locationId,
+      stockCount: event.count,
+      price: event.price,
+    }
+    this.form.patchValue(item);
+    this.calculate();
+  }
+
+  public get codeSource() {
+    return (params: TypeaheadRequestParams) => {
+      let p = new GetMountingsListRequest(params.text);
+      p.setPage(params.pageIndex, params.pageSize);
+      return this.moutingsService.getListByCodeOrName(p);
+    };
+  }
+
+  public get nameSource() {
+    return (params: TypeaheadRequestParams) => {
+      let p = new GetMountingsListRequest(undefined, params.text);
+      p.setPage(params.pageIndex, params.pageSize);
+      return this.moutingsService.getListByCodeOrName(p);
+    };
+  }
+
+  private calculate() {
+    let count = this.form.controls['count'].value;
+    let price = this.form.controls['price'].value;
+    count = Math.floor(count || 0);
+    price = Math.floor(price * 100) / 100;
+    let amount = (count * price).toFixed(2);
+    this.form.patchValue({ amount: amount });
   }
 
 }
