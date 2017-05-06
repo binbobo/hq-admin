@@ -4,7 +4,7 @@
       <span [style.width.%]="spaceWidth"></span>
       <span class="{{item.icon}}"> {{item.title}}</span>
     </a>
-    <a *ngIf="item?.children?.length" (click)="item.expand=!item.expand" class="list-group-item list-group-item-action">
+    <a *ngIf="item?.children?.length" (click)="toggle(item)" class="list-group-item list-group-item-action">
       <span [style.width.%]="spaceWidth"></span>
       <span class="{{item.icon}}"> {{item.title}}</span>
       <i class="fa" [class.fa-caret-down]="!item.expand" [class.fa-caret-up]="item.expand"></i>

@@ -1,9 +1,9 @@
-import { OnInit, Injector, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { OnInit, Injector, ViewChild, Input, Output, EventEmitter, ViewChildren, QueryList } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Location } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { BasicService } from 'app/shared/models';
-import { HqAlerter } from 'app/shared/directives';
+import { HqAlerter, FormControlErrorDirective } from 'app/shared/directives';
 
 export abstract class FormHandle<T> implements OnInit {
 
@@ -15,6 +15,8 @@ export abstract class FormHandle<T> implements OnInit {
     protected location: Location;
     @ViewChild(HqAlerter)
     protected alerter: HqAlerter;
+    @ViewChildren(FormControlErrorDirective)
+    private controls: QueryList<FormControlErrorDirective>;
     @Output()
     protected onSubmit = new EventEmitter<T>();
 
@@ -34,6 +36,16 @@ export abstract class FormHandle<T> implements OnInit {
         this.formBuilder = injector.get(FormBuilder);
     }
 
+    /**
+     * 表单是否有效（可以通过验证）
+     */
+    protected validate(): boolean {
+        let invalid = this.controls
+            .map(c => c.validate())
+            .some(m => !m);
+        return !invalid;
+    }
+
     protected patchValue(name: string, value: any) {
         this.model[name] = value;
         let obj = {};
@@ -42,7 +54,7 @@ export abstract class FormHandle<T> implements OnInit {
     }
 
     protected onReset() {
-        this.form=this.buidForm();
+        this.form = this.buidForm();
         this.form.reset(this.model);
         let f = this.form;
         this.form = null;
@@ -50,6 +62,10 @@ export abstract class FormHandle<T> implements OnInit {
     }
 
     protected onUpdate() {
+        let valid = this.validate();
+        if (!valid) {
+            return false;
+        }
         let model = this.form.value as T;
         this.submitting = true;
         return this.service
@@ -66,6 +82,10 @@ export abstract class FormHandle<T> implements OnInit {
     }
 
     protected onCreate() {
+        let valid = this.validate();
+        if (!valid) {
+            return false;
+        }
         let model = this.form.value as T;
         this.submitting = true;
         return this.service

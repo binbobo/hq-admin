@@ -87,7 +87,11 @@ export class MenuCreateComponent extends FormHandle<Menu> implements OnInit {
   }
 
   protected onCreate() {
-    return super.onCreate().then(() => this.loadParentMenus());
+    let submit = super.onCreate();
+    if (submit === false) {
+      return false;
+    }
+    return submit.then(() => this.loadParentMenus());
   }
 
   protected buidForm(): FormGroup {
