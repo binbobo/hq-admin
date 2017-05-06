@@ -1,4 +1,4 @@
-import { Directive, Input, OnInit, Host, OnDestroy, ViewContainerRef, ComponentFactoryResolver, ElementRef } from '@angular/core';
+import { Directive, Input, OnInit, Host, OnDestroy, ViewContainerRef, ComponentFactoryResolver, ElementRef, HostListener } from '@angular/core';
 import { ControlContainer, FormGroupDirective, FormGroup, FormControl, FormControlName } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import { FormControlErrorComponent } from './form-control-error/form-control-error.component';
@@ -15,6 +15,11 @@ export class FormControlErrorDirective implements OnInit, OnDestroy {
   private valueChange: Subscription;
   private component: FormControlErrorComponent;
 
+  @HostListener('blur', ['$event'])
+  private onblur(event: Event) {
+    this.validate();
+  }
+
   constructor(
     private el: ElementRef,
     private formControl: FormControlName,
@@ -28,18 +33,15 @@ export class FormControlErrorDirective implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    let input = this.el.nativeElement as HTMLInputElement;
     if (!this.placeholder && this.name && (this.el.nativeElement instanceof HTMLInputElement)) {
-      let input = this.el.nativeElement as HTMLInputElement;
       input.placeholder = `请输入${this.name}`;
     }
     this.name = this.name || this.formControl.name;
     let control = this.formControl;
     this.valueChange = control.valueChanges.subscribe(data => {
       this.component.errors = [];
-      if (control.invalid && (control.dirty || control.touched)) {
-        let keys = Object.keys(control.errors);
-        this.component.errors = keys.map(m => this.getError(m, control.errors));
-      }
+      this.validate(false);
     });
   }
 
@@ -47,6 +49,15 @@ export class FormControlErrorDirective implements OnInit, OnDestroy {
     if (this.valueChange) {
       this.valueChange.unsubscribe();
     }
+  }
+
+  public validate(compulsive = true): boolean {
+    let control = this.formControl;
+    if (control.invalid && (compulsive || control.dirty || control.touched)) {
+      let keys = Object.keys(control.errors);
+      this.component.errors = keys.map(m => this.getError(m, control.errors));
+    }
+    return control.valid;
   }
 
   private getError(key: string, errors: Object): string {
@@ -60,6 +71,11 @@ export class FormControlErrorDirective implements OnInit, OnDestroy {
     } else if (key === 'equalTo') {
       return `${this.name}输入不一致`;
     } else if (key === 'pattern') {
+      return `无效的${this.name}`;
+    } else if (key === 'digits') {
+      return `${this.name}必须是整数`;
+    } else {
+      console.log(key, errors);
       return `无效的${this.name}`;
     }
   }

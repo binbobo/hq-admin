@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpService, Urls } from 'app/shared/services';
 import { SelectOption, ListResult, PagedResult, PagedParams } from 'app/shared/models';
+import { DatePipe } from '@angular/common';
 
 @Injectable()
 export class MountingsService {
@@ -72,6 +73,15 @@ export class MountingsService {
         let url = Urls.chain.concat('/Products/GetPageListByNameOrCode');
         let search = params.serialize();
         return this.httpService.get<PagedResult<any>>(url, search)
+            .then(result => {
+                if (result.data && Array.isArray(result.data)) {
+                    result.data.forEach(m => {
+                        m.price = m.price || 0;
+                        m.price = (m.price / 100).toFixed(2);
+                    });
+                }
+                return result;
+            })
             .catch(err => Promise.reject(`获取配件信息失败：${err}`));
     }
 

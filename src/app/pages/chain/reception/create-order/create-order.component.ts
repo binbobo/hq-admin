@@ -4,7 +4,6 @@ import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, Mainte
 import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { ViewCell, LocalDataSource } from 'ng2-smart-table';
-// import { CustomMaintanceItemEditorComponent } from './custom-maintance-item-editor.component';  smart-table-add
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
@@ -14,7 +13,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 
 import * as moment from 'moment';
-import { TypeaheadRequestParams } from "app/shared/directives";
+import { TypeaheadRequestParams } from 'app/shared/directives';
 import { DataList, StorageKeys } from 'app/shared/models';
 
 
@@ -24,10 +23,8 @@ import { DataList, StorageKeys } from 'app/shared/models';
   styleUrls: ['./create-order.component.css'],
 })
 export class CreateOrderComponent extends DataList<Order> implements OnInit {
-
-
   // 车辆模糊查询  用于自动带出车型，车系，品牌信息
-  // 结果数据集，
+  // 结果数据集
   public vehicles: Vehicle[];
   // 当前选择的车辆对象
   public selectedVehicle: Vehicle;
@@ -61,27 +58,17 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   isMaintanceItemSelected = false;
   serviceSelected: string;
 
-
-  // 品牌是否选择标识, 用来记录当前选择的品牌id
-  // public selectedBrandId = null;
-  // 车系是否选择标识, 用来记录当前选择的车系id
-  // public selectedSeriesId = null;
   // 当前选择的客户车辆记录
   private selectedCustomerVehicle: any = {};
 
   // 维修类型数据
   public maintenanceTypeData: MaintenanceType[];
 
-
   // 挂起的工单
   public unsettledOrders; // Order[];
 
   // 创建工单表单FormGroup
   workSheetForm: FormGroup;
-
-  // 新增维修项目数据（临时保存） smart-table-add
-  // newMaintenanceItemData = [];
-  // stDataSource: LocalDataSource;
 
   // 新增维修项目相关(不使用smart-table)
   addNewMaintenanceItem = false; // 维修项目编辑区域是否可见标志
@@ -98,38 +85,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   // 当前登录用户信息
   public user = null;
 
-  // ng2-smart-table相关配置  smart-table-add
-  // 维修项目表头
-  // maintanceItemSettings = {
-  //   columns: {
-  //     serviceName: {
-  //       title: '维修项目名称',
-  //       type: 'html',
-  //       editor: {
-  //         type: 'custom',
-  //         component: CustomMaintanceItemEditorComponent
-  //       },
-  //     },
-  //     workHour: {
-  //       title: '维修工时(小时)',
-  //     },
-  //     price: {
-  //       title: '工时单价(元)'
-  //     },
-  //     money: {
-  //       editable: false,
-  //       title: '金额(元)'  // 需要自己计算：工时 * 单价, 不需要传给后台
-  //     },
-  //     discount: {
-  //       title: '折扣率(%)'
-  //     },
-  //     operationTime: {
-  //       editable: false,
-  //       title: '操作时间', // 不需要传给后台
-  //     }
-  //   }
-  // };
-
+  // 覆盖父类的初始化方法
   ngOnInit() { }
 
   constructor(
@@ -152,9 +108,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 构建表单
     this.createForm();
 
-    // 初始化只能表单数据源  smart-table-add
-    // this.stDataSource = new LocalDataSource();
-
     // 获取挂起的订单
     this.unsettledOrders = this.getUnsettledOrders();
 
@@ -173,11 +126,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       this.workSheetForm.controls.customerName,
       this.service.getCustomerVehicleByCustomerName
     );
-    // // 根据车型获取车辆信息异步数据源初始化
-    // this.vehicleDataSource = this.initFuzzySerarchDataSource(
-    //   this.workSheetForm.controls.model,
-    //   this.service.getVehicleByModel
-    // );
+
     // 根据品牌获取车辆信息异步数据源初始化
     this.brandDataSource = this.initFuzzySerarchDataSource(
       this.workSheetForm.controls.brand,
@@ -308,7 +257,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   loadCustomerVehicleInfo(customerVehicle) {
     // 记录当前选择的客户车辆记录
     this.selectedCustomerVehicle = customerVehicle;
-    console.log('模糊查询后, 当前选中的客户车俩信息为:', this.selectedCustomerVehicle);
+    // console.log('模糊查询后, 当前选中的客户车俩信息为:', customerVehicle); 有问题
 
     this.workSheetForm.controls.plateNo.setValue(customerVehicle.plateNo);
     this.workSheetForm.controls.brand.setValue(customerVehicle.brand);
@@ -357,7 +306,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       workHour: '',
       price: '',
       discount: 100,
-      money: '',
+      amount: '',
       operationTime: moment().format('YYYY-MM-DD hh:mm:ss')
     };
     // 维修项目编辑区域可见
@@ -374,7 +323,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       this.addNewMaintenanceItem = false;
 
       // 费用计算
-      this.fee.workHour += parseFloat(this.newMaintenanceItem.money);
+      this.fee.workHour += parseFloat(this.newMaintenanceItem.amount) / 100;
 
       // 判断生成工单按钮是否可用
       this.enableCreateWorkSheet = this.workSheetForm.valid;
@@ -391,7 +340,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       if (item.serviceId === serviceId) {
         this.newMaintenanceItemData2.splice(index, 1);
         // 费用计算
-        this.fee.workHour -= parseFloat(item.money);
+        this.fee.workHour -= parseFloat(item.amount) / 100;
         // 如果新增项目为0 设置生成工单按钮不可用
         this.enableCreateWorkSheet = (this.newMaintenanceItemData2.length > 0) && this.workSheetForm.valid;
         return;
@@ -440,17 +389,26 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     if (!this.isWorkHourValid()) {
       // this.alerter.warn('工时只能输入数字');
       this.newMaintenanceItem.workHour = '';
-      this.newMaintenanceItem.money = '';
+      this.newMaintenanceItem.amount = '';
     }
     this.calMoney();
   }
+
+  /**
+   * 挂单处理程序
+   * @memberof CreateOrderComponent
+   */
+  suspendOrder() {
+
+  }
+
   // 单价输入框 输入监听
   onPriceChange() {
     // 检查单价合法性
     if (!this.isPriceValid()) {
       // this.alerter.warn('单价只能输入数字');
       this.newMaintenanceItem.price = '';
-      this.newMaintenanceItem.money = '';
+      this.newMaintenanceItem.amount = '';
     }
 
     this.calMoney();
@@ -469,92 +427,15 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
    */
   calMoney() {
     if (this.isWorkHourValid() && this.isPriceValid()) {
-      this.newMaintenanceItem.money = this.newMaintenanceItem.workHour * this.newMaintenanceItem.price;
+      this.newMaintenanceItem.amount = this.newMaintenanceItem.workHour * this.newMaintenanceItem.price;
       if (this.isDiscountValid()) {
         const discountRatio = this.newMaintenanceItem.discount / 100;
-        console.log('discountRatio', discountRatio);
-        this.newMaintenanceItem.money = this.newMaintenanceItem.money * discountRatio;
+        this.newMaintenanceItem.amount = this.newMaintenanceItem.amount * discountRatio;
       }
-      this.newMaintenanceItem.money = this.newMaintenanceItem.money.toFixed(2);
+      this.newMaintenanceItem.amount = this.newMaintenanceItem.amount.toFixed(2) * 100; // 转成分
     }
   }
 
-
-  /**
-   * 通过智能表格新增维修项目, 添加按钮点击事件处理程序 smart-table-add
-   * @memberOf CreateOrderComponent
-   */
-  // addNewmaintanceItem(evt) {
-  //   // 获取新增的维修工项记录
-  //   const newData = evt.newData;
-  //   console.log(newData);
-
-  //   // 检查维修项目合法性
-  //   if (!newData.serviceName) {
-  //     this.alerter.warn('请选择一个维修项目');
-  //     return;
-  //   }
-  //   // 浮点数正则表达式
-  //   const reg = /^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/;
-  //   // 检查工时合法性
-  //   if (!newData.workHour || !reg.test(newData.workHour)) {
-  //     this.alerter.warn('工时只能输入数字');
-  //     return;
-  //   }
-  //   // 检查单价合法性
-  //   if (!newData.price || !reg.test(newData.price)) {
-  //     this.alerter.warn('单价只能输入数字');
-  //     return;
-  //   }
-  //   // 检查折扣率合法性
-  //   if (!newData.discount || !/^[0-9][0-9]?$|^100$/.test(newData.discount)) {
-  //     this.alerter.warn('折扣率只能0~100之间的整数');
-  //     return;
-  //   }
-
-  //   // 处理维修项目数据
-  //   newData.serviceId = sessionStorage.getItem(StorageKeys.MaintanceItemId); // 维修项目id
-  //   newData.money = newData.workHour * newData.price * (1 - newData.discount / 100); // 金额 = 工时*单价
-  //   newData.operationTime = moment().format('YYYY-MM-DD hh:mm:ss'); // 默认为当前时间
-  //   newData.type = '1';  // 类型 1表示维修项目
-
-  //   // 添加维修项目
-  //   this.newMaintenanceItemData.push(newData);
-
-  //   // 数据合法, 允许添加
-  //   evt.confirm.resolve(newData);
-
-  //   // 计算工时费
-  //   this.fee.workHour += newData.money;
-
-  //   // 判断生成工单按钮是否可用
-  //   this.enableCreateWorkSheet = this.workSheetForm.valid;
-  // }
-
-  /**
-  * 通过智能表格删除维修项目,事件处理程序  smart-table-add
-  * @memberOf CreateOrderComponent
-  */
-  // deleteMaintanceItem(evt) {
-  //   // 确认删除
-  //   evt.confirm.resolve();
-
-  //   // 移除维修项目
-  //   this.newMaintenanceItemData.forEach((item, index) => {
-  //     if (evt.data.serviceName === item.serviceName) {
-  //       // 将新增的维修项目从本地内存中移除
-  //       this.newMaintenanceItemData.splice(index, 1);
-
-  //       // 重新结算费用
-  //       this.fee.workHour -= item.money;
-
-  //       console.log('删除之后的维修项目', this.newMaintenanceItemData);
-  //       return;
-  //     }
-  //   });
-  //   // 如果新增项目为0 设置生成工单按钮不可用
-  //   this.enableCreateWorkSheet = (this.newMaintenanceItemData.length > 0) && this.workSheetForm.valid;
-  // }
 
   // 获取挂单数据
   getUnsettledOrders() {
@@ -609,7 +490,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 表单域中的值改变事件监听
     this.workSheetForm.valueChanges.subscribe(data => {
       // 只有表单域合法并且有新增维修项目数据的时候， 生成订单按钮才可用
-      // this.enableCreateWorkSheet = this.workSheetForm.valid && this.newMaintenanceItemData.length > 0; smart-table-add
       this.enableCreateWorkSheet = this.workSheetForm.valid && this.newMaintenanceItemData2.length > 0;
       // console.log('表单域改变, 表单是否合法：', this.workSheetForm.valid);
     });
@@ -640,6 +520,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     });
     // 车型表单域值改变事件监听
     this.workSheetForm.controls.model.valueChanges.subscribe((newValue) => {
+      // 设置当前选择的车型id为null
+      // this.selectedCustomerVehicle.vehicleId = null;
     });
   }
 
@@ -664,7 +546,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     workSheet.vehicleId = this.selectedCustomerVehicle.vehicleId; // 必传 (从模糊查询结果集中选择或者手动选择车型)
 
     // 2.新增维修项目数据 this.newMaintenanceItemData
-    // workSheet.maintenanceItems = this.newMaintenanceItemData;   smart-table-add
     workSheet.maintenanceItems = this.newMaintenanceItemData2;
 
     // 3. 当前登陆用户信息数据(操作员，组织id, ...)
@@ -680,16 +561,18 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       // 创建订单成功之后  做一些重置操作
 
       // 表单重置
-      this.workSheetForm.reset();
-      // 初始化开单时间和服务顾问
-      this.workSheetForm.controls.createdOnUtc.setValue(moment().format('YYYY-MM-DD hh:mm:ss'));
-      this.workSheetForm.controls.createdUserName.setValue(this.user.username);
+      this.workSheetForm.reset({
+        // 初始化开单时间和服务顾问
+        createdOnUtc: { value: moment().format('YYYY-MM-DD hh:mm:ss'), disabled: true },
+        createdUserName: this.user.username
+      });
+      // // 初始化开单时间和服务顾问
+      // this.workSheetForm.controls.createdOnUtc.setValue(moment().format('YYYY-MM-DD hh:mm:ss'));
+      // this.workSheetForm.controls.createdUserName.setValue(this.user.username);
       // 清空客户车辆信息数据   上次选择的品牌id和车系id,车型id
       this.selectedCustomerVehicle = {};
       // 清空新增维修项目数据
       this.newMaintenanceItemData2 = [];
-      // this.stDataSource.load([]);  smart-table-add
-      // this.newMaintenanceItemData = [];  smart-table-add
 
       // 重置费用
       this.fee.workHour = 0;
@@ -699,11 +582,11 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       // 清空上次维修工单数据
       this.lastOrderData = null;
     }).catch(err => {
-      console.log(err);
+      console.log('创建工单失败：' + err);
       // 出错的话  允许再次提交
       this.enableCreateWorkSheet = true;
 
-      this.alerter.error(err);
+      this.alerter.error('创建工单失败');
     });
   }
 

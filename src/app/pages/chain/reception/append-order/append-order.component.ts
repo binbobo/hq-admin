@@ -306,7 +306,10 @@ export class AppendOrderComponent {
       amount: {
         editable: false,
         title: '金额(元)',  // 需要自己计算：工时 * 单价, 不需要传给后台
-        filter: false
+        filter: false,
+        attr: {
+          disabled: true
+        }
       },
       discount: {
         title: '折扣率(%)',

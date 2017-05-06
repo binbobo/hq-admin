@@ -141,6 +141,16 @@ export class OrderListComponent extends DataList<Order> {
     });
   }
 
+  // 导出工单列表数据
+
+  // 导出当前查询条件下的车主信息
+  export() {
+    this.service.export(this.params).then(() => {
+      console.log('导出工单列表数据成功！');
+    });
+  }
+
+
   createForm() {
     // 初始化数组类型参数
     this.params.states = [];

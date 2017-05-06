@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'hq-menu',
   templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.css']
+  styleUrls: ['./menu.component.css'],
 })
 export class MenuComponent implements OnInit {
 
@@ -27,6 +27,11 @@ export class MenuComponent implements OnInit {
 
   private getRouterLink(routes: Array<any>) {
     return routes.filter(m => m && m.trim());
+  }
+
+  private toggle(item) {
+    this.menus.filter(m => m != item).forEach(m => m.expand = false);
+    item.expand = !item.expand;
   }
 
   private activeMenu(menus: Array<any>) {
