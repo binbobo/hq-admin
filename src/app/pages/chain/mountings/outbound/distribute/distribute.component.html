@@ -1,47 +1,32 @@
 <ng-template hq-alerter></ng-template>
-<div class="card">
+<div class="distribute card">
   <div class="card-header">
     <span>维修发料</span>
   </div>
   <div class="card-block">
-    <form class="form-inline mb-2">
-      <div class="form-group mb-2">
-        <label>车牌号：</label>
-        <div>
-          <!--<input #code [hqTableTypeahead]="codeSource" [columns]="columns" valueSelector="code" (onSelect)="onnpmSelect($event)" class="form-control mx-sm-3">-->
-
-            <input #code [hqTableTypeahead]="codeSource" [columns]="columns" (onSelect)="onItemSelect($event)" class="form-control mx-sm-3" placeholder="车牌号">
-        </div>
-      </div>
-      <div class="form-group mb-2">
-        <label class="mr-sm-2">工单号：</label>
-        <div>
-          <input #name [hqTableTypeahead]="nameSource" [columns]="columns" valueSelector="name" (onSelect)="onItemSelect($event)" class="form-control mx-sm-3"
-            placeholder="工单号">
-
-          <!--<input #name [hqTableTypeahead]="nameSource" [columns]="columns" (onSelect)="onItemSelect($event)" class="form-control mx-sm-3"
-            placeholder="配件名称">-->
-        </div>
-      </div>
-      <div class="form-group mb-2">
-        <button class="btn btn-primary mx-sm-1" (click)='OnChooseOrder($event, lgModal)'>选择工单</button>
-      </div>
-      <table class="table search-result">
-        <tr>
-          <td>车主:</td>
-          <td></td>
-          <td>VIN:</td>
-          <td></td>
-          <td>维修类型:</td>
-          <td></td>
-          <td>开单时间：</td>
-          <td></td>
-        </tr>
-      </table>
+    <form class="form-in input-form">
+      <input [hqTableTypeahead]="PlatNoSource" [columns]="typeaheadColumns" (onSelect)="onPlateNoSelect($event)" class="form-control input-left"
+        placeholder="请输入车牌号/工单号/车主姓名">
+      <span class='button-right'>
+          <button class="btn btn-info" type="submit">搜索</button>
+        </span>
     </form>
+    <table class="table search-table">
+      <tr>
+        <td>车主:</td>
+        <td>{{orderDetail?.customerName}}</td>
+        <td>VIN:</td>
+        <td>{{orderDetail?.vin}}</td>
+        <td>维修类型:</td>
+        <td>{{orderDetail?.typeName}}</td>
+        <td>开单时间：</td>
+        <td>{{orderDetail?.createdOnUtc |date:"yyyy/MM/dd HH:mm:ss"}}</td>
+      </tr>
+    </table>
 
-    <table class="table table-bordered table-sm table-striped">
-      <thead>
+    <a href="#" class="btn btn-warning disabled" role="button" aria-disabled="true">维修项目</a>
+    <table class="table table-bordered">
+      <thead class="thead-default">
         <tr>
           <th translate>序号</th>
           <th translate>维修项目</th>
@@ -50,114 +35,121 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td><a href="#">发料</a></td>
+        <tr *ngFor='let item of serviceData;let index=index'>
+          <td>{{index+1}}</td>
+          <td>{{item.serviceName}}</td>
+          <td>{{item.employeeNames}}</td>
+          <td><button class="btn btn-info" href="javascript:void(0)" (click)="OnAddNewItem($event,item.id,item.serviceName,item.employeeNames,item.turnEmployeeNames )">发料</button></td>
         </tr>
       </tbody>
     </table>
-    <table class="table table-bordered table-sm table-striped">
-      <thead>
+    <a href="#" class="btn btn-warning disabled" role="button" aria-disabled="true">维修发料</a>
+    <table class="table table-bordered">
+      <thead class="thead-default">
         <tr>
-          <th translate>流水号</th>
-          <th translate>序号</th>
-          <th translate>维修项目</th>
-          <th translate>品牌</th>
-          <th translate>配件编码</th>
-          <th translate>配件名称</th>
-          <th translate>规格型号</th>
-          <th translate>车型</th>
-          <th translate>仓库</th>
-          <th translate>库位</th>
-          <th translate>数量（个）</th>
-          <th translate>单价（元/个）</th>
-          <th translate>金额（元）</th>
-          <th translate>备注</th>
-          <th translate>领料人</th>
+          <th>流水号</th>
+          <th>序号</th>
+          <th>维修项目</th>
+          <th>品牌</th>
+          <th>*配件编码</th>
+          <th>*配件名称</th>
+          <th>规格型号</th>
+          <th>车型</th>
+          <th>仓库</th>
+          <th>库位</th>
+          <th>*数量（个）</th>
+          <th>单价（元/个）</th>
+          <th>金额（元）</th>
+          <th>备注</th>
+          <th>领料人</th>
+          <th>操作</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+        <tr *ngFor="let item of newMainData">
+
+          <td>{{item.a}}</td>
+          <td>{{item.number}}</td>
+          <td>{{item.serviceItem}}</td>
+          <td>{{item.brandName}}</td>
+          <td>{{item.productCode}}</td>
+          <td>{{item.productName}}</td>
+          <td>{{item.productSpecification}}</td>
+          <td>{{item.vehicleModelName}}</td>
+          <td>{{item.storeId}}</td>
+          <td>{{item.locationId}}</td>
+          <td>{{item.count}}</td>
+          <td>{{item.price/100}}</td>
+          <td>{{item.amount/100}}</td>
+          <td>{{item.description}}</td>
+          <td>{{item.createUser}}</td>
+          <td width="40">
+            <a href="javascript:void(0)" (click)="OnDelItem($event)">删除</a>
+          </td>
+        </tr>
+        <tr *ngIf="addNewItem">
+          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.a"
+              required></td>
+          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.number"
+              required></td>
+          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.serviceItem"
+              required style="width:100px;"></td>
+          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.brandName"
+              required></td>
+          <td><input placeholder="请输入配件编码" type="text" [hqTableTypeahead]="CodeSource" [columns]="CodeColumns" (onSelect)="onCodeSelect($event)"
+              class="form-control form-control-sm input-width" [(ngModel)]="newItem.productCode" required></td>
+          <td><input placeholder="请输入配件名称" type="text" [hqTableTypeahead]="NameSource" [columns]="NameColumns" (onSelect)="onNameSelect($event)"
+              class="form-control form-control-sm input-width" [(ngModel)]="newItem.productName" required></td>
+          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.productSpecification"
+              required></td>
+          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.vehicleModelName"
+              required></td>
+          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.storeId"
+              required></td>
+          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.locationId"
+              required></td>
+          <td><input placeholder="请输入数量 " type="text" class="input-width form-control form-control-sm" [(ngModel)]="newItem.count"
+              required></td>
+          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.price"
+              required></td>
+          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.amount"
+              required></td>
+          <td><input placeholder="请输入备注" type="text" class="input-width form-control form-control-sm" [(ngModel)]="newItem.description"></td>
+          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.createUser"
+              required></td>
+          <td width="75">
+            <a href="javascript:void(0)" (click)="OnConfirmItem($event)">确定</a> |
+            <a href="javascript:void(0)" (click)="addNewItem = false">取消</a>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
   <div class="card-footer text-muted">
-    <button class="btn btn-primary" (click)="createModal.show()">生成发料单</button>
-    <button class="btn btn-warning" [disabled]="!selectedItems?.length" (click)="enabled()">取消</button>
+    <button class="btn btn-primary" [disabled]="!isableAppend" (click)="OnCreatBill()">生成发料单</button>
+    <button class="btn btn-secondary" (click)="finishedOrder($event,  confirmModal)">取消</button>
     <button class="btn btn-success" (click)="suspend()">挂单</button>
-    <button class="btn btn-info" (click)="export()">打印</button>
+    <button class="btn btn-info" [disabled]="!isablePrint" (click)="export()">打印</button>
   </div>
-</div>
 
-<div bsModal #lgModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <ng-template *ngIf="isDetailModalShown" hq-alerter></ng-template>
-      <div class="modal-header">
-        <h6 class="modal-title pull-left">选择工单</h6>
-        <button type="button" class="close pull-right" (click)="lgModal.hide();isDetailModalShown=false;" aria-label="Close">
+  <!--提示是否确认退出-->
+  <div bsModal #confirmModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p class="modal-title">温馨提示</p>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="confirmModal.hide();">
           <span aria-hidden="true">&times;</span>
         </button>
-      </div>
-      <div class="modal-body" style='overflow: scroll;'>
-        <!--导出详情begin-->
-        <!---选择工单列表 start-->
-        <form>
-          <div class="search-order">
-            <input class="form-control" placeholder="请输入工单号/车牌号" />
-            <button class="btn btn-info">查询</button>
-          </div>
-        </form>
-
-        <table class="table table-hover">
-          <thead class="thead-default">
-            <tr>
-              <th>工单号</th>
-              <th>维修类型</th>
-              <th>车主</th>
-              <th>品牌</th>
-              <th>车型</th>
-              <th>车牌号</th>
-              <th>行驶里程(KM)</th>
-              <th>开单时间</th>
-              <th>预计交车时间</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of list">
-              <th scope="row">{{item.billCode}}</th>
-              <td>{{item.typeName}}</td>
-              <td>{{item.customerName}}</td>
-              <td>{{item.brand}}</td>
-              <td>{{item.model}}</td>
-              <td>{{item.plateNo}}</td>
-              <td>{{item.mileage}}</td>
-              <td>{{item.createdOnUtc}}</td>
-              <td>{{item.expectLeave}}</td>
-            </tr>
-          </tbody>
-        </table>
-        <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
-        <!---选择工单列表 end-->
-        <!--导出详情end-->
+        </div>
+        <div class="modal-body">
+          <p>您确定要取消发料吗</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm" data-dismiss="confirmModal" (click)="confirmModal.hide();">取消</button>
+          <button type="button" class="btn btn-sm" data-dismiss="modal" (click)="onConfirmFinished(confirmModal);">确定</button>
+        </div>
       </div>
     </div>
   </div>

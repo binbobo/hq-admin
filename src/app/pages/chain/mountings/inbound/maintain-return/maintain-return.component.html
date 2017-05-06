@@ -5,34 +5,25 @@
   </div>
   <div class='card-block'>
 
-    <ng-select [allowClear]="true" [items]="items" (data)="refreshValue($event)" (selected)="selected($event)">
-    </ng-select>
-    <p></p>
-    <pre>{{value.text}}</pre>
-
-    <form>
-      <div class="form-group row">
-        <label for="carNo" class="col-sm-1 col-form-label col-form-label-sm">车牌号:</label>
-        <div class="col-sm-2">
-          <input type="text" class="form-control   form-control-sm" id="carNo" placeholder="">
-        </div>
-        <label for="carOwner" class="col-sm-1 col-form-label col-form-label-sm">工单号:</label>
-        <div class="col-sm-2">
-          <input type="text" class="form-control   form-control-sm" id="carOwner" placeholder="">
-        </div>
-        <button class='btn  btn-primary choose-order' (click)='OnChooseOrder($event, lgModal)'>选择工单</button>
-      </div>
-      <table class="table search-result">
-        <tr>
-          <td>车牌号:</td>
-          <td></td>
-          <td>车主:</td>
-          <td></td>
-          <td>车主电话:</td>
-          <td></td>
-        </tr>
-      </table>
+    <form class="form-in input-form">
+      <input [hqTableTypeahead]="PlatNoSource" [columns]="typeaheadColumns" (onSelect)="onPlateNoSelect($event)" class="form-control input-left"
+        placeholder="请输入车牌号/工单号/车主姓名">
+      <span class='button-right'>
+          <button class="btn btn-info" type="submit">搜索</button>
+        </span>
     </form>
+    <table class="table search-table">
+      <tr>
+        <td>车主:</td>
+        <td>{{orderDetail?.customerName}}</td>
+        <td>VIN:</td>
+        <td>{{orderDetail?.vin}}</td>
+        <td>维修类型:</td>
+        <td>{{orderDetail?.typeName}}</td>
+        <td>开单时间：</td>
+        <td>{{orderDetail?.createdOnUtc |date:"yyyy/MM/dd HH:mm:ss"}}</td>
+      </tr>
+    </table>
     <hr>
     <!--维修项目-->
     <a href="#" class="btn btn-info  disabled" role="button" aria-disabled="true">维修项目</a>
@@ -45,10 +36,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of repairorder">
-          <th scope="row">{{item.a}}</th>
-          <td>{{item.b}}</td>
-          <td>{{item.c}}</td>
+        <tr *ngFor='let item of serviceData;let index=index'>
+          <td>{{index+1}}</td>
+          <td>{{item.serviceName}}</td>
+          <td>{{item.employeeNames}}</td>
         </tr>
       </tbody>
     </table>
@@ -95,68 +86,12 @@
         </tr>
       </tbody>
     </table>
-    <!--提交按钮-->
-    <div class="maintain-btn">
-      <button class="btn btn-primary">生成退料单</button>
-      <button class="btn btn-secondary">取消</button>
-      <button class="btn btn-warning">挂单</button>
-      <button class="btn btn-outline-info">打印</button>
-    </div>
   </div>
-
-  <div bsModal #lgModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <ng-template *ngIf="isDetailModalShown" hq-alerter></ng-template>
-        <div class="modal-header">
-          <h6 class="modal-title pull-left">选择工单</h6>
-          <button type="button" class="close pull-right" (click)="lgModal.hide();isDetailModalShown=false;" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        </div>
-        <div class="modal-body" style='overflow: scroll;'>
-          <!--导出详情begin-->
-          <!---选择工单列表 start-->
-          <form [formGroup]="ChooseOrderForm" (ngSubmit)="onSearch()">
-            <div class="search-order">
-              <input class="form-control" placeholder="请输入工单号/车牌号" [(ngModel)]="params.keyword" id="keyword" formControlName="keyword"
-              />
-              <button class="btn btn-info">查询</button>
-            </div>
-          </form>
-
-          <table class="table table-hover">
-            <thead class="thead-default">
-              <tr>
-                <th>工单号</th>
-                <th>维修类型</th>
-                <th>车主</th>
-                <th>品牌</th>
-                <th>车型</th>
-                <th>车牌号</th>
-                <th>行驶里程(KM)</th>
-                <th>开单时间</th>
-                <th>预计交车时间</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let item of list">
-                <th scope="row">{{item.billCode}}</th>
-                <td>{{item.typeName}}</td>
-                <td>{{item.customerName}}</td>
-                <td>{{item.brand}}</td>
-                <td>{{item.model}}</td>
-                <td>{{item.plateNo}}</td>
-                <td>{{item.mileage}}</td>
-                <td>{{item.createdOnUtc}}</td>
-                <td>{{item.expectLeave}}</td>
-              </tr>
-            </tbody>
-          </table>
-          <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
-          <!---选择工单列表 end-->
-          <!--导出详情end-->
-        </div>
-      </div>
-    </div>
+  <!--提交按钮-->
+  <div class="card-footer text-muted">
+    <button class="btn btn-primary" (click)="createModal.show()">生成发料单</button>
+    <button class="btn btn-warning" [disabled]="!selectedItems?.length" (click)="enabled()">取消</button>
+    <button class="btn btn-success" (click)="suspend()">挂单</button>
+    <button class="btn btn-info" (click)="export()">打印</button>
   </div>
+</div>

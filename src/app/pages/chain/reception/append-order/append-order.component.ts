@@ -14,6 +14,7 @@ import { LocalDataSource } from "ng2-smart-table";
 import { TypeaheadRequestParams } from "app/shared/directives";
 import * as moment from 'moment';
 import { CustomMaintanceItemEditorComponent } from "app/pages/chain/reception/create-order/custom-maintance-item-editor.component";
+
 @Component({
   selector: 'app-append-order',
   templateUrl: './append-order.component.html',
@@ -150,7 +151,7 @@ export class AppendOrderComponent {
     suggestData.maintenanceRecommends = this.newSuggestData;
     this.service1.suggestpost(suggestData).then(() => {
       console.log('添加建议维修项成功');
-    }).catch(err =>this.alerter.error(err, true, 2000));
+    }).catch(err => this.alerter.error(err, true, 2000));
 
   }
   /**

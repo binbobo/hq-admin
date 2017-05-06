@@ -84,6 +84,28 @@
     </table>
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
+
+    <!--提示是否确认退出-->
+  <div bsModal #confirmModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p class="modal-title">温馨提示</p>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="confirmModal.hide();">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+          <p>您确定要撤销结算吗</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm" data-dismiss="confirmModal" (click)="confirmModal.hide();">取消</button>
+          <button type="button" class="btn btn-sm" data-dismiss="modal" (click)="onConfirmFinished(confirmModal);">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <!--详情 begin-->
 <div bsModal #lgModal="bs-modal" class="modal" style='background-color: rgba(0, 0, 0, 0.47);' tabindex="-1" role="dialog"
@@ -91,7 +113,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="btn btn-secondary pull-left" aria-label="Close" [hidden]="!isShowPrint" (click)='OnPrintClick()'>打印</button>
+        <button type="button" class="btn btn-secondary pull-left" aria-label="Close" [hidden]="!isShowPrint" (click)='OnPrintClick()'>打印预览</button>
         <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

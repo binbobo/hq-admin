@@ -1,9 +1,26 @@
-.maintain td,.maintain th,.maintain a{
-    font-size:.9rem;
+.maintain .input-left{
+    display: inline-block;
+    width: 60%;
 }
-.maintain .choose-order{
-   cursor: pointer;           
- }
+.maintain .input-right{
+    display: inline-block;
+    width:20%;
+}
+.maintain .input-form{
+    width: 100%;
+    /*text-align: center;*/
+    margin-bottom:8px;
+}
+.maintain .search-table{
+        border: 1px solid #ddd;
+}
+.maintain .search-table td:nth-child(2n-1){
+    text-align: right;
+    font-size:1rem;
+}
+.maintain .search-table td:nth-child(2n){
+    background-color:rgba(221, 221, 221, 0.29);
+}
 .maintain .maintain-btn{
     text-align:center;
 }
