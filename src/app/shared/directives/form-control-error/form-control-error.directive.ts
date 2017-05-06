@@ -1,4 +1,4 @@
-import { Directive, Input, OnInit, Host, OnDestroy, ViewContainerRef, ComponentFactoryResolver, ElementRef } from '@angular/core';
+import { Directive, Input, OnInit, Host, OnDestroy, ViewContainerRef, ComponentFactoryResolver, ElementRef, HostListener } from '@angular/core';
 import { ControlContainer, FormGroupDirective, FormGroup, FormControl, FormControlName } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import { FormControlErrorComponent } from './form-control-error/form-control-error.component';
@@ -14,6 +14,11 @@ export class FormControlErrorDirective implements OnInit, OnDestroy {
   private placeholder: string;
   private valueChange: Subscription;
   private component: FormControlErrorComponent;
+  
+  @HostListener('blur', ['$event'])
+  private onblur(event: Event) {
+    this.validate();
+  }
 
   constructor(
     private el: ElementRef,

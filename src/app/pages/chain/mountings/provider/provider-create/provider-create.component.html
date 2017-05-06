@@ -6,46 +6,52 @@
       <button routerLink="../" class="btn btn-sm btn-info">返回</button>
     </div>
   </div>-->
-  <form *ngIf="form" class="card-block" [formGroup]="form" (ngSubmit)="onCreate()">
-    <div class="form-group">
-      <label class="form-control-label">*名称</label>
-      <input hqError="名称" type="text" formControlName="name" class="form-control" placeholder="请输入供应商名称">
+  <form *ngIf="form" class="card-block row" [formGroup]="form" (ngSubmit)="onCreate()">
+    <div class="col-6">
+      <div class="form-group">
+        <label class="form-control-label">*名称</label>
+        <input hqError="名称" type="text" formControlName="name" class="form-control" placeholder="请输入供应商名称">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*联系人</label>
+        <input hqError="联系人" type="text" formControlName="contactUser" class="form-control" placeholder="请输入供应商联系人">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*联系人电话</label>
+        <input hqError="联系人电话" type="tel" formControlName="tel" class="form-control" placeholder="请输入供应商联系人电话">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">代码</label>
+        <input hqError="代码" type="text" formControlName="code" class="form-control" placeholder="请输入供应商代码">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">简称</label>
+        <input hqError="简称" type="text" formControlName="shortName" class="form-control" placeholder="请输入供应商简称">
+      </div>
     </div>
-    <div class="form-group">
-      <label class="form-control-label">*联系人</label>
-      <input hqError="联系人" type="text" formControlName="contactUser" class="form-control" placeholder="请输入供应商联系人">
+    <div class="col-6">
+      <div class="form-group">
+        <label class="form-control-label">地址</label>
+        <input hqError="地址" type="text" formControlName="address" class="form-control" placeholder="请输入供应商地址">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">邮编</label>
+        <input hqError="邮编" type="text" formControlName="postal" class="form-control" placeholder="请输入供应商邮编">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">传真</label>
+        <input hqError="传真" type="text" formControlName="fax" class="form-control" placeholder="请输入供应商传真">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">备注</label>
+        <input hqError="备注" type="text" formControlName="description" class="form-control" placeholder="请输入供应商备注">
+      </div>
     </div>
-    <div class="form-group">
-      <label class="form-control-label">*联系人电话</label>
-      <input hqError="联系人电话" type="tel" formControlName="tel" class="form-control" placeholder="请输入供应商联系人电话">
-    </div>
-    <div class="form-group">
-      <label class="form-control-label">代码</label>
-      <input hqError="代码" type="text" formControlName="code" class="form-control" placeholder="请输入供应商代码">
-    </div>
-    <div class="form-group">
-      <label class="form-control-label">简称</label>
-      <input hqError="简称" type="text" formControlName="shortName" class="form-control" placeholder="请输入供应商简称">
-    </div>
-    <div class="form-group">
-      <label class="form-control-label">地址</label>
-      <input hqError="地址" type="text" formControlName="address" class="form-control" placeholder="请输入供应商地址">
-    </div>
-    <div class="form-group">
-      <label class="form-control-label">邮编</label>
-      <input hqError="邮编" type="text" formControlName="postal" class="form-control" placeholder="请输入供应商邮编">
-    </div>
-    <div class="form-group">
-      <label class="form-control-label">传真</label>
-      <input hqError="传真" type="text" formControlName="fax" class="form-control" placeholder="请输入供应商传真">
-    </div>
-    <div class="form-group">
-      <label class="form-control-label">备注</label>
-      <input hqError="备注" type="text" formControlName="description" class="form-control" placeholder="请输入供应商备注">
-    </div>
-    <div class="form-group">
-      <button type="submit" [disabled]="form.invalid||submitting" class="btn btn-primary mr-3">提交</button>
-      <button type="button" (click)="form.reset(model)" class="btn btn-secondary mr-3">重置</button>
+    <div class="col-12">
+      <div class="form-group">
+        <button type="submit" [disabled]="submitting" class="btn btn-primary mr-3">提交</button>
+        <button type="button" (click)="form.reset(model)" class="btn btn-secondary mr-3">重置</button>
+      </div>
     </div>
   </form>
 </div>

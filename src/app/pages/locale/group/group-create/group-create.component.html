@@ -20,7 +20,7 @@
       <textarea hqError="分组描述" formControlName="description" class="form-control" placeholder="请输入资源分组描述"></textarea>
     </div>
     <div class="form-group">
-      <button type="submit" [disabled]="form.invalid||submitting" class="btn btn-primary mr-3">提交</button>
+      <button type="submit" [disabled]="submitting" class="btn btn-primary mr-3">提交</button>
       <button type="button" (click)="form.reset(model)" class="btn btn-secondary mr-3">重置</button>
     </div>
   </form>

@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Input, Output, HostBinding, HostListener } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, HostListener } from '@angular/core';
 import { TableTypeaheadColumn } from './table-typeahead.directive';
 import { PagedParams, PagedResult } from 'app/shared/models';
 
