@@ -75,7 +75,7 @@
   </div>
   <div class="text-center" style="margin-bottom: 10px;">
     <input type="text" class="btn textInputBtn" readonly (click)="addNewCarOwner(lgModal)" value="新增">
-    <input type="text" class="btn textInputBtn" readonly value="导出">
+    <input type="text" class="btn textInputBtn" readonly (click)="export()" value="导出">
   </div>
 </div>
 
@@ -93,12 +93,12 @@
         <form [formGroup]="carOwnerForm" autocomplete="off" (ngSubmit)="addCarOwner()">
           <div class="form-group row">
             <label for="customerName" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车主</label>
-            <div class="col-sm-2">
-              <input type="text" value="{{selectedCustomer?.name}}" required class="form-control form-control-sm" formControlName="name" id="customerName" placeholder="车主">
+            <div class="col-sm-2"> <!-- (typeaheadOnSelect)="onCustomerNameSelect($event)" [typeahead]="nameDataSource" typeaheadOptionField="name" [(ngModel)]="fuzzySearch.nameKeyword" -->
+              <input type="text"  required class="form-control form-control-sm" formControlName="name" id="customerName" placeholder="车主">
             </div>
             <label for="sex" class="col-sm-1 col-form-label sm">性别</label>
             <div class="col-sm-2">
-              <select id="type"  value="{{selectedCustomer?.sex}}" formControlName="sex" class="form-control sm">
+              <select id="sex" formControlName="sex" class="form-control sm">
                 <option value="true" [selected]="true">男</option>
                 <option value="false">女</option>
                 <option value="">保密</option>
@@ -107,7 +107,7 @@
 
             <label for="birthday" class="col-sm-1 col-form-label col-form-label-sm">生日</label>
             <div class="input-group input-group-sm col-sm-2">
-              <input   value="{{selectedCustomer?.birthday|date:'yyyy-MM-dd'}}" class="form-control form-control-sm datetime-picker" type="text" formControlName="birthday" ngui-datetime-picker date-format="YYYY-MM-DD"
+              <input class="form-control form-control-sm datetime-picker" type="text" formControlName="birthday" ngui-datetime-picker date-format="YYYY-MM-DD"
                 date-only="true" />
               <span class="input-group-addon">
                   <i class="fa fa-calendar" aria-hidden="true"></i>
@@ -115,46 +115,46 @@
             </div>
             <label for="identityCard" class="col-sm-1 col-form-label col-form-label-sm">身份证号</label>
             <div class="col-sm-2">
-              <input type="text"   value="{{selectedCustomer?.identityCard}}" class="form-control form-control-sm" formControlName="identityCard" id="identityCard" placeholder="身份证号">
+              <input type="text" class="form-control form-control-sm" formControlName="identityCard" id="identityCard" placeholder="身份证号">
             </div>
           </div>
           <hr>
           <div class="form-group row">
             <label for="phone" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>手机号</label>
-            <div class="col-sm-2">
-              <input type="text" value="{{selectedCustomer?.phone}}"  class="form-control form-control-sm" formControlName="phone" id="phone" placeholder="手机号">
+            <div class="col-sm-2"> <!-- (typeaheadOnSelect)="onCustomerPhoneSelect($event)" [typeahead]="phoneDataSource" typeaheadOptionField="name" [(ngModel)]="fuzzySearch.phoneKeyword"  -->
+              <input type="text" required  class="form-control form-control-sm" formControlName="phone" id="phone" placeholder="手机号">
             </div>
             <label for="tel" class="col-sm-1 col-form-label col-form-label-sm">电话</label>
             <div class="col-sm-2">
-              <input type="text" value="{{selectedCustomer?.tel}}"   class="form-control form-control-sm" formControlName="tel" id="tel" placeholder="电话">
+              <input type="text" class="form-control form-control-sm" formControlName="tel" id="tel" placeholder="电话">
             </div>
             <label for="fax" class="col-sm-1 col-form-label col-form-label-sm">传真</label>
             <div class="col-sm-2">
-              <input type="text" value="{{selectedCustomer?.fax}}"   class="form-control form-control-sm" formControlName="fax" placeholder="传真" id="fax">
+              <input type="text" class="form-control form-control-sm" formControlName="fax" placeholder="传真" id="fax">
             </div>
             <label for="email" class="col-sm-1 col-form-label col-form-label-sm">Email</label>
             <div class="col-sm-2">
-              <input type="text" value="{{selectedCustomer?.email}}"   class="form-control form-control-sm" formControlName="email" id="email" placeholder="电子邮箱">
+              <input type="text" class="form-control form-control-sm" formControlName="email" id="email" placeholder="电子邮箱">
             </div>
           </div>
           <div class="form-group row">
-            <label for="provinceId" class="col-sm-1 col-form-label col-form-label-sm">省份</label>
+            <label for="province" class="col-sm-1 col-form-label col-form-label-sm">省份</label>
             <div class="col-sm-2">
-              <select #province value="{{selectedCustomer?.cityIdList.split(',')[0]}},{{selectedCustomer?.cityNameList.split(',')[0]}}" (change)="onProvinceChange(province.value)" id="provinceId"  class="form-control sm">
+              <select #province (change)="onProvinceChange(province.value)" formControlName="province" id="province"  class="form-control sm">
                 <option style="display:none">
                 <option *ngFor="let province of provincesData" value="{{province.id}},{{province.name}}">{{province.name}}</option>
               </select>
             </div>
-            <label for="cityId" class="col-sm-1 col-form-label col-form-label-sm">城市</label>
+            <label for="city" class="col-sm-1 col-form-label col-form-label-sm">城市</label>
             <div class="col-sm-2">
-              <select #city value="{{selectedCustomer?.cityIdList.split(',')[1]}},{{selectedCustomer?.cityNameList.split(',')[1]}}" (change)="onCityChange(city.value)" id="cityId"  class="form-control sm">
+              <select #city (change)="onCityChange(city.value)" formControlName="city" id="city"  class="form-control sm">
                 <option style="display:none">
                 <option *ngFor="let city of citiesData" value="{{city.id}},{{city.name}}">{{city.name}}</option>
               </select>
             </div>
-            <label for="areaId" class="col-sm-1 col-form-label col-form-label-sm">区县</label>
+            <label for="area" class="col-sm-1 col-form-label col-form-label-sm">区县</label>
             <div class="col-sm-2">
-              <select id="area" #area value="{{selectedCustomer?.cityIdList.split(',')[2]}},{{selectedCustomer?.cityNameList.split(',')[2]}}" (change)="onAreaChange(area.value)" class="form-control sm">
+              <select id="area" #area (change)="onAreaChange(area.value)" formControlName="area" class="form-control sm">
                 <option style="display:none">
                 <option  *ngFor="let area of areasData" value="{{area.id}},{{area.name}}">{{area.name}}</option>
               </select>
@@ -163,7 +163,7 @@
           <div class="form-group row">
             <label for="address" class="col-sm-1 col-form-label col-form-label-sm">详细地址</label>
             <div class="col-sm-5">
-              <input type="text" value="{{selectedCustomer?.address}}" class="form-control form-control-sm" formControlName="address" placeholder="详细地址" id="address">
+              <input type="text" class="form-control form-control-sm" formControlName="address" placeholder="详细地址" id="address">
             </div>
           </div>
         </form>
@@ -189,7 +189,9 @@
               </thead>
               <tbody>
                 <tr *ngFor="let vehicle of newVehiclesData">
-                  <td width="40">
+                  <td width="75">
+                    <!--更新车主信息的时候才显示编辑操作 编辑的时候 有车辆id  添加的时候木有-->
+                    <a *ngIf="false" href="#" (click)="$event.preventDefault();onEditVehicle(vehicle.id);">编辑|</a>
                     <a href="#" (click)="$event.preventDefault();onConfirmDelVehicle(vehicle.plateNo);">删除</a>
                   </td>
                   <td>{{vehicle.plateNo}}</td>

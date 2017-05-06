@@ -180,7 +180,7 @@ placeholder="请输入工单号/车牌号" />-->
               <td>{{item.workHour}}</td>
               <td>{{item.price}}</td>
               <td>{{item.discount}}</td>
-              <td>{{item.money}}</td>
+              <td>{{item.amount/100}}</td>
               <td>{{item.operationTime}}</td>
             </tr>
             <tr *ngIf="addNewMaintenanceItem">
@@ -193,7 +193,7 @@ placeholder="请输入工单号/车牌号" />-->
               <td><input placeholder="请输入数字" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.workHour" (keyup)="onWorkHourChange()" type="text" class="form-control form-control-sm" required></td>
               <td><input placeholder="请输入数字" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.price" (keyup)="onPriceChange()" type="text" class="form-control form-control-sm" required></td>
               <td><input placeholder="请输入0~100之间的整数" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.discount" (keyup)="onDiscountChange()" type="text" class="form-control form-control-sm" required></td>
-              <td><input [value]="newMaintenanceItem.money" type="text" class="form-control form-control-sm" [disabled]="true"></td>
+              <td><input [value]="newMaintenanceItem.amount/100" type="text" class="form-control form-control-sm" [disabled]="true"></td>
               <td><input [value]="newMaintenanceItem.operationTime" type="text" class="form-control form-control-sm" [disabled]="true"></td>
             </tr>
           </tbody>
@@ -306,7 +306,7 @@ placeholder="请输入工单号/车牌号" />-->
         </div>
         <div class="card-block text-center">
           <input type="text" class="btn textInputBtn" readonly [disabled]="!enableCreateWorkSheet" (click)="createWorkSheet()" value="生成工单">
-          <input type="text" class="btn textInputBtn" readonly value="挂单">
+          <input type="text" class="btn textInputBtn" readonly (click)="suspendOrder()" value="挂单">
         </div>
       </div>
     </tabset>

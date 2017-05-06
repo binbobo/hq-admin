@@ -41,6 +41,21 @@ export class OrderService implements BasicService<Order> {
     }
 
     /**
+ * 到处车主信息
+ * @param {PagedParams} params 
+ * @returns {Promise<any>} 
+ * 
+ * @memberOf CustomerService
+ */
+    public export(params: OrderListRequest): Promise<void> {
+        const url = Urls.chain.concat('/Maintenances/ExportToExcel');
+        console.log('导出工单列表参数以及url：', params.serialize(), url);
+        return this.httpService
+            .download(url, params.serialize(), '工单列表')
+            .catch(err => Promise.reject(`工单列表导出失败：${err}`));
+    }
+
+    /**
      * 获取维修类型数据
      * @memberOf OrderService
      */
@@ -254,7 +269,7 @@ export class OrderService implements BasicService<Order> {
      * 分页获取工单列表信息
      * @param params
      */
-    public getPagedList(params: PagedParams): Promise<PagedResult<Order>> {
+    public getPagedList(params: OrderListRequest): Promise<PagedResult<Order>> {
         const url = Urls.chain.concat('/Maintenances?', params.serialize());
         return this.httpService
             .get<PagedResult<Order>>(url)

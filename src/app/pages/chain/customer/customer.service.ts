@@ -50,7 +50,7 @@ export class CustomerService implements BasicService<any> {
      * 分页获取客户列表信息
      * @param params
      */
-    public getPagedList(params: PagedParams): Promise<PagedResult<any>> {
+    public getPagedList(params: CustomerListRequest): Promise<PagedResult<any>> {
         const url = Urls.chain.concat('/Customers?', params.serialize());
         console.log('查询客户车主列表数据url: ', url);
         return this.httpService
@@ -60,6 +60,21 @@ export class CustomerService implements BasicService<any> {
                 return result;
             })
             .catch(err => Promise.reject(`加载客户列表数据失败：${err}`));
+    }
+
+    /**
+     * 到处车主信息
+     * @param {PagedParams} params 
+     * @returns {Promise<any>} 
+     * 
+     * @memberOf CustomerService
+     */
+    public export(params: CustomerListRequest): Promise<void> {
+        const url = Urls.chain.concat('/Customers/ExportToExcel');
+        console.log('导出客户列表参数以及url：', params.serialize(), url);
+        return this.httpService
+            .download(url, params.serialize(), '客户列表')
+            .catch(err => Promise.reject(`客户列表导出失败：${err}`));
     }
 
     /**
@@ -79,11 +94,42 @@ export class CustomerService implements BasicService<any> {
             .catch(err => Promise.reject(`获取客户详情失败：${err}`));
     }
 
+    /**
+     * 
+     * @param body 更新车主信息
+     */
     public update(body: any): Promise<void> {
-        const url = Urls.chain.concat('/Customers/', body.id);
+        const url = Urls.chain.concat('/Customers/Vehicle/', body.id);
+        console.log('更新车主信息亲求url: ', url);
         return this.httpService.
             put<void>(url, body)
-            .catch(err => Promise.reject(`更新菜单失败：${err}`));
+            .catch(err => Promise.reject(`更新车主失败失败：${err}`));
+    }
+
+    /**
+ * 根据车主姓名或者电话模糊查询其它门店车主信息
+ * @param {string} token
+ * @returns {Observable<Vehicle[]>}
+ * @memberOf OrderService
+ */
+    getVehicleByNameOrPhone(token: string, type: string): Observable<any[]> {
+        const url = Urls.chain.concat('/Customers/search');
+
+        const params: any = {};
+        if (type === 'name') {
+            params.name = token;
+        } else if (type === 'phone') {
+            params.phone = token;
+        }
+        console.log('根据车主或者手机号模糊查询其它门店的车主信息:', token);
+        return this.httpService
+            .request(url, {
+                params: params
+            })
+            .map(response => {
+                console.log('根据车主或者手机号模糊查询其它门店的车主信息：', response.json().data);
+                return response.json().data as any[];
+            });
     }
 
     /**

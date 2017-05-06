@@ -44,8 +44,9 @@
         </div>
         <label class="col-sm-1 col-form-label col-form-label-sm"></label>
         <div class="col-sm-3" *ngIf="isCollapsed">
-          <button type="submit" [disabled]="false" class="btn btn-sm btn-secondary">查询</button>&nbsp;&nbsp;
-          <button type="reset" (click)="revert()" [disabled]="false" class="btn-sm btn btn-secondary">撤销</button>&nbsp;&nbsp;
+          <button type="submit" [disabled]="false" class="btn btn-sm btn-secondary mr-2">查询</button>
+          <button type="reset" (click)="revert()" class="btn-sm btn btn-secondary mr-2">撤销</button>
+          <button type="button" (click)="export()" class=" btn-sm btn btn-secondary mr-2">导出</button>
         </div>
       </div>
       <hr>
@@ -90,6 +91,7 @@
               <label for="type" class="col-sm-1 col-form-label col-form-label-sm">维修类型</label>
               <div class="col-sm-2">
                 <select id="type" [(ngModel)]="params.type" formControlName="type" class="form-control form-control-sm">
+                  <option style="display:none">
                   <option *ngFor="let type of maintenanceTypeData" value="{{type.id}}">{{type.value}}</option>
                 </select>
               </div>
@@ -137,7 +139,8 @@
               </div>
               <div class="col-sm-3" *ngIf="!isCollapsed">
                 <button type="submit" [disabled]="false" class="btn btn-sm btn-secondary mr-2">查询</button>
-                <button type="reset" (click)="revert()" [disabled]="false" class=" btn-sm btn btn-secondary mr-2 mr-2">撤销</button>
+                <button type="reset" (click)="revert()" class=" btn-sm btn btn-secondary mr-2 mr-2">撤销</button>
+                <button type="button" (click)="export()" class=" btn-sm btn btn-secondary mr-2 mr-2">导出</button>
               </div>
             </div>
           </div>

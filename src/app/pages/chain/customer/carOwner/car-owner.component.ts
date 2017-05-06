@@ -9,6 +9,7 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-car-owner',
@@ -16,6 +17,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
   styleUrls: ['./car-owner.component.css']
 })
 export class CarOwnerComponent extends DataList<any>  {
+
   // 车主列表查询表单
   customerManagementForm: FormGroup;
   // 车主列表查询参数
@@ -34,6 +36,8 @@ export class CarOwnerComponent extends DataList<any>  {
 
   // 当前选择的车主记录
   selectedCustomer = null;
+  // 当前选择的客户id  用于编辑
+  selectedCustomerId = null;
 
   // 添加车主
   // 1.省市县
@@ -43,18 +47,25 @@ export class CarOwnerComponent extends DataList<any>  {
   addNewVehicle = false; // 车辆添加区域是否可见标志]
   newVehiclesData = []; // 保存所有添加的车辆
   newVehicle = null; // 当前编辑的车辆记录
+  // 模糊查询对象
   fuzzySearch: any = {
     brandKeyword: '',
     seriesKeyword: '',
     modelKeyword: '',
+    nameKeyword: '',
+    phoneKeyword: '',
   };
 
   // 根据品牌获取车辆信息异步数据源
-  public brandDataSource: Observable<any>; // 可以加品牌model类：Brand
+  public brandDataSource: Observable<any>;
   // 根据车系获取车辆信息异步数据源
-  public seriesDataSource: Observable<any>; // 可以加车系model类：Series
+  public seriesDataSource: Observable<any>;
   // 根据车型获取车辆信息异步数据源
-  public modelDataSource: Observable<any>; // 可以加车型model类：Model
+  public modelDataSource: Observable<any>;
+  // 根据车主名称模糊匹配其它门店车主异步数据源
+  public nameDataSource: Observable<any>;
+  // 根据手机号模糊匹配其它门店车主异步数据源
+  public phoneDataSource: Observable<any>;
 
   constructor(
     injector: Injector,
@@ -70,6 +81,36 @@ export class CarOwnerComponent extends DataList<any>  {
 
     // 初始化FormGroup
     this.createForm();
+
+    // 根据车主模糊匹配其它门店车主异步数据源
+    this.nameDataSource = Observable
+      .create((observer: any) => {
+        observer.next(this.fuzzySearch.nameKeyword);
+      })
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .mergeMap((token: string) => {
+        if (!token) {
+          return Observable.of([]);
+        }
+        return this.service.getVehicleByNameOrPhone(token, 'name');
+      }) // 绑定this
+      .catch(err => console.log(err));
+
+    // 根据手机号模糊匹配其它门店车主异步数据源
+    this.phoneDataSource = Observable
+      .create((observer: any) => {
+        observer.next(this.fuzzySearch.phoneKeyword);
+      })
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .mergeMap((token: string) => {
+        if (!token) {
+          return Observable.of([]);
+        }
+        return this.service.getVehicleByNameOrPhone(token, 'phone');
+      }) // 绑定this
+      .catch(err => console.log(err));
 
     // 根据品牌获取车辆信息异步数据源初始化
     this.brandDataSource = Observable
@@ -246,7 +287,6 @@ export class CarOwnerComponent extends DataList<any>  {
 
     // 添加车主表单
     this.carOwnerForm = this.fb.group({
-      plateNo: '', // 车牌号
       name: '', // 车主
       phone: '', // 车主手机号
       sex: '', // 车主性别
@@ -255,16 +295,15 @@ export class CarOwnerComponent extends DataList<any>  {
       tel: '', // 电话
       fax: '', // 传真
       email: '', // 电子邮箱
-      // provinceId: '', // 省份id
-      // cityId: '', // 城市id
-      // areaId: '', // 区县id
+      province: '', // 省份id,name
+      city: '', // 城市id,name
+      area: '', // 区县id,name
       address: '' // 详细地址
     });
 
     // 表单域中的值改变事件监听
     this.carOwnerForm.valueChanges.subscribe(data => {
-      console.log('carOwnerForm value changed', data);
-      // 只有表单域合法 生成车主按钮才可用
+      // 只有表单域合法 保存车主按钮才可用
       this.enableSaveCustomer = this.carOwnerForm.valid;
     });
   }
@@ -308,6 +347,42 @@ export class CarOwnerComponent extends DataList<any>  {
     }
   }
 
+  // // 根据客户id查询客户信息
+  // getByCustomerId(evt) {
+  //   if (!evt.item.id) {
+  //     this.alerter.error('加载客户信息失败！缺少客户ID');
+  //     return;
+  //   }
+  //   this.service.getCustomerInfo(evt.item.id).subscribe(customer => {
+  //     console.log('根据客户id查询客户信息：', customer);
+  //     // 根据选择的车牌号带出客户车辆信息
+  //     this.loadCustomerInfo(evt.item);
+  //   });
+  // }
+
+  // // 加载客户信息
+  // loadCustomerInfo(customer) {
+
+  // }
+ 
+  /**
+   * 选择车主名称
+   * @memberof CarOwnerComponent
+   */
+  onCustomerNameSelect(evt) {
+    console.log('创建车主时选择车主姓名：', evt);
+
+    // 加载车主数据
+  }
+  /**
+ * 选择车主电话
+ * @memberof CarOwnerComponent
+ */
+  onCustomerPhoneSelect(evt) {
+    console.log('创建车主时选择车主电话：', evt);
+
+    // 加载车主数据
+  }
   // 从模糊查询下拉列表中选择一个品牌事件处理程序
   onBrandSelect(evt: TypeaheadMatch) {
     // 设置当前选择的品牌id
@@ -347,23 +422,48 @@ export class CarOwnerComponent extends DataList<any>  {
 
     console.log('提交的车主对象为：', JSON.stringify(carOwnerBody));
 
-    // // 调用后台添加车主接口
-    this.service.create(carOwnerBody).then(data => {
-      console.log('创建车主成功, 新创建的车主信息为：', JSON.stringify(data));
+    if (this.selectedCustomerId) {
+      carOwnerBody.id = this.selectedCustomerId;
+      // 更新
+      // // 调用后台更新车主接口
+      this.service.update(carOwnerBody).then(data => {
+        console.log('更新车主成功, 更新后的车主对象为：', JSON.stringify(data));
 
-      // 隐藏创建车主弹窗
-      lgModal.hide();
+        // 隐藏更新车主弹窗
+        lgModal.hide();
 
-      // 提示创建车主成功
-      this.alerter.success('创建车主成功');
-      // 刷新列表
-      this.onLoadList();
-    }).catch(err => {
-      console.log('创建车主失败：' + err);
+        // 提示更新车主成功
+        this.alerter.success('更新车主成功');
+        // 刷新列表
+        this.onLoadList();
+      }).catch(err => {
+        console.log('更新车主失败：' + err);
 
-      this.enableSaveCustomer = true;
-      this.alerter.error('创建车主失败');
-    });
+        this.enableSaveCustomer = true;
+        this.alerter.error('更新车主失败');
+      });
+    } else {
+      // 添加
+      // // 调用后台添加车主接口
+      this.service.create(carOwnerBody).then(data => {
+        console.log('创建车主成功, 新创建的车主信息为：', JSON.stringify(data));
+
+        // 隐藏创建车主弹窗
+        lgModal.hide();
+
+        // 提示创建车主成功
+        this.alerter.success('创建车主成功');
+        // 刷新列表
+        this.onLoadList();
+      }).catch(err => {
+        console.log('创建车主失败：' + err);
+
+        this.enableSaveCustomer = true;
+        this.alerter.error('创建车主失败');
+      });
+    }
+
+
   }
 
   /**
@@ -382,8 +482,8 @@ export class CarOwnerComponent extends DataList<any>  {
     this.cityIdList = [];
     this.cityNameList = [];
 
-    // 
-    this.selectedCustomer = null;
+    // 与编辑车主相区分
+    this.selectedCustomerId = null;
 
     lgModal.show();
   }
@@ -397,6 +497,9 @@ export class CarOwnerComponent extends DataList<any>  {
    * @memberOf CarOwnerComponent
    */
   customerDetail(id, lgModal) {
+    // 清空上次详情记录
+    this.selectedCustomer = null;
+
     // 根据id获取客户详细信息
     this.service.get(id).then(data => {
       console.log('根据客户id获取客户详情数据：', data);
@@ -406,6 +509,13 @@ export class CarOwnerComponent extends DataList<any>  {
 
       // 显示窗口
       lgModal.show();
+    });
+  }
+
+  // 导出当前查询条件下的车主信息
+  export() {
+    this.service.export(this.params).then(() => {
+      console.log('导出客户车主信息成功！');
     });
   }
 
@@ -419,40 +529,82 @@ export class CarOwnerComponent extends DataList<any>  {
     this.service.get(id).then(data => {
       console.log('根据客户id获取客户详情数据, 用于编辑：', data);
 
+      // 记录当前编辑的车主id
+      this.selectedCustomerId = id;
+
       // 判断当前编辑的车主是否有城市信息
-      if (data.cityIdList.split(',').length > 0) {
+      if (data.cityIdList && data.cityIdList.split(',').length > 0) {
         // 重新获取城市信息
         this.service.getChildrenData(data.cityIdList.split(',')[0])
           .subscribe(citiesData => {
             this.citiesData = citiesData;
-            if (data.cityIdList.split(',').length > 1) {
+            if (data.cityIdList && data.cityIdList.split(',').length > 1) {
               this.service.getChildrenData(data.cityIdList.split(',')[1])
                 .subscribe(areasData => this.areasData = areasData);
-
-              // 记录当前操作的客户记录
-              this.selectedCustomer = data;
-              // 初始化当前编辑的车主下面的车辆信息
-              this.newVehiclesData = this.selectedCustomer.customerVehicles;
-              // 显示窗口
-              lgModal.show();
+              this.loadCustomer(data, lgModal);
             } else {
-              // 记录当前操作的客户记录
-              this.selectedCustomer = data;
-              // 初始化当前编辑的车主下面的车辆信息
-              this.newVehiclesData = this.selectedCustomer.customerVehicles;
-              // 显示窗口
-              lgModal.show();
+              this.loadCustomer(data, lgModal);
             }
           });
       } else {
-        // 记录当前操作的客户记录
-        this.selectedCustomer = data;
-        // 初始化当前编辑的车主下面的车辆信息
-        this.newVehiclesData = this.selectedCustomer.customerVehicles;
-        // 显示窗口
-        lgModal.show();
+        this.loadCustomer(data, lgModal);
       }
     });
   }
 
+  /**
+   * 更新车主信息的时候  编辑车辆信息处理程序
+   * @param id 车辆id
+   */
+  onEditVehicle(id) {
+    console.log('当前编辑的车辆id为：', id);
+  }
+
+  // 加载客户信息 用于编辑客户
+  loadCustomer(customer, lgModal) {
+    // 组织省份数据
+    let provinceId = '', provinceName = '';
+    let cityId = '', cityName = '';
+    let areaId = '', areaName = '';
+    if (customer.cityIdList && customer.cityNameList) {
+      this.cityIdList = customer.cityIdList.split(',');
+      this.cityNameList = customer.cityNameList.split(',');
+
+      if (this.cityIdList[0]) {
+        provinceId = this.cityIdList[0];
+        provinceName = this.cityNameList[0];
+      }
+      if (this.cityIdList[1]) {
+        cityId = this.cityIdList[1];
+        cityName = this.cityNameList[1];
+      }
+      if (this.cityIdList[2]) {
+        areaId = this.cityIdList[2];
+        areaName = this.cityNameList[2];
+      }
+    } else {
+      this.cityIdList = [];
+      this.cityNameList = [];
+    }
+    // 初始化车主表单数据
+    this.carOwnerForm.setValue({
+      name: customer.name || '',
+      phone: customer.phone || '',
+      sex: customer.sex || '',
+      birthday: customer.birthday ? moment(customer.birthday).format('YYYY-MM-DD') : '',
+      identityCard: customer.identityCard || '',
+      tel: customer.tel || '',
+      fax: customer.fax || '',
+      email: customer.email || '',
+      province: provinceId + ',' + provinceName || '',
+      city: cityId + ',' + cityName || '',
+      area: areaId + ',' + areaName || '',
+      address: customer.address || '',
+    });
+
+    // 初始化当前编辑的车主下面的车辆信息
+    this.newVehiclesData = customer.customerVehicles;
+    // 显示窗口
+    lgModal.show();
+  }
 }
