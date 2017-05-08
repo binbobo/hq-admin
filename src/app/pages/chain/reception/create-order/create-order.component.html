@@ -2,15 +2,16 @@
 <div class="card">
   <div class="card-header">
     创建工单
-    <input container="body" type="text" value="我的挂单 ({{unsettledOrders?.length}})" #pop="bs-popover" readonly placement="bottom"
-      [popover]="popTemplate" class="pull-right btn btn-sm textInputBtn" style="margin-right: 55px;">
+    <input container="body" type="text" value="我的挂单 ({{suspendedOrders?.length}})" #pop="bs-popover" readonly placement="bottom"
+      [popover]="popTemplate" class="pull-right btn btn-sm textInputBtn" style="margin-right: 105px;">
     <!--挂单列模板-->
     <template #popTemplate>
       <div class="list-group">
-        <a *ngFor="let order of unsettledOrders" (click)="loadUnsettledOrderInfo(order, pop)" class="list-group-item list-group-item-action">
-          <span class="mr-2">{{order.carOwner}}</span>
-          <span class="mr-2">{{order.carOwnerPhone}}</span>
-          <span class="mr-2">{{order.carNo}}</span>
+        <a *ngFor="let order of suspendedOrders" (click)="loadSuspendedOrderInfo($event, order, pop)" class="list-group-item list-group-item-action">
+          <span class="mr-2">{{order.customerName}}</span> 
+          <span class="mr-2">{{order.plateNo}} </span>
+          <span class="mr-2">{{order.phone}}</span>
+          <button class="ml-2 btn btn-sm btn-danger my-sm"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </a>
       </div>
     </template>
@@ -23,16 +24,13 @@
       <div class="form-group row">
         <label for="plateNo" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车牌号</label>
         <div class="col-sm-2">
-          <!--<input [hqTableTypeahead]="typeaheadSource" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)" class="form-control"
-placeholder="请输入工单号/车牌号" />-->
-          <input (typeaheadOnSelect)="plateNoOnSelect($event)" [typeahead]="plateNoDataSource" typeaheadOptionField="plateNo" required
-            type="text" class="form-control form-control-sm" formControlName="plateNo" id="plateNo" placeholder="输入 12 测试">
+          <input [hqTableTypeahead]="plateNotypeaheadSource" [columns]="typeaheadColumns" (onSelect)="plateNoOnSelect($event)" class="form-control form-control-sm" formControlName="plateNo" id="plateNo" type="text" required placeholder="请输入车牌号" />
         </div>
         <label for="customerName" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车主</label>
         <div class="col-sm-2">
-          <input typeaheadOptionField="customerName" [typeaheadItemTemplate]="customCustomerVehicleTemplate" (typeaheadOnSelect)="onCustomerNameSelect($event)"
-            [typeahead]="customerNameDataSource" type="text" required class="form-control form-control-sm" formControlName="customerName"
+          <input [hqTableTypeahead]="customerNametypeaheadSource" [columns]="typeaheadColumns" (onSelect)="onCustomerNameSelect($event)" type="text" required class="form-control form-control-sm" formControlName="customerName"
             id="customerName" placeholder="输入字母 ll 测试">
+
         </div>
         <!--根据车主查询客户车辆信息下拉列表，自定义显示模板 let-model="item"遍历集合, 引用记录 -->
         <template #customCustomerVehicleTemplate let-model="item" let-index="index">
@@ -78,8 +76,8 @@ placeholder="请输入工单号/车牌号" />-->
         </div>
         <label for="series" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车系</label>
         <div class="col-sm-2">
-          <input (typeaheadOnSelect)="onSeriesSelect($event)" [typeahead]="seriesDataSource" typeaheadOptionField="name"
-            required type="text" class="form-control form-control-sm" formControlName="series" id="series" placeholder="输入 奥迪/大众  测试">
+          <input (typeaheadOnSelect)="onSeriesSelect($event)" [typeahead]="seriesDataSource" typeaheadOptionField="name" required type="text"
+            class="form-control form-control-sm" formControlName="series" id="series" placeholder="输入 奥迪/大众  测试">
         </div>
       </div>
       <div class="form-group row">
@@ -90,9 +88,7 @@ placeholder="请输入工单号/车牌号" />-->
         </div>
         <label for="vin" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>VIN</label>
         <div class="col-sm-2">
-          <!--(typeaheadOnSelect)="onVinSelect($event)" [typeahead]="vinDataSource" typeaheadOptionField="vin"-->
-          <input type="text" class="form-control form-control-sm"
-            formControlName="vin" id="vin" placeholder="VIN">
+          <input type="text" class="form-control form-control-sm" formControlName="vin" id="vin" placeholder="VIN">
         </div>
         <label for="validate" class="col-sm-1 col-form-label col-form-label-sm">验车日期</label>
         <div class="input-group input-group-sm col-sm-2">
@@ -188,11 +184,14 @@ placeholder="请输入工单号/车牌号" />-->
                 <a href="#" (click)="onConfirmAddNewMaintenanceItem($event)">确定</a> |
                 <a href="#" (click)="addNewMaintenanceItem = false">取消</a>
               </td>
-              <td><input placeholder="输入 更换  进行测试" (blur) = "onServiceBlur(maintanceItem)"
-            (change) = "onServiceChange()" (typeaheadOnSelect)="serviceTypeaheadOnSelect($event)" [typeahead]="serviceDataSource" typeaheadOptionField="name" [(ngModel)]="newMaintenanceItem.serviceName" type="text" class="form-control form-control-sm" required></td>
-              <td><input placeholder="请输入数字" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.workHour" (keyup)="onWorkHourChange()" type="text" class="form-control form-control-sm" required></td>
-              <td><input placeholder="请输入数字" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.price" (keyup)="onPriceChange()" type="text" class="form-control form-control-sm" required></td>
-              <td><input placeholder="请输入0~100之间的整数" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.discount" (keyup)="onDiscountChange()" type="text" class="form-control form-control-sm" required></td>
+              <td><input placeholder="输入 更换  进行测试" (blur)="onServiceBlur()" (change)="onServiceChange()" [hqTableTypeahead]="serviceNametypeaheadSource" [columns]="serviceNameTypeaheadColumns" (onSelect)="serviceTypeaheadOnSelect($event)"  [(ngModel)]="newMaintenanceItem.serviceName"
+                  type="text" class="form-control form-control-sm" required></td>
+              <td><input placeholder="请输入数字" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.workHour"
+                  (keyup)="onWorkHourChange()" type="text" class="form-control form-control-sm" required></td>
+              <td><input placeholder="请输入数字" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.price"
+                  (keyup)="onPriceChange()" type="text" class="form-control form-control-sm" required></td>
+              <td><input placeholder="请输入0~100之间的整数" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.discount"
+                  (keyup)="onDiscountChange()" type="text" class="form-control form-control-sm" required></td>
               <td><input [value]="newMaintenanceItem.amount/100" type="text" class="form-control form-control-sm" [disabled]="true"></td>
               <td><input [value]="newMaintenanceItem.operationTime" type="text" class="form-control form-control-sm" [disabled]="true"></td>
             </tr>
@@ -201,11 +200,6 @@ placeholder="请输入工单号/车牌号" />-->
         <div>
           <button class="btn btn-sm btn-secondary mr-2" (click)="addNewmaintanceItem2()" placement="right">新增</button>
         </div>
-        <!--<template tabHeading>
-          <span class="asterisk mr-1">*</span>维修项目
-        </template>
-        <smart-table (deleteConfirm)="deleteMaintanceItem($event)" [source]="stDataSource" (createConfirm)="addNewmaintanceItem($event)"
-          [settings]="maintanceItemSettings"></smart-table>-->
       </tab>
       <tab heading="上次维修记录">
         <table class="table table-hover table-bordered table-sm">
@@ -306,7 +300,7 @@ placeholder="请输入工单号/车牌号" />-->
         </div>
         <div class="card-block text-center">
           <input type="text" class="btn textInputBtn" readonly [disabled]="!enableCreateWorkSheet" (click)="createWorkSheet()" value="生成工单">
-          <input type="text" class="btn textInputBtn" readonly (click)="suspendOrder()" value="挂单">
+          <input type="text" class="btn textInputBtn" readonly [disabled]="!enableSuspendWorkSheet" (click)="suspendOrder()" value="挂单">
         </div>
       </div>
     </tabset>

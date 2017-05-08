@@ -97,35 +97,35 @@ export class CarOwnerComponent extends DataList<any>  {
       }) // 绑定this
       .catch(err => console.log(err));
 
-    // 根据手机号模糊匹配其它门店车主异步数据源
-    this.phoneDataSource = Observable
-      .create((observer: any) => {
-        observer.next(this.fuzzySearch.phoneKeyword);
-      })
-      .debounceTime(300)
-      .distinctUntilChanged()
-      .mergeMap((token: string) => {
-        if (!token) {
-          return Observable.of([]);
-        }
-        return this.service.getVehicleByNameOrPhone(token, 'phone');
-      }) // 绑定this
-      .catch(err => console.log(err));
+    // // 根据手机号模糊匹配其它门店车主异步数据源
+    // this.phoneDataSource = Observable
+    //   .create((observer: any) => {
+    //     observer.next(this.fuzzySearch.phoneKeyword);
+    //   })
+    //   .debounceTime(300)
+    //   .distinctUntilChanged()
+    //   .mergeMap((token: string) => {
+    //     if (!token) {
+    //       return Observable.of([]);
+    //     }
+    //     return this.service.getVehicleByNameOrPhone(token, 'phone');
+    //   }) // 绑定this
+    //   .catch(err => console.log(err));
 
-    // 根据品牌获取车辆信息异步数据源初始化
-    this.brandDataSource = Observable
-      .create((observer: any) => {
-        observer.next(this.fuzzySearch.brandKeyword);
-      })
-      .debounceTime(300)
-      .distinctUntilChanged()
-      .mergeMap((token: string) => {
-        if (!token) {
-          return Observable.of([]);
-        }
-        return this.service.getVehicleByBrand(token);
-      }) // 绑定this
-      .catch(err => console.log(err));
+    // // 根据品牌获取车辆信息异步数据源初始化
+    // this.brandDataSource = Observable
+    //   .create((observer: any) => {
+    //     observer.next(this.fuzzySearch.brandKeyword);
+    //   })
+    //   .debounceTime(300)
+    //   .distinctUntilChanged()
+    //   .mergeMap((token: string) => {
+    //     if (!token) {
+    //       return Observable.of([]);
+    //     }
+    //     return this.service.getVehicleByBrand(token);
+    //   }) // 绑定this
+    //   .catch(err => console.log(err));
 
     // 根据车系获取车辆信息异步数据源初始化
     this.seriesDataSource = Observable
@@ -586,21 +586,12 @@ export class CarOwnerComponent extends DataList<any>  {
       this.cityIdList = [];
       this.cityNameList = [];
     }
+    customer.province = provinceId + ',' + provinceName;
+    customer.city = cityId + ',' + cityName;
+    customer.area = areaId + ',' + areaName;
+    customer.birthday = moment(customer.birthday).format('YYYY-MM-DD');
     // 初始化车主表单数据
-    this.carOwnerForm.setValue({
-      name: customer.name || '',
-      phone: customer.phone || '',
-      sex: customer.sex || '',
-      birthday: customer.birthday ? moment(customer.birthday).format('YYYY-MM-DD') : '',
-      identityCard: customer.identityCard || '',
-      tel: customer.tel || '',
-      fax: customer.fax || '',
-      email: customer.email || '',
-      province: provinceId + ',' + provinceName || '',
-      city: cityId + ',' + cityName || '',
-      area: areaId + ',' + areaName || '',
-      address: customer.address || '',
-    });
+    this.carOwnerForm.patchValue(customer);
 
     // 初始化当前编辑的车主下面的车辆信息
     this.newVehiclesData = customer.customerVehicles;

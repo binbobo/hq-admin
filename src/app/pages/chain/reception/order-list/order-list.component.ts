@@ -126,15 +126,15 @@ export class OrderListComponent extends DataList<Order> {
 
       // 工时费： 维修项目金额总和
       this.selectedOrder.workHourFee = data.serviceOutputs.reduce((accumulator, currentValue) => {
-        return accumulator + (currentValue.workHour * currentValue.price);
+        return accumulator + (currentValue.amount / 100);
       }, 0);
       // 材料费： 维修配件金额总和
       this.selectedOrder.materialFee = data.productOutputs.reduce((accumulator, currentValue) => {
-        return accumulator + (currentValue.count * currentValue.price);
+        return accumulator + (currentValue.amount / 100);
       }, 0);
       // 其它费： 0
       this.selectedOrder.otherFee = 0;
-      // 总计费： 
+      // 总计费：
       this.selectedOrder.sumFee = this.selectedOrder.workHourFee + this.selectedOrder.materialFee + this.selectedOrder.otherFee;
       // 显示窗口
       modalDialog.show();
