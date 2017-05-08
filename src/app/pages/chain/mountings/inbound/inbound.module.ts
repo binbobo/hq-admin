@@ -12,7 +12,6 @@ import { AlertModule } from 'ngx-bootstrap/alert';
 import { ModalModule } from 'ngx-bootstrap';
 import { NguiDatetimePickerModule } from '@ngui/datetime-picker';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
-import { SelectModule } from 'ng2-select';
 import { MaintainReturnService } from "app/pages/chain/mountings/inbound/maintain-return/maintain-return.service";
 @NgModule({
   imports: [
@@ -25,7 +24,6 @@ import { MaintainReturnService } from "app/pages/chain/mountings/inbound/maintai
     AlertModule.forRoot(),
     TypeaheadModule.forRoot(),
     ModalModule.forRoot(),
-    SelectModule,
     SharedModule,
     ReactiveFormsModule,
     NguiDatetimePickerModule
