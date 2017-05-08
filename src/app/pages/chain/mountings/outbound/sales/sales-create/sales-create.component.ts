@@ -6,6 +6,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FormControlErrorDirective, TypeaheadRequestParams } from 'app/shared/directives';
 import { GetMountingsListRequest, MountingsService } from '../../../mountings.service';
 import { CustomValidators } from 'ng2-validation';
+import { CentToYuanPipe } from "app/shared/pipes";
 
 @Component({
   selector: 'hq-sales-create',
@@ -15,6 +16,7 @@ import { CustomValidators } from 'ng2-validation';
 export class SalesCreateComponent implements OnInit {
 
   private form: FormGroup;
+  private converter: CentToYuanPipe = new CentToYuanPipe();
   @Output()
   private formSubmit = new EventEmitter<SalesListItem>();
   private model: SalesListItem = new SalesListItem();
@@ -32,19 +34,19 @@ export class SalesCreateComponent implements OnInit {
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      brand: [this.model.brand],
+      brand: [this.model.brand, [Validators.required]],
       productCode: [this.model.productCode],
       productName: [this.model.productName],
       productId: [this.model.productId, [Validators.required, Validators.maxLength(36)]],
-      productSpecification: [this.model.productSpecification],
+      productSpecification: [this.model.productSpecification, [Validators.required]],
       storeId: [this.model.storeId],
       locationId: [this.model.locationId],
       count: [this.model.count, [Validators.required, CustomValidators.digits]],
       price: [this.model.price],
       amount: [this.model.amount],
-      stockCount: [this.model.stockCount],
-      locationName: [this.model.locationName],
-      houseName: [this.model.houseName],
+      stockCount: [this.model.stockCount, [Validators.required]],
+      locationName: [this.model.locationName, [Validators.required]],
+      houseName: [this.model.houseName, [Validators.required]],
     })
   }
 
@@ -86,10 +88,13 @@ export class SalesCreateComponent implements OnInit {
       brand: event.brand,
       brandId: event.brandId,
       storeId: event.storeId,
+      houseName: event.houseName,
       locationId: event.locationId,
+      locationName: event.locationName,
       stockCount: event.count,
       price: event.price,
     }
+    Object.assign(this.model, item);
     this.form.patchValue(item);
     this.calculate();
   }
@@ -114,9 +119,9 @@ export class SalesCreateComponent implements OnInit {
     let count = this.form.controls['count'].value;
     let price = this.form.controls['price'].value;
     count = Math.floor(count || 0);
-    price = Math.floor(price * 100) / 100;
-    let amount = (count * price).toFixed(2);
-    this.form.patchValue({ amount: amount });
+    price = Math.floor(price || 0);
+    let amount = (count || 0) * (price || 0);
+    this.form.patchValue({ amount: amount, count: count, price: price });
   }
 
 }

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ReceiveComponent } from './receive.component';
+import { ReceiveListComponent } from './receive-list.component';
 
-describe('ReceiveComponent', () => {
-  let component: ReceiveComponent;
-  let fixture: ComponentFixture<ReceiveComponent>;
+describe('ReceiveListComponent', () => {
+  let component: ReceiveListComponent;
+  let fixture: ComponentFixture<ReceiveListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReceiveComponent ]
+      declarations: [ ReceiveListComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ReceiveComponent);
+    fixture = TestBed.createComponent(ReceiveListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
