@@ -5,7 +5,6 @@ import { AssignOrderComponent } from './assign-order/assign-order.component';
 import { BillOrderComponent } from './bill-order/bill-order.component';
 import { AppendOrderComponent } from './append-order/append-order.component';
 import { CreateOrderComponent } from './create-order/create-order.component';
-import { CustomMaintanceItemEditorComponent } from './create-order/custom-maintance-item-editor.component';
 import { PrintOrderComponent } from "app/pages/chain/reception/bill-order/print-order/print-order.component";
 
 const routes: Routes = [
@@ -29,5 +28,5 @@ const routes: Routes = [
 })
 export class ReceptionRoutingModule { }
 
-export const routedComponents = [CustomMaintanceItemEditorComponent, OrderListComponent, AssignOrderComponent, CreateOrderComponent, BillOrderComponent, AppendOrderComponent,PrintOrderComponent];
+export const routedComponents = [OrderListComponent, AssignOrderComponent, CreateOrderComponent, BillOrderComponent, AppendOrderComponent,PrintOrderComponent];
 

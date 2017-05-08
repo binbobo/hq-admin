@@ -23,7 +23,7 @@ export class BillOrderComponent extends DataList<any>{
     workHourFee = 0;
     isShowCost = false;
     isShowCostDetail = false;
-    isShowPrint=false;
+    isShowPrint = false;
     public user = null;
     constructor(
         private router: Router,
@@ -58,7 +58,7 @@ export class BillOrderComponent extends DataList<any>{
     orderDetailsDialog(evt, id, dialog) {
         this.isShowCostDetail = false;
         this.isShowCost = true;
-        this.isShowPrint=false;
+        this.isShowPrint = false;
         evt.preventDefault();
         // 显示窗口
         dialog.show();
@@ -80,17 +80,25 @@ export class BillOrderComponent extends DataList<any>{
             // 其它费： 0
             this.otherFee = 0;
             // 总计费： 
-            this.sumFee =(data.workHourCost+data.materialCost+this.otherFee)/100;
+            this.sumFee = (data.workHourCost + data.materialCost + this.otherFee) / 100;
             // this.billPrice = this.sumFee;           
         })
-       
+
     }
     // 点击撤销结算事件
-    unBill(evt, id) {
-        console.log(id)
+    finishedOrder(evt, id, confirmModal) {
         evt.preventDefault();
-        this.service.put(id).then(() => {
-            console.log("撤销结算成功"),this.onLoadList()
+        // 显示确认框
+        confirmModal.show();
+
+        // 记录id
+        confirmModal.id = id;
+    }
+    unBill(confirmModal) {
+        confirmModal.hide();
+        console.log(confirmModal.id)
+        this.service.put(confirmModal.id).then(() => {
+            console.log("撤销结算成功"), this.onLoadList()
         }).catch(err => console.log("撤销结算失败" + err));
 
     }
@@ -112,10 +120,10 @@ export class BillOrderComponent extends DataList<any>{
 
         });
         this.service.getCost(id).then(data => {
-            if(!data.isSettlement){
-                 this.isShowPrint=false;
-            }else{
-                this.isShowPrint=true;
+            if (!data.isSettlement) {
+                this.isShowPrint = false;
+            } else {
+                this.isShowPrint = true;
             }
             console.log("根据工单id获取工单材料费和工时费", data);
             // 工时费： 维修项目金额总和
@@ -125,8 +133,8 @@ export class BillOrderComponent extends DataList<any>{
             // 其它费： 0
             this.otherFee = 0;
             // 总计费： 
-            this.sumFee =(data.workHourCost+data.materialCost+this.otherFee)/100;
-            
+            this.sumFee = (data.workHourCost + data.materialCost + this.otherFee) / 100;
+
             // this.billPrice = this.sumFee;
         })
     }

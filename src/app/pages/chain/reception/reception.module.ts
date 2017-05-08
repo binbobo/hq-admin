@@ -33,6 +33,5 @@ import { BillOrderService } from "app/pages/chain/reception/bill-order/bill-orde
   ],
   declarations: [routedComponents],
   providers: [OrderService, AssignService, BillOrderService],
-  entryComponents: [routedComponents[0]], // 配置CustomDatetimeEditorComponent
 })
 export class ReceptionModule { }

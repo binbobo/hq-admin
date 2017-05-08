@@ -8,7 +8,7 @@
       <!--<input #search formControlName="state" [typeahead]="plateNoData" typeaheadOptionField="plateNo" (typeaheadOnSelect)="OnSearchClick($event)"
         placeholder="请输入工单号/车牌号" class="form-control mr-2">-->
       <input [hqTableTypeahead]="typeaheadSource" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)" class="form-control"
-        placeholder="请输入工单号/车牌号"/>
+        placeholder="请输入工单号/车牌号" />
     </form>
 
     <table class="table search-table">
@@ -68,63 +68,141 @@
       <tabset #staticTabs>
         <!--维修项目-->
         <tab heading="维修项目">
-          <smart-table [source]="stDataSource" (deleteConfirm)="deleteMaintanceItem($event)" (createConfirm)="addNewmaintanceItem($event)"
-            [settings]="maintanceItemSettings"></smart-table>
-          <table class='table table-bordered table-tab table-sm table-hover'>
-            <thead class="thead-default">
+          <!--<smart-table [source]="stDataSource" (deleteConfirm)="deleteMaintanceItem($event)" (createConfirm)="addNewmaintanceItem($event)"
+            [settings]="maintanceItemSettings"></smart-table>-->
+
+          <table class="table table-hover table-bordered table-sm">
+            <thead>
               <tr>
-                <th>已添加维修项目名称</th>
-                <th>维修工时（小时）</th>
-                <th>工时单价（元）</th>
-                <th>金额（元）</th>
-                <th>折扣率（%）</th>
+
+                <th>维修项目名称</th>
+                <th>维修工时(小时)</th>
+                <th>工时单价(元)</th>
+                <th>折扣率(%)</th>
+                <th>金额(元)</th>
                 <th>操作时间</th>
+                <th>操作</th>
               </tr>
             </thead>
-            <tr *ngFor="let item of maintenanceProjectData">
-              <td>{{item.serviceName}}</td>
-              <td>{{item.workHour}}</td>
-              <td>{{item.price}}</td>
-              <td>{{item.amount}}</td>
-              <td>{{item.discount}}</td>
-              <td>{{item.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-            </tr>
-          </table>
+            <tbody>
+              <tr *ngFor="let item of maintenanceProjectData">
+                <td>{{item.serviceName}}</td>
+                <td>{{item.workHour}}</td>
+                <td>{{item.price/100}}</td>
+                 <td>{{item.discount}}</td>
+                <td>{{item.amount/100}}</td>               
+                <td>{{item.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                <td></td>
+              </tr>
 
+              <tr *ngFor="let item of newMaintenanceItemData2">
+                <td>{{item.serviceName}}</td>
+                <td>{{item.workHour}}</td>
+                <td>{{item.price/100}}</td>
+                <td>{{item.discount}}</td>
+                <td>{{item.amount/100}}</td>
+                <td>{{item.operationTime}}</td>
+                <td width="40">
+                  <a href="#" (click)="onDelNewMaintenanceItem($event, item.serviceId)">删除</a>
+                </td>
+              </tr>
+              <tr *ngIf="addNewMaintenanceItem">
+                <td><input placeholder="输入 更换  进行测试" (blur)="onServiceBlur(maintanceItem)" (change)="onServiceChange()" (typeaheadOnSelect)="serviceTypeaheadOnSelect($event)"
+                    [typeahead]="serviceDataSource" typeaheadOptionField="name" [(ngModel)]="newMaintenanceItem.serviceName"
+                    type="text" class="form-control form-control-sm" required></td>
+                <td><input placeholder="请输入数字" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.workHour"
+                    (keyup)="onWorkHourChange()" type="text" class="form-control form-control-sm" required></td>
+                <td><input placeholder="请输入数字" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.price"
+                    (keyup)="onPriceChange()" type="text" class="form-control form-control-sm" required></td>
+                <td><input placeholder="请输入0~100之间的整数" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.discount"
+                    (keyup)="onDiscountChange()" type="text" class="form-control form-control-sm" required></td>
+                <td><input [value]="newMaintenanceItem.amount" type="text" class="form-control form-control-sm" [disabled]="true"></td>
+                <td><input [value]="newMaintenanceItem.operationTime" type="text" class="form-control form-control-sm" [disabled]="true"></td>
+                <td width="75">
+                  <a href="#" (click)="onConfirmAddNewMaintenanceItem($event)">确定</a> |
+                  <a href="#" (click)="addNewMaintenanceItem = false">取消</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div>
+            <button class="btn btn-sm btn-secondary mr-2" (click)="addNewmaintanceItem()" placement="right">新增</button>
+          </div>
         </tab>
         <!--附加项目-->
         <tab heading="附加项目">
-          <smart-table (deleteConfirm)="deleteAttachItem($event)" (createConfirm)="addAttachItem($event)" [settings]="addItemSettings"></smart-table>
           <table class='table table-tab'>
             <thead class="thead-default">
               <tr>
-                <th>已有附加项目备注</th>
+                <th>备注</th>
+                <th>操作</th>
               </tr>
             </thead>
             <tr *ngFor="let item of attachServiceOutputs">
               <td>{{item.description}}</td>
+              <td></td>
+            </tr>
+            <tr *ngFor="let item of newAttachItemData">
+              <td>{{item.description}}</td>
+              <td width="40">
+                <a href="#" (click)="onDelAttachItem($event)">删除</a>
+              </td>
+            </tr>
+            <tr *ngIf="addNewAttachItem">
+              <td><input placeholder="请输入附加项目备注" (keyup.enter)="onConfirmAddNewAttachItem()" [(ngModel)]="newAttachItem.description"
+                  type="text" class="form-control form-control-sm"></td>
+              <td width="75">
+                <a href="#" (click)="onConfirmAddNewAttachItem($event)">确定</a> |
+                <a href="#" (click)="addNewAttachItem = false">取消</a>
+              </td>
             </tr>
           </table>
-
+          <div>
+            <button class="btn btn-sm btn-secondary mr-2" (click)="addNewAttachItemData()" placement="right">新增</button>
+          </div>
         </tab>
 
         <!--建议维修项-->
         <tab heading="建议维修项">
-          <smart-table (deleteConfirm)="deletsuggestItem($event)" (createConfirm)="suggestItem($event)" [settings]="suggestedMaintanceSettings"></smart-table>
           <table class='table table-tab '>
             <thead class="thead-default">
               <tr>
-                <th>已增加建议维修项目</th>
+                <th>建议维修项目</th>
                 <th>操作时间</th>
                 <th>备注</th>
+                <th>操作</th>
               </tr>
             </thead>
             <tr *ngFor="let item of suggestServiceOutputs">
               <td>{{item.content}}</td>
-              <td>{{item.operateDateTime}}</td>
+              <td>{{item.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
               <td>{{item.description}}</td>
+              <td></td>
+            </tr>
+            <tr *ngFor="let item of newSuggestItemData">
+              <td>{{item.serviceName}}</td>
+              <td>{{item.operationTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+              <td>{{item.description}}</td>
+              <td width="40">
+                <a href="#" (click)="onDelSuggestItem($event)">删除</a>
+              </td>
+            </tr>
+            <tr *ngIf="addNewSuggestItem">
+              <td><input placeholder="输入 更换  进行测试" (blur)="onSuggestBlur(maintanceItem)" (change)="onSuggestChange()" (typeaheadOnSelect)="SuggestTypeaheadOnSelect($event)"
+                  [typeahead]="suggestDataSource" typeaheadOptionField="name" [(ngModel)]="newSuggestItem.serviceName" type="text"
+                  class="form-control form-control-sm" required></td>
+              <td><input [value]="newSuggestItem.operationTime" type="text" class="form-control form-control-sm" [disabled]="true"></td>
+              <td><input placeholder="请输入备注" (keyup.enter)="onConfirmAddNewSuggestItem()" [(ngModel)]="newSuggestItem.description"
+                  type="text" class="form-control form-control-sm"></td>
+              <td width="75">
+                <a href="#" (click)="onConfirmAddNewSuggestItem($event)">确定</a> |
+                <a href="#" (click)="addNewSuggestItem = false">取消</a>
+              </td>
             </tr>
           </table>
+          <div>
+            <button class="btn btn-sm btn-secondary mr-2" (click)="addNewSuggestItemData()" placement="right">新增</button>
+          </div>
         </tab>
 
         <!--上次维修记录-->
@@ -242,18 +320,18 @@
       </tabset>
     </div>
     <!--只有前4个选项卡显示-->
-     <div class="card-block text-center">
-        <button type="button" class="btn  btn-primary" (click)="submitAddOrder()" [disabled]="!isableAppend">提交增项</button>
-        <!--<input type="text" readonly class="btn btn-primary" (click)="submitAddOrder()" value='提交增项'>-->
-        <button type="button" class="btn  btn-primary" (click)="submitAddOrder()" disabled>挂单</button>
-      </div>
+    <div class="card-block text-center">
+      <button type="button" class="btn  btn-primary" (click)="submitAddOrder()" [disabled]='!isableAppend'>提交增项</button>
+      <!--<input type="text" readonly class="btn btn-primary" (click)="submitAddOrder()" value='提交增项'>-->
+      <button type="button" class="btn  btn-primary" (click)="submitAddOrder()" disabled>挂单</button>
+    </div>
     <div class="card">
       <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
         折前费用: 工时费<span class="ml-2 mr-2">{{workHourFee}}</span> | 材料费
         <span class="ml-2 mr-2">{{materialFee}}</span> | 其它
         <span class="ml-2 mr-2">{{otherFee}}</span> | 合计
         <span class="ml-2 mr-2">{{sumFee}}</span>|
-      </div>     
+      </div>
     </div>
 
   </div>

@@ -26,7 +26,7 @@
     </table>
     <hr>
     <!--维修项目-->
-    <a href="#" class="btn btn-info  disabled" role="button" aria-disabled="true">维修项目</a>
+    <a href="#" class="btn btn-warning disabled" role="button" aria-disabled="true">维修项目</a>
     <table class="table table-hover">
       <thead class="thead-default">
         <tr>
@@ -45,21 +45,22 @@
     </table>
 
     <!--维修退料-->
-    <a href="#" class="btn btn-info disabled" role="button" aria-disabled="true">维修退料</a>
+    <a href="#" class="btn btn-warning disabled" role="button" aria-disabled="true">维修退料</a>
     <table class="table table-hover">
       <thead class="thead-default">
         <tr>
           <th>序号</th>
           <th>维修项目</th>
           <th>配件编码</th>
+          <th>品牌</th>
           <th>配件名称</th>
           <th>规格型号</th>
           <th>车型</th>
           <th>仓库</th>
           <th>库位</th>
-          <th>数量</th>
-          <th>价格</th>
-          <th>金额</th>
+          <th>数量(个)</th>
+          <th>单价(元/个)</th>
+          <th>金额(元)</th>
           <th>备注</th>
           <th>领料人</th>
           <th>退料人</th>
@@ -67,31 +68,82 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of returnpart">
-          <th scope="row">{{item.a}}</th>
-          <td>{{item.b}}</td>
-          <td>{{item.c}}</td>
-          <td>{{item.d}}</td>
-          <td>{{item.e}}</td>
-          <td>{{item.f}}</td>
-          <td>{{item.h}}</td>
-          <td>{{item.i}}</td>
-          <td>{{item.g}}</td>
-          <td>{{item.k}}</td>
-          <td>{{item.l}}</td>
-          <td>{{item.m}}</td>
-          <td>{{item.n}}</td>
-          <td>{{item.o}}</td>
-          <td><a href="#">退料</a></td>
+        <tr>
+          <td colspan="15"></td>
+          <td><button class="btn btn-info" (click)="OnChangeNewItem($event)">退料</button></td>
+        </tr>
+        <tr *ngFor="let item of newMainData">
+          <td>{{item.a}}</td>
+          <td>{{item.number}}</td>
+          <td>{{item.serviceItem}}</td>
+          <td>{{item.brandName}}</td>
+          <td>{{item.productCode}}</td>
+          <td>{{item.productName}}</td>
+          <td>{{item.productSpecification}}</td>
+          <td>{{item.vehicleModelName}}</td>
+          <td>{{item.storeId}}</td>
+          <td>{{item.locationId}}</td>
+          <td>{{item.count}}</td>
+          <td>{{item.price/100}}</td>
+          <td>{{item.amount/100}}</td>
+          <td>{{item.description}}</td>
+          <td>{{item.createUser}}</td>
+          <td width="40">
+            <a href="javascript:void(0)" (click)="OnDelItem($event)">删除</a>
+          </td>
+
+        </tr>
+        <tr *ngIf="addNewItem">
+          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.a"></td>
+          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.number"></td>
+          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.serviceItem"></td>
+          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.brandName"></td>
+          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm " [(ngModel)]="newItem.productCode"></td>
+          <td><input placeholder=" " type="text" readonly class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.productName"></td>
+          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.productSpecification"></td>
+          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.vehicleModelName"></td>
+          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.storeId"></td>
+          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.locationId"></td>
+          <td><input placeholder="请输入数量 " type="text" class="input-width form-control form-control-sm" [(ngModel)]="newItem.count"></td>
+          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.price"></td>
+          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.amount"></td>
+          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.createUser"></td>
+          <td width="75">
+            <a href="javascript:void(0)" (click)="OnConfirmItem($event)">确定</a> |
+            <a href="javascript:void(0)" (click)="addNewItem = false">取消</a>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
   <!--提交按钮-->
   <div class="card-footer text-muted">
-    <button class="btn btn-primary" (click)="createModal.show()">生成发料单</button>
-    <button class="btn btn-warning" [disabled]="!selectedItems?.length" (click)="enabled()">取消</button>
+    <button class="btn btn-primary" [disabled]="!isableAppend" (click)="OnCreatBill()">生成发料单</button>
+    <button class="btn btn-secondary" (click)="finishedOrder($event,  confirmModal)">取消</button>
     <button class="btn btn-success" (click)="suspend()">挂单</button>
-    <button class="btn btn-info" (click)="export()">打印</button>
+    <button class="btn btn-secondary " options="printOptions" (onConfirm)="onConfirmTechnicians($event)" [hqMutilSelect]="maintenanceTechnicians"
+      title="选择流水号" href="#" (click)="onMultiSelectorClick($event)" placement="right">打印</button>
+  </div>
+
+  <!--提示是否确认退出-->
+  <div bsModal #confirmModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p class="modal-title">温馨提示</p>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="confirmModal.hide();">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+          <p>您确定要取消退料吗</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm" data-dismiss="confirmModal" (click)="confirmModal.hide();">取消</button>
+          <button type="button" class="btn btn-sm" data-dismiss="modal" (click)="onConfirmFinished(confirmModal);">确定</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

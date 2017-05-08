@@ -42,6 +42,10 @@ hr {
     padding: .375rem .75rem;
 }
 
+.btn-sm.my-sm {
+    padding: .01rem .1rem;
+}
+
 
 /*重写表格样式*/
 .table th, .table td {

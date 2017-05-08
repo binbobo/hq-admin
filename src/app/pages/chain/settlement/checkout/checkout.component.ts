@@ -122,6 +122,7 @@ export class CheckoutComponent extends DataList<any> {
     }).catch(err => this.alerter.error(err, true, 2000))
 
     this.payData.forEach(item => {
+      console.log(this.payData)
       item.amount = null;
     })
   }
