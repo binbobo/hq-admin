@@ -5,35 +5,35 @@ import { PagedParams, PagedResult, ApiResult, BasicService, BasicModel } from "a
 
 @Injectable()
 export class MaintainReturnService implements BasicService<any>{
-  get(id: string): Promise<any> {
-    throw new Error('Method not implemented.');
-  }
-  create(body: any): Promise<any> {
-    throw new Error('Method not implemented.');
-  }
-  update(body: any): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-  patch(body: any): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-  delete(id: string): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-  constructor(private httpService: HttpService) { }
-  /**
-  * 分页获取工单列表信息
-  */
-  public getPagedList(params: PagedParams): Promise<PagedResult<any>> {
-    const url = Urls.chain.concat('/Maintenances?', params.serialize());
-    return this.httpService
-      .get<PagedResult<any>>(url)
-      .then(result => {
-        console.log('工单列表数据', result);
-        return result;
-      })
-      .catch(err => Promise.reject(`列表失败：${err}`));
-  }
+    get(id: string): Promise<any> {
+        throw new Error('Method not implemented.');
+    }
+    create(body: any): Promise<any> {
+        throw new Error('Method not implemented.');
+    }
+    update(body: any): Promise<void> {
+        throw new Error('Method not implemented.');
+    }
+    patch(body: any): Promise<void> {
+        throw new Error('Method not implemented.');
+    }
+    delete(id: string): Promise<void> {
+        throw new Error('Method not implemented.');
+    }
+    constructor(private httpService: HttpService) { }
+    /**
+    * 分页获取工单列表信息
+    */
+    public getPagedList(params: PagedParams): Promise<PagedResult<any>> {
+        const url = Urls.chain.concat('/Maintenances?', params.serialize());
+        return this.httpService
+            .get<PagedResult<any>>(url)
+            .then(result => {
+                console.log('工单列表数据', result);
+                return result;
+            })
+            .catch(err => Promise.reject(`列表失败：${err}`));
+    }
     //  根据工单或者车牌号搜索
     getOrderPageData(params: MaintainRequest): Promise<PagedResult<SearchReturnData>> {
         let search = params.serialize();
@@ -54,6 +54,17 @@ export class MaintainReturnService implements BasicService<any>{
             .then(data => data || Promise.reject('获取数据无效！'))
             .catch(err => Promise.reject(`加载失败：${err}`));
     }
+
+    //获取已经退料数据接口 /StoreInOutDetails/GetMainList
+    //生成退料单post接口数据 /StoreInOutDetails/CreateMaintReturnBill
+    public postReturnBill(body: any): Promise<any> {
+        const url = Urls.chain.concat('/StoreInOutDetails/CreateMaintReturnBill');
+        return this.httpService
+            .post<ApiResult<any>>(url, body)
+            .catch(err => Promise.reject(`${err}`));
+    }
+
+    //打印退料单接口数据
 
 }
 
@@ -105,6 +116,6 @@ export class DetailData {
         public suggestServiceOutputs: any = [],//建议维修项
         public lastManufactureDetailOutput: any = [],//上次维修记录
         public feedBackInfosOutput: any = [],// 客户回访记录
-        public productOutputs:any=[]//维修配件
+        public productOutputs: any = []//维修配件
     ) { }
 }

@@ -64,7 +64,7 @@
         <tr *ngFor="let item of list">
           <td *ngIf="!item.updateOnUtc"><a href="javascript:void(0)" (click)='orderDetailsDialog($event, item.id,lgModal)'>结算</a> | <a href="javascript:void(0)"
               (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
-          <td *ngIf="item.updateOnUtc"><a href="javascript:void(0)" (click)='unBill($event,item.id)'>撤销结算</a> | <a href="javascript:void(0)" (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
+          <td *ngIf="item.updateOnUtc"><a href="javascript:void(0)" (click)='finishedOrder($event, item.id, confirmModal)'>撤销结算</a> | <a href="javascript:void(0)" (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
           <td>{{item.statusName}}</td>
           <td>{{item.typeName}}</td>
           <td>{{item.billCode}}</td>
@@ -85,7 +85,7 @@
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
 
-    <!--提示是否确认退出-->
+  <!--提示是否确认退出-->
   <div bsModal #confirmModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-sm">
@@ -101,7 +101,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-sm" data-dismiss="confirmModal" (click)="confirmModal.hide();">取消</button>
-          <button type="button" class="btn btn-sm" data-dismiss="modal" (click)="onConfirmFinished(confirmModal);">确定</button>
+          <button type="button" class="btn btn-sm" data-dismiss="modal" (click)="unBill(confirmModal);">确定</button>
         </div>
       </div>
     </div>

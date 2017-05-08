@@ -72,7 +72,9 @@ export class DistributeService implements BasicService<any>{
             .catch(err => Promise.reject(`${err}`));
     }
 
-
+    // 维修发料打印接口 StoreInOutDetails/PrintStore
+    // 维修发料领料人接口修改
+    // 维修发料获取已发料list数据 /StoreInOutDetails/GetMainList
 }
 // 根据工单号或车牌号搜索创建的类
 export class SearchReturnData {

@@ -217,11 +217,13 @@ export class DistributeComponent extends DataList<any>{
     evt.preventDefault();
     // 显示确认框
     confirmModal.show();
-
   }
+  // 取消发料
   onConfirmFinished(confirmModal) {
     confirmModal.hide();
     history.go(-1);
   }
+
+
 
 }

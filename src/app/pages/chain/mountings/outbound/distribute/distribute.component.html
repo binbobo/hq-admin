@@ -39,7 +39,7 @@
           <td>{{index+1}}</td>
           <td>{{item.serviceName}}</td>
           <td>{{item.employeeNames}}</td>
-          <td><button class="btn btn-info" href="javascript:void(0)" (click)="OnAddNewItem($event,item.id,item.serviceName,item.employeeNames,item.turnEmployeeNames )">发料</button></td>
+          <td><button class="btn btn-info"  (click)="OnAddNewItem($event,item.id,item.serviceName,item.employeeNames,item.turnEmployeeNames )">发料</button></td>
         </tr>
       </tbody>
     </table>
@@ -129,7 +129,8 @@
     <button class="btn btn-primary" [disabled]="!isableAppend" (click)="OnCreatBill()">生成发料单</button>
     <button class="btn btn-secondary" (click)="finishedOrder($event,  confirmModal)">取消</button>
     <button class="btn btn-success" (click)="suspend()">挂单</button>
-    <button class="btn btn-info" [disabled]="!isablePrint" (click)="export()">打印</button>
+    <button class="btn btn-secondary " options="printOptions" (onConfirm)="onConfirmTechnicians($event)" [hqMutilSelect]="maintenanceTechnicians"
+      title="选择流水号" href="#" (click)="onMultiSelectorClick($event)" placement="right">打印</button>
   </div>
 
   <!--提示是否确认退出-->

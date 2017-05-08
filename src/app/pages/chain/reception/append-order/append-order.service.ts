@@ -5,7 +5,7 @@ import { Observable } from "rxjs/Observable";
 
 @Injectable()
 export class AppendOrderService implements BasicService<any> {
-    getPagedList(body: any): Promise<any> {
+  getPagedList(body: any): Promise<any> {
     throw new Error('Method not implemented.');
   }
   create(body: any): Promise<any> {
@@ -54,6 +54,7 @@ export class AppendOrderService implements BasicService<any> {
     return this.httpService
       .get<ApiResult<DetailData>>(url)
       .then(result => {
+        console.log(result.data)
         return result.data
       })
       .then(data => data || Promise.reject('获取数据无效！'))
@@ -74,6 +75,23 @@ export class AppendOrderService implements BasicService<any> {
     return this.httpService
       .post<ApiResult<any>>(url, body)
       .catch(err => Promise.reject(`${err}`));
+  }
+  /**
+ * 获取维修类型数据
+ * @memberOf OrderService
+ */
+  getMaintenanceItemsByName(name: string): Observable<any> {
+    const url = Urls.chain.concat('/Services/GetByName');
+    return this.httpService
+      .request(url, {
+        params: {
+          name: name
+        }
+      })
+      .map(response => {
+        // console.log(response.json().data);
+        return response.json().data;
+      });
   }
 }
 
@@ -113,7 +131,7 @@ export class SearchReturnData {
 export class DetailData {
   constructor(
     public id: any,
-    public billCode:any,
+    public billCode: any,
     public serviceOutputs: any = [],//维修项目
     public attachServiceOutputs: Array<any> = [],//附加项目
     public suggestServiceOutputs: any = [],//建议维修项
