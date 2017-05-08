@@ -4,48 +4,11 @@
     text-align: right;
 }
 
-/*必选项前面的星号样式*/ 
-.asterisk {
-    color: #a94442;
-}
-
-/*mileage unit*/
-.mileageUnit {
-    background: transparent;
-    border:0;
-}
-
-/*只读的文本框背景透明*/
-input[readonly] {
-  background-color:transparent;
-}
-
-.textInputBtn {
-    border: 1px solid #eed;
-}
-
 /*重写ngui-datetimer-picker表单input样式*/
 .datetime-picker {
     width: 100%;
     border-radius:0;
 }
-
-hr {
-    border-top:1px dotted #ccc;
-    /*Rest of stuff here*/
-}
-
-/*智能表格日期时间类型单元格样式*/
-.datetime-editor {
-    width: 100%;
-    line-height: normal;
-    padding: .375rem .75rem;
-}
-
-.btn-sm.my-sm {
-    padding: .01rem .1rem;
-}
-
 
 /*重写表格样式*/
 .table th, .table td {
@@ -58,8 +21,15 @@ hr {
 .table th {
     background: silver;
 }
-caption {
-    caption-side: top;
+
+.textInputBtn {
+    border: 1px solid #eed;
+}
+
+@media (min-width: 992px) {
+    .modal-lg {
+        max-width: 1000px;
+    }
 }
 
 input.ng-valid[required], input.ng-valid.required  {
@@ -70,3 +40,10 @@ input.ng-touched.ng-invalid  {
   border-radius: .2rem
 }
 
+.customer-detail {
+    font-size: .875rem;
+}
+.customer-detail label {
+    width: 75px;
+    text-align: right;
+}
