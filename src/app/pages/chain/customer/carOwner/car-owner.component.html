@@ -6,45 +6,38 @@
   <div class="card-block">
     <form [formGroup]="customerManagementForm" (ngSubmit)="onLoadList()">
       <div class="form-group row">
-        <label for="name" class="col-sm-1 col-form-label col-form-label-sm">车主</label>
-        <div class="col-sm-2">
-          <input type="text" [(ngModel)]="params.name" class="form-control form-control-sm" formControlName="name" id="name" placeholder="车主">
+        <label for="name" class="col-1 col-form-label col-form-label">车主</label>
+        <div class="col-2">
+          <input type="text" [(ngModel)]="params.name" class="form-control form-control" formControlName="name" id="name" placeholder="车主">
         </div>
-        <label for="plateNo" class="col-sm-1 col-form-label col-form-label-sm">车牌号</label>
-        <div class="col-sm-2">
-          <input type="text" [(ngModel)]="params.plateNo" class="form-control form-control-sm" formControlName="plateNo" id="plateNo"
+        <label for="plateNo" class="col-1 col-form-label col-form-label">车牌号</label>
+        <div class="col-2">
+          <input type="text" [(ngModel)]="params.plateNo" class="form-control form-control" formControlName="plateNo" id="plateNo"
             placeholder="车牌号">
         </div>
-        <label for="phone" class="col-sm-1 col-form-label col-form-label-sm">车主电话</label>
-        <div class="col-sm-2">
-          <input type="tel" [(ngModel)]="params.phone" class="form-control form-control-sm" formControlName="plateNo" id="phone" placeholder="车主电话">
+        <label for="phone" class="col-1 col-form-label col-form-label">车主电话</label>
+        <div class="col-2">
+          <input type="tel" [(ngModel)]="params.phone" class="form-control form-control" formControlName="plateNo" id="phone" placeholder="车主电话">
         </div>
       </div>
       <div class="form-group row">
-        <label for="createdStartDate" class="col-sm-1 col-form-label col-form-label-sm">建档日期</label>
-        <div class="input-group input-group-sm col-sm-2">
-          <input [(ngModel)]="params.createdStartDate" class="form-control form-control-sm datetime-picker" type="text" formControlName="createdStartDate"
+        <label for="createdStartDate" class="col-1 col-form-label col-form-label">建档日期</label>
+        <div class="col-2">
+          <input [(ngModel)]="params.createdStartDate" class="form-control form-control datetime-picker" type="text" formControlName="createdStartDate"
             ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
-          <span class="input-group-addon">
-                <i class="fa fa-calendar" aria-hidden="true"></i>
-              </span>
         </div>
-        <label class="col-sm-1 col-form-label col-form-label-sm">至</label>
-        <div class="input-group input-group-sm col-sm-2">
-          <input [(ngModel)]="params.createdEndDate" class="form-control form-control-sm datetime-picker" type="text" formControlName="createdEndDate"
+        <label class="col-1 col-form-label col-form-label">至</label>
+        <div class="col-2">
+          <input [(ngModel)]="params.createdEndDate" class="form-control form-control datetime-picker" type="text" formControlName="createdEndDate"
             ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
-          <span class="input-group-addon">
-                  <i class="fa fa-calendar" aria-hidden="true"></i>
-                </span>
         </div>
-        <label class="col-sm-1 col-form-label col-form-label-sm">
-          <button type="submit" class="btn btn-sm btn-secondary mr-2">查询</button>
+        <label class="col-1 col-form-label col-form-label">
+          <button type="submit" class="btn btn btn-primary mr-2">查询</button>
         </label>
-
       </div>
     </form>
     <hr>
-    <table class="table table-hover table-bordered table-sm">
+    <table class="table table-striped table-borderd">
       <thead>
         <tr>
           <th>操作</th>
@@ -92,85 +85,85 @@
       <div class="modal-body" style='overflow: scroll;'>
         <form [formGroup]="carOwnerForm" autocomplete="off" (ngSubmit)="addCarOwner()">
           <div class="form-group row">
-            <label for="customerName" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车主</label>
-            <div class="col-sm-2"> <!-- (typeaheadOnSelect)="onCustomerNameSelect($event)" [typeahead]="nameDataSource" typeaheadOptionField="name" [(ngModel)]="fuzzySearch.nameKeyword" -->
-              <input type="text"  required class="form-control form-control-sm" formControlName="name" id="customerName" placeholder="车主">
+            <label for="customerName" class="col-1 col-form-label col-form-label"><span class="asterisk mr-1">*</span>车主</label>
+            <div class="col-2">
+              <!--编辑的时候不模糊搜索-->
+              <input *ngIf="selectedCustomerId !== null" type="text"  required class="form-control form-control" formControlName="name" id="customerName" placeholder="车主">
+              <!--新增的时候模糊搜索-->
+              <input *ngIf="selectedCustomerId === null" type="text" [hqTableTypeahead]="customerNameTypeaheadSource" [columns]="customerTypeaheadColumns" (onSelect)="onCustomerNameSelect($event)"  required class="form-control form-control" formControlName="name" id="customerName" placeholder="车主">
             </div>
-            <label for="sex" class="col-sm-1 col-form-label sm">性别</label>
-            <div class="col-sm-2">
-              <select id="sex" formControlName="sex" class="form-control sm">
+            <label for="sex" class="col-1 col-form-label">性别</label>
+            <div class="col-2">
+              <select id="sex" formControlName="sex" class="form-control">
                 <option value="true" [selected]="true">男</option>
                 <option value="false">女</option>
                 <option value="">保密</option>
               </select>
             </div>
 
-            <label for="birthday" class="col-sm-1 col-form-label col-form-label-sm">生日</label>
-            <div class="input-group input-group-sm col-sm-2">
-              <input class="form-control form-control-sm datetime-picker" type="text" formControlName="birthday" ngui-datetime-picker date-format="YYYY-MM-DD"
+            <label for="birthday" class="col-1 col-form-label col-form-label">生日</label>
+            <div class="col-2">
+              <input class="form-control form-control datetime-picker" type="text" formControlName="birthday" ngui-datetime-picker date-format="YYYY-MM-DD"
                 date-only="true" />
-              <span class="input-group-addon">
-                  <i class="fa fa-calendar" aria-hidden="true"></i>
-                </span>
             </div>
-            <label for="identityCard" class="col-sm-1 col-form-label col-form-label-sm">身份证号</label>
-            <div class="col-sm-2">
-              <input type="text" class="form-control form-control-sm" formControlName="identityCard" id="identityCard" placeholder="身份证号">
-            </div>
-          </div>
-          <hr>
-          <div class="form-group row">
-            <label for="phone" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>手机号</label>
-            <div class="col-sm-2"> <!-- (typeaheadOnSelect)="onCustomerPhoneSelect($event)" [typeahead]="phoneDataSource" typeaheadOptionField="name" [(ngModel)]="fuzzySearch.phoneKeyword"  -->
-              <input type="text" required  class="form-control form-control-sm" formControlName="phone" id="phone" placeholder="手机号">
-            </div>
-            <label for="tel" class="col-sm-1 col-form-label col-form-label-sm">电话</label>
-            <div class="col-sm-2">
-              <input type="text" class="form-control form-control-sm" formControlName="tel" id="tel" placeholder="电话">
-            </div>
-            <label for="fax" class="col-sm-1 col-form-label col-form-label-sm">传真</label>
-            <div class="col-sm-2">
-              <input type="text" class="form-control form-control-sm" formControlName="fax" placeholder="传真" id="fax">
-            </div>
-            <label for="email" class="col-sm-1 col-form-label col-form-label-sm">Email</label>
-            <div class="col-sm-2">
-              <input type="text" class="form-control form-control-sm" formControlName="email" id="email" placeholder="电子邮箱">
+            <label for="identityCard" class="col-1 col-form-label col-form-label">身份证号</label>
+            <div class="col-2">
+              <input type="text" class="form-control form-control" formControlName="identityCard" id="identityCard" placeholder="身份证号">
             </div>
           </div>
           <div class="form-group row">
-            <label for="province" class="col-sm-1 col-form-label col-form-label-sm">省份</label>
-            <div class="col-sm-2">
-              <select #province (change)="onProvinceChange(province.value)" formControlName="province" id="province"  class="form-control sm">
+            <label for="phone" class="col-1 col-form-label col-form-label"><span class="asterisk mr-1">*</span>手机号</label>
+            <div class="col-2"> 
+              <input *ngIf="selectedCustomerId !== null" type="text" required  class="form-control form-control" formControlName="phone" id="phone" placeholder="手机号">
+              <input *ngIf="selectedCustomerId === null" [hqTableTypeahead]="customerPhoneTypeaheadSource" [columns]="customerTypeaheadColumns" (onSelect)="onCustomerPhoneSelect($event)" type="text" required  class="form-control form-control" formControlName="phone" id="phone" placeholder="手机号">
+            </div>
+            <label for="tel" class="col-1 col-form-label col-form-label">电话</label>
+            <div class="col-2">
+              <input type="text" class="form-control form-control" formControlName="tel" id="tel" placeholder="电话">
+            </div>
+            <label for="fax" class="col-1 col-form-label col-form-label">传真</label>
+            <div class="col-2">
+              <input type="text" class="form-control form-control" formControlName="fax" placeholder="传真" id="fax">
+            </div>
+            <label for="email" class="col-1 col-form-label col-form-label">Email</label>
+            <div class="col-2">
+              <input type="text" class="form-control form-control" formControlName="email" id="email" placeholder="电子邮箱">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="province" class="col-1 col-form-label col-form-label">省份</label>
+            <div class="col-2">
+              <select #province (change)="onProvinceChange(province.value)" formControlName="province" id="province"  class="form-control">
                 <option style="display:none">
                 <option *ngFor="let province of provincesData" value="{{province.id}},{{province.name}}">{{province.name}}</option>
               </select>
             </div>
-            <label for="city" class="col-sm-1 col-form-label col-form-label-sm">城市</label>
-            <div class="col-sm-2">
-              <select #city (change)="onCityChange(city.value)" formControlName="city" id="city"  class="form-control sm">
+            <label for="city" class="col-1 col-form-label col-form-label">城市</label>
+            <div class="col-2">
+              <select #city (change)="onCityChange(city.value)" formControlName="city" id="city"  class="form-control">
                 <option style="display:none">
                 <option *ngFor="let city of citiesData" value="{{city.id}},{{city.name}}">{{city.name}}</option>
               </select>
             </div>
-            <label for="area" class="col-sm-1 col-form-label col-form-label-sm">区县</label>
-            <div class="col-sm-2">
-              <select id="area" #area (change)="onAreaChange(area.value)" formControlName="area" class="form-control sm">
+            <label for="area" class="col-1 col-form-label col-form-label">区县</label>
+            <div class="col-2">
+              <select id="area" #area (change)="onAreaChange(area.value)" formControlName="area" class="form-control">
                 <option style="display:none">
                 <option  *ngFor="let area of areasData" value="{{area.id}},{{area.name}}">{{area.name}}</option>
               </select>
             </div>
           </div>
           <div class="form-group row">
-            <label for="address" class="col-sm-1 col-form-label col-form-label-sm">详细地址</label>
-            <div class="col-sm-5">
-              <input type="text" class="form-control form-control-sm" formControlName="address" placeholder="详细地址" id="address">
+            <label for="address" class="col-1 col-form-label col-form-label">详细地址</label>
+            <div class="col-5">
+              <input type="text" class="form-control form-control" formControlName="address" placeholder="详细地址" id="address">
             </div>
           </div>
         </form>
         <hr>
         <tabset>
           <tab heading="车辆信息">
-            <table class="table table-hover table-bordered table-sm">
+            <table class="table table-responsive table-striped table-borderd">
               <thead>
                 <tr>
                   <th>操作</th>
@@ -211,25 +204,25 @@
                     <a href="#" (click)="$event.preventDefault();onConfirmAddVehicle();">确定</a> |
                     <a href="#" (click)="addNewVehicle=false;">取消</a>
                   </td>
-                  <td><input type="text" class="form-control form-control-sm" [(ngModel)]="newVehicle.plateNo" required></td>
-                  <td><input type="text" class="form-control form-control-sm" #brand (blur)="onBrandBlur(brand.value)" (typeaheadOnSelect)="onBrandSelect($event)" [typeahead]="brandDataSource" typeaheadOptionField="name" [(ngModel)]="fuzzySearch.brandKeyword" required></td>
-                  <td><input type="text" class="form-control form-control-sm" [disabled]="!newVehicle.brandId" #series (blur)="onSeriesBlur(series.value)" (typeaheadOnSelect)="onSeriesSelect($event)" [typeahead]="seriesDataSource" typeaheadOptionField="name" [(ngModel)]="fuzzySearch.seriesKeyword" required></td>
-                  <td><input type="text" class="form-control form-control-sm" [disabled]="!newVehicle.seriesId" #model (blur)="onModelBlur(model.value)" (typeaheadOnSelect)="onModelSelect($event)" [typeahead]="modelDataSource" typeaheadOptionField="name" [(ngModel)]="fuzzySearch.modelKeyword" required></td>
-                  <td><input type="text" class="form-control form-control-sm" [(ngModel)]="newVehicle.engineNo" required></td>
-                  <td><input type="text" class="form-control form-control-sm" [(ngModel)]="newVehicle.vin" required></td>
-                  <td><input type="text" class="form-control form-control-sm" [(ngModel)]="newVehicle.vehicleColor"></td>
-                  <td><input type="text" class="form-control form-control-sm datetime-picker" [(ngModel)]="newVehicle.purchaseDate"
+                  <td><input type="text" class="form-control form-control" [(ngModel)]="newVehicle.plateNo" required></td>
+                  <td><input type="text" class="form-control form-control" #brand (blur)="onBrandBlur(brand.value)" [hqTableTypeahead]="brandTypeaheadSource" [columns]="vehicleTypeaheadColumns" (onSelect)="onBrandSelect($event)" [(ngModel)]="fuzzySearch.brandKeyword" required></td>
+                  <td><input type="text" class="form-control form-control" [disabled]="!newVehicle.brandId" #series (blur)="onSeriesBlur(series.value)" [hqTableTypeahead]="seriesTypeaheadSource" [columns]="vehicleTypeaheadColumns" (onSelect)="onSeriesSelect($event)" [(ngModel)]="fuzzySearch.seriesKeyword" required></td>
+                  <td><input type="text" class="form-control form-control" [disabled]="!newVehicle.seriesId" #model (blur)="onModelBlur(model.value)" [hqTableTypeahead]="modelTypeaheadSource" [columns]="vehicleTypeaheadColumns" (onSelect)="onModelSelect($event)" [(ngModel)]="fuzzySearch.modelKeyword" required></td>
+                  <td><input type="text" class="form-control form-control" [(ngModel)]="newVehicle.engineNo" required></td>
+                  <td><input type="text" class="form-control form-control" [(ngModel)]="newVehicle.vin" required></td>
+                  <td><input type="text" class="form-control form-control" [(ngModel)]="newVehicle.vehicleColor"></td>
+                  <td><input type="text" class="form-control form-control datetime-picker" [(ngModel)]="newVehicle.purchaseDate"
                       type="text" ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true"></td>
-                  <td><input type="text" class="form-control form-control-sm datetime-picker" [(ngModel)]="newVehicle.validate" ngui-datetime-picker
+                  <td><input type="text" class="form-control form-control datetime-picker" [(ngModel)]="newVehicle.validate" ngui-datetime-picker
                       date-format="YYYY-MM-DD" date-only="true"></td>
-                  <td><input type="text" class="form-control form-control-sm datetime-picker" [(ngModel)]="newVehicle.insuranceDue" ngui-datetime-picker
+                  <td><input type="text" class="form-control form-control datetime-picker" [(ngModel)]="newVehicle.insuranceDue" ngui-datetime-picker
                       date-format="YYYY-MM-DD" date-only="true"></td>
-                  <td><input type="text" class="form-control form-control-sm" (keyup.enter)="onConfirmAddVehicle()" [(ngModel)]="newVehicle.insuranceCompany"></td>
+                  <td><input type="text" class="form-control form-control" (keyup.enter)="onConfirmAddVehicle()" [(ngModel)]="newVehicle.insuranceCompany"></td>
                 </tr>
               </tbody>
             </table>
             <div>
-              <button class="btn btn-sm btn-secondary mr-2" (click)="addNewVehicleHandler()" placement="right">新增</button>
+              <button class="btn btn btn-secondary mr-2" (click)="addNewVehicleHandler()" placement="right">新增</button>
             </div>
           </tab>
         </tabset>
@@ -317,7 +310,7 @@
         <hr>
         <tabset>
           <tab heading="车辆信息">
-            <table class="table table-hover table-bordered table-sm">
+            <table class="table table-responsive table-striped table-borderd">
               <thead>
                 <tr>
                   <th>车牌号</th>

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { DistributeComponent } from './distribute/distribute.component';
-import { ReceiveComponent } from './receive/receive.component';
 import { ReturnComponent } from './return/return.component';
 import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from 'app/shared/shared.module';
@@ -11,11 +10,17 @@ import { ModalModule, BsDropdownModule } from 'ngx-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomFormsModule } from "ng2-validation/dist";
 import { PrintComponent } from './distribute/print/print.component';
+import { ReceiveListComponent } from './receive/receive-list/receive-list.component';
+import { ReceiveCreateComponent } from './receive/receive-create/receive-create.component';
+import { ReceiveService } from './receive/receive.service';
+import { ReceivePrintComponent } from './receive/receive-print/receive-print.component';
+import { SalesPrintComponent } from './sales/sales-print/sales-print.component';
+import { ChainSharedModule } from '../../chain-shared/chain-shared.module';
 
 const routes: Routes = [
   { path: 'maintain-distribute', component: DistributeComponent },
   { path: 'sell', component: SalesListComponent },
-  { path: 'inner-receive', component: ReceiveComponent },
+  { path: 'inner-receive', component: ReceiveListComponent },
   { path: 'purchase-return', component: ReturnComponent },
   { path: 'maintain-distribute/print', component: PrintComponent },
 ]
@@ -23,6 +28,7 @@ const routes: Routes = [
 @NgModule({
   imports: [
     SharedModule,
+    ChainSharedModule,
     ModalModule.forRoot(),
     RouterModule.forChild(routes),
     FormsModule,
@@ -30,10 +36,11 @@ const routes: Routes = [
     CustomFormsModule,
     ModalModule.forRoot(),
     RouterModule.forChild(routes),
-    BsDropdownModule.forRoot(),
   ],
   exports: [RouterModule],
-  providers: [SalesService],
-  declarations: [DistributeComponent, SalesListComponent, ReceiveComponent, ReturnComponent, SalesCreateComponent, PrintComponent]
+
+  providers: [SalesService, ReceiveService],
+  declarations: [DistributeComponent, SalesListComponent, ReturnComponent, SalesCreateComponent, ReceiveListComponent, ReceiveCreateComponent, ReceivePrintComponent, SalesPrintComponent，PrintComponent]
+
 })
 export class OutboundModule { }

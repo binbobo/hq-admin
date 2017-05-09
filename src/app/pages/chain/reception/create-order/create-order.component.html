@@ -8,7 +8,7 @@
     <template #popTemplate>
       <div class="list-group">
         <a *ngFor="let order of suspendedOrders" (click)="loadSuspendedOrderInfo($event, order, pop)" class="list-group-item list-group-item-action">
-          <span class="mr-2">{{order.customerName}}</span> 
+          <span class="mr-2">{{order.customerName}}</span>
           <span class="mr-2">{{order.plateNo}} </span>
           <span class="mr-2">{{order.phone}}</span>
           <button class="ml-2 btn btn-sm btn-danger my-sm"><i class="fa fa-trash" aria-hidden="true"></i></button>
@@ -22,132 +22,123 @@
     <form [formGroup]="workSheetForm" autocomplete="off" (ngSubmit)="onSerarch()">
       <!--工单基本筛选条件面板-->
       <div class="form-group row">
-        <label for="plateNo" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车牌号</label>
-        <div class="col-sm-2">
-          <input [hqTableTypeahead]="plateNotypeaheadSource" [columns]="typeaheadColumns" (onSelect)="plateNoOnSelect($event)" class="form-control form-control-sm" formControlName="plateNo" id="plateNo" type="text" required placeholder="请输入车牌号" />
+        <label for="plateNo" class="col-1 col-form-label col-form-label"><span class="asterisk mr-1">*</span>车牌号</label>
+        <div class="col-2">
+          <input [hqTableTypeahead]="plateNotypeaheadSource" [columns]="typeaheadColumns" (onSelect)="plateNoOnSelect($event)" class="form-control form-control"
+            formControlName="plateNo" id="plateNo" type="text" required placeholder="请输入车牌号" />
         </div>
-        <label for="customerName" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车主</label>
-        <div class="col-sm-2">
-          <input [hqTableTypeahead]="customerNametypeaheadSource" [columns]="typeaheadColumns" (onSelect)="onCustomerNameSelect($event)" type="text" required class="form-control form-control-sm" formControlName="customerName"
-            id="customerName" placeholder="输入字母 ll 测试">
+        <label for="customerName" class="col-1 col-form-label col-form-label"><span class="asterisk mr-1">*</span>车主</label>
+        <div class="col-2">
+          <input [hqTableTypeahead]="customerNametypeaheadSource" [columns]="typeaheadColumns" (onSelect)="onCustomerNameSelect($event)"
+            type="text" required class="form-control form-control" formControlName="customerName" id="customerName" placeholder="输入字母 ll 测试">
 
         </div>
         <!--根据车主查询客户车辆信息下拉列表，自定义显示模板 let-model="item"遍历集合, 引用记录 -->
         <template #customCustomerVehicleTemplate let-model="item" let-index="index">
           车主: {{model?.customerName}} -- 车牌号: {{ model?.plateNo }}
         </template>
-        <label for="phone" class="col-sm-1 col-form-label col-form-label-sm">车主电话</label>
-        <div class="col-sm-2">
-          <input type="text" class="form-control form-control-sm" formControlName="phone" id="phone" placeholder="车主电话">
+        <label for="phone" class="col-1 col-form-label col-form-label">车主电话</label>
+        <div class="col-2">
+          <input type="text" class="form-control form-control" formControlName="phone" id="phone" placeholder="车主电话">
         </div>
       </div>
       <hr>
       <div class="form-group row">
-        <label for="createdOnUtc" class="col-sm-1 col-form-label col-form-label-sm">开单时间</label>
-        <div class="col-sm-2">
-          <input type="text" class="form-control form-control-sm" formControlName="createdOnUtc" id="createdOnUtc">
+        <label for="createdOnUtc" class="col-1 col-form-label col-form-label">开单时间</label>
+        <div class="col-2">
+          <input type="text" class="form-control form-control" formControlName="createdOnUtc" id="createdOnUtc">
         </div>
-        <label for="contactUser" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>送修人</label>
-        <div class="col-sm-2">
-          <input type="text" required class="form-control form-control-sm" formControlName="contactUser" id="contactUser" placeholder="送修人">
+        <label for="contactUser" class="col-1 col-form-label col-form-label"><span class="asterisk mr-1">*</span>送修人</label>
+        <div class="col-2">
+          <input type="text" required class="form-control form-control" formControlName="contactUser" id="contactUser" placeholder="送修人">
         </div>
-        <label for="contactInfo" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>送修人电话</label>
-        <div class="col-sm-2">
-          <input required type="text" class="form-control form-control-sm" formControlName="contactInfo" id="contactInfo" placeholder="送修人电话">
+        <label for="contactInfo" class="col-1 col-form-label col-form-label"><span class="asterisk mr-1">*</span>送修人电话</label>
+        <div class="col-2">
+          <input required type="text" class="form-control form-control" formControlName="contactInfo" id="contactInfo" placeholder="送修人电话">
         </div>
-        <label for="createdUserName" class="col-sm-1 col-form-label col-form-label-sm">服务顾问</label>
-        <div class="col-sm-2">
-          <input type="text" class="form-control form-control-sm" formControlName="createdUserName" id="createdUserName">
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="introducer" class="col-sm-1 col-form-label col-form-label-sm">介绍人</label>
-        <div class="col-sm-2">
-          <input type="text" class="form-control form-control-sm" formControlName="introducer" id="introducer" placeholder="介绍人">
-        </div>
-        <label for="introPhone" class="col-sm-1 col-form-label col-form-label-sm">介绍人电话</label>
-        <div class="col-sm-2">
-          <input type="text" class="form-control form-control-sm" formControlName="introPhone" id="introPhone" placeholder="介绍人电话">
-        </div>
-        <label for="brand" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>品牌</label>
-        <div class="col-sm-2">
-          <input (typeaheadOnSelect)="onBrandSelect($event)" [typeahead]="brandDataSource" typeaheadOptionField="name" required type="text"
-            class="form-control form-control-sm" formControlName="brand" id="brand" placeholder="输入 奥迪/大众  测试">
-        </div>
-        <label for="series" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车系</label>
-        <div class="col-sm-2">
-          <input (typeaheadOnSelect)="onSeriesSelect($event)" [typeahead]="seriesDataSource" typeaheadOptionField="name" required type="text"
-            class="form-control form-control-sm" formControlName="series" id="series" placeholder="输入 奥迪/大众  测试">
+        <label for="createdUserName" class="col-1 col-form-label col-form-label">服务顾问</label>
+        <div class="col-2">
+          <input type="text" class="form-control form-control" formControlName="createdUserName" id="createdUserName">
         </div>
       </div>
       <div class="form-group row">
-        <label for="model" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>车型</label>
-        <div class="col-sm-2">
-          <input (typeaheadOnSelect)="onModelSelect($event)" [typeahead]="modelDataSource" typeaheadOptionField="name" required type="text"
-            class="form-control form-control-sm" formControlName="model" id="model" placeholder="输入 加长 测试">
+        <label for="introducer" class="col-1 col-form-label col-form-label">介绍人</label>
+        <div class="col-2">
+          <input type="text" class="form-control form-control" formControlName="introducer" id="introducer" placeholder="介绍人">
         </div>
-        <label for="vin" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>VIN</label>
-        <div class="col-sm-2">
-          <input type="text" class="form-control form-control-sm" formControlName="vin" id="vin" placeholder="VIN">
+        <label for="introPhone" class="col-1 col-form-label col-form-label">介绍人电话</label>
+        <div class="col-2">
+          <input type="text" class="form-control form-control" formControlName="introPhone" id="introPhone" placeholder="介绍人电话">
         </div>
-        <label for="validate" class="col-sm-1 col-form-label col-form-label-sm">验车日期</label>
-        <div class="input-group input-group-sm col-sm-2">
-          <input class="form-control form-control-sm datetime-picker" type="text" formControlName="validate" ngui-datetime-picker date-format="YYYY-MM-DD"
+        <label for="brand" class="col-1 col-form-label col-form-label"><span class="asterisk mr-1">*</span>品牌</label>
+        <div class="col-2">
+          <input [hqTableTypeahead]="brandTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onBrandSelect($event)" required
+            type="text" class="form-control form-control" formControlName="brand" id="brand" placeholder="输入 奥迪/大众  测试">
+        </div>
+        <label for="series" class="col-1 col-form-label col-form-label"><span class="asterisk mr-1">*</span>车系</label>
+        <div class="col-2">
+          <input [hqTableTypeahead]="seriesTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onSeriesSelect($event)" required
+            type="text" class="form-control form-control" formControlName="series" id="series" placeholder="输入 奥迪/大众  测试">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="model" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车型</label>
+        <div class="col-2">
+          <input [hqTableTypeahead]="modelTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onModelSelect($event)" required
+            type="text" class="form-control form-control" formControlName="model" id="model" placeholder="输入 加长 测试">
+        </div>
+        <label for="vin" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>VIN</label>
+        <div class="col-2">
+          <input type="text" class="form-control form-control" formControlName="vin" id="vin" placeholder="VIN">
+        </div>
+        <label for="validate" class="col-1 col-form-label">验车日期</label>
+        <div class="  col-2">
+          <input class="form-control form-control datetime-picker" type="text" formControlName="validate" ngui-datetime-picker date-format="YYYY-MM-DD"
             date-only="true" />
-          <span class="input-group-addon">
-            <i class="fa fa-calendar" aria-hidden="true"></i>
-          </span>
         </div>
       </div>
       <hr>
       <div class="form-group row">
-        <label for="type" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>维修类型</label>
-        <div class="col-sm-2">
-          <select required id="type" formControlName="type" class="form-control sm">
+        <label for="type" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>维修类型</label>
+        <div class="col-2">
+          <select required id="type" formControlName="type" class="form-control">
             <option *ngFor="let type of maintenanceTypeData" value="{{type.id}}">{{type.value}}</option>
           </select>
         </div>
-        <label for="expectLeave" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>预计交车时间</label>
-        <div class="input-group input-group-sm col-sm-2">
-          <input class="form-control form-control-sm datetime-picker" type="text" formControlName="expectLeave" ngui-datetime-picker
-            date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' />
-          <span class="input-group-addon">
+        <label for="expectLeave" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>预计交车时间</label>
+        <div class=" col-2">
+          <input class="form-control form-control datetime-picker" type="text" formControlName="expectLeave" ngui-datetime-picker date-format="YYYY-MM-DD hh:mm"
+            hour="23" minute='59' />
+          <!--<span class="-addon">
                 <i class="fa fa-calendar" aria-hidden="true"></i>
-              </span>
+              </span>-->
         </div>
-        <label for="mileage" class="col-sm-1 col-form-label col-form-label-sm"><span class="asterisk mr-1">*</span>行驶里程</label>
-        <div class="input-group input-group-sm col-sm-2">
-          <input required type="text" class="form-control form-control-sm" formControlName="mileage" id="mileage">
-          <span class="input-group-addon"><i>KM</i></span>
+        <label for="mileage" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>行驶里程</label>
+        <div class="col-2">
+          <input required type="text" class="form-control" formControlName="mileage" id="mileage">
         </div>
-        <label for="lastEnter" class="col-sm-1 col-form-label col-form-label-sm">上次进店时间</label>
-        <div class="col-sm-2">
-          <input type="text" class="form-control form-control-sm" formControlName="lastEnter" id="lastEnter">
+        <label for="lastEnter" class="col-1 col-form-label">上次进店时间</label>
+        <div class="col-2">
+          <input type="text" class="form-control" formControlName="lastEnter" id="lastEnter">
         </div>
       </div>
       <div class="form-group row">
-
-        <label for="nextDate" class="col-sm-1 col-form-label col-form-label-sm">建议下次保养日期</label>
-        <div class="input-group input-group-sm col-sm-2">
-          <input class="form-control form-control-sm datetime-picker" type="text" formControlName="nextDate" ngui-datetime-picker date-format="YYYY-MM-DD"
+        <label for="nextDate" class="col-1 col-form-label">建议下次保养日期</label>
+        <div class="col-2">
+          <input class="form-control form-control datetime-picker" type="text" formControlName="nextDate" ngui-datetime-picker date-format="YYYY-MM-DD"
             date-only="true" />
-          <span class="input-group-addon">
-                <i class="fa fa-calendar" aria-hidden="true"></i>
-              </span>
         </div>
-        <label for="location" class="col-sm-1 col-form-label col-form-label-sm">维修工位</label>
-        <div class="col-sm-2">
-          <input type="text" class="form-control form-control-sm" formControlName="location" id="location">
+        <label for="location" class="col-1">维修工位</label>
+        <div class="col-2">
+          <input type="text" class="form-control form-control" formControlName="location" id="location">
         </div>
-        <label for="lastMileage" class="col-sm-1 col-form-label col-form-label-sm">上次进店里程</label>
-        <div class="input-group input-group-sm col-sm-2">
-          <input type="text" class="form-control form-control-sm" formControlName="lastMileage" id="lastMileage">
-          <span class="input-group-addon"><i>KM</i></span>
+        <label for="lastMileage" class="col-1 col-form-label">上次进店里程</label>
+        <div class="col-2">
+          <input type="text" class="form-control form-control" formControlName="lastMileage" id="lastMileage">
         </div>
-        <label for="nextMileage" class="col-sm-1 col-form-label col-form-label-sm">建议下次保养里程</label>
-        <div class="input-group input-group-sm col-sm-2">
-          <input type="text" class="form-control form-control-sm" formControlName="nextMileage" id="nextMileage">
-          <span class="input-group-addon"><i>KM</i></span>
+        <label for="nextMileage" class="col-1 col-form-label">建议下次保养里程</label>
+        <div class="col-2">
+          <input type="text" class="form-control form-control" formControlName="nextMileage" id="nextMileage">
         </div>
       </div>
     </form>
@@ -155,7 +146,7 @@
 
     <tabset>
       <tab heading="维修项目">
-        <table class="table table-hover table-bordered table-sm">
+        <table class="table table-striped table-borderd">
           <thead>
             <tr>
               <th>操作</th>
@@ -176,7 +167,7 @@
               <td>{{item.workHour}}</td>
               <td>{{item.price}}</td>
               <td>{{item.discount}}</td>
-              <td>{{item.amount/100}}</td>
+              <td>{{record?.amount ? (record?.amount / 100) : ''}}</td>
               <td>{{item.operationTime}}</td>
             </tr>
             <tr *ngIf="addNewMaintenanceItem">
@@ -184,25 +175,26 @@
                 <a href="#" (click)="onConfirmAddNewMaintenanceItem($event)">确定</a> |
                 <a href="#" (click)="addNewMaintenanceItem = false">取消</a>
               </td>
-              <td><input placeholder="输入 更换  进行测试" (blur)="onServiceBlur()" (change)="onServiceChange()" [hqTableTypeahead]="serviceNametypeaheadSource" [columns]="serviceNameTypeaheadColumns" (onSelect)="serviceTypeaheadOnSelect($event)"  [(ngModel)]="newMaintenanceItem.serviceName"
-                  type="text" class="form-control form-control-sm" required></td>
+              <td><input placeholder="输入 更换  进行测试" (blur)="onServiceBlur()" (change)="onServiceChange()" [hqTableTypeahead]="serviceNameTypeaheadSource"
+                  [columns]="nameTypeaheadColumns" (onSelect)="serviceTypeaheadOnSelect($event)" [(ngModel)]="newMaintenanceItem.serviceName"
+                  type="text" class="form-control form-control" required></td>
               <td><input placeholder="请输入数字" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.workHour"
-                  (keyup)="onWorkHourChange()" type="text" class="form-control form-control-sm" required></td>
+                  (keyup)="onWorkHourChange()" type="text" class="form-control form-control" required></td>
               <td><input placeholder="请输入数字" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.price"
-                  (keyup)="onPriceChange()" type="text" class="form-control form-control-sm" required></td>
+                  (keyup)="onPriceChange()" type="text" class="form-control form-control" required></td>
               <td><input placeholder="请输入0~100之间的整数" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.discount"
-                  (keyup)="onDiscountChange()" type="text" class="form-control form-control-sm" required></td>
-              <td><input [value]="newMaintenanceItem.amount/100" type="text" class="form-control form-control-sm" [disabled]="true"></td>
-              <td><input [value]="newMaintenanceItem.operationTime" type="text" class="form-control form-control-sm" [disabled]="true"></td>
+                  (keyup)="onDiscountChange()" type="text" class="form-control form-control" required></td>
+              <td><input [value]="newMaintenanceItem.amount/100" type="text" class="form-control form-control" [disabled]="true"></td>
+              <td><input [value]="newMaintenanceItem.operationTime" type="text" class="form-control form-control" [disabled]="true"></td>
             </tr>
           </tbody>
         </table>
         <div>
-          <button class="btn btn-sm btn-secondary mr-2" (click)="addNewmaintanceItem2()" placement="right">新增</button>
+          <button class="btn btn btn-secondary mr-2" (click)="addNewmaintanceItem2()" placement="right">新增</button>
         </div>
       </tab>
       <tab heading="上次维修记录">
-        <table class="table table-hover table-bordered table-sm">
+        <table class="table table-striped table-borderd">
           <caption>维修项目</caption>
           <thead>
             <tr>
@@ -228,7 +220,7 @@
           </tbody>
         </table>
         <br>
-        <table class="table table-hover table-bordered table-sm">
+        <table class="table table-striped table-borderd">
           <caption>维修配件</caption>
           <thead>
             <tr>
@@ -256,7 +248,7 @@
           </tbody>
         </table>
         <br>
-        <table class="table table-hover table-bordered table-sm">
+        <table class="table table-striped table-borderd">
           <caption>附加项目</caption>
           <thead>
             <tr>
@@ -270,7 +262,7 @@
           </tbody>
         </table>
         <br>
-        <table class="table table-hover table-bordered table-sm">
+        <table class="table table-striped table-borderd">
           <caption>建议维修项目</caption>
           <thead>
             <tr>
@@ -291,7 +283,7 @@
       <br>
       <!--只有前4个选项卡显示-->
       <div *ngIf="true" class="card">
-        <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
+        <div class="card-header" style="color:gray;padding: 3px 5px;">
           折前费用: 工时费
           <span class="ml-2 mr-2">{{fee.workHour}}</span> | 材料费
           <span class="ml-2 mr-2">{{fee.material}}</span> | 其它

@@ -1,0 +1,17 @@
+.card {
+    border: none;
+}
+.card-block {
+    border: 1px solid #eceeef;
+}
+.card-block label {
+    width: 100px;
+    text-align: right;
+}
+hr {
+    border-top: 2px solid #8c8b8b;
+}
+.print-date span {
+    margin-left: 15px;
+}
+

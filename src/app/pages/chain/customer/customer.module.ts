@@ -8,6 +8,7 @@ import { ModalModule } from 'ngx-bootstrap';
 import { NguiDatetimePickerModule } from '@ngui/datetime-picker';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { SharedModule } from 'app/shared/shared.module';
+import { OrderService } from '../reception/order.service';
 
 @NgModule({
   imports: [
@@ -21,6 +22,6 @@ import { SharedModule } from 'app/shared/shared.module';
     NguiDatetimePickerModule
   ],
   declarations: [routedComponents],
-  providers: [CustomerService],
+  providers: [CustomerService, OrderService],
 })
 export class CustomerModule { }

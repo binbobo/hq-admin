@@ -62,25 +62,25 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of list">
-          <td><input [(ngModel)]="item.checked" type="checkbox"></td>
-          <td>{{item.number}}</td>
+          <td class="text-center"><input [(ngModel)]="item.checked" type="checkbox"></td>
+          <td class="text-center">{{item.number}}</td>
           <td>{{ item.storageLocationName}}</td>
           <td>{{item.category}}</td>
           <td>{{item.brand}}</td>
           <td>{{ item.code}}</td>
           <td>{{item.name}}</td>
-          <td>{{item.count}}</td>
+          <td class="text-center">{{item.count}}</td>
           <td>{{ item.vehicleName}}</td>
           <td>{{item.unit}}</td>
-          <td>{{item.price}}</td>
-          <td>{{ item.newPrice}}</td>
-          <td>{{item.maxCount}}</td>
-          <td>{{item.minCount}}</td>
+          <td class="text-right">{{item.price|centToYuan}}</td>
+          <td class="text-right">{{ item.newPrice|centToYuan}}</td>
+          <td class="text-center">{{item.maxCount}}</td>
+          <td class="text-center">{{item.minCount}}</td>
           <td>{{ item.packageInfo}}</td>
           <td>{{item.madeIn}}</td>
           <td>{{item.properties}}</td>
           <td>{{ item.description}}</td>
-          <td><button class="btn btn-sm btn" (click)="onEdit($event,item)">编辑</button></td>
+          <td class="text-center"><button class="btn btn-sm btn" (click)="onEdit($event,item)">编辑</button></td>
         </tr>
       </tbody>
     </table>
