@@ -21,7 +21,7 @@ select.form-control{
     padding: 0 12px;
 }
 
-.card-block table th{
+table th{
     text-align: center;
 }
 
@@ -74,5 +74,5 @@ ngx-dropdown-treeview.sm input.form-control{
 }
 
 .card {
-    height: 100%;
+    min-height: 50vh;
 }

@@ -1,9 +1,9 @@
 export class ApiResult<T>{
-    constructor(public data: T) { }
+    constructor(public data?: T) { }
 }
 
 export class ListResult<T> implements ApiResult<Array<T>>{
-    constructor(public data: Array<T>) { }
+    constructor(public data?: Array<T>) { }
 }
 
 export class PagedResult<T> implements ApiResult<Array<T>>{
