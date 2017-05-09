@@ -41,19 +41,19 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of list">
-          <td><input [(ngModel)]="item.checked" type="checkbox"></td>
-          <td>{{item.number}}</td>
+          <td class="text-center"><input [(ngModel)]="item.checked" type="checkbox"></td>
+          <td class="text-center">{{item.number}}</td>
           <td>{{item.code}}</td>
           <td>{{item.name}}</td>
           <td>{{item.shortName}}</td>
           <td>{{item.contactUser}}</td>
-          <td>{{item.tel}}</td>
+          <td class="text-center">{{item.tel}}</td>
           <td>{{item.address}}</td>
           <td>{{item.postal}}</td>
           <td>{{item.fax}}</td>
           <td>{{item.description}}</td>
-          <td>{{item.status}}</td>
-          <td>
+          <td class="text-center">{{item.status}}</td>
+          <td class="text-center">
             <button (click)="onProviderEdit(item)" class="btn btn-sm btn-success">编辑</button>
           </td>
         </tr>

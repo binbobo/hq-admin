@@ -21,6 +21,10 @@ select.form-control{
     padding: 0 12px;
 }
 
+td,th{
+    white-space: nowrap;
+}
+
 table th{
     text-align: center;
 }
@@ -71,8 +75,4 @@ ngx-dropdown-treeview.sm input.form-control{
 .popover {
     padding: 0;
     max-width: 100%;
-}
-
-.card {
-    min-height: 50vh;
 }
