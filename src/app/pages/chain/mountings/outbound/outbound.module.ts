@@ -10,12 +10,14 @@ import { SalesCreateComponent } from './sales/sales-create/sales-create.componen
 import { ModalModule, BsDropdownModule } from 'ngx-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomFormsModule } from "ng2-validation/dist";
+import { PrintComponent } from './distribute/print/print.component';
 
 const routes: Routes = [
   { path: 'maintain-distribute', component: DistributeComponent },
   { path: 'sell', component: SalesListComponent },
   { path: 'inner-receive', component: ReceiveComponent },
   { path: 'purchase-return', component: ReturnComponent },
+  { path: 'maintain-distribute/print', component: PrintComponent },
 ]
 
 @NgModule({
@@ -32,6 +34,6 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
   providers: [SalesService],
-  declarations: [DistributeComponent, SalesListComponent, ReceiveComponent, ReturnComponent, SalesCreateComponent]
+  declarations: [DistributeComponent, SalesListComponent, ReceiveComponent, ReturnComponent, SalesCreateComponent, PrintComponent]
 })
 export class OutboundModule { }

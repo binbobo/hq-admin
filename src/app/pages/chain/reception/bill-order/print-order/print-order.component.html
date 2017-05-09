@@ -1,6 +1,6 @@
 <div class="print card">
   <div class="card-header">
-     <span>维修结算单</span>
+    <span>维修结算单</span>
   </div>
   <div class='card-block' hqPrint #printer="hq-print">
     <table class="table search-table table-bordered">
@@ -144,9 +144,13 @@
     <hr>
     <div class="print-bot">
       <div class="pull-left"> 打印时间：{{data?.printOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</div>
-      <div class="pull-right">操作人：<span class='nbspx'></span> 客户签名： <span class='nbspx'></span>日期：<span class="nbspx-sm"></span> 年 <span class="nbspx-sm"></span>月<span class="nbspx-sm"></span>日</div>
+      <div class="pull-right">操作人：<span class='nbspx'></span> 客户签名： <span class='nbspx'></span>日期：<span class="nbspx-sm"></span> 年 <span class="nbspx-sm"></span>月
+        <span class="nbspx-sm"></span>日</div>
     </div>
-    <div class="center" >
+
+  </div>
+  <div class="card-footer text-muted">
+    <div class="center">
       <button type="button" class="btn btn-primary" (click)="print()">打印</button>
     </div>
   </div>

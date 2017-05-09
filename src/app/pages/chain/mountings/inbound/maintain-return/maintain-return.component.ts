@@ -10,6 +10,7 @@ import { TypeaheadRequestParams } from "app/shared/directives";
   styleUrls: ['./maintain-return.component.css']
 })
 export class MaintainReturnComponent extends DataList<any>{
+  billCode: any;
   printId: any;
   productData: any;
   serviceData: any;
@@ -40,18 +41,25 @@ export class MaintainReturnComponent extends DataList<any>{
       { name: 'model', title: '车型' }
     ];
   }
-
   // 选择之后根据id查找工单详情并替换数据
   public onPlateNoSelect($event) {
     this.SearchappendList = $event;
     this.listId = $event.id;
+    this.billCode = $event.billCode;
+
     this.service.getOrderItemData(this.listId)
       .then(data => {
         this.orderDetail = data
         this.serviceData = data.serviceOutputs;
         this.productData = data.productOutputs;
+
         console.log(data)
       });
+
+    this.service.getMainList(this.billCode)
+      .then(data => {
+        console.log(data);
+      })
   }
 
   // 车牌号模糊搜索接口调用
@@ -86,7 +94,6 @@ export class MaintainReturnComponent extends DataList<any>{
     this.newItem = {
       maintenanceItemId: id, //维修明细id
       serviceItem: serviceName,//维修项目
-      createUser: "", //领料人
       brandName: '',// 品牌
       productCode: '',//配件编码
       productName: '',//配件名称
@@ -98,6 +105,7 @@ export class MaintainReturnComponent extends DataList<any>{
       price: '',//单价
       amount: '',//金额
       description: '',//备注
+
     };
     // 维修项目编辑区域可见
     this.addNewItem = true;
@@ -154,5 +162,8 @@ export class MaintainReturnComponent extends DataList<any>{
       this.alerter.info('生成发料单成功', true, 2000);
     }).catch(err => this.alerter.error(err, true, 2000));
   }
+  valueObj: any;
+  createName: any;
+  createId: any;
 
 }

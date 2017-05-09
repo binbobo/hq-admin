@@ -6,32 +6,12 @@
     display: inline-block;
     width:20%;
 }
-.distribute .input-form{
-    width: 100%;
-    /*text-align: center;*/
-    margin-bottom:8px;
-}
-.distribute .search-table{
-        border: 1px solid #ddd;
-}
-.adistribute .search-table td:nth-child(2n-1){
-    text-align: right;
-    font-size:1rem;
-    font-weight: bold;
-}
-.distribute .search-table td:nth-child(2n){
-    background-color:rgba(221, 221, 221, 0.29);
-}
-.distribute .form-control2{
-    border:0;
-    background:#fff;
-}
-.distribute .input-width{
-    min-width:120px;
-}
-.distribute a{
-    font-size:.9rem;
-}
-.distribute table tr td{
+caption {
+    caption-side: top;
     text-align: center;
+}
+table th,table td{
+     text-overflow:ellipsis; 
+     white-space:nowrap; 
+     overflow:hidden;
 }
