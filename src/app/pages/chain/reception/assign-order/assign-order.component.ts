@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewChild, Injector } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
 import { AssignService, AssignListRequest } from '../assign.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { StorageKeys, SelectOption, DataList } from 'app/shared/models';
-import { Observable } from 'rxjs/Observable';
 import * as fileSaver from 'file-saver';
 
 

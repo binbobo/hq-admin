@@ -5,11 +5,13 @@ import { AssignOrderComponent } from './assign-order/assign-order.component';
 import { BillOrderComponent } from './bill-order/bill-order.component';
 import { AppendOrderComponent } from './append-order/append-order.component';
 import { CreateOrderComponent } from './create-order/create-order.component';
-import { PrintOrderComponent } from "app/pages/chain/reception/bill-order/print-order/print-order.component";
+import { PrintOrderComponent } from 'app/pages/chain/reception/bill-order/print-order/print-order.component';
+import { OrderDetailComponent } from './order-list/print-preview/order-detail.component';
 
 const routes: Routes = [
     // 工单列表路由
     { path: 'order', component: OrderListComponent },
+    { path: 'order/print-preview/:id', component: OrderDetailComponent },
     // 指派工单列表路由
     { path: 'assign', component: AssignOrderComponent },
     // 结算单列表路由
@@ -28,5 +30,5 @@ const routes: Routes = [
 })
 export class ReceptionRoutingModule { }
 
-export const routedComponents = [OrderListComponent, AssignOrderComponent, CreateOrderComponent, BillOrderComponent, AppendOrderComponent,PrintOrderComponent];
+export const routedComponents = [OrderListComponent, AssignOrderComponent, CreateOrderComponent, BillOrderComponent, AppendOrderComponent, PrintOrderComponent, OrderDetailComponent];
 

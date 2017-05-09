@@ -66,7 +66,6 @@ export class OrderListComponent extends DataList<Order> {
     // 获取当前登录用户信息
     this.user = JSON.parse(sessionStorage.getItem(StorageKeys.Identity));
     console.log('当前登陆用户: ', this.user);
-
     // 构建表单
     this.createForm();
   }
@@ -121,6 +120,7 @@ export class OrderListComponent extends DataList<Order> {
 
       // 记录当前操作的工单记录
       this.selectedOrder = data;
+      this.selectedOrder.id = id;
 
       // 统计各项费用
 
@@ -189,7 +189,7 @@ export class OrderListComponent extends DataList<Order> {
   }
 
   // 重置为初始查询条件
-  revert() {
+  reset() {
     this.workSheetFilterForm.reset();
 
     this.params.states = [];

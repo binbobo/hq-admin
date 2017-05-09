@@ -81,16 +81,62 @@ export class OrderService implements BasicService<Order> {
     }
 
     /**
-     * 根据维修项目名称模糊查询维修项目信息
+     * 根据品牌模糊查询车辆信息
      * 
      * @param {FuzzySearchRequest} params 
      * @returns {Promise<PagedResult<any>>} 
      * 
      * @memberof OrderService
      */
+    getVehicleByBrand(params: VehicleBrandSearchRequest): Promise<PagedResult<any>> {
+        const search = params.serialize();
+        const url = Urls.chain.concat('/Brands/search');
+        console.log('根据品牌模糊查询车辆信息:', url + search);
+        return this.httpService
+            .get<PagedResult<any>>(url, search);
+    }
+    /**
+  * 根据车系模糊查询车辆信息
+  * 
+  * @param {FuzzySearchRequest} params 
+  * @returns {Promise<PagedResult<any>>} 
+  * 
+  * @memberof OrderService
+  */
+    getVehicleBySeries(params: VehicleSeriesSearchRequest): Promise<PagedResult<any>> {
+        const search = params.serialize();
+        const url = Urls.chain.concat('/VehicleSeries/search');
+        console.log('根据车系模糊查询车辆信息:', url + search);
+        return this.httpService
+            .get<PagedResult<any>>(url, search);
+    }
+    /**
+  * 根据维修项目名称模糊查询维修项目信息
+  * 
+  * @param {FuzzySearchRequest} params 
+  * @returns {Promise<PagedResult<any>>} 
+  * 
+  * @memberof OrderService
+  */
     getMaintenanceItemsByName(params: FuzzySearchRequest): Promise<PagedResult<any>> {
         const search = params.serialize();
         const url = Urls.chain.concat('/Services/GetByName');
+        console.log('模糊查询维修项目:', url + search);
+        return this.httpService
+            .get<PagedResult<any>>(url, search);
+    }
+    /**
+  * 根据车型模糊查询车辆信息
+  * 
+  * @param {FuzzySearchRequest} params 
+  * @returns {Promise<PagedResult<any>>} 
+  * 
+  * @memberof OrderService
+  */
+    getVehicleByModel(params: VehicleSearchRequest): Promise<PagedResult<any>> {
+        const search = params.serialize();
+        const url = Urls.chain.concat('/Vehicles/search');
+        console.log('根据车型模糊查询车辆信息:', url + search);
         return this.httpService
             .get<PagedResult<any>>(url, search);
     }
@@ -139,22 +185,43 @@ export class OrderService implements BasicService<Order> {
     * @returns {Observable<Vehicle[]>}
     * @memberOf OrderService
     */
-    getVehicleByModel(vehicleName: string, brandId: string, seriesId: string): Observable<Vehicle[]> {
-        const url = Urls.chain.concat('/Vehicles/search');
-        // console.log('根据车型模糊查询车辆信息参数', vehicleName, brandId, seriesId);
-        return this.httpService
-            .request(url, {
-                params: {
-                    'vehicleName': vehicleName,
-                    'brandId': brandId,
-                    'seriesId': seriesId
-                }
-            })
-            .map(response => {
-                console.log('根据车型模糊查询车辆信息：', response.json().data);
-                return response.json().data as Vehicle[];
-            });
-    }
+    // getVehicleByModel(vehicleName: string, brandId: string, seriesId: string): Observable<Vehicle[]> {
+    //     const url = Urls.chain.concat('/Vehicles/search');
+    //     // console.log('根据车型模糊查询车辆信息参数', vehicleName, brandId, seriesId);
+    //     return this.httpService
+    //         .request(url, {
+    //             params: {
+    //                 'vehicleName': vehicleName,
+    //                 'brandId': brandId,
+    //                 'seriesId': seriesId
+    //             }
+    //         })
+    //         .map(response => {
+    //             console.log('根据车型模糊查询车辆信息：', response.json().data);
+    //             return response.json().data as Vehicle[];
+    //         });
+    // }
+
+    /**
+    * 根据车型模糊查询车辆信息
+    * @param {string} token
+    * @returns {Observable<Vehicle[]>}
+    * @memberOf OrderService
+    // */
+    // getVehicleByBrand(brandName: string): Observable<Vehicle[]> {
+    //     const url = Urls.chain.concat('/Brands/search');
+    //     console.log('根据品牌模糊查询车辆信息brandName:', brandName);
+    //     return this.httpService
+    //         .request(url, {
+    //             params: {
+    //                 'brandName': brandName
+    //             }
+    //         })
+    //         .map(response => {
+    //             console.log('根据品牌模糊查询车辆信息：', response.json().data);
+    //             return response.json().data as Vehicle[];
+    //         });
+    // }
 
     /**
     * 根据车型模糊查询车辆信息
@@ -162,41 +229,20 @@ export class OrderService implements BasicService<Order> {
     * @returns {Observable<Vehicle[]>}
     * @memberOf OrderService
     */
-    getVehicleByBrand(brandName: string): Observable<Vehicle[]> {
-        const url = Urls.chain.concat('/Brands/search');
-        console.log('根据品牌模糊查询车辆信息brandName:', brandName);
-        return this.httpService
-            .request(url, {
-                params: {
-                    'brandName': brandName
-                }
-            })
-            .map(response => {
-                console.log('根据品牌模糊查询车辆信息：', response.json().data);
-                return response.json().data as Vehicle[];
-            });
-    }
-
-    /**
-    * 根据车型模糊查询车辆信息
-    * @param {string} token
-    * @returns {Observable<Vehicle[]>}
-    * @memberOf OrderService
-    */
-    getVehicleBySerias(serieName: string, brandId: string): Observable<Vehicle[]> {
-        const url = Urls.chain.concat('/VehicleSeries/search');
-        return this.httpService
-            .request(url, {
-                params: {
-                    'serieName': serieName,
-                    'brandId': brandId
-                }
-            })
-            .map(response => {
-                console.log('根据车系模糊查询车辆信息：', response.json().data);
-                return response.json().data as Vehicle[];
-            });
-    }
+    // getVehicleBySerias(serieName: string, brandId: string): Observable<Vehicle[]> {
+    //     const url = Urls.chain.concat('/VehicleSeries/search');
+    //     return this.httpService
+    //         .request(url, {
+    //             params: {
+    //                 'serieName': serieName,
+    //                 'brandId': brandId
+    //             }
+    //         })
+    //         .map(response => {
+    //             console.log('根据车系模糊查询车辆信息：', response.json().data);
+    //             return response.json().data as Vehicle[];
+    //         });
+    // }
 
     /**
   *  根据客户车辆id查询上一次工单信息
@@ -348,6 +394,7 @@ export class OrderService implements BasicService<Order> {
      */
     public deleteSuspendOrder(id: string): Promise<void> {
         const url = Urls.chain.concat('/SuspendedBills/', id);
+        console.log('根据id删除挂掉记录请求url:', url);
         return this.httpService
             .delete(url)
             .catch(err => Promise.reject(`删除挂单记录失败：${err}`));
@@ -416,6 +463,31 @@ export class FuzzySearchRequest extends PagedParams {
         public keyword: string, // 模糊搜索关键字
     ) {
         // super('FuzzySearchRequestParams');
+        super();
+    }
+}
+
+export class VehicleBrandSearchRequest extends PagedParams {
+    constructor(
+        public brandName: string, // 品牌名称
+    ) {
+        super();
+    }
+}
+export class VehicleSeriesSearchRequest extends PagedParams {
+    constructor(
+        public seriesName?: string, // 车系名称
+        public brandId?: string, // 品牌id
+    ) {
+        super();
+    }
+}
+export class VehicleSearchRequest extends PagedParams {
+    constructor(
+        public vehicleName?: string, // 车型名称
+        public brandId?: string, // 品牌id
+        public seriesId?: string, // 车系id
+    ) {
         super();
     }
 }
