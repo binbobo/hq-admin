@@ -8,23 +8,24 @@
       <div class="input-group col-8 offset-2">
         <input style="border-radius: 5px;" [(ngModel)]="params.keyword" formControlName="keyword" placeholder="请输入车牌号/工单号" class="form-control mr-3">
         <span class="input-group-btn">
-          <button class="btn btn-secondary" type="submit">搜索</button>
+          <button class="btn btn-primary" type="submit">搜索</button>
         </span>
       </div>
       <hr>
       <div class="form-group">
         <div class="form-check form-check-inline" *ngFor="let type of maintenanceAssignTypes">
-          <label class="form-check-label">
+          <label class="form-check-label mr-2">
             <input class="form-check-input" (change)='type.checked = !type.checked' [checked]="type.checked"  type="checkbox" value="{{type.id}}"> {{type.value}}
           </label>
         </div>
       </div>
     </form>
     <hr>
-    <table class="table table-hover table-bordered table-sm">
+    <table class="table table-responsive table-striped table-borderd">
       <thead>
         <tr>
           <th>操作</th>
+          <th>状态</th>
           <th>维修类型</th>
           <th>工单号</th>
           <th>进店时间</th>
@@ -47,18 +48,9 @@
             <a href="#" (click)="orderDetailsHandler($event, item.id, lgModal)">详情</a> |
             <a href="#" (click)="finishedOrder($event, item.id, confirmModal)">完工</a>
           </td>
-          <!--<td>
-            <a *ngIf="item.teamType === '0'" href="#" [hqMutilSelect]="maintenanceTechnicians" mTitle="选择维修技师" placement="right"
-              (onChange)="onChangeTechnicians($event)" (onConfirm)="onConfirmTechnicians(item.id, 1)" (click)="onMultiSelectorClick($event)">指派</a>
-            <span *ngIf="item.teamType !== '0'">{{item.employeeNames?.join(',')}}</span>
+          <td>
+            {{item.statusName}}
           </td>
-          <td width="40">
-            <span *ngIf="item.teamType === '2'">
-              {{item.turnEmployeeNames?.join(',')}}
-              </span>
-            <a *ngIf="item.teamType !== '0'" href="#" [hqMutilSelect]="maintenanceTechnicians" mTitle="选择维修技师" placement="right"
-              (onConfirm)="onConfirmTechnicians(item.id, 2)" (click)="onMultiSelectorClick($event)">转派</a>
-          </td>-->
           <td>
             {{item.typeName}}
           </td>
@@ -109,7 +101,7 @@
           <!--导出详情begin-->
           <tabset>
             <tab heading="维修项目">
-              <table class="table table-hover table-bordered table-sm">
+              <table class="table table-striped table-borderd">
                 <thead>
                   <tr>
                     <th><input value="all" #checkAll (change)="assignToggleCheckboxAll(checkAll)" [checked]="selectedOrder?.serviceOutputs?.checkedAll" type="checkbox" /></th>
@@ -146,23 +138,23 @@
                     </td>
                     <td>{{record?.workHour }}</td>
                     <td>{{record?.price}}</td>
-                    <td>{{record?.amount}}</td>
+                    <td>{{record?.amount ? (record?.amount / 100) : ''}}</td>
                     <td>{{record?.discount}}</td>
                     <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
                   </tr>
                 </tbody>
               </table>
               <div>
-                <button class="btn btn-sm btn-secondary mr-2" (onConfirm)="onConfirmTechnicians($event, 1)" [hqMutilSelect]="maintenanceTechnicians"
+                <button class="btn btn btn-secondary mr-2" (onConfirm)="onConfirmTechnicians($event, 1)" [hqMutilSelect]="maintenanceTechnicians"
                   mTitle="选择维修技师" href="#" [disabled]="!selectedOrder?.serviceOutputs?.enableAssignment" (click)="onMultiSelectorClick($event)"
                   placement="right">指派</button>
-                <button class="btn btn-sm btn-secondary" (onConfirm)="onConfirmTechnicians($event, 2)" [hqMutilSelect]="maintenanceTechnicians"
+                <button class="btn btn btn-secondary" (onConfirm)="onConfirmTechnicians($event, 2)" [hqMutilSelect]="maintenanceTechnicians"
                   mTitle="选择维修技师" href="#" [disabled]="!selectedOrder?.serviceOutputs?.enableAssignment" (click)="onMultiSelectorClick($event)"
                   placement="right">转派</button>
               </div>
             </tab>
             <tab heading="附加项目">
-              <table class="table table-hover table-bordered table-sm">
+              <table class="table table-striped table-borderd">
                 <thead>
                   <tr>
                     <th>备注</th>
@@ -177,7 +169,7 @@
             </tab>
 
             <tab heading="建议维修项目">
-              <table class="table table-hover table-bordered table-sm">
+              <table class="table table-striped table-borderd">
                 <thead>
                   <tr>
                     <th>建议维修项目</th>
@@ -206,8 +198,6 @@
               </div>
             </div>
           </tabset>
-          <!--建议维修项 end-->
-          <!--导出详情end-->
         </div>
       </div>
     </div>
@@ -229,8 +219,8 @@
           <p>您确定要完工吗</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-sm" data-dismiss="confirmModal" (click)="confirmModal.hide();">取消</button>
-          <button type="button" class="btn btn-sm" data-dismiss="modal" (click)="onConfirmFinished(confirmModal)">确定</button>
+          <button type="button" class="btn" data-dismiss="confirmModal" (click)="confirmModal.hide();">取消</button>
+          <button type="button" class="btn" data-dismiss="modal" (click)="onConfirmFinished(confirmModal)">确定</button>
         </div>
       </div>
     </div>
