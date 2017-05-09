@@ -188,7 +188,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
 
             // 工时费： 维修项目金额总和
             this.selectedOrder.workHourFee = data.serviceOutputs.reduce((accumulator, currentValue) => {
-                return accumulator + currentValue.amount;
+                return accumulator + (currentValue.workHour * currentValue.price);
             }, 0);
             // 材料费： 维修配件金额总和
             this.selectedOrder.materialFee = data.productOutputs.reduce((accumulator, currentValue) => {
