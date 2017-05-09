@@ -40,7 +40,7 @@ const routes: Routes = [
   exports: [RouterModule],
 
   providers: [SalesService, ReceiveService],
-  declarations: [DistributeComponent, SalesListComponent, ReturnComponent, SalesCreateComponent, ReceiveListComponent, ReceiveCreateComponent, ReceivePrintComponent, SalesPrintComponent，PrintComponent]
+  declarations: [DistributeComponent, SalesListComponent, ReturnComponent, SalesCreateComponent, ReceiveListComponent, ReceiveCreateComponent, ReceivePrintComponent, SalesPrintComponent, PrintComponent]
 
 })
 export class OutboundModule { }
