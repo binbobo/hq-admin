@@ -3,11 +3,10 @@ import {SystemRouting,routedComponents} from "./system.routing"
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { AlertModule } from 'ngx-bootstrap/alert';
-import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { ModalModule } from 'ngx-bootstrap';
-import { NguiDatetimePickerModule } from '@ngui/datetime-picker';
-import { TabsModule } from 'ngx-bootstrap/tabs';
 import { SharedModule } from 'app/shared/shared.module';
+import {TreeviewModule} from "ngx-treeview"
+
 
 import {UserCenterService} from "./usercenter/usercenter.service"
 
@@ -16,11 +15,9 @@ import {UserCenterService} from "./usercenter/usercenter.service"
         SystemRouting,
         SharedModule,
         ReactiveFormsModule,
-        TabsModule.forRoot(),
         AlertModule.forRoot(),
-        TypeaheadModule.forRoot(),
         ModalModule.forRoot(),
-        NguiDatetimePickerModule
+        TreeviewModule.forRoot()
     ],
     declarations:[routedComponents],
     providers:[UserCenterService]
