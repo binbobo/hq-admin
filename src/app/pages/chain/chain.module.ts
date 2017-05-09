@@ -4,7 +4,7 @@ import { ChainRoutingModule } from './chain.routing';
 
 @NgModule({
   imports: [
-    ChainRoutingModule
+    ChainRoutingModule, 
   ],
   declarations: []
 })

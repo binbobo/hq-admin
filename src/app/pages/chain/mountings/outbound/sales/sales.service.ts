@@ -1,17 +1,25 @@
 import { Injectable } from '@angular/core';
 import { HttpService, Urls } from 'app/shared/services';
-import { ListResult, SelectOption } from 'app/shared/models';
-import { GenerateSuspendedBillRequest, GenerateSuspendedBillResponse } from '../../suspended-bills.service';
+import { ListResult, SelectOption, ApiResult } from 'app/shared/models';
 
 @Injectable()
 export class SalesService {
 
   constructor(private httpService: HttpService) { }
 
-  generate(data: SalesListRequest): Promise<GenerateSuspendedBillResponse<SalesListRequest>> {
+  generate(data: SalesListRequest): Promise<string> {
     let url = Urls.chain.concat('/StoreInOutDetails/CreateSaleBill');
-    return this.httpService.post<GenerateSuspendedBillResponse<SalesListRequest>>(url, data)
+    return this.httpService.post<ApiResult<string>>(url, data)
+      .then(result => result.data)
       .catch(err => Promise.reject(`生成销售清单失败：${err}`))
+  }
+
+  get(code: string): Promise<SalesPrintItem> {
+    if (!code) return Promise.resolve({});
+    let url = Urls.chain.concat('/SaleDetails/Print?BillCode=', code);
+    return this.httpService.get<ApiResult<SalesPrintItem>>(url)
+      .then(result => result.data)
+      .catch(err => Promise.reject(`获取销售出售单信息失败：${err}`));
   }
 
   getSalesmanOptions(): Promise<Array<SelectOption>> {
@@ -24,15 +32,26 @@ export class SalesService {
   }
 }
 
-export class SalesListRequest extends GenerateSuspendedBillRequest {
+export class SalesPrintItem {
+  public title?: string;
+  public billCode?: string;
+  public customerName?: string;
+  public seller?: string;
+  public createBillDateTime?: string;
+  public totalAmount: string;
+  public printDateTime: string;
+  public operator: string;
+  public list: Array<any>
+}
+
+export class SalesListRequest {
   constructor(
+    public list: Array<SalesListItem> = [],
     public custName?: string,
     public custPhone?: string,
     public seller?: string,
-    public list?: Array<SalesListItem>,
-  ) {
-    super()
-  }
+    public suspendedBillId?: string,
+  ) { }
 }
 
 export class SalesListItem {

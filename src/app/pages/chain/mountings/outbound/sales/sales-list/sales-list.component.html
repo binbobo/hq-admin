@@ -2,24 +2,7 @@
 <div class="card">
   <div class="card-header">
     <span>配件销售</span>
-    <div class="btn-group pull-right" dropdown>
-      <button dropdownToggle class="btn btn-sm btn-secondary dropdown-toggle">
-        <span>挂单信息 <span class="badge badge-default">{{suspendedItems?.totalCount}}</span></span> 
-        <span class="caret"></span>
-      </button>
-      <div *dropdownMenu class="p-0 dropdown-menu dropdown-menu-right" role="menu">
-        <table class="m-0 table table-sm table-hover">
-          <tr>
-            <th>客户名称</th>
-            <th>操作人</th>
-          </tr>
-          <tr *ngFor="let item of suspendedItems?.data">
-            <td>{{item.data.custName}}</td>
-            <td>{{item.data.custPhone}}</td>
-          </tr>
-        </table>
-      </div>
-    </div>
+    <ng-template hqSuspendBill="VW" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
   <div class="card-block">
     <form class="form-inline mb-2">
@@ -58,10 +41,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of items;let i=index">
+        <tr *ngFor="let item of model?.list;let i=index">
           <td class="text-center">{{i+1}}</td>
           <td>{{item.brand }}</td>
-          <td>{{item.productCode }}</td>
+          <td class="text-center">{{item.productCode }}</td>
           <td>{{item.productName}}</td>
           <td>{{item.productSpecification}}</td>
           <td>{{item.houseName }}</td>
@@ -95,4 +78,4 @@
   </div>
 </div>
 
-<hq-sales-print class="invisible" hqPrint #printer="hq-print" [item]="model"></hq-sales-print>
+<hq-sales-print class="invisible" hqPrint #printer="hq-print" [model]="printModel"></hq-sales-print>
