@@ -26,7 +26,7 @@ export class UserCenterService implements BasicService<any>{
 
     getPagedList(params: UserPageparams): Promise<PagedResult<UserModel>>{
         let url=Urls.chain.concat(UserCenterService.Url_UserSearch);
-        url="http://localhost:8022/api/SystemManager/Search";
+        //url="http://localhost:8022/api/SystemManager/Search";
 
        return this.httpService
             .get<PagedResult<UserModel>>(url,params.serialize())
