@@ -21,19 +21,9 @@ select.form-control{
     padding: 0 12px;
 }
 
-.card-block table th{
+table th{
     text-align: center;
 }
-
-/*解决bs4单选下拉框 form-control-sm 高度不匹配bug
-select.form-control.sm {
-    padding: .2rem .5rem;
-    font-size: .875rem;
-    border-radius: .2rem;
-}
-select.form-control.sm:not([size]):not([multiple]) {
-    height: auto;
-}*/
 
 /*下拉树组件样式复写*/
 /*ngx-dropdown-treeview.sm button.dropdown-toggle{
@@ -47,20 +37,6 @@ ngx-dropdown-treeview.sm input.form-control{
     border-radius: .2rem;
 }*/
 
-/*ng2-smart-table样式
-.inputFilter {
-    display: none;
-}
-.ng2-smart-filters .ng2-smart-th {
-    border: none;
-}
-.ng2-smart-filters .ng2-smart-th:last-child{
-    border-right: 1px solid #e9ebec;
-}
-.ng2-smart-filters .ng2-smart-actions-title {
-    border-right: none;
-}*/
-
 /*ngx-bootstrap popver 样式复写  用于挂单列表显示*/
 .popover-content {
     padding: 0;
@@ -70,11 +46,9 @@ ngx-dropdown-treeview.sm input.form-control{
     padding: 0;
     max-width: 100%;
 }
-
-/*.card {
-    height: 100%;
-}*/
-
 caption {
     caption-side: top;
+}
+.card {
+    min-height: 50vh;
 }

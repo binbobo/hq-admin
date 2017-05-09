@@ -12,3 +12,8 @@ table{
 tbody tr{
     cursor: pointer;
 }
+
+.close{
+    position: absolute;
+    right: -6px;
+}

@@ -101,7 +101,6 @@ export class TableTypeaheadDirective implements OnInit {
     Observable.fromEvent(this.el.nativeElement, 'input')
       .map((e: any) => e.target.value)
       .debounceTime(this.delay)
-      .distinctUntilChanged()
       .subscribe(value => {
         this.component.hide();
         this.search();
