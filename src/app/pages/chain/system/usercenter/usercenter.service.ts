@@ -1,10 +1,17 @@
 import {Injectable} from "@angular/core"
 import { Urls, HttpService } from "app/shared/services";
-import { PagedParams, PagedResult, ApiResult, BasicModel, BasicService,RequestParams} from 'app/shared/models';
+import { PagedParams,ListResult, PagedResult, ApiResult, BasicModel, BasicService,RequestParams,SelectOption} from 'app/shared/models';
 import {TreeviewItem,TreeviewConfig} from "ngx-treeview"
 @Injectable()
 export class UserCenterService implements BasicService<any>{
-    private static Url_UserSearch:string="/SystemManager/Search";
+    private static Url_Chain_UserSearch:string="/SystemManager/Search";
+    private static Url_Chain_PositionOption:string="/Positions/Options";
+    private static Url_Chain_DepartmentOption:string="/Departments/Options";
+    
+    private static Url_Platfrom_Enabled:string="Users/Enabled/";
+    private static Url_Platfrom_ResetPassword:string="Users/ResetPassword/";
+    private static Url_Platfrom_RoleOption:string="/SystemManager/Search";
+
     constructor(
         private httpService: HttpService
     ){
@@ -25,8 +32,8 @@ export class UserCenterService implements BasicService<any>{
     }
 
     getPagedList(params: UserPageparams): Promise<PagedResult<UserModel>>{
-        let url=Urls.chain.concat(UserCenterService.Url_UserSearch);
-        //url="http://localhost:8022/api/SystemManager/Search";
+        let url=Urls.chain.concat(UserCenterService.Url_Chain_UserSearch);
+        // url="http://localhost:8022/api/SystemManager/Search";
 
        return this.httpService
             .get<PagedResult<UserModel>>(url,params.serialize())
@@ -34,6 +41,36 @@ export class UserCenterService implements BasicService<any>{
                 return item;
             })
             .catch(err => Promise.reject(`加载工单列表失败：${err}`));
+    }
+
+    getPositionOptions():Promise<PagedResult<Selection>>{
+         let url=Urls.chain.concat(UserCenterService.Url_Chain_PositionOption);
+        // url="http://localhost:8022/api/SystemManager/Search";
+
+       return this.httpService
+            .get<PagedResult<Selection>>(url)
+            .then(item=>{
+                return item;
+            })
+            .catch(err => Promise.reject(`加载工单列表失败：${err}`));
+    }
+
+    EnabledUser(id,isEnabled:boolean):Promise<void>{
+         let url=Urls.platform.concat(UserCenterService.Url_Platfrom_Enabled,id);
+        // url="http://localhost:8020/api/Users/Enabled/"+id;
+         return this.httpService.
+            put<void>(url,{Enabled:isEnabled})
+            .catch(err => Promise.reject(`${isEnabled?"解冻":"冻结"}：${err}`));
+       // return this.httpService.put(url,)
+    }
+
+     ResetPassword(id):Promise<void>{
+         let url=Urls.platform.concat(UserCenterService.Url_Chain_UserSearch,id);
+        // url="http://localhost:8020/api/Users/ResetPassword/"+id;
+         return this.httpService.
+            put<void>(url,{})
+            .catch(err => Promise.reject(`重置密码：${err}`));
+       // return this.httpService.put(url,)
     }
 
     get(id: string): Promise<UserModel>{
@@ -56,6 +93,11 @@ export class UserCenterService implements BasicService<any>{
     }
 
     get positionsDropDown():DropDownItem{
+    //      let url=Urls.platform.concat(UserCenterService.Url_Chain_PositionOption);
+    //      url="localHost:8022/api/".concat(UserCenterService.Url_Chain_PositionOption);
+
+    //    return this.httpService.get<ListResult<SelectOption>>(url)
+    //                     .then(item=>new DropDownItem(item.data.map(x=>new TreeviewItem({text:x.text,value:x.value}))));
         return new DropDownItem([
                     new TreeviewItem({text:"人力资源部",value:"123",children:[
                         {text:"职位一",value:"1"},

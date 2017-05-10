@@ -10,8 +10,6 @@ import {TreeviewItem,TreeviewConfig} from "ngx-treeview"
 })
 export class UsercenterComponent implements OnInit {
 
-
-
   constructor(
     protected service:UserCenterService,
     private builder:FormBuilder
@@ -66,6 +64,9 @@ export class UsercenterComponent implements OnInit {
     event.show();
   }
 
+/**
+ *
+ */
   openCreateUser(event){
     this.userModel=new UserModel();
     this.isCreateOrEdit=true;
@@ -78,19 +79,24 @@ export class UsercenterComponent implements OnInit {
     this.listUserModels=null;
     this.service.getPagedList(this.params)
               .then(item=>{
+                this.loading = false;
                       if(item.data)
                       {
                           item.data.forEach(x=>{
                             x.userRoleName=x.roles.map(d=>d.name).join(",");
-                            x.positionName=x.partPositionItems.map(d=>d.name).join(",");
-                            x.partName=x.partPositionItems.map(d=>d.positionItems.map(c=>c.name)).join(",");
+                            if(x.partPositionItems) {
+                              x.positionName=x.partPositionItems.map(d=>d.name).join(",");
+                              x.partName=x.partPositionItems.map(d=>d.positionItems.map(c=>c.name)).join(",");
+                            }
                           })
                           this.listUserModels=item.data;
-                          this.loading = false;
                           this.list = item.data;
                           this.total = item.totalCount;
                           this.params.save();
                       }
+                     
+              }).catch(x=>{
+                this.loading = false;
               })
   }
 
@@ -108,6 +114,18 @@ export class UsercenterComponent implements OnInit {
 
   updateUser(user:UserModel):void{
     this.service.update(user);
+  }
+  
+  EnabledUser(id,isEnabled:boolean){
+    this.service.EnabledUser(id,isEnabled)
+      .then(item=>{})
+      .catch(item=>{});
+  }
+
+  ResetPassWord(id){
+    this.service.ResetPassword(id)
+      .then(item=>{})
+      .catch(item=>{});
   }
 
     onSelectedCahngeForRoleItem(values){

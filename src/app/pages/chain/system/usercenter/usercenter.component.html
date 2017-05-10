@@ -28,17 +28,17 @@
       </thead>
       <tbody *ngIf="listUserModels">
         <tr *ngFor="let item of listUserModels">
-          <td [id]="item.Id"> {{item.name}} {{item.id}}</td>
+          <td [id]="item.id">{{item.name}}</td>
           <td>{{item.userRoleName}}</td>
           <td>{{item.positionName}}</td>
           <td>{{item.partName}}</td>
           <td>{{item.phone}}</td>
-          <td>{{item.createTime|date:"yyyy/MM/dd HH:mm:ss"}}}</td>
+          <td>{{item.createTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
           <td>{{item.description}}</td>
-          <td style="text-align:center" >
-            <a  href="javascript:void" (click)="openEditorUser(newmodal,item)">编辑</a>&nbsp;&nbsp;&nbsp;
-            <a  href="javascript:void">重置密码</a>&nbsp;&nbsp;&nbsp;
-            <a  href="javascript:void">冻结</a>
+          <td style="text-align:center">
+            <button [disabled]="!item.enabled" href="javascript:void" (click)="openEditorUser(newmodal,item)">编辑</button>&nbsp;&nbsp;&nbsp;
+            <button [disabled]="!item.enabled" href="javascript:void" (click)="ResetPassWord(item.id)">重置密码</button>&nbsp;&nbsp;&nbsp;
+            <button  href="javascript:void" (click)="EnabledUser(item.id,!item.enabled)">{{ item.enabled?"冻结":"解冻" }}</button>
           </td>
         </tr>
       </tbody>
@@ -55,8 +55,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 *ngIf="isCreateOrEdit">新增用户</h5>
-         <h5 *ngIf="!isCreateOrEdit">编辑用户</h5>
+        <h5>{{ isCreateOrEdit?"新增用户":"编辑用户"}}</h5>
         <button type="button" class="close pull-right"  aria-label="Close" (click)="newmodal.hide()">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -92,7 +91,7 @@
               </div>
               <div class="form-group col-sm-2" *ngIf="!isCreateOrEdit">
                 创建时间：
-                <label  *ngIf="userModel.createTime">{{userModel.createTime|date:"yyyy/MM/dd HH:mm:ss"}}</label>
+                <label  *ngIf="userModel.createTime">{{userModel.createTime |date:"yyyy/MM/dd HH:mm:ss"}}</label>
               </div>
               <div class="form-group col-sm-2">
                 <label>备注：</label>
