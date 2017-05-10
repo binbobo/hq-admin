@@ -70,7 +70,7 @@ export class SalesListComponent implements OnInit {
       .catch(err => {
         el.disabled = false;
         this.alerter.error(err);
-      })
+      }) 
   }
 
   suspend(event: Event) {

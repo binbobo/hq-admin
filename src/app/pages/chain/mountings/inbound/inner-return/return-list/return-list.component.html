@@ -1,0 +1,98 @@
+<ng-template hq-alerter></ng-template>
+<div class="card">
+  <div class="card-header">
+    <span>内部退料</span>
+    <div class="btn-group pull-right" dropdown>
+      <button dropdownToggle class="btn btn-sm btn-secondary dropdown-toggle">
+        <span>挂单信息 <span class="badge badge-default">0</span></span> 
+        <span class="caret"></span>
+      </button>
+      <div *dropdownMenu class="p-1 dropdown-menu dropdown-menu-right" role="menu">
+        <table class="table table-bordered table-responsive table-striped">
+          <tr>
+            <th>退料人</th>
+            <th>退料单号</th>
+          </tr>
+          <tr *ngFor= "let item of ">
+            <td>1111</td>
+            <td>2222</td>
+          </tr>
+          <tr>
+            <td>3333</td>
+            <td>4444</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="card-block">
+    <form class="form-inline mb-2">
+      <div class="form-group mb-2">
+        <label>*退料人：</label>
+        <select class="form-control" (change)="onInnerSelect($event)">
+          <option *ngFor="let employee of employees" [value]="employee.value">{{employee.text}}</option>
+        </select>
+      </div>
+      <div class="form-group mb-2">
+        <label>部门：</label>
+        <select class="form-control">
+          <option *ngFor="let department of departments" [value]="department.value">{{department.text}}</option>
+        </select>
+      </div>
+      <div class="form-group mb-2">
+        <button (click)="createModal.show()" class="btn btn-primary" translate>新增</button>
+      </div>
+    </form>
+    <table hqPrint #printer="hq-print" class="table table-bordered table-responsive table-striped">
+      <thead>
+        <tr>
+          <th translate>序号</th>
+          <th translate>品牌</th>
+          <th translate>配件编码</th>
+          <th translate>配件名称</th>
+          <th translate>规格型号</th>
+          <th translate>仓库</th>
+          <th translate>库位</th>
+          <th translate>配件类别</th>
+          <th translate>数量（个）</th>
+          <th translate>单价（元/个）</th>
+          <th translate>金额（元）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of items;let i=index">
+          <td class="text-center">{{i+1}}</td>
+          <td>{{item.brand }}</td>
+          <td>{{item.productCode }}</td>
+          <td>{{item.productName}}</td>
+          <td>{{item.productSpecification}}</td>
+          <td>{{item.houseName }}</td>
+          <td>{{item.locationName }}</td>
+          <td>{{item.productCategory}}</td>
+          <td class="text-center">{{item.count}}</td>
+          <td class="text-right">{{item.price|centToYuan}}</td>
+          <td class="text-right">{{item.amount|centToYuan}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card-footer text-muted">
+    <button class="btn btn-primary" (click)="createReturnList($event)">生成内部退料单</button>
+    <button class="btn btn-warning" (click)="cancel($event)">取消</button>
+    <button class="btn btn-info" (click)="suspend($event)">挂单</button>
+  </div>
+</div>
+
+<div class="modal fade" bsModal #createModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">新增</h5>
+        <button class="close pull-right" (click)="createModal.hide()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <hq-return-create (formSubmit)="onCreate($event)"></hq-return-create>
+      </div>
+    </div>
+  </div>
+</div>
