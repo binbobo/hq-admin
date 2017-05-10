@@ -8,7 +8,7 @@
       <!--不同工单状态工单复选框部分-->
       <div class="form-group">
         <div class="form-check form-check-inline" *ngFor="let status of orderStatusData">
-          <label class="form-check-label">
+          <label class="form-check-label mr-2">
             <input (change)='status.checked = !status.checked' [checked]="status.checked" class="form-check-input"  type="checkbox" value="{{status.id}}"> {{status.value}}
           </label>
         </div>
@@ -16,44 +16,44 @@
       <hr>
       <!--工单基本筛选条件面板-->
       <div class="form-group row">
-        <label for="plateNo" class="col-sm-1 col-form-label col-form-label-sm">车牌号</label>
-        <div class="col-sm-2">
-          <input type="text" [(ngModel)]="params.plateNo" class="form-control form-control-sm" formControlName="plateNo" id="plateNo"
+        <label for="plateNo" class="col-1 col-form-label col-form-label">车牌号</label>
+        <div class="col-2">
+          <input type="text" [(ngModel)]="params.plateNo" class="form-control form-control" formControlName="plateNo" id="plateNo"
             placeholder="车牌号">
         </div>
-        <label for="customerName" class="col-sm-1 col-form-label col-form-label-sm">车主</label>
-        <div class="col-sm-2">
-          <input type="text" [(ngModel)]="params.customerName" class="form-control form-control-sm" formControlName="customerName"
+        <label for="customerName" class="col-1 col-form-label col-form-label">车主</label>
+        <div class="col-2">
+          <input type="text" [(ngModel)]="params.customerName" class="form-control form-control" formControlName="customerName"
             id="customerName" placeholder="车主">
         </div>
-        <label for="phone" class="col-sm-1 col-form-label col-form-label-sm">车主电话</label>
-        <div class="col-sm-2">
-          <input type="tel" [(ngModel)]="params.phone" class="form-control form-control-sm" formControlName="phone" id="phone" placeholder="车主电话">
+        <label for="phone" class="col-1 col-form-label col-form-label">车主电话</label>
+        <div class="col-2">
+          <input type="tel" [(ngModel)]="params.phone" class="form-control form-control" formControlName="phone" id="phone" placeholder="车主电话">
         </div>
-        <label for="contactUser" class="col-sm-1 col-form-label col-form-label-sm">送修人</label>
-        <div class="col-sm-2">
-          <input type="email" [(ngModel)]="params.contactUser" class="form-control form-control-sm" formControlName="contactUser" id="contactUser"
+        <label for="contactUser" class="col-1 col-form-label col-form-label">送修人</label>
+        <div class="col-2">
+          <input type="email" [(ngModel)]="params.contactUser" class="form-control form-control" formControlName="contactUser" id="contactUser"
             placeholder="送修人">
         </div>
       </div>
       <div class="form-group row">
-        <label for="contactInfo" class="col-sm-1 col-form-label col-form-label-sm">送修人电话</label>
-        <div class="col-sm-2">
-          <input type="tel" [(ngModel)]="params.contactInfo" class="form-control form-control-sm" formControlName="contactInfo" id="contactInfo"
+        <label for="contactInfo" class="col-1 col-form-label col-form-label">送修人电话</label>
+        <div class="col-2">
+          <input type="tel" [(ngModel)]="params.contactInfo" class="form-control form-control" formControlName="contactInfo" id="contactInfo"
             placeholder="送修人电话">
         </div>
-        <label class="col-sm-1 col-form-label col-form-label-sm"></label>
-        <div class="col-sm-3" *ngIf="isCollapsed">
-          <button type="submit" [disabled]="false" class="btn btn-sm btn-secondary mr-2">查询</button>
-          <button type="reset" (click)="revert()" class="btn-sm btn btn-secondary mr-2">撤销</button>
-          <button type="button" (click)="export()" class=" btn-sm btn btn-secondary mr-2">导出</button>
+        <label class="col-1 col-form-label col-form-label"></label>
+        <div class="col-3" *ngIf="isCollapsed">
+          <button type="submit" [disabled]="false" class="btn btn btn-primary mr-2">查询</button>
+          <button type="reset" (click)="reset()" class="btn btn btn-secondary mr-2">重置</button>
+          <button type="button" (click)="export()" class=" btn btn btn-secondary mr-2">导出</button>
         </div>
       </div>
       <hr>
       <!--高级筛选面板-->
       <fieldset>
         <legend class="col-form-legend p-0 text-center">
-          <a (click)="isCollapsed = !isCollapsed">
+          <a (click)="isCollapsed = !isCollapsed" class="cursor-pointer">
             高级筛选
             <i class="fa fa-angle-double-up" [hidden]="isCollapsed"></i>
             <i class="fa fa-angle-double-down" [hidden]="!isCollapsed"></i>
@@ -62,85 +62,72 @@
         <div [collapse]="isCollapsed" class="card mt-3 card-block">
           <div class="well well-lg">
             <div class="form-group row">
-              <label for="brand" class="col-sm-1 col-form-label col-form-label-sm">品牌</label>
-              <div class="col-sm-2">
-                <input type="text" [(ngModel)]="params.brand" class="form-control form-control-sm" formControlName="brand" id="brand" placeholder="品牌">
+              <label for="brand" class="col-1 col-form-label col-form-label">品牌</label>
+              <div class="col-2">
+                <input type="text" [(ngModel)]="params.brand" class="form-control form-control" formControlName="brand" id="brand" placeholder="品牌">
               </div>
-              <label for="series" class="col-sm-1 col-form-label col-form-label-sm">车系</label>
-              <div class="col-sm-2">
-                <input type="text" [(ngModel)]="params.series" class="form-control form-control-sm" formControlName="series" id="series"
+              <label for="series" class="col-1 col-form-label col-form-label">车系</label>
+              <div class="col-2">
+                <input type="text" [(ngModel)]="params.series" class="form-control form-control" formControlName="series" id="series"
                   placeholder="车系">
               </div>
-              <label for="billCode" class="col-sm-1 col-form-label col-form-label-sm">工单号</label>
-              <div class="col-sm-2">
-                <input type="text" [(ngModel)]="params.billCode" class="form-control form-control-sm" formControlName="billCode" id="billCode"
+              <label for="billCode" class="col-1 col-form-label col-form-label">工单号</label>
+              <div class="col-2">
+                <input type="text" [(ngModel)]="params.billCode" class="form-control form-control" formControlName="billCode" id="billCode"
                   placeholder="工单号">
               </div>
-              <label for="createdUserName" class="col-sm-1 col-form-label col-form-label-sm">服务顾问</label>
-              <div class="col-sm-2">
-                <input type="text" [(ngModel)]="params.createdUserName" class="form-control form-control-sm" formControlName="createdUserName"
+              <label for="createdUserName" class="col-1 col-form-label col-form-label">服务顾问</label>
+              <div class="col-2">
+                <input type="text" [(ngModel)]="params.createdUserName" class="form-control form-control" formControlName="createdUserName"
                   id="createdUserName" placeholder="服务顾问">
               </div>
             </div>
             <div class="form-group row">
-
-              <label for="model" class="col-sm-1 col-form-label col-form-label-sm">车型</label>
-              <div class="col-sm-2">
-                <input type="text" [(ngModel)]="params.model" class="form-control form-control-sm" formControlName="model" id="model" placeholder="车型">
+              <label for="model" class="col-1 col-form-label col-form-label">车型</label>
+              <div class="col-2">
+                <input type="text" [(ngModel)]="params.model" class="form-control form-control" formControlName="model" id="model" placeholder="车型">
               </div>
-              <label for="type" class="col-sm-1 col-form-label col-form-label-sm">维修类型</label>
-              <div class="col-sm-2">
-                <select id="type" [(ngModel)]="params.type" formControlName="type" class="form-control form-control-sm">
+              <label for="type" class="col-1 col-form-label col-form-label">维修类型</label>
+              <div class="col-2">
+                <select id="type" [(ngModel)]="params.type" formControlName="type" class="form-control form-control">
                   <option style="display:none">
                   <option *ngFor="let type of maintenanceTypeData" value="{{type.id}}">{{type.value}}</option>
                 </select>
               </div>
-              <label for="enterStoreTime" class="col-sm-1 col-form-label col-form-label-sm">进店时间</label>
-              <div class="input-group input-group-sm col-sm-2">
-                <input [(ngModel)]="params.enterStartTimeDate" class="form-control form-control-sm datetime-picker" type="text" readonly
+              <label for="enterStoreTime" class="col-1 col-form-label col-form-label">进店时间</label>
+              <div class="col-2">
+                <input [(ngModel)]="params.enterStartTimeDate" class="form-control form-control datetime-picker" type="text" readonly
                   formControlName="enterStoreTimeStart" ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="2" minute='59'
                   close-on-select="false" />
-                <span class="input-group-addon">
-                <i class="fa fa-calendar" aria-hidden="true"></i>
-              </span>
               </div>
-              <label class="col-sm-1 col-form-label col-form-label-sm">至</label>
-              <div class="input-group input-group-sm col-sm-2">
-                <input [(ngModel)]="params.enterEndTimeDate" class="form-control form-control-sm datetime-picker" type="text" readonly formControlName="enterStoreTimeEnd"
+              <label class="col-1 col-form-label col-form-label">至</label>
+              <div class="  col-2">
+                <input [(ngModel)]="params.enterEndTimeDate" class="form-control form-control datetime-picker" type="text" readonly formControlName="enterStoreTimeEnd"
                   ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' close-on-select="false" />
-                <span class="input-group-addon">
-                  <i class="fa fa-calendar" aria-hidden="true"></i>
-                </span>
               </div>
             </div>
 
             <div class="form-group row">
-              <label for="leaveFactoryTime" class="col-sm-1 col-form-label col-form-label-sm">出厂时间</label>
-              <div class="input-group input-group-sm col-sm-2">
-                <input [(ngModel)]="params.leaveStartTimeDate" class="form-control form-control-sm datetime-picker" type="text" readonly
+              <label for="leaveFactoryTime" class="col-1 col-form-label col-form-label">出厂时间</label>
+              <div class="col-2">
+                <input [(ngModel)]="params.leaveStartTimeDate" class="form-control form-control datetime-picker" type="text" readonly
                   formControlName="leaveFactoryTimeStart" ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="23" minute='59'
                   close-on-select="false" />
-                <span class="input-group-addon">
-                <i class="fa fa-calendar" aria-hidden="true"></i>
-              </span>
               </div>
-              <label class="col-sm-1 col-form-label col-form-label-sm">至</label>
-              <div class="input-group input-group-sm col-sm-2">
-                <input [(ngModel)]="params.leaveEndTimeDate" class="form-control form-control-sm datetime-picker" type="text" readonly formControlName="leaveFactoryTimeEnd"
+              <label class="col-1 col-form-label col-form-label">至</label>
+              <div class="col-2">
+                <input [(ngModel)]="params.leaveEndTimeDate" class="form-control form-control datetime-picker" type="text" readonly formControlName="leaveFactoryTimeEnd"
                   ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' close-on-select="false" />
-                <span class="input-group-addon">
-                <i class="fa fa-calendar" aria-hidden="true"></i>
-              </span>
               </div>
-              <label for="searchRange" class="col-sm-1 col-form-label col-form-label-sm">查询范围</label>
-              <div class="col-sm-2">
-                <ngx-dropdown-treeview class="sm" [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)"> >
+              <label for="searchRange" class="col-1 col-form-label col-form-label">查询范围</label>
+              <div class="col-2">
+                <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)"> >
                 </ngx-dropdown-treeview>
               </div>
-              <div class="col-sm-3" *ngIf="!isCollapsed">
-                <button type="submit" [disabled]="false" class="btn btn-sm btn-secondary mr-2">查询</button>
-                <button type="reset" (click)="revert()" class=" btn-sm btn btn-secondary mr-2 mr-2">撤销</button>
-                <button type="button" (click)="export()" class=" btn-sm btn btn-secondary mr-2 mr-2">导出</button>
+              <div class="col-offset-9 col-3" *ngIf="!isCollapsed">
+                <button type="submit" [disabled]="false" class="btn btn-primary mr-2">查询</button>
+                <button type="reset" (click)="reset()" class=" btn btn-secondary mr-2">重置</button>
+                <button type="button" (click)="export()" class=" btn btn-secondary mr-2">导出</button>
               </div>
             </div>
           </div>
@@ -150,7 +137,7 @@
     <hr>
     <!--显示工单列表的表格-->
 
-    <table class="table table-hover table-bordered table-sm">
+    <table class="table table-responsive table-striped table-borderd">
       <thead>
         <tr>
           <th>操作</th>
@@ -208,6 +195,11 @@
           <td>{{item.leaveTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
         </tr>
       </tbody>
+      <tfoot *ngIf="list?.length <= 0">
+        <tr>
+          <td colspan="21">查询结果为空</td>
+        </tr>
+      </tfoot>
     </table>
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
 
@@ -218,7 +210,7 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="btn btn-secondary pull-left" aria-label="Close">打印</button>
+            <button type="button" [routerLink]="['print-preview',selectedOrder?.id]" class="btn btn-secondary pull-left" aria-label="Close">打印预览</button>
             <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -227,7 +219,7 @@
             <!--导出详情begin-->
 
             <!--工单详情 start-->
-            <table class="table table-hover table-bordered table-sm">
+            <table class="table table-responsive table-striped table-borderd">
               <caption>工单详情</caption>
               <thead>
                 <tr class='table-info'>
@@ -286,7 +278,7 @@
             <br>
             <tabset>
               <tab heading="维修项目">
-                <table class="table table-hover table-bordered table-sm">
+                <table class="table table-striped table-borderd">
                   <thead>
                     <tr>
                       <th>项目名称</th>
@@ -303,7 +295,7 @@
                       <td>{{record?.serviceName}}</td>
                       <td>{{record?.workHour}}</td>
                       <td>{{record?.price}}</td>
-                      <td>{{record?.amount / 100}}</td>
+                      <td>{{record?.amount ? (record?.amount / 100) : ''}}</td>
                       <td>{{record?.discount}}</td>
                       <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
                       <td>{{user.username}}</td>
@@ -312,7 +304,7 @@
                 </table>
               </tab>
               <tab heading="维修配件">
-                <table class="table table-hover table-bordered table-sm">
+                <table class="table table-striped table-borderd">
                   <thead>
                     <tr>
                       <th>维修工项</th>
@@ -333,14 +325,14 @@
                       <td>{{record?.specification}}</td>
                       <td>{{record?.count}}</td>
                       <td>{{record?.price}}</td>
-                      <td>{{record?.amount}}</td>
+                      <td>{{record?.amount ? (record?.amount / 100) : ''}}</td>
                       <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
                     </tr>
                   </tbody>
                 </table>
               </tab>
               <tab heading="附加项目">
-                <table class="table table-hover table-bordered table-sm">
+                <table class="table table-striped table-borderd">
                   <thead>
                     <tr>
                       <th>备注</th>
@@ -355,7 +347,7 @@
               </tab>
 
               <tab heading="建议维修项目">
-                <table class="table table-hover table-bordered table-sm">
+                <table class="table table-striped table-borderd">
                   <thead>
                     <tr>
                       <th>建议维修项目</th>

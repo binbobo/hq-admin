@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpService, Urls } from "app/shared/services";
 import { PagedParams, PagedResult, ApiResult, BasicService, BasicModel } from "app/shared/models";
+import { Observable } from "rxjs/Observable";
 
 
 @Injectable()
@@ -75,6 +76,32 @@ export class DistributeService implements BasicService<any>{
     // 维修发料打印接口 StoreInOutDetails/PrintStore
     // 维修发料领料人接口修改
     // 维修发料获取已发料list数据 /StoreInOutDetails/GetMainList
+
+    // public getMainList(id: string): Promise<any> {
+    //     const url = Urls.chain.concat('/StoreInOutDetails/GetMainList?BillId=' + id, "&&BillTypeKey=MM");
+    //     return this.httpService
+    //         .get<ApiResult<any>>(url)
+    //         .then(result => {
+    //             console.log(result.data)
+    //             return result.data
+    //         })
+    //         .then(data => data || Promise.reject('获取数据无效！'))
+    //         .catch(err => Promise.reject(`加载失败：${err}`));
+    // }
+
+    getMainList(billCode: string): Observable<any> {
+        const url = Urls.chain.concat('/StoreInOutDetails/GetMainList');
+        return this.httpService
+            .request(url, {
+                params: {
+                    "BillCode": billCode,
+                    "BillTypeKey": "MM"
+                }
+            })
+            .map(response => {
+                return response.json().data as any[];
+            });
+    }
 }
 // 根据工单号或车牌号搜索创建的类
 export class SearchReturnData {
@@ -149,6 +176,7 @@ export class DetailData {
         public suggestServiceOutputs: any = [],//建议维修项
         public lastManufactureDetailOutput: any = [],//上次维修记录
         public feedBackInfosOutput: any = [],// 客户回访记录
-        public productOutputs: any = []//维修配件
+        public productOutputs: any = [],//维修配件
+        public maintenanceEmployees: any = []//领料人列表
     ) { }
 }

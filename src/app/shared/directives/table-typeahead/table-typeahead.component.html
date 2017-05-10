@@ -18,7 +18,7 @@
       </tr>
     </tbody>
   </table>
-  <pagination [hidden]="size>=result?.totalCount" class="pagination-sm" [maxSize]="3" [boundaryLinks]="true" [itemsPerPage]="size"
+  <pagination [hidden]="!showPagination" class="pagination-sm" [maxSize]="3" [boundaryLinks]="true" [itemsPerPage]="size"
     previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" [totalItems]="result?.totalCount" [(ngModel)]="index"
     (pageChanged)="pageChanged($event)"></pagination>
 </div>

@@ -35,17 +35,17 @@
   </thead>
   <tbody>
     <tr *ngIf="item">
-      <td>{{item.number}}</td>
+      <td class="text-center">{{item.number}}</td>
       <td>{{item.brand }}</td>
       <td>{{item.code }}</td>
       <td>{{item.name}}</td>
       <td>{{item.specification }}</td>
-      <td>{{item.price}}</td>
-      <td>{{item.amount}}</td>
+      <td class="text-right">{{item.price|centToYuan}}</td>
+      <td class="text-right">{{item.amount|centToYuan}}</td>
       <td>{{item.vehicleName }}</td>
-      <td>{{item.count}}</td>
-      <td>{{item.lastInStoreDate}}</td>
-      <td>{{item.lastOutStoreDate}}</td>
+      <td class="text-center">{{item.count}}</td>
+      <td class="text-center">{{item.lastInStoreDate}}</td>
+      <td class="text-center">{{item.lastOutStoreDate}}</td>
     </tr>
   </tbody>
 </table>

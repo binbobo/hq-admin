@@ -4,65 +4,42 @@
   </div>
   <div class="card-block">
     <div class="" hq-alerter></div>
-    <form [formGroup]="myForm" class='form-in mb-2 ng-pristine ng-valid assign-form ng-untouched'>
-      <!--<input #search formControlName="state" [typeahead]="plateNoData" typeaheadOptionField="plateNo" (typeaheadOnSelect)="OnSearchClick($event)"
-        placeholder="请输入工单号/车牌号" class="form-control mr-2">-->
+    <form [formGroup]="myForm" class='form-in mb-2' style="width:370px">
       <input [hqTableTypeahead]="typeaheadSource" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)" class="form-control"
         placeholder="请输入工单号/车牌号" />
     </form>
-
-    <table class="table search-table">
-      <tr>
-        <td>车牌号:</td>
-        <td>{{SearchappendList.plateNo}}</td>
-        <td>车主:</td>
-        <td>{{SearchappendList.customerName}}</td>
-        <td>车主电话:</td>
-        <td>{{SearchappendList.phone}}</td>
-        <td>验车时间</td>
-        <td>{{SearchappendList.validate |date:"yyyy/MM/dd HH:mm:ss"}}</td>
-      </tr>
-      <tr>
-        <td>开单时间:</td>
-        <td>{{SearchappendList.createdOnUtc |date:"yyyy/MM/dd HH:mm:ss"}} </td>
-        <td>送修人:</td>
-        <td>{{SearchappendList.contactUser}}</td>
-        <td>送修人电话:</td>
-        <td>{{SearchappendList.contactInfo}}</td>
-        <td>服务顾问</td>
-        <td>{{SearchappendList.createdUserName}}</td>
-      </tr>
-      <tr>
-        <td>品牌:</td>
-        <td>{{SearchappendList.brand}}</td>
-        <td>车系:</td>
-        <td>{{SearchappendList.series}}</td>
-        <td>车型:</td>
-        <td>{{SearchappendList.model}}</td>
-        <td>VIN:</td>
-        <td>{{SearchappendList.vin}}</td>
-      </tr>
-      <tr>
-        <td>维修类型:</td>
-        <td>{{SearchappendList.typeName}}</td>
-        <td>预计交车时间:</td>
-        <td>{{SearchappendList.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-        <td>行驶里程(KM):</td>
-        <td>{{SearchappendList.mileage}}</td>
-        <td>上次进店时间:</td>
-        <td>{{SearchappendList.lastEnterDate|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-      </tr>
-      <tr>
-        <td>维修工位:</td>
-        <td>{{SearchappendList.location}}</td>
-        <td>建议下次保养日期:</td>
-        <td>{{SearchappendList.nextDate}}</td>
-        <td>建议下次保养里程(KM):</td>
-        <td>{{SearchappendList.nextMileage}}</td>
-        <td>上次进店里程:</td>
-        <td>{{SearchappendList.lastMileage}}</td>
-      </tr>
-    </table>
+    <div class=container>
+      <div class="row">
+        <div class="col-md-3">车牌号:{{SearchappendList.plateNo}}</div>
+        <div class="col-md-3">车主:{{SearchappendList.customerName}}</div>
+        <div class="col-md-3">车主电话:{{SearchappendList.phone}}</div>
+        <div class="col-md-3">验车时间:{{SearchappendList.validate |date:"yyyy/MM/dd HH:mm:ss"}}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">开单时间:{{SearchappendList.createdOnUtc |date:"yyyy/MM/dd HH:mm:ss"}} </div>
+        <div class="col-md-3">送修人:{{SearchappendList.contactUser}}</div>
+        <div class="col-md-3">送修人电话:{{SearchappendList.contactInfo}}</div>
+        <div class="col-md-3">服务顾问:{{SearchappendList.createdUserName}}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">品牌:{{SearchappendList.brand}}</div>
+        <div class="col-md-3">车系:{{SearchappendList.series}}</div>
+        <div class="col-md-3">车型:{{SearchappendList.model}}</div>
+        <div class="col-md-3">VIN:{{SearchappendList.vin}}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">维修类型:{{SearchappendList.typeName}}</div>
+        <div class="col-md-3">预计交车时间:{{SearchappendList.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</div>
+        <div class="col-md-3">行驶里程(KM):{{SearchappendList.mileage}}</div>
+        <div class="col-md-3">上次进店时间:{{SearchappendList.lastEnterDate|date:"yyyy/MM/dd HH:mm:ss"}}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">维修工位:{{SearchappendList.location}}</div>
+        <div class="col-md-3">建议下次保养日期:{{SearchappendList.nextDate}}</div>
+        <div class="col-md-3">建议下次保养里程(KM):{{SearchappendList.nextMileage}}</div>
+        <div class="col-md-3">上次进店里程(KM):{{SearchappendList.lastMileage}}</div>
+      </div>
+    </div>
 
     <div [hidden]="!isShowAppend">
       <tabset #staticTabs>
@@ -89,8 +66,8 @@
                 <td>{{item.serviceName}}</td>
                 <td>{{item.workHour}}</td>
                 <td>{{item.price/100}}</td>
-                 <td>{{item.discount}}</td>
-                <td>{{item.amount/100}}</td>               
+                <td>{{item.discount}}</td>
+                <td>{{item.amount/100}}</td>
                 <td>{{item.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
                 <td></td>
               </tr>
@@ -318,21 +295,26 @@
           </table>
         </tab>-->
       </tabset>
-    </div>
-    <!--只有前4个选项卡显示-->
-    <div class="card-block text-center">
-      <button type="button" class="btn  btn-primary" (click)="submitAddOrder()" [disabled]='!isableAppend'>提交增项</button>
-      <!--<input type="text" readonly class="btn btn-primary" (click)="submitAddOrder()" value='提交增项'>-->
-      <button type="button" class="btn  btn-primary" (click)="submitAddOrder()" disabled>挂单</button>
-    </div>
-    <div class="card">
-      <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
-        折前费用: 工时费<span class="ml-2 mr-2">{{workHourFee}}</span> | 材料费
-        <span class="ml-2 mr-2">{{materialFee}}</span> | 其它
-        <span class="ml-2 mr-2">{{otherFee}}</span> | 合计
-        <span class="ml-2 mr-2">{{sumFee}}</span>|
+
+      <div class="card" style="margin-top:40px;">
+        <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
+          折前费用: 工时费<span class="ml-2 mr-2">{{workHourFee}}</span> | 材料费
+          <span class="ml-2 mr-2">{{materialFee}}</span> | 其它
+          <span class="ml-2 mr-2">{{otherFee}}</span> | 合计
+          <span class="ml-2 mr-2">{{sumFee}}</span>|
+        </div>
       </div>
+
+
     </div>
 
+
+
   </div>
+  <div class="card-footer text-muted">
+    <button type="button" class="btn  btn-primary" (click)="submitAddOrder()" [disabled]='!isableAppend'>提交增项</button>
+    <!--<input type="text" readonly class="btn btn-primary" (click)="submitAddOrder()" value='提交增项'>-->
+    <button type="button" class="btn  btn-primary" (click)="submitAddOrder()" disabled>挂单</button>
+  </div>
+
 </div>

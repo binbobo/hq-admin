@@ -8,20 +8,20 @@
       <div class="input-group col-8 offset-2">
         <input style="border-radius: 5px;" [(ngModel)]="params.keyword" formControlName="keyword" placeholder="请输入车牌号/工单号" class="form-control mr-3">
         <span class="input-group-btn">
-          <button class="btn btn-secondary" type="submit">搜索</button>
+          <button class="btn btn-primary" type="submit">搜索</button>
         </span>
       </div>
       <hr>
       <div class="form-group">
         <div class="form-check form-check-inline" *ngFor="let type of maintenanceCheckTypes">
-          <label class="form-check-label">
+          <label class="form-check-label mr-2">
             <input class="form-check-input" (change)='type.checked = !type.checked' [checked]="type.checked"  type="checkbox" value="{{type.id}}"> {{type.value}}
           </label>
         </div>
       </div>
     </form>
     <hr>
-    <table class="table table-hover table-bordered table-sm">
+    <table class="table table-responsive table-striped table-borderd">
       <thead>
         <tr>
           <th>操作</th>
@@ -94,7 +94,7 @@
           <!--导出详情begin-->
           <tabset>
             <tab heading="维修项目">
-              <table class="table table-hover table-bordered table-sm">
+              <table class="table table-striped table-borderd">
                 <thead>
                   <tr>
                     <th><input value="all" #checkAll (change)="toggleCheckboxAll(checkAll)" [checked]="selectedOrder?.serviceOutputs?.checkedAll"
@@ -121,18 +121,18 @@
                     </td>
                     <td>{{record?.workHour }}</td>
                     <td>{{record?.price}}</td>
-                    <td>{{record?.amount}}</td>
+                    <td>{{record?.amount ? (record?.amount / 100) : ''}}</td>
                     <td>{{record?.discount}}</td>
                     <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
                   </tr>
                 </tbody>
               </table>
               <div>
-                <button class="btn btn-sm btn-secondary" [disabled]="!selectedOrder?.serviceOutputs?.enableCheck" (click)="onOrderCheckPass()">同意</button>
+                <button class="btn btn-secondary" [disabled]="!selectedOrder?.serviceOutputs?.enableCheck" (click)="onOrderCheckPass()">同意</button>
               </div>
             </tab>
             <tab heading="维修配件">
-              <table class="table table-hover table-bordered table-sm">
+              <table class="table table-striped table-borderd">
                 <thead>
                   <tr>
                     <th>维修工项</th>
@@ -160,7 +160,7 @@
               </table>
             </tab>
             <tab heading="附加项目">
-              <table class="table table-hover table-bordered table-sm">
+              <table class="table table-striped table-borderd">
                 <thead>
                   <tr>
                     <th>备注</th>
@@ -175,7 +175,7 @@
             </tab>
 
             <tab heading="建议维修项目">
-              <table class="table table-hover table-bordered table-sm">
+              <table class="table table-striped table-borderd">
                 <thead>
                   <tr>
                     <th>建议维修项目</th>
@@ -193,8 +193,8 @@
               </table>
             </tab>
             <hr>
-            <div *ngIf="true" class="card">
-              <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
+            <div *ngIf="true">
+              <div class="card-header" style="color:gray;padding: 3px 5px;">
                 折前费用: 工时费
                 <span class="ml-2 mr-2">{{selectedOrder?.workHourFee}}</span> | 材料费
                 <span class="ml-2 mr-2">{{selectedOrder?.materialFee}}</span> | 其它
@@ -203,11 +203,8 @@
               </div>
             </div>
           </tabset>
-          <!--建议维修项 end-->
-          <!--导出详情end-->
         </div>
       </div>
     </div>
   </div>
-  <!--详情 end-->
 </div>

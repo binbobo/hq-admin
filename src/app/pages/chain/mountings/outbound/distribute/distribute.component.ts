@@ -13,6 +13,8 @@ import * as moment from 'moment';
   providers: [DistributeService]
 })
 export class DistributeComponent extends DataList<any>{
+  employeesData: any;
+  maintenanceEmployees: any;
   isableAppend = false;
   isablePrint = false;
   printId: any;
@@ -30,6 +32,7 @@ export class DistributeComponent extends DataList<any>{
     private fb: FormBuilder) {
     super(injector, service)
     this.params = new DistributeRequest();
+
   }
 
   private orderDetail: any;
@@ -62,6 +65,8 @@ export class DistributeComponent extends DataList<any>{
   }
 
   // 选择之后根据id查找工单详情并替换数据
+  initCreatName: any;
+  initCreatId: any;
   public onPlateNoSelect($event) {
     this.SearchappendList = $event;
     this.listId = $event.id;
@@ -71,9 +76,47 @@ export class DistributeComponent extends DataList<any>{
         this.orderDetail = data
         this.serviceData = data.serviceOutputs;
         this.productData = data.productOutputs;
+        this.employeesData = data.maintenanceEmployees;
+        // 去重
+        if (this.employeesData.length > 0) {
+          this.initCreatId = this.employeesData[0]["id"];
+          this.initCreatName = this.employeesData[0]["name"]
+        }
+        var hash = {};
+        this.employeesData = this.employeesData.reduce(function (item, next) {
+          hash[next.name] ? '' : hash[next.name] = true && item.push(next);
+          return item
+        }, [])
+
+        console.log(this.employeesData);
         console.log(data)
       });
+    // 根据工单号获取流水号列表
+    
+    this.service.getMainList(this.billCode).toPromise()
+      .then(data => {
+        console.log(data);
+        this.serialData=data;
+
+      })
   }
+  
+  serialData:any;
+  serialDataList:any;
+  valueObj: any;
+  createName: any;
+  createId: any;
+  onSellerSelect(evt) {
+    this.valueObj = evt.split(",,");
+    console.log(this.valueObj);
+    this.createName = this.valueObj[1];
+    this.createId = this.valueObj[0];
+    console.log(this.createName);
+
+    this.newItem.createUser = this.createId;
+    this.newItem.createUserName = this.createName;
+  }
+
   // 配件编码下拉点击后
   public onCodeSelect($event) {
     console.log($event)
@@ -82,24 +125,15 @@ export class DistributeComponent extends DataList<any>{
     this.newItem.brandName = $event.brand;//品牌
     this.newItem.number = $event.number;//序号
     this.newItem.vehicleModelName = $event.vehicleName;//车型
-    this.newItem.storeId = $event.storeHouseName;//仓库
-    this.newItem.locationId = $event.storageLocationName;//库位名称
-    this.newItem.price = $event.price;//单价
-    this.newItem.amount = $event.amount;//金额
+    this.newItem.houseName = $event.houseName;//仓库
+    this.newItem.locationName = $event.locationName;//库位名称
     console.log(this.newItem)
   }
 
   public onNameSelect($event) {
     console.log($event)
     this.newItem.productName = $event.name;
-    this.newItem.productSpecification = $event.specification; //规格型号
-    this.newItem.brandName = $event.brand;//品牌
-    this.newItem.number = $event.number;//序号
-    this.newItem.vehicleModelName = $event.vehicleName;//车型
-    this.newItem.storeId = $event.storeHouseName;//仓库
-    this.newItem.locationId = $event.storageLocationName;//库位名称
-    this.newItem.price = $event.price;//单价
-    this.newItem.amount = $event.amount;//金额
+    this.newItem.price = $event.price/100;//单价
     console.log(this.newItem)
   }
 
@@ -139,19 +173,21 @@ export class DistributeComponent extends DataList<any>{
     this.newItem = {
       maintenanceItemId: id, //维修明细id
       serviceItem: serviceName,//维修项目
-      createUser: Sname, //领料人
       brandName: '',// 品牌
       productCode: '',//配件编码
       productName: '',//配件名称
       productSpecification: '',//规格型号
       vehicleModelName: '',//车型
-      storeId: '',//仓库
-      locationId: '',//库位
+      houseName: '',//仓库
+      locationName: '',//库位
       count: '',//数量
       price: '',//单价
       amount: '',//金额
       description: '',//备注
+      createUser: this.initCreatId,//领料人默认id
+      createUserName: this.initCreatName//领料人默认名字
     };
+    console.log(this.newItem.createUser,this.newItem.createUserName)
     // 维修项目编辑区域可见
     this.addNewItem = true;
   }
@@ -186,6 +222,7 @@ export class DistributeComponent extends DataList<any>{
     if (evt) {
       evt.preventDefault();
     }
+    
     this.newMainData.push(this.newItem);
     // 维修项目编辑区域不可见
     this.addNewItem = false;
@@ -223,7 +260,6 @@ export class DistributeComponent extends DataList<any>{
     confirmModal.hide();
     history.go(-1);
   }
-
 
 
 }

@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewChild, Injector } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
 import { AssignService, AssignListRequest } from '../assign.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { StorageKeys, SelectOption, DataList } from 'app/shared/models';
-import { Observable } from 'rxjs/Observable';
 import * as fileSaver from 'file-saver';
 
 
@@ -189,7 +188,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
 
             // 工时费： 维修项目金额总和
             this.selectedOrder.workHourFee = data.serviceOutputs.reduce((accumulator, currentValue) => {
-                return accumulator + currentValue.amount;
+                return accumulator + (currentValue.workHour * currentValue.price);
             }, 0);
             // 材料费： 维修配件金额总和
             this.selectedOrder.materialFee = data.productOutputs.reduce((accumulator, currentValue) => {

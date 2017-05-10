@@ -84,6 +84,10 @@ export class TableTypeaheadComponent implements OnInit {
     }
   }
 
+  get showPagination() {
+    return this.result && this.result.totalCount && this.size < this.result.totalCount;
+  }
+
   constructor() { }
 
   ngOnInit() {
