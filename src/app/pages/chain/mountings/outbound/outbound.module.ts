@@ -16,6 +16,7 @@ import { ReceiveService } from './receive/receive.service';
 import { ReceivePrintComponent } from './receive/receive-print/receive-print.component';
 import { SalesPrintComponent } from './sales/sales-print/sales-print.component';
 import { ChainSharedModule } from '../../chain-shared/chain-shared.module';
+import { ProviderService } from '../provider/provider.service';
 
 const routes: Routes = [
   { path: 'maintain-distribute', component: DistributeComponent },
@@ -38,8 +39,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
   ],
   exports: [RouterModule],
-
-  providers: [SalesService, ReceiveService],
+  providers: [SalesService, ReceiveService, ProviderService],
   declarations: [DistributeComponent, SalesListComponent, ReturnComponent, SalesCreateComponent, ReceiveListComponent, ReceiveCreateComponent, ReceivePrintComponent, SalesPrintComponent, PrintComponent]
 
 })

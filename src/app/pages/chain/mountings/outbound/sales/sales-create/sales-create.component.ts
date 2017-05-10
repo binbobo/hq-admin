@@ -94,7 +94,7 @@ export class SalesCreateComponent implements OnInit {
       stockCount: event.count,
       price: event.price,
     }
-    Object.assign(this.model, item);
+    //Object.assign(this.model, item);
     this.form.patchValue(item);
     this.calculate();
   }

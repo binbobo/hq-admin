@@ -3,8 +3,8 @@
     <div class="col-6">
       <div class="form-group">
         <label class="form-control-label">*配件编码</label>
-        <input hqError="配件编码" [hqTableTypeahead]="codeSource" [columns]="itemColumns(false)" (onSelect)="onItemSelect($event)" formControlName="productCode"
-          class="form-control">
+        <input [hqTableTypeahead]="codeSource" [columns]="itemColumns(false)" (onSelect)="onItemSelect($event)" formControlName="productCode"
+          class="form-control" placeholder="请输入配件编码">
         <input type="hidden" hqError="配件编码" formControlName="productId">
       </div>
       <div class="form-group">
