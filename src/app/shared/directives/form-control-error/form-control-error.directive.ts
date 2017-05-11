@@ -4,7 +4,8 @@ import { Subscription } from 'rxjs/Subscription';
 import { FormControlErrorComponent } from './form-control-error/form-control-error.component';
 
 @Directive({
-  selector: '[hqError]'
+  selector: '[hqError]',
+  exportAs: 'hq-error'
 })
 export class FormControlErrorDirective implements OnInit, OnDestroy {
 
@@ -74,7 +75,10 @@ export class FormControlErrorDirective implements OnInit, OnDestroy {
       return `无效的${this.name}`;
     } else if (key === 'digits') {
       return `${this.name}必须是整数`;
-    } else {
+    } else if (key === "gte") {
+      return `${this.name}不能低于最小限制范围`;
+    }
+    else {
       console.log(key, errors);
       return `无效的${this.name}`;
     }

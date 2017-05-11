@@ -38,7 +38,7 @@
     </form>
     <hr>
 
-    <table class='table table-responsive table-striped table-borderd'>
+    <table class='table table-responsive table-striped table-bordered'>
       <thead>
         <tr>
           <th>操作</th>
@@ -89,15 +89,15 @@
   aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header pos-top">
 
         <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+          <span aria-hidden="true" class="close-right">&times;</span>
         </button>
       </div>
       <div class="modal-body" style='overflow:scroll;'>
         <!--工单详情 start-->
-        <table class="table table-responsive table-striped table-borderd">
+        <table class="table table-responsive table-striped table-bordered">
           <caption>工单详情</caption>
           <thead>
             <tr>
@@ -148,7 +148,7 @@
         <br>
         <tabset>
           <tab heading="维修项目">
-            <table class="table table-responsive table-striped table-borderd">
+            <table class="table table-responsive table-striped table-bordered">
               <thead>
                 <tr>
                   <th>项目名称</th>
@@ -174,7 +174,7 @@
             </table>
           </tab>
           <tab heading="维修配件">
-            <table class="table table-responsive table-striped table-borderd">
+            <table class="table table-responsive table-striped table-bordered">
               <thead>
                 <tr>
                   <th>维修工项</th>
@@ -202,7 +202,7 @@
             </table>
           </tab>
           <tab heading="附加项目">
-            <table class="table table-responsive table-striped table-borderd">
+            <table class="table table-responsive table-striped table-bordered">
               <thead>
                 <tr>
                   <th>备注</th>
@@ -217,7 +217,7 @@
           </tab>
 
           <tab heading="建议维修项目">
-            <table class="table table-responsive table-striped table-borderd">
+            <table class="table table-responsive table-striped table-bordered">
               <thead>
                 <tr>
                   <th>建议维修项目</th>
@@ -268,13 +268,13 @@
       <div class="modal-body">
         <div class="cost-money">实收金额：{{costMoney}}元</div>
 
-        <div class="input-group checkout-input" *ngFor="let item of payData;">
+        <div class="input-group checkout-item" *ngFor="let item of payData;">
           <span class="input-group-addon" id="sizing-addon2" style="width:150px;">{{item.value}}(元)</span>
           <input type="text" class="form-control" [(ngModel)]="item.amount" aria-label="Username" aria-describedby="sizing-addon1">
         </div>
 
       </div>
-      <div class="center"><button type="button" class="btn btn-primary" aria-label="Close" (click)="OnPostPay(CheckoutModal)">确定收银</button></div>
+      <div class="btn-center"><button type="button" class="btn btn-primary" aria-label="Close" (click)="OnPostPay(CheckoutModal)">确定收银</button></div>
     </div>
   </div>
 </div>
