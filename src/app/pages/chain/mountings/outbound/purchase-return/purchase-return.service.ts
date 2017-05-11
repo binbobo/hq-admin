@@ -14,6 +14,14 @@ export class PurchaseReturnService {
       .catch(err => Promise.reject(`获取配件信息失败：${err}`));
   }
 
+  get(code: string): Promise<PurchaseReturnPrintItem> {
+    if (!code) return Promise.resolve({});
+    let url = Urls.chain.concat('/PurchaseReturnDetails/Print?BillCode=', code);
+    return this.httpService.get<ApiResult<PurchaseReturnPrintItem>>(url)
+      .then(result => result.data)
+      .catch(err => Promise.reject(`获取退库单信息失败：${err}`));
+  }
+
   public generate(request: PurchaseReturnRequest): Promise<string> {
     let url = Urls.chain.concat('/StoreInOutDetails/CreatePurchaseReturnBill');
     return this.httpService.post<ApiResult<string>>(url, request)
@@ -35,7 +43,7 @@ export class PurchaseReturnRequest {
   constructor(
     public list: Array<PurchaseReturnItem> = [],
     public provider?: string,
-    public providerId?: string,
+    public inunit?: string,
     public suspendedBillId?: string,
   ) { }
 }
@@ -48,22 +56,32 @@ export class PurchaseReturnItem {
     public taxRate: number = 0,
     public exTaxPrice: number = 0,
     public exTaxAmount: number = 0,
-    public productName?: string,
     public brand?: string,
     public productId?: string,
+    public productName?: string,
     public productCode?: string,
     public productCategory?: string,
+    public productSpecification?: string,
     public storeId?: string,
     public locationId?: string,
+    public packingCode?: string,
     public description?: string,
+
     public locationName?: string,
     public houseName?: string,
-    public specification?: string,
     public vehicleName?: string,
-    public packingCode?: string,
   ) { }
 }
 
 export class PurchaseReturnPrintItem {
-
+  constructor(
+    public list: Array<any> = [],
+    public title?: string,
+    public billCode?: string,
+    public createBillDateTime?: string,
+    public totalAmount?: string,
+    public totalExTaxAmount?: string,
+    public printDateTime?: string,
+    public operator?: string,
+  ) { }
 }

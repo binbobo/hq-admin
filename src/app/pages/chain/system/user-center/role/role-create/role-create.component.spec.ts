@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SalesReturnComponent } from './sales-return.component';
+import { RoleCreateComponent } from './role-create.component';
 
-describe('SalesReturnComponent', () => {
-  let component: SalesReturnComponent;
-  let fixture: ComponentFixture<SalesReturnComponent>;
+describe('RoleCreateComponent', () => {
+  let component: RoleCreateComponent;
+  let fixture: ComponentFixture<RoleCreateComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SalesReturnComponent ]
+      declarations: [ RoleCreateComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SalesReturnComponent);
+    fixture = TestBed.createComponent(RoleCreateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -5,7 +5,7 @@ import { PurchaseReturnRequest } from "app/pages/chain/mountings/outbound/purcha
 import { Location } from '@angular/common';
 import { SuspendBillDirective } from 'app/pages/chain/chain-shared';
 import { ModalDirective } from 'ngx-bootstrap';
-import { PurchaseReturnPrintItem, PurchaseReturnItem } from '../purchase-return.service';
+import { PurchaseReturnPrintItem, PurchaseReturnItem, PurchaseReturnService } from '../purchase-return.service';
 
 @Component({
   selector: 'hq-return-list',
@@ -27,6 +27,7 @@ export class ReturnListComponent implements OnInit {
 
   constructor(
     private providerService: ProviderService,
+    private returnService: PurchaseReturnService,
     private location: Location
   ) { }
 
@@ -47,16 +48,24 @@ export class ReturnListComponent implements OnInit {
     this.model = new PurchaseReturnRequest();
   }
 
-  public get columns() {
+  public get suspendedColumns() {
     return [
       { name: 'provider', title: '供应商' },
-      { name: 'operator', title: '操作人' },
+      { name: 'createBillTime', title: '挂单时间' },
+    ];
+  }
+
+  private get providerColumns() {
+    return [
+      { name: 'code', title: '代码' },
+      { name: 'name', title: '名称' },
+      { name: 'contactUser', title: '联系人' },
     ];
   }
 
   public onProviderSelect(event) {
     this.model.provider = event.name;
-    this.model.providerId = event.code;
+    this.model.inunit = event.id;
   }
 
   public get source() {
@@ -68,8 +77,8 @@ export class ReturnListComponent implements OnInit {
   }
 
   suspend(event: Event) {
-    if (!this.model.provider) {
-      alert('请输入供应商名称');
+    if (!this.model.inunit) {
+      alert('请选择供应商名称');
       return false;
     }
     let el = event.target as HTMLButtonElement;
@@ -78,6 +87,34 @@ export class ReturnListComponent implements OnInit {
       .then(() => el.disabled = false)
       .then(() => this.suspendBill.refresh())
       .then(() => this.alerter.success('挂单成功！'))
+      .catch(err => {
+        el.disabled = false;
+        this.alerter.error(err);
+      })
+  }
+
+  generate(event: Event) {
+    if (!this.model.inunit) {
+      alert('请选择供应商名称');
+      return false;
+    }
+    let el = event.target as HTMLButtonElement;
+    el.disabled = true;
+    this.returnService.generate(this.model)
+      .then(data => {
+        el.disabled = false;
+        this.reset();
+        this.suspendBill.refresh();
+        return confirm('已生成出库单，是否需要打印？') ? data : null;
+      })
+      .then(code => code && this.returnService.get(code))
+      .then(data => {
+        if (data) {
+          console.log(data);
+          this.printModel = data;
+          setTimeout(() => this.printer.print(), 300);
+        }
+      })
       .catch(err => {
         el.disabled = false;
         this.alerter.error(err);

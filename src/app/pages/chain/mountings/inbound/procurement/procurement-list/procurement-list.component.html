@@ -1,0 +1,82 @@
+<ng-template hq-alerter></ng-template>
+<div class="card">
+  <div class="card-header">
+    <span>采购入库</span>
+    <ng-template hqSuspendBill="PW" (onSelect)="onSuspendSelect($event)" [columns]="suspendedColumns"></ng-template>
+  </div>
+  <div class="card-block">
+    <form class="form-inline mb-2">
+      <div class="form-group mb-2">
+        <label>*供应商名称</label>
+        <div class="mx-sm-3">
+          <input [hqTableTypeahead]="source" [columns]="providerColumns" (onSelect)="onProviderSelect($event)" value="{{model?.provider||''}}"
+            class="form-control" placeholder="请输入供应商名称" />
+        </div>
+      </div>
+      <div class="form-group mb-2">
+        <button (click)="createModal.show()" class="btn btn-primary mx-sm-1" translate>新增</button>
+      </div>
+    </form>
+    <table class="table table-bordered table-sm table-striped">
+      <thead>
+        <tr>
+          <th translate>序号</th>
+          <th translate>装箱单号</th>
+          <th translate>仓库</th>
+          <th translate>品牌</th>
+          <th translate>配件编码</th>
+          <th translate>配件名称</th>
+          <th translate>规格型号</th>
+          <th translate>配件类别</th>
+          <th translate>库位</th>
+          <th translate>数量（个）</th>
+          <th translate>含税单价（元）</th>
+          <th translate>含税总金额（元）</th>
+          <th translate>税率（%）</th>
+          <th translate>不含税单价（元）</th>
+          <th translate>不含税总金额（元）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of model.list;let i=index">
+          <td class="text-center">{{i+1}}</td>
+          <td>{{item.packingCode }}</td>
+          <td>{{item.storeName}}</td>
+          <td>{{item.brand}}</td>
+          <td>{{item.productCode }}</td>
+          <td>{{item.productName }}</td>
+          <td>{{item.productSpecification}}</td>
+          <td>{{item.productCategory}}</td>
+          <td>{{item.locationName }}</td>
+          <td class="text-center">{{item.count }}</td>
+          <td class="text-right">{{item.price|centToYuan}}</td>
+          <td class="text-right">{{item.amount|centToYuan}}</td>
+          <td class="text-center">{{item.taxRate }}</td>
+          <td class="text-right">{{item.exTaxPrice|centToYuan }}</td>
+          <td class="text-right">{{item.exTaxAmount|centToYuan }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card-footer text-muted">
+    <button class="btn btn-primary" (click)="generate($event)">生成退库单</button>
+    <button class="btn btn-warning" (click)="cancel($event)">取消</button>
+    <button [disabled]="!model?.list?.length" class="btn btn-info" (click)="suspend($event)">挂单</button>
+  </div>
+</div>
+
+<div class="modal fade" bsModal #createModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">新增</h5>
+        <button class="close pull-right" (click)="createModal.hide()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <hq-procurement-create (formSubmit)="onCreate($event)"></hq-procurement-create>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hq-procurement-print class="invisible" hqPrint #printer="hq-print" [model]="printModel"></hq-procurement-print>

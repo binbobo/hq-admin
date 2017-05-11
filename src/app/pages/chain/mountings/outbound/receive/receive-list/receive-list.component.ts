@@ -52,6 +52,7 @@ export class ReceiveListComponent implements OnInit {
   generate(event: Event) {
     let el = event.target as HTMLButtonElement;
     el.disabled = true;
+    console.log(JSON.stringify(this.model));
     this.receiveService.generate(this.model)
       .then(data => {
         el.disabled = false;

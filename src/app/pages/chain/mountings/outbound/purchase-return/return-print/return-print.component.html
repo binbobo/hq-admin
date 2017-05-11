@@ -1,10 +1,9 @@
 <h3>{{model?.title}}</h3>
 <hr class="blod">
 <div class="row">
-  <div class="col-3">退库单号：{{model?.billCode}}</div>
-  <div class="col-3">供应商名称：{{model?.customerName}}</div>
-  <div class="col-3">装箱单号：{{model?.seller}}</div>
-  <div class="col-3">开单时间：{{model?.createBillDateTime}}</div>
+  <div class="col-4">退库单号：{{model?.billCode}}</div>
+  <div class="col-4">供应商名称：{{model?.provider}}</div>
+  <div class="col-4">开单时间：{{model?.createBillDateTime}}</div>
 </div>
 <hr>
 <div class="print-page">
@@ -30,19 +29,19 @@
         <td>{{item.storeName }}</td>
         <td>{{item.productCode }}</td>
         <td>{{item.productName}}</td>
-        <td>{{item.productName}}</td>
+        <td>{{item.productCategory}}</td>
         <td>{{item.locationName }}</td>
         <td class="text-center">{{item.count}}</td>
         <td class="text-right">{{item.price|centToYuan }}</td>
         <td class="text-right">{{item.amount|centToYuan }}</td>
-        <td class="text-right">{{item.price|centToYuan }}</td>
-        <td class="text-right">{{item.amount|centToYuan }}</td>
+        <td class="text-right">{{item.exTaxPrice|centToYuan }}</td>
+        <td class="text-right">{{item.exTaxAmount|centToYuan }}</td>
       </tr>
     </tbody>
   </table>
   <div class="row">
     <div class="col-3">含税金额：{{model?.totalAmount|centToYuan}}</div>
-    <div class="col-3">不含税金额：{{model?.totalAmount|centToYuan}}</div>
+    <div class="col-3">不含税金额：{{model?.totalExTaxAmount|centToYuan}}</div>
     <div class="col-3">打印时间：{{model?.printDateTime}}</div>
     <div class="col-3">操作人：</div>
   </div>
