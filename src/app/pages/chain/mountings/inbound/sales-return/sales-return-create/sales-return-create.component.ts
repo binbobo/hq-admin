@@ -44,6 +44,7 @@ export class SalesReturnCreateComponent implements OnInit {
       amount: [this.model.amount],
       locationName: [this.model.locationName, [Validators.required]],
       houseName: [this.model.houseName, [Validators.required]],
+      yuan: [0, [Validators.required]],
     })
   }
 
@@ -64,6 +65,13 @@ export class SalesReturnCreateComponent implements OnInit {
     this.form = null;
     setTimeout(() => this.buildForm(), 1);
     return false;
+  }
+
+  onPriceChange(event) {
+    let val = event.target.value || 0;
+    let price = Math.floor(val * 100);
+    this.form.patchValue({ price: price });
+    this.calculate();
   }
 
   public itemColumns(isName: boolean) {
@@ -89,9 +97,13 @@ export class SalesReturnCreateComponent implements OnInit {
       locationId: event.locationId,
       locationName: event.locationName,
       price: event.price,
+      yuan: (event.price || 0) / 100,
     }
-    this.form.patchValue(item);
-    this.calculate();
+    this.form.controls['yuan'].setValidators(CustomValidators.gte(item.price / 100))
+    setTimeout(() => {
+      this.form.patchValue(item);
+      this.calculate();
+    }, 1);
   }
 
   public get codeSource() {

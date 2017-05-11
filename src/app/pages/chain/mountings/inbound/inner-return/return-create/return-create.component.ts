@@ -1,4 +1,4 @@
-import { Component, OnInit,Injector, Output, EventEmitter, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, Injector, Output, EventEmitter, ViewChildren, QueryList } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { CentToYuanPipe } from "app/shared/pipes";
 import { FormControlErrorDirective, TypeaheadRequestParams } from "app/shared/directives";
@@ -30,12 +30,12 @@ export class ReturnCreateComponent implements OnInit {
     this.buildForm();
   }
 
-   private buildForm() {
+  private buildForm() {
     this.form = this.formBuilder.group({
       brand: [this.model.brand, [Validators.required]],
       productCode: [this.model.productCode],
       productName: [this.model.productName],
-      productCategory:[this.model.productCategory],
+      productCategory: [this.model.productCategory],
       productId: [this.model.productId, [Validators.required, Validators.maxLength(36)]],
       productSpecification: [this.model.productSpecification, [Validators.required]],
       storeId: [this.model.storeId],
@@ -43,9 +43,10 @@ export class ReturnCreateComponent implements OnInit {
       count: [this.model.count, [Validators.required, CustomValidators.digits]],
       price: [this.model.price],
       amount: [this.model.amount],
-      description:[this.model.description],
+      description: [this.model.description],
       locationName: [this.model.locationName, [Validators.required]],
       houseName: [this.model.houseName, [Validators.required]],
+      yuan: [0, [Validators.required]],
     })
   }
 
@@ -67,8 +68,8 @@ export class ReturnCreateComponent implements OnInit {
     setTimeout(() => this.buildForm(), 1);
     return false;
   }
-//定义模糊查询要显示的列
-public itemColumns(isName: boolean) {
+  //定义模糊查询要显示的列
+  public itemColumns(isName: boolean) {
     return [
       { name: 'name', title: '名称', weight: isName ? 1 : 0 },
       { name: 'code', title: '编码', weight: isName ? 0 : 1 },
@@ -77,7 +78,7 @@ public itemColumns(isName: boolean) {
       { name: 'locationName', title: '库位' },
     ];
   }
-//编码数据源
+  //编码数据源
   public get codeSource() {
     return (params: TypeaheadRequestParams) => {
       let p = new GetMountingsListRequest(params.text);
@@ -85,13 +86,20 @@ public itemColumns(isName: boolean) {
       return this.moutingsService.getListByCodeOrName(p);
     };
   }
-//名称数据源
+  //名称数据源
   public get nameSource() {
     return (params: TypeaheadRequestParams) => {
       let p = new GetMountingsListRequest(undefined, params.text);
       p.setPage(params.pageIndex, params.pageSize);
       return this.moutingsService.getListByCodeOrName(p);
     };
+  }
+  //单价变动限制
+  onPriceChange(event) {
+    let val = event.target.value || 0;
+    let price = Math.floor(val * 100);
+    this.form.patchValue({ price: price });
+    this.calculate();
   }
 
   public onItemSelect(event) {
@@ -108,9 +116,13 @@ public itemColumns(isName: boolean) {
       locationName: event.locationName,
       productCategory: event.Category,
       price: event.price,
+      yuan: (event.price || 0) / 100,
     }
-    this.form.patchValue(item);
-    this.calculate();
+    this.form.controls['yuan'].setValidators(CustomValidators.gte(item.price / 100))
+    setTimeout(() => {
+      this.form.patchValue(item);
+      this.calculate();
+    }, 1);
   }
 
   private calculate() {
@@ -121,5 +133,5 @@ public itemColumns(isName: boolean) {
     let amount = (count || 0) * (price || 0);
     this.form.patchValue({ amount: amount, count: count, price: price });
   }
-  
+
 }
