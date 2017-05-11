@@ -75,6 +75,7 @@ export class ReturnListComponent implements OnInit {
       history.go(-1);
     }
   }
+  //挂单
   suspend(event: Event) {
     let el = event.target as HTMLButtonElement;
     el.disabled = true;
@@ -85,6 +86,7 @@ export class ReturnListComponent implements OnInit {
     this.suspendBill.suspend(this.model)
       .then(() => el.disabled = false)
       .then(() => this.suspendBill.refresh())
+      .then(()=>this.reset())
       .then(() => this.alerter.success('挂单成功！'))
       .catch(err => {
         el.disabled = false;

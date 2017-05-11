@@ -110,6 +110,7 @@ export class SalesReturnListComponent implements OnInit {
     this.suspendBill.suspend(this.model)
       .then(() => el.disabled = false)
       .then(() => this.suspendBill.refresh())
+      .then(()=>this.reset())
       .then(() => this.alerter.success('挂单成功！'))
       .catch(err => {
         el.disabled = false;
