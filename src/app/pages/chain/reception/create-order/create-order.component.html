@@ -1,10 +1,12 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
   <div class="card-header">
-    创建工单
+    <span> 创建工单</span>
+    <!--MW-->
+    <ng-template hqSuspendBill="01" (onSelect)="loadSuspendedOrderInfo($event)" [columns]="typeaheadColumns"></ng-template>
+    <!--创建工单
     <input container="body" type="text" value="我的挂单 ({{suspendedOrders?.length}})" #pop="bs-popover" readonly placement="bottom"
       [popover]="popTemplate" class="pull-right btn btn-sm textInputBtn" style="margin-right: 105px;">
-    <!--挂单列模板-->
     <template #popTemplate>
       <div class="list-group">
         <a *ngFor="let order of suspendedOrders" (click)="loadSuspendedOrderInfo($event, order, pop)" class="list-group-item list-group-item-action">
@@ -14,12 +16,14 @@
           <button class="ml-2 btn btn-sm btn-danger my-sm"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </a>
       </div>
-    </template>
+    </template>-->
   </div>
 
   <!--填写工单信息表单-->
   <div class="card-block">
     <form [formGroup]="workSheetForm" autocomplete="off" (ngSubmit)="onSerarch()">
+      <!--挂单id-->
+      <input type="hidden" formControlName="suspendedBillId" />
       <!--工单基本筛选条件面板-->
       <div class="form-group row">
         <label for="plateNo" class="col-1 col-form-label col-form-label"><span class="asterisk mr-1">*</span>车牌号</label>
@@ -31,7 +35,6 @@
         <div class="col-2">
           <input [hqTableTypeahead]="customerNametypeaheadSource" [columns]="typeaheadColumns" (onSelect)="onCustomerNameSelect($event)"
             type="text" required class="form-control form-control" formControlName="customerName" id="customerName" placeholder="输入字母 ll 测试">
-
         </div>
         <!--根据车主查询客户车辆信息下拉列表，自定义显示模板 let-model="item"遍历集合, 引用记录 -->
         <template #customCustomerVehicleTemplate let-model="item" let-index="index">
@@ -146,7 +149,7 @@
 
     <tabset>
       <tab heading="维修项目">
-        <table class="table table-striped table-borderd">
+        <table class="table table-striped table-bordered">
           <thead>
             <tr>
               <th>操作</th>
@@ -165,9 +168,9 @@
               </td>
               <td>{{item.serviceName}}</td>
               <td>{{item.workHour}}</td>
-              <td>{{item.price}}</td>
+              <td>{{item.price|centToYuan}}</td>
               <td>{{item.discount}}</td>
-              <td>{{record?.amount ? (record?.amount / 100) : ''}}</td>
+              <td>{{item.amount|centToYuan}}</td>
               <td>{{item.operationTime}}</td>
             </tr>
             <tr *ngIf="addNewMaintenanceItem">
@@ -184,7 +187,7 @@
                   (keyup)="onPriceChange()" type="text" class="form-control form-control" required></td>
               <td><input placeholder="请输入0~100之间的整数" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.discount"
                   (keyup)="onDiscountChange()" type="text" class="form-control form-control" required></td>
-              <td><input [value]="newMaintenanceItem.amount/100" type="text" class="form-control form-control" [disabled]="true"></td>
+              <td><input [value]="newMaintenanceItem.amount" type="text" class="form-control form-control" [disabled]="true"></td>
               <td><input [value]="newMaintenanceItem.operationTime" type="text" class="form-control form-control" [disabled]="true"></td>
             </tr>
           </tbody>
@@ -194,7 +197,7 @@
         </div>
       </tab>
       <tab heading="上次维修记录">
-        <table class="table table-striped table-borderd">
+        <table class="table table-striped table-bordered">
           <caption>维修项目</caption>
           <thead>
             <tr>
@@ -209,18 +212,18 @@
           </thead>
           <tbody>
             <tr *ngFor="let record of lastOrderData?.serviceOutputs">
-              <td>{{record?.name}}</td>
-              <td>{{record?.workingHour }}</td>
-              <td>{{record?.price}}</td>
-              <td>{{record?.workingHour * record?.price}}</td>
+              <td>{{record?.serviceName}}</td>
+              <td>{{record?.workHour}}</td>
+              <td>{{record?.price|centToYuan}}</td>
+              <td>{{record?.amount|centToYuan}}</td>
               <td>{{record?.discount}}</td>
-              <td>{{record?.operateDateTime}}</td>
+              <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
               <td>{{user.username}}</td>
             </tr>
           </tbody>
         </table>
         <br>
-        <table class="table table-striped table-borderd">
+        <table class="table table-striped table-bordered">
           <caption>维修配件</caption>
           <thead>
             <tr>
@@ -248,7 +251,7 @@
           </tbody>
         </table>
         <br>
-        <table class="table table-striped table-borderd">
+        <table class="table table-striped table-bordered">
           <caption>附加项目</caption>
           <thead>
             <tr>
@@ -262,7 +265,7 @@
           </tbody>
         </table>
         <br>
-        <table class="table table-striped table-borderd">
+        <table class="table table-striped table-bordered">
           <caption>建议维修项目</caption>
           <thead>
             <tr>
@@ -285,10 +288,10 @@
       <div *ngIf="true" class="card">
         <div class="card-header" style="color:gray;padding: 3px 5px;">
           折前费用: 工时费
-          <span class="ml-2 mr-2">{{fee.workHour}}</span> | 材料费
-          <span class="ml-2 mr-2">{{fee.material}}</span> | 其它
-          <span class="ml-2 mr-2">{{fee.other}}</span> | 合计
-          <span class="ml-2 mr-2">{{fee.workHour+fee.material+fee.other}}</span>|
+          <span class="ml-2 mr-2">{{fee.workHour|centToYuan}}</span> | 材料费
+          <span class="ml-2 mr-2">{{fee.material|centToYuan}}</span> | 其它
+          <span class="ml-2 mr-2">{{fee.other|centToYuan}}</span> | 合计
+          <span class="ml-2 mr-2">{{fee.workHour+fee.material+fee.other|centToYuan}}</span>|
         </div>
         <div class="card-block text-center">
           <input type="text" class="btn textInputBtn" readonly [disabled]="!enableCreateWorkSheet" (click)="createWorkSheet()" value="生成工单">
