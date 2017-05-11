@@ -1,4 +1,4 @@
-import { Directive, ViewContainerRef, ComponentFactoryResolver, Input, EventEmitter, Output, OnInit, HostListener, ElementRef } from '@angular/core';
+import { Directive, ViewContainerRef, ComponentFactoryResolver, Input, EventEmitter, Output, OnInit, HostListener, ElementRef, Component, ComponentRef } from '@angular/core';
 import { TableTypeaheadComponent } from './table-typeahead.component';
 import { PagedResult, PagedParams } from 'app/shared/models';
 import { Observable } from 'rxjs/Observable';
@@ -12,7 +12,6 @@ import 'rxjs/add/operator/debounceTime';
 })
 export class TableTypeaheadDirective implements OnInit {
 
-  private component: TableTypeaheadComponent;
   @Input("hqTableTypeahead")
   private source: (params: TypeaheadRequestParams) => Promise<PagedResult<any>>;
   @Input()
@@ -28,27 +27,27 @@ export class TableTypeaheadDirective implements OnInit {
   @Output()
   private onRemove = new EventEmitter();
 
+  private el: HTMLInputElement;
+  private componentRef: ComponentRef<TableTypeaheadComponent>;
   private paging = false;
   private sortedKeys: Array<string> = [];
 
   constructor(
-    private el: ElementRef,
     private viewContainerRef: ViewContainerRef,
     private componentFactoryResolver: ComponentFactoryResolver
   ) {
+    this.el = this.viewContainerRef.element.nativeElement;
   }
 
   @HostListener('blur', ['$event'])
   onBlur(event) {
-    let result = this.component.result;
-    if (!this.multiple && result && result.data && result.data.length) {
+    if (!this.multiple) {
       setTimeout(() => {
         if (this.paging) {
           this.paging = false;
-          let el = this.el.nativeElement as HTMLInputElement;
-          el.focus();
+          this.el.focus();
         } else {
-          this.component.hide();
+          this.hide();
         }
       }, 500);
     }
@@ -56,19 +55,30 @@ export class TableTypeaheadDirective implements OnInit {
 
   @HostListener('focus', ['$event'])
   onFocus(event) {
-    this.component.show();
+    this.show();
+  }
+
+  show() {
+    let rect = this.el.getBoundingClientRect();
+    let ne = this.componentRef.location.nativeElement;
+    ne.style.top = rect.height + "px";
+    ne.style.left = 0;
+    this.componentRef.instance.show();
+  }
+
+  hide() {
+    this.componentRef.instance.hide();
   }
 
   private search(pageIndex = 1) {
-    let el = this.el.nativeElement as HTMLInputElement;
-    if (!el.value) return;
-    let param = new TypeaheadRequestParams(el.value);
+    if (!this.el.value) return;
+    let param = new TypeaheadRequestParams(this.el.value);
     param.setPage(pageIndex, this.pageSize);
     if (this.source) {
       this.source(param)
         .then(result => {
-          this.component.result = result;
-          this.component.show();
+          this.componentRef.instance.result = result;
+          this.show();
         })
         .catch(err => console.error(err));
     }
@@ -85,39 +95,55 @@ export class TableTypeaheadDirective implements OnInit {
         })
         .map(m => m.name);
     }
-    let el = this.el.nativeElement as HTMLInputElement;
+    let wrapper = document.createElement("div");
+    wrapper.className = 'input-group';
+    this.el.parentElement.insertBefore(wrapper, this.el.nextSibling);
+    wrapper.appendChild(this.el);
+    let span = document.createElement('span');
+    span.className = "input-group-addon";
+    span.style.borderTopRightRadius = "0.25rem";
+    span.style.borderBottomRightRadius = "0.25rem";
+    span.style.borderRightWidth = "1px";
+    span.style.borderRightStyle = "solid";
+    span.style.borderRightColor = "rgba(0, 0, 0, 0.14902)";
+    span.innerHTML = '<i class="fa fa-search"></i>';
+    wrapper.appendChild(span);
     let componentFactory = this.componentFactoryResolver.resolveComponentFactory(TableTypeaheadComponent);
-    let componentRef = this.viewContainerRef.createComponent(componentFactory);
-    this.component = (<TableTypeaheadComponent>componentRef.instance);
-    this.component.columns = this.columns;
-    this.component.onSelect = this.onSelect;
-    this.component.onRemove = this.onRemove;
-    this.component.size = this.pageSize;
-    this.component.multiple = this.multiple;
-    this.component.onPageChange.subscribe(params => {
+    this.componentRef = this.viewContainerRef.createComponent(componentFactory);
+    let ne = this.componentRef.location.nativeElement;
+    ne.style.transition = 'height 0.3s ease-in';
+    wrapper.appendChild(ne);
+    let component = this.componentRef.instance;
+    component.columns = this.columns;
+    component.onRemove = this.onRemove;
+    component.size = this.pageSize;
+    component.multiple = this.multiple;
+    component.onPageChange.subscribe(params => {
       this.paging = true;
       this.search(params.pageIndex);
     });
-    Observable.fromEvent(this.el.nativeElement, 'input')
-      .map((e: any) => e.target.value)
-      .debounceTime(this.delay)
-      .subscribe(value => {
-        this.component.hide();
-        this.search();
-      });
-    this.onSelect.subscribe((item) => {
-      let originValue = el.value;
+    component.onSelect.subscribe((item) => {
+      let originValue = this.el.value;
       if (!this.multiple) {
         let selectedValue = this.sortedKeys
           .filter(key => item[key])
           .map(key => item[key].toString())
           .find(value => value.includes(originValue));
         if (selectedValue) {
-          el.value = selectedValue;
+          this.el.value = selectedValue;
         }
       }
+      this.onSelect.emit(item);
     })
+    Observable.fromEvent(this.el, 'input')
+      .map((e: any) => e.target.value)
+      .debounceTime(this.delay)
+      .subscribe(value => {
+        this.hide();
+        this.search();
+      });
   }
+
 }
 
 export class TableTypeaheadColumn {

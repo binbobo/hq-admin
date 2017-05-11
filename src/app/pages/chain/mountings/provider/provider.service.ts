@@ -15,7 +15,7 @@ export class ProviderService implements BasicService<Provider> {
       .catch(err => `供应商列表导出失败：${err}`);
   }
 
-  getPagedList(params: PagedParams): Promise<PagedResult<Provider>> {
+  getPagedList(params: ProviderListRequest): Promise<PagedResult<Provider>> {
     let url = Urls.chain.concat('/suppliers/getPageList');
     return this.httpService
       .get<PagedResult<Provider>>(url, params.serialize())
@@ -58,7 +58,7 @@ export class ProviderService implements BasicService<Provider> {
 
 export class ProviderListRequest extends PagedParams {
   constructor(
-    public orgid: string = '53113bfb-d2cf-43a8-a0d0-c5b5a61d0c07',
+    public searchInfo?: string,
     public name?: string,
     public contactUser?: string,
     public tel?: string,

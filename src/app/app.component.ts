@@ -12,7 +12,7 @@ moment.locale('zh-cn');
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  myDate=null;
+
   constructor(
     private translate: TranslateService,
     private dispatcher: EventDispatcher,
