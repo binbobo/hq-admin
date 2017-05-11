@@ -1,7 +1,7 @@
 <!--<ng-template hq-alerter></ng-template>-->
 <div class="card">
   <div class="card-header">
-    用户信息
+    用户管理
   </div>
   <div class="card-block">
     <form [formGroup]="userSearch" (ngSubmit)="getPageList()">
@@ -36,9 +36,9 @@
           <td>{{item.createTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
           <td>{{item.description}}</td>
           <td style="text-align:center">
-            <button [disabled]="!item.enabled" href="javascript:void" (click)="openEditorUser(newmodal,item)">编辑</button>&nbsp;&nbsp;&nbsp;
-            <button [disabled]="!item.enabled" href="javascript:void" (click)="ResetPassWord(item.id)">重置密码</button>&nbsp;&nbsp;&nbsp;
-            <button  href="javascript:void" (click)="EnabledUser(item.id,!item.enabled)">{{ item.enabled?"冻结":"解冻" }}</button>
+            <button [(disabled)]="!item.enabled" href="javascript:void" (click)="openEditorUser(newmodal,item)">编辑</button>&nbsp;&nbsp;&nbsp;
+            <button [(disabled)]="!item.enabled" href="javascript:void" (click)="ResetPassWord(item)">重置密码</button>&nbsp;&nbsp;&nbsp;
+            <button  href="javascript:void" (click)="EnabledUser(item)">{{ item.enabled?"冻结":"解冻" }}</button>
           </td>
         </tr>
       </tbody>
@@ -77,7 +77,7 @@
                 <ngx-dropdown-treeview class="sm"
                     [items]="roleItem.items"
                     [config]="roleItem.config"
-                    (selectedChange)="roleItem.callBack($event)">
+                    (selectedChange)="onSelectedCahngeForRoleItem($event)">
                 </ngx-dropdown-treeview>
               </div>
               <div class="form-group col-sm-2">
@@ -85,7 +85,7 @@
                  <ngx-dropdown-treeview class="sm"
                    [items]="position.items"
                    [config]="position.config"
-                   (selectedChange)="position.callBack($event)"
+                   (selectedChange)="onSelectedChangeForPosition($event)"
                  >
                  </ngx-dropdown-treeview>
               </div>
