@@ -36,7 +36,6 @@ import { SalesReturnService } from "./sales-return/sales-return.service";
     AlertModule.forRoot(),
     TypeaheadModule.forRoot(),
     ModalModule.forRoot(),
-    SharedModule,
     ReactiveFormsModule,
     NguiDatetimePickerModule,
     FormsModule,
