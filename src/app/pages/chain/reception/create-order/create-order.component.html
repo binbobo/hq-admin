@@ -2,21 +2,7 @@
 <div class="card">
   <div class="card-header">
     <span> 创建工单</span>
-    <!--MW-->
-    <ng-template hqSuspendBill="01" (onSelect)="loadSuspendedOrderInfo($event)" [columns]="typeaheadColumns"></ng-template>
-    <!--创建工单
-    <input container="body" type="text" value="我的挂单 ({{suspendedOrders?.length}})" #pop="bs-popover" readonly placement="bottom"
-      [popover]="popTemplate" class="pull-right btn btn-sm textInputBtn" style="margin-right: 105px;">
-    <template #popTemplate>
-      <div class="list-group">
-        <a *ngFor="let order of suspendedOrders" (click)="loadSuspendedOrderInfo($event, order, pop)" class="list-group-item list-group-item-action">
-          <span class="mr-2">{{order.customerName}}</span>
-          <span class="mr-2">{{order.plateNo}} </span>
-          <span class="mr-2">{{order.phone}}</span>
-          <button class="ml-2 btn btn-sm btn-danger my-sm"><i class="fa fa-trash" aria-hidden="true"></i></button>
-        </a>
-      </div>
-    </template>-->
+    <ng-template hqSuspendBill="MW" (onSelect)="loadSuspendedOrderInfo($event)" [columns]="typeaheadColumns"></ng-template>
   </div>
 
   <!--填写工单信息表单-->
