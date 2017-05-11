@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ReturnComponent } from './return.component';
+import { ReturnListComponent } from './return-list.component';
 
-describe('ReturnComponent', () => {
-  let component: ReturnComponent;
-  let fixture: ComponentFixture<ReturnComponent>;
+describe('ReturnListComponent', () => {
+  let component: ReturnListComponent;
+  let fixture: ComponentFixture<ReturnListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReturnComponent ]
+      declarations: [ ReturnListComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ReturnComponent);
+    fixture = TestBed.createComponent(ReturnListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

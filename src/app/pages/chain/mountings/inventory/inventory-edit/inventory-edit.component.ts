@@ -37,6 +37,7 @@ export class InventoryEditComponent extends FormHandle<Inventory> implements OnI
       maxCount: [this.model.maxCount],
       minCount: [this.model.minCount],
       brandId: [this.model.brandId],
+      storeId: [this.model.storeId],
       id: [this.model.id],
       description: [this.model.description, [Validators.maxLength(200)]],
     });

@@ -3,7 +3,7 @@
     <span>挂单信息 <span class="badge badge-default">{{result?.totalCount||0}}</span></span> 
     <span class="caret"></span>
   </button>
-  <div *dropdownMenu class="p-0 dropdown-menu dropdown-menu-right" role="menu">
+  <div [hidden]="!result?.data?.length" *dropdownMenu class="p-0 dropdown-menu dropdown-menu-right" role="menu">
     <table class="m-0 table table-sm table-hover">
       <tr>
         <th *ngFor="let col of columns">{{col.title||col.name}}</th>
