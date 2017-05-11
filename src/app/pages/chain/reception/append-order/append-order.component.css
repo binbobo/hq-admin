@@ -12,3 +12,9 @@ table th,table td{
      white-space:nowrap; 
      overflow:hidden;
 }
+.container {
+    text-align: left;
+}
+.mg{
+    margin-bottom:30px;
+}
