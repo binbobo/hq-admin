@@ -33,6 +33,11 @@ export class SuspendBillDirective implements OnInit {
     this.component.onSelect = this.onSelect;
     this.component.onSelect.subscribe(m => {
       this.selectedItem = m;
+    });
+    this.component.onRemove.subscribe(m => {
+      if (this.selectedItem && this.selectedItem.id === m.id) {
+        this.selectedItem = null;
+      }
     })
   }
 
@@ -44,7 +49,7 @@ export class SuspendBillDirective implements OnInit {
     }
   }
 
-  public refresh(){
+  public refresh() {
     this.component.loadList();
   }
 

@@ -5,14 +5,14 @@ import { PurchaseReturnRequest } from "app/pages/chain/mountings/outbound/purcha
 import { Location } from '@angular/common';
 import { SuspendBillDirective } from 'app/pages/chain/chain-shared';
 import { ModalDirective } from 'ngx-bootstrap';
-import { PurchaseReturnPrintItem, PurchaseReturnItem, PurchaseReturnService } from '../purchase-return.service';
+import { ProcurementService, ProcurementPrintItem, ProcurementItem } from '../procurement.service';
 
 @Component({
-  selector: 'hq-return-list',
-  templateUrl: './return-list.component.html',
-  styleUrls: ['./return-list.component.css']
+  selector: 'hq-procurement-list',
+  templateUrl: './procurement-list.component.html',
+  styleUrls: ['./procurement-list.component.css']
 })
-export class ReturnListComponent implements OnInit {
+export class ProcurementListComponent implements OnInit {
 
   @ViewChild(SuspendBillDirective)
   private suspendBill: SuspendBillDirective;
@@ -22,12 +22,12 @@ export class ReturnListComponent implements OnInit {
   protected alerter: HqAlerter;
   @ViewChild('printer')
   public printer: PrintDirective;
-  private printModel: PurchaseReturnPrintItem;
+  private printModel: ProcurementPrintItem;
   private model = new PurchaseReturnRequest();
 
   constructor(
     private providerService: ProviderService,
-    private returnService: PurchaseReturnService,
+    private procurementService: ProcurementService,
     private location: Location
   ) { }
 
@@ -39,7 +39,7 @@ export class ReturnListComponent implements OnInit {
     this.model.suspendedBillId = item.id;
   }
 
-  onCreate(event: PurchaseReturnItem) {
+  onCreate(event: ProcurementItem) {
     this.model.list.push(event);
     this.createModal.hide();
   }
@@ -100,17 +100,16 @@ export class ReturnListComponent implements OnInit {
     }
     let el = event.target as HTMLButtonElement;
     el.disabled = true;
-    this.returnService.generate(this.model)
+    this.procurementService.generate(this.model)
       .then(data => {
         el.disabled = false;
         this.reset();
         this.suspendBill.refresh();
         return confirm('已生成出库单，是否需要打印？') ? data : null;
       })
-      .then(code => code && this.returnService.get(code))
+      .then(code => code && this.procurementService.get(code))
       .then(data => {
         if (data) {
-          console.log(data);
           this.printModel = data;
           setTimeout(() => this.printer.print(), 300);
         }

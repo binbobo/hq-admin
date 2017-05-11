@@ -14,9 +14,16 @@ import { NguiDatetimePickerModule } from '@ngui/datetime-picker';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { MaintainReturnService } from "app/pages/chain/mountings/inbound/maintain-return/maintain-return.service";
 import { PrintComponent } from './maintain-return/print/print.component';
+import { ProcurementListComponent } from './procurement/procurement-list/procurement-list.component';
+import { ProcurementCreateComponent } from './procurement/procurement-create/procurement-create.component';
+import { ProcurementPrintComponent } from './procurement/procurement-print/procurement-print.component';
+import { ProcurementService } from './procurement/procurement.service';
+import { ChainSharedModule } from '../../chain-shared/chain-shared.module';
+import { ProviderService } from '../provider/provider.service';
 @NgModule({
   imports: [
     SharedModule,
+    ChainSharedModule,
     InboundRoutingModule,
     TreeviewModule.forRoot(),
     CollapseModule.forRoot(),
@@ -25,12 +32,11 @@ import { PrintComponent } from './maintain-return/print/print.component';
     AlertModule.forRoot(),
     TypeaheadModule.forRoot(),
     ModalModule.forRoot(),
-    SharedModule,
     ReactiveFormsModule,
     NguiDatetimePickerModule
   ],
-  declarations: [routedComponents, SalesReturnComponent, PrintComponent],
-  providers: [MaintainReturnService],
+  declarations: [routedComponents, SalesReturnComponent, PrintComponent, ProcurementListComponent, ProcurementCreateComponent, ProcurementPrintComponent],
+  providers: [MaintainReturnService, ProcurementService, ProviderService],
   entryComponents: [routedComponents[0]],
 })
 export class InboundModule { }

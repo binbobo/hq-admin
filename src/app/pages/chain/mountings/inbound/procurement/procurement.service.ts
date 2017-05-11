@@ -3,7 +3,7 @@ import { PagedResult, PagedParams, ApiResult } from 'app/shared/models';
 import { Urls, HttpService } from 'app/shared/services';
 
 @Injectable()
-export class PurchaseReturnService {
+export class ProcurementService {
 
   constructor(private httpService: HttpService) { }
 
@@ -14,15 +14,15 @@ export class PurchaseReturnService {
       .catch(err => Promise.reject(`获取配件信息失败：${err}`));
   }
 
-  get(code: string): Promise<PurchaseReturnPrintItem> {
+  get(code: string): Promise<ProcurementPrintItem> {
     if (!code) return Promise.resolve({});
     let url = Urls.chain.concat('/PurchaseReturnDetails/Print?BillCode=', code);
-    return this.httpService.get<ApiResult<PurchaseReturnPrintItem>>(url)
+    return this.httpService.get<ApiResult<ProcurementPrintItem>>(url)
       .then(result => result.data)
       .catch(err => Promise.reject(`获取退库单信息失败：${err}`));
   }
 
-  public generate(request: PurchaseReturnRequest): Promise<string> {
+  public generate(request: ProcurementRequest): Promise<string> {
     let url = Urls.chain.concat('/StoreInOutDetails/CreatePurchaseReturnBill');
     return this.httpService.post<ApiResult<string>>(url, request)
       .then(result => result.data)
@@ -39,16 +39,16 @@ export class GetProductsRequest extends PagedParams {
   }
 }
 
-export class PurchaseReturnRequest {
+export class ProcurementRequest {
   constructor(
-    public list: Array<PurchaseReturnItem> = [],
+    public list: Array<ProcurementItem> = [],
     public provider?: string,
     public inunit?: string,
     public suspendedBillId?: string,
   ) { }
 }
 
-export class PurchaseReturnItem {
+export class ProcurementItem {
   constructor(
     public count: number = 0,
     public price: number = 0,
@@ -73,15 +73,6 @@ export class PurchaseReturnItem {
   ) { }
 }
 
-export class PurchaseReturnPrintItem {
-  constructor(
-    public list: Array<any> = [],
-    public title?: string,
-    public billCode?: string,
-    public createBillDateTime?: string,
-    public totalAmount?: string,
-    public totalExTaxAmount?: string,
-    public printDateTime?: string,
-    public operator?: string,
-  ) { }
+export class ProcurementPrintItem {
+
 }

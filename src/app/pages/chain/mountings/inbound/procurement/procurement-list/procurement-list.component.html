@@ -1,16 +1,16 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
   <div class="card-header">
-    <span>采购退库</span>
-    <ng-template hqSuspendBill="PR" (onSelect)="onSuspendSelect($event)" [columns]="suspendedColumns"></ng-template>
+    <span>采购入库</span>
+    <ng-template hqSuspendBill="PW" (onSelect)="onSuspendSelect($event)" [columns]="suspendedColumns"></ng-template>
   </div>
   <div class="card-block">
     <form class="form-inline mb-2">
       <div class="form-group mb-2">
         <label>*供应商名称</label>
         <div class="mx-sm-3">
-          <input [hqTableTypeahead]="source" [columns]="providerColumns" (onSelect)="onProviderSelect($event)" value="{{model?.provider||''}}" class="form-control"
-            placeholder="请输入供应商名称" />
+          <input [hqTableTypeahead]="source" [columns]="providerColumns" (onSelect)="onProviderSelect($event)" value="{{model?.provider||''}}"
+            class="form-control" placeholder="请输入供应商名称" />
         </div>
       </div>
       <div class="form-group mb-2">
@@ -73,10 +73,10 @@
         <button class="close pull-right" (click)="createModal.hide()">&times;</button>
       </div>
       <div class="modal-body">
-        <hq-return-create (formSubmit)="onCreate($event)"></hq-return-create>
+        <hq-procurement-create (formSubmit)="onCreate($event)"></hq-procurement-create>
       </div>
     </div>
   </div>
 </div>
 
-<hq-return-print class="invisible" hqPrint #printer="hq-print" [model]="printModel"></hq-return-print>
+<hq-procurement-print class="invisible" hqPrint #printer="hq-print" [model]="printModel"></hq-procurement-print>
