@@ -56,7 +56,7 @@ export class SalesReturnCreateComponent implements OnInit {
       return false;
     } else {
       this.formSubmit.emit(this.form.value);
-      this.form.reset();
+      this.form.reset(this.model);
     }
   }
 
@@ -90,7 +90,6 @@ export class SalesReturnCreateComponent implements OnInit {
       locationName: event.locationName,
       price: event.price,
     }
-    Object.assign(this.model, item);
     this.form.patchValue(item);
     this.calculate();
   }

@@ -58,7 +58,7 @@ export class ReturnCreateComponent implements OnInit {
       return false;
     } else {
       this.formSubmit.emit(this.form.value);
-      this.form.reset();
+      this.form.reset(this.model);
     }
   }
 
@@ -109,7 +109,6 @@ public itemColumns(isName: boolean) {
       productCategory: event.Category,
       price: event.price,
     }
-    Object.assign(this.model, item);
     this.form.patchValue(item);
     this.calculate();
   }
