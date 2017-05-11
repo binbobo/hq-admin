@@ -15,15 +15,12 @@ import { ReceiveService } from './receive/receive.service';
 import { ReceivePrintComponent } from './receive/receive-print/receive-print.component';
 import { SalesPrintComponent } from './sales/sales-print/sales-print.component';
 import { ChainSharedModule } from '../../chain-shared/chain-shared.module';
-<<<<<<< HEAD
 import { DistributeCreatComponent } from './distribute/distribute-creat/distribute-creat.component';
-=======
 import { ProviderService } from '../provider/provider.service';
 import { ReturnListComponent } from './purchase-return/return-list/return-list.component';
 import { ReturnCreateComponent } from './purchase-return/return-create/return-create.component';
 import { ReturnPrintComponent } from './purchase-return/return-print/return-print.component';
 import { PurchaseReturnService } from './purchase-return/purchase-return.service';
->>>>>>> 2a507134fd984e57620b580eef942153bea114c0
 
 const routes: Routes = [
   { path: 'maintain-distribute', component: DistributeComponent },
@@ -43,14 +40,9 @@ const routes: Routes = [
     CustomFormsModule,
   ],
   exports: [RouterModule],
-<<<<<<< HEAD
-
-  providers: [SalesService, ReceiveService],
-  declarations: [DistributeComponent, SalesListComponent, ReturnComponent, SalesCreateComponent, ReceiveListComponent, ReceiveCreateComponent, ReceivePrintComponent, SalesPrintComponent,PrintComponent, DistributeCreatComponent]
-=======
   providers: [SalesService, ReceiveService, ProviderService, PurchaseReturnService],
-  declarations: [DistributeComponent, SalesListComponent, SalesCreateComponent, ReceiveListComponent, ReceiveCreateComponent, ReceivePrintComponent, SalesPrintComponent, PrintComponent, ReturnListComponent, ReturnCreateComponent, ReturnPrintComponent]
->>>>>>> 2a507134fd984e57620b580eef942153bea114c0
+  declarations: [DistributeComponent, SalesListComponent, SalesCreateComponent, ReceiveListComponent, ReceiveCreateComponent, ReceivePrintComponent, SalesPrintComponent, PrintComponent, ReturnListComponent, ReturnCreateComponent, ReturnPrintComponent, DistributeCreatComponent]
+
 
 })
 export class OutboundModule { }

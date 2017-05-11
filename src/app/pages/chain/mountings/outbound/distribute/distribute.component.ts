@@ -14,7 +14,6 @@ import * as moment from 'moment';
   providers: [DistributeService]
 })
 export class DistributeComponent implements OnInit {
-
   @ViewChild('createModal')
   private createModal: ModalDirective;
   @ViewChild(HqAlerter)
