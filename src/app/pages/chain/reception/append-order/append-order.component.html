@@ -4,11 +4,13 @@
   </div>
   <div class="card-block">
     <div class="" hq-alerter></div>
-    <form [formGroup]="myForm" class='form-in mb-2' style="width:370px">
-      <input [hqTableTypeahead]="typeaheadSource" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)" class="form-control"
-        placeholder="请输入工单号/车牌号" />
-    </form>
-    <div class=container>
+    <div class="container mg">
+      <form [formGroup]="myForm" class='form-in mb-2' style="width:370px">
+        <input [hqTableTypeahead]="typeaheadSource" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)" class="form-control"
+          placeholder="请输入工单号/车牌号" />
+      </form>
+    </div>
+    <div class="container">
       <div class="row">
         <div class="col-md-3">车牌号:{{SearchappendList.plateNo}}</div>
         <div class="col-md-3">车主:{{SearchappendList.customerName}}</div>
@@ -48,10 +50,9 @@
           <!--<smart-table [source]="stDataSource" (deleteConfirm)="deleteMaintanceItem($event)" (createConfirm)="addNewmaintanceItem($event)"
             [settings]="maintanceItemSettings"></smart-table>-->
 
-          <table class="table table-hover table-bordered table-sm">
+          <table class="table  table-striped table-bordered">
             <thead>
               <tr>
-
                 <th>维修项目名称</th>
                 <th>维修工时(小时)</th>
                 <th>工时单价(元)</th>
@@ -108,8 +109,8 @@
         </tab>
         <!--附加项目-->
         <tab heading="附加项目">
-          <table class='table table-tab'>
-            <thead class="thead-default">
+          <table class='table   table-striped table-bordered'>
+            <thead>
               <tr>
                 <th>备注</th>
                 <th>操作</th>
@@ -141,8 +142,8 @@
 
         <!--建议维修项-->
         <tab heading="建议维修项">
-          <table class='table table-tab '>
-            <thead class="thead-default">
+          <table class='table   table-striped table-bordered'>
+            <thead>
               <tr>
                 <th>建议维修项目</th>
                 <th>操作时间</th>
@@ -184,9 +185,9 @@
 
         <!--上次维修记录-->
         <tab heading="上次维修记录">
-          <table class="table table-hover table-bordered table-sm table-tab">
+          <table class="table table-striped table-bordered">
             <caption>维修项目</caption>
-            <thead class="thead-default">
+            <thead>
               <tr>
                 <th>项目名称</th>
                 <th>维修工时</th>
@@ -237,9 +238,9 @@
             </tbody>
           </table>-->
 
-          <table class="table table-hover table-bordered table-sm table-tab">
+          <table class="table  table-striped table-bordered">
             <caption>附加项目</caption>
-            <thead class="thead-default">
+            <thead>
               <tr>
                 <th>备注</th>
               </tr>
@@ -251,9 +252,9 @@
             </tbody>
           </table>
 
-          <table class="table table-hover table-bordered table-sm table-tab">
+          <table class="table  table-striped table-bordered">
             <caption>建议维修项目</caption>
-            <thead class="thead-default">
+            <thead>
               <tr>
                 <th>建议维修项目</th>
                 <th>操作时间</th>
