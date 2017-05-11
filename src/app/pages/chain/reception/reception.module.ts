@@ -1,3 +1,4 @@
+import {ChainSharedModule} from '../chain-shared/chain-shared.module';
 import { NgModule } from '@angular/core';
 import { ReceptionRoutingModule, routedComponents } from './reception.routing';
 import { DatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -26,6 +27,7 @@ import { BillOrderService } from "app/pages/chain/reception/bill-order/bill-orde
     TypeaheadModule.forRoot(),
     ModalModule.forRoot(),
     ReceptionRoutingModule,
+    ChainSharedModule,
     SharedModule,
     Ng2SmartTableModule,
     ReactiveFormsModule,

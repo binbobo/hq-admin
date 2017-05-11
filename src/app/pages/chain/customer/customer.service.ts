@@ -78,7 +78,7 @@ export class CustomerService implements BasicService<any> {
     }
 
     /**
-     * 根据工单id查询工单详细信息
+     * 根据车主id查询车主详细信息
      * 
      * @param {string} id 
      * @returns {Promise<Order>} 

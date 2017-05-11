@@ -1,8 +1,11 @@
 .card {
     border: none;
+    font-size: 12px;
+    font-family: "Courier New", Courier, monospace;
 }
 .card-block {
     border: 1px solid #eceeef;
+    font-weight: 100;
 }
 .card-block label {
     width: 100px;
@@ -11,7 +14,11 @@
 hr {
     border-top: 2px solid #8c8b8b;
 }
-.print-date span {
-    margin-left: 15px;
+th, td {
+    padding: 0.25rem;
+    text-align: center;
+    /*内容多了要换行*/
+    white-space: normal; 
 }
+
 

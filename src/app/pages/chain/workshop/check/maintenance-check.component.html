@@ -21,7 +21,7 @@
       </div>
     </form>
     <hr>
-    <table class="table table-responsive table-striped table-borderd">
+    <table class="table table-responsive table-striped table-bordered">
       <thead>
         <tr>
           <th>操作</th>
@@ -94,7 +94,7 @@
           <!--导出详情begin-->
           <tabset>
             <tab heading="维修项目">
-              <table class="table table-striped table-borderd">
+              <table class="table table-striped table-bordered">
                 <thead>
                   <tr>
                     <th><input value="all" #checkAll (change)="toggleCheckboxAll(checkAll)" [checked]="selectedOrder?.serviceOutputs?.checkedAll"
@@ -119,9 +119,9 @@
                       <!--已通过的打个标记-->
                       <span [class.triangle]="record.teamType === 6"></span>
                     </td>
-                    <td>{{record?.workHour }}</td>
-                    <td>{{record?.price}}</td>
-                    <td>{{record?.amount ? (record?.amount / 100) : ''}}</td>
+                    <td>{{record?.workHour}}</td>
+                    <td>{{record?.price|centToYuan}}</td>
+                    <td>{{record?.amount|centToYuan}}</td>
                     <td>{{record?.discount}}</td>
                     <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
                   </tr>
@@ -132,7 +132,7 @@
               </div>
             </tab>
             <tab heading="维修配件">
-              <table class="table table-striped table-borderd">
+              <table class="table table-striped table-bordered">
                 <thead>
                   <tr>
                     <th>维修工项</th>
@@ -152,15 +152,15 @@
                     <td>{{record?.brandName}}</td>
                     <td>{{record?.specification}}</td>
                     <td>{{record?.count}}</td>
-                    <td>{{record?.price}}</td>
-                    <td>{{record?.amount}}</td>
+                    <td>{{record?.price|centToYuan}}</td>
+                    <td>{{record?.amount|centToYuan}}</td>
                     <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
                   </tr>
                 </tbody>
               </table>
             </tab>
             <tab heading="附加项目">
-              <table class="table table-striped table-borderd">
+              <table class="table table-striped table-bordered">
                 <thead>
                   <tr>
                     <th>备注</th>
@@ -175,7 +175,7 @@
             </tab>
 
             <tab heading="建议维修项目">
-              <table class="table table-striped table-borderd">
+              <table class="table table-striped table-bordered">
                 <thead>
                   <tr>
                     <th>建议维修项目</th>

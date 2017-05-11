@@ -66,14 +66,16 @@ export class OrderService implements BasicService<Order> {
     getCustomerVehicleByPlateNo(params: FuzzySearchRequest): Promise<PagedResult<any>> {
         const search = params.serialize();
         const url = Urls.chain.concat('/CustomerVehicles/Search');
+        console.log('根据车牌号模糊查询客户车辆信息 响应数据', url, search);
         return this.httpService
             .get<PagedResult<any>>(url, search)
             .then(response => {
+                console.log('根据车牌号模糊查询客户车辆信息 响应数据', response);
                 // 加工数据
                 response.data = response.data.map(item => {
                     const o = item;
-                    o.customerName = item.customer.name;
-                    o.phone = item.customer.phone;
+                    o.customerName = item.customerInfo.name;
+                    o.phone = item.customerInfo.phone;
                     return o;
                 });
                 return response;

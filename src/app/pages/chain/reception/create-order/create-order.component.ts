@@ -1,10 +1,11 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType, CustomerVehicle, FuzzySearchRequest, VehicleSeriesSearchRequest, VehicleBrandSearchRequest, VehicleSearchRequest } from '../order.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TabsetComponent } from 'ngx-bootstrap';
 import * as moment from 'moment';
 import { TypeaheadRequestParams } from 'app/shared/directives';
 import { DataList, StorageKeys } from 'app/shared/models';
+import { SuspendBillDirective } from 'app/pages/chain/chain-shared';
 
 
 @Component({
@@ -24,7 +25,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   // 挂单按钮是否可用
   public enableSuspendWorkSheet = true;
 
-  // 客户车辆模糊查询  用于带出在本店维修过项目的客户车辆信息
+  @ViewChild(SuspendBillDirective)
+  private suspendBill: SuspendBillDirective;
 
   // 结果集
   public customerVehicles: CustomerVehicle[] = [];
@@ -120,16 +122,15 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   getLastOrderByCustomerVechileId(evt) {
     // 先清空上次工单数据  再查询新数据
     this.lastOrderData = null;
+    // 根据选择的车牌号带出客户车辆信息
+    this.loadCustomerVehicleInfo(evt);
 
     if (!evt.id) {
-      this.alerter.error('加载客户车辆信息失败！缺少客户车辆ID');
+      this.alerter.error('加载上次工单信息失败！缺少客户车辆ID');
       return;
     }
     this.service.getLastOrderInfo(evt.id).subscribe(lastOrder => {
       console.log('根据客户车辆id自动带出的上次工单信息：', lastOrder);
-      // 根据选择的车牌号带出客户车辆信息
-      this.loadCustomerVehicleInfo(evt);
-
       // 判断是否有上次
       if (lastOrder) {
         this.loadLastOrderInfo(lastOrder);
@@ -145,6 +146,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 格式化日期
     lastOrder.expectLeave = moment(lastOrder.expectLeave).format('YYYY-MM-DD hh:mm:ss');
     lastOrder.lastEnter = moment(lastOrder.lastEnter).format('YYYY-MM-DD hh:mm:ss');
+    lastOrder.createdOnUtc = moment(lastOrder.createdOnUtc).format('YYYY-MM-DD hh:mm:ss');
     lastOrder.nextDate = moment(lastOrder.nextDate).format('YYYY-MM-DD');
     lastOrder.validate = moment(lastOrder.validate).format('YYYY-MM-DD');
 
@@ -222,12 +224,14 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       evt.preventDefault();
     }
     if (this.isWorkHourValid() && this.isPriceValid() && this.isDiscountValid()) {
+      this.newMaintenanceItem.price = this.newMaintenanceItem.price * 100; // 转成分
+      this.newMaintenanceItem.amount = this.newMaintenanceItem.amount.toFixed(2) * 100; // 转成分
       this.newMaintenanceItemData2.push(this.newMaintenanceItem);
       // 维修项目编辑区域不可见
       this.addNewMaintenanceItem = false;
 
       // 费用计算
-      this.fee.workHour += parseFloat(this.newMaintenanceItem.amount) / 100;
+      this.fee.workHour += parseFloat(this.newMaintenanceItem.amount);
 
       // 判断生成工单按钮是否可用
       this.enableCreateWorkSheet = this.workSheetForm.valid;
@@ -244,7 +248,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       if (item.serviceId === serviceId) {
         this.newMaintenanceItemData2.splice(index, 1);
         // 费用计算
-        this.fee.workHour -= parseFloat(item.amount) / 100;
+        this.fee.workHour -= parseFloat(item.amount);
         // 如果新增项目为0 设置生成工单按钮不可用
         this.enableCreateWorkSheet = (this.newMaintenanceItemData2.length > 0) && this.workSheetForm.valid;
         return;
@@ -309,53 +313,68 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
     // 获取当前录入的工单数据
     const workSheet = this.getEdittingOrder();
-    const suspendedOrder: any = {
-      type: '01', // 挂起单据类型 01：维修工单 02：销售单
-      data: JSON.stringify(workSheet)
-    };
 
-    console.log('提交的挂单数据为：', JSON.stringify(suspendedOrder));
-    // 修改挂单记录信息
-    if (workSheet.suspendedBillId) {
-      suspendedOrder.suspendedBillId = workSheet.suspendedBillId;
-
-      this.service.updateSuspendOrder(suspendedOrder).then(() => {
-        console.log('更新挂单记录成功啦');
-        this.alerter.success('挂起工单成功！');
+    this.suspendBill.suspend(workSheet)
+      .then(() => this.suspendBill.refresh())
+      .then(() => {
+        this.alerter.success('挂单成功！');
+        // 挂单按钮不可用  防止重复提交
         this.enableSuspendWorkSheet = true;
-
-        // 重新获取挂单列表
-        this.getSuspendedOrders();
-
         // 清空数据
         this.initOrderData();
-      }).catch(err => {
-        console.log('挂起工单失败：' + err);
-        // 出错的话  允许再次挂单
+      })
+      .catch(err => {
+        // 挂单按钮不可用  防止重复提交
         this.enableSuspendWorkSheet = true;
-
-        this.alerter.error('挂起工单失败');
+        this.alerter.error(err);
       });
-    } else {
-      // 添加挂单
-      this.service.suspend(suspendedOrder).then((data) => {
-        // console.log('挂起工单成功之后， 返回的工单对象：', data);
-        this.alerter.success('挂起工单成功！');
-        this.enableSuspendWorkSheet = true;
+    // const suspendedOrder: any = {
+    //   type: '01', // 挂起单据类型 01：维修工单 02：销售单
+    //   data: JSON.stringify(workSheet)
+    // };
 
-        // 重新获取挂单列表
-        this.getSuspendedOrders();
+    // console.log('提交的挂单数据为：', JSON.stringify(suspendedOrder));
+    // // 修改挂单记录信息
+    // if (workSheet.suspendedBillId) {
+    //   suspendedOrder.suspendedBillId = workSheet.suspendedBillId;
 
-        // 清空数据
-        this.initOrderData();
-      }).catch(err => {
-        console.log('挂起工单失败：' + err);
-        // 出错的话  允许再次挂单
-        this.enableSuspendWorkSheet = true;
+    //   this.service.updateSuspendOrder(suspendedOrder).then(() => {
+    //     console.log('更新挂单记录成功啦');
+    //     this.alerter.success('挂起工单成功！');
+    //     this.enableSuspendWorkSheet = true;
 
-        this.alerter.error('挂起工单失败');
-      });
-    }
+    //     // 重新获取挂单列表
+    //     this.getSuspendedOrders();
+
+    //     // 清空数据
+    //     this.initOrderData();
+    //   }).catch(err => {
+    //     console.log('挂起工单失败：' + err);
+    //     // 出错的话  允许再次挂单
+    //     this.enableSuspendWorkSheet = true;
+
+    //     this.alerter.error('挂起工单失败');
+    //   });
+    // } else {
+    //   // 添加挂单
+    //   this.service.suspend(suspendedOrder).then((data) => {
+    //     // console.log('挂起工单成功之后， 返回的工单对象：', data);
+    //     this.alerter.success('挂起工单成功！');
+    //     this.enableSuspendWorkSheet = true;
+
+    //     // 重新获取挂单列表
+    //     this.getSuspendedOrders();
+
+    //     // 清空数据
+    //     this.initOrderData();
+    //   }).catch(err => {
+    //     console.log('挂起工单失败：' + err);
+    //     // 出错的话  允许再次挂单
+    //     this.enableSuspendWorkSheet = true;
+
+    //     this.alerter.error('挂起工单失败');
+    //   });
+    // }
   }
 
   // 单价输入框 输入监听
@@ -383,12 +402,11 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
    */
   calMoney() {
     if (this.isWorkHourValid() && this.isPriceValid()) {
-      this.newMaintenanceItem.amount = this.newMaintenanceItem.workHour * this.newMaintenanceItem.price;
+      this.newMaintenanceItem.amount = parseFloat(this.newMaintenanceItem.workHour) * parseFloat(this.newMaintenanceItem.price);
       if (this.isDiscountValid()) {
         const discountRatio = this.newMaintenanceItem.discount / 100;
         this.newMaintenanceItem.amount = this.newMaintenanceItem.amount * discountRatio;
       }
-      this.newMaintenanceItem.amount = this.newMaintenanceItem.amount.toFixed(2) * 100; // 转成分
     }
   }
 
@@ -396,50 +414,30 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
    * 点击挂单列表的时候, 载入挂单信息
    * @memberOf CreateOrderComponent
    */
-  loadSuspendedOrderInfo(evt, order, pop) {
-    if (evt.target.tagName === 'BUTTON' || evt.target.tagName === 'I') {
-      // 点击的删除按钮
-      // 提示是否删除当前挂单信息
+  loadSuspendedOrderInfo(evt) {
+    console.log('当前选择的挂掉记录为：', evt);
+    const order = evt.value;
+    order.suspendedBillId = evt.id; // 保存挂单id
+    // 表单赋值
+    this.workSheetForm.patchValue(order);
 
-      // 获取挂单id
-      const suspendedBillId = order.suspendedBillId;
-      if (!suspendedBillId) {
-        console.log('获取挂单id失败！');
-        return;
-      }
-      // 根据id删除挂单记录
-      this.service.deleteSuspendOrder(suspendedBillId).then(() => {
-        this.alerter.success('删除挂单记录成功');
+    // 计算费用
+    this.fee.workHour = order.maintenanceItems.reduce((accumulator, currentValue) => {
+      return accumulator + parseFloat(currentValue.amount);
+    }, 0);
 
-        // 获取挂单列表数据
-        this.getSuspendedOrders();
-      }).catch(err => this.alerter.error('删除挂单记录失败：' + err));
-    } else {
-      // 隐藏popover
-      pop.hide();
+    // 需要深copy order对象  不能改变原对象 
+    // 因为每次选择一个挂掉的时候，挂单记录不会从列表中消失 只有点击创建工单之后  才消失
+    const copiedOrder = Object.assign({}, order);
+    copiedOrder.maintenanceItems = this.deepCopyArray(order.maintenanceItems);
 
-      console.log('当前选择的挂掉记录为：', order);
-      // 表单赋值
-      this.workSheetForm.patchValue(order);
+    // 记录当前选择的挂单
+    this.selectedCustomerVehicle = copiedOrder;
+    // 设置维修项目数据
+    this.newMaintenanceItemData2 = copiedOrder.maintenanceItems;
 
-      // 计算费用
-      this.fee.workHour = order.maintenanceItems.reduce((accumulator, currentValue) => {
-        return accumulator + currentValue.amount / 100;
-      }, 0);
-
-      // 需要深copy order对象  不能改变原对象 
-      // 因为每次选择一个挂掉的时候，挂单记录不会从列表中消失 只有点击创建工单之后  才消失
-      const copiedOrder = Object.assign({}, order);
-      copiedOrder.maintenanceItems = this.deepCopyArray(order.maintenanceItems);
-
-      // 记录当前选择的挂单
-      this.selectedCustomerVehicle = copiedOrder;
-      // 设置维修项目数据
-      this.newMaintenanceItemData2 = copiedOrder.maintenanceItems;
-
-      // 判断生成工单按钮是否可用
-      this.enableCreateWorkSheet = this.workSheetForm.valid && this.newMaintenanceItemData2.length > 0;
-    }
+    // // 判断生成工单按钮是否可用
+    this.enableCreateWorkSheet = this.workSheetForm.valid && this.newMaintenanceItemData2.length > 0;
   }
 
   // 深拷贝 数组
@@ -453,6 +451,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   createForm() {
     this.workSheetForm = this.fb.group({
+      suspendedBillId: '', // 挂单id
       billCode: '', // 工单号
       customerName: ['', [Validators.required]], // 车主
       phone: [''], // 车主电话
@@ -542,10 +541,10 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 3. 当前登陆用户信息数据(操作员，组织id, ...)
     workSheet.orgId = '53113BFB-D2CF-43A8-A0D0-C5B5A61D0C07';
 
-    // 判断是否有挂单id
-    if (this.selectedCustomerVehicle.suspendedBillId) {
-      workSheet.suspendedBillId = this.selectedCustomerVehicle.suspendedBillId;
-    }
+    // // 判断是否有挂单id
+    // if (this.selectedCustomerVehicle.suspendedBillId) {
+    //   workSheet.suspendedBillId = this.selectedCustomerVehicle.suspendedBillId;
+    // }
 
     return workSheet;
   }
@@ -585,7 +584,10 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 调用创建工单接口
     console.log('提交的工单对象： ', JSON.stringify(workSheet));
 
-    this.service.create(workSheet).then(data => {
+    this.service.create(workSheet)
+    // 刷新挂单列表
+    .then(() => this.suspendBill.refresh())
+    .then(data => {
       // console.log('创建工单成功之后， 返回的工单对象：', data);
       this.alerter.success('创建工单成功！');
       // 创建订单成功之后  做一些重置操作
@@ -598,11 +600,10 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
         this.getSuspendedOrders();
       }
     }).catch(err => {
-      console.log('创建工单失败：' + err);
       // 出错的话  允许再次提交
       this.enableCreateWorkSheet = true;
 
-      this.alerter.error('创建工单失败');
+      this.alerter.error('创建工单失败:' + err);
     });
   }
 
@@ -641,7 +642,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   public get serviceNameTypeaheadSource() {
     return this.typeaheadSource(this.service.getMaintenanceItemsByName);
   }
-   // 根据品牌名称模糊查询数据源
+  // 根据品牌名称模糊查询数据源
   public get brandTypeaheadSource() {
     return (params: TypeaheadRequestParams) => {
       const p = new VehicleBrandSearchRequest(params.text);
@@ -649,17 +650,17 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       return this.service.getVehicleByBrand(p);
     };
   }
-   // 根据车系名称模糊查询数据源
+  // 根据车系名称模糊查询数据源
   public get seriesTypeaheadSource() {
-     return (params: TypeaheadRequestParams) => {
+    return (params: TypeaheadRequestParams) => {
       const p = new VehicleSeriesSearchRequest(params.text, this.selectedCustomerVehicle.selectedBrandId);
       p.setPage(params.pageIndex, params.pageSize);
       return this.service.getVehicleBySeries(p);
     };
   }
-   // 根据车型名称模糊查询数据源
+  // 根据车型名称模糊查询数据源
   public get modelTypeaheadSource() {
-     return (params: TypeaheadRequestParams) => {
+    return (params: TypeaheadRequestParams) => {
       const p = new VehicleSearchRequest(params.text, this.selectedCustomerVehicle.selectedBrandId, this.selectedCustomerVehicle.selectedSeriesId);
       p.setPage(params.pageIndex, params.pageSize);
       return this.service.getVehicleByModel(p);
