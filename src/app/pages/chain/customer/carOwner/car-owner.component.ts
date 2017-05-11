@@ -1,15 +1,11 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { CustomerListRequest } from '../../customer/customer.service';
-import { CustomerService } from '../customer.service';
+import { CustomerService, CustomerPhoneSearchRequest, CustomerNameSearchRequest } from '../customer.service';
 import { DataList } from 'app/shared/models';
-import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
 import * as moment from 'moment';
+import { OrderService, VehicleSearchRequest, VehicleSeriesSearchRequest, VehicleBrandSearchRequest } from '../../reception/order.service';
+import { TypeaheadRequestParams } from 'app/shared/directives';
 
 @Component({
   selector: 'app-car-owner',
@@ -56,20 +52,10 @@ export class CarOwnerComponent extends DataList<any>  {
     phoneKeyword: '',
   };
 
-  // 根据品牌获取车辆信息异步数据源
-  public brandDataSource: Observable<any>;
-  // 根据车系获取车辆信息异步数据源
-  public seriesDataSource: Observable<any>;
-  // 根据车型获取车辆信息异步数据源
-  public modelDataSource: Observable<any>;
-  // 根据车主名称模糊匹配其它门店车主异步数据源
-  public nameDataSource: Observable<any>;
-  // 根据手机号模糊匹配其它门店车主异步数据源
-  public phoneDataSource: Observable<any>;
-
   constructor(
     injector: Injector,
     protected service: CustomerService,
+    protected orderService: OrderService,
 
     private fb: FormBuilder) {
     super(injector, service);
@@ -81,81 +67,6 @@ export class CarOwnerComponent extends DataList<any>  {
 
     // 初始化FormGroup
     this.createForm();
-
-    // 根据车主模糊匹配其它门店车主异步数据源
-    this.nameDataSource = Observable
-      .create((observer: any) => {
-        observer.next(this.fuzzySearch.nameKeyword);
-      })
-      .debounceTime(300)
-      .distinctUntilChanged()
-      .mergeMap((token: string) => {
-        if (!token) {
-          return Observable.of([]);
-        }
-        return this.service.getVehicleByNameOrPhone(token, 'name');
-      }) // 绑定this
-      .catch(err => console.log(err));
-
-    // // 根据手机号模糊匹配其它门店车主异步数据源
-    // this.phoneDataSource = Observable
-    //   .create((observer: any) => {
-    //     observer.next(this.fuzzySearch.phoneKeyword);
-    //   })
-    //   .debounceTime(300)
-    //   .distinctUntilChanged()
-    //   .mergeMap((token: string) => {
-    //     if (!token) {
-    //       return Observable.of([]);
-    //     }
-    //     return this.service.getVehicleByNameOrPhone(token, 'phone');
-    //   }) // 绑定this
-    //   .catch(err => console.log(err));
-
-    // // 根据品牌获取车辆信息异步数据源初始化
-    // this.brandDataSource = Observable
-    //   .create((observer: any) => {
-    //     observer.next(this.fuzzySearch.brandKeyword);
-    //   })
-    //   .debounceTime(300)
-    //   .distinctUntilChanged()
-    //   .mergeMap((token: string) => {
-    //     if (!token) {
-    //       return Observable.of([]);
-    //     }
-    //     return this.service.getVehicleByBrand(token);
-    //   }) // 绑定this
-    //   .catch(err => console.log(err));
-
-    // 根据车系获取车辆信息异步数据源初始化
-    this.seriesDataSource = Observable
-      .create((observer: any) => {
-        observer.next(this.fuzzySearch.seriesKeyword);
-      })
-      .debounceTime(300)
-      .distinctUntilChanged()
-      .mergeMap((token: string) => {
-        if (!token) {
-          return Observable.of([]);
-        }
-        return this.service.getVehicleBySerias(token, this.newVehicle.brandId);
-      }) // 绑定this
-      .catch(err => console.log(err));
-
-    // 根据车系获取车辆信息异步数据源初始化
-    this.modelDataSource = Observable
-      .create((observer: any) => {
-        observer.next(this.fuzzySearch.modelKeyword);
-      })
-      .debounceTime(300)
-      .distinctUntilChanged()
-      .mergeMap((token: string) => {
-        if (!token) {
-          return Observable.of([]);
-        }
-        return this.service.getVehicleByModel(token, this.newVehicle.brandId, this.newVehicle.seriesId);
-      })
-      .catch(err => console.log(err));
   }
 
   // 省份选择事件处理程序
@@ -347,62 +258,48 @@ export class CarOwnerComponent extends DataList<any>  {
     }
   }
 
-  // // 根据客户id查询客户信息
-  // getByCustomerId(evt) {
-  //   if (!evt.item.id) {
-  //     this.alerter.error('加载客户信息失败！缺少客户ID');
-  //     return;
-  //   }
-  //   this.service.getCustomerInfo(evt.item.id).subscribe(customer => {
-  //     console.log('根据客户id查询客户信息：', customer);
-  //     // 根据选择的车牌号带出客户车辆信息
-  //     this.loadCustomerInfo(evt.item);
-  //   });
-  // }
 
-  // // 加载客户信息
-  // loadCustomerInfo(customer) {
-
-  // }
- 
   /**
    * 选择车主名称
    * @memberof CarOwnerComponent
    */
   onCustomerNameSelect(evt) {
-    console.log('创建车主时选择车主姓名：', evt);
+    console.log('通过车主姓名模糊查询车主下拉选择：', evt);
+    // 主键id是否有用
 
     // 加载车主数据
+    this.loadCustomer(evt);
   }
   /**
  * 选择车主电话
  * @memberof CarOwnerComponent
  */
   onCustomerPhoneSelect(evt) {
-    console.log('创建车主时选择车主电话：', evt);
+    console.log('通过车主手机号模糊查询车主下拉选择：', evt);
 
     // 加载车主数据
+    this.loadCustomer(evt);
   }
   // 从模糊查询下拉列表中选择一个品牌事件处理程序
-  onBrandSelect(evt: TypeaheadMatch) {
+  onBrandSelect(evt) {
     // 设置当前选择的品牌id
-    this.newVehicle.brandId = evt.item.id;
-    this.newVehicle.brand = evt.item.name;
+    this.newVehicle.brandId = evt.id;
+    this.newVehicle.brand = evt.name;
   }
   // 从模糊查询下拉列表中选择一个车系事件处理程序
-  onSeriesSelect(evt: TypeaheadMatch) {
+  onSeriesSelect(evt) {
     // 设置当前选择的车系id
-    this.newVehicle.seriesId = evt.item.id;
-    this.newVehicle.series = evt.item.name;
+    this.newVehicle.seriesId = evt.id;
+    this.newVehicle.series = evt.name;
   }
   // 从模糊查询下拉列表中选择一个车型事件处理程序
-  onModelSelect(evt: TypeaheadMatch) {
+  onModelSelect(evt) {
     // 设置当前选择的车系id
     console.log('当前选择的车型', evt);
 
     // 记录车型id
-    this.newVehicle.vehicleId = evt.item.id;
-    this.newVehicle.vehicleName = evt.item.name;
+    this.newVehicle.vehicleId = evt.id;
+    this.newVehicle.vehicleName = evt.name;
   }
 
   // 添加车主
@@ -422,9 +319,9 @@ export class CarOwnerComponent extends DataList<any>  {
 
     console.log('提交的车主对象为：', JSON.stringify(carOwnerBody));
 
+    // 编辑车主
     if (this.selectedCustomerId) {
       carOwnerBody.id = this.selectedCustomerId;
-      // 更新
       // // 调用后台更新车主接口
       this.service.update(carOwnerBody).then(data => {
         console.log('更新车主成功, 更新后的车主对象为：', JSON.stringify(data));
@@ -443,7 +340,8 @@ export class CarOwnerComponent extends DataList<any>  {
         this.alerter.error('更新车主失败');
       });
     } else {
-      // 添加
+      // 新建车主
+
       // // 调用后台添加车主接口
       this.service.create(carOwnerBody).then(data => {
         console.log('创建车主成功, 新创建的车主信息为：', JSON.stringify(data));
@@ -541,13 +439,16 @@ export class CarOwnerComponent extends DataList<any>  {
             if (data.cityIdList && data.cityIdList.split(',').length > 1) {
               this.service.getChildrenData(data.cityIdList.split(',')[1])
                 .subscribe(areasData => this.areasData = areasData);
-              this.loadCustomer(data, lgModal);
+              this.loadCustomer(data);
+              lgModal.show();
             } else {
-              this.loadCustomer(data, lgModal);
+              this.loadCustomer(data);
+              lgModal.show();
             }
           });
       } else {
-        this.loadCustomer(data, lgModal);
+        this.loadCustomer(data);
+        lgModal.show();
       }
     });
   }
@@ -560,8 +461,8 @@ export class CarOwnerComponent extends DataList<any>  {
     console.log('当前编辑的车辆id为：', id);
   }
 
-  // 加载客户信息 用于编辑客户
-  loadCustomer(customer, lgModal) {
+  // 加载客户信息 
+  loadCustomer(customer) {
     // 组织省份数据
     let provinceId = '', provinceName = '';
     let cityId = '', cityName = '';
@@ -595,7 +496,61 @@ export class CarOwnerComponent extends DataList<any>  {
 
     // 初始化当前编辑的车主下面的车辆信息
     this.newVehiclesData = customer.customerVehicles;
-    // 显示窗口
-    lgModal.show();
+  }
+
+  // 定义车主模糊查询要显示的列
+  public get customerTypeaheadColumns() {
+    return [
+      { name: 'name', title: '姓名' },
+      { name: 'phone', title: '手机号' },
+    ];
+  }
+  // 定义车辆模糊查询要显示的列
+  public get vehicleTypeaheadColumns() {
+    return [
+      { name: 'name', title: '名称' },
+    ];
+  }
+
+  // 根据车主名称模糊查询数据源
+  public get customerNameTypeaheadSource() {
+    return (params: TypeaheadRequestParams) => {
+      const p = new CustomerNameSearchRequest(params.text);
+      p.setPage(params.pageIndex, params.pageSize);
+      return this.service.getCustomerByName(p);
+    };
+  }
+  // 根据手机号名称模糊查询数据源
+  public get customerPhoneTypeaheadSource() {
+    return (params: TypeaheadRequestParams) => {
+      const p = new CustomerPhoneSearchRequest(params.text);
+      p.setPage(params.pageIndex, params.pageSize);
+      return this.service.getCustomerByPhone(p);
+    };
+  }
+
+  // 根据品牌名称模糊查询数据源
+  public get brandTypeaheadSource() {
+    return (params: TypeaheadRequestParams) => {
+      const p = new VehicleBrandSearchRequest(params.text);
+      p.setPage(params.pageIndex, params.pageSize);
+      return this.orderService.getVehicleByBrand(p);
+    };
+  }
+  // 根据车系名称模糊查询数据源
+  public get seriesTypeaheadSource() {
+    return (params: TypeaheadRequestParams) => {
+      const p = new VehicleSeriesSearchRequest(params.text, this.newVehicle.brandId);
+      p.setPage(params.pageIndex, params.pageSize);
+      return this.orderService.getVehicleBySeries(p);
+    };
+  }
+  // 根据车型名称模糊查询数据源
+  public get modelTypeaheadSource() {
+    return (params: TypeaheadRequestParams) => {
+      const p = new VehicleSearchRequest(params.text, this.newVehicle.brandId, this.newVehicle.seriesId);
+      p.setPage(params.pageIndex, params.pageSize);
+      return this.orderService.getVehicleByModel(p);
+    };
   }
 }

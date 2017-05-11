@@ -1,11 +1,12 @@
-import { Component, OnInit, Output, EventEmitter, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit,Injector, Output, EventEmitter, ViewChildren, QueryList } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { CentToYuanPipe } from "app/shared/pipes";
 import { FormControlErrorDirective, TypeaheadRequestParams } from "app/shared/directives";
 import { MountingsService, GetMountingsListRequest } from "../../../mountings.service";
 import { CustomValidators } from "ng2-validation/dist";
 import { InnerListItem, InnerReturnService } from "../inner-return.service";
-
+import { FormHandle } from 'app/shared/models';
+import { Observable } from "rxjs/Rx";
 @Component({
   selector: 'hq-return-create',
   templateUrl: './return-create.component.html',
@@ -23,7 +24,7 @@ export class ReturnCreateComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private InnerReturnService: InnerReturnService,
+    private moutingsService: MountingsService,
   ) { }
   ngOnInit() {
     this.buildForm();
@@ -57,7 +58,7 @@ export class ReturnCreateComponent implements OnInit {
       return false;
     } else {
       this.formSubmit.emit(this.form.value);
-      this.form.reset(this.model);
+      this.form.reset();
     }
   }
 
@@ -81,7 +82,7 @@ public itemColumns(isName: boolean) {
     return (params: TypeaheadRequestParams) => {
       let p = new GetMountingsListRequest(params.text);
       p.setPage(params.pageIndex, params.pageSize);
-      return this.InnerReturnService.getListByCodeOrName(p);
+      return this.moutingsService.getListByCodeOrName(p);
     };
   }
 //名称数据源
@@ -89,7 +90,7 @@ public itemColumns(isName: boolean) {
     return (params: TypeaheadRequestParams) => {
       let p = new GetMountingsListRequest(undefined, params.text);
       p.setPage(params.pageIndex, params.pageSize);
-      return this.InnerReturnService.getListByCodeOrName(p);
+      return this.moutingsService.getListByCodeOrName(p);
     };
   }
 

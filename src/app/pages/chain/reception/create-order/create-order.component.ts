@@ -1,17 +1,7 @@
-import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
-import { Component, Injector, ViewChild, ElementRef, OnInit } from '@angular/core';
-import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType, CustomerVehicle, FuzzySearchRequest } from '../order.service';
-import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
+import { Component, Injector, OnInit } from '@angular/core';
+import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType, CustomerVehicle, FuzzySearchRequest, VehicleSeriesSearchRequest, VehicleBrandSearchRequest, VehicleSearchRequest } from '../order.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TabsetComponent } from 'ngx-bootstrap';
-import { ViewCell, LocalDataSource } from 'ng2-smart-table';
-
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/switchMap';
-
 import * as moment from 'moment';
 import { TypeaheadRequestParams } from 'app/shared/directives';
 import { DataList, StorageKeys } from 'app/shared/models';
@@ -41,12 +31,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   // 上次维修工单信息
   public lastOrderData = null;
 
-  // 根据品牌获取车辆信息异步数据源
-  public brandDataSource: Observable<any>; // 可以加品牌model类：Brand
-  // 根据车系获取车辆信息异步数据源
-  public seriesDataSource: Observable<any>; // 可以加车系model类：Series
-  // 根据车型获取车辆信息异步数据源
-  public modelDataSource: Observable<any>; // 可以加车型model类：Model
   // 当前选择的维修项目id
   isMaintanceItemSelected = false;
   serviceSelected: string;
@@ -104,89 +88,31 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 构建表单
     this.createForm();
 
-    // 根据品牌获取车辆信息异步数据源初始化
-    this.brandDataSource = this.initFuzzySerarchDataSource(
-      this.workSheetForm.controls.brand,
-      this.service.getVehicleByBrand
-    );
-    // 根据车系获取车辆信息异步数据源初始化
-    this.seriesDataSource = Observable
-      .create((observer: any) => {
-        observer.next(this.workSheetForm.controls.series.value);
-      })
-      .debounceTime(300)
-      .distinctUntilChanged()
-      .mergeMap((token: string) => {
-        if (!token) {
-          return Observable.of([]);
-        }
-        return this.service.getVehicleBySerias(token, this.selectedCustomerVehicle.selectedBrandId);
-      }) // 绑定this
-      .catch(err => console.log(err));
-
-    // 根据车系获取车辆信息异步数据源初始化
-    this.modelDataSource = Observable
-      .create((observer: any) => {
-        observer.next(this.workSheetForm.controls.model.value);
-      })
-      .debounceTime(300)
-      .distinctUntilChanged()
-      .mergeMap((token: string) => {
-        if (!token) {
-          return Observable.of([]);
-        }
-        return this.service.getVehicleByModel(token, this.selectedCustomerVehicle.selectedBrandId, this.selectedCustomerVehicle.selectedSeriesId)
-      })
-      .catch(err => console.log(err));
-
-
     console.log('moment', moment());
   }
 
-  /**
-  * @param {string} nextValue
-  * @param {Function} service
-  * @returns
-  * @memberOf CreateOrderComponent
-  */
-  initFuzzySerarchDataSource(formControl: AbstractControl, service: Function) {
-    return Observable
-      .create((observer: any) => {
-        observer.next(formControl.value);
-      })
-      .debounceTime(300)
-      .distinctUntilChanged()
-      .mergeMap((token: string) => {
-        if (!token) {
-          return Observable.of([]);
-        }
-        return service.call(this.service, token);
-      }) // 绑定this
-      .catch(err => console.log(err));
-  }
-
   // 从模糊查询下拉列表中选择一个品牌事件处理程序
-  onBrandSelect(evt: TypeaheadMatch) {
+  onBrandSelect(evt) {
     // 设置当前选择的品牌id
-    this.selectedCustomerVehicle.selectedBrandId = evt.item.id;
+    this.selectedCustomerVehicle.selectedBrandId = evt.id;
     // enable车系选择
     this.workSheetForm.controls.series.enable();
   }
   // 从模糊查询下拉列表中选择一个车系事件处理程序
-  onSeriesSelect(evt: TypeaheadMatch) {
+  onSeriesSelect(evt) {
     // 设置当前选择的车系id
-    this.selectedCustomerVehicle.selectedSeriesId = evt.item.id;
+    this.selectedCustomerVehicle.selectedSeriesId = evt.id;
     // enable车型选择
     this.workSheetForm.controls.model.enable();
   }
 
   // 从模糊查询下拉列表中选择一个车型事件处理程序
-  onModelSelect(evt: TypeaheadMatch) {
+  onModelSelect(evt) {
     // 设置当前选择的车系id
     console.log('选择车型', evt);
 
     // 如果手动选择了车型  以该车型id为准
-    this.selectedCustomerVehicle.vehicleId = evt.item.id;
+    this.selectedCustomerVehicle.vehicleId = evt.id;
   }
 
 
@@ -257,7 +183,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   /**
   * @memberOf CreateOrderComponent
   */
-  plateNoOnSelect(evt: TypeaheadMatch) {
+  plateNoOnSelect(evt) {
     console.log('根据车牌号模糊查询客户车辆信息selected: ', JSON.stringify(evt));
     // 车牌号对应唯一客户车辆记录
 
@@ -267,8 +193,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   /**
   * @memberOf CreateOrderComponent
   */
-  onCustomerNameSelect(evt: TypeaheadMatch) {
-    console.log('根据车主姓名模糊查询客户车辆信息selected: ', JSON.stringify(evt.item));
+  onCustomerNameSelect(evt) {
+    console.log('根据车主姓名模糊查询客户车辆信息selected: ', JSON.stringify(evt));
     // 一个车主下面可能有多条客户车辆记录
 
     this.getLastOrderByCustomerVechileId(evt);
@@ -354,6 +280,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   }
   // 从下拉列表中选择一个维修项目事件处理程序
   serviceTypeaheadOnSelect(evt) {
+    console.log('当前选择的维修项目为：', evt);
     // 保存当前选择的维修项目名称
     this.newMaintenanceItem.serviceName = evt.name;
     // 保存当前选择的维修项目id
@@ -464,20 +391,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       this.newMaintenanceItem.amount = this.newMaintenanceItem.amount.toFixed(2) * 100; // 转成分
     }
   }
-
-
-  // 获取挂单数据
-  // getUnsettledOrders() {
-  //   return [{
-  //     carOwner: '蛋蛋',
-  //     carOwnerPhone: '13488618198',
-  //     carNo: '京AH11P9'
-  //   }, {
-  //     carOwner: '池子',
-  //     carOwnerPhone: '13488618198',
-  //     carNo: 'AH11P9'
-  //   }];
-  // }
 
   /**
    * 点击挂单列表的时候, 载入挂单信息
@@ -703,9 +616,9 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     ];
   }
   // 定义维修项目模糊查询要显示的列
-  public get serviceNameTypeaheadColumns() {
+  public get nameTypeaheadColumns() {
     return [
-      { name: 'name', title: '维修项目名称' },
+      { name: 'name', title: '名称' },
     ];
   }
   // 设置数据源
@@ -725,7 +638,31 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     return this.typeaheadSource(this.service.getCustomerVehicleByCustomerName);
   }
   // 根据维修项目名称模糊查询数据源
-  public get serviceNametypeaheadSource() {
+  public get serviceNameTypeaheadSource() {
     return this.typeaheadSource(this.service.getMaintenanceItemsByName);
+  }
+   // 根据品牌名称模糊查询数据源
+  public get brandTypeaheadSource() {
+    return (params: TypeaheadRequestParams) => {
+      const p = new VehicleBrandSearchRequest(params.text);
+      p.setPage(params.pageIndex, params.pageSize);
+      return this.service.getVehicleByBrand(p);
+    };
+  }
+   // 根据车系名称模糊查询数据源
+  public get seriesTypeaheadSource() {
+     return (params: TypeaheadRequestParams) => {
+      const p = new VehicleSeriesSearchRequest(params.text, this.selectedCustomerVehicle.selectedBrandId);
+      p.setPage(params.pageIndex, params.pageSize);
+      return this.service.getVehicleBySeries(p);
+    };
+  }
+   // 根据车型名称模糊查询数据源
+  public get modelTypeaheadSource() {
+     return (params: TypeaheadRequestParams) => {
+      const p = new VehicleSearchRequest(params.text, this.selectedCustomerVehicle.selectedBrandId, this.selectedCustomerVehicle.selectedSeriesId);
+      p.setPage(params.pageIndex, params.pageSize);
+      return this.service.getVehicleByModel(p);
+    };
   }
 }

@@ -1,36 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HttpService, Urls } from "app/shared/services";
-import { SelectOption, ListResult, PagedParams, BasicService, PagedResult } from "app/shared/models";
-import { GetMountingsListRequest } from "app/pages/chain/mountings/mountings.service";
-import { GenerateSuspendedBillRequest } from "app/pages/chain/mountings/suspended-bills.service";
+import { SelectOption, ListResult, PagedParams, BasicService, PagedResult, ApiResult } from "app/shared/models";
 
 @Injectable()
-export class InnerReturnService implements BasicService<any>{
-  create(body: any): Promise<any> {
-    throw new Error('Method not implemented.');
-  }
-  update(body: any): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-  patch(body: any): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-  getPagedList(params: PagedParams): Promise<PagedResult<any>> {
-    throw new Error('Method not implemented.');
-  }
-  get(id: string): Promise<any> {
-    throw new Error('Method not implemented.');
-  }
-  delete(id: string): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-
+export class InnerReturnService {
 
   constructor(private httpService: HttpService) { }
+
+  get(code: string): Promise<InnerPrintItem> {
+    if (!code) return Promise.resolve({});
+    let url = Urls.chain.concat('/UseReturnDetails/Print?BillCode=', code);
+    return this.httpService.get<ApiResult<any>>(url)
+      .then(result => {
+        // console.log(result.data);
+        return result.data;})
+      .catch(err => Promise.reject(`获取内部退料单信息失败：${err}`));
+  }
   //生成退料单
-  createReturnList(data: InnerListRequest): Promise<void> {
+  createReturnList(data: InnerListRequest): Promise<string> {
     let url = Urls.chain.concat('/StoreInOutDetails/CreateUseReturnBill');
-    return this.httpService.post<void>(url, data)
+    return this.httpService.post<ApiResult<string>>(url, data)
+      .then(result => result.data)
       .catch(err => Promise.reject(`生成退料清单失败：${err}`))
   }
   //获取退料人
@@ -51,41 +41,32 @@ export class InnerReturnService implements BasicService<any>{
       .then(data => data.map(m => new SelectOption(m.name, m.id)))
       .catch(err => Promise.reject(`获取部门选项失败：${err}`))
   }
-  //根据配件名称或编码模糊查询
-  public getListByCodeOrName(params: GetMountingsListRequest): Promise<PagedResult<any>> {
-    let url = Urls.chain.concat('/Products/GetPageListByNameOrCode');
-    let search = params.serialize();
-    return this.httpService.get<PagedResult<any>>(url, search)
-      .then(result => {
-        if (result.data && Array.isArray(result.data)) {
-          result.data.forEach(m => {
-            m.price = m.price || 0;
-            m.price = (m.price / 100).toFixed(2);
-          });
-        }
-        return result;
-      })
-      .catch(err => Promise.reject(`获取配件信息失败：${err}`));
-  }
+
 
 }
 
-
-export class InnerListRequest extends GenerateSuspendedBillRequest {
+export class InnerPrintItem {
+  public title?: string;
+  public billCode?: string;
+  public createBillDateTime?: string;
+  public takeUser?: string;
+  public department?: string;
+  public totalAmount: string;
+  public printDateTime: string;
+  public operator: string;
+  public list: Array<any>
+}
+export class InnerListRequest {
   constructor(
-    public inUnit?: string,
-    // public returnUser?: string,
-    // public returnDepart?: string,
-    public seller?: string,
-    public list?: Array<InnerListItem>,
+    public list: Array<InnerListItem> = [],
+    public returnUser?: string,
+    public returnDepart?: string,
+    public suspendedBillId?: string,
   ) {
-    super();
   }
 }
 export class InnerListItem {
   constructor(
-    public returnUser?: string,
-    public returnDepart?: string,
     public count: number = 0,
     public price: number = 0,
     public amount: number = 0,
@@ -99,6 +80,7 @@ export class InnerListItem {
     public locationId?: string,
     public description?: string,
     public locationName?: string,
-    public houseName?: string
+    public houseName?: string,
+    public storeName?:string
   ) { }
 }

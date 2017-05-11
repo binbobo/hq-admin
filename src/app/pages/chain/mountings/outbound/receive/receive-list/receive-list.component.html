@@ -2,28 +2,7 @@
 <div class="card">
   <div class="card-header">
     <span>配件销售</span>
-    <div class="btn-group pull-right" dropdown>
-      <button dropdownToggle class="btn btn-sm btn-secondary dropdown-toggle">
-        <span>挂单信息 <span class="badge badge-default">0</span></span> 
-        <span class="caret"></span>
-      </button>
-      <div *dropdownMenu class="p-1 dropdown-menu dropdown-menu-right" role="menu">
-        <table class="m-0 table table-sm table-hover">
-          <tr>
-            <th>领用人</th>
-            <th>领用单号</th>
-          </tr>
-          <tr (click)="alert()">
-            <td>11111111111111</td>
-            <td>333333333</td>
-          </tr>
-          <tr>
-            <td>22</td>
-            <td>33</td>
-          </tr>
-        </table>
-      </div>
-    </div>
+    <ng-template hqSuspendBill="IU" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
   <div class="card-block">
     <form class="form-inline mb-2">
@@ -43,7 +22,7 @@
         <button (click)="createModal.show()" class="btn btn-primary mx-sm-1" translate>新增</button>
       </div>
     </form>
-    <table hqPrint #printer="hq-print" class="table table-bordered table-sm table-striped">
+    <table class="table table-bordered table-sm table-striped">
       <thead>
         <tr>
           <th translate>序号</th>
@@ -60,18 +39,18 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of items;let i=index">
-          <td class="text-center">{{i+1}}</td>
+        <tr *ngFor="let item of model.list;let i=index">
+         <td class="text-center">{{i+1}}</td>
           <td>{{item.brand }}</td>
-          <td>{{item.productCode }}</td>
+          <td class="text-center">{{item.productCode }}</td>
           <td>{{item.productName}}</td>
           <td>{{item.productSpecification}}</td>
-          <td>{{item.storeId }}</td>
-          <td>{{item.locationId }}</td>
-          <td>{{item.stockCount}}</td>
-          <td>{{item.count}}</td>
-          <td>{{item.price }}</td>
-          <td>{{item.amount }}</td>
+          <td>{{item.houseName }}</td>
+          <td>{{item.locationName }}</td>
+          <td class="text-center">{{item.stockCount}}</td>
+          <td class="text-center">{{item.count}}</td>
+          <td class="text-right">{{item.price|centToYuan }}</td>
+          <td class="text-right">{{item.amount|centToYuan }}</td>
         </tr>
       </tbody>
     </table>
@@ -96,3 +75,5 @@
     </div>
   </div>
 </div>
+
+<hq-receive-print class="invisible" hqPrint #printer="hq-print" [model]="printModel"></hq-receive-print>

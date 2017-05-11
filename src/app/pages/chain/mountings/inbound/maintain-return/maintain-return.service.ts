@@ -56,6 +56,18 @@ export class MaintainReturnService implements BasicService<any>{
     }
 
     //获取已经退料数据接口 /StoreInOutDetails/GetMainList
+    public getMainList(id: string): Promise<any> {
+        const url = Urls.chain.concat('/StoreInOutDetails/GetMainList?BillCode=' + id);
+        return this.httpService
+            .get<ApiResult<any>>(url)
+            .then(result => {
+                console.log(result.data)
+                return result.data
+            })
+            .then(data => data || Promise.reject('获取数据无效！'))
+            .catch(err => Promise.reject(`加载失败：${err}`));
+    }
+
     //生成退料单post接口数据 /StoreInOutDetails/CreateMaintReturnBill
     public postReturnBill(body: any): Promise<any> {
         const url = Urls.chain.concat('/StoreInOutDetails/CreateMaintReturnBill');
@@ -116,6 +128,7 @@ export class DetailData {
         public suggestServiceOutputs: any = [],//建议维修项
         public lastManufactureDetailOutput: any = [],//上次维修记录
         public feedBackInfosOutput: any = [],// 客户回访记录
-        public productOutputs: any = []//维修配件
+        public productOutputs: any = [],//维修配件
+        public maintenanceEmployees:any =[]//退料人
     ) { }
 }

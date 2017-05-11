@@ -1,0 +1,67 @@
+<div class="print card">
+  <div class="card-header">
+    <span>维修发料单</span>
+  </div>
+  <div class='card-block' hqPrint #printer="hq-print">
+
+    <div class="container">
+      <div class="row">
+        <h4 class="col-md-12">维修发料单</h4>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">发料单号：</div>
+        <div class="col-md-3">流水号：</div>
+        <div class="col-md-3">车牌号：</div>
+        <div class="col-md-3">开单时间：</div>
+      </div>
+    </div>
+    <table class="table table-responsive table-striped table-borderd">
+      <thead>
+        <tr>
+          <th>序号</th>
+          <th>维修项目</th>
+          <th>配件编码</th>
+          <th>配件名称</th>
+          <th>规格型号</th>
+          <th>仓库</th>
+          <th>库位</th>
+          <th>数量</th>
+          <th>价格</th>
+          <th>金额</th>
+          <th>备注</th>
+          <th>领料人</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">打印时间：</div>
+        <div class="col-md-3">操作人：</div>
+        <div class="col-md-3">领料人：</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer text-muted">
+    <div class="center">
+      <button type="button" class="btn btn-primary" (click)="print()">打印</button>
+    </div>
+  </div>
+</div>

@@ -1,44 +1,14 @@
-.append-order .search-table{
-        border: 1px solid #ddd;
+table th,table td{
+     text-overflow:ellipsis; 
+     white-space:nowrap; 
+     overflow:hidden;
 }
-.append-order .search-table td{
-    font-size:.9rem;
+.append-order .container .row{
+    height: 50px;
+  
 }
-.append-order .form-in{
-    width:60%;
-}
-.append-order .search-table td:nth-child(2n-1){
-    text-align: right;
-    font-size:1rem;
-}
-.append-order .search-table td:nth-child(2n){
-    background-color:rgba(221, 221, 221, 0.29);
-}
-.append-order caption {
-    caption-side: top;
-}
-.append-order .ng2-smart-actions{
-    width: 100px !important;
-}
-.append-order table tr th{
-border-top:0;
-}
-.append-order table tr td{
-   text-align: center;
-}
-.append-order inputFilter{
-    width: 200px;
-    background-color: #ddd;
-    border-color: red;
-}
-.append-order .nav-tabs .nav-item{
-    border-bottom: 1px solid #ddd !important;
-    background-color: #f0ad4e !important;
-    }
-
-.append-order .table-tab{
-    font-size:.9rem;
-}
-.append-order .text-center input{
-    cursor: pointer;
+.append-order .container .row div{
+         text-overflow:ellipsis; 
+     white-space:nowrap; 
+     overflow:hidden;
 }
