@@ -14,19 +14,19 @@ export class ProcurementService {
       .catch(err => Promise.reject(`获取配件信息失败：${err}`));
   }
 
-  get(code: string): Promise<ProcurementPrintItem> {
+  public get(code: string): Promise<ProcurementPrintItem> {
     if (!code) return Promise.resolve({});
-    let url = Urls.chain.concat('/PurchaseReturnDetails/Print?BillCode=', code);
+    let url = Urls.chain.concat('/PurchaseDetails/Print?BillCode=', code);
     return this.httpService.get<ApiResult<ProcurementPrintItem>>(url)
       .then(result => result.data)
-      .catch(err => Promise.reject(`获取退库单信息失败：${err}`));
+      .catch(err => Promise.reject(`获取采购单信息失败：${err}`));
   }
 
   public generate(request: ProcurementRequest): Promise<string> {
-    let url = Urls.chain.concat('/StoreInOutDetails/CreatePurchaseReturnBill');
+    let url = Urls.chain.concat('/StoreInOutDetails/CreatePurchaseBill');
     return this.httpService.post<ApiResult<string>>(url, request)
       .then(result => result.data)
-      .catch(err => Promise.reject(`生成退库单失败：${err}`));
+      .catch(err => Promise.reject(`生成采购单失败：${err}`));
   }
 }
 
@@ -42,8 +42,8 @@ export class GetProductsRequest extends PagedParams {
 export class ProcurementRequest {
   constructor(
     public list: Array<ProcurementItem> = [],
-    public provider?: string,
-    public inunit?: string,
+    public custName?: string,
+    public outunit?: string,
     public suspendedBillId?: string,
   ) { }
 }

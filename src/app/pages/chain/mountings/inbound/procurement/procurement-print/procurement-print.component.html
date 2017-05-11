@@ -1,10 +1,9 @@
 <h3>{{model?.title}}</h3>
 <hr class="blod">
 <div class="row">
-  <div class="col-3">退库单号：{{model?.billCode}}</div>
-  <div class="col-3">供应商名称：{{model?.customerName}}</div>
-  <div class="col-3">装箱单号：{{model?.seller}}</div>
-  <div class="col-3">开单时间：{{model?.createBillDateTime}}</div>
+  <div class="col-4">供应商名称：{{model?.customerName}}</div>
+  <div class="col-4">入库单号：{{model?.billCode}}</div>
+  <div class="col-4">开单时间：{{model?.createBillDateTime}}</div>
 </div>
 <hr>
 <div class="print-page">
@@ -15,7 +14,6 @@
         <th translate>仓库</th>
         <th translate>配件编码</th>
         <th translate>配件名称</th>
-        <th translate>配件类别</th>
         <th translate>库位</th>
         <th translate>数量</th>
         <th translate>含税单价</th>
@@ -29,7 +27,6 @@
         <td class="text-center">{{i+1}}</td>
         <td>{{item.storeName }}</td>
         <td>{{item.productCode }}</td>
-        <td>{{item.productName}}</td>
         <td>{{item.productName}}</td>
         <td>{{item.locationName }}</td>
         <td class="text-center">{{item.count}}</td>

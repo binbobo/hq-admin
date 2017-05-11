@@ -1,11 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProviderService, ProviderListRequest } from '../../../provider/provider.service';
 import { TypeaheadRequestParams, HqAlerter, PrintDirective } from 'app/shared/directives';
-import { PurchaseReturnRequest } from "app/pages/chain/mountings/outbound/purchase-return/purchase-return.service";
 import { Location } from '@angular/common';
 import { SuspendBillDirective } from 'app/pages/chain/chain-shared';
 import { ModalDirective } from 'ngx-bootstrap';
-import { ProcurementService, ProcurementPrintItem, ProcurementItem } from '../procurement.service';
+import { ProcurementService, ProcurementPrintItem, ProcurementItem, ProcurementRequest } from '../procurement.service';
 
 @Component({
   selector: 'hq-procurement-list',
@@ -23,7 +22,7 @@ export class ProcurementListComponent implements OnInit {
   @ViewChild('printer')
   public printer: PrintDirective;
   private printModel: ProcurementPrintItem;
-  private model = new PurchaseReturnRequest();
+  private model = new ProcurementRequest();
 
   constructor(
     private providerService: ProviderService,
@@ -45,12 +44,12 @@ export class ProcurementListComponent implements OnInit {
   }
 
   reset() {
-    this.model = new PurchaseReturnRequest();
+    this.model = new ProcurementRequest();
   }
 
   public get suspendedColumns() {
     return [
-      { name: 'provider', title: '供应商' },
+      { name: 'custName', title: '供应商' },
       { name: 'createBillTime', title: '挂单时间' },
     ];
   }
@@ -64,8 +63,8 @@ export class ProcurementListComponent implements OnInit {
   }
 
   public onProviderSelect(event) {
-    this.model.provider = event.name;
-    this.model.inunit = event.id;
+    this.model.custName = event.name;
+    this.model.outunit = event.id;
   }
 
   public get source() {
@@ -77,7 +76,7 @@ export class ProcurementListComponent implements OnInit {
   }
 
   suspend(event: Event) {
-    if (!this.model.inunit) {
+    if (!this.model.outunit) {
       alert('请选择供应商名称');
       return false;
     }
@@ -94,7 +93,7 @@ export class ProcurementListComponent implements OnInit {
   }
 
   generate(event: Event) {
-    if (!this.model.inunit) {
+    if (!this.model.outunit) {
       alert('请选择供应商名称');
       return false;
     }
