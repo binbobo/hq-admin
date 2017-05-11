@@ -9,9 +9,13 @@
       </div>
       <div class="form-group">
         <label class="form-control-label">*配件名称</label>
-        <input hqError="配件名称" [hqTableTypeahead]="nameSource" [columns]="itemColumns(true)" (onSelect)="onItemSelect($event)"
+        <input (input)="onItemChange($event)" [hqTableTypeahead]="nameSource" [columns]="itemColumns(true)" (onSelect)="onItemSelect($event)"
           formControlName="productName" class="form-control" placeholder="请输入配件名称">
         <input type="hidden" hqError="配件名称" formControlName="productId">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">装箱单号</label>
+        <input readonly hqError="装箱单号" formControlName="packingCode" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*品牌</label>
@@ -22,31 +26,49 @@
         <input readonly hqError="规格型号" formControlName="productSpecification" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*单价（元/个）</label>
-        <input type="number" hqError="单价" formControlName="yuan" class="form-control" (input)="onPriceChange($event)"/>
+        <label class="form-control-label">*配件类别</label>
+        <input readonly hqError="配件类别" formControlName="productCategory" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">税率</label>
+        <div class="input-group">
+          <input readonly hqError="税率" formControlName="taxRate" class="form-control">
+          <span class="input-group-addon">%</span>
+        </div>
       </div>
     </div>
     <div class="col-6">
       <div class="form-group">
         <label class="form-control-label">*仓库</label>
-        <input readonly hqError="仓库" formControlName="houseName" class="form-control">
+        <input readonly hqError="仓库" formControlName="storeName" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*库位</label>
         <input readonly hqError="库位" formControlName="locationName" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*库存</label>
-        <input readonly hqError="库存" formControlName="stockCount" class="form-control">
+        <label class="form-control-label">*含税单价（元/个）</label>
+        <div class="form-control">{{form?.controls['price']?.value|centToYuan}}</div>
+        <input type="hidden" readonly hqError="单价" formControlName="price" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*不含税单价（元/个）</label>
+        <div class="form-control">{{form?.controls['exTaxPrice']?.value|centToYuan}}</div>
+        <input type="hidden" readonly hqError="不含税单价" formControlName="exTaxPrice" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*数量（个）</label>
         <input hqError="数量" (input)="calculate()" type="number" formControlName="count" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*金额</label>
+        <label class="form-control-label">*含税总金额</label>
         <div class="form-control">{{form?.controls['amount']?.value|centToYuan}}</div>
         <input type="hidden" readonly hqError="金额" formControlName="amount" [value]="centToYuan|centToYuan" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*不含税总金额</label>
+        <div class="form-control">{{form?.controls['exTaxAmount']?.value|centToYuan}}</div>
+        <input type="hidden" readonly hqError="金额" formControlName="exTaxAmount" [value]="centToYuan|centToYuan" class="form-control">
       </div>
     </div>
     <div class="col-12">

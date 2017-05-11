@@ -23,6 +23,11 @@ import { SalesReturnCreateComponent } from './sales-return/sales-return-create/s
 import { SalesReturnPrintComponent } from './sales-return/sales-return-print/sales-return-print.component';
 import { CustomFormsModule } from "ng2-validation/dist";
 import { SalesReturnService } from "./sales-return/sales-return.service";
+import { ProcurementListComponent } from './procurement/procurement-list/procurement-list.component';
+import { ProcurementCreateComponent } from './procurement/procurement-create/procurement-create.component';
+import { ProcurementPrintComponent } from './procurement/procurement-print/procurement-print.component';
+import { ProcurementService } from './procurement/procurement.service';
+import { ProviderService } from '../provider/provider.service';
 
 @NgModule({
   imports: [
@@ -42,8 +47,8 @@ import { SalesReturnService } from "./sales-return/sales-return.service";
     CustomFormsModule,
     BsDropdownModule.forRoot(),
   ],
-  declarations: [routedComponents, ReturnListComponent, ReturnCreateComponent, ReturnPrintComponent, PrintComponent,routedComponents, SalesReturnListComponent, SalesReturnCreateComponent, SalesReturnPrintComponent],
-  providers: [MaintainReturnService,InnerReturnService,SalesReturnService],
+  declarations: [routedComponents, ReturnListComponent, ReturnCreateComponent, ReturnPrintComponent, PrintComponent, routedComponents, SalesReturnListComponent, SalesReturnCreateComponent, SalesReturnPrintComponent, PrintComponent, ProcurementListComponent, ProcurementCreateComponent, ProcurementPrintComponent],
+  providers: [MaintainReturnService, ProcurementService, ProviderService, InnerReturnService, SalesReturnService],
   entryComponents: [routedComponents[0]],
 })
 export class InboundModule { }

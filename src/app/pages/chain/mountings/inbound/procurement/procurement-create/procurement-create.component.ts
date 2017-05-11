@@ -3,26 +3,26 @@ import { TypeaheadRequestParams, FormControlErrorDirective } from 'app/shared/di
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { CentToYuanPipe } from 'app/shared/pipes';
-import { PurchaseReturnItem, PurchaseReturnService, GetProductsRequest } from '../purchase-return.service';
+import { ProcurementService, ProcurementItem, GetProductsRequest } from '../procurement.service';
 
 @Component({
-  selector: 'hq-return-create',
-  templateUrl: './return-create.component.html',
-  styleUrls: ['./return-create.component.css'],
+  selector: 'hq-procurement-create',
+  templateUrl: './procurement-create.component.html',
+  styleUrls: ['./procurement-create.component.css']
 })
-export class ReturnCreateComponent implements OnInit {
+export class ProcurementCreateComponent implements OnInit {
 
   private form: FormGroup;
   private converter: CentToYuanPipe = new CentToYuanPipe();
   @Output()
-  private formSubmit = new EventEmitter<PurchaseReturnItem>();
-  private model: PurchaseReturnItem = new PurchaseReturnItem();
+  private formSubmit = new EventEmitter<ProcurementItem>();
+  private model: ProcurementItem = new ProcurementItem();
   @ViewChildren(FormControlErrorDirective)
   private controls: QueryList<FormControlErrorDirective>;
 
   constructor(
     private formBuilder: FormBuilder,
-    private returnService: PurchaseReturnService,
+    private procurementService: ProcurementService,
   ) { }
 
   ngOnInit() {
@@ -107,7 +107,7 @@ export class ReturnCreateComponent implements OnInit {
     return (params: TypeaheadRequestParams) => {
       let p = new GetProductsRequest(params.text);
       p.setPage(params.pageIndex, params.pageSize);
-      return this.returnService.getProducts(p);
+      return this.procurementService.getProducts(p);
     };
   }
 
@@ -115,7 +115,7 @@ export class ReturnCreateComponent implements OnInit {
     return (params: TypeaheadRequestParams) => {
       let p = new GetProductsRequest(undefined, params.text);
       p.setPage(params.pageIndex, params.pageSize);
-      return this.returnService.getProducts(p);
+      return this.procurementService.getProducts(p);
     };
   }
 

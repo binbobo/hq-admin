@@ -1,18 +1,17 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProviderService, ProviderListRequest } from '../../../provider/provider.service';
 import { TypeaheadRequestParams, HqAlerter, PrintDirective } from 'app/shared/directives';
-import { PurchaseReturnRequest } from "app/pages/chain/mountings/outbound/purchase-return/purchase-return.service";
 import { Location } from '@angular/common';
 import { SuspendBillDirective } from 'app/pages/chain/chain-shared';
 import { ModalDirective } from 'ngx-bootstrap';
-import { PurchaseReturnPrintItem, PurchaseReturnItem, PurchaseReturnService } from '../purchase-return.service';
+import { ProcurementService, ProcurementPrintItem, ProcurementItem, ProcurementRequest } from '../procurement.service';
 
 @Component({
-  selector: 'hq-return-list',
-  templateUrl: './return-list.component.html',
-  styleUrls: ['./return-list.component.css']
+  selector: 'hq-procurement-list',
+  templateUrl: './procurement-list.component.html',
+  styleUrls: ['./procurement-list.component.css']
 })
-export class ReturnListComponent implements OnInit {
+export class ProcurementListComponent implements OnInit {
 
   @ViewChild(SuspendBillDirective)
   private suspendBill: SuspendBillDirective;
@@ -22,12 +21,12 @@ export class ReturnListComponent implements OnInit {
   protected alerter: HqAlerter;
   @ViewChild('printer')
   public printer: PrintDirective;
-  private printModel: PurchaseReturnPrintItem;
-  private model = new PurchaseReturnRequest();
+  private printModel: ProcurementPrintItem;
+  private model = new ProcurementRequest();
 
   constructor(
     private providerService: ProviderService,
-    private returnService: PurchaseReturnService,
+    private procurementService: ProcurementService,
     private location: Location
   ) { }
 
@@ -39,18 +38,18 @@ export class ReturnListComponent implements OnInit {
     this.model.suspendedBillId = item.id;
   }
 
-  onCreate(event: PurchaseReturnItem) {
+  onCreate(event: ProcurementItem) {
     this.model.list.push(event);
     this.createModal.hide();
   }
 
   reset() {
-    this.model = new PurchaseReturnRequest();
+    this.model = new ProcurementRequest();
   }
 
   public get suspendedColumns() {
     return [
-      { name: 'provider', title: '供应商' },
+      { name: 'custName', title: '供应商' },
       { name: 'createBillTime', title: '挂单时间' },
     ];
   }
@@ -64,8 +63,8 @@ export class ReturnListComponent implements OnInit {
   }
 
   public onProviderSelect(event) {
-    this.model.provider = event.name;
-    this.model.inunit = event.id;
+    this.model.custName = event.name;
+    this.model.outunit = event.id;
   }
 
   public get source() {
@@ -77,7 +76,7 @@ export class ReturnListComponent implements OnInit {
   }
 
   suspend(event: Event) {
-    if (!this.model.inunit) {
+    if (!this.model.outunit) {
       alert('请选择供应商名称');
       return false;
     }
@@ -94,23 +93,22 @@ export class ReturnListComponent implements OnInit {
   }
 
   generate(event: Event) {
-    if (!this.model.inunit) {
+    if (!this.model.outunit) {
       alert('请选择供应商名称');
       return false;
     }
     let el = event.target as HTMLButtonElement;
     el.disabled = true;
-    this.returnService.generate(this.model)
+    this.procurementService.generate(this.model)
       .then(data => {
         el.disabled = false;
         this.reset();
         this.suspendBill.refresh();
         return confirm('已生成出库单，是否需要打印？') ? data : null;
       })
-      .then(code => code && this.returnService.get(code))
+      .then(code => code && this.procurementService.get(code))
       .then(data => {
         if (data) {
-          console.log(data);
           this.printModel = data;
           setTimeout(() => this.printer.print(), 300);
         }
