@@ -1,3 +1,83 @@
-<p>
-  role-list works!
-</p>
+<ng-template hq-alerter></ng-template>
+<div class="card">
+  <div class="card-header">
+    <span>角色管理</span>
+  </div>
+  <div class="card-block">
+    <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
+      <div class="form-group mb-2">
+        <label class="mr-sm-2">角色名称</label>
+        <input type="text" class="form-control mx-sm-3" name="name" [(ngModel)]="params.name" placeholder="角色名称">
+      </div>
+      <div class="form-group mb-2">
+        <button type="submit" class="btn btn-primary mx-sm-1" translate>搜索</button>
+        <button type="button" (click)="createModal.show()" class="btn btn-secondary mx-sm-1" translate>新增</button>
+        <button type="button" (click)="allocateModal.show()" class="btn btn-secondary mx-sm-1" translate>分配</button>
+      </div>
+    </form>
+    <table class="table table-bordered table-sm table-striped">
+      <thead>
+        <tr *ngIf="!loading">
+          <th translate>操作</th>
+          <th translate>角色</th>
+          <th translate>创建时间</th>
+          <th translate>备注</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of list;let i=index">
+          <td>
+            <button class="btn btn-sm">编辑</button>
+            <button class="btn btn-sm">分配权限</button>
+          </td>
+          <td>{{item.name}}</td>
+          <td>{{item.createdOnUtc}}</td>
+          <td>{{item.description}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+  </div>
+</div>
+
+<div class="modal fade" bsModal #createModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">新增角色</h5>
+        <button class="close pull-right" (click)="createModal.hide()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <hq-role-create (onSubmit)="onRoleCreate($event)"></hq-role-create>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" bsModal #editModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">修改角色</h5>
+        <button class="close pull-right" (click)="editModal.hide()">&times;</button>
+      </div>
+      <div *ngIf="role" class="modal-body">
+        <hq-role-edit (onSubmit)="onRoleUpdate($event)" [model]="role"></hq-role-edit>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" bsModal #allocateModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">分配权限</h5>
+        <button class="close pull-right" (click)="allocateModal.hide()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <hq-role-allocate (onSubmit)="onRoleAllocate($event)" [model]="role"></hq-role-allocate>
+      </div>
+    </div>
+  </div>
+</div>

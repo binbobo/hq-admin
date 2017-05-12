@@ -1,3 +1,7 @@
-<p>
-  role-allocate works!
-</p>
+<div id="alerter">
+  <ng-template hq-alerter></ng-template>
+</div>
+<div class="card">
+  <ngx-treeview [items]="items" (selectedChange)="onSelectedChange($event)">
+  </ngx-treeview>
+</div>
