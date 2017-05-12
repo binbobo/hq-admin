@@ -42,7 +42,6 @@ export class DistributeService implements BasicService<any>{
         const url = Urls.chain.concat('/Maintenances');
         return this.httpService
             .get<PagedResult<SearchReturnData>>(url, search)
-
     }
 
     // 根据id获取工单详情
@@ -74,7 +73,22 @@ export class DistributeService implements BasicService<any>{
     }
 
     // 维修发料打印接口 StoreInOutDetails/PrintStore
-    // 维修发料领料人接口修改
+
+    getPrintList(billId: string,billCode: string,SerialNums:any): Observable<any> {
+        const url = Urls.chain.concat('/StoreInOutDetails/PrintStore');
+        return this.httpService
+            .request(url, {
+                params: {
+                    "billId": billId,
+                    "billCode":billCode,
+                    "SerialNums":SerialNums
+                }
+            })
+            .map(response => {
+                return response.json().data as any[];
+            });
+    }
+
     // 维修发料获取已发料list数据 /StoreInOutDetails/GetMainList
 
     // public getMainList(id: string): Promise<any> {
@@ -200,6 +214,7 @@ export class DistributeListItem {
         public serviceName?: string,
         public createUser?: string,
         public createUserName?: string,
-        public maintenanceItemId?:string
+        public maintenanceItemId?: string,
+        public number?: any
     ) { }
 }

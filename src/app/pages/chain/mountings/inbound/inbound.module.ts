@@ -14,6 +14,7 @@ import { NguiDatetimePickerModule } from '@ngui/datetime-picker';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { MaintainReturnService } from "app/pages/chain/mountings/inbound/maintain-return/maintain-return.service";
 import { PrintComponent } from './maintain-return/print/print.component';
+import { MaintainCreatComponent } from './maintain-return/maintain-creat/maintain-creat.component';
 @NgModule({
   imports: [
     SharedModule,
@@ -29,7 +30,7 @@ import { PrintComponent } from './maintain-return/print/print.component';
     ReactiveFormsModule,
     NguiDatetimePickerModule
   ],
-  declarations: [routedComponents, SalesReturnComponent, PrintComponent],
+  declarations: [routedComponents, SalesReturnComponent, PrintComponent, MaintainCreatComponent],
   providers: [MaintainReturnService],
   entryComponents: [routedComponents[0]],
 })

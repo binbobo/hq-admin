@@ -1,15 +1,19 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { DataList, StorageKeys } from "app/shared/models";
 import { Router } from "@angular/router";
 import { MaintainReturnService, MaintainRequest } from "./maintain-return.service";
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { TypeaheadRequestParams } from "app/shared/directives";
+import { ModalDirective } from "ngx-bootstrap";
 @Component({
   selector: 'app-maintain-return',
   templateUrl: './maintain-return.component.html',
   styleUrls: ['./maintain-return.component.css']
 })
 export class MaintainReturnComponent extends DataList<any>{
+  serialData: any;
+  @ViewChild('createModal')
+  private createModal: ModalDirective;
   billCode: any;
   printId: any;
   productData: any;
@@ -58,7 +62,10 @@ export class MaintainReturnComponent extends DataList<any>{
 
     this.service.getMainList(this.billCode)
       .then(data => {
-        console.log(data);
+        this.serialData = data;
+        this.serialData.sort((a, b) => {
+          return a.serialNum - b.serialNum;
+        })
       })
   }
 
@@ -87,64 +94,12 @@ export class MaintainReturnComponent extends DataList<any>{
     confirmModal.hide();
     history.go(-1);
   }
-  //点击退料
-  OnChangeNewItem($event, id, serviceName, names, turnnames) {
 
-    // 初始化当前编辑的
-    this.newItem = {
-      maintenanceItemId: id, //维修明细id
-      serviceItem: serviceName,//维修项目
-      brandName: '',// 品牌
-      productCode: '',//配件编码
-      productName: '',//配件名称
-      productSpecification: '',//规格型号
-      vehicleModelName: '',//车型
-      storeId: '',//仓库
-      locationId: '',//库位
-      count: '',//数量
-      price: '',//单价
-      amount: '',//金额
-      description: '',//备注
-
-    };
-    // 维修项目编辑区域可见
-    this.addNewItem = true;
-  }
   private newMainData = [];
   isableAppend = false;
 
-  // 确定退料
-  OnConfirmItem(evt?: Event) {
-    // 浮点数正则表达式
-    const reg = /^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/;
-    // 检查数量合法性
-    if (!this.newItem.count || !reg.test(this.newItem.count)) {
-      this.alerter.error(" 数量格式错误，请输入数字", true, 2000)
-    }
-    if (!this.newItem.count) {
-      this.alerter.error(" 数量不能为空", true, 2000);
-      return false;
-    }
 
-    if (evt) {
-      evt.preventDefault();
-    }
-    this.newMainData.push(this.newItem);
-    // 编辑区域不可见
-    this.addNewItem = false;
-    if (this.newMainData.length > 0) {
-      this.isableAppend = true;
-    }
-  }
-  //  新增数据删除
-  OnDelItem(evt) {
-    evt.preventDefault();
-    this.newMainData.filter((item, index) => {
-      this.newMainData.splice(index, 1);
-      return;
-    });
 
-  }
 
   private billData: any;
   //生成退料单
@@ -162,8 +117,16 @@ export class MaintainReturnComponent extends DataList<any>{
       this.alerter.info('生成发料单成功', true, 2000);
     }).catch(err => this.alerter.error(err, true, 2000));
   }
-  valueObj: any;
-  createName: any;
-  createId: any;
 
+  inputData: any;
+  // 点击发料弹出发料弹框
+  OnCreatBound(item) {
+    console.log(item)
+    this.inputData = item.list;
+    this.createModal.show();
+  }
+
+  onCreate(e) {
+    console.log(e)
+  }
 }
