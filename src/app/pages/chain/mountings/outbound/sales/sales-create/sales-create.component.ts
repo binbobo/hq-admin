@@ -32,6 +32,13 @@ export class SalesCreateComponent implements OnInit {
     this.buildForm();
   }
 
+  onPriceChange(event) {
+    let val = event.target.value || 0;
+    let price = Math.floor(val * 100);
+    this.form.patchValue({ price: price });
+    this.calculate();
+  }
+
   private buildForm() {
     this.form = this.formBuilder.group({
       brand: [this.model.brand, [Validators.required]],
@@ -47,6 +54,7 @@ export class SalesCreateComponent implements OnInit {
       stockCount: [this.model.stockCount, [Validators.required]],
       locationName: [this.model.locationName, [Validators.required]],
       houseName: [this.model.houseName, [Validators.required]],
+      yuan: [0, [Validators.required]]
     })
   }
 
@@ -93,9 +101,13 @@ export class SalesCreateComponent implements OnInit {
       locationName: event.locationName,
       stockCount: event.count,
       price: event.price,
+      yuan: (event.price || 0) / 100
     }
-    this.form.patchValue(item);
-    this.calculate();
+    this.form.controls['yuan'].setValidators(CustomValidators.gte(item.price / 100))
+    setTimeout(() => {
+      this.form.patchValue(item);
+      this.calculate();
+    }, 1);
   }
 
   public get codeSource() {

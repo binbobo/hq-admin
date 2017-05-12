@@ -1,0 +1,81 @@
+<ng-template hq-alerter></ng-template>
+<div class="card">
+  <form *ngIf="form" class="card-block row" [formGroup]="form" (ngSubmit)="onSubmit($event)">
+    <div class="col-6">
+      <div class="form-group">
+        <label class="form-control-label">*配件编码</label>
+        <input [hqTableTypeahead]="codeSource" [columns]="itemColumns(false)" (onSelect)="onItemSelect($event)" formControlName="productCode"
+          class="form-control" placeholder="请输入配件编码">
+        <input type="hidden" hqError="配件编码" formControlName="productId">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*配件名称</label>
+        <input (input)="onItemChange($event)" [hqTableTypeahead]="nameSource" [columns]="itemColumns(true)" (onSelect)="onItemSelect($event)"
+          formControlName="productName" class="form-control" placeholder="请输入配件名称">
+        <input type="hidden" hqError="配件名称" formControlName="productId">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">装箱单号</label>
+        <input [attr.readonly]="editable" hqError="装箱单号" formControlName="packingCode" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*品牌</label>
+        <input [attr.readonly]="editable" hqError="品牌" formControlName="brand" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*规格型号</label>
+        <input [attr.readonly]="editable" hqError="规格型号" formControlName="productSpecification" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*配件类别</label>
+        <input [attr.readonly]="editable" hqError="配件类别" formControlName="productCategory" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">税率</label>
+        <div class="input-group">
+          <input readonly hqError="税率" formControlName="taxRate" class="form-control">
+          <span class="input-group-addon">%</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="form-group">
+        <label class="form-control-label">*仓库</label>
+        <select [attr.disabled]="editable" hqError="仓库" formControlName="storeId" class="form-control">
+          <option *ngFor="let item of warehouses" value="{{item.value}}">{{item.text}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*库位</label>
+        <input [attr.readonly]="editable" hqError="库位" formControlName="locationName" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*含税单价（元/个）</label>
+        <input type="number" hqError="单价" formControlName="yuan" (input)="onPriceChange($event)" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*不含税单价（元/个）</label>
+        <div class="form-control">{{form?.controls['exTaxPrice']?.value|centToYuan}}</div>
+        <input type="hidden" readonly hqError="不含税单价" formControlName="exTaxPrice" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*数量（个）</label>
+        <input hqError="数量" (input)="calculate()" type="number" formControlName="count" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*含税总金额</label>
+        <div class="form-control">{{form?.controls['amount']?.value|centToYuan}}</div>
+        <input type="hidden" readonly hqError="金额" formControlName="amount" [value]="centToYuan|centToYuan" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*不含税总金额</label>
+        <div class="form-control">{{form?.controls['exTaxAmount']?.value|centToYuan}}</div>
+        <input type="hidden" readonly hqError="金额" formControlName="exTaxAmount" [value]="centToYuan|centToYuan" class="form-control">
+      </div>
+    </div>
+    <div class="col-12">
+      <button type="submit" [disabled]="submitting" class="btn btn-primary mr-3">提交</button>
+      <button (click)="onReset()" class="btn btn-secondary mr-3">重置</button>
+    </div>
+  </form>
+</div>

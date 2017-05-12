@@ -6,7 +6,7 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { Router } from '@angular/router';
 import { SuspendBillDirective } from "app/pages/chain/chain-shared";
 import { Location } from '@angular/common';
-
+ 
 @Component({
   selector: 'hq-sales-list',
   templateUrl: './sales-list.component.html',
@@ -86,7 +86,7 @@ export class SalesListComponent implements OnInit {
       .catch(err => {
         el.disabled = false;
         this.alerter.error(err);
-      })
+      }) 
   }
 
   suspend(event: Event) {

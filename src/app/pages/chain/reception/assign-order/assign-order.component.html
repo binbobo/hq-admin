@@ -21,7 +21,7 @@
       </div>
     </form>
     <hr>
-    <table class="table table-responsive table-striped table-borderd">
+    <table class="table table-responsive table-striped table-bordered">
       <thead>
         <tr>
           <th>操作</th>
@@ -101,7 +101,7 @@
           <!--导出详情begin-->
           <tabset>
             <tab heading="维修项目">
-              <table class="table table-striped table-borderd">
+              <table class="table table-striped table-bordered">
                 <thead>
                   <tr>
                     <th><input value="all" #checkAll (change)="assignToggleCheckboxAll(checkAll)" [checked]="selectedOrder?.serviceOutputs?.checkedAll" type="checkbox" /></th>
@@ -137,8 +137,8 @@
                       <span [class.triangle]="record.type === 3"></span>
                     </td>
                     <td>{{record?.workHour }}</td>
-                    <td>{{record?.price}}</td>
-                    <td>{{record?.amount ? (record?.amount / 100) : ''}}</td>
+                    <td>{{record?.price|centToYuan}}</td>
+                    <td>{{record?.amount|centToYuan}}</td>
                     <td>{{record?.discount}}</td>
                     <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
                   </tr>
@@ -154,7 +154,7 @@
               </div>
             </tab>
             <tab heading="附加项目">
-              <table class="table table-striped table-borderd">
+              <table class="table table-striped table-bordered">
                 <thead>
                   <tr>
                     <th>备注</th>
@@ -169,7 +169,7 @@
             </tab>
 
             <tab heading="建议维修项目">
-              <table class="table table-striped table-borderd">
+              <table class="table table-striped table-bordered">
                 <thead>
                   <tr>
                     <th>建议维修项目</th>

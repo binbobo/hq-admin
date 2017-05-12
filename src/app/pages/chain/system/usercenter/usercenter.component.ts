@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {UserCenterService,UserModel,DropDownItem,UserPageparams} from "./usercenter.service"
-import { FormGroup,FormBuilder } from '@angular/forms';
+import { FormGroup,FormBuilder,Validators} from '@angular/forms';
 import {TreeviewItem,TreeviewConfig} from "ngx-treeview"
 
 @Component({
@@ -16,16 +16,27 @@ export class UsercenterComponent implements OnInit {
   ) { }
 
  userSearch:FormGroup; //搜索条件
- createUserModel:FormGroup; //创建用户
+ /**
+  * 表单 创建用户模型
+  */
+ createUserModel:FormGroup;
 
  listUserModels:UserModel[]; //列表用户
-
- roleItem:DropDownItem; //角色列表
- position:DropDownItem; //职位列表 
+/**
+ * 角色下拉列表数据
+ */
+ roleItem:DropDownItem=new DropDownItem([],this.onSelectedCahngeForRoleItem); 
+ /**
+  * 职位下拉列表数据
+  */
+ position:DropDownItem=new DropDownItem([],this.onSelectedChangeForPosition); 
 
  params:UserPageparams; //请求参数
  
- userModel:UserModel;
+ /**
+  * 创建 和 编辑 使用的用户模型
+  */
+ userModel:UserModel=new UserModel();
 
  isCreateOrEdit:boolean;
 
@@ -42,24 +53,43 @@ export class UsercenterComponent implements OnInit {
     });
     
     this.createUserModel=this.builder.group({
-      UserName:"",
-      Phone:"",
+      UserName:["",[Validators.required]],
+      Phone:["",[Validators.required,Validators.pattern("^1[3|4|5|7|8][0-9]{9}$")]],
       Remark:""
     });
 
     this.params=new UserPageparams();
-    this.userModel=new UserModel();
+    // this.userModel=new UserModel();
 
-    this.roleItem=this.service.rolesDropDown;
-    this.roleItem.callBack=this.onSelectedCahngeForRoleItem;
-    this.position=this.service.positionsDropDown;
-    this.position.callBack=this.onSelectedChangeForPosition;
-
+    this.service.getRolesOptions().then(item=>{
+      this.roleItem.items=item;
+    });
+    this.service.getPositionOptions().then(item=>{
+      this.position.items=item;
+    });
+    
+    // this.position=this.service.getPositionsDropDown;
+    // this.position.callBack=this.onSelectedChangeForPosition;
+    // this.roleItem=this.service.rolesDropDown;
+    // this.roleItem.callBack=this.onSelectedCahngeForRoleItem;
     this.getPageList()
   }
   
-  openEditorUser(event,userModel){
-    this.userModel=userModel;
+  openEditorUser(event,userModel:UserModel){
+    // this.userModel=userModel;
+
+    this.userModel.ClearData();
+    this.userModel.name=userModel.name;
+    this.userModel.phone=userModel.phone;
+    this.userModel.description=userModel.description;
+    this.userModel.positionIds=userModel.positionIds;
+    this.userModel.roleIds=userModel.roleIds;
+
+    alert(JSON.stringify(this.userModel.positionIds))
+     alert(JSON.stringify(this.userModel.roleIds))
+    this.service.SelectedTreeNode(this.position.items,this.userModel.positionIds);
+    this.service.SelectedTreeNode(this.position.items,this.userModel.roleIds);
+
     this.isCreateOrEdit=false;
     event.show();
   }
@@ -68,12 +98,16 @@ export class UsercenterComponent implements OnInit {
  *
  */
   openCreateUser(event){
-    this.userModel=new UserModel();
+    this.userModel.ClearData();
     this.isCreateOrEdit=true;
+    // this.service.getPositionOptions();
+    this.position.items.forEach(x=>{x.setCheckedRecursive(false);x.setCollapsedRecursive(false);});
+    this.roleItem.items.forEach(x=>{x.setCheckedRecursive(false);x.setCollapsedRecursive(false);});
     event.show();
   }
 
   getPageList(){
+    if(this.loading) return;
     this.params.pageIndex=1;
     this.loading=true;
     this.listUserModels=null;
@@ -84,9 +118,11 @@ export class UsercenterComponent implements OnInit {
                       {
                           item.data.forEach(x=>{
                             x.userRoleName=x.roles.map(d=>d.name).join(",");
+                            x.roleIds=x.roles.map(d=>d.id);
                             if(x.partPositionItems) {
                               x.positionName=x.partPositionItems.map(d=>d.name).join(",");
                               x.partName=x.partPositionItems.map(d=>d.positionItems.map(c=>c.name)).join(",");
+                              x.positionIds=x.partPositionItems.map(d=>d.positionItems.map(e=>e.id).join())
                             }
                           })
                           this.listUserModels=item.data;
@@ -102,11 +138,23 @@ export class UsercenterComponent implements OnInit {
 
   
   createOrUpdateUser(event){
-    this.userModel=new UserModel();
-    event.hide();
+    // if(this.createUserModel.invalid==false) return;
+    // alert(this.createUserModel.invalid)
+
+    // event.hide();
+    
+    let userInfoModel={
+            Name:this.userModel.name,
+            Phone:this.userModel.phone,
+            Description:this.userModel.description,
+            Roles:this.userModel.roleIds,
+            Positions:this.userModel.positionIds
+          }
+          
     if(this.isCreateOrEdit){
-      this.service.create(null)
+      this.service.create(userInfoModel)
       .catch(item=>alert(item))
+
     }else{
       this.updateUser(this.userModel);
     }
@@ -116,24 +164,31 @@ export class UsercenterComponent implements OnInit {
     this.service.update(user);
   }
   
-  EnabledUser(id,isEnabled:boolean){
-    this.service.EnabledUser(id,isEnabled)
-      .then(item=>{})
-      .catch(item=>{});
+  EnabledUser(item){
+    if(item.isRequest) return;
+    item.isRequest=true;
+    this.service.EnabledUser(item.id,!item.enabled)
+      .then(result=>{item.enabled=!item.enabled;item.isRequest=false;})
+      .catch(result=>{alert(result);item.isRequest=false;});
   }
 
-  ResetPassWord(id){
-    this.service.ResetPassword(id)
-      .then(item=>{})
-      .catch(item=>{});
+  ResetPassWord(item){
+    if(item.isRequest) return;
+     item.isRequest=true;
+
+    if(confirm("密码即将重置为手机号后6位")==false) return;
+
+    this.service.ResetPassword(item.id)
+      .then(result=>{alert("重置密码成功");item.isRequest=false;})
+      .catch(result=>{alert(result);item.isRequest=false;});
   }
 
     onSelectedCahngeForRoleItem(values){
-      // alert(JSON.stringify(values))
+       this.userModel.roleIds.push(values);
     } 
 
     onSelectedChangeForPosition(values){
-      // alert(JSON.stringify(values))
+      this.userModel.positionIds.push(values);
     }
 
 
