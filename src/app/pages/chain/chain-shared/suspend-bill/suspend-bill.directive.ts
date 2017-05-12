@@ -15,6 +15,8 @@ export class SuspendBillDirective implements OnInit {
   private columns: Array<SuspendBillColumn>;
   @Output()
   private onSelect = new EventEmitter<SuspendedBillItem>();
+  @Output()
+  private onRemove: EventEmitter<SuspendedBillItem> = new EventEmitter<SuspendedBillItem>();
 
   private selectedItem: SuspendedBillItem;
   private component: SuspendBillComponent;
@@ -38,6 +40,7 @@ export class SuspendBillDirective implements OnInit {
       if (this.selectedItem && this.selectedItem.id === m.id) {
         this.selectedItem = null;
       }
+      this.onRemove.emit(m);
     })
   }
 
