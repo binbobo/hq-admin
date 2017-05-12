@@ -127,6 +127,19 @@ export class OrderService implements BasicService<Order> {
         return this.httpService
             .get<PagedResult<any>>(url, search);
     }
+
+      /**
+  * 添加维修项目
+  * 
+  * @memberof OrderService
+  */
+    createMaintenanceItem(body: any): Promise<any> {
+        const url = Urls.chain.concat('/Services');
+        return this.httpService
+            .post<ApiResult<Order>>(url, body)
+            .then(m => m.data)
+            .catch(err => Promise.reject(`添加维修工项失败：${err}`));
+    }
     /**
   * 根据车型模糊查询车辆信息
   * 
@@ -167,7 +180,7 @@ export class OrderService implements BasicService<Order> {
                             customer.name,
                             customer.phone,
                             vehicle.series,
-                            vehicle.model,
+                            vehicle.vehicleName,
                             vehicle.brand,
                             vehicle.mileage,
                             vehicle.purchaseDate,
@@ -182,85 +195,18 @@ export class OrderService implements BasicService<Order> {
     }
 
     /**
-    * 根据车型模糊查询车辆信息
-    * @param {string} token
-    * @returns {Observable<Vehicle[]>}
-    * @memberOf OrderService
-    */
-    // getVehicleByModel(vehicleName: string, brandId: string, seriesId: string): Observable<Vehicle[]> {
-    //     const url = Urls.chain.concat('/Vehicles/search');
-    //     // console.log('根据车型模糊查询车辆信息参数', vehicleName, brandId, seriesId);
-    //     return this.httpService
-    //         .request(url, {
-    //             params: {
-    //                 'vehicleName': vehicleName,
-    //                 'brandId': brandId,
-    //                 'seriesId': seriesId
-    //             }
-    //         })
-    //         .map(response => {
-    //             console.log('根据车型模糊查询车辆信息：', response.json().data);
-    //             return response.json().data as Vehicle[];
-    //         });
-    // }
-
-    /**
-    * 根据车型模糊查询车辆信息
-    * @param {string} token
-    * @returns {Observable<Vehicle[]>}
-    * @memberOf OrderService
-    // */
-    // getVehicleByBrand(brandName: string): Observable<Vehicle[]> {
-    //     const url = Urls.chain.concat('/Brands/search');
-    //     console.log('根据品牌模糊查询车辆信息brandName:', brandName);
-    //     return this.httpService
-    //         .request(url, {
-    //             params: {
-    //                 'brandName': brandName
-    //             }
-    //         })
-    //         .map(response => {
-    //             console.log('根据品牌模糊查询车辆信息：', response.json().data);
-    //             return response.json().data as Vehicle[];
-    //         });
-    // }
-
-    /**
-    * 根据车型模糊查询车辆信息
-    * @param {string} token
-    * @returns {Observable<Vehicle[]>}
-    * @memberOf OrderService
-    */
-    // getVehicleBySerias(serieName: string, brandId: string): Observable<Vehicle[]> {
-    //     const url = Urls.chain.concat('/VehicleSeries/search');
-    //     return this.httpService
-    //         .request(url, {
-    //             params: {
-    //                 'serieName': serieName,
-    //                 'brandId': brandId
-    //             }
-    //         })
-    //         .map(response => {
-    //             console.log('根据车系模糊查询车辆信息：', response.json().data);
-    //             return response.json().data as Vehicle[];
-    //         });
-    // }
-
-    /**
   *  根据客户车辆id查询上一次工单信息
   * @param {string} id 
   * @returns {Observable<CustomerVehicle[]>}
   * @memberOf OrderService
   */
-    getLastOrderInfo(id: string): Observable<Order[]> {
-        const url = Urls.chain.concat('/Maintenances/search/last/' + id);
+    getLastOrderInfo(id: string): Promise<any> {
+        const url = Urls.chain.concat('/Maintenances/search/last/', id);
         return this.httpService
-            .request(url)
-            .map(response => {
-                console.log('根据客户车辆id查询上一次工单信息：', response.json().data);
-                // 每个车主下面可能有多个车辆信息
-                return response.json().data as Order[];
-            });
+            .get<ApiResult<any>>(url)
+            .then(result => result.data)
+            .then(data => data || Promise.reject('获取数据无效！'))
+            .catch(err => Promise.reject(`获取上次工单记录失败：${err}`));
     }
 
     /**
@@ -338,70 +284,6 @@ export class OrderService implements BasicService<Order> {
             put<void>(url, body)
             .catch(err => Promise.reject(`更新菜单失败：${err}`));
     }
-
-    /**
-     * 
-     * 挂单服务
-     * @param {*} body 
-     * @returns {Promise<any>} 
-     * 
-     * @memberof OrderService
-     */
-    public suspend(body: any): Promise<any> {
-        const url = Urls.chain.concat('/SuspendedBills');
-        return this.httpService
-            .post<ApiResult<any>>(url, body)
-            .then(m => m.data)
-            .catch(err => Promise.reject(`挂起工单失败：${err}`));
-    }
-
-    /**
-    * 获取挂起的工单列表
-    * @memberOf OrderService
-    */
-    getSuspendedOrders(): Observable<any[]> {
-        const url = Urls.chain.concat('/SuspendedBills/GetAll');
-        return this.httpService
-            .request(url, {
-                params: {
-                    type: '01'
-                }
-            })
-            .map(response => {
-                // console.log('查询挂单列表数据：', response.json().data);
-                return response.json().data as any[];
-            });
-    }
-
-
-    /**
-     * 
-     * @param body 更新挂单信息
-     */
-    public updateSuspendOrder(body: any): Promise<void> {
-        const url = Urls.chain.concat('/SuspendedBills/', body.suspendedBillId);
-        console.log('更新挂单信息请求url: ', url);
-        return this.httpService.
-            put<void>(url, body)
-            .catch(err => Promise.reject(`更新挂单失败失败：${err}`));
-    }
-
-    /**
-     * 根据id, 删除挂单记录
-     * 
-     * @param {string} id 
-     * @returns {Promise<void>} 
-     * 
-     * @memberof OrderService
-     */
-    public deleteSuspendOrder(id: string): Promise<void> {
-        const url = Urls.chain.concat('/SuspendedBills/', id);
-        console.log('根据id删除挂掉记录请求url:', url);
-        return this.httpService
-            .delete(url)
-            .catch(err => Promise.reject(`删除挂单记录失败：${err}`));
-    }
-
 
     /**
      * 创建工单服务
@@ -541,7 +423,7 @@ export class CustomerVehicle {
         public customerName: string = '', // 车主
         public phone: string = '', // 车主电话
         public series: string = '', // 车系
-        public model: string = '', // 车型
+        public vehicleName: string = '', // 车型
         public brand: string = '', // 品牌
         public mileage: string = '', // 行驶里程
         public purchaseDate: Date = null, // 购车时间
