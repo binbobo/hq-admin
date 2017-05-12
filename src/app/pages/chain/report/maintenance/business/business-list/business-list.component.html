@@ -1,41 +1,118 @@
-<!--<ng-template hq-alerter></ng-template>
-<div class="card">
+<ng-template hq-alerter></ng-template>
+<div class="card business">
   <div class="card-header">维修历史</div>
   <div class="card-block">
     <form (ngSubmit)="onSearch()">
       <div class="form-group row">
-        <label for="plateNo">车牌号：</label>
-        <div class="col-sm-2">
-          <input type="text" class="form-control form-control-sm" id="carnumber" formControlName="carnumber" placeholder="车牌号">
+        <label for="plateNo" class="col-form-label margin-l">车牌号：</label>
+        <div class="col-2">
+          <input type="text" class="form-control" id="carnumber" placeholder="车牌号">
         </div>
-        <label for="enterTime">进店时间：</label>
-        <div class="col-sm-2">
-          <input class="form-control form-control-sm datetime-picker" id="starttime" formControlName="enterStartTime"
-            type="text" ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
+        <label for="enterTime" class="col-form-label margin-l">进店时间：</label>
+        <div class="col-3">
+          <input class="form-control datetime-picker" id="starttime" type="text" ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true"
+          />
         </div>
-        至：
-        <div class="col-sm-2">
-          <input class="form-control form-control-sm datetime-picker" id="endtime" formControlName="enterEndTime"
-            type="text" ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
-        </div>
-        <label for="leaveTime">出厂时间：</label>
-        <div class="col-sm-2">
-          <input class="form-control form-control-sm datetime-picker" id="starttime" formControlName="leaveStartTime"
-            type="text" ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
-        </div>
-        至：
-        <div class="col-sm-2">
-          <input class="form-control form-control-sm datetime-picker" id="endtime" formControlName="leaveEndTime"
-            type="text" ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
-        </div>
-        <div class="col-sm-2">
-          <label for="orgName">查询范围：</label>
-          <select name="orgName" id="orgName">
-            <option></option>
-          </select>
+        <label class="col-form-label">至：</label>
+        <div class="col-3">
+          <input class="form-control datetime-picker" id="endtime" type="text" ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true"
+          />
         </div>
       </div>
-      <div class="col-sm-2"></div>
+      <div class="form-group row">
+        <label for="leaveTime" class="col-form-label margin-l">出厂时间：</label>
+        <div class="col-3">
+          <input class="form-control datetime-picker" id="starttime" type="text" ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true"
+          />
+        </div>
+        <label class="col-form-label">至：</label>
+        <div class="col-3">
+          <input class="form-control datetime-picker" id="endtime" type="text" ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true"
+          />
+        </div>
+        <label *ngIf="isShow" for="orgName" class="col-form-label margin-l">查询范围：</label>
+        <select *ngIf="isShow" name="orgName" id="orgName" class="form-control col-2">
+            <option value="1">总店的</option>
+          </select>
+        <div class="col-1">
+          <button type="submit" class="btn btn-primary">查询</button>
+        </div>
+      </div>
     </form>
+    <hr>
+    <h5>温馨提示：系统找到该车辆在本店维修过<span class="color">2</span>次</h5>
+    <hr>
+    <table class="table table-responsive table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>操作</th>
+          <th>维修类型</th>
+          <th>工单号</th>
+          <th>进店时间</th>
+          <th>预计交车时间</th>
+          <th>超时</th>
+          <th>服务顾问</th>
+          <th>品牌</th>
+          <th>车型</th>
+          <th>VIN</th>
+          <th>车牌号</th>
+          <th>行驶里程</th>
+          <th>购车时间</th>
+          <th>车主</th>
+          <th>送修人</th>
+          <th>送修人电话</th>
+          <th>介绍人</th>
+          <th>介绍人电话</th>
+          <th>维修技师</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td width="75">
+            <a href="javascript:void(0)" (click)="bdModal.show()">详情</a>
+          </td>
+          <td>12</td>
+          <td>123</td>
+          <td>123</td>
+          <td>123</td>
+          <td>13</td>
+          <td>13</td>
+          <td>132</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+      <tfoot *ngIf="list?.length <= 0">
+        <tr>
+          <td colspan="19">查询结果为空</td>
+        </tr>
+      </tfoot>
+    </table>
   </div>
-</div>-->
+  <div class="card-footer">
+    <button type="button" class="btn btn-secondary">导出</button>
+  </div>
+</div>
+
+<div class="modal fade" bsModal #bdModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <p class="modal-title mg">维修历史</p>
+        <button class="close pull-right" (click)="bdModal.hide()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <hq-business-detail></hq-business-detail>
+      </div>
+    </div>
+  </div>
+</div>
