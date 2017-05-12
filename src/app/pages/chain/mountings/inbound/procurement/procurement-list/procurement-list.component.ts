@@ -57,7 +57,7 @@ export class ProcurementListComponent implements OnInit {
   private get providerColumns() {
     return [
       { name: 'code', title: '代码' },
-      { name: 'name', title: '名称' },
+      { name: 'name', title: '名称', weight: 1 },
       { name: 'contactUser', title: '联系人' },
     ];
   }
