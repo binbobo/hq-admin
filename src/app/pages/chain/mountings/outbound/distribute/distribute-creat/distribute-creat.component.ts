@@ -31,7 +31,7 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
     private formBuilder: FormBuilder,
     private moutingsService: MountingsService,
   ) {
-
+  
   }
 
   ngOnInit() {
@@ -56,8 +56,8 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
     console.log(creatAry)
     this.model.createUserName = creatAry[0].name;
     this.model.createUser = creatAry[0].id;
-    console.log(this.model,this.form.value)
-    this.form.value["createUserName"]=this.model.createUserName;
+    console.log(this.model, this.form.value)
+    this.form.value["createUserName"] = this.model.createUserName;
 
   }
 
@@ -86,7 +86,7 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
   }
 
   public onSubmit(event: Event) {
-    Object.assign(this.form.value,this.model);
+    Object.assign(this.form.value, this.model);
     console.log(this.model);
     console.log(this.form.value)
     let invalid = this.controls
@@ -120,7 +120,7 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
   }
 
   public onPriceChange(evt) {
-    //evt.preventDefault();
+    // evt.preventDefault();
     let price = evt.target.value || 0;
     this.model.price = price * 100;
     this.model.amount = (this.model.price) * (this.model.count);
@@ -157,8 +157,8 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
     this.form.patchValue(item);
     this.form.controls['price'].setValidators(CustomValidators.gte(item.price));
     this.calculate();
-    Object.assign(this.form.value,this.model);
-    console.log(this.model,this.form.value)
+    Object.assign(this.form.value, this.model);
+    console.log(this.model, this.form.value)
   }
 
   public get codeSource() {

@@ -2,6 +2,7 @@ table th,table td{
      text-overflow:ellipsis; 
      white-space:nowrap; 
      overflow:hidden;
+     text-align: center;
 }
 .append-order .container .row{
     height: 50px;

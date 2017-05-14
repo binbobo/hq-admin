@@ -15,6 +15,8 @@ import { SuspendBillDirective } from "app/pages/chain/chain-shared";
   providers: [DistributeService]
 })
 export class DistributeComponent implements OnInit {
+  suspendedBillId: any;
+  numberPrintList: any;
   @ViewChild('createModal')
   private createModal: ModalDirective;
   @ViewChild(HqAlerter)
@@ -23,7 +25,6 @@ export class DistributeComponent implements OnInit {
   private suspendBill: SuspendBillDirective;
   employeesData: any;
   maintenanceEmployees: any;
-  isableAppend = false;
   isablePrint = false;
   printId: any;
   billCode: any;
@@ -40,11 +41,8 @@ export class DistributeComponent implements OnInit {
     protected service: DistributeService,
     private fb: FormBuilder) {
 
-
-
   }
   ngOnInit() {
-
   }
 
   private orderDetail: any;
@@ -62,16 +60,20 @@ export class DistributeComponent implements OnInit {
   // 选择之后根据id查找工单详情并替换数据
   initCreatName: any;
   initCreatId: any;
+  customerName: any;
   public onPlateNoSelect($event) {
     this.newMainData = [];
     this.SearchappendList = $event;
     this.listId = $event.id;
     this.billCode = $event.billCode;
+    this.customerName = $event.customerName;
+    this.suspendData = $event;
     this.service.getOrderItemData(this.listId)
       .then(data => {
         console.log(data)
         this.orderDetail = data
         this.serviceData = data.serviceOutputs;
+        this.suspendData.serviceData = this.serviceData;
         this.productData = data.productOutputs;
         this.employeesData = data.maintenanceEmployees;
         // 去重
@@ -85,11 +87,11 @@ export class DistributeComponent implements OnInit {
     // 根据工单号获取流水号列表
     this.service.getMainList(this.billCode).toPromise()
       .then(data => {
-        console.log(data);
         this.serialData = data;
         this.serialData.sort((a, b) => {
           return a.serialNum - b.serialNum
-        })
+        });
+        this.suspendData.serialData = this.serialData;
         this.numberList = data.map(item => {
           return {
             value: item.serialNum,
@@ -99,6 +101,11 @@ export class DistributeComponent implements OnInit {
         this.numberList.sort((a, b) => {
           return a.value - b.value
         });
+        var hashNumber = {};
+        this.numberPrintList = this.numberList.reduce(function (item, next) {
+          hashNumber[next.text] ? '' : hashNumber[next.text] = true && item.push(next);
+          return item
+        }, [])
 
       })
 
@@ -134,18 +141,27 @@ export class DistributeComponent implements OnInit {
     this.InputData = { ...this.InputData };
     this.createModal.show();
   }
-  private billData: any;
   // 生成发料单
   private billReturnData: any;
+
+
+
+  billData: any;
   OnCreatBill() {
     this.billData = {
       billCode: this.billCode,
       billId: this.listId,
+      suspendedBillId: this.suspendedBillId,
       list: this.newMainData
     }
+    let el = event.target as HTMLButtonElement;
+    el.disabled = true;
+    console.log(this.billData);
     let postData = JSON.stringify(this.billData)
     console.log(postData);
     this.service.postBill(postData).then((result) => {
+      el.disabled = false;
+      this.suspendBill.refresh();
       this.alerter.info('生成发料单成功', true, 2000);
       this.isablePrint = true;
       this.billReturnData = result.data;
@@ -167,7 +183,7 @@ export class DistributeComponent implements OnInit {
         return a.value - b.value
       });
       var hashNumber = {};
-      this.numberList = this.numberList.reduce(function (item, next) {
+      this.numberPrintList = this.numberList.reduce(function (item, next) {
         hashNumber[next.text] ? '' : hashNumber[next.text] = true && item.push(next);
         return item
       }, [])
@@ -191,17 +207,22 @@ export class DistributeComponent implements OnInit {
   onCreate(evt) {
     console.log(evt);
     evt.amount = evt.amount * 100;
-    this.newMainData.push(evt)
-    this.createModal.hide();
-    if (this.newMainData.length > 0) {
-      this.isableAppend = true;
+    if (this.newMainData) {
+      this.newMainData = this.newMainData;
+    } else {
+      this.newMainData = []
     }
+    this.newMainData.push(evt)
+    this.suspendData.newMainData = this.newMainData;
+    this.createModal.hide();
   }
 
   onDelCreat(i) {
     this.newMainData.splice(i, 1);
+    this.suspendData.newMainData = this.newMainData;
   }
   SerialNumsList: any;
+
   printUrlData = {
     listId: "",
     billCode: "",
@@ -222,25 +243,50 @@ export class DistributeComponent implements OnInit {
       { name: 'plateNo', title: '车牌号' },
     ]
   }
-
-  onSuspendSelect(item: { id: string, value: any }) {
-
+  // 挂单数据
+  private suspendData = {
+    billCode: this.billCode,
+    billId: this.listId,
+    newMainData: this.newMainData,
+    serviceData: this.serviceData,
+    serialData: this.serialData,
+    customerName: this.customerName,
   }
+  private sunspendRequest: any;
+  onSuspendSelect(item) {
+    console.log(item)
+    this.sunspendRequest = JSON.parse(item.data);
+    this.billCode = this.sunspendRequest["billCode"]
+    this.listId = this.sunspendRequest["id"];
+    this.orderDetail = this.sunspendRequest;
+    this.newMainData = this.sunspendRequest["newMainData"];
+    this.serviceData = this.sunspendRequest["serviceData"];
+    this.serialData = this.sunspendRequest["serialData"];
+    this.employeesData = this.sunspendRequest["maintenanceEmployees"];
+    // 去重
+    var hash = {};
+    this.InputData.employeesData = this.employeesData.reduce(function (item, next) {
+      hash[next.name] ? '' : hash[next.name] = true && item.push(next);
+      return item
+    }, [])
+    this.suspendedBillId = item.id;
+  }
+
   suspend(event: Event) {
-    if (!this.billData.billCode) {
+
+
+    if (this.sunspendRequest) {
+      Object.assign(this.suspendData, this.sunspendRequest);
+    }
+    console.log(this.suspendData)
+    if (!this.suspendData.billCode) {
       alert('请选择工单');
       return false;
     }
 
-    this.billData = {
-      billCode: this.billCode,
-      billId: this.listId,
-      list: this.newMainData
-    }
-
     let el = event.target as HTMLButtonElement;
     el.disabled = true;
-    this.suspendBill.suspend(this.billData)
+    this.suspendBill.suspend(this.suspendData)
       .then(() => el.disabled = false)
       .then(() => this.suspendBill.refresh())
       .then(() => this.alerter.success('挂单成功！'))

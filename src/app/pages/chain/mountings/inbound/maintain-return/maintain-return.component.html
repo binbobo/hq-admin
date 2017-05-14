@@ -1,7 +1,8 @@
+<ng-template hq-alerter></ng-template>
 <div class="maintain card">
   <div class="card-header">
     <span>维修退料</span>
-    <input container="body" type="text" value="我的挂单" readonly placement="bottom" class="pull-right btn btn-sm textInputBtn" style="margin-right: 55px;">
+       <ng-template hqSuspendBill="MR" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
   <div class='card-block'>
     <div class="container">
@@ -28,7 +29,7 @@
 
     <!--维修项目-->
     <div class="tab-title">维修项目</div>
-    <table class="table   table-striped table-bordered">
+    <table class="table  table-responsive  table-striped table-bordered">
       <thead>
         <tr>
           <th>序号</th>
@@ -45,50 +46,8 @@
       </tbody>
     </table>
 
-    <!--维修退料-->
     <div class="tab-title">维修退料</div>
-    <table *ngIf="newMainData.length>0" class="table table-responsive table-striped table-borderd">
-      <thead>
-        <tr>
-          <th>序号</th>
-          <th>维修项目</th>
-          <th>品牌</th>
-          <th>配件编码</th>
-          <th>配件名称</th>
-          <th>规格型号</th>
-          <th>车型</th>
-          <th>仓库</th>
-          <th>库位</th>
-          <th>数量（个）</th>
-          <th>单价（元/个）</th>
-          <th>金额（元）</th>
-          <th>备注</th>
-          <th>退料人</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let ele of newMainData;let i=index">
-          <td>{{i+1}}</td>
-          <td>{{ele.serviceName}}</td>
-          <td>{{ele.brandName}}</td>
-          <td>{{ele.productCode}}</td>
-          <td>{{ele.productName }}</td>
-          <td>{{ele.productSpecification}}</td>
-          <td>{{ele.vihicleName}}</td>
-          <td>{{ele.storeName}}</td>
-          <td>{{ele.locationName}}</td>
-          <td>{{ele.count}}</td>
-          <td>{{ele.price|centToYuan}}</td>
-          <td>{{ele.amount|centToYuan}}</td>
-          <td>{{ele.description}}</td>
-          <td>{{ele.createUserName}}</td>
-          <td><button class="btn" (click)="onDelCreat(i)">删除</button></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <table *ngIf="serialData" class="table table-responsive table-striped table-bordered">
+    <table class="table table-responsive table-striped table-bordered">
       <thead>
         <tr>
           <th>流水号</th>
@@ -104,7 +63,7 @@
           <th>*数量（个）</th>
           <th>单价（元/个）</th>
           <th>金额（元）</th>
-          <th>备注</th>
+          <!--<th>备注</th>-->
           <th>领料人</th>
           <th>操作</th>
         </tr>
@@ -124,15 +83,58 @@
           <td>{{ele.count}}</td>
           <td>{{ele.price|centToYuan}}</td>
           <td>{{ele.amount|centToYuan}}</td>
-          <td>{{ele.description}}</td>
+          <!--<td>{{ele.description}}</td>-->
           <td>{{ele.takeUser}}</td>
           <td><button class="btn btn-primary" (click)="OnCreatBound(item)">退料</button></td>
+      </tbody>
+    </table>
+
+    <!--维修退料-->
+    <div class="tab-title">新增维修退料</div>
+    <table class="table table-responsive table-striped table-borderd">
+      <thead>
+        <tr>
+          <th>序号</th>
+          <th>维修项目</th>
+          <th>品牌</th>
+          <th>配件编码</th>
+          <th>配件名称</th>
+          <th>规格型号</th>
+          <th>车型</th>
+          <th>仓库</th>
+          <th>库位</th>
+          <th>数量（个）</th>
+          <th>单价（元/个）</th>
+          <th>金额（元）</th>
+          <!--<th>备注</th>-->
+          <th>退料人</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ele of newMainData;let i=index">
+          <td>{{i+1}}</td>
+          <td>{{ele.serviceName}}</td>
+          <td>{{ele.brandName}}</td>
+          <td>{{ele.productCode}}</td>
+          <td>{{ele.productName }}</td>
+          <td>{{ele.productSpecification}}</td>
+          <td>{{ele.vihicleName}}</td>
+          <td>{{ele.storeName}}</td>
+          <td>{{ele.locationName}}</td>
+          <td>-{{ele.count}}</td>
+          <td>{{ele.price|centToYuan}}</td>
+          <td>{{ele.amount|centToYuan}}</td>
+          <!--<td>{{ele.description}}</td>-->
+          <td>{{ele.createUserName}}</td>
+          <td><button class="btn" (click)="onDelCreat(i)">删除</button></td>
+        </tr>
       </tbody>
     </table>
   </div>
   <!--提交按钮-->
   <div class="card-footer text-muted">
-    <button class="btn btn-primary" [disabled]="!isableAppend" (click)="OnCreatBill()">生成退料单</button>
+    <button class="btn btn-primary" (click)="OnCreatReturnBill()">生成退料单</button>
     <button class="btn btn-secondary" (click)="finishedOrder($event,  confirmModal)">取消</button>
     <button class="btn btn-success" (click)="suspend()">挂单</button>
     <button class="btn btn-secondary " options="printOptions" (onConfirm)="onConfirmTechnicians($event)" [hqMutilSelect]="maintenanceTechnicians"
@@ -170,7 +172,7 @@
         <button class="close pull-right" (click)="createModal.hide()">&times;</button>
       </div>
       <div class="modal-body">
-        <hq-maintain-creat [inputData]="inputData" (formSubmit)="onCreate($event)"></hq-maintain-creat>
+        <hq-maintain-creat *ngIf="isShowCreat" [inputData]="inputData" (formSubmit)="onCreate($event)"></hq-maintain-creat>
       </div>
     </div>
   </div>
