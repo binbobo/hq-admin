@@ -2,7 +2,7 @@
 <div class="card">
   <div class="card-header">
     <span> 创建工单</span>
-    <ng-template hqSuspendBill="MW" onRemove="onSuspendedBillRemove($event)" (onSelect)="onSuspendedBillSelect($event)" [columns]="typeaheadColumns"></ng-template>
+    <ng-template hqSuspendBill="MW" (onRemove)="onSuspendedBillRemove($event)" (onSelect)="onSuspendedBillSelect($event)" [columns]="typeaheadColumns"></ng-template>
   </div>
   <!--填写工单信息表单-->
   <div class="card-block">
@@ -45,7 +45,7 @@
         <label for="series" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车系</label>
         <div class="col-2">
           <input hqError="车系" [hqTableTypeahead]="seriesTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onSeriesSelect($event)"
-            type="text" class="form-control" formControlName="series" id="series" placeholder="输入 奥迪/大众  测试">
+            type="text" class="form-control" formControlName="series" id="series" placeholder="输入 奥 迪/大众  测试">
           <!--车系id-->
           <input type="hidden" formControlName="seriesId" />
         </div>
@@ -67,7 +67,7 @@
         </div>
         <label for="expectLeave" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>预计交车时间</label>
         <div class=" col-2">
-          <input hqError="预计交车时间" class="form-controldatetime-picker" type="text" formControlName="expectLeave" ngui-datetime-picker
+          <input hqError="预计交车时间" class="form-control datetime-picker" type="text" formControlName="expectLeave" ngui-datetime-picker
             date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' />
         </div>
         <label for="contactUser" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>送修人</label>
