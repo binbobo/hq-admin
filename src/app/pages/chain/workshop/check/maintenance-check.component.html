@@ -15,7 +15,7 @@
       <div class="form-group">
         <div class="form-check form-check-inline" *ngFor="let type of maintenanceCheckTypes">
           <label class="form-check-label mr-2">
-            <input class="form-check-input" (change)='type.checked = !type.checked' [checked]="type.checked"  type="checkbox" value="{{type.id}}"> {{type.value}}
+            <input class="form-check-input" (change)='onStatusChange(type)' [checked]="type.checked"  type="checkbox" value="{{type.id}}"> {{type.value}}
           </label>
         </div>
       </div>
