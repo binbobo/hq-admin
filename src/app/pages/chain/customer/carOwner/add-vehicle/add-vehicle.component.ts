@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TypeaheadRequestParams } from 'app/shared/directives';
 import { VehicleBrandSearchRequest, VehicleSeriesSearchRequest, VehicleSearchRequest, OrderService } from '../../../reception/order.service';
 
@@ -51,20 +51,21 @@ export class AddVehicleComponent implements OnInit {
     // 设置当前选择的车系id
     console.log('当前选择的车型', evt);
     this.vehicleForm.controls.vehicleId.setValue(evt.id);
+    this.vehicleForm.controls.vehicleName.setValue(evt.name);
   }
 
   createForm() {
     // 添加车主表单
     this.vehicleForm = this.fb.group({
-      plateNo: '',
-      brand: '',
+      plateNo: ['', [Validators.required]],
+      brand: ['', [Validators.required]], // 品牌
+      series: [{ value: '', disabled: true }, [Validators.required]], // 车系
+      vehicleName: [{ value: '', disabled: true }, [Validators.required]], // 车型
       brandId: '',
-      series: '',
       seriesId: '',
-      vehicleName: '',
       vehicleId: '',
       engineNo: '',
-      vin: '',
+      vin: ['', [Validators.required]],
       vehicleColor: '',
       purchaseDate: '',
       validate: '',
@@ -76,6 +77,31 @@ export class AddVehicleComponent implements OnInit {
     this.vehicleForm.valueChanges.subscribe(data => {
       // 只有表单域合法 保存车主按钮才可用
       this.enableSaveVehicle = this.vehicleForm.valid;
+    });
+
+    // 品牌表单域值改变事件监听
+    this.vehicleForm.controls.brand.valueChanges.subscribe((newValue) => {
+      // 设置当前选择的品牌id为null
+      this.vehicleForm.controls.brandId.reset();
+      // 设置当前选择的车系id为null
+      this.vehicleForm.controls.seriesId.reset();
+
+      this.vehicleForm.controls.series.reset();
+      this.vehicleForm.controls.vehicleName.reset();
+      this.vehicleForm.controls.series.disable();
+      this.vehicleForm.controls.vehicleName.disable();
+    });
+    // 车系表单域值改变事件监听
+    this.vehicleForm.controls.series.valueChanges.subscribe((newValue) => {
+      // 设置当前选择的车系id为null
+      this.vehicleForm.controls.seriesId.reset();
+
+      this.vehicleForm.controls.vehicleName.reset();
+      this.vehicleForm.controls.vehicleName.disable();
+    });
+    // 车型表单域值改变事件监听
+    this.vehicleForm.controls.vehicleName.valueChanges.subscribe((newValue) => {
+      this.vehicleForm.controls.vehicleId.reset();
     });
   }
 

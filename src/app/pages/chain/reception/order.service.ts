@@ -328,7 +328,7 @@ export class OrderListRequest extends PagedParams {
         public contactInfo?: string, // 送修人电话
         public brand?: string, // 品牌
         public series?: string, // 车系
-        public model?: string, // 车型
+        public vehicleName?: string, // 车型
         public billCode?: string, // 工单号
         public createdUserName?: string, // 服务顾问
         public type?: string, // 维修类型

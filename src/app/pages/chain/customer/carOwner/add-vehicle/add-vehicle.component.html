@@ -2,31 +2,31 @@
   <div class="form-group row">
     <div class="col-4">
       <label for="plateNo" class="col-form-label"><span class="asterisk mr-1">*</span>车牌号</label>
-      <input type="text" required class="form-control" formControlName="plateNo" placeholder="车牌号">
+      <input type="text" hqError="车品号" class="form-control" formControlName="plateNo" placeholder="车牌号">
     </div>
     <div class="col-4">
       <label for="brand" class="col-form-label"><span class="asterisk mr-1">*</span>品牌</label>
-      <input [hqTableTypeahead]="brandTypeaheadSource" [columns]="vehicleTypeaheadColumns" (onSelect)="onBrandSelect($event)" formControlName="brand"
-        type="text" class="form-control" required>
+      <input hqError="品牌" [hqTableTypeahead]="brandTypeaheadSource" [columns]="vehicleTypeaheadColumns" (onSelect)="onBrandSelect($event)" formControlName="brand"
+        type="text" class="form-control">
       <input type="hidden" formControlName="brandId" class="form-control">
     </div>
     <div class="col-4">
       <label for="series" class="col-form-label"><span class="asterisk mr-1">*</span>车系</label>
-      <input [hqTableTypeahead]="seriesTypeaheadSource" [columns]="vehicleTypeaheadColumns" (onSelect)="onSeriesSelect($event)"
-        formControlName="series" type="text" class="form-control" required>
+      <input hqError="车系" [hqTableTypeahead]="seriesTypeaheadSource" [columns]="vehicleTypeaheadColumns" (onSelect)="onSeriesSelect($event)"
+        formControlName="series" type="text" class="form-control">
       <input type="hidden" formControlName="seriesId" class="form-control">
     </div>
   </div>
   <div class="form-group row">
     <div class="col-4">
       <label for="vehicleName" class="col-form-label"><span class="asterisk mr-1">*</span>车型</label>
-      <input [hqTableTypeahead]="modelTypeaheadSource" [columns]="vehicleTypeaheadColumns" (onSelect)="onModelSelect($event)" formControlName="vehicleName"
-        type="text" class="form-control" required>
+      <input hqError="车型" [hqTableTypeahead]="modelTypeaheadSource" [columns]="vehicleTypeaheadColumns" (onSelect)="onModelSelect($event)" formControlName="vehicleName"
+        type="text" class="form-control">
       <input type="hidden" formControlName="vehicleId" class="form-control">
     </div>
     <div class="col-4">
       <label for="vin" class="col-form-label"><span class="asterisk mr-1">*</span>vin</label>
-      <input type="text" required class="form-control" formControlName="vin" id="vin" placeholder="vin">
+      <input hqError="vin" type="text" class="form-control" formControlName="vin" id="vin" placeholder="vin">
     </div>
     <div class="col-4">
       <label for="engineNo" class="col-form-label">发动机号</label>

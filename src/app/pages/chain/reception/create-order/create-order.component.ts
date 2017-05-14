@@ -141,25 +141,41 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   // 根据车牌号， 车主， vin 自动带出客户车辆信息
   loadLastOrderInfo(lastOrder) {
-    // 格式化日期
-    lastOrder.expectLeave = moment(lastOrder.expectLeave).format('YYYY-MM-DD hh:mm:ss');
-    lastOrder.lastEnter = moment(lastOrder.lastEnter).format('YYYY-MM-DD hh:mm:ss');
-    lastOrder.createdOnUtc = moment(lastOrder.createdOnUtc).format('YYYY-MM-DD hh:mm:ss');
-    lastOrder.nextDate = moment(lastOrder.nextDate).format('YYYY-MM-DD');
-    lastOrder.validate = moment(lastOrder.validate).format('YYYY-MM-DD');
-
-    this.workSheetForm.patchValue(lastOrder);
-
+    // 加载上次工单信息
+    this.workSheetForm.patchValue({
+      type: lastOrder.type,
+      contactUser: lastOrder.contactUser,
+      contactInfo: lastOrder.contactInfo,
+      mileage: lastOrder.mileage,
+      introducer: lastOrder.introducer,
+      introintroPhoneducer: lastOrder.introPhone,
+      validate: moment(lastOrder.validate).format('YYYY-MM-DD'),
+      location: lastOrder.location,
+      lastEnter: moment(lastOrder.lastEnter).format('YYYY-MM-DD hh:mm:ss'),
+      lastMileage: lastOrder.lastMileage,
+    });
     // 设置选择为true
     this.isSelected = true;
   }
 
   // 根据车牌号， 车主， vin 自动带出客户车辆信息
   loadCustomerVehicleInfo(customerVehicle) {
-    // 记录当前选择的客户车辆记录
-    // console.log('模糊查询后, 当前选中的客户车俩信息为:', customerVehicle);
+    // 加载客户车辆信息
+    this.workSheetForm.patchValue({
+      plateNo: customerVehicle.plateNo,
+      customerName: customerVehicle.customerName,
+      phone: customerVehicle.phone,
+      vin: customerVehicle.vin,
+      brand: customerVehicle.brand,
+      brandId: customerVehicle.brandId,
+      series: customerVehicle.series,
+      seriesId: customerVehicle.seriesId,
+      vehicleName: customerVehicle.vehicleName,
+      vehicleId: customerVehicle.vehicleId,
 
-    this.workSheetForm.patchValue(customerVehicle);
+      customerVehicleId: customerVehicle.id,
+      customerId: customerVehicle.customerId,
+    });
   }
 
   /**
@@ -186,20 +202,20 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.workSheetForm.controls.plateNo.enable();
     this.workSheetForm.controls.customerName.enable();
     this.workSheetForm.controls.phone.enable();
+    this.workSheetForm.controls.vin.enable();
     this.workSheetForm.controls.brand.enable();
     this.workSheetForm.controls.series.enable();
     this.workSheetForm.controls.vehicleName.enable();
-    this.workSheetForm.controls.vin.enable();
   }
   // 客户车辆相关输入框不可用
   disableCustomerVehicleField() {
     this.workSheetForm.controls.plateNo.disable();
     this.workSheetForm.controls.customerName.disable();
     this.workSheetForm.controls.phone.disable();
+    this.workSheetForm.controls.vin.disable();
     this.workSheetForm.controls.brand.disable();
     this.workSheetForm.controls.series.disable();
     this.workSheetForm.controls.vehicleName.disable();
-    this.workSheetForm.controls.vin.disable();
   }
 
   // 点击新增维修项目按钮 处理程序
@@ -314,6 +330,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 获取当前录入的工单数据
     const workSheet = this.getEdittingOrder();
 
+    console.log('提交的挂掉对象为：', JSON.stringify(workSheet));
+
     this.suspendBill.suspend(workSheet)
       .then(() => this.suspendBill.refresh())
       .then(() => {
@@ -422,7 +440,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   createForm() {
     this.workSheetForm = this.fb.group({
-      billCode: '', // 工单号
+      // billCode: '', // 工单号
       customerName: ['', [Validators.required]], // 车主
       phone: [''], // 车主电话
       createdOnUtc: [{ value: moment().format('YYYY-MM-DD hh:mm:ss'), disabled: true }], // 进店时间 / 开单时间
@@ -529,8 +547,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   private getEdittingOrder() {
     // 组织接口参数
 
-    // 1.表单基础数据
-    const workSheet = this.workSheetForm.value;
+    // 1.表单基础数据  getRawValue获取表单所有数据  包括disabled (value属性不能获取disabled表单域值)
+    const workSheet = this.workSheetForm.getRawValue();
     // 2.新增维修项目数据 this.newMaintenanceItemData
     workSheet.maintenanceItems = this.newMaintenanceItemData2;
 

@@ -51,9 +51,14 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
     // 初始化维修验收类型数据
     this.service.getMaintenanceCheckTypes()
       .subscribe(data => {
-        this.maintenanceCheckTypes = data;
+        this.maintenanceCheckTypes = [{
+          id: 'all',
+          value: '全部'
+        }].concat(data);
         // 页面初始化的时候  就要加入状态参数
-        this.params.states = this.maintenanceCheckTypes.map(item => item.id);
+        this.params.states = this.maintenanceCheckTypes
+          .filter(item => item.id !== 'all')
+          .map(item => item.id);
         // 加载列表
         this.loadList();
       });
@@ -167,12 +172,33 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
     if (checkedStatus.length === 0) {
       checkedStatus = this.maintenanceCheckTypes;
     }
-    this.params.states = checkedStatus.map(item => item.id);
+    this.params.states = checkedStatus.filter(item => item.id !== 'all').map(item => item.id);
 
     console.log('当前选择的工单状态为：', this.params.states);
 
     // 执行查询
     this.onLoadList();
+  }
+
+  /**
+     * 状态改变事件处理程序
+     * @param type
+     */
+  onStatusChange(type) {
+    type.checked = !type.checked;
+
+    if (type.id === 'all') {
+      this.maintenanceCheckTypes.map(item => item.checked = type.checked);
+    } else {
+      if (!type.checked) {
+        this.maintenanceCheckTypes[0].checked = false;
+      } else {
+        const len = this.maintenanceCheckTypes.filter(item => item !== type && item.id !== 'all' && item.checked).length;
+        if (len === this.maintenanceCheckTypes.length - 2) {
+          this.maintenanceCheckTypes[0].checked = true;
+        }
+      }
+    }
   }
 
   /**
