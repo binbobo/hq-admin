@@ -58,13 +58,14 @@ export class TableTypeaheadDirective implements OnInit {
   @HostListener('focus', ['$event'])
   onFocus(event) {
     this.show();
+    !this.componentRef.instance.result && this.search();
   }
 
   show() {
     let rect = this.el.getBoundingClientRect();
     let ne = this.componentRef.location.nativeElement;
     ne.style.top = rect.height + "px";
-    ne.style.left = 0;
+    ne.style.left = "-2px";
     this.componentRef.instance.show();
   }
 
@@ -73,7 +74,6 @@ export class TableTypeaheadDirective implements OnInit {
   }
 
   private search(pageIndex = 1) {
-    if (!this.el.value) return;
     let param = new TypeaheadRequestParams(this.el.value);
     param.setPage(pageIndex, this.pageSize);
     if (this.source) {
@@ -139,7 +139,7 @@ export class TableTypeaheadDirective implements OnInit {
           .map(key => item[key].toString())
           .find(value => value.includes(originValue));
         if (selectedValue) {
-          this.el.value = selectedValue;
+          this.el.value = selectedValue.trim();
         }
       }
       this.onSelect.emit(item);

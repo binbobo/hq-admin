@@ -2,7 +2,7 @@
 <div class="card">
   <div class="card-header">
     <span>内部领用</span>
-    <ng-template hqSuspendBill="IU" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
+    <ng-template hqSuspendBill="IU" (onRemove)="onSuspendRemove($event)" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
   <div class="card-block">
     <form class="form-inline mb-2">

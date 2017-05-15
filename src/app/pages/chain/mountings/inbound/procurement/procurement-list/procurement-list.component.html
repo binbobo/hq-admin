@@ -2,7 +2,7 @@
 <div class="card">
   <div class="card-header">
     <span>采购入库</span>
-    <ng-template hqSuspendBill="PW" (onSelect)="onSuspendSelect($event)" [columns]="suspendedColumns"></ng-template>
+    <ng-template hqSuspendBill="PW" (onRemove)="onSuspendRemove($event)" (onSelect)="onSuspendSelect($event)" [columns]="suspendedColumns"></ng-template>
   </div>
   <div class="card-block">
     <form class="form-inline mb-2">
@@ -61,7 +61,7 @@
   <div class="card-footer text-muted">
     <button class="btn btn-primary" (click)="generate($event)">生成退库单</button>
     <button class="btn btn-warning" (click)="cancel($event)">取消</button>
-    <button [disabled]="!model?.list?.length" class="btn btn-info" (click)="suspend($event)">挂单</button>
+    <button class="btn btn-info" (click)="suspend($event)">挂单</button>
   </div>
 </div>
 

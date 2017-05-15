@@ -2,6 +2,15 @@
 #hq-prining .print-page{
     page-break-after:always;
 }
+/*html{
+    font-size: 14px;
+}*/
+.bg-inverse{
+    background-color: #2d384b!important;
+}
+.card-header,.card-footer{
+    background-color: #fff;
+}
 
 #hq-printing .no-print{
     display: none;

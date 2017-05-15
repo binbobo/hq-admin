@@ -15,9 +15,16 @@ i.fa-caret-down,i.fa-caret-up{
 
 .list-group.list-group-item .list-group-item{
     border-radius: 0;
+    background-color: #303d53!important;
 }
 
 hq-menu{
     width:100%;
     margin-bottom: -1px;
+}
+
+.list-group-item{
+   background-color: #2d384b;
+   color: #fff!important; 
+   height: 40px;
 }
