@@ -128,9 +128,10 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       // 判断是否有上次历史工单记录
       if (lastOrder) {
         this.loadLastOrderInfo(lastOrder);
-
         // 保存上次工单记录
         this.lastOrderData = lastOrder;
+        // 设置选择为true
+        this.isSelected = true;
       }
     }).catch(err => {
       // 没有上次工单记录  或者  接口出错
@@ -155,8 +156,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       lastEnter: moment(lastOrder.lastEnter).format('YYYY-MM-DD hh:mm:ss'),
       lastMileage: lastOrder.lastMileage,
     });
-    // 设置选择为true
-    this.isSelected = true;
   }
 
   // 根据车牌号， 车主， vin 自动带出客户车辆信息
