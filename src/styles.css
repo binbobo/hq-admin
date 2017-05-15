@@ -1,4 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+#hq-prining .print-page{
+    page-break-after:always;
+}
 
 #hq-printing .no-print{
     display: none;

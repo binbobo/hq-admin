@@ -92,10 +92,10 @@
         </tr>
       </tbody>
     </table>
-   <div class="tab-title">
+    <div class="tab-title">
       已有维修发料
     </div>
-    <table   class="table table-responsive table-striped table-bordered">
+    <table class="table table-responsive table-striped table-bordered">
       <thead>
         <tr>
           <th>流水号</th>
@@ -139,7 +139,7 @@
 
   </div>
   <div class="card-footer text-muted">
-    <button class="btn btn-primary"  (click)="OnCreatBill()">生成发料单</button>
+    <button class="btn btn-primary" (click)="OnCreatBill()">生成发料单</button>
     <button class="btn btn-secondary" (click)="finishedOrder($event,  confirmModal)">取消</button>
     <button class="btn btn-info" (click)="suspend($event)">挂单</button>
     <button class="btn btn-secondary " options="printOptions" (onConfirm)="onConfirmNumber($event)" [hqMutilSelect]="numberPrintList"
