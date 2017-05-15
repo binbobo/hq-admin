@@ -86,8 +86,8 @@ export class UsercenterComponent implements OnInit {
     this.userModel.createTime=userModel.createTime;
     this.userModel.id=userModel.id;
 
-    this.position.items.forEach(x => { x.setCheckedRecursive(false)});
-    this.roleItem.items.forEach(x => { x.setCheckedRecursive(false);});
+    this.position.items.forEach(x => { x.setCheckedRecursive(false);x.setCollapsedRecursive(false);});
+    this.roleItem.items.forEach(x => { x.setCheckedRecursive(false);x.setCollapsedRecursive(false);});
 
     this.position.SelectedTreeNode(this.userModel.positionIds)
     this.roleItem.SelectedTreeNode(this.userModel.roleIds)
