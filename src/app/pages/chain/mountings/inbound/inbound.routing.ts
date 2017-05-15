@@ -9,7 +9,7 @@ import { ProcurementListComponent } from './procurement/procurement-list/procure
 const routes: Routes = [
     { path: 'maintain-return', component: MaintainReturnComponent },
     { path: 'sales-return', component: SalesReturnListComponent },
-    { path: 'maintain-return/print', component: PrintComponent },
+    { path: 'maintain-return/print/:billId/:billCode/:SerialNumsList', component: PrintComponent },
     { path: 'inner-return', component: ReturnListComponent },
     { path: 'procurement', component: ProcurementListComponent },
 ];

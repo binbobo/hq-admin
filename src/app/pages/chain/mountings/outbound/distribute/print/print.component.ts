@@ -10,6 +10,7 @@ import { ActivatedRoute, Params } from "@angular/router";
   providers: [DistributeService]
 })
 export class PrintComponent implements OnInit {
+  printList: any;
   @ViewChild('printer')
   public printer: PrintDirective;
   constructor(
@@ -26,6 +27,7 @@ export class PrintComponent implements OnInit {
       this.service.getPrintList(billId, billCode, SerialNumsList).toPromise()
         .then(data => {
           console.log(data)
+          this.printList = data;
         })
         .catch(err => console.log(err));
     });
@@ -34,5 +36,7 @@ export class PrintComponent implements OnInit {
   private data: any;
   ngOnInit() {
   }
-
+  print() {
+    this.printer.print();
+  }
 }

@@ -31,7 +31,7 @@ export class MaintainCreatComponent implements OnInit, OnChanges {
 
   }
   ngOnChanges(changes: SimpleChanges) {
-    Object.assign(this.model, this.inputData.list[0]);
+    Object.assign(this.model, this.inputData);
     console.log(this.model)
   }
   @Input() inputData;
@@ -70,13 +70,13 @@ export class MaintainCreatComponent implements OnInit, OnChanges {
       this.formSubmit.emit(this.form.value);
       this.form.reset(this.model);
     }
-    this.form.reset();
+    // this.form.reset();
   }
 
   public onChangeCount(evt) {
     evt.preventDefault();
     this.model.count = evt.target.value;
-    this.model.amount = this.inputData.list[0].amount - Number(this.model.count) * Number(this.inputData.list[0].price);
+    this.model.amount = this.inputData.amount - Number(this.model.count) * Number(this.inputData.price);
   }
 
 

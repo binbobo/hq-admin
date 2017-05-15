@@ -66,24 +66,27 @@ export class CheckoutComponent extends DataList<any> {
     dialog.show();
     // 根据id获取工单详细信息
     this.service.get(id).then(data => {
-      console.log('根据工单id获取工单详情数据：', data);
       // 记录当前操作的工单记录
       this.selectedOrder = data;
       this.billId = this.selectedOrder["id"]
 
     });
+    // 根据工单id获取工单材料费和工时费
     this.service.getCost(id).then(data => {
-      console.log("根据工单id获取工单材料费和工时费", data);
       // 工时费： 维修项目金额总和
       this.workHourFee = data.workHourCost / 100;
+      this.workHourFee.toFixed(2);
       // 材料费： 维修配件金额总和
       this.materialFee = data.materialCost / 100;
+      this.materialFee.toFixed(2);
       // 其它费： 0
       this.otherFee = 0;
       // 总计费： 
       this.sumFee = (data.workHourCost + data.materialCost + this.otherFee) / 100;
+      this.sumFee.toFixed(2);
 
-      this.billPrice = data.amount / 100;;
+      this.billPrice = data.amount / 100;
+      this.billPrice.toFixed(2)
     })
   }
   private billData = {};

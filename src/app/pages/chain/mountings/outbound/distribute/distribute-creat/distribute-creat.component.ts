@@ -31,7 +31,7 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
     private formBuilder: FormBuilder,
     private moutingsService: MountingsService,
   ) {
-  
+
   }
 
   ngOnInit() {
@@ -70,13 +70,13 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
       productSpecification: [this.model.productSpecification, [Validators.required]],
       storeId: [this.model.storeId],
       locationId: [this.model.locationId],
+      vehicleName: [this.model.vehicleName],
       count: [this.model.count, [Validators.required, CustomValidators.lte(this.model.count), CustomValidators.digits]],
       price: [this.model.price, [Validators.required, CustomValidators.gte(this.price)]],
       amount: [this.model.amount],
       stockCount: [this.model.stockCount, [Validators.required]],
       locationName: [this.model.locationName, [Validators.required]],
       houseName: [this.model.houseName, [Validators.required]],
-      vihicleName: [this.model.vihicleName],
       createUser: [this.model.createUser, [Validators.required]],
       createUserName: [this.model.createUserName],
       description: [this.model.description],
@@ -143,6 +143,7 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
       brand: event.brand,
       brandId: event.brandId,
       storeId: event.storeId,
+      vehicleName: event.vehicleName,
       houseName: event.houseName,
       locationId: event.locationId,
       locationName: event.locationName,
