@@ -3,64 +3,66 @@
     <span>维修退料单</span>
   </div>
   <div class='card-block' hqPrint #printer="hq-print">
-
-    <div class="container">
-      <div class="row">
-        <h4 class="col-md-12">维修退料单</h4>
+    <div *ngFor="let item of printList">
+      <div class="container">
+        <div class="container">
+          <div class="row">
+            <h4 class="col-md-12">维修退料单</h4>
+          </div>
+        </div>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4">退料单号：{{item.billCode}}</div>
+            <div class="col-md-4">流水号：{{item.serialNum}}</div>
+            <div class="col-md-4">开单时间：{{item.createBillDateTime}}</div>
+          </div>
+        </div>
+        <table class="table  table-striped table-borderd">
+          <thead>
+            <tr>
+              <th>序号</th>
+              <th>维修项目</th>
+              <th>配件编码</th>
+              <th>配件名称</th>
+              <th>规格型号</th>
+              <th>仓库</th>
+              <th>库位</th>
+              <th>数量</th>
+              <th>价格</th>
+              <th>金额</th>
+              <th>备注</th>
+              <th>退料人</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let ele of item.list">
+              <td>{{ele.number}}</td>
+              <td>{{ele.serviceItem}}</td>
+              <td>{{ele.productCode}}</td>
+              <td>{{ele.productName}}</td>
+              <td>{{ele.productSpecification}}</td>
+              <td>{{ele.storeName}}</td>
+              <td>{{ele.locationName}}</td>
+              <td>{{ele.count}}</td>
+              <td>{{ele.price |centToYuan}}</td>
+              <td>{{ele.amount|centToYuan}}</td>
+              <td>{{ele.description}}</td>
+              <td>{{ele.employee}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-3">打印时间：</div>
+            <div class="col-md-3">操作人：</div>
+            <div class="col-md-3">退料人：</div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-3">退料单号：</div>
-        <div class="col-md-3">流水号：</div>
-        <div class="col-md-3">开单时间：</div>
-      </div>
-    </div>
-    <table class="table table-responsive table-striped table-borderd">
-      <thead>
-        <tr>
-          <th>序号</th>
-          <th>维修项目</th>
-          <th>配件编码</th>
-          <th>配件名称</th>
-          <th>规格型号</th>
-          <th>仓库</th>
-          <th>库位</th>
-          <th>数量</th>
-          <th>价格</th>
-          <th>金额</th>
-          <th>备注</th>
-          <th>退料人</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-3">打印时间：</div>
-        <div class="col-md-3">操作人：</div>
-        <div class="col-md-3">退料人：</div>
+      <div class="card-footer text-muted">
+        <div class="center">
+          <button type="button" class="btn btn-primary" (click)="print()">打印</button>
+        </div>
       </div>
     </div>
   </div>
-  <div class="card-footer text-muted">
-    <div class="center">
-      <button type="button" class="btn btn-primary" (click)="print()">打印</button>
-    </div>
-  </div>
-</div>

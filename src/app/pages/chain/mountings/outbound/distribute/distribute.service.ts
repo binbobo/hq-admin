@@ -74,14 +74,14 @@ export class DistributeService implements BasicService<any>{
 
     // 维修发料打印接口 StoreInOutDetails/PrintStore
 
-    getPrintList(billId: string,billCode: string,SerialNums:any): Observable<any> {
+    getPrintList(billId: string, billCode: string, SerialNums: any): Observable<any> {
         const url = Urls.chain.concat('/StoreInOutDetails/PrintStore');
         return this.httpService
             .request(url, {
                 params: {
                     "billId": billId,
-                    "billCode":billCode,
-                    "SerialNums":SerialNums
+                    "billCode": billCode,
+                    "SerialNums": SerialNums
                 }
             })
             .map(response => {
@@ -205,6 +205,7 @@ export class DistributeListItem {
         public productId?: string,
         public productCode?: string,
         public productSpecification?: string,
+        public vehicleName?:string,
         public storeId?: string,
         public locationId?: string,
         public description?: string,

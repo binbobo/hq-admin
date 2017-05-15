@@ -165,7 +165,7 @@ export class DistributeComponent implements OnInit {
       this.alerter.info('生成发料单成功', true, 2000);
       this.isablePrint = true;
       this.billReturnData = result.data;
-      this.serialData = this.serialData.concat(result.data);
+      this.serialData = result.data;
       this.newMainData = [];
       console.log(result.data, this.serialData);
 
@@ -273,8 +273,6 @@ export class DistributeComponent implements OnInit {
   }
 
   suspend(event: Event) {
-
-
     if (this.sunspendRequest) {
       Object.assign(this.suspendData, this.sunspendRequest);
     }
