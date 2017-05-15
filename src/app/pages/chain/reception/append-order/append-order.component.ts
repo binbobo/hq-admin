@@ -13,6 +13,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import { LocalDataSource } from "ng2-smart-table";
 import { TypeaheadRequestParams } from "app/shared/directives";
 import * as moment from 'moment';
+import { SuspendBillDirective } from "app/pages/chain/chain-shared";
 
 @Component({
   selector: 'app-append-order',
@@ -34,6 +35,8 @@ export class AppendOrderComponent {
   public serviceDataSource: Observable<any>;
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
+  @ViewChild(SuspendBillDirective)
+  private suspendBill: SuspendBillDirective;
   constructor(
     protected service1: AppendOrderService
   ) {
@@ -94,9 +97,8 @@ export class AppendOrderComponent {
         //维修项目
         this.maintenanceProjectData = data.serviceOutputs;
         (this.maintenanceProjectData).forEach((item, index) => {
-
-            this.workHourFee += item.amount;
-            this.sumFee += this.workHourFee;
+          this.workHourFee += item.amount;
+          this.sumFee += this.workHourFee;
         })
         //附加项目
         this.attachServiceOutputs = data.attachServiceOutputs;
@@ -442,8 +444,46 @@ export class AppendOrderComponent {
     if (this.newAttachItemData.length == 0 && this.newAttachItemData.length == 0 && this.newMaintenanceItemData2.length == 0) {
       this.isableAppend = false;
     }
-    console.log(this.newAttachItemData)
+  }
 
+  get columns() {
+    return [
+      { name: 'billCode', title: '工单号' },
+      { name: 'customerName', title: '车主' },
+      { name: 'plateNo', title: '车牌号' },
+    ]
+  }
+  private sunspendRequest: any;
+  suspendedBillId: any;
+  onSuspendSelect(item) {
+    console.log(item)
+    this.sunspendRequest = JSON.parse(item.data);
+    this.suspendedBillId = item.id;
+  }
+  suspendData: any;
+  suspend(event: Event) {
+
+
+    // Object.assign(this.suspendData, this.orderDetail)
+    if (this.sunspendRequest) {
+      // Object.assign(this.suspendData, this.sunspendRequest);
+    }
+
+    if (!this.suspendData.billCode) {
+      alert('请选择工单');
+      return false;
+    }
+
+    // let el = event.target as HTMLButtonElement;
+    // el.disabled = true;
+    this.suspendBill.suspend(this.suspendData)
+      // .then(() => el.disabled = false)
+      .then(() => this.suspendBill.refresh())
+      .then(() => this.alerter.success('挂单成功！'))
+      .catch(err => {
+        // el.disabled = false;
+        this.alerter.error(err);
+      })
   }
 
 }

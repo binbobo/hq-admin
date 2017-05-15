@@ -1,6 +1,8 @@
+<ng-template hq-alerter></ng-template>
 <div class="card append-order">
   <div class="card-header">
     <span>增项</span>
+    <ng-template hqSuspendBill="MW" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
   <div class="card-block">
     <div class="" hq-alerter></div>
@@ -12,34 +14,40 @@
     </div>
     <div class="container">
       <div class="row">
-        <div class="col-md-3">车牌号:{{SearchappendList.plateNo}}</div>
-        <div class="col-md-3">车主:{{SearchappendList.customerName}}</div>
-        <div class="col-md-3">车主电话:{{SearchappendList.phone}}</div>
-        <div class="col-md-3">验车时间:{{SearchappendList.validate |date:"yyyy/MM/dd HH:mm:ss"}}</div>
+        <div class="col-md-3" title="{{SearchappendList.billCode}}">工单号:{{SearchappendList.billCode}}</div>
+        <div class="col-md-3"></div>
+        <div class="col-md-3"></div>
+        <div class="col-md-3"></div>
       </div>
       <div class="row">
-        <div class="col-md-3">开单时间:{{SearchappendList.createdOnUtc |date:"yyyy/MM/dd HH:mm:ss"}} </div>
-        <div class="col-md-3">送修人:{{SearchappendList.contactUser}}</div>
-        <div class="col-md-3">送修人电话:{{SearchappendList.contactInfo}}</div>
-        <div class="col-md-3">服务顾问:{{SearchappendList.createdUserName}}</div>
+        <div class="col-md-3" title="{{SearchappendList.plateNo}}">车牌号:{{SearchappendList.plateNo}}</div>
+        <div class="col-md-3" title="{{SearchappendList.customerName}}">车主:{{SearchappendList.customerName}}</div>
+        <div class="col-md-3" title="{{SearchappendList.phone}}">车主电话:{{SearchappendList.phone}}</div>
+        <div class="col-md-3" title="{{SearchappendList.validate |date:'yyyy/MM/dd HH:mm:ss'}}">验车时间:{{SearchappendList.validate |date:"yyyy/MM/dd HH:mm:ss"}}</div>
       </div>
       <div class="row">
-        <div class="col-md-3">品牌:{{SearchappendList.brand}}</div>
-        <div class="col-md-3">车系:{{SearchappendList.series}}</div>
-        <div class="col-md-3">车型:{{SearchappendList.model}}</div>
-        <div class="col-md-3">VIN:{{SearchappendList.vin}}</div>
+        <div class="col-md-3" title="{{SearchappendList.createdOnUtc |date:'yyyy/MM/dd HH:mm:ss'}}">开单时间:{{SearchappendList.createdOnUtc |date:"yyyy/MM/dd HH:mm:ss"}} </div>
+        <div class="col-md-3" title="{{SearchappendList.contactUser}}">送修人:{{SearchappendList.contactUser}}</div>
+        <div class="col-md-3" title="{{SearchappendList.contactInfo}}">送修人电话:{{SearchappendList.contactInfo}}</div>
+        <div class="col-md-3" title="{{SearchappendList.createdUserName}}">服务顾问:{{SearchappendList.createdUserName}}</div>
       </div>
       <div class="row">
-        <div class="col-md-3">维修类型:{{SearchappendList.typeName}}</div>
-        <div class="col-md-3">预计交车时间:{{SearchappendList.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</div>
-        <div class="col-md-3">行驶里程(KM):{{SearchappendList.mileage}}</div>
-        <div class="col-md-3">上次进店时间:{{SearchappendList.lastEnterDate|date:"yyyy/MM/dd HH:mm:ss"}}</div>
+        <div class="col-md-3" title="{{SearchappendList.brand}}">品牌:{{SearchappendList.brand}}</div>
+        <div class="col-md-3" title="{{SearchappendList.series}}">车系:{{SearchappendList.series}}</div>
+        <div class="col-md-3" title="{{SearchappendList.model}}">车型:{{SearchappendList.model}}</div>
+        <div class="col-md-3" title="{{SearchappendList.vin}}">VIN:{{SearchappendList.vin}}</div>
       </div>
       <div class="row">
-        <div class="col-md-3">维修工位:{{SearchappendList.location}}</div>
-        <div class="col-md-3">建议下次保养日期:{{SearchappendList.nextDate}}</div>
-        <div class="col-md-3">建议下次保养里程(KM):{{SearchappendList.nextMileage}}</div>
-        <div class="col-md-3">上次进店里程(KM):{{SearchappendList.lastMileage}}</div>
+        <div class="col-md-3" title="{{SearchappendList.typeName}}">维修类型:{{SearchappendList.typeName}}</div>
+        <div class="col-md-3" title="{{SearchappendList.expectLeave|date:'yyyy/MM/dd HH:mm:ss'}}">预计交车时间:{{SearchappendList.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</div>
+        <div class="col-md-3" title="{{SearchappendList.mileage}}">行驶里程(KM):{{SearchappendList.mileage}}</div>
+        <div class="col-md-3" title="{{SearchappendList.lastEnterDate|date:'yyyy/MM/dd HH:mm:ss'}}">上次进店时间:{{SearchappendList.lastEnterDate|date:"yyyy/MM/dd HH:mm:ss"}}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-3" title="{{SearchappendList.location}}">维修工位:{{SearchappendList.location}}</div>
+        <div class="col-md-3" title="{{SearchappendList.nextDate}}">建议下次保养日期:{{SearchappendList.nextDate}}</div>
+        <div class="col-md-3" title="{{SearchappendList.nextMileage}}">建议下次保养里程(KM):{{SearchappendList.nextMileage}}</div>
+        <div class="col-md-3" title="{{SearchappendList.lastMileage}}">上次进店里程(KM):{{SearchappendList.lastMileage}}</div>
       </div>
     </div>
 
@@ -299,10 +307,10 @@
 
       <div class="card" style="margin-top:40px;">
         <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
-          折前费用: 工时费<span class="ml-2 mr-2">{{workHourFee}}</span> | 材料费
-          <span class="ml-2 mr-2">{{materialFee}}</span> | 其它
-          <span class="ml-2 mr-2">{{otherFee}}</span> | 合计
-          <span class="ml-2 mr-2">{{sumFee}}</span>|
+          折前费用: 工时费<span class="ml-2 mr-2">{{workHourFee|centToYuan}}</span> | 材料费
+          <span class="ml-2 mr-2">{{materialFee|centToYuan}}</span> | 其它
+          <span class="ml-2 mr-2">{{otherFee|centToYuan}}</span> | 合计
+          <span class="ml-2 mr-2">{{sumFee|centToYuan}}</span>|
         </div>
       </div>
 
@@ -315,7 +323,7 @@
   <div class="card-footer text-muted">
     <button type="button" class="btn  btn-primary" (click)="submitAddOrder()" [disabled]='!isableAppend'>提交增项</button>
     <!--<input type="text" readonly class="btn btn-primary" (click)="submitAddOrder()" value='提交增项'>-->
-    <button type="button" class="btn  btn-primary" (click)="submitAddOrder()" disabled>挂单</button>
+    <button type="button" class="btn  btn-success" (click)="suspend()">挂单</button>
   </div>
 
 </div>

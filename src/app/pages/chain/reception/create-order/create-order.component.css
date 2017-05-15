@@ -1,18 +1,9 @@
-/*必选项前面的星号样式*/ 
-.asterisk {
-    color: #a94442;
-}
-
 /*mileage unit*/
 .mileageUnit {
     background: transparent;
     border:0;
 }
 
-/*只读的文本框背景透明*/
-input[readonly] {
-  background-color:transparent;
-}
 
 .textInputBtn {
     border: 1px solid #eed;

@@ -62,3 +62,10 @@ ngx-dropdown-treeview.sm input.form-control{
 caption {
     caption-side: top;
 }
+
+/*必选项前面的星号样式*/ 
+.asterisk {
+    color: #ef1815;
+    font-weight: bold;
+    font-size: 16px;
+}

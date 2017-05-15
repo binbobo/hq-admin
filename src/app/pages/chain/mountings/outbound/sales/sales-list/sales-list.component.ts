@@ -44,6 +44,7 @@ export class SalesListComponent implements OnInit {
   }
 
   onSuspendSelect(item: { id: string, value: any }) {
+    console.log(item)
     this.reset();
     Object.assign(this.model, item.value);
     this.model.suspendedBillId = item.id;

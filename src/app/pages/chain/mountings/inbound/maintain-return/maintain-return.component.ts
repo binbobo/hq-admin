@@ -1,15 +1,25 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { DataList, StorageKeys } from "app/shared/models";
 import { Router } from "@angular/router";
 import { MaintainReturnService, MaintainRequest } from "./maintain-return.service";
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { TypeaheadRequestParams } from "app/shared/directives";
+import { TypeaheadRequestParams, HqAlerter } from "app/shared/directives";
+import { ModalDirective } from "ngx-bootstrap";
+import { SuspendBillDirective } from "app/pages/chain/chain-shared";
 @Component({
   selector: 'app-maintain-return',
   templateUrl: './maintain-return.component.html',
   styleUrls: ['./maintain-return.component.css']
 })
 export class MaintainReturnComponent extends DataList<any>{
+  suspendedBillId: any;
+  serialData: any;
+  @ViewChild('createModal')
+  private createModal: ModalDirective;
+  @ViewChild(HqAlerter)
+  protected alerter: HqAlerter;
+  @ViewChild(SuspendBillDirective)
+  private suspendBill: SuspendBillDirective;
   billCode: any;
   printId: any;
   productData: any;
@@ -20,6 +30,7 @@ export class MaintainReturnComponent extends DataList<any>{
   ChooseOrderForm: FormGroup;
   private addNewItem = false;
   params: MaintainRequest;
+  isShowCreat = false;
   constructor(
     private router: Router,
     injector: Injector,
@@ -41,12 +52,13 @@ export class MaintainReturnComponent extends DataList<any>{
       { name: 'model', title: '车型' }
     ];
   }
+  suspendData: any;
   // 选择之后根据id查找工单详情并替换数据
   public onPlateNoSelect($event) {
     this.SearchappendList = $event;
     this.listId = $event.id;
     this.billCode = $event.billCode;
-
+    this.suspendData = $event;
     this.service.getOrderItemData(this.listId)
       .then(data => {
         this.orderDetail = data
@@ -58,8 +70,13 @@ export class MaintainReturnComponent extends DataList<any>{
 
     this.service.getMainList(this.billCode)
       .then(data => {
-        console.log(data);
-      })
+        this.serialData = data;
+        this.suspendData.serialData = this.serialData;
+        this.serialData.sort((a, b) => {
+          return a.serialNum - b.serialNum;
+        })
+      });
+    this.newMainData = [];
   }
 
   // 车牌号模糊搜索接口调用
@@ -87,71 +104,17 @@ export class MaintainReturnComponent extends DataList<any>{
     confirmModal.hide();
     history.go(-1);
   }
-  //点击退料
-  OnChangeNewItem($event, id, serviceName, names, turnnames) {
 
-    // 初始化当前编辑的
-    this.newItem = {
-      maintenanceItemId: id, //维修明细id
-      serviceItem: serviceName,//维修项目
-      brandName: '',// 品牌
-      productCode: '',//配件编码
-      productName: '',//配件名称
-      productSpecification: '',//规格型号
-      vehicleModelName: '',//车型
-      storeId: '',//仓库
-      locationId: '',//库位
-      count: '',//数量
-      price: '',//单价
-      amount: '',//金额
-      description: '',//备注
-
-    };
-    // 维修项目编辑区域可见
-    this.addNewItem = true;
-  }
   private newMainData = [];
-  isableAppend = false;
-
-  // 确定退料
-  OnConfirmItem(evt?: Event) {
-    // 浮点数正则表达式
-    const reg = /^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/;
-    // 检查数量合法性
-    if (!this.newItem.count || !reg.test(this.newItem.count)) {
-      this.alerter.error(" 数量格式错误，请输入数字", true, 2000)
-    }
-    if (!this.newItem.count) {
-      this.alerter.error(" 数量不能为空", true, 2000);
-      return false;
-    }
-
-    if (evt) {
-      evt.preventDefault();
-    }
-    this.newMainData.push(this.newItem);
-    // 编辑区域不可见
-    this.addNewItem = false;
-    if (this.newMainData.length > 0) {
-      this.isableAppend = true;
-    }
-  }
-  //  新增数据删除
-  OnDelItem(evt) {
-    evt.preventDefault();
-    this.newMainData.filter((item, index) => {
-      this.newMainData.splice(index, 1);
-      return;
-    });
-
-  }
 
   private billData: any;
   //生成退料单
   OnCreatReturnBill() {
+
     this.billData = {
-      // billCode: this.billCode,
+      billCode: this.billCode,
       billId: this.listId,
+      suspendedBillId: this.suspendedBillId,
       list: this.newMainData
     }
     let postData = JSON.stringify(this.billData)
@@ -159,11 +122,86 @@ export class MaintainReturnComponent extends DataList<any>{
     this.service.postReturnBill(postData).then((result) => {
       this.printId = result.data;
       console.log(this.printId);
-      this.alerter.info('生成发料单成功', true, 2000);
+      this.alerter.info('生成退料单成功', true, 2000);
     }).catch(err => this.alerter.error(err, true, 2000));
   }
-  valueObj: any;
-  createName: any;
-  createId: any;
 
+  inputData: any;
+  currentData: any;
+  // 点击退料弹出发料弹框
+  OnCreatBound(item) {
+    this.isShowCreat = true;
+    console.log(item)
+    this.inputData = item;
+    this.createModal.show();
+  }
+
+  onCreate(e) {
+    console.log(e);
+    if (this.newMainData) {
+      // e.maintenanceItemId = "428D37D2-45EA-477B-9B9F-BA01DA11972E";
+      // e.locationId = "8ECE0785-A8E8-4E4F-B1DE-B6C3641269B9";
+      this.newMainData.push(e);
+    } else {
+      this.newMainData = []
+    }
+
+    this.createModal.hide();
+  }
+  onDelCreat(i) {
+    this.newMainData.splice(i, 1);
+  }
+  get columns() {
+    return [
+      { name: 'billCode', title: '工单号' },
+      { name: 'customerName', title: '车主' },
+      { name: 'plateNo', title: '车牌号' },
+    ]
+  }
+  private sunspendRequest: any;
+  onSuspendSelect(item) {
+    console.log(item)
+    this.sunspendRequest = JSON.parse(item.data);
+    this.billCode = this.sunspendRequest["billCode"]
+    this.listId = this.sunspendRequest["id"];
+    this.orderDetail = this.sunspendRequest;
+    this.newMainData = this.sunspendRequest["newMainData"];
+    this.serviceData = this.sunspendRequest["serviceData"];
+    this.serialData = this.sunspendRequest["serialData"];
+    this.suspendedBillId = item.id;
+  }
+
+  suspend(event: Event) {
+    this.suspendData = {
+      newMainData: this.newMainData,
+      serviceData: this.serviceData,
+      serialData: this.serialData,
+      billCode: this.billCode,
+      billId: this.listId,
+      suspendedBillId: this.suspendedBillId,
+      list: this.newMainData
+    }
+
+    Object.assign(this.suspendData, this.orderDetail)
+    if (this.sunspendRequest) {
+      Object.assign(this.suspendData, this.sunspendRequest);
+    }
+    
+    console.log(this.suspendData)
+    if (!this.suspendData.billCode) {
+      alert('请选择工单');
+      return false;
+    }
+
+    // let el = event.target as HTMLButtonElement;
+    // el.disabled = true;
+    this.suspendBill.suspend(this.suspendData)
+      // .then(() => el.disabled = false)
+      .then(() => this.suspendBill.refresh())
+      .then(() => this.alerter.success('挂单成功！'))
+      .catch(err => {
+        // el.disabled = false;
+        this.alerter.error(err);
+      })
+  }
 }

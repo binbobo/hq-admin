@@ -166,7 +166,7 @@ export class OrderListComponent extends DataList<Order> {
       series: '', // 车系
       billCode: '', // 工单号
       createdUserName: '', // 服务顾问
-      model: '', // 车型
+      vehicleName: '', // 车型
       type: '', // 维修类型
       enterStoreTimeStart: '',
       enterStoreTimeEnd: '',

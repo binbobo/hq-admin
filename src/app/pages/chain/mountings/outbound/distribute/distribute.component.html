@@ -2,6 +2,7 @@
 <div class="distribute card">
   <div class="card-header">
     <span>维修发料</span>
+    <ng-template hqSuspendBill="MM" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
   <div class="card-block">
     <div class="container">
@@ -11,7 +12,6 @@
             <input [hqTableTypeahead]="PlatNoSource" [columns]="typeaheadColumns" (onSelect)="onPlateNoSelect($event)" class="form-control input-left"
               placeholder="请输入车牌号/工单号/车主姓名">
             <span class='button-right'>
-          <button class="btn  btn-primary" type="submit">搜索</button>
         </span>
           </form>
         </div>
@@ -20,15 +20,18 @@
     </div>
     <div class="container mg">
       <div class="row">
-        <div class="col-md-3">车主:{{orderDetail?.customerName}}</div>
+        <div class="col-md-2">车主:{{orderDetail?.customerName}}</div>
+        <div class="col-md-3">工单号:{{orderDetail?.billCode}}</div>
         <div class="col-md-3">VIN:{{orderDetail?.vin}}</div>
-        <div class="col-md-3">维修类型:{{orderDetail?.typeName}}</div>
-        <div class="col-md-3">开单时间：{{orderDetail?.createdOnUtc |date:"yyyy/MM/dd HH:mm:ss"}}</div>
+        <div class="col-md-2">维修类型:{{orderDetail?.typeName}}</div>
+        <div class="col-md-2">开单时间：{{orderDetail?.createdOnUtc |date:"yyyy/MM/dd HH:mm:ss"}}</div>
       </div>
     </div>
+    <div class="tab-title">
+      维修项目
+    </div>
+    <table class="table  table-responsive table-striped table-bordered">
 
-    <div>维修项目</div>
-    <table class="table  table-striped table-bordered">
       <thead>
         <tr>
           <th>序号</th>
@@ -41,72 +44,106 @@
         <tr *ngFor='let item of serviceData;let index=index'>
           <td>{{index+1}}</td>
           <td>{{item.serviceName}}</td>
-          <td>{{item.employeeNames}}</td>
+          <td>{{item?.employeeNames?.join(',')}}{{item?.turnEmployeeNames?.join(',')}}</td>
           <td><button class="btn btn-info" (dataName)="item.serviceName" (click)="OnCreatBound(item)">发料</button></td>
         </tr>
       </tbody>
     </table>
-    <div>维修发料</div>
-    <table class="table table-responsive table-striped table-bordered" *ngFor="let item of serialData">
+    <div class="tab-title">
+      新增维修发料
+    </div>
+    <table class="table table-responsive table-striped table-borderd">
       <thead>
         <tr>
-          <th>流水号</th>
-          <th>{{item.serialNum}}</th>
+          <th>序号</th>
+          <th>维修项目</th>
+          <th>品牌</th>
+          <th>*配件编码</th>
+          <th>*配件名称</th>
+          <th>规格型号</th>
+          <th>车型</th>
+          <th>仓库</th>
+          <th>库位</th>
+          <th>*数量（个）</th>
+          <th>单价（元/个）</th>
+          <th>金额（元）</th>
+          <!--<th>备注</th>-->
+          <th>*领料人</th>
+          <th>操作</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td></td>
-          <td>
-            <table class="table table-responsive table-striped table-borderd">
-              <thead>
-                <tr>
-                  <th>序号</th>
-                  <th>维修项目</th>
-                  <th>品牌</th>
-                  <th>*配件编码</th>
-                  <th>*配件名称</th>
-                  <th>规格型号</th>
-                  <th>车型</th>
-                  <th>仓库</th>
-                  <th>库位</th>
-                  <th>*数量（个）</th>
-                  <th>单价（元/个）</th>
-                  <th>金额（元）</th>
-                  <th>备注</th>
-                  <th>*领料人</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let ele of item.list">
-                  <td>{{ele.number}}</td>
-                  <td>{{ele.serviceName}}</td>
-                  <td>{{ele.brandName}}</td>
-                  <td>{{ele.productCode}}</td>
-                  <td>{{ele.productName }}</td>
-                  <td>{{ele.productSpecification}}</td>
-                  <td>{{ele.vihicleName}}</td>
-                  <td>{{ele.storeName}}</td>
-                  <td>{{ele.locationName}}</td>
-                  <td>{{ele.count}}</td>
-                  <td>{{ele.price}}</td>
-                  <td>{{ele.amount}}</td>
-                  <td>{{ele.description}}</td>
-                  <td>{{ele.takeUser}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
+        <tr *ngFor="let ele of  newMainData;let i=index">
+          <td>{{i+1}}</td>
+          <td>{{ele.serviceName}}</td>
+          <td>{{ele.brandName}}</td>
+          <td>{{ele.productCode}}</td>
+          <td>{{ele.productName }}</td>
+          <td>{{ele.productSpecification}}</td>
+          <td>{{ele.vihicleName}}</td>
+          <td>{{ele.storeName}}</td>
+          <td>{{ele.locationName}}</td>
+          <td>{{ele.count}}</td>
+          <td>{{ele.price|centToYuan}}</td>
+          <td>{{ele.amount|centToYuan}}</td>
+          <!--<td>{{ele.description}}</td>-->
+          <td>{{ele.createUserName}}</td>
+          <td><button class="btn" (click)="onDelCreat(i)">删除</button></td>
         </tr>
       </tbody>
     </table>
+   <div class="tab-title">
+      已有维修发料
+    </div>
+    <table   class="table table-responsive table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>流水号</th>
+          <th>序号</th>
+          <th>维修项目</th>
+          <th>品牌</th>
+          <th>配件编码</th>
+          <th>配件名称</th>
+          <th>规格型号</th>
+          <th>车型</th>
+          <th>仓库</th>
+          <th>库位</th>
+          <th>数量（个）</th>
+          <th>单价（元/个）</th>
+          <th>金额（元）</th>
+          <!--<th>备注</th>-->
+          <th>领料人</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of serialData">
+        <tr *ngFor="let ele of item.list">
+          <td>{{item.serialNum}}</td>
+          <td>{{ele.number}}</td>
+          <td>{{ele.serviceName}}</td>
+          <td>{{ele.brandName}}</td>
+          <td>{{ele.productCode}}</td>
+          <td>{{ele.productName }}</td>
+          <td>{{ele.productSpecification}}</td>
+          <td>{{ele.vihicleName}}</td>
+          <td>{{ele.storeName}}</td>
+          <td>{{ele.locationName}}</td>
+          <td>{{ele.count}}</td>
+          <td>{{ele.price|centToYuan}}</td>
+          <td>{{ele.amount|centToYuan}}</td>
+          <!--<td>{{ele.description}}</td>-->
+          <td>{{ele.takeUser}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+
   </div>
   <div class="card-footer text-muted">
-    <button class="btn btn-primary" [disabled]="!isableAppend" (click)="OnCreatBill()">生成发料单</button>
+    <button class="btn btn-primary"  (click)="OnCreatBill()">生成发料单</button>
     <button class="btn btn-secondary" (click)="finishedOrder($event,  confirmModal)">取消</button>
-    <button class="btn btn-success" (click)="suspend()">挂单</button>
-    <button class="btn btn-secondary " options="printOptions" (onConfirm)="onConfirmTechnicians($event)" [hqMutilSelect]="maintenanceTechnicians"
-      title="选择流水号" href="#" (click)="onMultiSelectorClick($event)" placement="right">打印</button>
+    <button class="btn btn-info" (click)="suspend($event)">挂单</button>
+    <button class="btn btn-secondary " options="printOptions" (onConfirm)="onConfirmNumber($event)" [hqMutilSelect]="numberPrintList"
+      title="选择流水号" href="#" placement="right">打印</button>
   </div>
 
   <!--提示是否确认退出-->

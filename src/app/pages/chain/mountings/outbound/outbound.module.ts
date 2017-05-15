@@ -21,18 +21,21 @@ import { ReturnListComponent } from './purchase-return/return-list/return-list.c
 import { ReturnCreateComponent } from './purchase-return/return-create/return-create.component';
 import { ReturnPrintComponent } from './purchase-return/return-print/return-print.component';
 import { PurchaseReturnService } from './purchase-return/purchase-return.service';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 
 const routes: Routes = [
   { path: 'maintain-distribute', component: DistributeComponent },
   { path: 'sell', component: SalesListComponent },
   { path: 'inner-receive', component: ReceiveListComponent },
   { path: 'purchase-return', component: ReturnListComponent },
+  { path: 'maintain-distribute/print/:billId/:billCode/:SerialNumsList', component: PrintComponent }
 ]
 
 @NgModule({
   imports: [
     SharedModule,
     ChainSharedModule,
+    TabsModule.forRoot(),
     ModalModule.forRoot(),
     RouterModule.forChild(routes),
     FormsModule,
