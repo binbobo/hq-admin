@@ -67,10 +67,10 @@ export class HqAlerter {
   /**
    * 显示错误消息
    * @param msg 消息内容
-   * @param dismissible 是否允许可关闭，默认false 
-   * @param dismissOnTimeout 显示时间，单位毫秒，为0时一直显示，默认3000
+   * @param dismissible 是否允许可关闭，默认true 
+   * @param dismissOnTimeout 显示时间，单位毫秒，为0时一直显示，默认0
    */
-  public error(msg: string, dismissible: boolean = false, dismissOnTimeout: number = 3000): ClosableAlerter {
+  public error(msg: string, dismissible: boolean = true, dismissOnTimeout: number = 0): ClosableAlerter {
     console.error(msg);
     return this.show(msg, AlerterType.Danger, dismissible, dismissOnTimeout);
   }

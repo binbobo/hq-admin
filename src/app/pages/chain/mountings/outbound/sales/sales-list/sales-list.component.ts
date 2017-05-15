@@ -6,7 +6,7 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { Router } from '@angular/router';
 import { SuspendBillDirective } from "app/pages/chain/chain-shared";
 import { Location } from '@angular/common';
- 
+
 @Component({
   selector: 'hq-sales-list',
   templateUrl: './sales-list.component.html',
@@ -44,9 +44,16 @@ export class SalesListComponent implements OnInit {
   }
 
   onSuspendSelect(item: { id: string, value: any }) {
+    console.log(item)
     this.reset();
     Object.assign(this.model, item.value);
     this.model.suspendedBillId = item.id;
+  }
+
+  onSuspendRemove(event) {
+    if (event.id === this.model.suspendedBillId) {
+      this.reset();
+    }
   }
 
   reset() {
@@ -86,7 +93,7 @@ export class SalesListComponent implements OnInit {
       .catch(err => {
         el.disabled = false;
         this.alerter.error(err);
-      }) 
+      })
   }
 
   suspend(event: Event) {
@@ -104,6 +111,7 @@ export class SalesListComponent implements OnInit {
     el.disabled = true;
     this.suspendBill.suspend(this.model)
       .then(() => el.disabled = false)
+      .then(() => this.reset())
       .then(() => this.suspendBill.refresh())
       .then(() => this.alerter.success('挂单成功！'))
       .catch(err => {

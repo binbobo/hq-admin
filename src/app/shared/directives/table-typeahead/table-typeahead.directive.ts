@@ -26,6 +26,8 @@ export class TableTypeaheadDirective implements OnInit {
   private onSelect = new EventEmitter<any>();
   @Output()
   private onRemove = new EventEmitter();
+  @Output()
+  private notFound = new EventEmitter();
 
   private el: HTMLInputElement;
   private componentRef: ComponentRef<TableTypeaheadComponent>;
@@ -56,13 +58,14 @@ export class TableTypeaheadDirective implements OnInit {
   @HostListener('focus', ['$event'])
   onFocus(event) {
     this.show();
+    !this.componentRef.instance.result && this.search();
   }
 
   show() {
     let rect = this.el.getBoundingClientRect();
     let ne = this.componentRef.location.nativeElement;
     ne.style.top = rect.height + "px";
-    ne.style.left = 0;
+    ne.style.left = "-2px";
     this.componentRef.instance.show();
   }
 
@@ -71,16 +74,22 @@ export class TableTypeaheadDirective implements OnInit {
   }
 
   private search(pageIndex = 1) {
-    if (!this.el.value) return;
     let param = new TypeaheadRequestParams(this.el.value);
     param.setPage(pageIndex, this.pageSize);
     if (this.source) {
       this.source(param)
+        .then(result => result || new PagedResult())
         .then(result => {
-          this.componentRef.instance.result = result;
-          this.show();
+          if (result.totalCount <= 0) {
+            this.notFound.emit();
+          } else {
+            this.componentRef.instance.result = result;
+            this.show();
+          }
         })
-        .catch(err => console.error(err));
+        .catch(err => {
+          this.notFound.emit();
+        });
     }
   }
 
@@ -130,7 +139,7 @@ export class TableTypeaheadDirective implements OnInit {
           .map(key => item[key].toString())
           .find(value => value.includes(originValue));
         if (selectedValue) {
-          this.el.value = selectedValue;
+          this.el.value = selectedValue.trim();
         }
       }
       this.onSelect.emit(item);

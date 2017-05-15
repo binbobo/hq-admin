@@ -38,6 +38,12 @@ export class ProcurementListComponent implements OnInit {
     this.model.suspendedBillId = item.id;
   }
 
+  onSuspendRemove(event) {
+    if (event.id === this.model.suspendedBillId) {
+      this.reset();
+    }
+  }
+
   onCreate(event: ProcurementItem) {
     this.model.list.push(event);
     this.createModal.hide();
@@ -57,7 +63,7 @@ export class ProcurementListComponent implements OnInit {
   private get providerColumns() {
     return [
       { name: 'code', title: '代码' },
-      { name: 'name', title: '名称' },
+      { name: 'name', title: '名称', weight: 1 },
       { name: 'contactUser', title: '联系人' },
     ];
   }
@@ -83,6 +89,7 @@ export class ProcurementListComponent implements OnInit {
     let el = event.target as HTMLButtonElement;
     el.disabled = true;
     this.suspendBill.suspend(this.model)
+      .then(() => this.reset())
       .then(() => el.disabled = false)
       .then(() => this.suspendBill.refresh())
       .then(() => this.alerter.success('挂单成功！'))

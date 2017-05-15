@@ -19,11 +19,11 @@
       </div>
       <div class="form-group">
         <label class="form-control-label">*品牌</label>
-        <input readonly formControlName="brand" class="form-control">
+        <input readonly hqError="品牌" formControlName="brand" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*规格型号</label>
-        <input readonly formControlName="productSpecification" class="form-control">
+        <input readonly hqError="规格型号" formControlName="productSpecification" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*单价（元/个）</label>
@@ -34,15 +34,15 @@
     <div class="col-6">
       <div class="form-group">
         <label class="form-control-label">*车型</label>
-        <input readonly formControlName="vihicleName" class="form-control">
+        <input readonly hqError="车型" formControlName="vihicleName" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*仓库</label>
-        <input readonly formControlName="houseName" class="form-control">
+        <input readonly hqError="仓库" formControlName="houseName" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*库位</label>
-        <input readonly formControlName="locationName" class="form-control">
+        <input readonly hqError="库位" formControlName="locationName" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*数量（个）</label>
@@ -50,18 +50,18 @@
       </div>
       <div class="form-group">
         <label class="form-control-label">*金额(元)</label>
-        <input class="form-control" [ngModel]="model.amount|centToYuan" formControlName="amount">
+        <input readonly class="form-control" [ngModel]="model.amount|centToYuan" formControlName="amount">
       </div>
       <div class="form-group">
         <label class="form-control-label">*领料人</label>
-        <select #person class="form-control" (change)="onSellerSelect(person.value)">
-          <option *ngFor="let item of InputData.employeesData" [value]="item.id+',,'+item.name">{{item.name}}</option>
+        <select #person class="form-control" hqError="领料人" formControlName="createUser" id="person" (change)="onSellerSelect($event)">
+          <option *ngFor="let item of InputData.employeesData" value="{{item.id}}">{{item.name}}</option>
         </select>
+        <input type="hidden" formControlName="createUserName">
       </div>
     </div>
     <div class="col-12">
       <button type="submit" [disabled]="submitting" class="btn btn-primary mr-3">提交</button>
-      <button (click)="onReset()" class="btn btn-secondary mr-3">重置</button>
     </div>
   </form>
 </div>

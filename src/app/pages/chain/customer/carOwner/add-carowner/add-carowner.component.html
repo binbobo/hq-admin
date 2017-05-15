@@ -11,7 +11,7 @@
         <div class="col-2">
           <!--新增的时候模糊搜索-->
           <input type="text" [hqTableTypeahead]="customerNameTypeaheadSource" [columns]="customerTypeaheadColumns" (onSelect)="onCustomerNameSelect($event)"
-            required class="form-control form-control" formControlName="name" placeholder="车主">
+            hqError="车主" class="form-control form-control" formControlName="name" placeholder="车主">
             <!--客户id 用于更新-->
           <input type="hidden" formControlName="id" >
         </div>
@@ -113,8 +113,8 @@
               <td>{{vehicle.brand}}</td>
               <td>{{vehicle.series}}</td>
               <td>{{vehicle.vehicleName}}</td>
-              <td>{{vehicle.engineNo}}</td>
               <td>{{vehicle.vin}}</td>
+              <td>{{vehicle.engineNo}}</td>
               <td>{{vehicle.vehicleColor}}</td>
               <td>{{vehicle.purchaseDate|date:"yyyy/MM/dd"}}</td>
               <td>{{vehicle.validate|date:"yyyy/MM/dd"}}</td>

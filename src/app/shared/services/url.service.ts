@@ -15,6 +15,6 @@ export class Urls {
 
     public static readonly chain = !Urls.debug ? Urls.base.concat('chain') : "http://192.168.59.124:8028/api";
 
-    // public static readonly chain = 'http://192.168.59.154:8028/api';
+    // public static readonly chain = 'http://localhost:8028/api';
     // public static readonly chain = 'http://192.168.58.225/api';
 }

@@ -1,33 +1,35 @@
+<ng-template hq-alerter></ng-template>
 <div class="maintain card">
   <div class="card-header">
     <span>维修退料</span>
-    <input container="body" type="text" value="我的挂单" readonly placement="bottom" class="pull-right btn btn-sm textInputBtn" style="margin-right: 55px;">
+    <ng-template hqSuspendBill="MR" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
   <div class='card-block'>
-
-    <form class="form-in input-form">
-      <input [hqTableTypeahead]="PlatNoSource" [columns]="typeaheadColumns" (onSelect)="onPlateNoSelect($event)" class="form-control input-left"
-        placeholder="请输入车牌号/工单号/车主姓名">
-      <span class='button-right'>
-          <button class="btn btn-primary" type="submit">搜索</button>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <form class="form-in input-form">
+            <input [hqTableTypeahead]="PlatNoSource" [columns]="typeaheadColumns" (onSelect)="onPlateNoSelect($event)" class="form-control input-left"
+              placeholder="请输入车牌号/工单号/车主姓名">
+            <span class='button-right'>
         </span>
-    </form>
-    <table class="table table-responsive table-striped table-borderd">
-      <tr>
-        <td>车主:</td>
-        <td>{{orderDetail?.customerName}}</td>
-        <td>VIN:</td>
-        <td>{{orderDetail?.vin}}</td>
-        <td>维修类型:</td>
-        <td>{{orderDetail?.typeName}}</td>
-        <td>开单时间：</td>
-        <td>{{orderDetail?.createdOnUtc |date:"yyyy/MM/dd HH:mm:ss"}}</td>
-      </tr>
-    </table>
-    <hr>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="container mg">
+      <div class="row">
+        <div class="col-md-2">车主:{{orderDetail?.customerName}}</div>
+        <div class="col-md-3">工单号:{{orderDetail?.billCode}}</div>
+        <div class="col-md-3">VIN:{{orderDetail?.vin}}</div>
+        <div class="col-md-2">维修类型:{{orderDetail?.typeName}}</div>
+        <div class="col-md-2">开单时间：{{orderDetail?.createdOnUtc |date:"yyyy/MM/dd HH:mm:ss"}}</div>
+      </div>
+    </div>
+
     <!--维修项目-->
-    <div>维修项目</div>
-    <table class="table table-responsive table-striped table-borderd">
+    <div class="tab-title">维修项目</div>
+    <table class="table  table-responsive  table-striped table-bordered">
       <thead>
         <tr>
           <th>序号</th>
@@ -44,84 +46,95 @@
       </tbody>
     </table>
 
-    <!--维修退料-->
-    <div>维修退料</div>
-    <table class="table table-responsive table-striped table-borderd">
+    <div class="tab-title">维修退料</div>
+    <table class="table table-responsive table-striped table-bordered">
       <thead>
         <tr>
+          <th>流水号</th>
           <th>序号</th>
           <th>维修项目</th>
-          <th>配件编码</th>
           <th>品牌</th>
+          <th>配件编码</th>
           <th>配件名称</th>
           <th>规格型号</th>
           <th>车型</th>
           <th>仓库</th>
           <th>库位</th>
-          <th>数量(个)</th>
-          <th>单价(元/个)</th>
-          <th>金额(元)</th>
-          <th>备注</th>
+          <th>*数量（个）</th>
+          <th>单价（元/个）</th>
+          <th>金额（元）</th>
+          <!--<th>备注</th>-->
           <th>领料人</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of serialData">
+        <tr *ngFor="let ele of item.list">
+          <td>{{item.serialNum}}</td>
+          <td>{{ele.number}}</td>
+          <td>{{ele.serviceName}}</td>
+          <td>{{ele.brandName}}</td>
+          <td>{{ele.productCode}}</td>
+          <td>{{ele.productName }}</td>
+          <td>{{ele.productSpecification}}</td>
+          <td>{{ele.vihicleName}}</td>
+          <td>{{ele.storeName}}</td>
+          <td>{{ele.locationName}}</td>
+          <td>{{ele.count}}</td>
+          <td>{{ele.price|centToYuan}}</td>
+          <td>{{ele.amount|centToYuan}}</td>
+          <!--<td>{{ele.description}}</td>-->
+          <td>{{ele.takeUser}}</td>
+          <td><button class="btn btn-primary" (click)="OnCreatBound(item)">退料</button></td>
+      </tbody>
+    </table>
+
+    <!--维修退料-->
+    <div class="tab-title">新增维修退料</div>
+    <table class="table table-responsive table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>序号</th>
+          <th>维修项目</th>
+          <th>品牌</th>
+          <th>配件编码</th>
+          <th>配件名称</th>
+          <th>规格型号</th>
+          <th>车型</th>
+          <th>仓库</th>
+          <th>库位</th>
+          <th>数量（个）</th>
+          <th>单价（元/个）</th>
+          <th>金额（元）</th>
+          <!--<th>备注</th>-->
           <th>退料人</th>
           <th>操作</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td colspan="15"></td>
-          <td><button class="btn btn-primary" (click)="OnChangeNewItem($event)">退料</button></td>
-        </tr>
-        <tr *ngFor="let item of newMainData">
-          <td>{{item.number}}</td>
-          <td>{{item.serviceItem}}</td>
-          <td>{{item.brandName}}</td>
-          <td>{{item.productCode}}</td>
-          <td>{{item.productName}}</td>
-          <td>{{item.productSpecification}}</td>
-          <td>{{item.vehicleModelName}}</td>
-          <td>{{item.storeId}}</td>
-          <td>{{item.locationId}}</td>
-          <td>-{{item.count}}</td>
-          <td>{{item.price/100}}</td>
-          <td>{{item.amount/100}}</td>
-          <td>{{item.description}}</td>
-          <td>{{item.createUserName}}</td>
-          <td width="40">
-            <a href="javascript:void(0)" (click)="OnDelItem($event)">删除</a>
-          </td>
-        </tr>
-        <tr *ngIf="addNewItem">
-          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.number"></td>
-          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.serviceItem"></td>
-          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.brandName"></td>
-          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm " [(ngModel)]="newItem.productCode"></td>
-          <td><input placeholder=" " type="text" readonly class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.productName"></td>
-          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.productSpecification"></td>
-          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.vehicleModelName"></td>
-          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.storeId"></td>
-          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.locationId"></td>
-          <td><input placeholder="请输入数量 " type="text" class="input-width form-control form-control-sm" [(ngModel)]="newItem.count"></td>
-          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.price"></td>
-          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.amount"></td>
-          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.description"></td>
-          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.createUser"></td>
-          <td><input placeholder="" readonly type="text" class="form-control form-control2 form-control-sm" [(ngModel)]="newItem.createUser"></td>
-<<<<<<< HEAD
-          
-=======
->>>>>>> 8b29f527621de6e10d74e78f03b5ef015ffdb388
-          <td width="75">
-            <a href="javascript:void(0)" (click)="OnConfirmItem($event)">确定</a>
-            <a href="javascript:void(0)" (click)="addNewItem = false">取消</a>
-          </td>
+        <tr *ngFor="let ele of newMainData;let i=index">
+          <td>{{i+1}}</td>
+          <td>{{ele.serviceName}}</td>
+          <td>{{ele.brandName}}</td>
+          <td>{{ele.productCode}}</td>
+          <td>{{ele.productName }}</td>
+          <td>{{ele.productSpecification}}</td>
+          <td>{{ele.vihicleName}}</td>
+          <td>{{ele.storeName}}</td>
+          <td>{{ele.locationName}}</td>
+          <td>-{{ele.count}}</td>
+          <td>{{ele.price|centToYuan}}</td>
+          <td>{{ele.amount|centToYuan}}</td>
+          <!--<td>{{ele.description}}</td>-->
+          <td>{{ele.createUserName}}</td>
+          <td><button class="btn" (click)="onDelCreat(i)">删除</button></td>
         </tr>
       </tbody>
     </table>
   </div>
   <!--提交按钮-->
   <div class="card-footer text-muted">
-    <button class="btn btn-primary" [disabled]="!isableAppend" (click)="OnCreatBill()">生成发料单</button>
+    <button class="btn btn-primary" (click)="OnCreatReturnBill()">生成退料单</button>
     <button class="btn btn-secondary" (click)="finishedOrder($event,  confirmModal)">取消</button>
     <button class="btn btn-success" (click)="suspend()">挂单</button>
     <button class="btn btn-secondary " options="printOptions" (onConfirm)="onConfirmTechnicians($event)" [hqMutilSelect]="maintenanceTechnicians"
@@ -146,6 +159,20 @@
           <button type="button" class="btn btn-sm" data-dismiss="confirmModal" (click)="confirmModal.hide();">取消</button>
           <button type="button" class="btn btn-sm" data-dismiss="modal" (click)="onConfirmFinished(confirmModal);">确定</button>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" bsModal #createModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">新增</h5>
+        <button class="close pull-right" (click)="createModal.hide()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <hq-maintain-creat *ngIf="isShowCreat" [inputData]="inputData" (formSubmit)="onCreate($event)"></hq-maintain-creat>
       </div>
     </div>
   </div>

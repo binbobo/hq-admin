@@ -31,38 +31,34 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
     private formBuilder: FormBuilder,
     private moutingsService: MountingsService,
   ) {
-    Object.assign(this.model, this.newCreateUser);
+  
   }
 
   ngOnInit() {
     this.buildForm();
   }
-  newCreateUser = {
-    createUser: "",
-    createUserName: ""
-  };
+
   ngOnChanges(changes: SimpleChanges) {
     if (this.form && changes['InputData']) {
       this.form.patchValue(this.InputData);
-      this.newCreateUser.createUser = this.InputData.initCreatId;
-      this.newCreateUser.createUserName = this.InputData.initCreatName;
       Object.assign(this.model, this.InputData);
-      Object.assign(this.model, this.newCreateUser);
     }
   }
 
   @Input() InputData;
-
   valueObj: any;
-  maintenanceItemId2: any;
+
 
   onSellerSelect(evt) {
-    this.valueObj = evt.split(",,");
-    console.log(this.valueObj);
-    this.newCreateUser.createUser = this.valueObj[0];
-    this.newCreateUser.createUserName = this.valueObj[1];
-    Object.assign(this.model, this.newCreateUser);
-    console.log(this.model)
+    console.log(evt)
+    let creatAry = [];
+    creatAry = this.InputData.employeesData.filter(item => item.id === evt.target.value);
+    console.log(creatAry)
+    this.model.createUserName = creatAry[0].name;
+    this.model.createUser = creatAry[0].id;
+    console.log(this.model, this.form.value)
+    this.form.value["createUserName"] = this.model.createUserName;
+
   }
 
   private buildForm() {
@@ -74,14 +70,15 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
       productSpecification: [this.model.productSpecification, [Validators.required]],
       storeId: [this.model.storeId],
       locationId: [this.model.locationId],
-      count: [this.model.count, [Validators.required, CustomValidators.digits]],
-      price: [this.model.price, [CustomValidators.gte(this.price)]],
+      count: [this.model.count, [Validators.required, CustomValidators.lte(this.model.count), CustomValidators.digits]],
+      price: [this.model.price, [Validators.required, CustomValidators.gte(this.price)]],
       amount: [this.model.amount],
       stockCount: [this.model.stockCount, [Validators.required]],
       locationName: [this.model.locationName, [Validators.required]],
       houseName: [this.model.houseName, [Validators.required]],
       vihicleName: [this.model.vihicleName],
-      createUser: [this.model.createUser],
+      createUser: [this.model.createUser, [Validators.required]],
+      createUserName: [this.model.createUserName],
       description: [this.model.description],
       serviceName: this.model.serviceName,
       maintenanceItemId: this.model.maintenanceItemId
@@ -89,6 +86,7 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
   }
 
   public onSubmit(event: Event) {
+    Object.assign(this.form.value, this.model);
     console.log(this.model);
     console.log(this.form.value)
     let invalid = this.controls
@@ -101,11 +99,13 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
       this.formSubmit.emit(this.form.value);
       this.form.reset(this.model);
     }
+    this.form.reset();
+
   }
 
   public onReset() {
-    this.form = null;
-    setTimeout(() => this.buildForm(), 1);
+    this.form.reset();
+    // setTimeout(() => this.buildForm(), 1);
     return false;
   }
 
@@ -120,7 +120,7 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
   }
 
   public onPriceChange(evt) {
-    //evt.preventDefault();
+    // evt.preventDefault();
     let price = evt.target.value || 0;
     this.model.price = price * 100;
     this.model.amount = (this.model.price) * (this.model.count);
@@ -135,7 +135,6 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
   }
 
   public onItemSelect(event) {
-    console.log(event);
     let item = {
       productCode: event.code,
       productName: event.name,
@@ -149,6 +148,7 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
       locationName: event.locationName,
       stockCount: event.count,
       price: event.costPrice,
+      count: event.count,
     }
     this.price = 0;
     setTimeout(() => this.price = item.price, 1);
@@ -157,6 +157,8 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
     this.form.patchValue(item);
     this.form.controls['price'].setValidators(CustomValidators.gte(item.price));
     this.calculate();
+    Object.assign(this.form.value, this.model);
+    console.log(this.model, this.form.value)
   }
 
   public get codeSource() {

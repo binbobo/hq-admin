@@ -26,33 +26,37 @@ export class PrintOrderComponent implements OnInit {
     private route: ActivatedRoute,
     protected service: BillOrderService
   ) {
-    this.route.params
-      .switchMap((params: Params) => this.service.getPrintDetail(params['id']))
-      .subscribe(data => {
-        this.data = data;
-        console.log(data)
-        this.costData = data.totalCost; //收费结算单
-        this.workHourData = data.workHours;//工时明细
-        this.materialData = data.matereialDetails; //材料明细
-        this.workHourData.forEach(item => {
-          //金额
-          this.moneyObj.workItemMoney = item.amount * (item.discount / 100)
-          // 工时明细的应收金额和折扣金额
-          this.moneyObj.workCostMoney += item.amount / 100;
-          this.moneyObj.discountMoney += item.amount * (1 - item.discount / 100) / 100;
-        });
-        this.materialData.forEach(item => {
-          // 材料明细的应收金额
-          this.moneyObj.materialMoney += item.amount / 100;
+
+    this.route.params.subscribe((params: Params) => {
+      const id = params['id'];
+      this.service.getPrintDetail(id)
+        .then(data => {
+          this.data = data;
+          console.log(data)
+          this.costData = data.totalCost; //收费结算单
+          this.workHourData = data.workHours;//工时明细
+          this.materialData = data.matereialDetails; //材料明细
+          this.workHourData.forEach(item => {
+            //金额
+            this.moneyObj.workItemMoney = item.amount * (item.discount / 100)
+            // 工时明细的应收金额和折扣金额
+            this.moneyObj.workCostMoney += item.amount / 100;
+            this.moneyObj.discountMoney += item.amount * (1 - item.discount / 100) / 100;
+          });
+          this.materialData.forEach(item => {
+            // 材料明细的应收金额
+            this.moneyObj.materialMoney += item.amount / 100;
+          })
+          // 收费结算金额
+          this.costData.forEach(item => {
+            this.moneyObj.costMoney += item.receivableCost / 100;
+            this.moneyObj.costCountMoney += (item.receivableCost - item.discountCost) / 100;
+          })
         })
-        // 收费结算金额
-        this.costData.forEach(item => {
-          this.moneyObj.costMoney += item.receivableCost / 100;
-          this.moneyObj.costCountMoney += (item.receivableCost - item.discountCost) / 100;
-        })
+        .catch(err => console.log(err));
+    });
 
 
-      });
     this.moneyObj = {
       workCostMoney: 0,
       discountMoney: 0,
@@ -65,7 +69,7 @@ export class PrintOrderComponent implements OnInit {
   ngOnInit() {
 
   }
-print() {
+  print() {
     this.printer.print();
   }
 

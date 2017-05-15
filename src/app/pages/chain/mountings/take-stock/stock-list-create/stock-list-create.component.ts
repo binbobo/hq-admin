@@ -34,7 +34,6 @@ export class StockListCreateComponent extends DataList<CreateStock> implements O
     this.lazyLoad = true;
     super.ngOnInit();
     this.moutingsService.getWarehouseOptions()
-      .then(data => data && data.length ? data : Promise.reject('没有可用的仓库信息！'))
       .then(data => this.houses = data)
       .then(data => {
         if (!this.params.inventoryId) {

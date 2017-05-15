@@ -49,6 +49,12 @@ export class ReceiveListComponent implements OnInit {
     this.model.suspendedBillId = item.id;
   }
 
+  onSuspendRemove(event) {
+    if (event.id === this.model.suspendedBillId) {
+      this.reset();
+    }
+  }
+
   generate(event: Event) {
     let el = event.target as HTMLButtonElement;
     el.disabled = true;
@@ -90,6 +96,7 @@ export class ReceiveListComponent implements OnInit {
     this.model['reveiver'] = reveiver && reveiver.text;
     this.model['department'] = department && department.text;
     this.suspendBill.suspend(this.model)
+      .then(() => this.reset())
       .then(() => el.disabled = false)
       .then(() => this.suspendBill.refresh())
       .then(() => this.alerter.success('挂单成功！'))

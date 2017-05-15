@@ -40,10 +40,16 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         // 初始化维修指派类型数据
         this.service.getMaintenanceAssignTypes()
             .subscribe(data => {
-                this.maintenanceAssignTypes = data;
+                console.log('维修派工状态类型数据：', data);
+                this.maintenanceAssignTypes = [{
+                    id: 'all',
+                    value: '全部'
+                }].concat(data);
 
                 // 页面初始化的时候  就要加入状态参数
-                this.params.states = this.maintenanceAssignTypes.map(item => item.id);
+                this.params.states = this.maintenanceAssignTypes
+                    .filter(item => item.id !== 'all')
+                    .map(item => item.id);
                 // 加载列表
                 this.loadList();
             });
@@ -104,7 +110,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         if (checkedStatus.length === 0) {
             checkedStatus = this.maintenanceAssignTypes;
         }
-        this.params.states = checkedStatus.map(item => item.id);
+        this.params.states = checkedStatus.filter(item => item.id !== 'all').map(item => item.id);
 
         console.log('当前选择的工单状态为：', JSON.stringify(this.params.states));
 
@@ -112,6 +118,26 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         this.onLoadList();
     }
 
+    /**
+     * 状态改变事件处理程序
+     * @param type
+     */
+    onStatusChange(type) {
+        type.checked = !type.checked;
+
+        if (type.id === 'all') {
+            this.maintenanceAssignTypes.map(item => item.checked = type.checked);
+        } else {
+            if (!type.checked) {
+                this.maintenanceAssignTypes[0].checked = false;
+            } else {
+                const len = this.maintenanceAssignTypes.filter(item => item !== type && item.id !== 'all' && item.checked).length;
+                if (len === this.maintenanceAssignTypes.length - 2) {
+                    this.maintenanceAssignTypes[0].checked = true;
+                }
+            }
+        }
+    }
 
     /**
      * 维修派工全选/反选事件处理程序

@@ -1,4 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+#hq-prining .print-page{
+    page-break-after:always;
+}
+/*html{
+    font-size: 14px;
+}*/
+.bg-inverse{
+    background-color: #2d384b!important;
+}
+.card-header,.card-footer{
+    background-color: #fff;
+}
 
 #hq-printing .no-print{
     display: none;
@@ -52,4 +64,11 @@ ngx-dropdown-treeview.sm input.form-control{
 }
 caption {
     caption-side: top;
+}
+
+/*必选项前面的星号样式*/ 
+.asterisk {
+    color: #ef1815;
+    font-weight: bold;
+    font-size: 16px;
 }

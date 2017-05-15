@@ -22,7 +22,7 @@ export class MenuComponent implements OnInit {
   }
 
   private get spaceWidth(): number {
-    return (this.parents.length - 1) * 8;
+    return (this.parents.length - 1) * 9;
   }
 
   private getRouterLink(routes: Array<any>) {

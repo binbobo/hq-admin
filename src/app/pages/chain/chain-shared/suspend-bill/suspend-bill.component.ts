@@ -7,12 +7,13 @@ import { SuspendBillColumn } from './suspend-bill.directive';
   selector: 'hq-suspend-bill',
   templateUrl: './suspend-bill.component.html',
   styleUrls: ['./suspend-bill.component.css'],
-  providers: [SuspendBillsService]
+  providers: [SuspendBillsService],
+  host: {
+    style: 'position:absolute;right:10px;top:7px;',
+  },
 })
 export class SuspendBillComponent implements OnInit {
 
-  @HostBinding("class")
-  private class = "pull-right";
   @Input()
   public type: string;
   @Input()
