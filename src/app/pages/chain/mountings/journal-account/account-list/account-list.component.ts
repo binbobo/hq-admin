@@ -28,7 +28,7 @@ export class AccountListComponent extends DataList<JournalAccount> implements On
   }
 
   private onSelectTag(tag: JournalAcountType) {
-    this.params.type = tag.type;
+    this.params.billType = tag.type;
     this.tags = [];
     this.loadList();
   }
