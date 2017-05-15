@@ -2,7 +2,7 @@
 <div class="card">
   <div class="card-header">
     <span>采购退库</span>
-    <ng-template hqSuspendBill="PR" (onSelect)="onSuspendSelect($event)" [columns]="suspendedColumns"></ng-template>
+    <ng-template hqSuspendBill="PR" (onRemove)="onSuspendRemove($event)" (onSelect)="onSuspendSelect($event)" [columns]="suspendedColumns"></ng-template>
   </div>
   <div class="card-block">
     <form class="form-inline mb-2">

@@ -68,6 +68,13 @@ export class ReturnListComponent implements OnInit {
     this.model.inunit = event.id;
   }
 
+  onSuspendRemove(event) {
+    if (event.id === this.model.suspendedBillId) {
+      this.reset();
+    }
+  }
+
+
   public get source() {
     return (params: TypeaheadRequestParams) => {
       let p = new ProviderListRequest(params.text, params.text);
@@ -84,6 +91,7 @@ export class ReturnListComponent implements OnInit {
     let el = event.target as HTMLButtonElement;
     el.disabled = true;
     this.suspendBill.suspend(this.model)
+      .then(() => el.disabled = false)
       .then(() => el.disabled = false)
       .then(() => this.suspendBill.refresh())
       .then(() => this.alerter.success('挂单成功！'))
