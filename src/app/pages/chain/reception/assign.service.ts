@@ -139,6 +139,6 @@ export class AssignListRequest extends PagedParams {
         public billCode?: string, // 工单号
         public keyword?: string // 车牌号或者工单号
     ) {
-        super('AssignListRequestParams');
+        super();
     }
 }

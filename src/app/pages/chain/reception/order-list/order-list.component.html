@@ -98,12 +98,12 @@
               <div class="col-2">
                 <input [(ngModel)]="params.enterStartTimeDate" class="form-control form-control datetime-picker" type="text" readonly
                   formControlName="enterStoreTimeStart" ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="2" minute='59'
-                  close-on-select="false" />
+                  [close-on-select]="false" />
               </div>
               <label class="col-1 col-form-label col-form-label">至</label>
               <div class="  col-2">
                 <input [(ngModel)]="params.enterEndTimeDate" class="form-control form-control datetime-picker" type="text" readonly formControlName="enterStoreTimeEnd"
-                  ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' close-on-select="false" />
+                  ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' [close-on-select]="false" />
               </div>
             </div>
 
@@ -112,12 +112,12 @@
               <div class="col-2">
                 <input [(ngModel)]="params.leaveStartTimeDate" class="form-control form-control datetime-picker" type="text" readonly
                   formControlName="leaveFactoryTimeStart" ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="23" minute='59'
-                  close-on-select="false" />
+                  [close-on-select]="false" />
               </div>
               <label class="col-1 col-form-label col-form-label">至</label>
               <div class="col-2">
                 <input [(ngModel)]="params.leaveEndTimeDate" class="form-control form-control datetime-picker" type="text" readonly formControlName="leaveFactoryTimeEnd"
-                  ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' close-on-select="false" />
+                  ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' [close-on-select]="false" />
               </div>
               <label for="searchRange" class="col-1 col-form-label col-form-label">查询范围</label>
               <div class="col-2">

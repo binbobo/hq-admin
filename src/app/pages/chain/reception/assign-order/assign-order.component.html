@@ -46,7 +46,7 @@
         <tr *ngFor="let item of list">
           <td width="75">
             <a href="#" (click)="orderDetailsHandler($event, item.id, lgModal)">详情</a> |
-            <a href="#" (click)="finishedOrder($event, item.id, confirmModal)">完工</a>
+            <a href="#" (click)="$event.preventDefault();finishedOrder(item.id)">完工</a>
           </td>
           <td>
             {{item.statusName}}
@@ -203,27 +203,4 @@
     </div>
   </div>
   <!--详情 end-->
-
-  <!--完工操作确认框-->
-  <div bsModal #confirmModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <div class="modal-header">
-          <p class="modal-title">温馨提示</p>
-          <button type="button" class="close pull-right" aria-label="Close" (click)="confirmModal.hide();">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        </div>
-        <div class="modal-body">
-          <p>您确定要完工吗</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn" data-dismiss="confirmModal" (click)="confirmModal.hide();">取消</button>
-          <button type="button" class="btn" data-dismiss="modal" (click)="onConfirmFinished(confirmModal)">确定</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
 </div>
