@@ -88,7 +88,6 @@ export class DistributeComponent implements OnInit {
     this.service.getMainList(this.billCode).toPromise()
       .then(data => {
         this.serialData = data;
-        console.log(data)
         this.serialData.sort((a, b) => {
           return a.serialNum - b.serialNum
         });
@@ -145,6 +144,8 @@ export class DistributeComponent implements OnInit {
   // 生成发料单
   private billReturnData: any;
 
+
+
   billData: any;
   OnCreatBill() {
     this.billData = {
@@ -163,7 +164,29 @@ export class DistributeComponent implements OnInit {
       this.suspendBill.refresh();
       this.alerter.info('生成发料单成功', true, 2000);
       this.isablePrint = true;
+      this.billReturnData = result.data;
+      this.serialData = result.data;
       this.newMainData = [];
+      console.log(result.data, this.serialData);
+
+      this.serialData.sort((a, b) => {
+        return a.serialNum - b.serialNum
+      })
+
+      this.numberList = this.serialData.map(item => {
+        return {
+          value: item.serialNum,
+          text: item.serialNum
+        };
+      });
+      this.numberList.sort((a, b) => {
+        return a.value - b.value
+      });
+      var hashNumber = {};
+      this.numberPrintList = this.numberList.reduce(function (item, next) {
+        hashNumber[next.text] ? '' : hashNumber[next.text] = true && item.push(next);
+        return item
+      }, [])
 
 
     }).catch(err => this.alerter.error(err, true, 2000));
