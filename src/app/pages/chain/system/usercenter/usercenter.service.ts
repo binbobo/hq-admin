@@ -7,12 +7,14 @@ import { TreeviewItem, TreeviewConfig } from "ngx-treeview"
 export class UserCenterService implements BasicService<any>{
     private static Url_Chain_UserSearch: string = "/SystemManager/Search";
     private static Url_Chain_CreateUser: string = "/SystemManager";
+    private static Url_Chain_EditUser: string = "/SystemManager/EditUserInfo";
+
     private static Url_Chain_PositionOption: string = "/Positions/Options";
     private static Url_Chain_DepartmentOption: string = "/Departments/Options/Position";
 
     private static Url_Platfrom_Enabled: string = "Users/Enabled/";
     private static Url_Platfrom_ResetPassword: string = "Users/ResetPassword/";
-    private static Url_Platfrom_RoleOption: string = "/Roles/Options";
+    private static Url_Platfrom_RoleOption: string = "Roles/Options";
 
     constructor(
         private httpService: HttpService
@@ -27,17 +29,24 @@ export class UserCenterService implements BasicService<any>{
         let url = Urls.chain.concat(UserCenterService.Url_Chain_CreateUser);
         // url = "http://localhost:8022/api/SystemManager";
         return this.httpService.post(url, JSON.stringify(body))
-            .then(result => { })
-            .catch(result => { });
+            .then(result => result)
+            .catch(error => Promise.reject(`新增用户失败： ${error}`));
     }
-    public update(body: any): Promise<void> {
-        throw new Error('Method not implemented.');
+    /**
+     * 编辑更新
+     */
+    public update(body: any): Promise<any> {
+        let url = Urls.chain.concat(UserCenterService.Url_Chain_EditUser);
+        // url = "http://localhost:8022/api/SystemManager/EditUserInfo/"+body.id;
+        return this.httpService.put<void>(url,JSON.stringify(body))
+                                .then(result=>result)
+                                .catch(error=>Promise.reject(`编辑用户失败：${error}`));
     }
     public patch(body: any): Promise<void> {
-        throw new Error('Method not implemented.');
+        return Promise.reject('Method not implemented.')
     }
     public delete(id: string): Promise<void> {
-        throw new Error('Method not implemented.');
+        return Promise.reject('Method not implemented.')
     }
 
     /**
@@ -55,43 +64,30 @@ export class UserCenterService implements BasicService<any>{
             .catch(err => Promise.reject(`加载用户列表失败：${err}`));
     }
 
+
     /**
-     * 获取职位下拉列表
-     */
+    * 获取职位下拉列表
+    */
     public getPositionOptions(): Promise<TreeviewItem[]> {
-        let url = Urls.platform.concat(UserCenterService.Url_Chain_DepartmentOption);
+        let url = Urls.chain.concat(UserCenterService.Url_Chain_DepartmentOption);
         // url = "http://localHost:8022/api".concat(UserCenterService.Url_Chain_DepartmentOption);
 
         return this.httpService.get<ListResult<TreeviewItem>>(url)
-            .then(item =>this.TreeView(item.data));
+            .then(item => item.data);
     }
 
-    private TreeView(items:TreeviewItem[]):TreeviewItem[]{
-        for (let i=0;i<items.length;i++){
-            items[i]=new TreeviewItem({text:items[i].text,value:items[i].value,checked:false});
-            if(items[i].children) this.TreeView(items[i].children)
-        }
-        return items;
-    }
-
-    public SelectedTreeNode(items:TreeviewItem[],nodes:string[]){
-        for (let i=0;i<items.length;i++){
-            let item=items[i];
-            //if(item.children) this.SelectedTreeNode(item.children,nodes)
-            if(nodes.filter(x=>x==item.value).length>0) item.checked=true; 
-        }
-    }
     /**
      * 获取角色下拉列表
      */
     public getRolesOptions(): Promise<TreeviewItem[]> {
         let url = Urls.platform.concat(UserCenterService.Url_Platfrom_RoleOption);
-        // url = "http://localHost:8020/api".concat(UserCenterService.Url_Platfrom_RoleOption);
+        // url = "http://localHost:8020/api/".concat(UserCenterService.Url_Platfrom_RoleOption);
 
-        return this.httpService.get<ListResult<SelectOption>>(url, `type=${RoleEnum.User.toString()}`)
+        return this.httpService.get<ListResult<SelectOption>>(url, `type=${RoleEnum.None.toString()}`)
             .then(item => {
-                return item.data.map(x => new TreeviewItem({ text: x.text, value: x.value,checked:false }))
-            });
+                return item.data.map(x => new TreeviewItem({ text: x.text, value: x.value, checked: false }))
+            })
+            .catch(error => Promise.reject(`获取角色选项失败： ${error}`));
     }
 
     /**
@@ -117,50 +113,10 @@ export class UserCenterService implements BasicService<any>{
         return this.httpService.
             put<void>(url, {})
             .catch(err => Promise.reject(`重置密码：${err}`));
-        // return this.httpService.put(url,)
     }
 
     public get(id: string): Promise<UserModel> {
         throw new Error('Method not implemented.');
-    }
-
-    public get rolesDropDown(): DropDownItem {
-        return new DropDownItem([
-            new TreeviewItem({
-                text: "第一页", value: "123", children: [
-                    { text: "生成", value: "1" },
-                    { text: "生成2", value: "2" },
-                    { text: "生成3", value: "3" },
-                ]
-            }),
-            new TreeviewItem({
-                text: "第二页", value: "222", children: [
-                    { text: "二生成", value: "11" },
-                    { text: "二生成2", value: "22" },
-                    { text: "二生成3", value: "33" },
-                ]
-            })
-        ]);
-    }
-
-    public get getPositionsDropDown(): DropDownItem {
-
-        return new DropDownItem([
-            new TreeviewItem({
-                text: "人力资源部", value: "123", children: [
-                    { text: "职位一", value: "1" },
-                    { text: "职位二", value: "2" },
-                    { text: "职位三", value: "3" },
-                ]
-            }),
-            new TreeviewItem({
-                text: "信息部", value: "222", children: [
-                    { text: "职位一", value: "11" },
-                    { text: "职位二", value: "22" },
-                    { text: "职位三", value: "33" },
-                ]
-            })
-        ]);
     }
 }
 
@@ -172,7 +128,7 @@ export class UserModel {
     name: string;
     phone: string;
     enabled: boolean;
-    createTime: string;
+    createTime:string;
     description: string;
     roles: UserRole[];
     roleIds: string[];
@@ -181,20 +137,21 @@ export class UserModel {
     userRoleName: string;
     positionName: string;
     partName: string;
+    passWord:string;
 
-    public ClearData(){
-        this.id="";
-        this.name="";
-        this.phone="";
-        this.enabled=false;
-        this.createTime="";
-        this.description="";
-        this.roles=[];
-        this.roleIds=[];
-        this.positionIds=[];
-        this.positionName="";
-        this.userRoleName="";
-        this.partName="";
+    public ClearData() {
+        this.id = "";
+        this.name = "";
+        this.phone = "";
+        this.enabled = false;
+        this.createTime = "";
+        this.description = "";
+        this.roles = [];
+        this.roleIds = [];
+        this.positionIds = [];
+        this.positionName = "";
+        this.userRoleName = "";
+        this.partName = "";
     }
 }
 
@@ -208,12 +165,21 @@ export class UserRole {
     name: string;
 }
 
+/**
+ * 部门信息
+ */
 export class PartPositionInfo {
     id: string;
     name: string;
+    /**
+     * 职位
+     */
     positionItems: PostionInfo[];
 }
 
+/**
+ * 职位信息
+ */
 export class PostionInfo {
     id: string;
     name: string;
@@ -229,12 +195,66 @@ export class DropDownItem {
         isShowCollapseExpand: true,
         maxHeight: 500
     };
-    public callBack: Function;
-    constructor(public items: TreeviewItem[], callBack?: Function, config?: TreeviewConfig) {
+    constructor(public items: TreeviewItem[], config?: TreeviewConfig) {
         if (config != null) this.config = config;
-        if (callBack != null) this.callBack = callBack;
+    }
+
+    /**
+     * 创建树节点
+     */
+    public CreateTreeViewNodes(items: TreeviewItem[]): TreeviewItem[] {
+        if (!items) return;
+        this.CopeyTreeViewItems(items);
+        this.items =items;
+        return items;
+    }
+
+    /**
+     * 在下拉选项中 选择 nodes数组中的节点
+     */
+    public SelectedTreeNode(nodes: string[]) {
+        if (!nodes) return;
+        this.SelectedNodes(this.items, nodes);
+    }
+
+    /**
+     * 创建新的节点
+     */
+    private CopeyTreeViewItems(items: TreeviewItem[]) {
+        for (let i = 0; i < items.length; i++) {
+            let model = new TreeviewItem({ text: items[i].text, value: items[i].value, checked: false });
+            model.children = items[i].children;
+            items[i] = model;
+            if (items[i].children) this.CopeyTreeViewItems(items[i].children)
+        }
+    }
+    /**
+     * 循环比对下拉列表中的节点是否是需要进行选择的
+     */
+    private SelectedNodes(items: TreeviewItem[], nodes: string[]) {
+        if (!items || !nodes) return;
+        for (let i = 0; i < items.length; i++) {
+            let item = items[i];
+            if (item.children) this.SelectedNodes(item.children, nodes);
+            this.CheckedNodes(item, nodes);
+        }
+    }
+
+    /**
+     * 选择节点
+     */
+    private CheckedNodes(item: TreeviewItem, nodes: string[]) {
+        if (!item || !nodes || !item.value) return;
+        for (let n = 0; n < nodes.length; n++) { 
+        // console.log(item.text+" "+item.value+"|"+ (nodes[n] == item.value)+"|"+nodes.length);
+            if (nodes[n] == item.value) {
+                item.checked = true;
+                break;
+            }
+        }
     }
 }
+
 
 /**
  * 用户搜索参数
