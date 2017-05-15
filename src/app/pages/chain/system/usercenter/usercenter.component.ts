@@ -55,7 +55,7 @@ export class UsercenterComponent implements OnInit {
     this.createUserModel = this.builder.group({
       UserName: ["", [Validators.required]],
       Phone: ["", [Validators.required, Validators.pattern("^1[3|4|5|7|8][0-9]{9}$")]],
-      Remark: "",
+      Remark: ["",[Validators.maxLength(500)]],
       PassWord:""
     });
 
@@ -77,6 +77,7 @@ export class UsercenterComponent implements OnInit {
     // this.userModel=userModel;
     if(userModel.enabled==false) return;
 
+    
     this.userModel.ClearData();
     this.userModel.name = userModel.name;
     this.userModel.phone = userModel.phone;
@@ -86,8 +87,8 @@ export class UsercenterComponent implements OnInit {
     this.userModel.createTime=userModel.createTime;
     this.userModel.id=userModel.id;
 
-    this.position.items.forEach(x => { x.setCheckedRecursive(false)});
-    this.roleItem.items.forEach(x => { x.setCheckedRecursive(false);});
+    this.position.items.forEach(x => { x.setCheckedRecursive(false);x.setCollapsedRecursive(false);});
+    this.roleItem.items.forEach(x => { x.setCheckedRecursive(false);x.setCollapsedRecursive(false);});
 
     this.position.SelectedTreeNode(this.userModel.positionIds)
     this.roleItem.SelectedTreeNode(this.userModel.roleIds)

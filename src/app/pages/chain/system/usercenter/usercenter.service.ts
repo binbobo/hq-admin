@@ -7,7 +7,7 @@ import { TreeviewItem, TreeviewConfig } from "ngx-treeview"
 export class UserCenterService implements BasicService<any>{
     private static Url_Chain_UserSearch: string = "/SystemManager/Search";
     private static Url_Chain_CreateUser: string = "/SystemManager";
-    private static Url_Chain_EditUser: string = "/SystemManager/EditUserInfo";
+    private static Url_Chain_EditUser: string = "/SystemManager/EditUserInfo/";
 
     private static Url_Chain_PositionOption: string = "/Positions/Options";
     private static Url_Chain_DepartmentOption: string = "/Departments/Options/Position";
@@ -36,7 +36,7 @@ export class UserCenterService implements BasicService<any>{
      * 编辑更新
      */
     public update(body: any): Promise<any> {
-        let url = Urls.chain.concat(UserCenterService.Url_Chain_EditUser);
+        let url = Urls.chain.concat(UserCenterService.Url_Chain_EditUser,body.id);
         // url = "http://localhost:8022/api/SystemManager/EditUserInfo/"+body.id;
         return this.httpService.put<void>(url,JSON.stringify(body))
                                 .then(result=>result)
@@ -108,7 +108,7 @@ export class UserCenterService implements BasicService<any>{
      * 重置用户密码
      */
     public ResetPassword(id): Promise<void> {
-        let url = Urls.platform.concat(UserCenterService.Url_Chain_UserSearch, id);
+        let url = Urls.platform.concat(UserCenterService.Url_Platfrom_ResetPassword, id);
         // url = "http://localhost:8020/api/Users/ResetPassword/" + id;
         return this.httpService.
             put<void>(url, {})
@@ -215,6 +215,7 @@ export class DropDownItem {
     public SelectedTreeNode(nodes: string[]) {
         if (!nodes) return;
         this.SelectedNodes(this.items, nodes);
+        return this.items;
     }
 
     /**
