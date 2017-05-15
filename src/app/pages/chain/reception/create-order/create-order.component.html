@@ -23,7 +23,7 @@
         <label for="customerName" class="col-1 col-form-label col-form-label"><span class="asterisk mr-1">*</span>车主</label>
         <div class="col-2">
           <input [hqTableTypeahead]="customerNametypeaheadSource" hqError="车主" [columns]="typeaheadColumns" (onSelect)="onCustomerNameSelect($event)"
-            type="text" class="form-control" formControlName="customerName" id="customerName" placeholder="输入字母 ll 测试">
+            type="text" class="form-control" formControlName="customerName" id="customerName" placeholder="输入车主名称">
         </div>
         <label for="phone" class="col-1 col-form-label">车主电话</label>
         <div class="col-2">
@@ -37,22 +37,25 @@
         </div>
         <label for="brand" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>品牌</label>
         <div class="col-2">
-          <input hqError="品牌" [hqTableTypeahead]="brandTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onBrandSelect($event)"
-            type="text" class="form-control" formControlName="brand" id="brand" placeholder="输入 奥迪/大众  测试">
+          <!--hqError="品牌"-->
+          <input [hqTableTypeahead]="brandTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onBrandSelect($event)"
+            type="text" class="form-control" formControlName="brand" id="brand" placeholder="请输入品牌名称">
           <!--品牌id-->
           <input type="hidden" formControlName="brandId" />
         </div>
         <label for="series" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车系</label>
         <div class="col-2">
-          <input hqError="车系" [hqTableTypeahead]="seriesTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onSeriesSelect($event)"
-            type="text" class="form-control" formControlName="series" id="series" placeholder="输入 奥 迪/大众  测试">
+          <!--hqError="车系"-->
+          <input [hqTableTypeahead]="seriesTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onSeriesSelect($event)"
+            type="text" class="form-control" formControlName="series" id="series" placeholder="输入车系名称">
           <!--车系id-->
           <input type="hidden" formControlName="seriesId" />
         </div>
         <label for="vehicleName" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车型</label>
         <div class="col-2">
-          <input hqError="车型" [hqTableTypeahead]="modelTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onModelSelect($event)"
-            type="text" class="form-control" formControlName="vehicleName" id="vehicleName" placeholder="输入 加长 测试">
+          <!--hqError="车型" -->
+          <input [hqTableTypeahead]="modelTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onModelSelect($event)"
+            type="text" class="form-control" formControlName="vehicleName" id="vehicleName" placeholder="输入车型名称">
           <!--车辆id-->
           <input type="hidden" formControlName="vehicleId" />
         </div>
@@ -67,7 +70,7 @@
         </div>
         <label for="expectLeave" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>预计交车时间</label>
         <div class=" col-2">
-          <input hqError="预计交车时间" class="form-control datetime-picker" type="text" formControlName="expectLeave" ngui-datetime-picker
+          <input [close-on-select]="false" hqError="预计交车时间" class="form-control datetime-picker" type="text" formControlName="expectLeave" ngui-datetime-picker
             date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' />
         </div>
         <label for="contactUser" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>送修人</label>
@@ -168,26 +171,26 @@
               <!-- (blur)="onServiceBlur()" (change)="onServiceChange()"-->
               <td>
                 <form [formGroup]="serviceForm" autocomplete="off">
-                  <input formControlName="serviceName" hqError="维修项目" placeholder="输入 更换  进行测试" [hqTableTypeahead]="serviceNameTypeaheadSource"
+                  <input formControlName="serviceName" hqError="维修项目" placeholder="输入维修项目名称" [hqTableTypeahead]="serviceNameTypeaheadSource"
                     [columns]="nameTypeaheadColumns" (onSelect)="serviceTypeaheadOnSelect($event)" [(ngModel)]="newMaintenanceItem.serviceName"
                     type="text" class="form-control">
                 </form>
               </td>
               <td>
                 <form [formGroup]="workHourForm">
-                  <input formControlName="workHour" hqError="维修工时" placeholder="请输入数字" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.workHour"
+                  <input formControlName="workHour" hqError="维修工时" placeholder="请输入工时" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.workHour"
                     (keyup)="onWorkHourChange()" type="text" class="form-control">
                 </form>
               </td>
               <td>
                 <form [formGroup]="workHourPriceForm">
-                  <input formControlName="workHourPrice" hqError="工时单价" placeholder="请输入数字" (keyup.enter)="onConfirmAddNewMaintenanceItem()"
+                  <input formControlName="workHourPrice" hqError="工时单价" placeholder="工时单价" (keyup.enter)="onConfirmAddNewMaintenanceItem()"
                     [(ngModel)]="newMaintenanceItem.price" (keyup)="onPriceChange()" type="text" class="form-control">
                 </form>
               </td>
               <td>
                 <form [formGroup]="discountRatioForm">
-                  <input formControlName="discountRatio" hqError="折扣率" placeholder="请输入0~100之间的整数" (keyup.enter)="onConfirmAddNewMaintenanceItem()"
+                  <input formControlName="discountRatio" hqError="折扣率" placeholder="折扣率" (keyup.enter)="onConfirmAddNewMaintenanceItem()"
                     [(ngModel)]="newMaintenanceItem.discount" (keyup)="onDiscountChange()" type="text" class="form-control">
                 </form>
               </td>

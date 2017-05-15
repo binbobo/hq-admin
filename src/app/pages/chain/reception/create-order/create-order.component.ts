@@ -80,6 +80,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   onBrandSelect(evt) {
     // 设置当前选择的品牌id
     this.workSheetForm.controls.brandId.setValue(evt.id);
+    this.workSheetForm.controls.brand.patchValue(evt.name, { emitEvent: false });
     // enable车系选择
     this.workSheetForm.controls.series.enable();
   }
@@ -87,6 +88,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   onSeriesSelect(evt) {
     // 设置当前选择的车系id
     this.workSheetForm.controls.seriesId.setValue(evt.id);
+    this.workSheetForm.controls.series.patchValue(evt.name, { emitEvent: false });
     // enable车型选择
     this.workSheetForm.controls.vehicleName.enable();
   }
@@ -98,7 +100,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
     // 如果手动选择了车型  以该车型id为准
     this.workSheetForm.controls.vehicleId.setValue(evt.id);
-    this.workSheetForm.controls.vehicleName.setValue(evt.name);
+    this.workSheetForm.controls.vehicleName.patchValue(evt.name, { emitEvent: false });
   }
 
 
@@ -131,7 +133,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
         this.lastOrderData = lastOrder;
       }
     }).catch(err => {
-      this.alerter.error('获取上次工单信息失败：' + err);
+      // 没有上次工单记录  或者  接口出错
+      // this.alerter.error('获取上次工单信息失败：' + err);
 
       this.isSelected = true;
     });
@@ -158,6 +161,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   // 根据车牌号， 车主， vin 自动带出客户车辆信息
   loadCustomerVehicleInfo(customerVehicle) {
+    console.log('客户车辆信息', customerVehicle);
     // 加载客户车辆信息
     this.workSheetForm.patchValue({
       plateNo: customerVehicle.plateNo,
@@ -583,7 +587,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     const workSheet = this.getEdittingOrder();
 
     // 调用创建工单接口
-    // console.log('提交的工单对象： ', JSON.stringify(workSheet));
+    console.log('提交的工单对象： ', JSON.stringify(workSheet));
 
     this.service.create(workSheet)
       // 刷新挂单列表
