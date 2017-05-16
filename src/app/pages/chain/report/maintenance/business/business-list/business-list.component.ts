@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChildren, QueryList, Injector } from '@angular/c
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DataList, StorageKeys } from "app/shared/models";
 import { BusinessService, BusinessListRequest, FuzzySearchRequest } from "../business.service";
-import { SecondToTimePipe } from "app/shared/pipes";
+// import { SecondToTimePipe } from "app/shared/pipes";
 import { TypeaheadRequestParams } from "app/shared/directives";
 
 @Component({
@@ -13,7 +13,7 @@ import { TypeaheadRequestParams } from "app/shared/directives";
 export class BusinessListComponent extends DataList<any> {
 
   private businessForm: FormGroup;
-  private converter: SecondToTimePipe = new SecondToTimePipe();
+  // private converter: SecondToTimePipe = new SecondToTimePipe();
   params: BusinessListRequest;
   public isShow = false;//查询范围是否显示
   public isSearch = false;//温馨提示是否显示
@@ -48,7 +48,14 @@ export class BusinessListComponent extends DataList<any> {
     };
   }
 
-  plateNoOnSelect(){}
+  plateNoOnSelect(event){
+    let item = {
+      plateNo:event.plateNo
+    }
+    setTimeout(() => {
+      this.businessForm.patchValue(item);
+    }, 1);
+  }
   //定义模糊查询要显示的列
   public get typeaheadColumns() {
     return [
@@ -63,7 +70,7 @@ export class BusinessListComponent extends DataList<any> {
   }
   //查询
   onSearch() {
-    if (this.params.plateNo) {
+    if (this.businessForm.value) {
       this.isSearch = true;
     }
     this.onLoadList();

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BasicService, BasicModel, PagedParams, PagedResult } from 'app/shared/models';
+import { BasicService, BasicModel, PagedParams, PagedResult, ListResult } from 'app/shared/models';
 import { Urls, HttpService } from 'app/shared/services';
 
 @Injectable()
@@ -23,7 +23,7 @@ export class RoleService implements BasicService<Role> {
       .catch(err => Promise.reject(`获取角色列表失败：${err}`));
   }
   get(id: string): Promise<Role> {
-    let url = Urls.platform.concat('/Roles/Menus/', id);
+    let url = Urls.platform.concat('/Roles/', id);
     return this.httpService.get<Role>(url)
       .catch(err => Promise.reject(`获取角色信息失败：${err}`));
   }
@@ -32,9 +32,16 @@ export class RoleService implements BasicService<Role> {
   }
   allocate(id: string, body: Array<string>): Promise<void> {
     let url = Urls.platform.concat('/Roles/AllotMenus/', id);
-    return this.httpService.post<void>(url, body)
+    return this.httpService.post<void>(url, { id: id, menuIds: body })
       .catch(err => Promise.reject(`分配权限失败：${err}`));
   }
+  getMenus(id: string): Promise<Array<any>> {
+    let url = Urls.platform.concat('/Roles/Menus/', id);
+    return this.httpService.get<ListResult<any>>(url)
+      .then(result => Array.isArray(result.data) ? result.data : [])
+      .catch(err => Promise.reject(`获取角色权限信息失败：${err}`));
+  }
+
 
   constructor(private httpService: HttpService) { }
 
@@ -42,7 +49,8 @@ export class RoleService implements BasicService<Role> {
 
 export class Role extends BasicModel {
   constructor(
-    public name?: string
+    public name?: string,
+    public createTime?: string,
   ) {
     super();
   }

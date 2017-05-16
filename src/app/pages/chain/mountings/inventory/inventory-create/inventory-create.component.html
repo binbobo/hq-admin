@@ -23,7 +23,7 @@
     <div class="col-6">
       <div class="form-group">
         <label class="form-control-label">*仓库</label>
-        <select hqError="仓库" formControlName="storeId" (change)="onClientChange($event)" class="form-control">
+        <select hqError="仓库" formControlName="storeId" class="form-control">
           <option *ngFor="let item of warehouses" value="{{item.value}}">{{item.text}}</option>
         </select>
       </div>
@@ -43,12 +43,12 @@
       </div>
       <div class="form-group">
         <label class="form-control-label">*品牌</label>
-        <input hqError="品牌" (input)="onBrandChange($event)" (typeaheadOnSelect)="onBrandSelect($event)" [typeahead]="brands" typeaheadOptionField="text"
+        <input hqError="品牌" [attr.disabled]='owned' (input)="onBrandChange($event)" (typeaheadOnSelect)="onBrandSelect($event)" [typeahead]="brands" typeaheadOptionField="text"
           formControlName="brandName" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">包装规格</label>
-        <input type="text" hqError='包装规格' formControlName="packageInfo" class="form-control">
+        <input type="text" hqError='包装规格' [attr.disabled]='owned' formControlName="packageInfo" class="form-control">
       </div>
     </div>
     <div class="col-6">
@@ -73,7 +73,7 @@
       </div>
       <div class="form-group">
         <label class="form-control-label">产地</label>
-        <input type="text" hqError='产地' formControlName="madeIn" class="form-control">
+        <input type="text" hqError='产地' [attr.disabled]='owned' formControlName="madeIn" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">备注</label>

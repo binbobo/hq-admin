@@ -40,6 +40,7 @@ export abstract class FormHandle<T> implements OnInit {
      * 表单是否有效（可以通过验证）
      */
     protected validate(): boolean {
+        console.log(this.controls.filter(c => !c.validate()))
         let invalid = this.controls
             .map(c => c.validate())
             .some(m => !m);

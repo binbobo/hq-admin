@@ -15,6 +15,7 @@ import { SuspendBillDirective } from "app/pages/chain/chain-shared";
   providers: [DistributeService]
 })
 export class DistributeComponent implements OnInit {
+  MRData: any;
   suspendedBillId: any;
   numberPrintList: any;
   @ViewChild('createModal')
@@ -84,8 +85,8 @@ export class DistributeComponent implements OnInit {
         }, [])
       });
 
-    // 根据工单号获取流水号列表
-    this.service.getMainList(this.billCode).toPromise()
+    // 根据工单号获取已发料流水号列表
+    this.service.getMMList(this.billCode).toPromise()
       .then(data => {
         this.serialData = data;
         this.serialData.sort((a, b) => {
@@ -109,6 +110,16 @@ export class DistributeComponent implements OnInit {
 
       })
 
+    // 根据工单号获取已退料流水号列表
+    this.service.getMRList(this.billCode).toPromise()
+      .then(data => {
+        this.MRData = data;
+        this.MRData.sort((a, b) => {
+          return a.serialNum - b.serialNum
+        });
+        this.suspendData.MRData = this.MRData;
+
+      })
 
   }
   numberList: any;
@@ -136,16 +147,14 @@ export class DistributeComponent implements OnInit {
 
   // 点击发料弹出发料弹框
   OnCreatBound(item) {
+    this.createModal.show();
     this.InputData.serviceName = item.serviceName; //维修项目名称
     this.InputData.maintenanceItemId = item.id; //维修明细id
     this.InputData = { ...this.InputData };
-    this.createModal.show();
+    
   }
   // 生成发料单
   private billReturnData: any;
-
-
-
   billData: any;
   OnCreatBill() {
     this.billData = {
@@ -165,7 +174,7 @@ export class DistributeComponent implements OnInit {
       this.alerter.info('生成发料单成功', true, 2000);
       this.isablePrint = true;
       this.billReturnData = result.data;
-      this.serialData = result.data;
+      this.serialData = this.serialData.concat(result.data);
       this.newMainData = [];
       console.log(result.data, this.serialData);
 
@@ -206,7 +215,7 @@ export class DistributeComponent implements OnInit {
 
   onCreate(evt) {
     console.log(evt);
-    evt.amount = evt.amount * 100;
+    evt.amount = evt.amount;
     if (this.newMainData) {
       this.newMainData = this.newMainData;
     } else {
@@ -251,6 +260,7 @@ export class DistributeComponent implements OnInit {
     serviceData: this.serviceData,
     serialData: this.serialData,
     customerName: this.customerName,
+    MRData: this.MRData,
   }
   private sunspendRequest: any;
   onSuspendSelect(item) {
@@ -263,6 +273,7 @@ export class DistributeComponent implements OnInit {
     this.serviceData = this.sunspendRequest["serviceData"];
     this.serialData = this.sunspendRequest["serialData"];
     this.employeesData = this.sunspendRequest["maintenanceEmployees"];
+    this.MRData = this.sunspendRequest["MRData"];
     // 去重
     var hash = {};
     this.InputData.employeesData = this.employeesData.reduce(function (item, next) {
@@ -294,6 +305,8 @@ export class DistributeComponent implements OnInit {
       })
   }
 
-
+  createModalHide() {
+    this.createModal.hide();
+  }
 
 }

@@ -11,7 +11,6 @@
   <table class="table table-bordered table-sm table-striped">
     <thead>
       <tr>
-        <th translate>序号</th>
         <th translate>配件编码</th>
         <th translate>配件名称</th>
         <th translate>仓库</th>
@@ -23,7 +22,6 @@
     </thead>
     <tbody>
       <tr *ngFor="let item of model?.list;let i=index">
-        <td class="text-center">{{i+1}}</td>
         <td class="text-center">{{item.productCode }}</td>
         <td class="text-center">{{item.productName}}</td>
         <td class="text-center">{{item.storeName }}</td>
