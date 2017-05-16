@@ -26,7 +26,6 @@
         <tr *ngIf="!loading">
           <th translate><input (change)="onCheckChange($event)" type="checkbox"></th>
           <th translate>操作</th>
-          <th translate>序号</th>
           <th translate>代码</th>
           <th translate>名称</th>
           <th translate>简称</th>
@@ -45,7 +44,6 @@
           <td class="text-center">
             <button (click)="onProviderEdit(item)" class="btn btn-sm btn-success">编辑</button>
           </td>
-          <td class="text-center">{{item.number}}</td>
           <td>{{item.code}}</td>
           <td>{{item.name}}</td>
           <td>{{item.shortName}}</td>

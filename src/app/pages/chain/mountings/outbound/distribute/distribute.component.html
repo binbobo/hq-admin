@@ -95,7 +95,6 @@
           <thead>
             <tr>
               <th>流水号</th>
-              <th>序号</th>
               <th>维修项目</th>
               <th>品牌</th>
               <th>配件编码</th>
@@ -113,7 +112,6 @@
           <tbody *ngFor="let item of serialData">
             <tr *ngFor="let ele of item.list">
               <td>{{item.serialNum}}</td>
-              <td>{{ele.number}}</td>
               <td>{{ele.serviceName}}</td>
               <td>{{ele.brandName}}</td>
               <td>{{ele.productCode}}</td>
@@ -135,7 +133,6 @@
           <thead>
             <tr>
               <th>流水号</th>
-              <th>序号</th>
               <th>维修项目</th>
               <th>品牌</th>
               <th>配件编码</th>
@@ -153,7 +150,6 @@
           <tbody *ngFor="let item of MRData">
             <tr *ngFor="let ele of item.list">
               <td>{{item.serialNum}}</td>
-              <td>{{ele.number}}</td>
               <td>{{ele.serviceName}}</td>
               <td>{{ele.brandName}}</td>
               <td>{{ele.productCode}}</td>

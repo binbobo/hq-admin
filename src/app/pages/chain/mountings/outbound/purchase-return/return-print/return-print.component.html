@@ -10,7 +10,6 @@
   <table class="table table-bordered table-sm table-striped">
     <thead>
       <tr>
-        <th translate>序号</th>
         <th translate>仓库</th>
         <th translate>配件编码</th>
         <th translate>配件名称</th>
@@ -25,7 +24,6 @@
     </thead>
     <tbody>
       <tr *ngFor="let item of model?.list;let i=index">
-        <td class="text-center">{{i+1}}</td>
         <td>{{item.storeName }}</td>
         <td>{{item.productCode }}</td>
         <td>{{item.productName}}</td>
