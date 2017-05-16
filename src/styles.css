@@ -12,6 +12,10 @@
     background-color: #fff;
 }
 
+.card-block{
+    overflow: auto;
+}
+
 #hq-printing .no-print{
     display: none;
 }
