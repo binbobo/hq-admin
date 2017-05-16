@@ -20,7 +20,6 @@ export class MenuComponent implements OnInit {
 
   ngOnInit() {
     this.activeMenu(this.items);
-    console.log(this.items);
     this.menus = this.items;
   }
 
@@ -42,7 +41,7 @@ export class MenuComponent implements OnInit {
     menus.forEach(m => {
       m.routes = this.parents.concat(m.path);
       if (!m.children || !Array.isArray(m.children)) return;
-      //m.expand = this.activable(m);
+      m.expand = this.activable(m);
       this.activeMenu(m.children);
     });
   }
@@ -63,5 +62,9 @@ export class MenuComponent implements OnInit {
       isActive = this.router.isActive(urlTree, false);
     }
     return isActive;
+  }
+
+  private onMenuClick(event: Event) {
+    scrollTo(undefined, 0);
   }
 }

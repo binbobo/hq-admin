@@ -73,6 +73,8 @@ export class Inventory extends BasicModel {
   constructor(
     public categoryId: Array<string> = [],
     public vehicleId: Array<string> = [],
+    public vehicleList: Array<any> = [],
+    public categoryList: Array<any> = [],
     public number?: number,
     public storeId?: string,
     public locationName?: string,

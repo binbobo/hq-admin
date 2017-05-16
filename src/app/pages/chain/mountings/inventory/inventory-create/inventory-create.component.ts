@@ -20,6 +20,7 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
   private categories: Array<TreeviewItem>;
   private brands: Array<SelectOption>;
   public items: Array<any> = [];
+  private owned: boolean;
 
   constructor(
     injector: Injector,
@@ -150,10 +151,10 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
   private disableItem(disabled: boolean) {
     let keys = ['packageInfo', 'madeIn', 'brandName'];
     if (disabled) {
-      keys.forEach(key => this.form.controls[key].disable());
+      this.owned = true;
     } else {
+      this.owned = undefined;
       keys.forEach(key => {
-        this.form.controls[key].enable();
         this.form.controls[key].setValue('');
       });
     }
