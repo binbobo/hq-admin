@@ -26,23 +26,13 @@ export class BusinessService implements BasicService<any> {
   //页面加载时分页获取维修历史信息
   public getPagedList(params: BusinessListRequest): Promise<PagedResult<any>> {
     const url = Urls.chain.concat('/Maintenances/history/search?', params.serialize());
+    console.log("url",url);
     return this.httpService.get<PagedResult<any>>(url)
       .then(result => {
         console.log('维修历史数据', result);
         return result;
       })
       .catch(err => Promise.reject(`获取维修历史数据失败：${err}`));
-  }
-//根据条件查询维修历史
-  public getBusinessList(params: BusinessListRequest): Promise<PagedResult<any>> {
-    const url = Urls.chain.concat('/Maintenances/history/search?', params.serialize());
-    console.log('url'+url);
-    return this.httpService.get<PagedResult<any>>(url)
-      .then(result => {
-        console.log('条件查询维修历史数据', result);
-        return result;
-      })
-      .catch(err => Promise.reject(`根据条件获取维修历史数据失败：${err}`));
   }
   
   //导出
@@ -98,7 +88,7 @@ export class BusinessListRequest extends PagedParams {
     // public keyword?: string, // 关键字
     // public orgIds?: Array<string> // 查询范围
   ) {
-    super('BusinessListRequestParams');
+    super();
   }
 }
 

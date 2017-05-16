@@ -6,29 +6,29 @@
       <div class="form-group row">
         <label for="plateNo" class="col-form-label margin-l">车牌号：</label>
         <div class="col-2">
-        <input [(ngModel)]="params.palteNo" formControlName="plateNo" [hqTableTypeahead]="plateNotypeaheadSource" [columns]="typeaheadColumns"
+        <input [(ngModel)]="params.plateNo" formControlName="plateNo" [hqTableTypeahead]="plateNotypeaheadSource" [columns]="typeaheadColumns"
           (onSelect)="plateNoOnSelect($event)" class="form-control" id="plateNo" type="text" placeholder="请输入车牌号" />
         </div>
         <label for="enterTime" class="col-form-label margin-l">进店时间：</label>
         <div class="col-3">
-        <input [(ngModel)]="params.enterStartTimeDate" formControlName="enterStartTimeDate" class="form-control datetime-picker"
+        <input [close-on-select]="false" [(ngModel)]="params.enterStartTimeDate" formControlName="enterStartTimeDate" class="form-control datetime-picker"
           id="enterStartTimeDate" type="text" ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' />
         </div>
         <label class="col-form-label">至：</label>
         <div class="col-3">
-        <input [(ngModel)]="params.enterEndTimeDate" formControlName="enterEndTimeDate" class="form-control datetime-picker"
+        <input [close-on-select]="false" [(ngModel)]="params.enterEndTimeDate" formControlName="enterEndTimeDate" class="form-control datetime-picker"
           id="enterEndTimeDate" type="text" ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="23" minute='59'/>
         </div>
       </div>
       <div class="form-group row">
         <label for="leaveTime" class="col-form-label margin-l">出厂时间：</label>
         <div class="col-3">
-        <input [(ngModel)]="params.leaveStartTimeDate" formControlName="leaveStartTimeDate" class="form-control datetime-picker"
+        <input [close-on-select]="false" [(ngModel)]="params.leaveStartTimeDate" formControlName="leaveStartTimeDate" class="form-control datetime-picker"
           id="leaveStartTimeDate" type="text" ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' />
         </div>
         <label class="col-form-label">至：</label>
         <div class="col-3">
-        <input [(ngModel)]="params.leaveEndTimeDate" formControlName="leaveEndTimeDate" class="form-control datetime-picker"
+        <input [close-on-select]="false" [(ngModel)]="params.leaveEndTimeDate" formControlName="leaveEndTimeDate" class="form-control datetime-picker"
           id="leaveEndTimeDate" type="text" ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' />
         </div>
         <label *ngIf="isShow" for="orgName" class="col-form-label margin-l">查询范围：</label>
@@ -41,7 +41,7 @@
       </div>
     </form>
     <hr>
-    <p *ngIf="isSearch">温馨提示：系统找到该车辆在本店维修过<span class="color">2</span>次</p>
+    <h5 *ngIf="isSearch">温馨提示：系统找到该车辆在本店维修过<span class="color">{{total}}</span>次</h5>
     <hr>
     <table class="table table-responsive table-striped table-bordered">
       <thead>

@@ -48,7 +48,14 @@ export class BusinessListComponent extends DataList<any> {
     };
   }
 
-  plateNoOnSelect(){}
+  plateNoOnSelect(event){
+    let item = {
+      plateNo:event.plateNo
+    }
+    setTimeout(() => {
+      this.businessForm.patchValue(item);
+    }, 1);
+  }
   //定义模糊查询要显示的列
   public get typeaheadColumns() {
     return [
@@ -63,7 +70,7 @@ export class BusinessListComponent extends DataList<any> {
   }
   //查询
   onSearch() {
-    if (this.params.plateNo) {
+    if (this.businessForm.value) {
       this.isSearch = true;
     }
     this.onLoadList();
