@@ -57,9 +57,6 @@ export class InventoryEditComponent extends FormHandle<Inventory> implements OnI
       this.vehicles = this.model.vehicleList.map(v => ({ id: v.vehicleId, name: v.vehicleName }));
       this._vehicles = this.model.vehicleList.map(v => v.vehicleId);
     }
-    if (Array.isArray(this.model.categoryList)) {
-      this.model['categoryName'] = this.model.categoryList.map(c => c.categoryName).join(',');
-    }
   }
 
   public vehicles: Array<any> = [];

@@ -13,11 +13,13 @@ export class RoleAllocateComponent implements OnInit {
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
   @Output()
-  private onSubmit = new EventEmitter();
+  private submit = new EventEmitter();
+  @Output()
+  private cancel = new EventEmitter();
   @Input()
   private model: Role;
   private items: Array<any> = [];
-  private unCheckedList: Array<any> = [];
+  private checkedList: Array<any> = [];
 
   constructor(
     private roleService: RoleService
@@ -43,8 +45,40 @@ export class RoleAllocateComponent implements OnInit {
     })
   }
 
-  onSelectedChange(downlineItems: DownlineTreeviewItem[]) {
-    console.log(downlineItems);
+  onSelectedChange(downlineItems) {
+    this.checkedList = downlineItems;
   }
 
+  onCancel() {
+    this.cancel.emit();
+  }
+
+  getCheckedList(items: Array<any>) {
+    let list = [];
+    items.forEach(m => {
+      if (this.checked(m)) {
+        list.push(m.value);
+      }
+      if (Array.isArray(m.children)) {
+        list = list.concat(this.getCheckedList(m.children));
+      }
+    })
+    return list;
+  }
+
+  checked(item: any) {
+    if (this.checkedList.includes(item.value)) return true;
+    if (Array.isArray(item.children)) {
+      return item.children.some(m => this.checked(m))
+    } else {
+      return false;
+    }
+  }
+
+  onSubmit() {
+    let list = this.getCheckedList(this.items);
+    this.roleService.allocate(this.model.id, list)
+      .then(() => this.submit.emit())
+      .catch(err => this.alerter.error(err));
+  }
 }

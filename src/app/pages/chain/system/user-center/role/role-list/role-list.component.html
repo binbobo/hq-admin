@@ -75,7 +75,7 @@
         <button class="close pull-right" (click)="allocateModal.hide()">&times;</button>
       </div>
       <div class="modal-body" *ngIf="role&&allocateModal.isShown">
-        <hq-role-allocate (onSubmit)="onRoleAllocate($event)" [model]="role"></hq-role-allocate>
+        <hq-role-allocate (cancel)="allocateModal.hide()" (submit)="onRoleAllocate($event)" [model]="role"></hq-role-allocate>
       </div>
     </div>
   </div>
