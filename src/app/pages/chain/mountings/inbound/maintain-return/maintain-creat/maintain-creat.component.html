@@ -3,23 +3,23 @@
     <div class="col-6">
       <div class="form-group">
         <label class="form-control-label">维修项目</label>
-        <input readonly type="text" [value]="inputData.serviceName" formControlName="serviceName" class="form-control">
+        <input readonly type="text" formControlName="serviceName" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">配件编码</label>
-        <input readonly type="text" [value]="inputData.productCode" formControlName="productCode" class="form-control">
+        <input readonly type="text" formControlName="productCode" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">配件名称</label>
-        <input readonly type="text" [value]="inputData.productName" formControlName="productName" class="form-control">
+        <input readonly type="text" formControlName="productName" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">品牌</label>
-        <input readonly type="text" [value]="inputData.brand" formControlName="brand" class="form-control">
+        <input readonly type="text" formControlName="brand" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">规格型号</label>
-        <input readonly type="text" [value]="inputData.productSpecification" formControlName="productSpecification" class="form-control">
+        <input readonly type="text" formControlName="productSpecification" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">单价（元/个）</label>
@@ -30,19 +30,19 @@
     <div class="col-6">
       <div class="form-group">
         <label class="form-control-label">车型</label>
-        <input readonly type="text" [value]="inputData.vihicleName" formControlName="vihicleName" class="form-control">
+        <input readonly type="text" formControlName="vihicleName" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">仓库</label>
-        <input readonly type="text" [value]="inputData.houseName" formControlName="houseName" class="form-control">
+        <input readonly type="text" formControlName="storeName" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">库位</label>
-        <input readonly type="text" [value]="inputData.locationName" formControlName="locationName" class="form-control">
+        <input readonly type="text" formControlName="locationName" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*数量（个）</label>
-        <input hqError="数量" type="number" formControlName="count" (change)="onChangeCount($event)" class="form-control">
+        <input hqError="数量" type="number" formControlName="initcount" (change)="onChangeCount($event)" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">金额(元)</label>
@@ -50,7 +50,7 @@
       </div>
       <div class="form-group">
         <label class="form-control-label">退料人</label>
-        <input readonly type="text" [value]="inputData.takeUser" formControlName="takeUser" class="form-control">
+        <input readonly type="text" formControlName="takeUser" class="form-control">
       </div>
     </div>
     <div class="col-12">

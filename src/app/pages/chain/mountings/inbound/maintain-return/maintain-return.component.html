@@ -39,7 +39,7 @@
     </table>
 
     <div class="tab-title">维修退料</div>
-    <table class="table  table-responsive table-striped table-bordered">
+    <table class="table  table-striped table-bordered">
       <thead>
         <tr>
           <th>操作</th>
@@ -86,7 +86,7 @@
     <!--维修退料-->
     <div *ngIf="newMainData.length>0">
       <div class="tab-title">新增维修退料</div>
-      <table class="table  table-responsive  table-striped table-bordered">
+      <table class="table table-striped table-bordered">
         <thead>
           <tr>
             <th>操作</th>
@@ -131,7 +131,7 @@
     </div>
 
     <div class="tab-title">维修退料记录</div>
-    <table class="table  table-responsive  table-striped table-bordered">
+    <table class="table  table-striped table-bordered">
       <thead>
         <tr>
           <th>流水号</th>
@@ -211,7 +211,7 @@
         <button class="close pull-right" (click)="createModal.hide()">&times;</button>
       </div>
       <div class="modal-body">
-        <hq-maintain-creat *ngIf="isShowCreat" [inputData]="inputData" (formSubmit)="onCreate($event)"></hq-maintain-creat>
+        <hq-maintain-creat *ngIf="createModal.isShown" [inputData]="inputData" (formSubmit)="onCreate($event)"></hq-maintain-creat>
       </div>
     </div>
   </div>

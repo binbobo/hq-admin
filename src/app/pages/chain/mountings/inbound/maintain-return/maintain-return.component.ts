@@ -33,7 +33,6 @@ export class MaintainReturnComponent implements OnInit {
   ChooseOrderForm: FormGroup;
   private addNewItem = false;
   params: MaintainRequest;
-  isShowCreat = false;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -186,7 +185,6 @@ export class MaintainReturnComponent implements OnInit {
   currentData: any;
   // 点击退料弹出弹框
   OnCreatBound(ele) {
-    this.isShowCreat = true;
     console.log(ele);
     ele.maintenanceItemId = ele.id; //维修明细id
     // ele.createUser = ele.takeUser;
