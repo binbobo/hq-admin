@@ -13,12 +13,16 @@ export class FormControlErrorDirective implements OnInit, OnDestroy {
   private name: string;
   @Input()
   private placeholder: string;
+  @Input()
+  private readonly: boolean;
   private valueChange: Subscription;
   private component: FormControlErrorComponent;
 
   @HostListener('blur', ['$event'])
   private onblur(event: Event) {
-    this.validate();
+    if (this.readonly === undefined) {
+      this.validate();
+    }
   }
 
   constructor(
@@ -27,7 +31,6 @@ export class FormControlErrorDirective implements OnInit, OnDestroy {
     private viewContainerRef: ViewContainerRef,
     private componentFactoryResolver: ComponentFactoryResolver
   ) {
-
     let componentFactory = this.componentFactoryResolver.resolveComponentFactory(FormControlErrorComponent);
     let componentRef = viewContainerRef.createComponent(componentFactory);
     this.component = (<FormControlErrorComponent>componentRef.instance);
@@ -77,6 +80,8 @@ export class FormControlErrorDirective implements OnInit, OnDestroy {
       return `${this.name}必须是整数`;
     } else if (key === "gte") {
       return `${this.name}不能低于最小限制范围`;
+    } else if (key === "lte") {
+      return `${this.name}不能高于最高限制范围`;
     }
     else {
       console.log(key, errors);

@@ -36,6 +36,20 @@ export class PagesComponent implements OnInit {
         setTimeout(() => this.menus = data, 0);
       })
       .catch(err => console.error(err));
+    // this.menus = [
+    //   {
+    //     title: '菜单1', icon: 'fa fa-user', path: 'menu1', children: [
+    //       { title: '菜单2', path: 'menu1' },
+    //       { title: '菜单3', path: 'menu1' },
+    //       { title: '菜单4', path: 'menu1' },
+    //       { title: '菜单5', path: 'menu1' },
+    //     ]
+    //   },
+    //   { title: '菜单2', icon: 'fa fa-user', path: 'menu1' },
+    //   { title: '菜单3', icon: 'fa fa-user', path: 'menu1' },
+    //   { title: '菜单4', icon: 'fa fa-user', path: 'menu1' },
+    //   { title: '菜单5', icon: 'fa fa-user', path: 'menu1' },
+    // ]
   }
 
   loadLanguages() {

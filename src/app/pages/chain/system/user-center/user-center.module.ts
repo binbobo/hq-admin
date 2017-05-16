@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 import { ModalModule } from 'ngx-bootstrap';
 import { RoleService } from './role/role.service';
+import { TreeviewModule } from 'ngx-treeview';
 
 const routes: Routes = [
   { path: 'role', component: RoleListComponent }
@@ -17,6 +18,7 @@ const routes: Routes = [
   imports: [
     SharedModule,
     FormsModule,
+    TreeviewModule,
     ReactiveFormsModule,
     ModalModule.forRoot(),
     RouterModule.forChild(routes),

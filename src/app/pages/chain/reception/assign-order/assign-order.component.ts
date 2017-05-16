@@ -29,6 +29,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
     // 当前选择的工单记录   用于查看工单详情  执行作废等功能
     selectedOrder = null;
     isDetailModalShown = false; // 详情弹框是否可见
+    statistics: any = null; // 各种状态数量统计
 
     // 当前登录用户信息
     public user = null;
@@ -40,12 +41,28 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         // 初始化维修指派类型数据
         this.service.getMaintenanceAssignTypes()
             .subscribe(data => {
-                this.maintenanceAssignTypes = data;
+                console.log('维修派工状态类型数据：', data);
+                this.maintenanceAssignTypes = [{
+                    id: 'all',
+                    value: '全部'
+                }].concat(data);
 
                 // 页面初始化的时候  就要加入状态参数
-                this.params.states = this.maintenanceAssignTypes.map(item => item.id);
+                this.params.states = this.maintenanceAssignTypes
+                    .filter(item => item.id !== 'all')
+                    .map(item => item.id);
                 // 加载列表
-                this.loadList();
+                this.loadList().then(() => {
+                    // this.statistics = {};
+                    // this.statistics['all'] = 0;
+                    // // 统计各种状态下面的工单数量
+                    // this.params.states.forEach(state => {
+                    //     console.log('111111111111：', this.list);
+                    //     this.statistics[state] = this.list.filter(item => item.status === state).length;
+                    //     this.statistics['all'] += this.statistics[state];
+                    // });
+                    // console.log('testesttestestset:', JSON.stringify(this.statistics));
+                });
             });
     }
 
@@ -104,7 +121,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         if (checkedStatus.length === 0) {
             checkedStatus = this.maintenanceAssignTypes;
         }
-        this.params.states = checkedStatus.map(item => item.id);
+        this.params.states = checkedStatus.filter(item => item.id !== 'all').map(item => item.id);
 
         console.log('当前选择的工单状态为：', JSON.stringify(this.params.states));
 
@@ -112,6 +129,26 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         this.onLoadList();
     }
 
+    /**
+     * 状态改变事件处理程序
+     * @param type
+     */
+    onStatusChange(type) {
+        type.checked = !type.checked;
+
+        if (type.id === 'all') {
+            this.maintenanceAssignTypes.map(item => item.checked = type.checked);
+        } else {
+            if (!type.checked) {
+                this.maintenanceAssignTypes[0].checked = false;
+            } else {
+                const len = this.maintenanceAssignTypes.filter(item => item !== type && item.id !== 'all' && item.checked).length;
+                if (len === this.maintenanceAssignTypes.length - 2) {
+                    this.maintenanceAssignTypes[0].checked = true;
+                }
+            }
+        }
+    }
 
     /**
      * 维修派工全选/反选事件处理程序
@@ -209,34 +246,17 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
      * @param evt 
      * @param id 
      */
-    finishedOrder(evt, id, confirmModal) {
-        evt.preventDefault();
-        // 显示确认框
-        confirmModal.show();
+    finishedOrder(id) {
+        if (confirm('确定要执行完工操作吗？')) {
+            // 调用完工接口
+            this.service.update({ id: id }).then(() => {
+                // 完工操作成功提示
+                this.alerter.success('执行完工操作成功！');
+                // 设置完工按钮不可用
 
-        // 记录id
-        confirmModal.id = id;
-    }
-
-    /**
-     * 点击完工按钮处理程序
-     * 
-     * @param {any} confirmModal 
-     * 
-     * @memberOf AssignOrderComponent
-     */
-    onConfirmFinished(confirmModal) {
-        console.log('要确认完工的工单id为：', confirmModal.id);
-        // 调用完工接口
-        this.service.update({ id: confirmModal.id }).then(() => {
-            // 完工操作成功提示
-            this.alerter.success('执行完工操作成功！');
-            // 设置完工按钮不可用
-
-            this.onLoadList();
-        });
-        // 隐藏确认框
-        confirmModal.hide();
+                this.onLoadList();
+            }).catch(err => this.alerter.error('执行完工操作失败: ' + err));
+        }
     }
 
     /**

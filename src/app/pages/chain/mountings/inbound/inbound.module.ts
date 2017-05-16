@@ -17,6 +17,7 @@ import { ReturnCreateComponent } from './inner-return/return-create/return-creat
 import { ReturnPrintComponent } from './inner-return/return-print/return-print.component';
 import { InnerReturnService } from "./inner-return/inner-return.service";
 import { PrintComponent } from './maintain-return/print/print.component';
+import { MaintainCreatComponent } from './maintain-return/maintain-creat/maintain-creat.component';
 import { ChainSharedModule } from "app/pages/chain/chain-shared/chain-shared.module";
 import { SalesReturnListComponent } from './sales-return/sales-return-list/sales-return-list.component';
 import { SalesReturnCreateComponent } from './sales-return/sales-return-create/sales-return-create.component';
@@ -28,6 +29,7 @@ import { ProcurementCreateComponent } from './procurement/procurement-create/pro
 import { ProcurementPrintComponent } from './procurement/procurement-print/procurement-print.component';
 import { ProcurementService } from './procurement/procurement.service';
 import { ProviderService } from '../provider/provider.service';
+
 
 @NgModule({
   imports: [
@@ -47,8 +49,11 @@ import { ProviderService } from '../provider/provider.service';
     CustomFormsModule,
     BsDropdownModule.forRoot(),
   ],
-  declarations: [routedComponents, ReturnListComponent, ReturnCreateComponent, ReturnPrintComponent, PrintComponent, routedComponents, SalesReturnListComponent, SalesReturnCreateComponent, SalesReturnPrintComponent, PrintComponent, ProcurementListComponent, ProcurementCreateComponent, ProcurementPrintComponent],
+
+
+  declarations: [routedComponents, ReturnListComponent, ReturnCreateComponent, ReturnPrintComponent, PrintComponent, routedComponents, SalesReturnListComponent, SalesReturnCreateComponent, SalesReturnPrintComponent, PrintComponent, ProcurementListComponent, ProcurementCreateComponent, ProcurementPrintComponent, PrintComponent, MaintainCreatComponent],
   providers: [MaintainReturnService, ProcurementService, ProviderService, InnerReturnService, SalesReturnService],
+
   entryComponents: [routedComponents[0]],
 })
 export class InboundModule { }

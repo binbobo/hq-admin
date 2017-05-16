@@ -9,16 +9,19 @@ import { Router } from '@angular/router';
 export class MenuComponent implements OnInit {
 
   @Input("menus")
-  private menus: Array<any>;
+  private items: Array<any>;
   @Input()
   private root: boolean = false;
   @Input()
   private parents: Array<string> = ["/"];
+  private menus: Array<any>;
 
   constructor(private router: Router) { }
 
   ngOnInit() {
-    this.activeMenu(this.menus);
+    this.activeMenu(this.items);
+    console.log(this.items);
+    this.menus = this.items;
   }
 
   private get spaceWidth(): number {
@@ -39,7 +42,7 @@ export class MenuComponent implements OnInit {
     menus.forEach(m => {
       m.routes = this.parents.concat(m.path);
       if (!m.children || !Array.isArray(m.children)) return;
-      m.expand = this.activable(m);
+      //m.expand = this.activable(m);
       this.activeMenu(m.children);
     });
   }

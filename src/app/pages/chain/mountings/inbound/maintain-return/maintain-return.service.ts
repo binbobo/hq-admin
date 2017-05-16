@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpService, Urls } from "app/shared/services";
 import { PagedParams, PagedResult, ApiResult, BasicService, BasicModel } from "app/shared/models";
+import { Observable } from "rxjs/Observable";
 
 
 @Injectable()
@@ -56,16 +57,33 @@ export class MaintainReturnService implements BasicService<any>{
     }
 
     //获取已经退料数据接口 /StoreInOutDetails/GetMainList
-    public getMainList(id: string): Promise<any> {
-        const url = Urls.chain.concat('/StoreInOutDetails/GetMainList?BillCode=' + id);
+    public getMRList(billCode: string): Observable<any> {
+        const url = Urls.chain.concat('/StoreInOutDetails/GetMainList');
         return this.httpService
-            .get<ApiResult<any>>(url)
-            .then(result => {
-                console.log(result.data)
-                return result.data
+            .request(url, {
+                params: {
+                    "BillCode": billCode,
+                    "BillTypeKey": "MR"
+                }
             })
-            .then(data => data || Promise.reject('获取数据无效！'))
-            .catch(err => Promise.reject(`加载失败：${err}`));
+            .map(response => {
+                return response.json().data as any[];
+            });
+    }
+
+    //获取发料数据接口 /StoreInOutDetails/GetMainList
+    getMMList(billCode: string): Observable<any> {
+        const url = Urls.chain.concat('/StoreInOutDetails/GetMainList');
+        return this.httpService
+            .request(url, {
+                params: {
+                    "BillCode": billCode,
+                    "BillTypeKey": "MM"
+                }
+            })
+            .map(response => {
+                return response.json().data as any[];
+            });
     }
 
     //生成退料单post接口数据 /StoreInOutDetails/CreateMaintReturnBill
@@ -77,6 +95,22 @@ export class MaintainReturnService implements BasicService<any>{
     }
 
     //打印退料单接口数据
+
+    getPrintList(billId: string, billCode: string, SerialNums: any): Observable<any> {
+        const url = Urls.chain.concat('/StoreInOutDetails/PrintReturnStore');
+        return this.httpService
+            .request(url, {
+                params: {
+                    "billId": billId,
+                    "billCode": billCode,
+                    "SerialNums": SerialNums
+                }
+            })
+            .map(response => {
+                return response.json().data as any[];
+            });
+    }
+
 
 }
 
@@ -129,6 +163,32 @@ export class DetailData {
         public lastManufactureDetailOutput: any = [],//上次维修记录
         public feedBackInfosOutput: any = [],// 客户回访记录
         public productOutputs: any = [],//维修配件
-        public maintenanceEmployees:any =[]//退料人
+        public maintenanceEmployees: any = []//退料人
+    ) { }
+}
+
+export class MaintainReturnListItem {
+    constructor(
+        public count: number = 0,
+        public price: number = 0,
+        public amount: number = 0,
+        public stockCount: number = 0,
+        public productName?: string,
+        public brand?: string,
+        public productId?: string,
+        public productCode?: string,
+        public productSpecification?: string,
+        public storeId?: string,
+        public locationId?: string,
+        public description?: string,
+        public locationName?: string,
+        public houseName?: string,
+        public vihicleName?: string,
+        public serviceName?: string,
+        public createUser?: string,
+        public createUserName?: string,
+        public maintenanceItemId?: string,
+        public number?: any,
+        public takeUser?: any,
     ) { }
 }

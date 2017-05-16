@@ -53,7 +53,7 @@ export class ProcurementItem {
     public count: number = 0,
     public price: number = 0,
     public amount: number = 0,
-    public taxRate: number = 0,
+    public taxRate: number = 17,
     public exTaxPrice: number = 0,
     public exTaxAmount: number = 0,
     public brand?: string,

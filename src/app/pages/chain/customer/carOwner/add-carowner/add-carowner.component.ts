@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CustomerService, CustomerNameSearchRequest, CustomerPhoneSearchRequest } from '../../customer.service';
 import { OrderService } from '../../../reception/order.service';
 import { ActivatedRoute } from '@angular/router';
@@ -180,7 +180,7 @@ export class AddCarownerComponent implements OnInit {
     // 添加车主表单
     this.carOwnerForm = this.fb.group({
       id: '', // 车主主键 用于更新
-      name: '', // 车主
+      name: ['', [Validators.required]], // 车主
       phone: '', // 车主手机号
       sex: '', // 车主性别
       birthday: '', // 车主生日

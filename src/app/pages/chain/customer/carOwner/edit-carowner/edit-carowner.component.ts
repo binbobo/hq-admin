@@ -73,7 +73,7 @@ export class EditCarownerComponent implements OnInit {
   }
 
   // 添加车主
-  saveCustomer(lgModal) {
+  saveCustomer() {
     // 设置保存按钮不可用
     this.enableSaveCustomer = false;
 
@@ -96,11 +96,11 @@ export class EditCarownerComponent implements OnInit {
 
       // 提示更新车主成功
       this.alerter.success('更新车主成功');
-      this.carOwnerForm.reset();
-      this.newVehiclesData = [];
+      // this.carOwnerForm.reset();
+      // this.newVehiclesData = [];
 
-      // 返回车主列表
-      this.goBack();
+      // // 返回车主列表
+      // this.goBack();
     }).catch(err => {
       console.log('更新车主失败：' + err);
 

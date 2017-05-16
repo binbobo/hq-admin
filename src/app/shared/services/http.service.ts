@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiResult } from '../models/api-result';
 import { Observable } from 'rxjs/Observable';
 import { Urls } from './url.service';
+import { PagedParams, PagedResult, ListResult } from 'app/shared/models';
 
 @Injectable()
 export class HttpService {
@@ -28,8 +29,19 @@ export class HttpService {
     get<TResult>(url: string, search?: string): Promise<TResult> {
         return this.promise(url, { method: RequestMethod.Get, search: search })
             .then(resp => this.extractData<TResult>(resp))
-            .then(result => result || Promise.reject('获取数据无效'))
             .catch(resp => this.handleError(resp));
+    }
+
+    getPagedList<T>(url: string, params?: PagedParams): Promise<PagedResult<T>> {
+        let search = params && params.serialize();
+        return this.get<PagedResult<T>>(url, search)
+            .then(result => result || new PagedResult());
+    }
+
+    getList<T>(url: string, search?: string): Promise<Array<T>> {
+        return this.get<ListResult<T>>(url, search)
+            .then(result => result || new ListResult([]))
+            .then(result => Array.isArray(result.data) ? result.data : []);
     }
 
     post<TResult>(url: string, body: any): Promise<TResult> {

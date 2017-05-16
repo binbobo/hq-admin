@@ -185,6 +185,6 @@ export class CustomerListRequest extends PagedParams {
         public createdStartDate?: string, // 建档开始时间
         public createdEndDate?: string, // 建档结束时间
     ) {
-        super('CustomerListRequestParams');
+        super();
     }
 }
