@@ -69,8 +69,6 @@ export class MaintainReturnComponent implements OnInit {
         this.orderDetail = data
         this.serviceData = data.serviceOutputs;
         this.productData = data.productOutputs;
-
-        console.log(data)
       });
 
     this.service.getMMList(this.billCode).toPromise()
@@ -157,20 +155,41 @@ export class MaintainReturnComponent implements OnInit {
     console.log(postData);
     this.service.postReturnBill(postData).then((result) => {
       console.log(result)
-      this.printId = result.data;
-      console.log(this.printId);
+
       this.newMainData = [];
+      this.serialData = this.serialData.concat(result.data);
+
+      this.serialData.sort((a, b) => {
+        return a.serialNum - b.serialNum
+      })
+
+      this.numberList = this.serialData.map(item => {
+        return {
+          value: item.serialNum,
+          text: item.serialNum
+        };
+      });
+      this.numberList.sort((a, b) => {
+        return a.value - b.value
+      });
+      var hashNumber = {};
+      this.numberPrintList = this.numberList.reduce(function (item, next) {
+        hashNumber[next.text] ? '' : hashNumber[next.text] = true && item.push(next);
+        return item
+      }, [])
+
       this.alerter.info('生成退料单成功', true, 2000);
     }).catch(err => this.alerter.error(err, true, 2000));
   }
 
   inputData: any;
   currentData: any;
-  // 点击退料弹出发料弹框
+  // 点击退料弹出弹框
   OnCreatBound(ele) {
-    
     this.isShowCreat = true;
-    console.log(ele)
+    console.log(ele);
+    ele.maintenanceItemId = ele.id; //维修明细id
+    // ele.createUser = ele.takeUser;
     this.inputData = ele;
     this.createModal.show();
   }
@@ -224,7 +243,6 @@ export class MaintainReturnComponent implements OnInit {
       Object.assign(this.suspendData, this.sunspendRequest);
     }
 
-    console.log(this.suspendData)
     if (!this.suspendData.billCode) {
       alert('请选择工单');
       return false;

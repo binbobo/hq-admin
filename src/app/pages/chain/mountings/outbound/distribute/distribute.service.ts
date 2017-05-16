@@ -102,7 +102,7 @@ export class DistributeService implements BasicService<any>{
     //         .then(data => data || Promise.reject('获取数据无效！'))
     //         .catch(err => Promise.reject(`加载失败：${err}`));
     // }
-
+    //   已有发料及退料接口
     getMainList(billCode: string): Observable<any> {
         const url = Urls.chain.concat('/StoreInOutDetails/GetMainList');
         return this.httpService
@@ -110,6 +110,37 @@ export class DistributeService implements BasicService<any>{
                 params: {
                     "BillCode": billCode,
                     "BillTypeKey": "MM"
+                }
+            })
+            .map(response => {
+                return response.json().data as any[];
+            });
+    }
+    //已有发料接口
+    
+    getMMList(billCode: string): Observable<any> {
+        const url = Urls.chain.concat('/StoreInOutDetails/GetMainList');
+        return this.httpService
+            .request(url, {
+                params: {
+                    "BillCode": billCode,
+                    "BillTypeKey": "MM"
+                }
+            })
+            .map(response => {
+                return response.json().data as any[];
+            });
+    }
+
+    //已有退料接口
+
+    getMRList(billCode: string): Observable<any> {
+        const url = Urls.chain.concat('/StoreInOutDetails/GetMainList');
+        return this.httpService
+            .request(url, {
+                params: {
+                    "BillCode": billCode,
+                    "BillTypeKey": "MR"
                 }
             })
             .map(response => {
@@ -205,7 +236,7 @@ export class DistributeListItem {
         public productId?: string,
         public productCode?: string,
         public productSpecification?: string,
-        public vehicleName?:string,
+        public vehicleName?: string,
         public storeId?: string,
         public locationId?: string,
         public description?: string,

@@ -19,3 +19,16 @@ table th,table td{
 .mg{
     margin-bottom:30px;
 }
+.serach-input{
+    width: 300px;
+}
+.serach-main{
+    width: 100%;
+    clear: both;
+    margin:22px auto;
+    margin-left:5px;
+}
+.serach-main .serach-list{
+    display:inline-block;
+    width:23%
+}

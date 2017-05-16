@@ -38,19 +38,19 @@ export class PrintOrderComponent implements OnInit {
           this.materialData = data.matereialDetails; //材料明细
           this.workHourData.forEach(item => {
             //金额
-            this.moneyObj.workItemMoney = item.amount * (item.discount / 100)
+            this.moneyObj.workItemMoney = item.amount * item.discount 
             // 工时明细的应收金额和折扣金额
-            this.moneyObj.workCostMoney += item.amount / 100;
-            this.moneyObj.discountMoney += item.amount * (1 - item.discount / 100) / 100;
+            this.moneyObj.workCostMoney += item.amount;
+            this.moneyObj.discountMoney += item.amount * (1 - item.discount / 100) ;
           });
           this.materialData.forEach(item => {
             // 材料明细的应收金额
-            this.moneyObj.materialMoney += item.amount / 100;
+            this.moneyObj.materialMoney += item.amount ;
           })
           // 收费结算金额
           this.costData.forEach(item => {
-            this.moneyObj.costMoney += item.receivableCost / 100;
-            this.moneyObj.costCountMoney += (item.receivableCost - item.discountCost) / 100;
+            this.moneyObj.costMoney += item.receivableCost ;
+            this.moneyObj.costCountMoney += (item.receivableCost - item.discountCost) ;
           })
         })
         .catch(err => console.log(err));
