@@ -7,6 +7,7 @@ import { FormGroup, Validators } from '@angular/forms';
 import { TypeaheadMatch } from 'ngx-bootstrap';
 import { TreeviewItem } from 'ngx-treeview';
 import { ActivatedRoute } from '@angular/router';
+import { TypeaheadRequestParams } from 'app/shared/directives';
 
 @Component({
   selector: 'hq-inventory-edit',
@@ -39,12 +40,12 @@ export class InventoryEditComponent extends FormHandle<Inventory> implements OnI
       brandId: [this.model.brandId],
       storeId: [this.model.storeId],
       id: [this.model.id],
+      vehicleId: [this.model.vehicleId],
       description: [this.model.description, [Validators.maxLength(200)]],
     });
   }
 
   ngOnInit() {
-    console.log(this.model);
     super.ngOnInit();
     this.moutingsService.getBrands()
       .then(options => this.brands = options)
@@ -52,7 +53,55 @@ export class InventoryEditComponent extends FormHandle<Inventory> implements OnI
     this.moutingsService.getUnitOptions()
       .then(options => this.units = options)
       .catch(err => this.alerter.warn(err));
+    if (Array.isArray(this.model.vehicleList)) {
+      this.vehicles = this.model.vehicleList.map(v => ({ id: v.vehicleId, name: v.vehicleName }));
+      this._vehicles = this.model.vehicleList.map(v => v.vehicleId);
+    }
+    if (Array.isArray(this.model.categoryList)) {
+      this.model['categoryName'] = this.model.categoryList.map(c => c.categoryName).join(',');
+    }
   }
+
+  public vehicles: Array<any> = [];
+  private _vehicles: Array<any> = [];
+
+  onVehicleSelect(event) {
+    let index = this.vehicles.findIndex(m => m.id === event.id);
+    if (!~index) {
+      this.vehicles.push(event);
+    }
+  }
+
+  onVehicleRemove(event) {
+    let index = this.vehicles.findIndex(m => m.id === event.id);
+    if (~index) {
+      this.vehicles.splice(index, 1);
+    }
+    let item = this._vehicles.find(m => m.id === event.id);
+    if (item) {
+      item.checked = false;
+    }
+  }
+
+  public get vehicleColumns() {
+    return [
+      { name: 'brandName', title: '品牌' },
+      { name: 'seriesName', title: '车系' },
+      { name: 'name', title: '车型', checked: true },
+    ];
+  }
+
+  public get vehicleSource() {
+    return (params: TypeaheadRequestParams) => {
+      return this.moutingsService.get(params.text)
+        .then(result => {
+          result.data.forEach(m => m.checked = m.id && this.vehicles.some(n => m.id === n.id))
+          this._vehicles = result.data;
+          return result;
+        });
+    };
+  }
+
 
   onBrandSelect(event: TypeaheadMatch) {
     this.form.patchValue({ brandId: event.item.value });
@@ -60,6 +109,12 @@ export class InventoryEditComponent extends FormHandle<Inventory> implements OnI
 
   onBrandChange(event: Event) {
     this.form.patchValue({ brandId: undefined });
+  }
+
+  protected onUpdate() {
+    let vehicles = this.vehicles.map(m => m.id);
+    this.form.patchValue({ vehicleId: vehicles });
+    return super.onUpdate();
   }
 
 }

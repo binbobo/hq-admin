@@ -32,7 +32,7 @@
         <button type="submit" class="btn btn-primary mx-sm-3" translate>search</button>
       </div>
     </form>
-    <table class="table table-bordered table-sm table-striped">
+    <table class="table table-bordered table-striped">
       <thead>
         <tr>
           <th translate>序号</th>
@@ -49,7 +49,7 @@
       <tbody>
         <tr *ngFor="let item of list">
           <td class="text-center">{{item.number }}</td>
-          <td>{{item.storeHouseName}}</td>
+          <td>{{item.houseName}}</td>
           <td>{{item.brand}}</td>
           <td>{{item.code}}</td>
           <td>{{item.name}}</td>

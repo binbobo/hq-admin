@@ -2,6 +2,7 @@
   <ng-template hq-alerter></ng-template>
 </div>
 <div class="card">
-  <ngx-treeview [items]="items" (selectedChange)="onSelectedChange($event)">
+  <hq-loading [loading]="!items"></hq-loading>
+  <ngx-treeview [hidden]="!items" [items]="items" (selectedChange)="onSelectedChange($event)">
   </ngx-treeview>
 </div>

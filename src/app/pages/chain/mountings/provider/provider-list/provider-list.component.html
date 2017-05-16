@@ -21,10 +21,11 @@
         <button type="submit" class="btn btn-primary mx-sm-1" translate>search</button>
       </div>
     </form>
-    <table class="table table-bordered table-sm table-striped">
+    <table class="table table-bordered table-striped">
       <thead>
         <tr *ngIf="!loading">
           <th translate><input (change)="onCheckChange($event)" type="checkbox"></th>
+          <th translate>操作</th>
           <th translate>序号</th>
           <th translate>代码</th>
           <th translate>名称</th>
@@ -36,12 +37,14 @@
           <th translate>传真</th>
           <th translate>备注</th>
           <th translate>状态</th>
-          <th translate>操作</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of list">
           <td class="text-center"><input [(ngModel)]="item.checked" type="checkbox"></td>
+          <td class="text-center">
+            <button (click)="onProviderEdit(item)" class="btn btn-sm btn-success">编辑</button>
+          </td>
           <td class="text-center">{{item.number}}</td>
           <td>{{item.code}}</td>
           <td>{{item.name}}</td>
@@ -53,9 +56,6 @@
           <td>{{item.fax}}</td>
           <td>{{item.description}}</td>
           <td class="text-center">{{item.status}}</td>
-          <td class="text-center">
-            <button (click)="onProviderEdit(item)" class="btn btn-sm btn-success">编辑</button>
-          </td>
         </tr>
       </tbody>
     </table>

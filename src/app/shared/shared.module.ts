@@ -11,6 +11,7 @@ import { TranslateStore } from "@ngx-translate/core/src/translate.store";
 import { MultiSelectorDirective, MultiSelectorComponent, HqAlerterComponent, HqAlerter, TableTypeaheadComponent, TableTypeaheadDirective, PrintDirective, FormControlErrorDirective, FormControlErrorComponent } from 'app/shared/directives';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgPipesModule } from 'ngx-pipes';
+import { TreeviewModule } from "ngx-treeview";
 
 const HQ_COMPONENTS = [
     PaginationComponent,

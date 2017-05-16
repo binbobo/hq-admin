@@ -16,6 +16,7 @@ export class RoleListComponent extends DataList<any> implements OnInit {
   private editModal: ModalDirective;
   @ViewChild('allocateModal')
   private allocateModal: ModalDirective;
+  private tree: Array<any>;
   private role: Role;
 
   constructor(
@@ -30,7 +31,7 @@ export class RoleListComponent extends DataList<any> implements OnInit {
     super.ngOnInit();
   }
 
-  private onWarehouseCreate(event) {
+  private onRoleCreate(event) {
     this.createModal.hide();
     this.loadList();
   }
@@ -46,12 +47,12 @@ export class RoleListComponent extends DataList<any> implements OnInit {
     this.allocateModal.hide();
   }
 
-  private onEdit(model: Role) {
+  private onEdit(event: Event, model: Role) {
     this.role = model;
     this.editModal.show();
   }
 
-  private onAllocate(model: Role) {
+  private onAllocate(event: Event, model: Role) {
     this.role = model;
     this.allocateModal.show();
   }
