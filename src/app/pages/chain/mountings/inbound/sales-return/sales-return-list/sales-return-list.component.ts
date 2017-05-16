@@ -56,7 +56,7 @@ export class SalesReturnListComponent implements OnInit {
       this.model.seller = this.salesmen[0].value;
     }
   }
-  
+
   createReturnList(event: Event) {
     if (!this.model.custName) {
       alert('请输入客户名称');
@@ -102,20 +102,22 @@ export class SalesReturnListComponent implements OnInit {
       alert('请选择销售员');
       return false;
     }
-    let el = event.target as HTMLButtonElement;
-    el.disabled = true;
-    let createTime = new Date();
-    this.model.createBillDateTime = moment(createTime).format('YYYY-MM-DD hh:mm:ss');
-    // console.log(this.model);
-    this.suspendBill.suspend(this.model)
-      .then(() => el.disabled = false)
-      .then(() => this.suspendBill.refresh())
-      .then(()=>this.reset())
-      .then(() => this.alerter.success('挂单成功！'))
-      .catch(err => {
-        el.disabled = false;
-        this.alerter.error(err);
-      })
+    if (confirm('是否确认挂单？')) {
+      let el = event.target as HTMLButtonElement;
+      el.disabled = true;
+      let createTime = new Date();
+      this.model.createBillDateTime = moment(createTime).format('YYYY-MM-DD hh:mm:ss');
+      // console.log(this.model);
+      this.suspendBill.suspend(this.model)
+        .then(() => el.disabled = false)
+        .then(() => this.suspendBill.refresh())
+        .then(() => this.reset())
+        .then(() => this.alerter.success('挂单成功！'))
+        .catch(err => {
+          el.disabled = false;
+          this.alerter.error(err);
+        })
+    }
   }
 
   get columns() {
