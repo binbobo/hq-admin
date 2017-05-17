@@ -74,13 +74,13 @@ export class BillOrderComponent extends DataList<any>{
         this.service.getCost(id).then(data => {
             console.log("根据工单id获取工单材料费和工时费", data);
             // 工时费： 维修项目金额总和
-            this.workHourFee = data.workHourCost / 100;
+            this.workHourFee = data.workHourCost;
             // 材料费： 维修配件金额总和
-            this.materialFee = data.materialCost / 100;
+            this.materialFee = data.materialCost;
             // 其它费： 0
             this.otherFee = 0;
             // 总计费： 
-            this.sumFee = (data.workHourCost + data.materialCost + this.otherFee) / 100;
+            this.sumFee = (data.workHourCost + data.materialCost + this.otherFee);
             // this.billPrice = this.sumFee;           
         })
 
@@ -127,37 +127,37 @@ export class BillOrderComponent extends DataList<any>{
             }
             console.log("根据工单id获取工单材料费和工时费", data);
             // 工时费： 维修项目金额总和
-            this.workHourFee = data.workHourCost / 100;
+            this.workHourFee = data.workHourCost;
             // 材料费： 维修配件金额总和
-            this.materialFee = data.materialCost / 100;
+            this.materialFee = data.materialCost;
             // 其它费： 0
             this.otherFee = 0;
             // 总计费： 
-            this.sumFee = (data.workHourCost + data.materialCost + this.otherFee) / 100;
+            this.sumFee = (data.workHourCost + data.materialCost + this.otherFee);
 
             // this.billPrice = this.sumFee;
         })
     }
     private billData = {};
     private billPrice;
+    private leaveMileage;
     // 点击确定生成结算单
     BillClick(evt, dialog) {
         this.isShowCost = false;
         evt.preventDefault();
         dialog.hide();
-        this.billData["id"] = this.billId;
-        this.billData["price"] = this.billPrice * 100;
-
-        this.service.post(this.billPrice * 100, this.billId).then(() => {
+        // this.billData["id"] = this.billId;
+        this.billData["price"] = this.billPrice;
+        this.billData["leaveMileage"]=this.leaveMileage;
+        this.service.post(this.billData, this.billId).then(() => {
             console.log('生成结算单成功'); this.onLoadList();
-        }).catch(err => console.log("添加维修项目失败" + err));
+        }).catch(err => console.log("结算失败" + err));
 
 
     }
     // 点击打印事件
     private pathname;
     OnPrintClick() {
-
         this.router.navigate(['/chain/reception/bill/print', this.billId])
     }
     createForm() {

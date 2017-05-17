@@ -247,6 +247,10 @@ export class DistributeListItem {
         public createUser?: string,
         public createUserName?: string,
         public maintenanceItemId?: string,
-        public number?: any
+        public number?: any,
+        public initcount:number=1,
+        public storeName?:string,
+        public specifications?:string,
+        public storeHouse?:string,
     ) { }
 }
