@@ -4,6 +4,7 @@ import { ListResult } from 'app/shared/models';
 import { TranslateService } from '@ngx-translate/core';
 import { PagesService } from './pages.service';
 import { StorageKeys } from '../shared/models/storage-keys';
+import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-pages',
@@ -15,6 +16,7 @@ export class PagesComponent implements OnInit {
   private menus: Array<any>;
   private languages: Array<any>;
   private language: any;
+  private loading: boolean = true;
 
   constructor(
     private userService: UserService,
@@ -22,7 +24,16 @@ export class PagesComponent implements OnInit {
     private service: PagesService,
     private translate: TranslateService,
     private dispatcher: EventDispatcher,
-  ) { }
+    private router: Router
+  ) {
+    router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        this.loading = true;
+      } else if (event instanceof NavigationEnd) {
+        this.loading = false;
+      }
+    });
+  }
 
   ngOnInit() {
     this.loadMenus();
@@ -67,5 +78,9 @@ export class PagesComponent implements OnInit {
     this.translate.use(item.culture);
     localStorage.setItem(StorageKeys.AcceptLanguage, JSON.stringify(item));
     this.loadMenus();
+  }
+
+  onActivate(event) {
+    alert(event);
   }
 }

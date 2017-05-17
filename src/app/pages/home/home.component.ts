@@ -11,8 +11,8 @@ import { PagedResult } from 'app/shared/models';
 export class HomeComponent implements OnInit {
 
   constructor() { }
-
+  loading = false;
   ngOnInit() {
-    
+    setInterval(() => this.loading = true, 3000);
   }
 }

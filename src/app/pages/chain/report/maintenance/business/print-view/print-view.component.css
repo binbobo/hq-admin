@@ -2,6 +2,11 @@
     border: none;
     font-size: 14px;
 }
+/*.card-header{
+    border: none;
+    text-align: center;
+    font-weight: 700;
+}*/
 .card-block {
     border: 1px solid #333333;
     font-weight: 400;
@@ -23,10 +28,22 @@ caption{
 hr {
     border-top: 2px solid #333333;
 }
-th, td {
+th,td {
     padding: 0.25rem;
     text-align: center;
     white-space: normal; 
 }
-
-
+.nbspx{
+    width:70px;
+    display: inline-block;
+}
+.nbspx-sm{
+    width:40px;
+    display: inline-block;
+}
+.print .print-bot{
+    margin-top:20px;
+}
+.billCode{
+    padding-right: 0;
+}

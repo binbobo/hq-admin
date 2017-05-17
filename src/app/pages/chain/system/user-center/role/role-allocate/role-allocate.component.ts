@@ -45,6 +45,15 @@ export class RoleAllocateComponent implements OnInit {
     })
   }
 
+  get config() {
+    return {
+      isShowAllCheckBox: true,
+      isShowFilter: false,
+      isShowCollapseExpand: true,
+      maxHeight: 500
+    }
+  }
+
   onSelectedChange(downlineItems) {
     this.checkedList = downlineItems;
   }

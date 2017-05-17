@@ -32,7 +32,7 @@ export class RoleService implements BasicService<Role> {
   }
   allocate(id: string, body: Array<string>): Promise<void> {
     let url = Urls.platform.concat('/Roles/AllotMenus/', id);
-    return this.httpService.post<void>(url, { id: id, menuIds: body })
+    return this.httpService.post<void>(url, body)
       .catch(err => Promise.reject(`分配权限失败：${err}`));
   }
   getMenus(id: string): Promise<Array<any>> {
