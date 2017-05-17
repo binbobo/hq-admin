@@ -39,7 +39,7 @@ export class DistributeService implements BasicService<any>{
     //  根据工单或者车牌号搜索
     getOrderPageData(params: DistributeRequest): Promise<PagedResult<SearchReturnData>> {
         let search = params.serialize();
-        const url = Urls.chain.concat('/Maintenances');
+        const url = Urls.chain.concat('/Maintenances/Material');
         return this.httpService
             .get<PagedResult<SearchReturnData>>(url, search)
     }

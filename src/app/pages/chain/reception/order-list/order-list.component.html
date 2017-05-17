@@ -270,7 +270,7 @@
                     <span *ngIf="teamType === 1">{{selectedOrder?.employeeNames.join(',')}}</span>
                     <span *ngIf="teamType === 2">{{selectedOrder?.turnEmployeeNames.join(',')}}</span>
                   </td>
-                  <td>{{selectedOrder?.leaveTim|date:"yyyy/MM/dd HH:mm:ss" }}</td>
+                  <td>{{selectedOrder?.leaveTime|date:"yyyy/MM/dd HH:mm:ss" }}</td>
                 </tr>
               </tbody>
             </table>

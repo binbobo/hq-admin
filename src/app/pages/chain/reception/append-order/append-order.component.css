@@ -30,5 +30,6 @@ table th,table td{
 }
 .serach-main .serach-list{
     display:inline-block;
-    width:23%
+    width:23%;
+    vertical-align: top;
 }
