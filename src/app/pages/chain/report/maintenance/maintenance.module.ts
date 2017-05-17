@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BusinessListComponent } from './business/business-list/business-list.component';
-import { BusinessDetailComponent } from './business/business-detail/business-detail.component';
 import { MaintenanceRoutingModule } from "./maintenance.routing";
 import { BusinessService } from "./business/business.service";
 import { NguiDatetimePickerModule } from "@ngui/datetime-picker/dist";
@@ -10,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { TreeviewModule } from "ngx-treeview/lib";
 import { ChainSharedModule } from "app/pages/chain/chain-shared/chain-shared.module";
 import { SharedModule } from "app/shared/shared.module";
+import { PrintViewComponent } from './business/print-view/print-view.component';
 
 @NgModule({
   imports: [
@@ -30,7 +30,7 @@ import { SharedModule } from "app/shared/shared.module";
     MaintenanceRoutingModule,
     
   ],
-  declarations: [BusinessListComponent, BusinessDetailComponent],
+  declarations: [BusinessListComponent, PrintViewComponent],
   providers:[BusinessService]
 })
 export class MaintenanceModule { }

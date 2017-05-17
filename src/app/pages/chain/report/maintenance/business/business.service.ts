@@ -7,10 +7,6 @@ export class BusinessService implements BasicService<any> {
 
   constructor(private httpService: HttpService) { }
 
-  get(id: string): Promise<any> {
-    throw new Error('Method not implemented.');
-  }
-
   create(body: any): Promise<any> {
     throw new Error('Method not implemented.');
   }
@@ -62,8 +58,8 @@ export class BusinessService implements BasicService<any> {
       });
   }
 
-  //根据工单id获取详情
-  public getBusinessDetail(id: string): Promise<any> {
+  //根据工单id获取维修历史详情
+  public get(id: string): Promise<any> {
     const url = Urls.chain.concat('/Settlements/PrintDetail/', id);
     return this.httpService
       .get<ApiResult<any>>(url)
@@ -99,3 +95,4 @@ export class FuzzySearchRequest extends PagedParams {
     super();
   }
 }
+

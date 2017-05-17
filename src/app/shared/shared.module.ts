@@ -3,7 +3,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { ServerTranslateLoader, HttpService, requestOptionsProvider, UserService, EventDispatcher } from 'app/shared/services';
 import { PaginationComponent, MenuComponent, LoadingComponent, ClippedWordComponent, SmartTableComponent } from "./components";
-import { HtmlPipe, SplitPipe, CentToYuanPipe,SecondToTimePipe } from './pipes';
+import { HtmlPipe, SplitPipe, CentToYuanPipe } from './pipes';
 import { FormsModule } from '@angular/forms';
 import { PaginationModule, PopoverModule, AlertModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
@@ -70,7 +70,7 @@ const HQ_SERVICES = [
         HQ_PIPES,
         HQ_DIRECTIVES,
     ],
-    declarations: [HQ_COMPONENTS, HQ_PIPES, HQ_DIRECTIVE_COMPONENTS, HQ_DIRECTIVES, SplitPipe, CentToYuanPipe, SecondToTimePipe],
+    declarations: [HQ_COMPONENTS, HQ_PIPES, HQ_DIRECTIVE_COMPONENTS, HQ_DIRECTIVES, SplitPipe, CentToYuanPipe],
     entryComponents: [HQ_DIRECTIVE_COMPONENTS]
 })
 export class SharedModule {

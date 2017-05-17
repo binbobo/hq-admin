@@ -1,0 +1,30 @@
+.card {
+    border: none;
+    font-size: 14px;
+}
+.card-block {
+    border: 1px solid #333333;
+    font-weight: 400;
+}
+.clearborder{
+    border: none;
+    padding-top: 0;
+    font-size: 12px;
+}
+.card-block label {
+    width: 70px;
+}
+.clearborder label{
+    text-align: right;
+}
+caption{
+    font-weight: 700;
+}
+hr {
+    border-top: 2px solid #333333;
+}
+th,td {
+    padding: 0.25rem;
+    text-align: center;
+    white-space: normal; 
+}
