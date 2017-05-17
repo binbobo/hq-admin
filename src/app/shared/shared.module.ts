@@ -3,7 +3,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { ServerTranslateLoader, HttpService, requestOptionsProvider, UserService, EventDispatcher } from 'app/shared/services';
 import { PaginationComponent, MenuComponent, LoadingComponent, ClippedWordComponent, SmartTableComponent } from "./components";
-import { HtmlPipe, SplitPipe, CentToYuanPipe } from './pipes';
+import { HtmlPipe, SplitPipe, CentToYuanPipe, DurationHumanizePipe } from './pipes';
 import { FormsModule } from '@angular/forms';
 import { PaginationModule, PopoverModule, AlertModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
@@ -11,6 +11,7 @@ import { TranslateStore } from "@ngx-translate/core/src/translate.store";
 import { MultiSelectorDirective, MultiSelectorComponent, HqAlerterComponent, HqAlerter, TableTypeaheadComponent, TableTypeaheadDirective, PrintDirective, FormControlErrorDirective, FormControlErrorComponent } from 'app/shared/directives';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgPipesModule } from 'ngx-pipes';
+import { TreeviewModule } from "ngx-treeview";
 
 const HQ_COMPONENTS = [
     PaginationComponent,
@@ -38,7 +39,8 @@ const HQ_DIRECTIVES = [
 const HQ_PIPES = [
     HtmlPipe,
     SplitPipe,
-    CentToYuanPipe
+    CentToYuanPipe,
+    DurationHumanizePipe
 ];
 
 const HQ_SERVICES = [

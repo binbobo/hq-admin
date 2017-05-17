@@ -17,10 +17,9 @@
         <button (click)="createModal.show()" class="btn btn-primary mx-sm-1" translate>新增</button>
       </div>
     </form>
-    <table class="table table-bordered table-sm table-striped">
+    <table class="table table-bordered table-striped">
       <thead>
         <tr>
-          <th translate>序号</th>
           <th translate>装箱单号</th>
           <th translate>仓库</th>
           <th translate>品牌</th>
@@ -39,7 +38,6 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of model.list;let i=index">
-          <td class="text-center">{{i+1}}</td>
           <td>{{item.packingCode }}</td>
           <td>{{item.storeName}}</td>
           <td>{{item.brand}}</td>

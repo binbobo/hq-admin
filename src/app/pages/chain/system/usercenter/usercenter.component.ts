@@ -90,13 +90,13 @@ export class UsercenterComponent implements OnInit {
     this.position.items.forEach(x => { x.setCheckedRecursive(false);x.setCollapsedRecursive(false);});
     this.roleItem.items.forEach(x => { x.setCheckedRecursive(false);x.setCollapsedRecursive(false);});
 
-    this.position.SelectedTreeNode(this.userModel.positionIds)
-    this.roleItem.SelectedTreeNode(this.userModel.roleIds)
-
+    if(this.position) this.position.SelectedTreeNode(this.userModel.positionIds)
+    if(this.roleItem) this.roleItem.SelectedTreeNode(this.userModel.roleIds)
+    
     this.isCreateOrEdit = false;
     event.show();
   }
-
+bsd=false;
   /**
    *打开创建用户界面
    */

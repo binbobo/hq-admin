@@ -2,6 +2,13 @@
   <ng-template hq-alerter></ng-template>
 </div>
 <div class="card">
-  <ngx-treeview [items]="items" (selectedChange)="onSelectedChange($event)">
-  </ngx-treeview>
+  <div class="card-block">
+    <hq-loading [loading]="!items"></hq-loading>
+    <ngx-treeview [hidden]="!items" [items]="items" [config]="config" (selectedChange)="onSelectedChange($event)">
+    </ngx-treeview>
+  </div>
+  <div class="card-footer text-muted">
+    <button type="button" (click)="onSubmit($event)" class="btn btn-primary">确定</button>
+    <button type="button" (click)="onCancel($event)" class="btn btn-secondary">取消</button>
+  </div>
 </div>

@@ -29,10 +29,9 @@
         </button>
       </div>
       <hr>
-      <table class="table table-bordered table-sm table-striped">
+      <table class="table table-bordered table-striped">
         <thead>
           <tr *ngIf="!loading">
-            <th translate>序号</th>
             <th translate>单号</th>
             <th translate>发生时间</th>
             <th translate>进出类型</th>
@@ -50,7 +49,6 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of list">
-            <td class="text-center">{{item.number}}</td>
             <td>{{item.billCode}}</td>
             <td class="text-center">{{item.createTime}}</td>
             <td>{{item.billType}}</td>

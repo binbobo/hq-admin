@@ -28,11 +28,10 @@ export class MaintainCreatComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.buildForm();
-
+    this.model.amount = this.inputData.amount - Number(this.model.initcount) * Number(this.inputData.price);
   }
   ngOnChanges(changes: SimpleChanges) {
     Object.assign(this.model, this.inputData);
-    console.log(this.model)
   }
   @Input() inputData;
 
@@ -46,19 +45,20 @@ export class MaintainCreatComponent implements OnInit, OnChanges {
       productSpecification: [this.model.productSpecification],
       storeId: [this.model.storeId],
       locationId: [this.model.locationId],
-      count: [this.model.count, [Validators.required, CustomValidators.digits]],
-      price: [this.model.price,[Validators.required]],
+      initcount: [this.model.initcount, [Validators.required, CustomValidators.gt(0), CustomValidators.digits,]],
+      price: [this.model.price, [Validators.required]],
       amount: [this.model.amount, [Validators.required]],
       locationName: [this.model.locationName],
-      houseName: [this.model.houseName],
       vihicleName: [this.model.vihicleName],
-      serviceName: [this.model.serviceName,[Validators.required]],
+      serviceName: [this.model.serviceName, [Validators.required]],
       maintenanceItemId: [this.model.maintenanceItemId],
-      takeUser: [this.model.takeUser]
+      takeUser: [this.model.takeUser],
+      storeName: [this.model.storeName],
     })
   }
 
   public onSubmit(event: Event) {
+    this.model.count = this.model.initcount;
     Object.assign(this.form.value, this.model);
     let invalid = this.controls
       .map(c => c.validate())
@@ -75,8 +75,8 @@ export class MaintainCreatComponent implements OnInit, OnChanges {
 
   public onChangeCount(evt) {
     evt.preventDefault();
-    this.model.count = evt.target.value;
-    this.model.amount = this.inputData.amount - Number(this.model.count) * Number(this.inputData.price);
+    this.model.initcount = evt.target.value;
+    this.model.amount = this.inputData.amount - Number(this.model.initcount) * Number(this.inputData.price);
   }
 
 

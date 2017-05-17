@@ -82,6 +82,7 @@ export class MaintainReturnService implements BasicService<any>{
                 }
             })
             .map(response => {
+                console.log(response.json())
                 return response.json().data as any[];
             });
     }
@@ -173,22 +174,20 @@ export class MaintainReturnListItem {
         public price: number = 0,
         public amount: number = 0,
         public stockCount: number = 0,
-        public productName?: string,
-        public brand?: string,
+        public productName: string="",
+        public brand: string="",
         public productId?: string,
         public productCode?: string,
-        public productSpecification?: string,
+        public productSpecification: string="",
         public storeId?: string,
         public locationId?: string,
-        public description?: string,
-        public locationName?: string,
-        public houseName?: string,
-        public vihicleName?: string,
-        public serviceName?: string,
-        public createUser?: string,
-        public createUserName?: string,
+        public locationName: string="",
+        public vihicleName: string="",
+        public serviceName: string="",
         public maintenanceItemId?: string,
         public number?: any,
         public takeUser?: any,
+        public storeName:string="",
+        public initcount:number=1,
     ) { }
 }
