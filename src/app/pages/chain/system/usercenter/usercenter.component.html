@@ -52,7 +52,7 @@
 
 <div bsModal #newmodal="bs-modal" class="modal" tabindex="1" role="dialog" aria-labelledby="modallable" aria-hidden="true">
   <div class="modal-dialog modal-lg">
-    <div class="modal-content">
+    <div class="modal-content" *ngIf="newmodal.isShown">
       <div class="modal-header">
         <h5>{{ isCreateOrEdit?"新增用户":"编辑用户"}}</h5>
         <button type="button" class="close pull-right" aria-label="Close" (click)="newmodal.hide()">
@@ -91,7 +91,10 @@
               <div class="form-group">
                 <em>*</em><label class="form-control-label">角色：</label>
                 <div>
-                  <ngx-dropdown-treeview [items]="roleItem.items" [config]="roleItem.config" (selectedChange)="onSelectedCahngeForRoleItem($event)">
+                  <ngx-dropdown-treeview
+                    [items]="roleItem.items" 
+                    [config]="roleItem.config"
+                    (selectedChange)="onSelectedCahngeForRoleItem($event)">
                   </ngx-dropdown-treeview>
                 </div>
               </div>
@@ -121,13 +124,10 @@
                 </div>
               </div>
             </div>
-
-            <div class="offset-6">
-              <button type="submit" class="btn btn-primary" [disabled]="!createUserModel.valid" >确定</button>
-          </div>
           </div>
         </div>
       </form>
+      <button (Click)="alert(123)">测试 </button>
     </div>
   </div>
 </div>
