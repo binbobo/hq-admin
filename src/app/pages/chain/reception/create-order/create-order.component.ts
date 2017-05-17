@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import { TypeaheadRequestParams } from 'app/shared/directives';
 import { DataList, StorageKeys } from 'app/shared/models';
 import { SuspendBillDirective } from 'app/pages/chain/chain-shared';
+import { CustomValidators } from 'ng2-validation';
 
 
 @Component({
@@ -27,20 +28,22 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   // 上次维修工单信息
   public lastOrderData = null;
+  slectedMaintenanceItem = null;
 
   // 维修类型数据
   public maintenanceTypeData: MaintenanceType[];
   // 创建工单表单FormGroup
   workSheetForm: FormGroup;
-  serviceForm: FormGroup;
-  workHourForm: FormGroup;
-  workHourPriceForm: FormGroup;
-  discountRatioForm: FormGroup;
+  // serviceForm: FormGroup;
+  // workHourForm: FormGroup;
+  // workHourPriceForm: FormGroup;
+  // discountRatioForm: FormGroup;
 
   // 新增维修项目相关(不使用smart-table)
-  addNewMaintenanceItem = false; // 维修项目编辑区域是否可见标志
+  // addNewMaintenanceItem = false; // 维修项目编辑区域是否可见标志
   newMaintenanceItemData2 = []; // 保存所有添加的维修项目记录
-  newMaintenanceItem = null; // 当前编辑的维修项目记录
+  selectedServiceIds: any = [];
+  // newMaintenanceItem = null; // 当前编辑的维修项目记录
 
   // 费用计算相关
   fee = {
@@ -80,6 +83,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   onBrandSelect(evt) {
     // 设置当前选择的品牌id
     this.workSheetForm.controls.brandId.setValue(evt.id);
+    this.workSheetForm.controls.brand.patchValue(evt.name, { emitEvent: false });
     // enable车系选择
     this.workSheetForm.controls.series.enable();
   }
@@ -87,6 +91,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   onSeriesSelect(evt) {
     // 设置当前选择的车系id
     this.workSheetForm.controls.seriesId.setValue(evt.id);
+    this.workSheetForm.controls.series.patchValue(evt.name, { emitEvent: false });
     // enable车型选择
     this.workSheetForm.controls.vehicleName.enable();
   }
@@ -98,7 +103,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
     // 如果手动选择了车型  以该车型id为准
     this.workSheetForm.controls.vehicleId.setValue(evt.id);
-    this.workSheetForm.controls.vehicleName.setValue(evt.name);
+    this.workSheetForm.controls.vehicleName.patchValue(evt.name, { emitEvent: false });
   }
 
 
@@ -126,12 +131,14 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       // 判断是否有上次历史工单记录
       if (lastOrder) {
         this.loadLastOrderInfo(lastOrder);
-
         // 保存上次工单记录
         this.lastOrderData = lastOrder;
+        // 设置选择为true
+        this.isSelected = true;
       }
     }).catch(err => {
-      this.alerter.error('获取上次工单信息失败：' + err);
+      // 没有上次工单记录  或者  接口出错
+      // this.alerter.error('获取上次工单信息失败：' + err);
 
       this.isSelected = true;
     });
@@ -152,12 +159,11 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       lastEnter: moment(lastOrder.lastEnter).format('YYYY-MM-DD hh:mm:ss'),
       lastMileage: lastOrder.lastMileage,
     });
-    // 设置选择为true
-    this.isSelected = true;
   }
 
   // 根据车牌号， 车主， vin 自动带出客户车辆信息
   loadCustomerVehicleInfo(customerVehicle) {
+    console.log('客户车辆信息', customerVehicle);
     // 加载客户车辆信息
     this.workSheetForm.patchValue({
       plateNo: customerVehicle.plateNo,
@@ -216,60 +222,91 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.workSheetForm.controls.vehicleName.disable();
   }
 
-  // 点击新增维修项目按钮 处理程序
-  addNewmaintanceItem() {
-    // 初始化当前编辑的维修项目记录
-    this.newMaintenanceItem = {
-      type: 1, // type 1 表示维修项目
+  // // 点击新增维修项目按钮 处理程序
+  // addNewmaintanceItem() {
+  //   // 初始化当前编辑的维修项目记录
+  //   this.newMaintenanceItem = {
+  //     type: 1, // type 1 表示维修项目
+  //     serviceName: '',
+  //     workHour: '',
+  //     price: '',
+  //     discount: 100,
+  //     amount: '',
+  //     operationTime: moment().format('YYYY-MM-DD hh:mm:ss')
+  //   };
+  //   // 维修项目编辑区域可见
+  //   // this.addNewMaintenanceItem = true;
+  // }
+
+  onAddHandler() {
+    this.slectedMaintenanceItem = {
       serviceName: '',
+      serviceId: '',
       workHour: '',
       price: '',
-      discount: 100,
       amount: '',
+      discount: 100,
       operationTime: moment().format('YYYY-MM-DD hh:mm:ss')
     };
-    // 维修项目编辑区域可见
-    this.addNewMaintenanceItem = true;
   }
-  // 确认添加一条维修项目记录 处理程序
-  onConfirmAddNewMaintenanceItem() {
-    if (this.isWorkHourValid() && this.isPriceValid() && this.isDiscountValid()) {
-      if (!this.newMaintenanceItem.serviceId) {
-        // 添加维修项目
-        this.service.createMaintenanceItem({ name: this.newMaintenanceItem.serviceName })
-          .then(data => {
-            this.alerter.success('新建维修项目成功, 返回的数据为：', data);
-            this.newMaintenanceItem.serviceId = data.id;
 
-            this.newMaintenanceItemDataHandler();
-          }).catch(err => {
-            this.alerter.error('新建维修项目失败：' + err + '请重新输入维修项目名称');
-          });
-      } else {
-        this.newMaintenanceItemDataHandler();
-      }
-    } else {
-      // 数据输入不合法
-      this.alerter.error('数据输入不合法');
+  onConfirmNewMaintenanceItem(evt, addModal) {
+    if (!evt) {
+      return;
     }
-  }
+    console.log('维修项目数据为：', evt);
 
-  newMaintenanceItemDataHandler() {
-    this.newMaintenanceItem.price = this.newMaintenanceItem.price * 100; // 转成分
-    this.newMaintenanceItem.amount = this.newMaintenanceItem.amount.toFixed(2) * 100; // 转成分
-    this.newMaintenanceItemData2.push(this.newMaintenanceItem);
-    // 维修项目编辑区域不可见
-    this.addNewMaintenanceItem = false;
+    evt.price = evt.price * 100; // 转成分
+    evt.amount = evt.amount.toFixed(2) * 100; // 转成分
+    this.newMaintenanceItemData2.push(evt);
+
+    this.selectedServiceIds.push(evt.serviceId);
+
     // 费用计算
-    this.fee.workHour += parseFloat(this.newMaintenanceItem.amount);
+    this.fee.workHour += parseFloat(evt.amount);
     // 判断生成工单按钮是否可用
     this.enableCreateWorkSheet = this.workSheetForm.valid;
+
+    addModal.hide();
   }
 
-  // 从表格中删除一条添加的维修项目事件处理程序
-  onDelNewMaintenanceItem(evt, serviceId) {
-    evt.preventDefault();
+  // // 确认添加一条维修项目记录 处理程序
+  // onConfirmAddNewMaintenanceItem() {
+  //   if (this.isWorkHourValid() && this.isPriceValid() && this.isDiscountValid()) {
+  //     if (!this.newMaintenanceItem.serviceId) {
+  //       // 添加维修项目
+  //       this.service.createMaintenanceItem({ name: this.newMaintenanceItem.serviceName })
+  //         .then(data => {
+  //           this.alerter.success('新建维修项目成功, 返回的数据为：', data);
+  //           this.newMaintenanceItem.serviceId = data.id;
 
+  //           this.newMaintenanceItemDataHandler();
+  //         }).catch(err => {
+  //           this.alerter.error('新建维修项目失败：' + err + '请重新输入维修项目名称');
+  //         });
+  //     } else {
+  //       this.newMaintenanceItemDataHandler();
+  //     }
+  //   } else {
+  //     // 数据输入不合法
+  //     this.alerter.error('数据输入不合法');
+  //   }
+  // }
+
+  // newMaintenanceItemDataHandler() {
+  //   this.newMaintenanceItem.price = this.newMaintenanceItem.price * 100; // 转成分
+  //   this.newMaintenanceItem.amount = this.newMaintenanceItem.amount.toFixed(2) * 100; // 转成分
+  //   this.newMaintenanceItemData2.push(this.newMaintenanceItem);
+  //   // 维修项目编辑区域不可见
+  //   // this.addNewMaintenanceItem = false;
+  //   // 费用计算
+  //   this.fee.workHour += parseFloat(this.newMaintenanceItem.amount);
+  //   // 判断生成工单按钮是否可用
+  //   this.enableCreateWorkSheet = this.workSheetForm.valid;
+  // }
+
+  // 从表格中删除一条添加的维修项目事件处理程序
+  onDelMaintenanceItem(serviceId) {
     this.newMaintenanceItemData2.filter((item, index) => {
       if (item.serviceId === serviceId) {
         this.newMaintenanceItemData2.splice(index, 1);
@@ -282,37 +319,37 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     });
 
   }
-  // 判断输入的工时是否合法
-  private isWorkHourValid() {
-    return /^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/.test(this.newMaintenanceItem.workHour);
-  }
-  // 判断输入的单价是否合法
-  private isPriceValid() {
-    return /^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/.test(this.newMaintenanceItem.price);
-  }
-  // 判断输入的折扣率是否合法
-  private isDiscountValid() {
-    return /^[0-9][0-9]?$|^100$/.test(this.newMaintenanceItem.discount);
-  }
+  // // 判断输入的工时是否合法
+  // private isWorkHourValid() {
+  //   return /^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/.test(this.newMaintenanceItem.workHour);
+  // }
+  // // 判断输入的单价是否合法
+  // private isPriceValid() {
+  //   return /^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/.test(this.newMaintenanceItem.price);
+  // }
+  // // 判断输入的折扣率是否合法
+  // private isDiscountValid() {
+  //   return /^[0-9][0-9]?$|^100$/.test(this.newMaintenanceItem.discount);
+  // }
 
-  // 从下拉列表中选择一个维修项目事件处理程序
-  serviceTypeaheadOnSelect(evt) {
-    // console.log('当前选择的维修项目为：', evt);
-    // 保存当前选择的维修项目名称
-    this.newMaintenanceItem.serviceName = evt.name;
-    // 保存当前选择的维修项目id
-    this.newMaintenanceItem.serviceId = evt.id;
-  }
-  // 工时输入框 输入监听
-  onWorkHourChange() {
-    // 检查工时合法性
-    if (!this.isWorkHourValid()) {
-      // this.alerter.warn('工时只能输入数字');
-      this.newMaintenanceItem.workHour = '';
-      this.newMaintenanceItem.amount = '';
-    }
-    this.calMoney();
-  }
+  // // 从下拉列表中选择一个维修项目事件处理程序
+  // serviceTypeaheadOnSelect(evt) {
+  //   // console.log('当前选择的维修项目为：', evt);
+  //   // 保存当前选择的维修项目名称
+  //   this.newMaintenanceItem.serviceName = evt.name;
+  //   // 保存当前选择的维修项目id
+  //   this.newMaintenanceItem.serviceId = evt.id;
+  // }
+  // // 工时输入框 输入监听
+  // onWorkHourChange() {
+  //   // 检查工时合法性
+  //   if (!this.isWorkHourValid()) {
+  //     // this.alerter.warn('工时只能输入数字');
+  //     this.newMaintenanceItem.workHour = '';
+  //     this.newMaintenanceItem.amount = '';
+  //   }
+  //   this.calMoney();
+  // }
 
   /**
    * 挂单处理程序
@@ -343,38 +380,38 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       });
   }
 
-  // 单价输入框 输入监听
-  onPriceChange() {
-    // 检查单价合法性
-    if (!this.isPriceValid()) {
-      // this.alerter.warn('单价只能输入数字');
-      this.newMaintenanceItem.price = '';
-      this.newMaintenanceItem.amount = '';
-    }
+  // // 单价输入框 输入监听
+  // onPriceChange() {
+  //   // 检查单价合法性
+  //   if (!this.isPriceValid()) {
+  //     // this.alerter.warn('单价只能输入数字');
+  //     this.newMaintenanceItem.price = '';
+  //     this.newMaintenanceItem.amount = '';
+  //   }
 
-    this.calMoney();
-  }
-  // 折扣率输入框 输入监听
-  onDiscountChange() {
-    // 检查折扣率合法性
-    if (!this.isDiscountValid()) {
-      // this.alerter.warn('折扣率只能0~100之间的整数');
-      this.newMaintenanceItem.discount = '';
-    }
-    this.calMoney();
-  }
-  /**
-   * 计算金额 工时*单价*折扣率
-   */
-  calMoney() {
-    if (this.isWorkHourValid() && this.isPriceValid()) {
-      this.newMaintenanceItem.amount = parseFloat(this.newMaintenanceItem.workHour) * parseFloat(this.newMaintenanceItem.price);
-      if (this.isDiscountValid()) {
-        const discountRatio = this.newMaintenanceItem.discount / 100;
-        this.newMaintenanceItem.amount = this.newMaintenanceItem.amount * discountRatio;
-      }
-    }
-  }
+  //   this.calMoney();
+  // }
+  // // 折扣率输入框 输入监听
+  // onDiscountChange() {
+  //   // 检查折扣率合法性
+  //   if (!this.isDiscountValid()) {
+  //     // this.alerter.warn('折扣率只能0~100之间的整数');
+  //     this.newMaintenanceItem.discount = '';
+  //   }
+  //   this.calMoney();
+  // }
+  // /**
+  //  * 计算金额 工时*单价*折扣率
+  //  */
+  // calMoney() {
+  //   if (this.isWorkHourValid() && this.isPriceValid()) {
+  //     this.newMaintenanceItem.amount = parseFloat(this.newMaintenanceItem.workHour) * parseFloat(this.newMaintenanceItem.price);
+  //     if (this.isDiscountValid()) {
+  //       const discountRatio = this.newMaintenanceItem.discount / 100;
+  //       this.newMaintenanceItem.amount = this.newMaintenanceItem.amount * discountRatio;
+  //     }
+  //   }
+  // }
 
 
   /**
@@ -437,7 +474,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.workSheetForm = this.fb.group({
       // billCode: '', // 工单号
       customerName: ['', [Validators.required]], // 车主
-      phone: [''], // 车主电话
+      phone: ['', [CustomValidators.phone('zh-CN')]], // 车主电话
       createdOnUtc: [{ value: moment().format('YYYY-MM-DD hh:mm:ss'), disabled: true }], // 进店时间 / 开单时间
       contactUser: ['', [Validators.required]], // 送修人
       contactInfo: ['', [Validators.required]], // 送修人电话
@@ -467,18 +504,18 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       vehicleId: '', // 车辆id
     });
 
-    this.serviceForm = this.fb.group({
-      serviceName: ['', [Validators.required]], // 维修项目名称
-    });
-    this.workHourForm = this.fb.group({
-      workHour: ['', [Validators.required]], // 维修工时
-    });
-    this.workHourPriceForm = this.fb.group({
-      workHourPrice: ['', [Validators.required]], // 工时单价
-    });
-    this.discountRatioForm = this.fb.group({
-      discountRatio: ['', [Validators.required]], // 折扣率
-    });
+    // this.serviceForm = this.fb.group({
+    //   serviceName: ['', [Validators.required]], // 维修项目名称
+    // });
+    // this.workHourForm = this.fb.group({
+    //   workHour: ['', [Validators.required, CustomValidators.number, CustomValidators.gt(0)]], // 维修工时
+    // });
+    // this.workHourPriceForm = this.fb.group({
+    //   workHourPrice: ['', [Validators.required, CustomValidators.number, CustomValidators.gt(0)]], // 工时单价
+    // });
+    // this.discountRatioForm = this.fb.group({
+    //   discountRatio: ['', [Validators.required, CustomValidators.digits, CustomValidators.range([0, 100])]], // 折扣率
+    // });
 
     // patchValue方法会触发FromGroup的valueChanges事件
 
@@ -583,7 +620,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     const workSheet = this.getEdittingOrder();
 
     // 调用创建工单接口
-    // console.log('提交的工单对象： ', JSON.stringify(workSheet));
+    console.log('提交的工单对象： ', JSON.stringify(workSheet));
 
     this.service.create(workSheet)
       // 刷新挂单列表
@@ -634,10 +671,10 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   public get customerNametypeaheadSource() {
     return this.typeaheadSource(this.service.getCustomerVehicleByCustomerName);
   }
-  // 根据维修项目名称模糊查询数据源
-  public get serviceNameTypeaheadSource() {
-    return this.typeaheadSource(this.service.getMaintenanceItemsByName);
-  }
+  // // 根据维修项目名称模糊查询数据源
+  // public get serviceNameTypeaheadSource() {
+  //   return this.typeaheadSource(this.service.getMaintenanceItemsByName);
+  // }
   // 根据品牌名称模糊查询数据源
   public get brandTypeaheadSource() {
     return (params: TypeaheadRequestParams) => {

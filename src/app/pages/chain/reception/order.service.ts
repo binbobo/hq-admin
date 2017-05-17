@@ -220,7 +220,7 @@ export class OrderService implements BasicService<Order> {
         return this.httpService
             .request(url)
             .map(response => {
-                console.log('获取可以选择的门店，用于中查询范围下拉框：', response.json().data);
+                console.log('获取可以选择的门店，用于查询范围下拉框：', response.json().data);
 
                 let orgs = null;
                 if (this.orgsRecursion([response.json().data])) {
@@ -338,7 +338,8 @@ export class OrderListRequest extends PagedParams {
         public leaveEndTimeDate?: string, // 出厂结束时间
         public orgIds?: Array<string> // 查询范围
     ) {
-        super('OrderListRequestParams');
+        // super('OrderListRequestParams');
+        super(); // 不带参数  禁用缓存
     }
 }
 

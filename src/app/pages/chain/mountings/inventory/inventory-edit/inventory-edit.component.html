@@ -9,38 +9,41 @@
   <form *ngIf="form" class="card-block row" [formGroup]="form" (ngSubmit)="onUpdate()">
     <div class="col-12">
       <div class="form-group">
-        <label class="form-control-label">车型</label>
+        <label class="form-control-label">*车型</label>
         <div>
-          <div *ngFor="let item of model?.vehicleName|split" class="btn btn-secondary btn-sm mr-1 mb-1">
-            <span>{{item}}</span>
+          <div *ngFor="let item of vehicles" class="btn btn-secondary btn-sm mr-1 mb-1">
+            <span>{{item.brandName}} {{item.seriesName}} {{item.name}}</span>
+            <i class="cursor-pointer fa fa-times" (click)="onVehicleRemove(item)"></i>
           </div>
         </div>
+        <input type="text" [hqTableTypeahead]="vehicleSource" (onSelect)="onVehicleSelect($event)" (onRemove)="onVehicleRemove($event)"
+          [columns]="vehicleColumns" multiple="true" class="form-control" placeholder="请输入车型">
       </div>
     </div>
     <div class="col-6">
       <div class="form-group">
         <label class="form-control-label">仓库</label>
-        <input type="text" class="form-control" disabled [value]="model?.houseName">
+        <input type="text" class="form-control" disabled value="{{model?.houseName}}">
       </div>
       <div class="form-group">
         <label class="form-control-label">类别</label>
-        <input type="text" class="form-control" disabled [value]="model?.categoryName">
+        <input type="text" class="form-control" disabled value="{{model?.categoryList|pluck:'categoryName'}}">
       </div>
       <div class="form-group">
         <label class="form-control-label">配件编码</label>
-        <input type="text" class="form-control" disabled [value]="model?.code">
+        <input type="text" class="form-control" disabled value="{{model?.code}}">
       </div>
       <div class="form-group">
         <label class="form-control-label">配件名称</label>
-        <input type="text" class="form-control" disabled [value]="model?.name">
+        <input type="text" class="form-control" disabled value="{{model?.name}}">
       </div>
       <div class="form-group">
         <label class="form-control-label">产地</label>
-        <input type="text" class="form-control" disabled [value]="model?.madeIn">
+        <input type="text" class="form-control" disabled value="{{model?.madeIn}}">
       </div>
       <div class="form-group">
         <label class="form-control-label">包装规格</label>
-        <input type="text" class="form-control" disabled [value]="model?.packageInfo">
+        <input type="text" class="form-control" disabled value="{{model?.packageInfo}}">
       </div>
     </div>
     <div class="col-6">
@@ -74,7 +77,7 @@
     </div>
     <div class="col-12">
       <button type="submit" [disabled]="submitting" class="btn btn-primary mr-3">提交</button>
-      <button type="button" (click)="onReset()" class="btn btn-secondary mr-3">重置</button>
+      <button type="button" (click)="onReset()" class="invisible btn btn-secondary mr-3">重置</button>
     </div>
   </form>
 </div>

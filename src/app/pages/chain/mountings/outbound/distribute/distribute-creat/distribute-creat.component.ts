@@ -15,6 +15,7 @@ import { CentToYuanPipe } from "app/shared/pipes";
   styleUrls: ['./distribute-creat.component.css']
 })
 export class DistributeCreatComponent implements OnInit, OnChanges {
+  selectCount: any;
 
   private form: FormGroup;
   private converter: CentToYuanPipe = new CentToYuanPipe();
@@ -31,11 +32,13 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
     private formBuilder: FormBuilder,
     private moutingsService: MountingsService,
   ) {
-  
+
   }
 
   ngOnInit() {
     this.buildForm();
+    this.form.patchValue(this.InputData);
+    Object.assign(this.model, this.InputData);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -70,13 +73,12 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
       productSpecification: [this.model.productSpecification, [Validators.required]],
       storeId: [this.model.storeId],
       locationId: [this.model.locationId],
-      count: [this.model.count, [Validators.required, CustomValidators.lte(this.model.count), CustomValidators.digits]],
+      vehicleName: [this.model.vehicleName],
+      count: [this.model.count, [Validators.required, CustomValidators.lte(this.selectCount), CustomValidators.digits]],
       price: [this.model.price, [Validators.required, CustomValidators.gte(this.price)]],
       amount: [this.model.amount],
-      stockCount: [this.model.stockCount, [Validators.required]],
       locationName: [this.model.locationName, [Validators.required]],
       houseName: [this.model.houseName, [Validators.required]],
-      vihicleName: [this.model.vihicleName],
       createUser: [this.model.createUser, [Validators.required]],
       createUserName: [this.model.createUserName],
       description: [this.model.description],
@@ -131,7 +133,6 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
     evt.preventDefault();
     this.model.count = evt.target.value;
     this.model.amount = (this.model.count) * (this.model.price);
-    console.log(this.model.amount)
   }
 
   public onItemSelect(event) {
@@ -143,6 +144,7 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
       brand: event.brand,
       brandId: event.brandId,
       storeId: event.storeId,
+      vehicleName: event.vehicleName,
       houseName: event.houseName,
       locationId: event.locationId,
       locationName: event.locationName,
@@ -150,6 +152,7 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
       price: event.costPrice,
       count: event.count,
     }
+
     this.price = 0;
     setTimeout(() => this.price = item.price, 1);
     Object.assign(this.model, item);
@@ -158,7 +161,7 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
     this.form.controls['price'].setValidators(CustomValidators.gte(item.price));
     this.calculate();
     Object.assign(this.form.value, this.model);
-    console.log(this.model, this.form.value)
+    this.selectCount = item.count;
   }
 
   public get codeSource() {

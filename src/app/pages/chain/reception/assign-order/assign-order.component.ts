@@ -29,6 +29,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
     // 当前选择的工单记录   用于查看工单详情  执行作废等功能
     selectedOrder = null;
     isDetailModalShown = false; // 详情弹框是否可见
+    statistics: any = null; // 各种状态数量统计
 
     // 当前登录用户信息
     public user = null;
@@ -51,7 +52,17 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
                     .filter(item => item.id !== 'all')
                     .map(item => item.id);
                 // 加载列表
-                this.loadList();
+                this.loadList().then(() => {
+                    // this.statistics = {};
+                    // this.statistics['all'] = 0;
+                    // // 统计各种状态下面的工单数量
+                    // this.params.states.forEach(state => {
+                    //     console.log('111111111111：', this.list);
+                    //     this.statistics[state] = this.list.filter(item => item.status === state).length;
+                    //     this.statistics['all'] += this.statistics[state];
+                    // });
+                    // console.log('testesttestestset:', JSON.stringify(this.statistics));
+                });
             });
     }
 
@@ -235,34 +246,17 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
      * @param evt 
      * @param id 
      */
-    finishedOrder(evt, id, confirmModal) {
-        evt.preventDefault();
-        // 显示确认框
-        confirmModal.show();
+    finishedOrder(id) {
+        if (confirm('确定要执行完工操作吗？')) {
+            // 调用完工接口
+            this.service.update({ id: id }).then(() => {
+                // 完工操作成功提示
+                this.alerter.success('执行完工操作成功！');
+                // 设置完工按钮不可用
 
-        // 记录id
-        confirmModal.id = id;
-    }
-
-    /**
-     * 点击完工按钮处理程序
-     * 
-     * @param {any} confirmModal 
-     * 
-     * @memberOf AssignOrderComponent
-     */
-    onConfirmFinished(confirmModal) {
-        console.log('要确认完工的工单id为：', confirmModal.id);
-        // 调用完工接口
-        this.service.update({ id: confirmModal.id }).then(() => {
-            // 完工操作成功提示
-            this.alerter.success('执行完工操作成功！');
-            // 设置完工按钮不可用
-
-            this.onLoadList();
-        });
-        // 隐藏确认框
-        confirmModal.hide();
+                this.onLoadList();
+            }).catch(err => this.alerter.error('执行完工操作失败: ' + err));
+        }
     }
 
     /**

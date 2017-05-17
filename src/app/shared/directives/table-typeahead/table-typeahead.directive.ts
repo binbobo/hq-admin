@@ -26,8 +26,6 @@ export class TableTypeaheadDirective implements OnInit {
   private onSelect = new EventEmitter<any>();
   @Output()
   private onRemove = new EventEmitter();
-  @Output()
-  private notFound = new EventEmitter();
 
   private el: HTMLInputElement;
   private componentRef: ComponentRef<TableTypeaheadComponent>;
@@ -80,16 +78,10 @@ export class TableTypeaheadDirective implements OnInit {
       this.source(param)
         .then(result => result || new PagedResult())
         .then(result => {
-          if (result.totalCount <= 0) {
-            this.notFound.emit();
-          } else {
-            this.componentRef.instance.result = result;
-            this.show();
-          }
+          this.componentRef.instance.result = result;
+          this.show();
         })
-        .catch(err => {
-          this.notFound.emit();
-        });
+        .catch(err => this.componentRef.instance.result = new PagedResult());
     }
   }
 

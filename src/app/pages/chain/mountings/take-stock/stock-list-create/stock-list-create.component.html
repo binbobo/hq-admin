@@ -13,7 +13,7 @@
       </div>
       <div class="form-group mb-2">
         <label class="mr-sm-2">选择库位：</label>
-        <input class="form-control mx-sm-3" (onConfirm)="onSelectLocation($event)" [hqMutilSelect]="locations" placeholder="点击选择库位"
+        <input class="form-control mx-sm-3" placement="bottom" (onConfirm)="onSelectLocation($event)" [hqMutilSelect]="locations" placeholder="点击选择库位"
         />
       </div>
       <div class="form-group mb-2">
@@ -23,7 +23,6 @@
     <table class="table table-bordered table-sm table-striped">
       <thead>
         <tr>
-          <th translate>序号</th>
           <th translate>品牌</th>
           <th translate>配件编码</th>
           <th translate>配件名称</th>
@@ -38,7 +37,6 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of list">
-          <td>{{item.number}}</td>
           <td>{{ item.productBrand }}</td>
           <td>{{item.productCode }}</td>
           <td>{{item.productName }}</td>

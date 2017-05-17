@@ -7,6 +7,8 @@ import { AppendOrderComponent } from './append-order/append-order.component';
 import { CreateOrderComponent } from './create-order/create-order.component';
 import { PrintOrderComponent } from 'app/pages/chain/reception/bill-order/print-order/print-order.component';
 import { OrderDetailComponent } from './order-list/print-preview/order-detail.component';
+import { WorkorderDetailComponent } from './shared/workorder-detail/workorder-detail.component';
+import { AddMaintenanceItemComponent } from './shared/add-maintenance-item/add-maintenance-item.component';
 
 const routes: Routes = [
     // 工单列表路由
@@ -30,5 +32,5 @@ const routes: Routes = [
 })
 export class ReceptionRoutingModule { }
 
-export const routedComponents = [OrderListComponent, AssignOrderComponent, CreateOrderComponent, BillOrderComponent, AppendOrderComponent, PrintOrderComponent, OrderDetailComponent];
+export const routedComponents = [WorkorderDetailComponent, AddMaintenanceItemComponent,OrderListComponent, AssignOrderComponent, CreateOrderComponent, BillOrderComponent, AppendOrderComponent, PrintOrderComponent, OrderDetailComponent];
 

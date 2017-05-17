@@ -1,0 +1,22 @@
+.business .margin-l{
+    margin-left: 15px;
+}
+.business .color{
+    color: red;
+}
+table th,table td{
+    text-overflow:ellipsis; 
+    white-space:nowrap; 
+    overflow:hidden;
+    text-align: center;
+}
+.mg{
+    margin: 0 auto;
+}
+.modal-header{
+    padding-bottom: 0;
+    border: none;
+}
+.modal-body{
+    padding-top: 0;
+}

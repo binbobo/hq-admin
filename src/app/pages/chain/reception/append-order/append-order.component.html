@@ -5,58 +5,54 @@
     <ng-template hqSuspendBill="MW" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
   <div class="card-block">
-    <div class="" hq-alerter></div>
-    <div class="container mg">
-      <form [formGroup]="myForm" class='form-in mb-2' style="width:370px">
+    <div>
+      <form [formGroup]="myForm" class='form-in serach-input'>
         <input [hqTableTypeahead]="typeaheadSource" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)" class="form-control"
           placeholder="请输入工单号/车牌号" />
       </form>
     </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-3" title="{{SearchappendList.billCode}}">工单号:{{SearchappendList.billCode}}</div>
-        <div class="col-md-3"></div>
-        <div class="col-md-3"></div>
-        <div class="col-md-3"></div>
-      </div>
-      <div class="row">
-        <div class="col-md-3" title="{{SearchappendList.plateNo}}">车牌号:{{SearchappendList.plateNo}}</div>
-        <div class="col-md-3" title="{{SearchappendList.customerName}}">车主:{{SearchappendList.customerName}}</div>
-        <div class="col-md-3" title="{{SearchappendList.phone}}">车主电话:{{SearchappendList.phone}}</div>
-        <div class="col-md-3" title="{{SearchappendList.validate |date:'yyyy/MM/dd HH:mm:ss'}}">验车时间:{{SearchappendList.validate |date:"yyyy/MM/dd HH:mm:ss"}}</div>
-      </div>
-      <div class="row">
-        <div class="col-md-3" title="{{SearchappendList.createdOnUtc |date:'yyyy/MM/dd HH:mm:ss'}}">开单时间:{{SearchappendList.createdOnUtc |date:"yyyy/MM/dd HH:mm:ss"}} </div>
-        <div class="col-md-3" title="{{SearchappendList.contactUser}}">送修人:{{SearchappendList.contactUser}}</div>
-        <div class="col-md-3" title="{{SearchappendList.contactInfo}}">送修人电话:{{SearchappendList.contactInfo}}</div>
-        <div class="col-md-3" title="{{SearchappendList.createdUserName}}">服务顾问:{{SearchappendList.createdUserName}}</div>
-      </div>
-      <div class="row">
-        <div class="col-md-3" title="{{SearchappendList.brand}}">品牌:{{SearchappendList.brand}}</div>
-        <div class="col-md-3" title="{{SearchappendList.series}}">车系:{{SearchappendList.series}}</div>
-        <div class="col-md-3" title="{{SearchappendList.model}}">车型:{{SearchappendList.model}}</div>
-        <div class="col-md-3" title="{{SearchappendList.vin}}">VIN:{{SearchappendList.vin}}</div>
-      </div>
-      <div class="row">
-        <div class="col-md-3" title="{{SearchappendList.typeName}}">维修类型:{{SearchappendList.typeName}}</div>
-        <div class="col-md-3" title="{{SearchappendList.expectLeave|date:'yyyy/MM/dd HH:mm:ss'}}">预计交车时间:{{SearchappendList.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</div>
-        <div class="col-md-3" title="{{SearchappendList.mileage}}">行驶里程(KM):{{SearchappendList.mileage}}</div>
-        <div class="col-md-3" title="{{SearchappendList.lastEnterDate|date:'yyyy/MM/dd HH:mm:ss'}}">上次进店时间:{{SearchappendList.lastEnterDate|date:"yyyy/MM/dd HH:mm:ss"}}</div>
-      </div>
-      <div class="row">
-        <div class="col-md-3" title="{{SearchappendList.location}}">维修工位:{{SearchappendList.location}}</div>
-        <div class="col-md-3" title="{{SearchappendList.nextDate}}">建议下次保养日期:{{SearchappendList.nextDate}}</div>
-        <div class="col-md-3" title="{{SearchappendList.nextMileage}}">建议下次保养里程(KM):{{SearchappendList.nextMileage}}</div>
-        <div class="col-md-3" title="{{SearchappendList.lastMileage}}">上次进店里程(KM):{{SearchappendList.lastMileage}}</div>
-      </div>
+    <div class="serach-main">
+      <div class="serach-list">工单号:{{SearchappendList.billCode}}</div>
+      <div class="serach-list"> </div>
+      <div class="serach-list"> </div>
+      <div class="serach-list"> </div>
+    </div>
+    <div class="serach-main">
+      <div class="serach-list">车牌号:{{SearchappendList.plateNo}}</div>
+      <div class="serach-list">车主:{{SearchappendList.customerName}} </div>
+      <div class="serach-list">车主电话:{{SearchappendList.phone}} </div>
+      <div class="serach-list">验车时间:{{SearchappendList.validate |date:"yyyy/MM/dd HH:mm:ss"}} </div>
+    </div>
+    <div class="serach-main">
+      <div class="serach-list">开单时间:{{SearchappendList.createdOnUtc |date:"yyyy/MM/dd HH:mm:ss"}} </div>
+      <div class="serach-list">送修人:{{SearchappendList.contactUser}} </div>
+      <div class="serach-list">送修人电话:{{SearchappendList.contactInfo}}</div>
+      <div class="serach-list">服务顾问:{{SearchappendList.createdUserName}}</div>
+    </div>
+    <div class="serach-main">
+      <div class="serach-list">品牌:{{SearchappendList.brand}} </div>
+      <div class="serach-list">车系:{{SearchappendList.series}}</div>
+      <div class="serach-list">车型:{{SearchappendList.model}}</div>
+      <div class="serach-list">VIN:{{SearchappendList.vin}}</div>
+    </div>
+    <div class="serach-main">
+      <div class="serach-list">维修类型:{{SearchappendList.typeName}}</div>
+      <div class="serach-list">预计交车时间:{{SearchappendList.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</div>
+      <div class="serach-list">行驶里程(KM):{{SearchappendList.mileage}}</div>
+      <div class="serach-list">上次进店时间:{{SearchappendList.lastEnterDate|date:"yyyy/MM/dd HH:mm:ss"}}</div>
+    </div>
+    <div class="serach-main">
+      <div class="serach-list">维修工位:{{SearchappendList.location}}</div>
+      <div class="serach-list">建议下次保养日期:{{SearchappendList.nextDate}}</div>
+      <div class="serach-list">建议下次保养里程(KM):{{SearchappendList.nextMileage}}</div>
+      <div class="serach-list">上次进店里程(KM):{{SearchappendList.lastMileage}}</div>
     </div>
 
     <div [hidden]="!isShowAppend">
       <tabset #staticTabs>
         <!--维修项目-->
         <tab heading="维修项目">
-          <!--<smart-table [source]="stDataSource" (deleteConfirm)="deleteMaintanceItem($event)" (createConfirm)="addNewmaintanceItem($event)"
-            [settings]="maintanceItemSettings"></smart-table>-->
+
 
           <table class="table  table-striped table-bordered">
             <thead>

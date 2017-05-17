@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-#hq-prining .print-page{
+#hq-printing .print-page{
     page-break-after:always;
 }
 /*html{
@@ -10,6 +10,10 @@
 }
 .card-header,.card-footer{
     background-color: #fff;
+}
+
+.card-block{
+    overflow: auto;
 }
 
 #hq-printing .no-print{

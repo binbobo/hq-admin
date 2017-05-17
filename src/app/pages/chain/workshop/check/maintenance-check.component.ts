@@ -117,7 +117,7 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
     const disabled = tmp.filter(item => item.teamType === '10').length;
 
     this.selectedOrder.serviceOutputs.checkedAll = (checked + disabled) === tmp.length;
-    // 指派  转派按钮是否可用
+    // 同意按钮是否可用
     this.selectedOrder.serviceOutputs.enableCheck = this.selectedOrder.serviceOutputs.filter(item => item.checked).length > 0;
   }
 
@@ -131,7 +131,7 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
   onOrderCheckPass() {
     // 获取选择的工项列表
     const maintenanceItemIds = this.selectedOrder.serviceOutputs.filter(item => item.checked).map(item => item.id);
-    console.log('选择的维修工单为：', maintenanceItemIds);
+    console.log('选择的工项列表为：', maintenanceItemIds);
     // 判断是否选择维修工项
     if (maintenanceItemIds.length === 0) {
       this.alerter.warn('请选择维修工项！');
@@ -150,6 +150,13 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
             break;
           }
         }
+      }
+
+      // 判断是否所有工项都验收通过
+      const uncheckedItemLen = this.selectedOrder.serviceOutputs.filter(item => item.teamType !== 6).length;
+      if (uncheckedItemLen === 0) {
+        // 修改工单的状态
+        this.selectedOrder.serviceOutputs.statusName = '已验收';
       }
 
       // 设置验收操作按钮不可用

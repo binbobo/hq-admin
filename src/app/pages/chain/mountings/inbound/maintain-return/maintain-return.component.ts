@@ -1,6 +1,6 @@
 import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { DataList, StorageKeys } from "app/shared/models";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { MaintainReturnService, MaintainRequest } from "./maintain-return.service";
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { TypeaheadRequestParams, HqAlerter } from "app/shared/directives";
@@ -11,7 +11,10 @@ import { SuspendBillDirective } from "app/pages/chain/chain-shared";
   templateUrl: './maintain-return.component.html',
   styleUrls: ['./maintain-return.component.css']
 })
-export class MaintainReturnComponent extends DataList<any>{
+export class MaintainReturnComponent implements OnInit {
+  [name: string]: any;
+  numberList: any;
+  mrData: any;
   suspendedBillId: any;
   serialData: any;
   @ViewChild('createModal')
@@ -30,16 +33,17 @@ export class MaintainReturnComponent extends DataList<any>{
   ChooseOrderForm: FormGroup;
   private addNewItem = false;
   params: MaintainRequest;
-  isShowCreat = false;
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     injector: Injector,
     protected service: MaintainReturnService,
     private fb: FormBuilder) {
-    super(injector, service)
     this.params = new MaintainRequest();
     // 构建表单
     this.createForm();
+  }
+  ngOnInit() {
   }
 
   private orderDetail: any;
@@ -64,11 +68,9 @@ export class MaintainReturnComponent extends DataList<any>{
         this.orderDetail = data
         this.serviceData = data.serviceOutputs;
         this.productData = data.productOutputs;
-
-        console.log(data)
       });
 
-    this.service.getMainList(this.billCode)
+    this.service.getMMList(this.billCode).toPromise()
       .then(data => {
         this.serialData = data;
         this.suspendData.serialData = this.serialData;
@@ -77,8 +79,39 @@ export class MaintainReturnComponent extends DataList<any>{
         })
       });
     this.newMainData = [];
+
+    this.service.getMRList(this.billCode).toPromise()
+      .then(data => {
+        this.mrData = data;
+        this.suspendData.mrData = this.mrData;
+        this.mrData.sort((a, b) => {
+          return a.serialNum - b.serialNum;
+        });
+
+        this.numberList = data.map(item => {
+          return {
+            value: item.serialNum,
+            text: item.serialNum
+          };
+        });
+        this.numberList.sort((a, b) => {
+          return a.value - b.value
+        });
+        var hashNumber = {};
+        this.numberPrintList = this.numberList.reduce(function (item, next) {
+          hashNumber[next.text] ? '' : hashNumber[next.text] = true && item.push(next);
+          return item
+        }, [])
+      });
+
   }
 
+  onConfirmNumber(evt) {
+    console.log(evt);
+    this.SerialNumsList = evt.value;
+    console.log(this.SerialNumsList)
+    this.router.navigate(['./print', this.listId, this.billCode, this.SerialNumsList.join("-")], { relativeTo: this.route });
+  }
   // 车牌号模糊搜索接口调用
   public get PlatNoSource() {
     return (params: TypeaheadRequestParams) => {
@@ -120,27 +153,48 @@ export class MaintainReturnComponent extends DataList<any>{
     let postData = JSON.stringify(this.billData)
     console.log(postData);
     this.service.postReturnBill(postData).then((result) => {
-      this.printId = result.data;
-      console.log(this.printId);
+      console.log(result)
+
+      this.newMainData = [];
+      this.serialData = this.serialData.concat(result.data);
+
+      this.serialData.sort((a, b) => {
+        return a.serialNum - b.serialNum
+      })
+
+      this.numberList = this.serialData.map(item => {
+        return {
+          value: item.serialNum,
+          text: item.serialNum
+        };
+      });
+      this.numberList.sort((a, b) => {
+        return a.value - b.value
+      });
+      var hashNumber = {};
+      this.numberPrintList = this.numberList.reduce(function (item, next) {
+        hashNumber[next.text] ? '' : hashNumber[next.text] = true && item.push(next);
+        return item
+      }, [])
+
       this.alerter.info('生成退料单成功', true, 2000);
     }).catch(err => this.alerter.error(err, true, 2000));
   }
 
   inputData: any;
   currentData: any;
-  // 点击退料弹出发料弹框
-  OnCreatBound(item) {
-    this.isShowCreat = true;
-    console.log(item)
-    this.inputData = item;
+  // 点击退料弹出弹框
+  OnCreatBound(ele) {
+    console.log(ele);
+    ele.maintenanceItemId = ele.id; //维修明细id
+    // ele.createUser = ele.takeUser;
+    this.inputData = ele;
     this.createModal.show();
   }
 
   onCreate(e) {
     console.log(e);
     if (this.newMainData) {
-      // e.maintenanceItemId = "428D37D2-45EA-477B-9B9F-BA01DA11972E";
-      // e.locationId = "8ECE0785-A8E8-4E4F-B1DE-B6C3641269B9";
       this.newMainData.push(e);
     } else {
       this.newMainData = []
@@ -186,8 +240,7 @@ export class MaintainReturnComponent extends DataList<any>{
     if (this.sunspendRequest) {
       Object.assign(this.suspendData, this.sunspendRequest);
     }
-    
-    console.log(this.suspendData)
+
     if (!this.suspendData.billCode) {
       alert('请选择工单');
       return false;

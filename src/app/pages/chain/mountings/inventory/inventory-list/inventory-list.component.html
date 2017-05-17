@@ -6,7 +6,7 @@
   <div class="card-block">
     <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
       <div class="form-group mb-2">
-        <label>仓库：</label>
+        <label class="form-control-label">仓库：</label>
         <select class="form-control mx-sm-3" name="storehouseId" [(ngModel)]="params.storehouseId">
           <option value="">全部仓库</option>
           <option *ngFor="let item of warehouses" value="{{item.value}}">{{item.text}}</option>
@@ -36,11 +36,11 @@
         <button type="submit" class="btn btn-primary mx-sm-3" translate>搜索</button>
       </div>
     </form>
-    <table class="table table-bordered table-sm table-striped">
+    <table class="table table-bordered table-striped">
       <thead>
         <tr>
           <th><input (change)="onCheckChange($event)" type="checkbox"></th>
-          <th translate>序号</th>
+          <th translate>操作</th>
           <th translate>库位</th>
           <th translate>类别</th>
           <th translate>品牌</th>
@@ -57,13 +57,13 @@
           <th translate>产地</th>
           <th translate>属性</th>
           <th translate>备注</th>
-          <th translate>操作</th>
+          <th>状态</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of list">
           <td class="text-center"><input [(ngModel)]="item.checked" type="checkbox"></td>
-          <td class="text-center">{{item.number}}</td>
+          <td class="text-center"><button class="btn btn-sm btn-success" [disabled]="item.enable==='停用'" (click)="onEdit($event,item)">编辑</button></td>
           <td>{{ item.storageLocationName}}</td>
           <td>{{item.category}}</td>
           <td>{{item.brand}}</td>
@@ -72,7 +72,7 @@
           <td class="text-center">{{item.count}}</td>
           <td>{{ item.vehicleName}}</td>
           <td>{{item.unit}}</td>
-          <td class="text-right">{{item.price|centToYuan}}</td>
+          <td class="text-right">{{item.suggPrice|centToYuan}}</td>
           <td class="text-right">{{ item.newPrice|centToYuan}}</td>
           <td class="text-center">{{item.maxCount}}</td>
           <td class="text-center">{{item.minCount}}</td>
@@ -80,7 +80,7 @@
           <td>{{item.madeIn}}</td>
           <td>{{item.properties}}</td>
           <td>{{ item.description}}</td>
-          <td class="text-center"><button class="btn btn-sm btn" (click)="onEdit($event,item)">编辑</button></td>
+          <td class="text-center">{{item.enable}}</td>
         </tr>
       </tbody>
     </table>
@@ -100,7 +100,7 @@
         <h5 class="modal-title pull-left">新增配件</h5>
         <button class="close pull-right" (click)="createModal.hide()">&times;</button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" *ngIf="createModal.isShown">
         <hq-inventory-create (onSubmit)="onInventoryCreate($event)"></hq-inventory-create>
       </div>
     </div>
