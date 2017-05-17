@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChildren, QueryList, Injector } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, Injector, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DataList, StorageKeys } from "app/shared/models";
 import { BusinessService, BusinessListRequest, FuzzySearchRequest } from "../business.service";
-// import { SecondToTimePipe } from "app/shared/pipes";
-import { TypeaheadRequestParams } from "app/shared/directives";
+import { TypeaheadRequestParams, PrintDirective } from "app/shared/directives";
+import { CentToYuanPipe, DurationHumanizePipe } from "app/shared/pipes";
 
 @Component({
   selector: 'hq-business-list',
@@ -13,10 +13,18 @@ import { TypeaheadRequestParams } from "app/shared/directives";
 export class BusinessListComponent extends DataList<any> {
 
   private businessForm: FormGroup;
-  // private converter: SecondToTimePipe = new SecondToTimePipe();
   params: BusinessListRequest;
   public isShow = false;//查询范围是否显示
   public isSearch = false;//温馨提示是否显示
+  private converter: CentToYuanPipe = new CentToYuanPipe();
+  private pipe: DurationHumanizePipe = new DurationHumanizePipe();
+  @ViewChild('printer')
+  public printer: PrintDirective;
+  // private costData: any;//收费结算单
+  // private workHourData: any;//工时明细
+  // private matereialData: any;//配件明细
+  private businessData: any;//维修历史详情
+  private moneyObj = null;
 
   constructor(
     injector: Injector,
@@ -26,6 +34,7 @@ export class BusinessListComponent extends DataList<any> {
     super(injector, service);
     this.params = new BusinessListRequest();
     this.createForm();
+
   }
 
   createForm() {
@@ -48,9 +57,9 @@ export class BusinessListComponent extends DataList<any> {
     };
   }
 
-  plateNoOnSelect(event){
+  plateNoOnSelect(event) {
     let item = {
-      plateNo:event.plateNo
+      plateNo: event.plateNo
     }
     setTimeout(() => {
       this.businessForm.patchValue(item);
@@ -68,15 +77,16 @@ export class BusinessListComponent extends DataList<any> {
   public get plateNotypeaheadSource() {
     return this.typeaheadSource(this.service.getCustomerVehicleByPlateNo);
   }
-  //查询
+  //条件查询维修历史
   onSearch() {
-    if (this.businessForm.value) {
+    this.isSearch = false;
+    if (this.params.plateNo) {
       this.isSearch = true;
     }
     this.onLoadList();
-    
+
   }
-  //导出报表
+  //导出维修历史
   onExport() {
     this.service.export(this.params).then(() => {
       console.log('导出维修历史数据成功！');
@@ -85,7 +95,47 @@ export class BusinessListComponent extends DataList<any> {
   //详情
   businessDetailsHandler(evt, id, modalDialog) {
     evt.preventDefault();
-    modalDialog.show();
+    this.moneyObj = {
+      amountReceivable1: 0,//表一应收金额
+      amountReceivable2: 0,//表二应收金额（工时费）
+      amountReceivable3: 0,//表三应收金额（材料费）
+      discountMoney1: 0,//表一折扣金额
+      discountMoney2: 0,//表二折扣金额
+      // workHourPrice:0,//工时费
+      // productPrice:0,//材料费
+    }
+    //根据ID获取维修历史详情
+    this.service.get(id).then(data => {
+      this.businessData = data;
+      console.log('根据ID获取维修详情', this.businessData);
+      // this.costData = data.totalCost;
+      // this.workHourData = data.workHours;
+      // this.matereialData = data.matereialDetails;
+      //表二
+      this.businessData.workHours.forEach(item => {
+        this.moneyObj.amountReceivable2 += item.amount;//应收金额(待校验)
+        this.moneyObj.discountMoney2 += item.amount - item.discountCost;//折扣金额(待校验)
+      });
+      //表三
+      this.businessData.matereialDetails.forEach(item => {
+        this.moneyObj.amountReceivable3 += item.amount;//应收金额(待校验)
+      });
+      //表一
+      this.businessData.totalCost.forEach(item => {
+        // this.moneyObj.workHourPrice = this.moneyObj.amountReceivable2;//工时费
+        // this.moneyObj.productPrice = this.moneyObj.amountReceivable3;//材料费
+        this.moneyObj.discountMoney1 += item.receivableCost - item.discountCost;//折扣金额
+        this.moneyObj.amountReceivable1 += item.receivableCost;//应收金额
+      });
+      this.businessData['moneyObj'] = this.moneyObj;
+      console.log('打印数据',this.businessData);
+    })
+      .catch(err => Promise.reject(`获取维修历史详情失败：${err}`));
+    setTimeout(() => modalDialog.show(), 300);
+
+  }
+  print() {
+    this.printer.print();
   }
 
 }

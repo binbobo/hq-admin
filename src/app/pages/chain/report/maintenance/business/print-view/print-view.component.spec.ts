@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BusinessDetailComponent } from './business-detail.component';
+import { PrintViewComponent } from './print-view.component';
 
-describe('BusinessDetailComponent', () => {
-  let component: BusinessDetailComponent;
-  let fixture: ComponentFixture<BusinessDetailComponent>;
+describe('PrintViewComponent', () => {
+  let component: PrintViewComponent;
+  let fixture: ComponentFixture<PrintViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BusinessDetailComponent ]
+      declarations: [ PrintViewComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BusinessDetailComponent);
+    fixture = TestBed.createComponent(PrintViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

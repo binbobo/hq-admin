@@ -32,7 +32,7 @@ export class PrintOrderComponent implements OnInit {
       this.service.getPrintDetail(id)
         .then(data => {
           this.data = data;
-          console.log(data)
+          console.log('结算单',data)
           this.costData = data.totalCost; //收费结算单
           this.workHourData = data.workHours;//工时明细
           this.materialData = data.matereialDetails; //材料明细
