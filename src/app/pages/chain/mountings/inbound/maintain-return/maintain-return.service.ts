@@ -189,5 +189,8 @@ export class MaintainReturnListItem {
         public takeUser?: any,
         public storeName:string="",
         public initcount:number=1,
+        public initamount:any=0,
+        public operatorId:string="",
+        public createUser:string="",
     ) { }
 }

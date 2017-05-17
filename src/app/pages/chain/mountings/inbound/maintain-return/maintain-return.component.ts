@@ -1,5 +1,5 @@
 import { Component, OnInit, Injector, ViewChild } from '@angular/core';
-import { DataList, StorageKeys } from "app/shared/models";
+import { DataList, StorageKeys, SelectOption } from "app/shared/models";
 import { Router, ActivatedRoute } from "@angular/router";
 import { MaintainReturnService, MaintainRequest } from "./maintain-return.service";
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -13,7 +13,7 @@ import { SuspendBillDirective } from "app/pages/chain/chain-shared";
 })
 export class MaintainReturnComponent implements OnInit {
   [name: string]: any;
-  numberList: any;
+  numberList: SelectOption[];
   mrData: any;
   suspendedBillId: any;
   serialData: any;
@@ -77,6 +77,17 @@ export class MaintainReturnComponent implements OnInit {
         this.serialData.sort((a, b) => {
           return a.serialNum - b.serialNum;
         })
+        this.serialData.forEach(element => {
+          (element.list).forEach(ele => {
+            if ((ele.count - ele.returnCount) > 0) {
+              element.isable = true;
+            } else {
+              element.isable = false;
+            }
+          })
+
+        });
+        console.log(this.serialData)
       });
     this.newMainData = [];
 
@@ -94,14 +105,16 @@ export class MaintainReturnComponent implements OnInit {
             text: item.serialNum
           };
         });
-        this.numberList.sort((a, b) => {
-          return a.value - b.value
-        });
+
         var hashNumber = {};
         this.numberPrintList = this.numberList.reduce(function (item, next) {
           hashNumber[next.text] ? '' : hashNumber[next.text] = true && item.push(next);
           return item
         }, [])
+
+        this.numberPrintList.sort((a, b) => {
+          return a.value - b.value
+        });
       });
 
   }
@@ -143,10 +156,10 @@ export class MaintainReturnComponent implements OnInit {
   private billData: any;
   //生成退料单
   OnCreatReturnBill() {
-
     this.billData = {
       billCode: this.billCode,
       billId: this.listId,
+      OriginalBillId: this.OriginalBillId,
       suspendedBillId: this.suspendedBillId,
       list: this.newMainData
     }
@@ -154,47 +167,52 @@ export class MaintainReturnComponent implements OnInit {
     console.log(postData);
     this.service.postReturnBill(postData).then((result) => {
       console.log(result)
-
+      let num = result.data[0].serialNum;
       this.newMainData = [];
-      this.serialData = this.serialData.concat(result.data);
+      this.mrData = this.mrData.concat(result.data);
 
-      this.serialData.sort((a, b) => {
+      this.mrData.sort((a, b) => {
         return a.serialNum - b.serialNum
       })
 
-      this.numberList = this.serialData.map(item => {
+      this.numberList = this.mrData.map(item => {
         return {
           value: item.serialNum,
-          text: item.serialNum
+          text: item.serialNum,
+          checked: item.serialNum === num
         };
       });
-      this.numberList.sort((a, b) => {
-        return a.value - b.value
-      });
+
       var hashNumber = {};
       this.numberPrintList = this.numberList.reduce(function (item, next) {
         hashNumber[next.text] ? '' : hashNumber[next.text] = true && item.push(next);
         return item
       }, [])
-
+      this.numberPrintList.sort((a, b) => {
+        return a.value - b.value
+      });
       this.alerter.info('生成退料单成功', true, 2000);
     }).catch(err => this.alerter.error(err, true, 2000));
   }
 
   inputData: any;
-  currentData: any;
   // 点击退料弹出弹框
-  OnCreatBound(ele) {
+  private currentItem: any;
+  OnCreatBound(ele, id) {
+    this.currentItem = ele;
     console.log(ele);
     ele.maintenanceItemId = ele.id; //维修明细id
-    // ele.createUser = ele.takeUser;
+    this.OriginalBillId = id;
     this.inputData = ele;
     this.createModal.show();
   }
-
+hasList:any;
   onCreate(e) {
-    console.log(e);
     if (this.newMainData) {
+      this.hasList=this.newMainData.filter(item=>item.id===e.id);
+      if(this.hasList){
+        
+      }
       this.newMainData.push(e);
     } else {
       this.newMainData = []
@@ -231,6 +249,7 @@ export class MaintainReturnComponent implements OnInit {
       serviceData: this.serviceData,
       serialData: this.serialData,
       billCode: this.billCode,
+      OriginalBillId: this.OriginalBillId,
       billId: this.listId,
       suspendedBillId: this.suspendedBillId,
       list: this.newMainData
