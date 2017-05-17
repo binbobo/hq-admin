@@ -12,24 +12,24 @@
         <label for="enterTime" class="col-form-label margin-l">进店时间：</label>
         <div class="col-3">
           <input [close-on-select]="false" [(ngModel)]="params.enterStartTimeDate" formControlName="enterStartTimeDate" class="form-control datetime-picker"
-            id="enterStartTimeDate" type="text" ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' />
+            id="enterStartTimeDate" type="text" ngui-datetime-picker/>
         </div>
         <label class="col-form-label">至：</label>
         <div class="col-3">
           <input [close-on-select]="false" [(ngModel)]="params.enterEndTimeDate" formControlName="enterEndTimeDate" class="form-control datetime-picker"
-            id="enterEndTimeDate" type="text" ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' />
+            id="enterEndTimeDate" type="text" ngui-datetime-picker/>
         </div>
       </div>
       <div class="form-group row">
         <label for="leaveTime" class="col-form-label margin-l">出厂时间：</label>
         <div class="col-3">
           <input [close-on-select]="false" [(ngModel)]="params.leaveStartTimeDate" formControlName="leaveStartTimeDate" class="form-control datetime-picker"
-            id="leaveStartTimeDate" type="text" ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' />
+            id="leaveStartTimeDate" type="text" ngui-datetime-picker/>
         </div>
         <label class="col-form-label">至：</label>
         <div class="col-3">
           <input [close-on-select]="false" [(ngModel)]="params.leaveEndTimeDate" formControlName="leaveEndTimeDate" class="form-control datetime-picker"
-            id="leaveEndTimeDate" type="text" ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' />
+            id="leaveEndTimeDate" type="text" ngui-datetime-picker/>
         </div>
         <label *ngIf="isShow" for="orgName" class="col-form-label margin-l">查询范围：</label>
         <select *ngIf="isShow" name="orgName" id="orgName" class="form-control col-2">

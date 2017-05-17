@@ -249,7 +249,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let record of selectedOrder?.SuggestServiceDetailOutput">
+                <tr *ngFor="let record of selectedOrder?.suggestServiceOutputs">
                   <td>{{record?.content}}</td>
                   <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
                   <td>{{record?.description}}</td>

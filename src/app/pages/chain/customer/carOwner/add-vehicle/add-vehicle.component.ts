@@ -30,6 +30,10 @@ export class AddVehicleComponent implements OnInit {
   }
   onAddVehicleConfirmHandler() {
     // 验证数据合法性
+    if (!this.vehicleForm.value.vehicleId) {
+      alert('请选择车系');
+      return;
+    }
     this.onAddVehicleConfirm.emit(this.vehicleForm.value);
     this.vehicleForm.reset();
   }
@@ -38,20 +42,20 @@ export class AddVehicleComponent implements OnInit {
   onBrandSelect(evt) {
     // 设置当前选择的品牌id
     this.vehicleForm.controls.brandId.setValue(evt.id);
-
+    this.vehicleForm.controls.brand.patchValue(evt.name, { emitEvent: false });
   }
   // 从模糊查询下拉列表中选择一个车系事件处理程序
   onSeriesSelect(evt) {
     // 设置当前选择的车系id
     this.vehicleForm.controls.seriesId.setValue(evt.id);
-
+    this.vehicleForm.controls.series.patchValue(evt.name, { emitEvent: false });
   }
   // 从模糊查询下拉列表中选择一个车型事件处理程序
   onModelSelect(evt) {
     // 设置当前选择的车系id
     console.log('当前选择的车型', evt);
     this.vehicleForm.controls.vehicleId.setValue(evt.id);
-    this.vehicleForm.controls.vehicleName.setValue(evt.name);
+    this.vehicleForm.controls.vehicleName.patchValue(evt.name, { emitEvent: false });
   }
 
   createForm() {

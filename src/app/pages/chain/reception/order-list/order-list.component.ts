@@ -1,8 +1,9 @@
-import { Component, Injector } from '@angular/core';
+import { Component, Injector, ViewChild } from '@angular/core';
 import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
 import { OrderService, OrderListRequest, Order, MaintenanceType } from '../order.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StorageKeys, DataList } from 'app/shared/models';
+import { PrintDirective } from 'app/shared/directives';
 
 @Component({
   selector: 'app-order-list',
@@ -41,6 +42,9 @@ export class OrderListComponent extends DataList<Order> {
 
   // 当前登录用户信息
   public user = null;
+
+  @ViewChild('printer')
+  public printer: PrintDirective;
 
   constructor(
     injector: Injector,
@@ -104,6 +108,10 @@ export class OrderListComponent extends DataList<Order> {
     });
   }
 
+  print() {
+    this.printer.print();
+  }
+
   /**
    * 点击工单详情按钮处理程序
    * @param {any} id 
@@ -126,11 +134,11 @@ export class OrderListComponent extends DataList<Order> {
 
       // 工时费： 维修项目金额总和
       this.selectedOrder.workHourFee = data.serviceOutputs.reduce((accumulator, currentValue) => {
-        return accumulator + (currentValue.amount / 100);
+        return accumulator + currentValue.amount;
       }, 0);
       // 材料费： 维修配件金额总和
       this.selectedOrder.materialFee = data.productOutputs.reduce((accumulator, currentValue) => {
-        return accumulator + (currentValue.amount / 100);
+        return accumulator + currentValue.amount;
       }, 0);
       // 其它费： 0
       this.selectedOrder.otherFee = 0;

@@ -38,7 +38,7 @@
         <label for="brand" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>品牌</label>
         <div class="col-2">
           <!--hqError="品牌"-->
-          <input [hqTableTypeahead]="brandTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onBrandSelect($event)" type="text"
+          <input forceRefresh="true" [hqTableTypeahead]="brandTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onBrandSelect($event)" type="text"
             class="form-control" formControlName="brand" id="brand" placeholder="请输入品牌名称">
           <!--品牌id-->
           <input type="hidden" formControlName="brandId" />
@@ -46,7 +46,7 @@
         <label for="series" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车系</label>
         <div class="col-2">
           <!--hqError="车系"-->
-          <input [hqTableTypeahead]="seriesTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onSeriesSelect($event)" type="text"
+          <input forceRefresh="true" [hqTableTypeahead]="seriesTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onSeriesSelect($event)" type="text"
             class="form-control" formControlName="series" id="series" placeholder="输入车系名称">
           <!--车系id-->
           <input type="hidden" formControlName="seriesId" />
@@ -54,7 +54,7 @@
         <label for="vehicleName" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车型</label>
         <div class="col-2">
           <!--hqError="车型" -->
-          <input [hqTableTypeahead]="modelTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onModelSelect($event)" type="text"
+          <input forceRefresh="true" [hqTableTypeahead]="modelTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onModelSelect($event)" type="text"
             class="form-control" formControlName="vehicleName" id="vehicleName" placeholder="输入车型名称">
           <!--车辆id-->
           <input type="hidden" formControlName="vehicleId" />
@@ -65,13 +65,14 @@
         <label for="type" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>维修类型</label>
         <div class="col-2">
           <select hqError="维修类型" id="type" formControlName="type" class="form-control">
+            <option style="display:none">
             <option *ngFor="let type of maintenanceTypeData" value="{{type.id}}">{{type.value}}</option>
           </select>
         </div>
         <label for="expectLeave" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>预计交车时间</label>
         <div class=" col-2">
           <input [close-on-select]="false" hqError="预计交车时间" class="form-control datetime-picker" type="text" formControlName="expectLeave"
-            ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="23" minute='59' />
+            ngui-datetime-picker />
         </div>
         <label for="contactUser" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>送修人</label>
         <div class="col-2">
@@ -152,55 +153,22 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of newMaintenanceItemData2">
+            <tr *ngFor="let item of newMaintenanceItemData">
               <td width="40">
-                <a href="#" (click)="$event.preventDefault();onEditMaintenanceItem(item.serviceId)">编辑</a>
+                <a href="#" (click)="onMaintenanceItemEdit($event, addModal, item)">编辑</a>
                 <a href="#" (click)="$event.preventDefault();onDelMaintenanceItem(item.serviceId)">删除</a>
               </td>
               <td>{{item.serviceName}}</td>
               <td>{{item.workHour}}</td>
-              <td>{{item.price|centToYuan}}</td>
+              <td>{{item.price}}</td>
               <td>{{item.discount}}</td>
-              <td>{{item.amount|centToYuan}}</td>
+              <td>{{item.amount}}</td>
               <td>{{item.operationTime}}</td>
             </tr>
-            <!--<tr *ngIf="addNewMaintenanceItem">
-              <td width="75">
-                <a href="#" (click)="$event.preventDefault();onConfirmAddNewMaintenanceItem()">确定</a> |
-                <a href="#" (click)="addNewMaintenanceItem = false">取消</a>
-              </td>
-              <td>
-                <form [formGroup]="serviceForm" autocomplete="off">
-                  <input formControlName="serviceName" hqError="维修项目" placeholder="输入维修项目名称" [hqTableTypeahead]="serviceNameTypeaheadSource"
-                    [columns]="nameTypeaheadColumns" (onSelect)="serviceTypeaheadOnSelect($event)" [(ngModel)]="newMaintenanceItem.serviceName"
-                    type="text" class="form-control">
-                </form>
-              </td>
-              <td>
-                <form [formGroup]="workHourForm">
-                  <input formControlName="workHour" hqError="维修工时" placeholder="请输入工时" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.workHour"
-                    type="text" class="form-control">
-                </form>
-              </td>
-              <td>
-                <form [formGroup]="workHourPriceForm">
-                  <input formControlName="workHourPrice" hqError="工时单价" placeholder="工时单价" (keyup.enter)="onConfirmAddNewMaintenanceItem()"
-                    [(ngModel)]="newMaintenanceItem.price" type="text" class="form-control">
-                </form>
-              </td>
-              <td>
-                <form [formGroup]="discountRatioForm">
-                  <input formControlName="discountRatio" hqError="折扣率" placeholder="折扣率" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.discount"
-                    type="text" class="form-control">
-                </form>
-              </td>
-              <td><input [value]="newMaintenanceItem.amount" type="text" class="form-control" [disabled]="true"></td>
-              <td><input [value]="newMaintenanceItem.operationTime" type="text" class="form-control" [disabled]="true"></td>
-            </tr>-->
           </tbody>
         </table>
         <div>
-          <button class="btn btn-secondary mr-2" (click)="addModal.show();onAddHandler()">新增</button>
+          <button class="btn btn-secondary mr-2" (click)="addModal.show();">新增</button>
         </div>
       </tab>
       <tab heading="上次维修记录">
@@ -282,7 +250,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let record of lastOrderData?.SuggestServiceDetailOutput">
+            <tr *ngFor="let record of lastOrderData?.suggestServiceOutputs">
               <td>{{record?.content}}</td>
               <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
               <td>{{record?.description}}</td>
@@ -309,17 +277,20 @@
   </div>
 
   <div bsModal #addModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <!--每次都创建一个新的 为了清空表单-->
+    <div *ngIf="addModal.isShown" class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h6 class="modal-title pull-left">新增维修项目</h6>
-          <button type="button" class="close pull-right" (click)="addModal.hide()" aria-label="Close">
+          <button type="button" class="close pull-right" (click)="addModal.hide();selectedItem=null;" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
         </div>
         <div class="modal-body">
-          <hq-add-maintenance-item (onCancel)="addModal.hide();" (onConfirm)="onConfirmNewMaintenanceItem($event, addModal)"></hq-add-maintenance-item>
+          <hq-add-maintenance-item [serviceIds]="selectedServiceIds" [item]="selectedItem" (onCancel)="addModal.hide();selectedItem=null;"
+            (onConfirm)="onConfirmNewMaintenanceItem($event, addModal)"></hq-add-maintenance-item>
         </div>
       </div>
     </div>
   </div>
+  <hq-workorder-detail-print  [data]="newWorkOrderData" class="invisible" hqPrint #printer="hq-print"></hq-workorder-detail-print>

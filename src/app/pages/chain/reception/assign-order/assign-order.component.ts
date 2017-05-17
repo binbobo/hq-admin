@@ -88,7 +88,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
                     return {
                         text: item.name,
                         value: item.id,
-                        // selected: false
+                        // checked: false
                     };
                 });
             });
@@ -101,6 +101,11 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         this.selectedOrder.serviceOutputs.checkedAll = false;
         // 初始化当前选择的维修技师列表
         this.selectedTechnicians = [];
+        // 重置维修项目选择弹框复选框的选中状态
+        this.maintenanceTechnicians = this.maintenanceTechnicians.map(item => {
+            item.checked = false;
+            return item;
+        });
     }
 
     createForm() {
@@ -220,21 +225,6 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             this.selectedOrder.serviceOutputs.enableAssignment = false;
             // 全选复选框是否选中标志
             this.selectedOrder.serviceOutputs.checkedAll = false;
-
-            // 统计各项费用
-
-            // 工时费： 维修项目金额总和
-            this.selectedOrder.workHourFee = data.serviceOutputs.reduce((accumulator, currentValue) => {
-                return accumulator + (currentValue.workHour * currentValue.price);
-            }, 0);
-            // 材料费： 维修配件金额总和
-            this.selectedOrder.materialFee = data.productOutputs.reduce((accumulator, currentValue) => {
-                return accumulator + (currentValue.count * currentValue.price);
-            }, 0);
-            // 其它费： 0
-            this.selectedOrder.otherFee = 0;
-            // 总计费： 
-            this.selectedOrder.sumFee = this.selectedOrder.workHourFee + this.selectedOrder.materialFee + this.selectedOrder.otherFee;
             // 显示窗口
             modalDialog.show();
             this.isDetailModalShown = true;
@@ -244,19 +234,30 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
     /**
      * 点击完工按钮处理程序
      * @param evt 
-     * @param id 
+     * @param item
      */
-    finishedOrder(id) {
-        if (confirm('确定要执行完工操作吗？')) {
-            // 调用完工接口
-            this.service.update({ id: id }).then(() => {
-                // 完工操作成功提示
-                this.alerter.success('执行完工操作成功！');
-                // 设置完工按钮不可用
-
-                this.onLoadList();
-            }).catch(err => this.alerter.error('执行完工操作失败: ' + err));
+    finishedOrder(item) {
+        // 判断是否已经指派维修技师 没有指派不可以完工
+        if (item.teamType === 0) {
+            alert('此工单还没有指派维修技师, 不可以执行完工操作。请先指派维修技师');
+            return;
         }
+        // 判断用户是否领料
+        if (!item.productOutputs || item.productOutputs.length === 0) {
+            if (confirm('用户' + item.createdUserName + '工项没有发料，是否确认完工？')) {
+                // 调用完工接口
+                this.confirmOrderFinish(item.id);
+            }
+        } else {
+            // 调用完工接口
+            this.confirmOrderFinish(item.id);
+        }
+    }
+
+    confirmOrderFinish(id) {
+        this.service.update({ id: id }).then(() => {
+            this.onLoadList();
+        }).catch(err => this.alerter.error('执行完工操作失败: ' + err));
     }
 
     /**
@@ -316,7 +317,6 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         }
 
         // 获取选中的维修技师
-        // const employeeIds = this.maintenanceTechnicians.filter(item => item.selected).map(item => item.value);
         const employeeIds = this.selectedTechnicians;
         console.log('选择的维修技师为：', employeeIds);
         // 判断是否选择维修技师

@@ -127,7 +127,7 @@
               <td>{{selectedOrder?.billCode}}</td>
               <td>{{selectedOrder?.createdOnUtc |date:"yyyy/MM/dd HH:mm:ss"}}</td>
               <td>{{selectedOrder?.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-              <td>{{selectedOrder?.overTime |date:"yyyy/MM/dd HH:mm:ss"}}</td>
+              <td>{{selectedOrder?.overTime|durationHumanize}}</td>
               <td>{{selectedOrder?.createdUserName}}</td>
               <td>{{selectedOrder?.brand}}</td>
               <td>{{selectedOrder?.model}}</td>
@@ -226,7 +226,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let record of selectedOrder?.SuggestServiceDetailOutput">
+                <tr *ngFor="let record of selectedOrder?.suggestServiceOutputs">
                   <td>{{record?.content}}</td>
                   <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
                   <td>{{record?.description}}</td>
