@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'hq-print-view',
@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./print-view.component.css']
 })
 export class PrintViewComponent implements OnInit {
+
+  @Input()
+  private businessData:any;
 
   constructor() { }
 

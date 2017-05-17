@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { DataList, StorageKeys } from "app/shared/models";
 import { BusinessService, BusinessListRequest, FuzzySearchRequest } from "../business.service";
 import { TypeaheadRequestParams, PrintDirective } from "app/shared/directives";
-import { CentToYuanPipe } from "app/shared/pipes";
+import { CentToYuanPipe, DurationHumanizePipe } from "app/shared/pipes";
 
 @Component({
   selector: 'hq-business-list',
@@ -17,12 +17,13 @@ export class BusinessListComponent extends DataList<any> {
   public isShow = false;//查询范围是否显示
   public isSearch = false;//温馨提示是否显示
   private converter: CentToYuanPipe = new CentToYuanPipe();
+  private pipe: DurationHumanizePipe = new DurationHumanizePipe();
   @ViewChild('printer')
   public printer: PrintDirective;
-  private costData:any;//收费结算单
-  private workHourData:any;//工时明细
-  private matereialData:any;//配件明细
-  private businessData:any;//维修历史详情
+  // private costData: any;//收费结算单
+  // private workHourData: any;//工时明细
+  // private matereialData: any;//配件明细
+  private businessData: any;//维修历史详情
   private moneyObj = null;
 
   constructor(
@@ -33,7 +34,7 @@ export class BusinessListComponent extends DataList<any> {
     super(injector, service);
     this.params = new BusinessListRequest();
     this.createForm();
-    
+
   }
 
   createForm() {
@@ -95,45 +96,46 @@ export class BusinessListComponent extends DataList<any> {
   businessDetailsHandler(evt, id, modalDialog) {
     evt.preventDefault();
     this.moneyObj = {
-      amountReceivable1:0,//表一应收金额
-      amountReceivable2:0,//表二应收金额（工时费）
-      amountReceivable3:0,//表三应收金额（材料费）
-      discountMoney1:0,//表一折扣金额
-      discountMoney2:0,//表二折扣金额
+      amountReceivable1: 0,//表一应收金额
+      amountReceivable2: 0,//表二应收金额（工时费）
+      amountReceivable3: 0,//表三应收金额（材料费）
+      discountMoney1: 0,//表一折扣金额
+      discountMoney2: 0,//表二折扣金额
       // workHourPrice:0,//工时费
       // productPrice:0,//材料费
     }
-    modalDialog.show();
     //根据ID获取维修历史详情
-    console.log('详情id', id);
     this.service.get(id).then(data => {
       this.businessData = data;
       console.log('根据ID获取维修详情', this.businessData);
-      this.costData = data.totalCost;
-      this.workHourData = data.workHours;
-      this.matereialData = data.matereialDetails;
+      // this.costData = data.totalCost;
+      // this.workHourData = data.workHours;
+      // this.matereialData = data.matereialDetails;
       //表二
-      this.workHourData.forEach(item => {
+      this.businessData.workHours.forEach(item => {
         this.moneyObj.amountReceivable2 += item.amount;//应收金额(待校验)
-        this.moneyObj.discountMoney2 += item.amount-item.discountCost ;//折扣金额(待校验)
+        this.moneyObj.discountMoney2 += item.amount - item.discountCost;//折扣金额(待校验)
       });
       //表三
-      this.matereialData.forEach(item => {
+      this.businessData.matereialDetails.forEach(item => {
         this.moneyObj.amountReceivable3 += item.amount;//应收金额(待校验)
       });
       //表一
-      this.costData.forEach(item => {
+      this.businessData.totalCost.forEach(item => {
         // this.moneyObj.workHourPrice = this.moneyObj.amountReceivable2;//工时费
         // this.moneyObj.productPrice = this.moneyObj.amountReceivable3;//材料费
         this.moneyObj.discountMoney1 += item.receivableCost - item.discountCost;//折扣金额
         this.moneyObj.amountReceivable1 += item.receivableCost;//应收金额
       });
+      this.businessData['moneyObj'] = this.moneyObj;
+      console.log('打印数据',this.businessData);
     })
       .catch(err => Promise.reject(`获取维修历史详情失败：${err}`));
-    
+    setTimeout(() => modalDialog.show(), 300);
+
   }
   print() {
-    // this.printer.print();
+    this.printer.print();
   }
-  
+
 }
