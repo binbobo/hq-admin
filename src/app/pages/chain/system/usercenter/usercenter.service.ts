@@ -5,15 +5,19 @@ import { TreeviewItem, TreeviewConfig } from "ngx-treeview"
 
 @Injectable()
 export class UserCenterService implements BasicService<any>{
+    /**搜索接口 */
     private static Url_Chain_UserSearch: string = "/SystemManager/Search";
+    /**创建接口 */
     private static Url_Chain_CreateUser: string = "/SystemManager";
+    /**编辑接口 */
     private static Url_Chain_EditUser: string = "/SystemManager/EditUserInfo/";
-
-    private static Url_Chain_PositionOption: string = "/Positions/Options";
+    /**获取部门接口 */
     private static Url_Chain_DepartmentOption: string = "/Departments/Options/Position";
-
+    /**冻结 解冻 接口 */
     private static Url_Platfrom_Enabled: string = "Users/Enabled/";
+    /**重置密码 */
     private static Url_Platfrom_ResetPassword: string = "Users/ResetPassword/";
+    /**角色下拉接口 */
     private static Url_Platfrom_RoleOption: string = "Roles/Options";
 
     constructor(
