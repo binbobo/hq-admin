@@ -106,6 +106,7 @@ export class CheckoutComponent extends DataList<any> {
     paymentMethod: '',
     amount: 0
   };
+  
   OnPostPay(dialog) {
     dialog.hide();
     this.payData.forEach(item => {
