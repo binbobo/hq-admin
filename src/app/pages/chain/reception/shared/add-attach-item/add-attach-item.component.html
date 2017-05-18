@@ -1,0 +1,16 @@
+<ng-template hq-alerter></ng-template>
+<form [formGroup]="attachForm" autocomplete="off">
+  <div class="form-group row">
+    <div class="col-12">
+      <label for="description " class="col-form-label"><span class="asterisk mr-1">*</span>项目内容</label>
+      <input hqError="项目内容" formControlName="description " type="text" class="form-control">
+    </div>
+  </div>
+
+</form>
+<br>
+<hr>
+<div style="text-align:center">
+  <button type="submit" class="btn btn-secondary" [disabled]="!maintenanceItemForm.valid" (click)="onConfirmHandler()">保存</button>
+  <button type="button" class="btn btn-secondary" (click)="onCancelHandler()">取消</button>
+</div>
