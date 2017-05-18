@@ -6,6 +6,7 @@
       <input [hqTableTypeahead]="serviceNameTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="serviceTypeaheadOnSelect($event)"
         type="text" hqError="维修项目名称" class="form-control" formControlName="serviceName" placeholder="维修项目名称">
       <input type="hidden" formControlName="serviceId">
+      <input type="hidden" formControlName="type">
     </div>
     <div class="col-4">
       <label for="workHour" class="col-form-label"><span class="asterisk mr-1">*</span>维修工时</label>
@@ -20,11 +21,14 @@
     <div class="col-4">
       <label for="discount" class="col-form-label"><span class="asterisk mr-1">*</span>折扣率</label>
       <input hqError="折扣率" formControlName="discount" type="text" class="form-control" placeholder="折扣率">
+      <!--<div class="input-group">
+        <input hqError="折扣率" formControlName="discount" type="text" class="form-control" placeholder="折扣率">
+        <span class="input-group-addon">%</span>
+      </div>-->
     </div>
     <div class="col-4">
       <label for="amount" class="col-form-label">金额</label>
-      <input hqError="金额" [(ngModel)]="maintenanceItemForm.value.workHour*maintenanceItemForm.value.price*maintenanceItemForm.value.discount"
-        formControlName="amount" type="text" class="form-control">
+      <input hqError="金额" formControlName="amount" type="text" class="form-control">
     </div>
     <div class="col-4">
       <label for="operationTime" class="col-form-label">操作时间</label>

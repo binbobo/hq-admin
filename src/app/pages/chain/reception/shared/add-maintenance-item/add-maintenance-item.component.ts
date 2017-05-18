@@ -18,6 +18,11 @@ export class AddMaintenanceItemComponent implements OnInit {
   @Output() onCancel = new EventEmitter<any>();
   @Output() onConfirm = new EventEmitter<any>();
 
+  @Input()
+  item: any = null; // 当前编辑的维修项目
+  @Input()
+  serviceIds: any = []; // 当前已经选择的维修项目id列表
+
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
 
@@ -28,6 +33,12 @@ export class AddMaintenanceItemComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
+
+    console.log('当前已经选择的维修项目id列表为：', this.serviceIds);
+    // 编辑
+    if (this.item) {
+      this.maintenanceItemForm.patchValue(this.item);
+    }
   }
 
   serviceTypeaheadOnSelect(evt) {
@@ -37,7 +48,6 @@ export class AddMaintenanceItemComponent implements OnInit {
 
   onCancelHandler() {
     this.onCancel.emit();
-    this.maintenanceItemForm.reset();
   }
   onConfirmHandler() {
     if (!this.maintenanceItemForm.value.serviceId) {
@@ -47,22 +57,21 @@ export class AddMaintenanceItemComponent implements OnInit {
           this.alerter.success('新建维修项目成功, 返回的数据为：', data);
           this.maintenanceItemForm.value.serviceId = data.id;
 
+
           // 验证数据合法性
-          this.onConfirm.emit(this.maintenanceItemForm.value);
-          this.maintenanceItemForm.reset({
-            operationTime: { value: moment().format('YYYY-MM-DD hh:mm:ss'), disabled: true },
-            discount: 100
-          }, { emitEvent: false });
+          this.onConfirm.emit({
+            data: this.maintenanceItemForm.getRawValue(), // 维修项目数据
+            isEdit: this.item ? true : false  // 是否为编辑标志
+          });
         }).catch(err => {
           this.alerter.error('新建维修项目失败：' + err + '请重新输入维修项目名称');
         });
     } else {
       // 验证数据合法性
-      this.onConfirm.emit(this.maintenanceItemForm.getRawValue());
-      this.maintenanceItemForm.reset({
-        operationTime: { value: moment().format('YYYY-MM-DD hh:mm:ss'), disabled: true },
-        discount: 100
-      }, { emitEvent: false });
+      this.onConfirm.emit({
+        data: this.maintenanceItemForm.getRawValue(),
+        isEdit: this.item ? true : false
+      });
     }
 
   }
@@ -71,15 +80,36 @@ export class AddMaintenanceItemComponent implements OnInit {
     this.maintenanceItemForm = this.fb.group({
       serviceName: ['', [Validators.required]],
       serviceId: [''],
+      type: 1, // 1表示维修项目/
       workHour: ['', [Validators.required, CustomValidators.number, CustomValidators.gt(0)]],
       price: ['', [Validators.required, CustomValidators.number, CustomValidators.gt(0)]],
       discount: [100, [Validators.required, CustomValidators.digits, CustomValidators.range([0, 100])]],
       amount: [{ value: '', disabled: true }],
       operationTime: [{ value: moment().format('YYYY-MM-DD hh:mm:ss'), disabled: true }],
     });
-    this.maintenanceItemForm.controls.amount.valueChanges.subscribe(newValue => {
-      this.maintenanceItemForm.controls.amount.patchValue(newValue / 100, { emitEvent: false });
+
+    this.maintenanceItemForm.controls.price.valueChanges.subscribe(newValue => {
+      if (this.maintenanceItemForm.controls.price.valid) {
+        this.calAmount();
+      }
     });
+    this.maintenanceItemForm.controls.workHour.valueChanges.subscribe(newValue => {
+      if (this.maintenanceItemForm.controls.workHour.valid) {
+        this.calAmount();
+      }
+    });
+    this.maintenanceItemForm.controls.discount.valueChanges.subscribe(newValue => {
+      if (this.maintenanceItemForm.controls.discount.valid) {
+        this.calAmount();
+      }
+    });
+  }
+  // 计算金额
+  calAmount() {
+    const workHour = this.maintenanceItemForm.controls.workHour.value;
+    const workHourPrice = this.maintenanceItemForm.controls.price.value;
+    const discount = this.maintenanceItemForm.controls.discount.value / 100;
+    this.maintenanceItemForm.controls.amount.patchValue(workHour * workHourPrice * discount, { emitEvent: false });
   }
   // 定义维修项目模糊查询要显示的列
   public get nameTypeaheadColumns() {
@@ -94,6 +124,12 @@ export class AddMaintenanceItemComponent implements OnInit {
       const p = new FuzzySearchRequest(params.text);
       p.setPage(params.pageIndex, params.pageSize);
       return this.service.getMaintenanceItemsByName(p).then(pagedData => {
+        for (let i = 0; i < this.serviceIds.length; i++) {
+          const index = pagedData.data.findIndex(item => item.id === this.serviceIds[i]);
+          if (index > -1) {
+            pagedData.data.splice(index, 1);
+          }
+        }
         return pagedData;
       });
     };

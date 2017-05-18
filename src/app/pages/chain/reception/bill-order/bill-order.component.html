@@ -39,7 +39,7 @@
       <div class="search-button"><button class="btn btn-primary">查询</button></div>
 
     </form>
-     <table class='table table-striped table-bordered'>
+    <table class='table table-striped table-bordered'>
       <thead class="">
         <tr>
           <th>操作</th>
@@ -62,7 +62,8 @@
         <tr *ngFor="let item of list">
           <td *ngIf="!item.updateOnUtc"><a href="javascript:void(0)" (click)='orderDetailsDialog($event, item.id,lgModal)'>结算</a> | <a href="javascript:void(0)"
               (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
-          <td *ngIf="item.updateOnUtc"><a href="javascript:void(0)" (click)='finishedOrder($event, item.id, confirmModal)'>撤销结算</a> | <a href="javascript:void(0)" (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
+          <td *ngIf="item.updateOnUtc"><a href="javascript:void(0)" (click)='finishedOrder($event, item.id, confirmModal)'>撤销结算</a> | <a href="javascript:void(0)"
+              (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
           <td>{{item.statusName}}</td>
           <td>{{item.typeName}}</td>
           <td>{{item.billCode}}</td>
@@ -74,7 +75,7 @@
           <td>{{item.mileage}}</td>
           <td>{{item.purchaseDate|date:"yyyy/MM/dd HH:mm:ss"}}</td>
           <td>{{item.customerName}}</td>
-          <td>{{item.amount/100}}</td>
+          <td>{{item.amount|centToYuan}}</td>
           <td>{{item.updateOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
 
         </tr>
@@ -150,7 +151,7 @@
               <td>{{selectedOrder?.billCode}}</td>
               <td>{{selectedOrder?.createdOnUtc |date:"yyyy/MM/dd HH:mm:ss"}}</td>
               <td>{{selectedOrder?.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-              <td>{{selectedOrder?.overTime |date:"yyyy/MM/dd HH:mm:ss"}}</td>
+              <td>{{selectedOrder?.overTime |durationHumanize}}</td>
               <td>{{selectedOrder?.createdUserName}}</td>
               <td>{{selectedOrder?.brand}}</td>
               <td>{{selectedOrder?.model}}</td>
@@ -187,8 +188,8 @@
                 <tr *ngFor="let record of selectedOrder?.serviceOutputs">
                   <td>{{record?.serviceName}}</td>
                   <td>{{record?.workHour}}</td>
-                  <td>{{record?.price/100}}</td>
-                  <td>{{record?.amount/100}}</td>
+                  <td>{{record?.price|centToYuan}}</td>
+                  <td>{{record?.amount|centToYuan}}</td>
                   <td>{{record?.discount}}</td>
                   <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
                   <td>{{user.username}}</td>
@@ -197,7 +198,7 @@
             </table>
           </tab>
           <tab heading="维修配件">
-            <table class="table table-hover table-bordered table-sm">
+            <table class="table  table-bordered">
               <thead>
                 <tr>
                   <th>维修工项</th>
@@ -217,8 +218,8 @@
                   <td>{{record?.brandName}}</td>
                   <td>{{record?.specification}}</td>
                   <td>{{record?.count}}</td>
-                  <td>{{record?.price/100}}</td>
-                  <td>{{record?.amount/100}}</td>
+                  <td>{{record?.price|centToYuan}}</td>
+                  <td>{{record?.amount|centToYuan}}</td>
                   <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
                 </tr>
               </tbody>
@@ -249,7 +250,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let record of selectedOrder?.SuggestServiceDetailOutput">
+                <tr *ngFor="let record of selectedOrder?.suggestServiceOutputs">
                   <td>{{record?.content}}</td>
                   <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
                   <td>{{record?.description}}</td>
@@ -261,12 +262,14 @@
           <div class="card" [hidden]="!isShowCost">
             <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
               折前费用: 工时费
-              <span class="ml-2 mr-2">{{workHourFee}}</span> | 材料费
-              <span class="ml-2 mr-2">{{materialFee}}</span> | 其它
-              <span class="ml-2 mr-2">{{otherFee}}</span> | 合计
-              <span class="ml-2 mr-2">{{sumFee}}</span>|
-              <span class="ml-2 mr-2">实收金额：
+              <span class="ml-2 mr-2">{{workHourFee|centToYuan}}</span> | 材料费
+              <span class="ml-2 mr-2">{{materialFee|centToYuan}}</span> | 其它
+              <span class="ml-2 mr-2">{{otherFee|centToYuan}}</span> | 合计
+              <span class="ml-2 mr-2">{{sumFee|centToYuan}}</span>|
+              <span class="ml-2 mr-2">实收金额(元)：
                 <input type="text" placeholder="{{selectedOrder?.sumFee}}"  [(ngModel)]="billPrice"></span>
+                 <span class="ml-2 mr-2">出厂里程(KM)：
+                <input type="text"  [(ngModel)]="leaveMileage"></span>
               <button type="button" class="btn btn-primary" aria-label="Close" (click)="BillClick($event,lgModal)">确定</button>
             </div>
           </div>
@@ -274,11 +277,11 @@
           <div class="card" [hidden]="!isShowCostDetail">
             <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
               折前费用: 工时费
-              <span class="ml-2 mr-2">{{workHourFee}}</span> | 材料费
-              <span class="ml-2 mr-2">{{materialFee}}</span> | 其它
-              <span class="ml-2 mr-2">{{otherFee}}</span> | 合计
-              <span class="ml-2 mr-2">{{sumFee}}</span>|
-              <span class="ml-2 mr-2">实收金额：{{billPrice}}</span>
+              <span class="ml-2 mr-2">{{workHourFee|centToYuan}}</span> | 材料费
+              <span class="ml-2 mr-2">{{materialFee|centToYuan}}</span> | 其它
+              <span class="ml-2 mr-2">{{otherFee|centToYuan}}</span> | 合计
+              <span class="ml-2 mr-2">{{sumFee|centToYuan}}</span>|
+              <span class="ml-2 mr-2">实收金额：{{billPrice|centToYuan}}</span>
             </div>
           </div>
         </tabset>

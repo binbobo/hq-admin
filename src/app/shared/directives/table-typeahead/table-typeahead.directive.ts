@@ -17,6 +17,8 @@ export class TableTypeaheadDirective implements OnInit {
   @Input()
   private delay: number = 600;
   @Input()
+  private forceRefresh: boolean;
+  @Input()
   private columns: Array<TableTypeaheadColumn>;
   @Input()
   private pageSize: number = 10;
@@ -31,6 +33,7 @@ export class TableTypeaheadDirective implements OnInit {
   private componentRef: ComponentRef<TableTypeaheadComponent>;
   private paging = false;
   private sortedKeys: Array<string> = [];
+  private statusElement: HTMLElement;
 
   constructor(
     private viewContainerRef: ViewContainerRef,
@@ -56,7 +59,15 @@ export class TableTypeaheadDirective implements OnInit {
   @HostListener('focus', ['$event'])
   onFocus(event) {
     this.show();
-    !this.componentRef.instance.result && this.search();
+    if (this.forceRefresh || !this.componentRef.instance.result) {
+      this.componentRef.instance.result = null;
+      this.search();
+    }
+  }
+
+  @HostListener('input', ['$event'])
+  onInput(event) {
+    this.componentRef.instance.result = null;
   }
 
   show() {
@@ -74,6 +85,17 @@ export class TableTypeaheadDirective implements OnInit {
   private search(pageIndex = 1) {
     let param = new TypeaheadRequestParams(this.el.value);
     param.setPage(pageIndex, this.pageSize);
+    this.statusElement.classList.add('fa-spinner');
+    let rotate = 0;
+    let animation = setInterval(() => {
+      rotate = (rotate + 10) % 360;
+      this.statusElement.style.transform = `rotate(${rotate}deg)`;
+    }, 20);
+    let stopAnimation = () => {
+      clearInterval(animation);
+      this.statusElement.classList.remove('fa-spinner');
+      this.statusElement.style.transform = 'none';
+    };
     if (this.source) {
       this.source(param)
         .then(result => result || new PagedResult())
@@ -81,7 +103,11 @@ export class TableTypeaheadDirective implements OnInit {
           this.componentRef.instance.result = result;
           this.show();
         })
-        .catch(err => this.componentRef.instance.result = new PagedResult());
+        .then(() => stopAnimation())
+        .catch(err => {
+          stopAnimation();
+          this.componentRef.instance.result = null;
+        });
     }
   }
 
@@ -107,7 +133,9 @@ export class TableTypeaheadDirective implements OnInit {
     span.style.borderRightWidth = "1px";
     span.style.borderRightStyle = "solid";
     span.style.borderRightColor = "rgba(0, 0, 0, 0.14902)";
-    span.innerHTML = '<i class="fa fa-search"></i>';
+    this.statusElement = document.createElement('i');
+    this.statusElement.className = "cursor-pointer fa fa-search";
+    span.appendChild(this.statusElement);
     wrapper.appendChild(span);
     let componentFactory = this.componentFactoryResolver.resolveComponentFactory(TableTypeaheadComponent);
     this.componentRef = this.viewContainerRef.createComponent(componentFactory);
@@ -143,6 +171,13 @@ export class TableTypeaheadDirective implements OnInit {
         this.hide();
         this.search();
       });
+    this.statusElement.addEventListener('click', (event: MouseEvent) => {
+      let el = event.target as HTMLElement;
+      if (!el.classList.contains('fa-spinner')) {
+        this.search();
+      }
+      event.stopPropagation();
+    });
   }
 
 }

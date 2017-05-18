@@ -37,3 +37,17 @@ nav{
 .btn.dropdown-toggle{
     padding: 8px 2px;
 }
+
+#loading{
+    padding-top: 100px;
+    position: absolute;
+    top: -54px;
+    margin: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color:rgba(45, 56, 75, 0.5);
+    color: #fff;
+    text-align: center;
+    z-index: 999999999;
+}

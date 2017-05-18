@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'hq-workorder-detail',
@@ -6,7 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./workorder-detail.component.css']
 })
 export class WorkorderDetailComponent implements OnInit {
-
+  @Input()
+  data: any;
+  
   constructor() { }
 
   ngOnInit() {

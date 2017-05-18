@@ -1,5 +1,5 @@
 import { Component, OnInit, Injector, ViewChild } from '@angular/core';
-import { DataList, PagedResult, StorageKeys } from "app/shared/models";
+import { DataList, PagedResult, StorageKeys, SelectOption } from "app/shared/models";
 import { Router, ActivatedRoute } from "@angular/router";
 import { DistributeService, DistributeRequest, SearchReturnData, ProductRequest } from "./distribute.service";
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -17,7 +17,7 @@ import { SuspendBillDirective } from "app/pages/chain/chain-shared";
 export class DistributeComponent implements OnInit {
   MRData: any;
   suspendedBillId: any;
-  numberPrintList: any;
+  numberPrintList: SelectOption[];
   @ViewChild('createModal')
   private createModal: ModalDirective;
   @ViewChild(HqAlerter)
@@ -151,10 +151,9 @@ export class DistributeComponent implements OnInit {
     this.InputData.serviceName = item.serviceName; //维修项目名称
     this.InputData.maintenanceItemId = item.id; //维修明细id
     this.InputData = { ...this.InputData };
-    
+
   }
   // 生成发料单
-  private billReturnData: any;
   billData: any;
   OnCreatBill() {
     this.billData = {
@@ -164,30 +163,31 @@ export class DistributeComponent implements OnInit {
       list: this.newMainData
     }
     let el = event.target as HTMLButtonElement;
-    el.disabled = true;
+    // el.disabled = true;
     console.log(this.billData);
     let postData = JSON.stringify(this.billData)
     console.log(postData);
     this.service.postBill(postData).then((result) => {
+      console.log(result)
       el.disabled = false;
       this.suspendBill.refresh();
       this.alerter.info('生成发料单成功', true, 2000);
       this.isablePrint = true;
-      this.billReturnData = result.data;
+      let num = result.data[0].serialNum;
       this.serialData = this.serialData.concat(result.data);
       this.newMainData = [];
-      console.log(result.data, this.serialData);
-
       this.serialData.sort((a, b) => {
         return a.serialNum - b.serialNum
       })
-
+     
       this.numberList = this.serialData.map(item => {
         return {
           value: item.serialNum,
-          text: item.serialNum
+          text: item.serialNum,
+          checked:item.serialNum===num,
         };
       });
+      console.log(this.numberList)
       this.numberList.sort((a, b) => {
         return a.value - b.value
       });

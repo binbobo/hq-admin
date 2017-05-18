@@ -93,7 +93,7 @@ export class OrderService implements BasicService<Order> {
     getVehicleByBrand(params: VehicleBrandSearchRequest): Promise<PagedResult<any>> {
         const search = params.serialize();
         const url = Urls.chain.concat('/Brands/search');
-        console.log('根据品牌模糊查询车辆信息:', url + search);
+        console.log('根据品牌模糊查询车辆信息:', url + '?' + search);
         return this.httpService
             .get<PagedResult<any>>(url, search);
     }
@@ -128,11 +128,11 @@ export class OrderService implements BasicService<Order> {
             .get<PagedResult<any>>(url, search);
     }
 
-      /**
-  * 添加维修项目
-  * 
-  * @memberof OrderService
-  */
+    /**
+* 添加维修项目
+* 
+* @memberof OrderService
+*/
     createMaintenanceItem(body: any): Promise<any> {
         const url = Urls.chain.concat('/Services');
         return this.httpService
