@@ -237,7 +237,7 @@
 
           <div class="card">
             <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
-              折前费用: 工时费
+              应收金额: 工时费
               <span class="ml-2 mr-2">{{workHourFee}}</span> | 材料费
               <span class="ml-2 mr-2">{{materialFee}}</span> | 其它
               <span class="ml-2 mr-2">{{otherFee}}</span> | 合计
@@ -266,7 +266,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="cost-money">实收金额：{{costMoney}}元</div>
+        <div class="cost-money">应收金额：{{costMoney}}元</div>
 
         <div class="input-group checkout-item" *ngFor="let item of payData;">
           <span class="input-group-addon" id="sizing-addon2" style="width:150px;">{{item.value}}(元)</span>
