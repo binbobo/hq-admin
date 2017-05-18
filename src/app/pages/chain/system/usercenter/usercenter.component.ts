@@ -61,6 +61,7 @@ export class UsercenterComponent implements OnInit {
 
     this.params = new UserPageparams();
 
+    this.roleItem.config.isShowAllCheckBox=true;
     this.service.getRolesOptions().then(item => {
      this.roleItem.items = item;
     });
