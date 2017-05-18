@@ -1,0 +1,11 @@
+.print-page{
+    page-break-after:always;
+}
+
+.no-print{
+    display: none;
+}
+
+.hq-visible{
+    visibility: visible!important;
+}

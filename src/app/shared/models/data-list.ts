@@ -14,10 +14,12 @@ export abstract class DataList<T> implements OnInit {
   ngOnInit(): void {
     this.params.init();
     this.index = this.params.pageIndex;
+    this.size = this.params.pageSize;
     this.route.queryParams.subscribe((params: Params) => {
       Object.keys(this.params).forEach(key => {
         if (params[key] !== undefined && params[key] !== this.params[key]) {
           this.index = 1;
+          this.size = 10;
           this.params[key] = params[key];
         }
       });

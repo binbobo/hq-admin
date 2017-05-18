@@ -63,7 +63,7 @@
       <tbody>
         <tr *ngFor="let item of list">
           <td class="text-center"><input [(ngModel)]="item.checked" type="checkbox"></td>
-          <td class="text-center"><button class="btn btn-sm btn-success" [disabled]="item.enable==='停用'" (click)="onEdit($event,item)">编辑</button></td>
+          <td class="text-center"><button class="btn btn-sm btn-success" [disabled]="!item.enable" (click)="onEdit($event,item)">编辑</button></td>
           <td>{{ item.storageLocationName}}</td>
           <td>{{item.category}}</td>
           <td>{{item.brand}}</td>
@@ -80,7 +80,7 @@
           <td>{{item.madeIn}}</td>
           <td>{{item.properties}}</td>
           <td>{{ item.description}}</td>
-          <td class="text-center">{{item.enable}}</td>
+          <td class="text-center">{{item.enable?'可用':'停用'}}</td>
         </tr>
       </tbody>
     </table>
