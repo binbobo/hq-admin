@@ -1,16 +1,16 @@
 <ng-template hq-alerter></ng-template>
-<form [formGroup]="attachForm" autocomplete="off">
-  <div class="form-group row">
+<ng-template hq-alerter></ng-template>
+<div class="card">
+  <form *ngIf="form" class="card-block row" [formGroup]="form" (ngSubmit)="onSubmit($event)">
     <div class="col-12">
-      <label for="description " class="col-form-label"><span class="asterisk mr-1">*</span>项目内容</label>
-      <input hqError="项目内容" formControlName="description " type="text" class="form-control">
+      <div class="form-group">
+        <label class="form-control-label">备注</label>
+        <textarea type="textarea" formControlName="description" [(ngModel)]="model.description" class="form-control" placeholder="备注"></textarea>
+      </div>
     </div>
-  </div>
-
-</form>
-<br>
-<hr>
+  </form>
+</div>
 <div style="text-align:center">
-  <button type="submit" class="btn btn-secondary" [disabled]="!maintenanceItemForm.valid" (click)="onConfirmHandler()">保存</button>
+  <button type="submit" class="btn btn-secondary" (click)="onSubmit()">保存</button>
   <button type="button" class="btn btn-secondary" (click)="onCancelHandler()">取消</button>
 </div>
