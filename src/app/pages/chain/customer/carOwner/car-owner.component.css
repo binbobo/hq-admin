@@ -1,0 +1,41 @@
+/*重写ngui-datetimer-picker表单input样式*/
+.datetime-picker {
+    width: 100%;
+    border-radius:0;
+}
+
+.textInputBtn {
+    border: 1px solid #eed;
+}
+
+@media (min-width: 992px) {
+    .modal-lg {
+        max-width: 1000px;
+    }
+}
+
+input.ng-valid[required], input.ng-valid.required  {
+  border-left: 5px solid #42A948 !important; /* green */
+}
+input.ng-touched.ng-invalid  {
+  border-left: 5px solid #a94442; /* red */
+  border-radius: .2rem
+}
+
+/*#addVehicle hqTableTypeahead {
+    position: fixed !important; 
+}*/
+#addVehicle input {
+    width: 100px;
+}
+#addVehicle ngui-datetime-picker {
+    /*!important强制 覆盖父组件中的内联样式 */
+    /*position: fixed !important; */
+   /* top: 0px !important;
+    transition: height 0.3s ease-in !important;
+    visibility: visible !important;*/
+}
+
+/*#vehicle-add-table {
+    overflow: visible;  
+}*/

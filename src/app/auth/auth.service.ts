@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
-import { Urls, User } from 'app/shared/services';
+import { Urls, User, HttpService } from 'app/shared/services';
 
 @Injectable()
 export class AuthService {
 
   constructor(
     private http: Http,
+    private httpService: HttpService
   ) { }
 
   public login(model: LoginRequestModel): Promise<User> {
@@ -38,10 +39,23 @@ export class AuthService {
       .catch(err => Promise.reject('用户注册失败！'));
   }
 
+  public changePassword(model: ChangePasswordRequest): Promise<void> {
+    let url = Urls.platform.concat('/users/changepassword');
+    return this.httpService.put<void>(url, model)
+      .catch(err => Promise.reject(`修改密码失败:${err}`));
+  }
+
   public logout(user: User): Promise<void> {
     const url = Urls.platform.concat('users/logout?token=', user.token);
     return this.http.get(url).toPromise().then(resp => { });
   }
+}
+
+export class ChangePasswordRequest {
+  constructor(
+    public oldPassword: string,
+    public newPassword: string
+  ) { }
 }
 
 export class LoginRequestModel {

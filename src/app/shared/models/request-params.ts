@@ -5,6 +5,10 @@ export abstract class RequestParams {
             .filter(key => key !== "keyName")
             .map(function (key) {
                 if (self[key] === '' || self[key] === null || self[key] === undefined) return null;
+                if (Array.isArray(self[key])) {
+                    let arr = self[key] as Array<any>;
+                    return arr.map(val => key + '=' + val).join('&');
+                }
                 return key + "=" + self[key];
             })
             .filter(m => m != null)
@@ -13,7 +17,7 @@ export abstract class RequestParams {
 
     private keyName: string;
 
-    constructor(keyName: string) {
+    constructor(keyName?: string) {
         this.keyName = keyName;
     }
 
@@ -42,12 +46,14 @@ export class PagedParams extends RequestParams {
     public pageIndex = 1;
     public pageSize = 10;
 
-    constructor(keyName: string) {
+    constructor(keyName?: string, pageIndex?: number, pageSize?: number) {
         super(keyName);
+        this.pageIndex = pageIndex || this.pageIndex;
+        this.pageSize = pageSize || this.pageSize;
     }
 
     public setPage(index: number, size?: number) {
         this.pageIndex = index;
-        this.pageSize = size || this.pageSize;
+        this.pageSize = size;
     }
 }

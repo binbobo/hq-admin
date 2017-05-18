@@ -1,17 +1,24 @@
 export class ApiResult<T>{
-    constructor(public data: T) { }
+    constructor(public data?: T) { }
 }
 
 export class ListResult<T> implements ApiResult<Array<T>>{
-    constructor(public data: Array<T>) { }
+    constructor(public data?: Array<T>) { }
 }
 
 export class PagedResult<T> implements ApiResult<Array<T>>{
     constructor(
-        public data: Array<T>,
-        public total: number,
-        public totalCount: number
+        public data: Array<T> = [],
+        public total: number = 0,
+        public totalCount: number = 0,
     ) { }
+
+    public nullCheck(): PagedResult<T> {
+        this.data = this.data || [];
+        this.total = this.total || 0;
+        this.totalCount = this.totalCount || 0;
+        return this;
+    }
 }
 
 export class SuccessResult implements ApiResult<boolean>{

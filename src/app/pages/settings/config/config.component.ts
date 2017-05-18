@@ -1,14 +1,13 @@
-import { Component, OnInit, Host } from '@angular/core';
-import { AlerterService } from 'app/shared/services';
+import { Component, OnInit, Host, ViewChild } from '@angular/core';
 import { ConfigService } from "./config.service";
 import { Tree, NodeSelectedEvent, FoldingType, TreeModel, TreeModelSettings } from 'ng2-tree';
 import { TreeStatus } from "ng2-tree/src/tree.types";
+import { HqAlerter }  from 'app/shared/directives';
 
 @Component({
   selector: 'app-config',
   templateUrl: './config.component.html',
   styleUrls: ['./config.component.css'],
-  providers: [AlerterService]
 })
 export class ConfigComponent implements OnInit {
 
@@ -16,10 +15,11 @@ export class ConfigComponent implements OnInit {
   public currentNode: ConfigNode;
   private currentTree: Tree;
   private editable: boolean = true;
+  @ViewChild(HqAlerter)
+  private alerter: HqAlerter;
 
   constructor(
     private service: ConfigService,
-    private alerter: AlerterService
   ) { }
 
   private onDelete($event: MouseEvent) {

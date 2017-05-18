@@ -1,0 +1,41 @@
+table th,table td{
+     text-overflow:ellipsis; 
+     white-space:nowrap; 
+     overflow:hidden;
+     text-align: center;
+}
+.checkout .search-button{
+    text-align: center;
+    margin-bottom:8px;
+}
+.checkout .search-button button{
+    display: inline-block;
+}
+.checkout .row{
+    margin-left: 0;
+}
+caption {
+    caption-side: top;
+    text-align: center;
+}
+.pos-top{
+    position: relative;
+        height: 52px;
+}
+.close-right{
+    position: absolute;
+        right: 14px;
+    top: 13px;
+
+}
+.btn-center{
+    text-align: center;
+    margin-bottom:8px;
+}
+.checkout-item{
+    margin:4px auto;
+}
+.cost-money{
+    margin-bottom: 12px;
+    font-size: 17px;
+}

@@ -4,6 +4,7 @@ import { ListResult } from 'app/shared/models';
 import { TranslateService } from '@ngx-translate/core';
 import { PagesService } from './pages.service';
 import { StorageKeys } from '../shared/models/storage-keys';
+import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-pages',
@@ -15,6 +16,7 @@ export class PagesComponent implements OnInit {
   private menus: Array<any>;
   private languages: Array<any>;
   private language: any;
+  private loading: boolean = true;
 
   constructor(
     private userService: UserService,
@@ -22,7 +24,16 @@ export class PagesComponent implements OnInit {
     private service: PagesService,
     private translate: TranslateService,
     private dispatcher: EventDispatcher,
-  ) { }
+    private router: Router
+  ) {
+    router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        this.loading = true;
+      } else if (event instanceof NavigationEnd) {
+        this.loading = false;
+      }
+    });
+  }
 
   ngOnInit() {
     this.loadMenus();
@@ -36,6 +47,20 @@ export class PagesComponent implements OnInit {
         setTimeout(() => this.menus = data, 0);
       })
       .catch(err => console.error(err));
+    // this.menus = [
+    //   {
+    //     title: '菜单1', icon: 'fa fa-user', path: 'menu1', children: [
+    //       { title: '菜单2', path: 'menu1' },
+    //       { title: '菜单3', path: 'menu1' },
+    //       { title: '菜单4', path: 'menu1' },
+    //       { title: '菜单5', path: 'menu1' },
+    //     ]
+    //   },
+    //   { title: '菜单2', icon: 'fa fa-user', path: 'menu1' },
+    //   { title: '菜单3', icon: 'fa fa-user', path: 'menu1' },
+    //   { title: '菜单4', icon: 'fa fa-user', path: 'menu1' },
+    //   { title: '菜单5', icon: 'fa fa-user', path: 'menu1' },
+    // ]
   }
 
   loadLanguages() {
@@ -47,11 +72,15 @@ export class PagesComponent implements OnInit {
 
   onSelectLanguage(item: any) {
     if (this.language && item.culture === this.language.culture) return;
-    this.languages.forEach(m => m.selected = m === item);
+    this.languages.forEach(m => m.checked = m === item);
     this.language = item;
     this.dispatcher.emit('LanguageChanged', item);
     this.translate.use(item.culture);
     localStorage.setItem(StorageKeys.AcceptLanguage, JSON.stringify(item));
     this.loadMenus();
+  }
+
+  onActivate(event) {
+    alert(event);
   }
 }

@@ -1,40 +1,41 @@
-import { PagedParams, PagedResult, BasicService } from 'app/shared/models';
-import { AlerterService } from "app/shared/services";
+import { PagedParams, PagedResult } from 'app/shared/models';
 import { OnInit, ViewChild, Injector } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap';
 import { ActivatedRoute, Params } from '@angular/router';
+import { HqAlerter } from 'app/shared/directives';
+import { PagedService } from './basic-service.interface';
 
 export abstract class DataList<T> implements OnInit {
-
+  protected lazyLoad = false;
   protected route: ActivatedRoute;
-  protected alerter: AlerterService;
+  @ViewChild(HqAlerter)
+  protected alerter: HqAlerter;
   protected params: PagedParams;
 
   ngOnInit(): void {
     this.params.init();
     this.index = this.params.pageIndex;
+    this.size = this.params.pageSize;
     this.route.queryParams.subscribe((params: Params) => {
       Object.keys(this.params).forEach(key => {
         if (params[key] !== undefined && params[key] !== this.params[key]) {
           this.index = 1;
+          this.size = 10;
           this.params[key] = params[key];
         }
       });
     });
-    this.loadList();
+    if (!this.lazyLoad) {
+      this.loadList();
+    }
   }
 
   constructor(
     injector: Injector,
-    protected service: BasicService<T>
+    protected service: PagedService<T>
   ) {
     this.route = injector.get(ActivatedRoute);
-    this.alerter = new AlerterService();
   }
 
-  @ViewChild("detailModal")
-  protected detailModal: ModalDirective;
-  protected model: T;
   protected total: number = 0;
   protected index: number = 1;
   protected size: number = 10;
@@ -46,15 +47,26 @@ export abstract class DataList<T> implements OnInit {
     this.loadList();
   }
 
+  protected onCheckChange($event: Event) {
+    let el = $event.target as HTMLInputElement;
+    this.list.forEach(m => m['checked'] = el.checked);
+  }
+
+  protected get selectedItems(): Array<T> {
+    if (!this.list) return null;
+    return this.list.filter(m => m['checked'] === true);
+  }
+
   protected loadList() {
     this.loading = true;
     this.list = null;
-    this.service.getPagedList(this.params)
+    return this.service.getPagedList(this.params)
       .then(m => {
         this.loading = false;
         this.list = m.data;
         this.total = m.totalCount;
         this.params.save();
+        return m;
       })
       .catch(err => {
         this.alerter.error(err);
@@ -65,29 +77,5 @@ export abstract class DataList<T> implements OnInit {
   protected onLoadList() {
     this.params.setPage(1);
     this.loadList();
-  }
-
-  protected showModal(id: string): void {
-    this.service.get(id)
-      .then(log => {
-        this.model = log;
-        this.detailModal.show();
-      })
-      .catch(err => this.alerter.error(err))
-  }
-
-  protected onDelete($event: Event, id: string) {
-    if (!confirm('确定要删除？')) return false;
-    let el = $event.target as HTMLInputElement;
-    el.disabled = true;
-    this.service.delete(id)
-      .then(() => {
-        this.alerter.success('删除成功！');
-        this.loadList();
-      })
-      .catch(err => {
-        this.alerter.error(err);
-        el.disabled = false;
-      });
   }
 }

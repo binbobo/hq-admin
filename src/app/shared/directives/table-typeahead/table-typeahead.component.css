@@ -1,0 +1,18 @@
+.hqTableTypeahead{
+    background-color: #fff;
+    font-size: 14px;
+    border-radius: 4px;
+    padding: 2px;
+}
+table{
+    margin: 2px;
+}
+
+tbody tr{
+    cursor: pointer;
+}
+
+.close{
+    position: absolute;
+    right: -20px;
+}

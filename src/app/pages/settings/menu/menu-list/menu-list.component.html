@@ -1,4 +1,4 @@
-<hq-alerter [service]="alerter"></hq-alerter>
+<ng-template hq-alerter></ng-template>
 <div class="card">
   <div class="card-header">
     <span>菜单列表</span>
@@ -8,7 +8,11 @@
   </div>
   <div class="card-block">
     <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
-      <input type="text" name="title" [(ngModel)]="params.title" class="form-control mb-2 mr-2" placeholder="请输入菜单名称">
+      <select name="clientId" [(ngModel)]="params.clientId" class="form-control mb-2 mr-2">
+        <option value="">全部客户端</option>
+        <option *ngFor="let item of clients" value="{{item.value}}">{{item.text}}</option>
+      </select>
+      <input type="text" name="name" [(ngModel)]="params.name" class="form-control mb-2 mr-2" placeholder="请输入菜单名称">
       <button type="submit" class="btn btn-primary mb-2 mr-2" translate>search</button>
     </form>
     <table class="table table-bordered table-sm table-striped">
@@ -32,7 +36,7 @@
           <td>
             <a [routerLink]="['create']" [queryParams]="{parentId:item.id}" class="btn btn-sm btn-secondary" title="添加子菜单"><i class="fa fa-plus"></i></a>
             <a [routerLink]="['edit',item.id]" class="btn btn-sm btn-success" title="编辑"><i class="fa fa-pencil-square-o"></i></a>
-            <a (click)="onRemove(item)" class="btn btn-sm btn-danger" title="删除"><i class="fa fa-trash-o"></i></a>
+            <a (click)="onDelete($event,item.id)" class="btn btn-sm btn-danger" title="删除"><i class="fa fa-trash-o"></i></a>
           </td>
         </tr>
       </tbody>

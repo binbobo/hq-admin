@@ -1,0 +1,35 @@
+table th,table td{
+     text-overflow:ellipsis; 
+     white-space:nowrap; 
+     overflow:hidden;
+     text-align: center;
+}
+.append-order .container .row{
+    height: 50px;
+  
+}
+.append-order .container .row div{
+         text-overflow:ellipsis; 
+     white-space:nowrap; 
+     overflow:hidden;
+}
+.container {
+    text-align: left;
+}
+.mg{
+    margin-bottom:30px;
+}
+.serach-input{
+    width: 300px;
+}
+.serach-main{
+    width: 100%;
+    clear: both;
+    margin:22px auto;
+    margin-left:5px;
+}
+.serach-main .serach-list{
+    display:inline-block;
+    width:23%;
+    vertical-align: top;
+}

@@ -1,0 +1,158 @@
+<div class="print card">
+  <div class="card-header">
+    <span>维修结算单</span>
+  </div>
+  <div class='card-block' hqPrint #printer="hq-print">
+    <table class="table search-table table-bordered">
+      <tr>
+        <td colspan="10">
+          <h4>维修结算单</h4>
+        </td>
+      </tr>
+      <tr>
+        <td>车牌号:</td>
+        <td> {{data?.plateNo}}</td>
+        <td>车型描述:</td>
+        <td>{{data?.model}} </td>
+        <td>VIN:</td>
+        <td>{{data?.vin}} </td>
+        <td>送修人：</td>
+        <td>{{data?.contactUser}}</td>
+        <td>送修人手机：</td>
+        <td>{{data?.contactInfo}}</td>
+      </tr>
+      <tr>
+        <td>结算单号:</td>
+        <td>{{data?.settlementCode}}</td>
+        <td>工单号:</td>
+        <td>{{data?.billCode}}</td>
+        <td>结算员:</td>
+        <td>{{data?.updateUser}}</td>
+        <td>结算时间：</td>
+        <td>{{data?.updateOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+        <td>结算方：</td>
+        <td>{{data?.settlementParty}}</td>
+      </tr>
+      <tr>
+        <td>服务顾问:</td>
+        <td>{{data?.createdUserName }}</td>
+        <td>发票类型:</td>
+        <td>{{data?.invoiceType}}</td>
+        <td>发票号码:</td>
+        <td>{{data?.invoiceCode}}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>维修类型:</td>
+        <td>{{data?.typeName}}</td>
+        <td>进店时间:</td>
+        <td>{{data?.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+        <td>进店里程(KM):</td>
+        <td>{{data?.mileage}}</td>
+        <td>出厂时间:</td>
+        <td></td>
+        <td>出厂里程(KM):</td>
+        <td>{{data?.leaveMileage}}</td>
+      </tr>
+    </table>
+
+    <table class="table table-bordered">
+      <tr>
+        <td colspan="4">
+          <h5>表一：收费结算单</h5>
+        </td>
+      </tr>
+      <tr class="table-active">
+        <td>序号</td>
+        <td>名称</td>
+        <td>金额</td>
+        <td>备注</td>
+      </tr>
+      <tr *ngFor="let item of costData;let index=index">
+        <td>{{index+1}}</td>
+        <td>{{item?.name}}</td>
+        <td>{{item?.discountCost|centToYuan}}</td>
+        <td>{{item?.description}}</td>
+      </tr>
+      <tr>
+        <td colspan="4">合计：应收金额：{{moneyObj?.costMoney|centToYuan}}折扣金额：{{moneyObj?.costCountMoney|centToYuan}}</td>
+      </tr>
+    </table>
+
+
+    <table class="table table-bordered">
+      <tr>
+        <td colspan="7">
+          <h5>表二：工时明细</h5>
+        </td>
+      </tr>
+      <tr class="table-active">
+        <td>序号</td>
+        <td>维修项目</td>
+        <td>结算工时</td>
+        <td>单价(元/个)</td>
+        <td>折扣率(%)</td>
+        <td>金额</td>
+        <td>备注</td>
+      </tr>
+      <tr *ngFor="let item of workHourData;let index=index">
+        <td>{{index+1}}</td>
+        <td>{{item?.serviceName}}</td>
+        <td>{{item?.workHour}}</td>
+        <td>{{item?.price|centToYuan}}</td>
+        <td>{{item?.discount}}</td>
+        <td>{{item?.workItemMoney}}</td>
+        <td>{{item?.description}}</td>
+      </tr>
+      <tr>
+        <td colspan="7">合计：应收金额：{{moneyObj?.workCostMoney|centToYuan}}折扣金额：{{moneyObj?.discountMoney|centToYuan}}</td>
+      </tr>
+    </table>
+
+    <table class="table table-bordered">
+      <tr>
+        <td colspan="8">
+          <h5>表三：配件明细</h5>
+        </td>
+      </tr>
+      <tr class="table-active">
+        <td>序号</td>
+        <td>配件编码</td>
+        <td>配件名称</td>
+        <td>单位</td>
+        <td>数量</td>
+        <td>单价(元/工时)</td>
+        <td>金额</td>
+        <td>备注</td>
+      </tr>
+      <tr *ngFor="let item of materialData;let index=index;">
+        <td>{{index+1}}</td>
+        <td>{{item?.productCode}}</td>
+        <td>{{item?.productName}}</td>
+        <td>{{item?.unit}}</td>
+        <td>{{item?.count}}</td>
+        <td>{{item?.amount|centToYuan}]</td>
+        <td>{{item?.price|centToYuan}}</td>
+        <td>{{item?.description}}</td>
+      </tr>
+      <tr>
+        <td colspan="8">合计：应收金额：{{moneyObj?.materialMoney|centToYuan}}</td>
+      </tr>
+    </table>
+    <hr>
+    <div class="print-bot">
+      <div class="pull-left"> 打印时间：{{data?.printOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</div>
+      <div class="pull-right">操作人：<span class='nbspx'></span> 客户签名： <span class='nbspx'></span>日期：<span class="nbspx-sm"></span> 年 <span class="nbspx-sm"></span>月
+        <span class="nbspx-sm"></span>日</div>
+    </div>
+
+  </div>
+  <div class="card-footer text-muted">
+    <div class="center">
+      <button type="button" class="btn btn-primary" (click)="print()">打印</button>
+    </div>
+  </div>
+</div>

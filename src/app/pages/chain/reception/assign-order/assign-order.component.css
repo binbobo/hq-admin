@@ -1,0 +1,14 @@
+@media (min-width: 992px) {
+    .modal-lg {
+        max-width: 1000px;
+    }
+}
+.checked {
+    background: #f7ecd7;
+}
+/*增项标志*/
+.triangle{
+    border-top: 10px solid blue;
+    border-left: 10px solid transparent;
+    float: right;
+}

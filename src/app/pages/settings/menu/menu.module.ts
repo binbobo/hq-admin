@@ -5,6 +5,8 @@ import { MenuService } from './menu.service';
 import { MenuDetailResolver } from './menu-detail-resolver.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'app/shared/shared.module';
+import { ScopeService } from '../scope/scope.service';
+import { ClientService } from '../client/client.service';
 
 @NgModule({
   imports: [
@@ -13,7 +15,7 @@ import { SharedModule } from 'app/shared/shared.module';
     ReactiveFormsModule,
     MenuRoutingModule
   ],
-  providers: [MenuService, MenuDetailResolver],
+  providers: [MenuService, ScopeService, ClientService, MenuDetailResolver],
   declarations: [routedComponents]
 })
 export class MenuModule { }

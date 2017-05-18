@@ -1,0 +1,21 @@
+@media (min-width: 992px) {
+    .modal-lg {
+        max-width: 1000px;
+    }
+}
+
+/*只读的文本框背景透明*/
+input[readonly]{
+  background-color:transparent;
+}
+
+#advanceFilter {
+    margin-top: 10px;
+}
+
+
+/*重写ngui-datetimer-picker表单input样式*/
+.datetime-picker {
+    width: 100%;
+    border-radius:0;
+}

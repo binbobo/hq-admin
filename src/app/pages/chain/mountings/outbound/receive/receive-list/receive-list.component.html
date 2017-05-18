@@ -1,0 +1,77 @@
+<ng-template hq-alerter></ng-template>
+<div class="card">
+  <div class="card-header">
+    <span>内部领用</span>
+    <ng-template hqSuspendBill="IU" (onRemove)="onSuspendRemove($event)" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
+  </div>
+  <div class="card-block">
+    <form class="form-inline mb-2">
+      <div class="form-group mb-2">
+        <label>*领用人：</label>
+        <select class="form-control mx-sm-3" (change)="onReceiverSelect($event)">
+          <option *ngFor="let item of employees" [value]="item.value">{{item.text}}</option>
+        </select>
+      </div>
+      <div class="form-group mb-2">
+        <label class="mr-sm-2">部门：</label>
+        <select class="form-control mx-sm-3">
+          <option *ngFor="let item of departments" [value]="item.value">{{item.text}}</option>
+        </select>
+      </div>
+      <div class="form-group mb-2">
+        <button (click)="createModal.show()" class="btn btn-primary mx-sm-1" translate>新增</button>
+      </div>
+    </form>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th translate>品牌</th>
+          <th translate>配件编码</th>
+          <th translate>配件名称</th>
+          <th translate>规格型号</th>
+          <th translate>仓库</th>
+          <th translate>库位</th>
+          <th translate>库存</th>
+          <th translate>数量（个）</th>
+          <th translate>单价（元/个）</th>
+          <th translate>金额（元）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of model.list;let i=index">
+          <td>{{item.brand }}</td>
+          <td class="text-center">{{item.productCode }}</td>
+          <td>{{item.productName}}</td>
+          <td>{{item.productSpecification}}</td>
+          <td>{{item.houseName }}</td>
+          <td>{{item.locationName }}</td>
+          <td class="text-center">{{item.stockCount}}</td>
+          <td class="text-center">{{item.count}}</td>
+          <td class="text-right">{{item.price|centToYuan }}</td>
+          <td class="text-right">{{item.amount|centToYuan }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card-footer text-muted">
+    <button class="btn btn-primary" (click)="generate($event)">生成内部领用单</button>
+    <button class="btn btn-warning" (click)="cancel($event)">取消</button>
+    <button [disabled]="!model?.list?.length" class="btn btn-info" (click)="suspend($event)">挂单</button>
+  </div>
+</div>
+
+<div class="modal fade" bsModal #createModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">新增</h5>
+        <button class="close pull-right" (click)="createModal.hide()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <hq-sales-create (formSubmit)="onCreate($event)"></hq-sales-create>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hq-receive-print class="invisible" hqPrint #printer="hq-print" [model]="printModel"></hq-receive-print>

@@ -1,4 +1,4 @@
-<hq-alerter [service]="alerter"></hq-alerter>
+<ng-template hq-alerter></ng-template>
 <div class="card">
   <div class="card-header">
     <span>添加资源分组</span>
@@ -9,25 +9,18 @@
   <form *ngIf="form" class="card-block" [formGroup]="form" (ngSubmit)="onCreate()">
     <div class="form-group">
       <label class="form-control-label">分组名称</label>
-      <input type="text" formControlName="groupName" class="form-control" placeholder="请输入资源分组名称">
-      <control-errors control="groupName" [form]="form">
-        <control-error code="required">分组名称不能为空</control-error>
-        <control-error code="maxlength">分组名称要求不能超过30位字符</control-error>
-      </control-errors>
+      <input hqError="分组名称" type="text" formControlName="groupName" class="form-control" placeholder="请输入资源分组名称">
     </div>
     <div class="form-group">
       <label class="form-control-label">分组显示顺序</label>
-      <input type="number" formControlName="displayOrder" class="form-control" placeholder="请输入资源分组顺序">
+      <input hqError="显示顺序" type="number" formControlName="displayOrder" class="form-control" placeholder="请输入资源分组顺序">
     </div>
     <div class="form-group">
       <label class="form-control-label">分组描述</label>
-      <textarea formControlName="description" class="form-control" placeholder="请输入资源分组描述"></textarea>
-      <control-errors control="description" [form]="form">
-        <control-error code="maxlength">分组描述要求不能超过100位字符</control-error>
-      </control-errors>
+      <textarea hqError="分组描述" formControlName="description" class="form-control" placeholder="请输入资源分组描述"></textarea>
     </div>
     <div class="form-group">
-      <button type="submit" [disabled]="form.invalid||submitting" class="btn btn-primary mr-3">提交</button>
+      <button type="submit" [disabled]="submitting" class="btn btn-primary mr-3">提交</button>
       <button type="button" (click)="form.reset(model)" class="btn btn-secondary mr-3">重置</button>
     </div>
   </form>

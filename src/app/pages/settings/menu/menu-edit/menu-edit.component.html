@@ -1,7 +1,7 @@
-<hq-alerter [service]="alerter"></hq-alerter>
+<ng-template hq-alerter></ng-template>
 <div class="card">
   <div class="card-header">
-    <span>编辑语言</span>
+    <span>编辑菜单</span>
     <div class="pull-right">
       <button routerLink="../../" class="btn btn-sm btn-info">返回</button>
       <button routerLink="../../create" class="btn btn-sm btn-secondary">添加</button>
@@ -10,30 +10,25 @@
   <form *ngIf="form" class="card-block" [formGroup]="form" (ngSubmit)="onUpdate()">
     <div class="form-group">
       <label class="form-control-label">菜单标题</label>
-      <input type="text" formControlName="title" class="form-control" placeholder="请输入菜单标题">
-      <control-errors control="title" [form]="form">
-        <control-error code="required">菜单标题不能为空</control-error>
-        <control-error code="minlength">菜单标题要求最少2位字符</control-error>
-        <control-error code="maxlength">菜单标题要求不能超过20位字符</control-error>
-      </control-errors>
+      <input hqError="菜单标题" type="text" formControlName="title" class="form-control" placeholder="请输入菜单标题">
     </div>
     <div class="form-group">
       <label class="form-control-label">菜单路径</label>
-      <input type="text" formControlName="path" class="form-control" placeholder="请输入菜单路径">
-      <control-errors control="path" [form]="form">
-        <control-error code="maxlength">菜单路径要求不能超过20位字符</control-error>
-      </control-errors>
+      <input hqError="菜单路径" type="text" formControlName="path" class="form-control" placeholder="请输入菜单路径">
     </div>
     <div class="form-group">
       <label class="form-control-label">菜单图标</label>
-      <input type="text" formControlName="icon" class="form-control" placeholder="请输入菜单图标">
-      <control-errors control="icon" [form]="form">
-        <control-error code="maxlength">菜单图标要求不能超过30位字符</control-error>
-      </control-errors>
+      <input hqError="菜单图标" type="text" formControlName="icon" class="form-control" placeholder="请输入菜单图标">
     </div>
     <div class="form-group">
       <label class="form-control-label">显示顺序</label>
       <input type="number" formControlName="displayOrder" class="form-control" placeholder="请输入菜单显示顺序">
+    </div>
+    <div class="form-group">
+      <label class="form-control-label">所属客户端</label>
+      <select formControlName="clientId" (change)="onClientChange($event)" class="form-control">
+        <option *ngFor="let item of clients" value="{{item.value}}">{{item.text}}</option>
+      </select>
     </div>
     <div class="form-group">
       <label class="form-control-label">上级菜单</label>
@@ -43,6 +38,23 @@
       </select>
     </div>
     <div class="form-group">
+      <label class="form-control-label">菜单分组</label>
+      <div class="form-control">
+        <div class="form-check form-check-inline" *ngFor="let item of scopes">
+          <label class="form-check-label">
+            <input class="form-check-input" (change)="onScopeSelect($event)" [attr.checked]="item.checked" type="checkbox" [value]="item.value"> {{item.text}}
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="custom-control custom-checkbox">
+        <input type="checkbox" formControlName="autoRun" class="custom-control-input">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description">自动运行</span>
+      </label>
+    </div>
+    <div class="form-group">
       <label class="custom-control custom-checkbox">
         <input type="checkbox" formControlName="enabled" class="custom-control-input">
         <span class="custom-control-indicator"></span>
@@ -50,7 +62,7 @@
       </label>
     </div>
     <div class="form-group">
-      <button type="submit" [disabled]="form.invalid||submitting" class="btn btn-primary mr-3">提交</button>
+      <button type="submit" [disabled]="submitting" class="btn btn-primary mr-3">提交</button>
       <button type="button" (click)="form.reset(model)" class="btn btn-secondary mr-3">重置</button>
     </div>
   </form>

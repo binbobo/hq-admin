@@ -1,7 +1,19 @@
 <hq-loading [loading]="loading"></hq-loading>
-<div *ngIf="totalItems" [hidden]="totalItems<=10||loading">
+<div [hidden]="loading||totalItems">没有数据</div>
+<div *ngIf="totalItems" class="form-inline hq-pagination" [hidden]="totalItems<=10||loading">
+  <label>每页显示</label>
+  <select class="form-control mx-sm-2" [(ngModel)]="itemsPerPage" (change)="onSizeChange($event)">
+    <option value="10">10</option>
+    <option value="20">20</option>
+    <option value="30">30</option>
+    <option value="50">50</option>
+    <option value="100">100</option>
+  </select>
   <pagination [totalItems]="totalItems" [maxSize]="maxSize" [boundaryLinks]="boundaryLinks" [itemsPerPage]="itemsPerPage" firstText="{{'first.text'|translate}}"
     lastText="{{'last.text'|translate}}" previousText="{{'previous.text'|translate}}" nextText="{{'next.text'|translate}}"
     [(ngModel)]="currentPage" (numPages)="onNumPages($event)" (pageChanged)="onPageChanged($event)">
   </pagination>
+  <label class="mx-sm-2">跳转到</label>
+  <input type="number" min="1" [attr.max]="totalPages" (keyup.enter)="onIndexChange($event)" class="form-control goto">
+  <label class="mx-sm-2">页</label>
 </div>

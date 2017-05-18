@@ -1,0 +1,41 @@
+<h3>{{model?.title}}</h3>
+<hr class="blod">
+<div class="row">
+  <div class="col-4">退料单号：{{model?.billCode}}</div>
+  <div class="col-2">退料人：{{model?.takeUser}}</div>
+  <div class="col-2">部门：{{model?.department}}</div>
+  <div class="col-4">开单时间：{{model?.createBillDateTime}}</div>
+</div>
+<hr>
+<div class="print-page">
+  <table class="table table-bordered table-sm table-striped">
+    <thead>
+      <tr>
+        <th translate>配件编码</th>
+        <th translate>配件名称</th>
+        <th translate>仓库</th>
+        <th translate>库位</th>
+        <th translate>数量</th>
+        <th translate>单价</th>
+        <th translate>金额</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of model?.list;let i=index">
+        <td class="text-center">{{item.productCode }}</td>
+        <td class="text-center">{{item.productName}}</td>
+        <td class="text-center">{{item.storeName }}</td>
+        <td class="text-center">{{item.locationName }}</td>
+        <td class="text-center">{{item.count}}</td>
+        <td class="text-right">{{item.price|centToYuan }}</td>
+        <td class="text-right">{{item.amount|centToYuan }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="row">
+    <div class="col-2">金额：{{model?.totalAmount|centToYuan}}</div>
+    <div class="col-5">打印时间：{{model?.printDateTime}}</div>
+    <div class="col-2">操作人：{{model?.operater}}</div>
+    <div class="col-3">退料人：</div>
+  </div>
+</div>

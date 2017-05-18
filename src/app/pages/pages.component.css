@@ -1,3 +1,13 @@
+nav{
+    background-color: #2d384b!important;
+    z-index: 1;
+}
+.menus{
+    padding: 54px 3px 0 0;
+    margin-top: -54px;
+    min-height: 100vh;
+    background-color: #2d384b!important;
+}
 .navbar-right{
     width:100%;
     text-align: right;
@@ -16,10 +26,28 @@
     color:#000;
 }
 
+.cursor-pointer.btn{
+    padding-left: 0;
+}
+
 .fa.fa-check{
   margin-left: -20px;
 }
 
 .btn.dropdown-toggle{
     padding: 8px 2px;
+}
+
+#loading{
+    padding-top: 100px;
+    position: absolute;
+    top: -54px;
+    margin: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color:rgba(45, 56, 75, 0.5);
+    color: #fff;
+    text-align: center;
+    z-index: 999999999;
 }

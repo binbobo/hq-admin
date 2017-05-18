@@ -1,0 +1,19 @@
+.center{
+    text-align:center;
+    clear:both;
+}
+h4{
+    font-size:1.1rem;
+    text-align:center;
+    font-weight: bold;
+    margin-bottom:26px;
+}
+table th,table td{
+     text-overflow:ellipsis; 
+     white-space:nowrap; 
+     overflow:hidden;
+     text-align: center;
+}
+.container{
+    margin-top: 20px;
+}

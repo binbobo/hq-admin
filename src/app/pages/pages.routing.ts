@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { PagesComponent } from './pages.component';
 import { HomeComponent } from './home/home.component';
-import { AuthGuard } from "app/auth/auth.guard";
+import { AuthGuard } from '../auth/auth.guard';
 
 const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -16,6 +16,7 @@ const routes: Routes = [
             { path: 'logs', loadChildren: 'app/pages/logs/logs.module#LogsModule' },
             { path: 'settings', loadChildren: 'app/pages/settings/settings.module#SettingsModule' },
             { path: 'locale', loadChildren: 'app/pages/locale/locale.module#LocaleModule' },
+            { path: 'chain', loadChildren: 'app/pages/chain/chain.module#ChainModule' },
         ]
     },
 ];

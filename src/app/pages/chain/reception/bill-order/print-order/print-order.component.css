@@ -1,0 +1,28 @@
+.print tr td,.print tr th{
+    font-size:.9rem;
+}
+.print h5{
+    font-size:1rem;
+    text-align:left;
+    font-weight: bold;
+}
+.print h4{
+    font-size:1.1rem;
+    text-align:center;
+    font-weight: bold;
+}
+.print .center{
+    text-align:center;
+    clear:both;
+}
+.print .nbspx{
+    width:80px;
+    display: inline-block;
+}
+.print .nbspx-sm{
+    width:40px;
+    display: inline-block;
+}
+.print .print-bot{
+    margin-top:20px;
+}

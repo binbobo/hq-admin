@@ -1,0 +1,39 @@
+<ng-template hq-alerter></ng-template>
+<div class="card">
+  <div class="card-header">
+    <span>应用列表</span>
+    <div class="pull-right">
+      <a routerLink="create" class="btn btn-sm btn-secondary">添加</a>
+    </div>
+  </div>
+  <div class="card-block">
+    <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
+      <input type="text" name="name" [(ngModel)]="params.name" class="form-control mb-2 mr-2" placeholder="请输入应用名称">
+      <button type="submit" class="btn btn-primary mb-2 mr-2" translate>search</button>
+    </form>
+    <table class="table table-bordered table-sm table-striped">
+      <thead>
+        <tr>
+          <th translate>name</th>
+          <th translate>icon</th>
+          <th translate>display.order</th>
+          <th translate>status</th>
+          <th translate>operator</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of list">
+          <td>{{ item.name }}</td>
+          <td><i class="{{ item.icon }}"></i></td>
+          <td>{{ item.displayOrder }}</td>
+          <td><i class="fa fa-{{ item.enabled?'check':'times' }}"></i></td>
+          <td>
+            <a [routerLink]="['edit',item.id]" class="btn btn-sm btn-success" title="编辑"><i class="fa fa-pencil-square-o"></i></a>
+            <a (click)="onDelete($event,item.id)" class="btn btn-sm btn-danger" title="删除"><i class="fa fa-trash-o"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+  </div>
+</div>

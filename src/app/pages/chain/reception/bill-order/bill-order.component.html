@@ -1,0 +1,294 @@
+<div class="bill card">
+  <div class="card-header">
+    <span>结算单</span>
+  </div>
+  <div class='card-block'>
+    <form [formGroup]="workSheetSearchForm" (ngSubmit)="onSearch()">
+      <div class="form-group">
+        <div class="form-check form-check-inline" *ngFor="let status of orderStatusData">
+          <label class="form-check-label">
+            <input (change)='status.checked = !status.checked' [checked]="status.checked" class="form-check-input"  type="checkbox" value="{{status.id}}"> {{status.value}}
+          </label>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="serviceId">工单号：</label>
+        <div class="col-sm-2">
+          <input type="text" [(ngModel)]="params.billcode" class="form-control form-control-sm" id="billcode" formControlName="billcode"
+            placeholder="工单号">
+        </div>
+        <label for="plateNo">车牌号：</label>
+        <div class="col-sm-2">
+          <input type="text" [(ngModel)]="params.carnumber" class="form-control form-control-sm" id="carnumber" formControlName="carnumber"
+            placeholder="车牌号">
+        </div>
+        <label for="createdTime">进店时间：</label>
+        <div class="col-sm-2">
+
+
+
+          <input class="form-control form-control-sm datetime-picker" [(ngModel)]="params.starttime" id="starttime" formControlName="starttime"
+            type="text" ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
+        </div>
+        至：
+        <div class="col-sm-2">
+          <input class="form-control form-control-sm datetime-picker" id="endtime" [(ngModel)]="params.endtime" formControlName="endtime"
+            type="text" ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
+        </div>
+      </div>
+      <div class="search-button"><button class="btn btn-primary">查询</button></div>
+
+    </form>
+    <table class='table table-striped table-bordered'>
+      <thead class="">
+        <tr>
+          <th>操作</th>
+          <th>状态</th>
+          <th>维修类型</th>
+          <th>工单号</th>
+          <th>开单时间</th>
+          <th>预计交车时间</th>
+          <th>服务顾问</th>
+          <th>车型</th>
+          <th>车牌号</th>
+          <th>行驶里程(KM)</th>
+          <th>购车日期</th>
+          <th>车主</th>
+          <th>实收金额</th>
+          <th>结算时间</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of list">
+          <td *ngIf="!item.updateOnUtc"><a href="javascript:void(0)" (click)='orderDetailsDialog($event, item.id,lgModal)'>结算</a> | <a href="javascript:void(0)"
+              (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
+          <td *ngIf="item.updateOnUtc"><a href="javascript:void(0)" (click)='finishedOrder($event, item.id, confirmModal)'>撤销结算</a> | <a href="javascript:void(0)"
+              (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
+          <td>{{item.statusName}}</td>
+          <td>{{item.typeName}}</td>
+          <td>{{item.billCode}}</td>
+          <td>{{item.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+          <td>{{item.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+          <td>{{item.createdUserName}}</td>
+          <td>{{item.model}}</td>
+          <td>{{item.plateNo}}</td>
+          <td>{{item.mileage}}</td>
+          <td>{{item.purchaseDate|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+          <td>{{item.customerName}}</td>
+          <td>{{item.amount|centToYuan}}</td>
+          <td>{{item.updateOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+
+        </tr>
+      </tbody>
+    </table>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+  </div>
+
+  <!--提示是否确认退出-->
+  <div bsModal #confirmModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p class="modal-title">温馨提示</p>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="confirmModal.hide();">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+          <p>您确定要撤销结算吗</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm" data-dismiss="confirmModal" (click)="confirmModal.hide();">取消</button>
+          <button type="button" class="btn btn-sm" data-dismiss="modal" (click)="unBill(confirmModal);">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--详情 begin-->
+<div bsModal #lgModal="bs-modal" class="modal" style='background-color: rgba(0, 0, 0, 0.47);' tabindex="-1" role="dialog"
+  aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header pos-top">
+        <button type="button" class="btn btn-secondary pull-left" aria-label="Close" [hidden]="!isShowPrint" (click)='OnPrintClick()'>打印预览</button>
+        <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
+          <span aria-hidden="true" class="pull-right close-right">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style='overflow: scroll;'>
+        <!--导出详情begin-->
+
+        <!--工单详情 start-->
+        <table class="table table-striped table-bordered">
+          <caption>维修结算单详情</caption>
+          <thead>
+            <tr>
+              <th>维修类型</th>
+              <th>工单号</th>
+              <th>进店时间</th>
+              <th>预计交车时间</th>
+              <th>超时</th>
+              <th>服务顾问</th>
+              <th>品牌</th>
+              <th>车型</th>
+              <th>车牌号</th>
+              <th>行驶里程</th>
+              <th>购车时间</th>
+              <th>车主</th>
+              <th>送修人</th>
+              <th>送修人电话</th>
+              <th>介绍人</th>
+              <th>介绍人电话</th>
+              <th>维修技师</th>
+              <th>出厂时间</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{selectedOrder?.typeName}}</td>
+              <td>{{selectedOrder?.billCode}}</td>
+              <td>{{selectedOrder?.createdOnUtc |date:"yyyy/MM/dd HH:mm:ss"}}</td>
+              <td>{{selectedOrder?.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+              <td>{{selectedOrder?.overTime |durationHumanize}}</td>
+              <td>{{selectedOrder?.createdUserName}}</td>
+              <td>{{selectedOrder?.brand}}</td>
+              <td>{{selectedOrder?.model}}</td>
+              <td>{{selectedOrder?.plateNo}}</td>
+              <td>{{selectedOrder?.mileage }}</td>
+              <td>{{selectedOrder?.purchaseDate|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+              <td>{{selectedOrder?.customerName}}</td>
+              <td>{{selectedOrder?.contactUser}}</td>
+              <td>{{selectedOrder?.contactInfo}}</td>
+              <td>{{selectedOrder?.introducer}}</td>
+              <td>{{selectedOrder?.introPhone}}</td>
+              <td>{{selectedOrder?.employeeNames?.join(',')}}，{{selectedOrder?.turnEmployeeNames?.join(',')}}</td>
+              <td>{{selectedOrder?.leaveTime |date:"yyyy/MM/dd HH:mm:ss" }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <br>
+        <tabset>
+          <tab heading="维修项目">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>项目名称</th>
+                  <th>维修工时</th>
+                  <th>工时单价(元)</th>
+                  <th>金额(元)</th>
+                  <th>折扣率(%)</th>
+                  <th>操作时间</th>
+                  <th>操作员</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let record of selectedOrder?.serviceOutputs">
+                  <td>{{record?.serviceName}}</td>
+                  <td>{{record?.workHour}}</td>
+                  <td>{{record?.price|centToYuan}}</td>
+                  <td>{{record?.amount|centToYuan}}</td>
+                  <td>{{record?.discount}}</td>
+                  <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                  <td>{{user.username}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </tab>
+          <tab heading="维修配件">
+            <table class="table  table-bordered">
+              <thead>
+                <tr>
+                  <th>维修工项</th>
+                  <th>配件名称</th>
+                  <th>品牌</th>
+                  <th>规格型号</th>
+                  <th>数量</th>
+                  <th>单价(元)</th>
+                  <th>金额(元)</th>
+                  <th>操作时间</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let record of selectedOrder?.productOutputs">
+                  <td>{{record?.serviceName}}</td>
+                  <td>{{record?.productName}}</td>
+                  <td>{{record?.brandName}}</td>
+                  <td>{{record?.specification}}</td>
+                  <td>{{record?.count}}</td>
+                  <td>{{record?.price|centToYuan}}</td>
+                  <td>{{record?.amount|centToYuan}}</td>
+                  <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </tab>
+          <tab heading="附加项目">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>备注</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let record of selectedOrder?.attachServiceOutputs">
+                  <td>{{record?.description}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </tab>
+
+          <tab heading="建议维修项目">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>建议维修项目</th>
+                  <th>操作时间</th>
+                  <th>备注</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let record of selectedOrder?.suggestServiceOutputs">
+                  <td>{{record?.content}}</td>
+                  <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                  <td>{{record?.description}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </tab>
+          <!--结算费用-->
+          <div class="card" [hidden]="!isShowCost">
+            <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
+              折前费用: 工时费
+              <span class="ml-2 mr-2">{{workHourFee|centToYuan}}</span> | 材料费
+              <span class="ml-2 mr-2">{{materialFee|centToYuan}}</span> | 其它
+              <span class="ml-2 mr-2">{{otherFee|centToYuan}}</span> | 合计
+              <span class="ml-2 mr-2">{{sumFee|centToYuan}}</span>|
+              <span class="ml-2 mr-2">实收金额(元)：
+                <input type="text" placeholder="{{selectedOrder?.sumFee}}"  [(ngModel)]="billPrice"></span>
+                 <span class="ml-2 mr-2">出厂里程(KM)：
+                <input type="text"  [(ngModel)]="leaveMileage"></span>
+              <button type="button" class="btn btn-primary" aria-label="Close" (click)="BillClick($event,lgModal)">确定</button>
+            </div>
+          </div>
+          <!--详情费用-->
+          <div class="card" [hidden]="!isShowCostDetail">
+            <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
+              折前费用: 工时费
+              <span class="ml-2 mr-2">{{workHourFee|centToYuan}}</span> | 材料费
+              <span class="ml-2 mr-2">{{materialFee|centToYuan}}</span> | 其它
+              <span class="ml-2 mr-2">{{otherFee|centToYuan}}</span> | 合计
+              <span class="ml-2 mr-2">{{sumFee|centToYuan}}</span>|
+              <span class="ml-2 mr-2">实收金额：{{billPrice|centToYuan}}</span>
+            </div>
+          </div>
+        </tabset>
+        <!--建议维修项 end-->
+        <!--导出详情end-->
+      </div>
+    </div>
+  </div>
+</div>
+<!--详情 end-->

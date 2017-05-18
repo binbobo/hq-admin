@@ -1,42 +1,47 @@
 <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
-  <a class="navbar-brand" href="/">华汽后台综合管理系统</a>
+  <a class="navbar-brand" href="/">
+  <img src="http://sinoauto.com/Themes/SinoAutoAdaption/Content/logonew.png" class="d-inline-block align-middle">
+  </a>
   <div class="navbar-right">
-    <div class="dropdown d-inline">
-      <a class="btn dropdown-toggle" data-toggle="dropdown">
+    <div dropdown class="dropdown d-inline">
+      <a dropdownToggle class="btn cursor-pointer">
         <span [hidden]="language" class="fa fa-globe" translate> language</span>
         <p *ngIf="language" class="d-inline">
-            <span class="flag-icon flag-icon-{{language.flag}}"></span>
-            {{language.name}}
+          <span class="flag-icon flag-icon-{{language.flag}}"></span> {{language.name}}
         </p>
       </a>
-      <div class="dropdown-menu dropdown-menu-right bg-inverse">
+      <div *dropdownMenu class="dropdown-menu dropdown-menu-right bg-inverse">
         <a class="dropdown-item" (click)="onSelectLanguage(item)" *ngFor="let item of languages">
-            <i *ngIf="item.selected||item.culture===language?.culture" class="fa fa-check"></i>
-            <span class="flag-icon flag-icon-{{item.flag}}"></span>
-            {{item.name}}
+          <i *ngIf="item.checked||item.culture===language?.culture" class="fa fa-check"></i>
+          <span class="flag-icon flag-icon-{{item.flag}}"></span> {{item.name}}
         </a>
       </div>
     </div>
-    <div class="dropdown d-inline">
-      <a class="btn dropdown-toggle"  data-toggle="dropdown">
+    <div dropdown class="dropdown d-inline">
+      <a dropdownToggle class="btn cursor-pointer">
         <a><i class="fa fa-user-circle"> {{userService?.user?.username}}</i></a>
       </a>
-      <div class="dropdown-menu dropdown-menu-right bg-inverse">
-        <a class="dropdown-item" href="#">Action</a>
-        <a class="dropdown-item" href="#">Another action</a>
+      <div *dropdownMenu class="dropdown-menu dropdown-menu-right bg-inverse">
+        <a class="dropdown-item" href="#">设置</a>
+        <a class="dropdown-item" routerLink="/auth/change_pwd">修改密码</a>
         <div class="dropdown-divider"></div>
-        <a routerLink="/logout" class="dropdown-item"><i class="fa fa-sign-out">退出</i></a>
+        <a routerLink="/auth/logout" class="dropdown-item"><i class="fa fa-sign-out">退出</i></a>
       </div>
     </div>
   </div>
 </nav>
-<div class="container-fluid mt-2">
+<div class="container-fluid">
   <div class="row">
-    <div class="pr-0 col-xs-3 col-sm-3 col-md-3 col-lg-2">
+    <div class="menus col-xs-3 col-sm-3 col-md-3 col-lg-2">
       <hq-menu *ngIf="menus" [menus]="menus" [root]="true"></hq-menu>
     </div>
-    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10">
+    <div class="col-xs-9 pt-3 col-sm-9 col-md-9 col-lg-10">
       <router-outlet></router-outlet>
+      <div id="loading" [hidden]="!loading" class="jumbotron align-items-center">
+        <div class="container" [hqSpinner]="loading">
+          Loading...
+        </div>
+      </div>
     </div>
   </div>
 </div>

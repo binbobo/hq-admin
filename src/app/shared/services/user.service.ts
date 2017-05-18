@@ -21,7 +21,7 @@ export class UserService {
             this._user = null;
             this.clearStorage();
             this.redirectUrl = this.router.url;
-            this.router.navigateByUrl('/login');
+            this.router.navigateByUrl('/auth/login');
         });
         let user = this.user;
         if (user && user.token) {
@@ -59,7 +59,8 @@ export class UserService {
     }
 
     public redirect(): void {
-        var url = this.redirectUrl || '/';
+        let url = this.redirectUrl || '/';
+        url=url.includes('login')?'/':url;
         console.info('跳转至', url);
         this.router.navigate([url]);
     }

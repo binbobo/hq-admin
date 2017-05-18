@@ -1,0 +1,44 @@
+<form class="form-inline mb-2">
+  <div class="form-group mb-2">
+    <label>配件编码：</label>
+    <div class="mx-sm-3">
+      <input #code [hqTableTypeahead]="codeSource" [columns]="columns" (onSelect)="onItemSelect($event)" class="form-control" placeholder="配件编码">
+    </div>
+  </div>
+  <div class="form-group mb-2">
+    <label class="mr-sm-2">配件名称：</label>
+    <div class="mx-sm-3">
+      <input #name [hqTableTypeahead]="nameSource" [columns]="columns" (onSelect)="onItemSelect($event)" class="form-control" placeholder="配件名称">
+    </div>
+  </div>
+</form>
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th translate>品牌</th>
+      <th translate>配件编码</th>
+      <th translate>配件名称</th>
+      <th translate>规格型号</th>
+      <th translate>单价</th>
+      <th translate>金额</th>
+      <th translate>车型</th>
+      <th translate>库存</th>
+      <th translate>最新入库日期</th>
+      <th translate>最新出库日期</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngIf="item">
+      <td>{{item.brand }}</td>
+      <td>{{item.code }}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.specification }}</td>
+      <td class="text-right">{{item.price|centToYuan}}</td>
+      <td class="text-right">{{item.amount|centToYuan}}</td>
+      <td>{{item.vehicleName }}</td>
+      <td class="text-center">{{item.count}}</td>
+      <td class="text-center">{{item.lastInStoreDate}}</td>
+      <td class="text-center">{{item.lastOutStoreDate}}</td>
+    </tr>
+  </tbody>
+</table>

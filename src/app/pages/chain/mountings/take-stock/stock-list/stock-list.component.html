@@ -1,0 +1,71 @@
+<ng-template hq-alerter></ng-template>
+<div class="card">
+  <div class="card-header">
+    盘点清单
+  </div>
+  <div class="card-block">
+    <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
+      <div class="form-group mb-2">
+        <label>盘点单号：</label>
+        <input type="text" class="form-control mx-sm-3" name="billCode" [(ngModel)]="params.billCode" placeholder="请输入盘点单号">
+      </div>
+      <div class="form-group mb-2">
+        <label class="mr-sm-2" for="inlineFormCustomSelect">生成日期：</label>
+        <input class="form-control mx-sm-3" ngui-datetime-picker date-only="true" name="createTimeStart" [(ngModel)]="params.createTimeStart"
+          placeholder="请选择开始日期">
+      </div>
+      <div class="form-group mb-2">
+        <label class="mr-sm-2" for="inlineFormCustomSelect">至：</label>
+        <input class="form-control mx-sm-3" ngui-datetime-picker date-only="true" name="createTimeEnd" [(ngModel)]="params.createTimeEnd"
+          placeholder="请选择截止日期">
+      </div>
+      <div class="form-group mb-2">
+        <label class="mr-sm-2" for="inlineFormCustomSelect">操作人：</label>
+        <input type="text" class="form-control mx-sm-3" name="operator" [(ngModel)]="params.operator" placeholder="请输入操作人">
+      </div>
+      <div class="form-group mb-2">
+        <button type="submit" class="btn btn-primary mx-sm-3" translate>search</button>
+      </div>
+    </form>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th translate>操作</th>
+          <th translate>盘点单号</th>
+          <th translate>生成时间</th>
+          <th translate>仓库</th>
+          <th translate>操作人</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of list">
+          <td class="text-center">
+            <button [routerLink]="['detail',item.billCode]" class="btn btn-sm btn-info">详情</button>
+          </td>
+          <td class="text-center">{{item.billCode}}</td>
+          <td class="text-center">{{ item.createdOnUtc}}</td>
+          <td>{{item.houseName }}</td>
+          <td>{{item.operator}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+  </div>
+  <div class="card-footer text-muted">
+    <button class="btn btn-primary" (click)="generateModal.show()">创建盘点单</button>
+  </div>
+</div>
+
+<div class="modal fade" bsModal #generateModal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">创建盘点清单</h5>
+        <button class="close pull-right" (click)="generateModal.hide()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <hq-stock-list-create (onSubmit)="onGenerate($event)" (onCancel)="generateModal.hide()"></hq-stock-list-create>
+      </div>
+    </div>
+  </div>
+</div>

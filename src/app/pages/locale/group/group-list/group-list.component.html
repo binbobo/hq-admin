@@ -1,4 +1,4 @@
-<hq-alerter [service]="alerter"></hq-alerter>
+<ng-template hq-alerter></ng-template>
 <div class="card">
   <div class="card-header">
     <span>资源分组列表</span>
@@ -26,10 +26,10 @@
         <tr *ngFor="let item of list">
           <td>{{ item.groupName }}</td>
           <td>{{ item.description }}</td>
-          <td>{{ item.displayOrder }}</td>
-          <td>{{ item.createdOnUtc|date:'y-MM-dd HH:mm:ss' }}</td>
-          <td><i class="fa fa-{{ item.enabled?'check':'times' }}"></i></td>
-          <td>
+          <td class="text-center">{{ item.displayOrder }}</td>
+          <td class="text-center">{{ item.createdOnUtc|date:'y-MM-dd HH:mm:ss' }}</td>
+          <td class="text-center"><i class="fa fa-{{ item.enabled?'check':'times' }}"></i></td>
+          <td class="text-center">
             <a [routerLink]="['../../resource']" [queryParams]="{groupId:item.id}" class="btn btn-sm btn-info" title="查看资源"><i class="fa fa-linode"></i></a>
             <a [routerLink]="['edit',item.id]" class="btn btn-sm btn-success" title="编辑"><i class="fa fa-pencil-square-o"></i></a>
             <a (click)="onDelete($event,item.id)" class="btn btn-sm btn-danger" title="删除"><i class="fa fa-trash-o"></i></a>
@@ -37,6 +37,6 @@
         </tr>
       </tbody>
     </table>
-    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" [itemsPerPage]="size" (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
 </div>

@@ -1,0 +1,25 @@
+<div id="alerter">
+  <ng-template hq-alerter></ng-template>
+</div>
+<div class="card">
+  <!--<div class="card-header">
+    <span>新增供应商</span>
+    <div class="pull-right">
+      <button routerLink="../" class="btn btn-sm btn-info">返回</button>
+    </div>
+  </div>-->
+  <form *ngIf="form" class="card-block" [formGroup]="form" (ngSubmit)="onCreate()">
+    <div class="form-group">
+      <label class="form-control-label">*角色名称</label>
+      <input hqError="角色名称" type="text" formControlName="name" class="form-control">
+    </div>
+    <div class="form-group">
+      <label class="form-control-label">备注</label>
+      <input hqError="备注" type="text" formControlName="description" class="form-control">
+    </div>
+    <div class="form-group">
+      <button type="submit" [disabled]="submitting" class="btn btn-primary mr-3">提交</button>
+      <button type="button" (click)="form.reset(model)" class="btn btn-secondary mr-3">重置</button>
+    </div>
+  </form>
+</div>
