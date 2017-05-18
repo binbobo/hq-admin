@@ -15,7 +15,8 @@ export class UsercenterComponent implements OnInit {
     private builder: FormBuilder
   ) { }
 
-  userSearch: FormGroup; //搜索条件
+  /**搜索条件 */
+  userSearch: FormGroup; 
   /**
    * 表单 创建用户模型
    */
@@ -38,6 +39,7 @@ export class UsercenterComponent implements OnInit {
    */
   userModel: UserModel = new UserModel();
 
+  /**true:新建 false:编辑 */
   isCreateOrEdit: boolean;
 
   protected total: number = 0;
@@ -97,7 +99,7 @@ export class UsercenterComponent implements OnInit {
     this.isCreateOrEdit = false;
     event.show();
   }
-bsd=false;
+  
   /**
    *打开创建用户界面
    */
@@ -109,6 +111,7 @@ bsd=false;
     event.show();
   }
 
+  /**获取用户列表 */
   getPageList() {
     if (this.loading) return;
     this.params.pageIndex = 1;
@@ -142,7 +145,7 @@ bsd=false;
       })
   }
 
-
+  /** 新建 OR 编辑用户信息 */
   createOrUpdateUser(event) {
     if(this.createUserModel.valid==false) return;
 
@@ -178,6 +181,7 @@ bsd=false;
       })
   }
 
+  /**冻结 OR 解冻 用户 */
   EnabledUser(item) {
     if (item.isRequest) return;
     item.isRequest = true;
@@ -186,6 +190,7 @@ bsd=false;
       .catch(result => { alert(result); item.isRequest = false; });
   }
 
+  /**重置密码 */
   ResetPassWord(item) {
     if(item.enabled==false) return;
 
@@ -199,17 +204,19 @@ bsd=false;
       .catch(result => { alert(result); item.isRequest = false; });
   }
 
+  /**角色下拉勾选 */
   onSelectedCahngeForRoleItem(values) {
     this.userModel.roleIds = [];
     values.forEach(x => this.userModel.roleIds.push(x));
   }
 
+  /**职位下拉勾选操作 */
   onSelectedChangeForPosition(values) {
     this.userModel.positionIds = [];
     values.forEach(x => this.userModel.positionIds.push(x));
   }
 
-
+  /**查询用户 */
   protected onPageChanged(event: { page: number, itemsPerPage: number }) {
     this.params.setPage(event.page, event.itemsPerPage);
     this.getPageList();

@@ -124,21 +124,36 @@ export class UserCenterService implements BasicService<any>{
  * 用户结构
  */
 export class UserModel {
+    /**主键*/
     id: string;
+    /** 名称  */
     name: string;
+    /**电话号码 */
     phone: string;
+    /**true:启用 false:冻结*/
     enabled: boolean;
+    /**创建时间 */
     createTime:string;
+    /**备注 */
     description: string;
+    /**角色集合-后台返回*/
     roles: UserRole[];
+    /**角色ID 集合-从后台返回集合中找出来  创建时间做为参数*/
     roleIds: string[];
+    /** 职位ID集合-从后台返回集合中找出来  创建时间做为参数*/
     positionIds: string[];
+    /**职位集合-后台返回 */
     partPositionItems: PartPositionInfo[];
+    /**角色名-列表显示  从返回数据中处理的结果 */
     userRoleName: string;
+    /** 职位名称-列表显示 从返回数据中处理的结果 */
     positionName: string;
+    /**部门名称-列表显示 从返回数据中处理的结果 */
     partName: string;
+    /**密码-创建时做为参数 */
     passWord:string;
 
+    /**清空所有数据 */
     public ClearData() {
         this.id = "";
         this.name = "";
@@ -152,6 +167,9 @@ export class UserModel {
         this.positionName = "";
         this.userRoleName = "";
         this.partName = "";
+        this.passWord="";
+        this.partPositionItems=[];
+        this.roles=[];
     }
 }
 
@@ -189,9 +207,13 @@ export class PostionInfo {
  * 下拉列表模型
  */
 export class DropDownItem {
+    /**下拉列表配置 */
     public config = {
+        /**ture:显示全选 false:不显示*/
         isShowAllCheckBox: false,
+        /**true:显示搜索 false:不显示 */
         isShowFilter: true,
+        /**true:折叠 false:展开*/
         isShowCollapseExpand: true,
         maxHeight: 500
     };
