@@ -3,7 +3,33 @@ import { HttpService, Urls } from "app/shared/services";
 import { SelectOption, ListResult, PagedParams, BasicService, PagedResult, ApiResult } from "app/shared/models";
 
 @Injectable()
-export class InnerReturnService {
+export class InnerReturnService implements BasicService<any>{
+    create(body: any): Promise<any> {
+      throw new Error('Method not implemented.');
+    }
+  update(body: any): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+  patch(body: any): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+//获取内部领用信息
+  getPagedList(params: BillCodeSearchRequest): Promise<PagedResult<any>> {
+    const url = Urls.chain.concat('/Use/GetPagedList?', params.serialize());
+    console.log("url",url);
+    return this.httpService.get<PagedResult<any>>(url)
+      .then(result => {
+        console.log('领用单数据', result);
+        return result;
+      })
+      .catch(err => Promise.reject(`获取内部领用数据失败：${err}`));
+  }
+
+
+  delete(id: string): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+
 
   constructor(private httpService: HttpService) { }
 
@@ -41,7 +67,6 @@ export class InnerReturnService {
       .then(data => data.map(m => new SelectOption(m.name, m.id)))
       .catch(err => Promise.reject(`获取部门选项失败：${err}`))
   }
-
 
 }
 
@@ -83,4 +108,14 @@ export class InnerListItem {
     public houseName?: string,
     public storeName?:string
   ) { }
+}
+//领用单号模糊查询参数
+export class BillCodeSearchRequest extends PagedParams {
+  constructor(
+    public takeUserId?: string, // 领用人ID
+    public takeDepartId?: string, // 部门ID
+    public billCode?: string, // 领用单号
+  ) {
+    super();
+  }
 }

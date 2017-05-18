@@ -287,7 +287,7 @@
         </button>
         </div>
         <div class="modal-body">
-          <hq-add-maintenance-item [serviceIds]="selectedServiceIds" [item]="selectedItem" (onCancel)="addModal.hide();selectedItem=null;"
+          <hq-add-maintenance-item [services]="selectedServices" [item]="selectedItem" (onCancel)="addModal.hide();selectedItem=null;"
             (onConfirm)="onConfirmNewMaintenanceItem($event, addModal)"></hq-add-maintenance-item>
         </div>
       </div>
