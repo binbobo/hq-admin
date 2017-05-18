@@ -2,7 +2,7 @@
 <div class="card append-order">
   <div class="card-header">
     <span>增项</span>
-    <ng-template hqSuspendBill="MW" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
+    <ng-template hqSuspendBill="MWIM" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
   <div class="card-block">
     <div>
@@ -57,58 +57,43 @@
           <table class="table  table-striped table-bordered">
             <thead>
               <tr>
+                <th>操作</th>
                 <th>维修项目名称</th>
                 <th>维修工时(小时)</th>
                 <th>工时单价(元)</th>
                 <th>折扣率(%)</th>
                 <th>金额(元)</th>
                 <th>操作时间</th>
-                <th>操作</th>
+
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let item of maintenanceProjectData">
+                <td>&nbsp;</td>
                 <td>{{item.serviceName}}</td>
                 <td>{{item.workHour}}</td>
                 <td>{{item.price/100}}</td>
                 <td>{{item.discount}}</td>
                 <td>{{item.amount/100}}</td>
                 <td>{{item.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-                <td></td>
               </tr>
 
-              <tr *ngFor="let item of newMaintenanceItemData2">
-                <td>{{item.serviceName}}</td>
-                <td>{{item.workHour}}</td>
-                <td>{{item.price/100}}</td>
-                <td>{{item.discount}}</td>
-                <td>{{item.amount/100}}</td>
-                <td>{{item.operationTime}}</td>
+              <tr *ngFor="let item of newMaintenanceItemData">
                 <td width="40">
-                  <a href="#" (click)="onDelNewMaintenanceItem($event, item.serviceId)">删除</a>
+                  <a href="#" (click)="onMaintenanceItemEdit($event, addModal, item)">编辑</a>
+                  <a href="#" (click)="$event.preventDefault();onDelMaintenanceItem(item?.serviceId)">删除</a>
                 </td>
-              </tr>
-              <tr *ngIf="addNewMaintenanceItem">
-                <td><input placeholder="输入 更换  进行测试" (blur)="onServiceBlur(maintanceItem)" (change)="onServiceChange()" (typeaheadOnSelect)="serviceTypeaheadOnSelect($event)"
-                    [typeahead]="serviceDataSource" typeaheadOptionField="name" [(ngModel)]="newMaintenanceItem.serviceName"
-                    type="text" class="form-control form-control-sm" required></td>
-                <td><input placeholder="请输入数字" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.workHour"
-                    (keyup)="onWorkHourChange()" type="text" class="form-control form-control-sm" required></td>
-                <td><input placeholder="请输入数字" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.price"
-                    (keyup)="onPriceChange()" type="text" class="form-control form-control-sm" required></td>
-                <td><input placeholder="请输入0~100之间的整数" (keyup.enter)="onConfirmAddNewMaintenanceItem()" [(ngModel)]="newMaintenanceItem.discount"
-                    (keyup)="onDiscountChange()" type="text" class="form-control form-control-sm" required></td>
-                <td><input [value]="newMaintenanceItem.amount" type="text" class="form-control form-control-sm" [disabled]="true"></td>
-                <td><input [value]="newMaintenanceItem.operationTime" type="text" class="form-control form-control-sm" [disabled]="true"></td>
-                <td width="75">
-                  <a href="#" (click)="onConfirmAddNewMaintenanceItem($event)">确定</a> |
-                  <a href="#" (click)="addNewMaintenanceItem = false">取消</a>
-                </td>
+                <td>{{item?.serviceName}}</td>
+                <td>{{item?.workHour}}</td>
+                <td>{{item?.price}}</td>
+                <td>{{item?.discount}}</td>
+                <td>{{item?.amount}}</td>
+                <td>{{item?.operationTime}}</td>
               </tr>
             </tbody>
           </table>
           <div>
-            <button class="btn btn-sm btn-secondary mr-2" (click)="addNewmaintanceItem()" placement="right">新增</button>
+            <button class="btn btn-sm btn-secondary mr-2" (click)="addModal.show()" placement="right">新增</button>
           </div>
         </tab>
         <!--附加项目-->
@@ -116,31 +101,24 @@
           <table class='table   table-striped table-bordered'>
             <thead>
               <tr>
-                <th>备注</th>
                 <th>操作</th>
+                <th>备注</th>
               </tr>
             </thead>
             <tr *ngFor="let item of attachServiceOutputs">
-              <td>{{item.description}}</td>
               <td></td>
-            </tr>
-            <tr *ngFor="let item of newAttachItemData">
               <td>{{item.description}}</td>
-              <td width="40">
-                <a href="#" (click)="onDelAttachItem($event)">删除</a>
-              </td>
             </tr>
-            <tr *ngIf="addNewAttachItem">
-              <td><input placeholder="请输入附加项目备注" (keyup.enter)="onConfirmAddNewAttachItem()" [(ngModel)]="newAttachItem.description"
-                  type="text" class="form-control form-control-sm"></td>
-              <td width="75">
-                <a href="#" (click)="onConfirmAddNewAttachItem($event)">确定</a> |
-                <a href="#" (click)="addNewAttachItem = false">取消</a>
+            <tr *ngFor="let item of newAttachData;let i=index">
+              <td width="40">
+                <a href="#" (click)="onAttachEdit($event, attachModal, item)">编辑</a>
+                <a href="#" (click)="$event.preventDefault();onDelAttachItem(i)">删除</a>
               </td>
+              <td>{{item.description}}</td>
             </tr>
           </table>
           <div>
-            <button class="btn btn-sm btn-secondary mr-2" (click)="addNewAttachItemData()" placement="right">新增</button>
+            <button class="btn btn-sm btn-secondary mr-2" [disabled]="!!((newAttachData.length)>=1)" (click)="attachModal.show()" placement="right">新增</button>
           </div>
         </tab>
 
@@ -149,46 +127,39 @@
           <table class='table   table-striped table-bordered'>
             <thead>
               <tr>
+                <th>操作</th>
                 <th>建议维修项目</th>
                 <th>操作时间</th>
                 <th>备注</th>
-                <th>操作</th>
+
               </tr>
             </thead>
             <tr *ngFor="let item of suggestServiceOutputs">
+              <td></td>
               <td>{{item.content}}</td>
               <td>{{item.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
               <td>{{item.description}}</td>
-              <td></td>
+
             </tr>
-            <tr *ngFor="let item of newSuggestItemData">
+            <tr *ngFor="let item of newSuggestData">
+              <td width="40">
+                <a href="#" (click)="onSuggestItemEdit($event, suggestModal, item)">编辑</a>
+                <a href="#" (click)="$event.preventDefault();onDelSuggestItem(item.serviceId)">删除</a>
+              </td>
               <td>{{item.serviceName}}</td>
               <td>{{item.operationTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
               <td>{{item.description}}</td>
-              <td width="40">
-                <a href="#" (click)="onDelSuggestItem($event)">删除</a>
-              </td>
+
             </tr>
-            <tr *ngIf="addNewSuggestItem">
-              <td><input placeholder="输入 更换  进行测试" (blur)="onSuggestBlur(maintanceItem)" (change)="onSuggestChange()" (typeaheadOnSelect)="SuggestTypeaheadOnSelect($event)"
-                  [typeahead]="suggestDataSource" typeaheadOptionField="name" [(ngModel)]="newSuggestItem.serviceName" type="text"
-                  class="form-control form-control-sm" required></td>
-              <td><input [value]="newSuggestItem.operationTime" type="text" class="form-control form-control-sm" [disabled]="true"></td>
-              <td><input placeholder="请输入备注" (keyup.enter)="onConfirmAddNewSuggestItem()" [(ngModel)]="newSuggestItem.description"
-                  type="text" class="form-control form-control-sm"></td>
-              <td width="75">
-                <a href="#" (click)="onConfirmAddNewSuggestItem($event)">确定</a> |
-                <a href="#" (click)="addNewSuggestItem = false">取消</a>
-              </td>
-            </tr>
+
           </table>
           <div>
-            <button class="btn btn-sm btn-secondary mr-2" (click)="addNewSuggestItemData()" placement="right">新增</button>
+            <button class="btn btn-sm btn-secondary mr-2" (click)="suggestModal.show()" placement="right">新增</button>
           </div>
         </tab>
 
         <!--上次维修记录-->
-        <tab heading="上次维修记录">
+        <tab heading="上次维修记录" [hidden]="!isLast">
           <table class="table table-striped table-bordered">
             <caption>维修项目</caption>
             <thead>
@@ -274,31 +245,6 @@
             </tbody>
           </table>
         </tab>
-
-        <!--客户回访记录
-        <tab heading="客户回访记录">
-          <table class="table table-hover table-bordered table-sm table-tab">
-            <caption>客户回访记录</caption>
-            <thead>
-              <tr>
-                <th>回访时间</th>
-                <th>回访人</th>
-                <th>维修质量</th>
-                <th>服务态度</th>
-                <th>休息环境</th>
-                <th>工时价格</th>
-                <th>配件价格</th>
-                <th>接车时是否验车</th>
-                <th>是否报价</th>
-                <th>有无建议项目</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let record of list">
-              </tr>
-            </tbody>
-          </table>
-        </tab>-->
       </tabset>
 
       <div class="card" style="margin-top:40px;">
@@ -310,16 +256,66 @@
         </div>
       </div>
 
-
     </div>
-
-
 
   </div>
   <div class="card-footer text-muted">
-    <button type="button" class="btn  btn-primary" (click)="submitAddOrder()" [disabled]='!isableAppend'>提交增项</button>
-    <!--<input type="text" readonly class="btn btn-primary" (click)="submitAddOrder()" value='提交增项'>-->
+    <button type="button" class="btn  btn-primary" [disabled]="!isableAppend" (click)="submitAddOrder()">提交增项</button>
     <button type="button" class="btn  btn-success" (click)="suspend()">挂单</button>
   </div>
 
+</div>
+
+<div bsModal #addModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <!--每次都创建一个新的 为了清空表单-->
+  <div *ngIf="addModal.isShown" class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title pull-left">新增维修项目</h6>
+        <button type="button" class="close pull-right" (click)="addModal.hide();selectedItem=null;" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <hq-add-maintenance-item [services]="selectedServices" [item]="selectedItem" (onCancel)="addModal.hide();selectedItem=null;"
+          (onConfirm)="onConfirmNewMaintenanceItem($event, addModal)"></hq-add-maintenance-item>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #attachModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <!--每次都创建一个新的 为了清空表单-->
+  <div *ngIf="attachModal.isShown" class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title pull-left">新增附加项目</h6>
+        <button type="button" class="close pull-right" (click)="attachModal.hide();selectedAttachItem=null;" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <hq-add-attach-item (onCancel)="attachModal.hide();selectedAttachItem=null" [item]="selectedAttachItem" (formSubmit)="onCreateAttach($event)"></hq-add-attach-item>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #suggestModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <!--每次都创建一个新的 为了清空表单-->
+  <div *ngIf="suggestModal.isShown" class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title pull-left">新增建议维修项目</h6>
+        <button type="button" class="close pull-right" (click)="suggestModal.hide();selectedSuggestItem=null;" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <hq-add-suggest-item [services]="selectedSuggestServices" [item]="selectedSuggestItem" (onCancel)="suggestModal.hide();selectedSuggestItem=null;"
+          (onConfirm)="onConfirmNewSuggestItem($event, suggestModal)"></hq-add-suggest-item>
+      </div>
+    </div>
+  </div>
 </div>
