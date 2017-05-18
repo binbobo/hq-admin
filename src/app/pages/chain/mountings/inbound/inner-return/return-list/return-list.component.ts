@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalDirective } from "ngx-bootstrap";
-import { HqAlerter, PrintDirective } from "app/shared/directives";
+import { HqAlerter, PrintDirective, TypeaheadRequestParams } from "app/shared/directives";
 import { SelectOption, PagedResult } from "app/shared/models";
-import { InnerListRequest, InnerListItem, InnerReturnService, InnerPrintItem } from "../inner-return.service";
+import { InnerListRequest, InnerListItem, InnerReturnService, InnerPrintItem, BillCodeSearchRequest } from "../inner-return.service";
 import { SuspendBillDirective } from "app/pages/chain/chain-shared";
 
 @Component({
@@ -129,6 +129,27 @@ export class ReturnListComponent implements OnInit {
       { name: 'innerReturner', title: '退料人' },
       { name: 'department', title: '部门' },
     ]
+  }
+
+  //定义模糊查询要显示的列
+  public itemColumns() {
+    return [
+      { name: 'billCode', title: '内部领用单号' },
+    ];
+  }
+  //编码数据源
+  public get codeSource() {
+    return (params: TypeaheadRequestParams) => {
+      let p = new BillCodeSearchRequest(params.text);
+      p.setPage(params.pageIndex, params.pageSize);
+      console.log('ppppppppp',p);
+      return this.innerReturnService.getPagedList(p);
+    };
+  }
+
+  //退料
+  OnCreatBound(event,id,createModal){
+
   }
 
 }

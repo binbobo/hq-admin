@@ -199,7 +199,7 @@ export class MaintainReturnComponent implements OnInit {
   // 点击退料弹出弹框
 
   OnCreatBound(ele, id) {
-    ele.
+   
     console.log(ele);
     ele.maintenanceItemId = ele.id; //维修明细id
     this.OriginalBillId = id;
