@@ -55,7 +55,7 @@ export class AssignService implements BasicService<any> {
      * @param params
      */
     public getPagedList(params: PagedParams): Promise<PagedResult<any>> {
-        const url = Urls.chain.concat('/Maintenances/team/search?', params.serialize());
+        const url = Urls.chain.concat('/MaintenanceTeams/assign/search?', params.serialize());
         return this.httpService
             .get<PagedResult<any>>(url)
             .then(result => {
@@ -134,7 +134,7 @@ export class AssignService implements BasicService<any> {
 export class AssignListRequest extends PagedParams {
     constructor(
         // 工单列表页面查询参数
-        public states?: Array<string>, // 工单状态
+        public status?: Array<string>, // 工单状态
         public plateNo?: string, // 车牌号
         public billCode?: string, // 工单号
         public keyword?: string // 车牌号或者工单号

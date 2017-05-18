@@ -2,17 +2,17 @@
   <div class="form-group row">
     <div class="col-4">
       <label for="plateNo" class="col-form-label"><span class="asterisk mr-1">*</span>车牌号</label>
-      <input type="text" hqError="车品号" class="form-control" formControlName="plateNo" placeholder="车牌号">
+      <input type="text" hqError="车牌号" class="form-control" formControlName="plateNo" placeholder="车牌号">
     </div>
     <div class="col-4">
       <label for="brand" class="col-form-label"><span class="asterisk mr-1">*</span>品牌</label>
-      <input hqError="品牌" [hqTableTypeahead]="brandTypeaheadSource" [columns]="vehicleTypeaheadColumns" (onSelect)="onBrandSelect($event)" formControlName="brand"
+      <input hqError="品牌"  forceRefresh="true" [hqTableTypeahead]="brandTypeaheadSource" [columns]="vehicleTypeaheadColumns" (onSelect)="onBrandSelect($event)" formControlName="brand"
         type="text" class="form-control">
       <input type="hidden" formControlName="brandId" class="form-control">
     </div>
     <div class="col-4">
       <label for="series" class="col-form-label"><span class="asterisk mr-1">*</span>车系</label>
-      <input hqError="车系" [hqTableTypeahead]="seriesTypeaheadSource" [columns]="vehicleTypeaheadColumns" (onSelect)="onSeriesSelect($event)"
+      <input hqError="车系"  forceRefresh="true" [hqTableTypeahead]="seriesTypeaheadSource" [columns]="vehicleTypeaheadColumns" (onSelect)="onSeriesSelect($event)"
         formControlName="series" type="text" class="form-control">
       <input type="hidden" formControlName="seriesId" class="form-control">
     </div>
@@ -20,7 +20,7 @@
   <div class="form-group row">
     <div class="col-4">
       <label for="vehicleName" class="col-form-label"><span class="asterisk mr-1">*</span>车型</label>
-      <input hqError="车型" [hqTableTypeahead]="modelTypeaheadSource" [columns]="vehicleTypeaheadColumns" (onSelect)="onModelSelect($event)" formControlName="vehicleName"
+      <input hqError="车型"  forceRefresh="true" [hqTableTypeahead]="modelTypeaheadSource" [columns]="vehicleTypeaheadColumns" (onSelect)="onModelSelect($event)" formControlName="vehicleName"
         type="text" class="form-control">
       <input type="hidden" formControlName="vehicleId" class="form-control">
     </div>
@@ -40,19 +40,19 @@
     </div>
     <div class="col-4">
       <label for="purchaseDate" class="col-form-label">购车日期</label>
-      <input type="text" class="form-control" formControlName="purchaseDate" id="purchaseDate" ngui-datetime-picker date-format="YYYY-MM-DD"
+      <input type="text" hqError="购车日期" class="form-control" formControlName="purchaseDate" id="purchaseDate" ngui-datetime-picker date-format="YYYY-MM-DD"
         date-only="true" placeholder="购车日期">
     </div>
     <div class="col-4">
       <label for="validate" class="col-form-label">验车日期</label>
-      <input type="text" class="form-control" formControlName="validate" placeholder="验车日期" ngui-datetime-picker date-format="YYYY-MM-DD"
+      <input type="text" hqError="验车日期" class="form-control" formControlName="validate" placeholder="验车日期" ngui-datetime-picker date-format="YYYY-MM-DD"
         date-only="true" id="validate">
     </div>
   </div>
   <div class="form-group row">
     <div class="col-4">
       <label for="insuranceDue" class="col-form-label">保险到期日期</label>
-      <input type="text" class="form-control" formControlName="insuranceDue" placeholder="保险到期日期" ngui-datetime-picker date-format="YYYY-MM-DD"
+      <input type="text"  hqError="保险到期日期"  class="form-control" formControlName="insuranceDue" placeholder="保险到期日期" ngui-datetime-picker date-format="YYYY-MM-DD"
         date-only="true" id="insuranceDue">
     </div>
     <div class="col-4">

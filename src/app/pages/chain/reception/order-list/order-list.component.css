@@ -12,10 +12,3 @@ input[readonly]{
 #advanceFilter {
     margin-top: 10px;
 }
-
-
-/*重写ngui-datetimer-picker表单input样式*/
-.datetime-picker {
-    width: 100%;
-    border-radius:0;
-}

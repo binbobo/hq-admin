@@ -38,24 +38,24 @@
         <label for="brand" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>品牌</label>
         <div class="col-2">
           <!--hqError="品牌"-->
-          <input forceRefresh="true" [hqTableTypeahead]="brandTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onBrandSelect($event)" type="text"
-            class="form-control" formControlName="brand" id="brand" placeholder="请输入品牌名称">
+          <input forceRefresh="true" [hqTableTypeahead]="brandTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onBrandSelect($event)"
+            type="text" class="form-control" formControlName="brand" id="brand" placeholder="请输入品牌名称">
           <!--品牌id-->
           <input type="hidden" formControlName="brandId" />
         </div>
         <label for="series" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车系</label>
         <div class="col-2">
           <!--hqError="车系"-->
-          <input forceRefresh="true" [hqTableTypeahead]="seriesTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onSeriesSelect($event)" type="text"
-            class="form-control" formControlName="series" id="series" placeholder="输入车系名称">
+          <input forceRefresh="true" [hqTableTypeahead]="seriesTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onSeriesSelect($event)"
+            type="text" class="form-control" formControlName="series" id="series" placeholder="输入车系名称">
           <!--车系id-->
           <input type="hidden" formControlName="seriesId" />
         </div>
         <label for="vehicleName" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车型</label>
         <div class="col-2">
           <!--hqError="车型" -->
-          <input forceRefresh="true" [hqTableTypeahead]="modelTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onModelSelect($event)" type="text"
-            class="form-control" formControlName="vehicleName" id="vehicleName" placeholder="输入车型名称">
+          <input forceRefresh="true" [hqTableTypeahead]="modelTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onModelSelect($event)"
+            type="text" class="form-control" formControlName="vehicleName" id="vehicleName" placeholder="输入车型名称">
           <!--车辆id-->
           <input type="hidden" formControlName="vehicleId" />
         </div>
@@ -71,8 +71,8 @@
         </div>
         <label for="expectLeave" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>预计交车时间</label>
         <div class=" col-2">
-          <input [close-on-select]="false" hqError="预计交车时间" class="form-control datetime-picker" type="text" formControlName="expectLeave"
-            ngui-datetime-picker />
+          <input [close-on-select]="false" hqError="预计交车时间" class="form-control" type="text" formControlName="expectLeave" ngui-datetime-picker
+          />
         </div>
         <label for="contactUser" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>送修人</label>
         <div class="col-2">
@@ -86,7 +86,10 @@
       <div class="form-group row">
         <label for="mileage" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>行驶里程</label>
         <div class="col-2">
-          <input hqError="行驶里程" type="text" class="form-control" formControlName="mileage" id="mileage">
+          <div class="input-group">
+            <input hqError="行驶里程" type="text" class="form-control" formControlName="mileage" id="mileage">
+            <span class="input-group-addon">KM</span>
+          </div>
         </div>
         <label for="introducer" class="col-1 col-form-label">介绍人</label>
         <div class="col-2">
@@ -98,8 +101,8 @@
         </div>
         <label for="validate" class="col-1 col-form-label">验车日期</label>
         <div class="  col-2">
-          <input class="form-control datetime-picker" type="text" formControlName="validate" ngui-datetime-picker date-format="YYYY-MM-DD"
-            date-only="true" />
+          <input class="form-control" type="text" formControlName="validate" ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true"
+          />
         </div>
       </div>
       <!--<hr>-->
@@ -110,12 +113,15 @@
         </div>
         <label for="nextDate" class="col-1 col-form-label">建议下次保养日期</label>
         <div class="col-2">
-          <input class="form-control datetime-picker" type="text" formControlName="nextDate" ngui-datetime-picker date-format="YYYY-MM-DD"
-            date-only="true" />
+          <input class="form-control" type="text" formControlName="nextDate" ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true"
+          />
         </div>
         <label for="nextMileage" class="col-1 col-form-label">建议下次保养里程</label>
         <div class="col-2">
-          <input type="text" class="form-control" formControlName="nextMileage" id="nextMileage">
+          <div class="input-group">
+            <input hqError="建议下次保养里程" type="text" class="form-control" formControlName="nextMileage" id="nextMileage">
+            <span class="input-group-addon">KM</span>
+          </div>
         </div>
       </div>
       <div class="form-group row">
@@ -282,15 +288,14 @@
       <div class="modal-content">
         <div class="modal-header">
           <h6 class="modal-title pull-left">新增维修项目</h6>
-          <button type="button" class="close pull-right" (click)="addModal.hide();selectedItem=null;" aria-label="Close">
+          <button type="button" class="close pull-right" (click)="close(addModal)" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
         </div>
         <div class="modal-body">
-          <hq-add-maintenance-item [services]="selectedServices" [item]="selectedItem" (onCancel)="addModal.hide();selectedItem=null;"
-            (onConfirm)="onConfirmNewMaintenanceItem($event, addModal)"></hq-add-maintenance-item>
+          <hq-add-maintenance-item [services]="selectedServices" [item]="selectedItem" (onCancel)="close(addModal)" (onConfirm)="onConfirmNewMaintenanceItem($event, addModal)"></hq-add-maintenance-item>
         </div>
       </div>
     </div>
   </div>
-  <hq-workorder-detail-print  [data]="newWorkOrderData" class="invisible" hqPrint #printer="hq-print"></hq-workorder-detail-print>
+  <hq-workorder-detail-print *ngIf="confirmPrint" class="invisible" [data]="newWorkOrderData" hqPrint #printer="hq-print"></hq-workorder-detail-print>

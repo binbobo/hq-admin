@@ -217,5 +217,4 @@
         </div>
       </div>
     </div>
-
-    <hq-workorder-detail-print [data]="selectedOrder" class="invisible" hqPrint #printer="hq-print"></hq-workorder-detail-print>
+    <hq-workorder-detail-print *ngIf="lgModal.isShown" [data]="selectedOrder" hqPrint #printer="hq-print"></hq-workorder-detail-print>
