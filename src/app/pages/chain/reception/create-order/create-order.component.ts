@@ -35,8 +35,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   // 当前选择的维修项目记录  用于编辑
   selectedItem: any;
-  // 当前已经选择的维修项目id列表
-  selectedServiceIds: Array<string> = [];
+  // 当前已经选择的维修项目列表
+  selectedServices: Array<any> = [];
 
   // 维修类型数据
   public maintenanceTypeData: MaintenanceType[];
@@ -155,7 +155,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       type: lastOrder.type,
       contactUser: lastOrder.contactUser,
       contactInfo: lastOrder.contactInfo,
-      mileage: lastOrder.mileage,
+      // mileage: lastOrder.mileage,
       introducer: lastOrder.introducer,
       introintroPhoneducer: lastOrder.introPhone,
       validate: moment(lastOrder.validate).format('YYYY-MM-DD'),
@@ -235,9 +235,9 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 
     this.selectedItem = item;
     // 当前编辑的维修项目仍然可选
-    const index = this.selectedServiceIds.findIndex(elem => elem === item.serviceId);
+    const index = this.selectedServices.findIndex(elem => elem.id === item.serviceId);
     if (index > -1) {
-      this.selectedServiceIds.splice(index, 1);
+      this.selectedServices.splice(index, 1);
     }
 
     // 显示窗口
@@ -259,6 +259,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
       // 更新价格
       this.fee.workHour += (parseFloat(data.amount) - parseFloat(this.selectedItem.amount));
+      this.fee.workHour = this.fee.workHour * 100;
 
       // 清空当前编辑的维修项目记录
       this.selectedItem = null;
@@ -268,9 +269,10 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
       // 费用计算
       this.fee.workHour += parseFloat(data.amount);
+      this.fee.workHour = this.fee.workHour * 100;
     }
-    // 记录当前选择的维修项目id
-    this.selectedServiceIds = this.newMaintenanceItemData.map(item => item.serviceId);
+    // 记录当前选择的维修项目
+    this.selectedServices = this.getSelectedServices();
     // 判断生成工单按钮是否可用
     this.enableCreateWorkSheet = this.workSheetForm.valid;
     addModal.hide();
@@ -283,25 +285,23 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
         this.newMaintenanceItemData.splice(index, 1);
         // 费用计算
         this.fee.workHour -= parseFloat(item.amount);
+        this.fee.workHour = this.fee.workHour * 100;
         // 如果新增项目为0 设置生成工单按钮不可用
         this.enableCreateWorkSheet = (this.newMaintenanceItemData.length > 0) && this.workSheetForm.valid;
         return;
       }
     });
-    this.selectedServiceIds = this.newMaintenanceItemData.map(item => item.serviceId);
+    this.selectedServices = this.getSelectedServices();
   }
-  // // 判断输入的工时是否合法
-  // private isWorkHourValid() {
-  //   return /^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/.test(this.newMaintenanceItem.workHour);
-  // }
-  // // 判断输入的单价是否合法
-  // private isPriceValid() {
-  //   return /^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/.test(this.newMaintenanceItem.price);
-  // }
-  // // 判断输入的折扣率是否合法
-  // private isDiscountValid() {
-  //   return /^[0-9][0-9]?$|^100$/.test(this.newMaintenanceItem.discount);
-  // }
+
+  private getSelectedServices() {
+    return this.newMaintenanceItemData.map(item => {
+      return {
+        id: item.serviceId,
+        name: item.serviceName
+      };
+    });
+  }
 
   /**
    * 挂单处理程序
@@ -366,6 +366,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.fee.workHour = order.maintenanceItems.reduce((accumulator, currentValue) => {
       return accumulator + parseFloat(currentValue.amount);
     }, 0);
+    this.fee.workHour = this.fee.workHour * 100;
 
     // 需要深copy order对象  不能改变原对象 
     // 因为每次选择一个挂掉的时候，挂单记录不会从列表中消失 只有点击创建工单之后  才消失
