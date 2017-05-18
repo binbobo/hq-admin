@@ -107,7 +107,7 @@ export class ReturnCreateComponent implements OnInit {
     return (params: TypeaheadRequestParams) => {
       let p = new GetProductsRequest(params.text);
       p.setPage(params.pageIndex, params.pageSize);
-      return this.returnService.getProducts(p);
+      return this.returnService.getPagedList(p);
     };
   }
 
@@ -115,7 +115,7 @@ export class ReturnCreateComponent implements OnInit {
     return (params: TypeaheadRequestParams) => {
       let p = new GetProductsRequest(undefined, params.text);
       p.setPage(params.pageIndex, params.pageSize);
-      return this.returnService.getProducts(p);
+      return this.returnService.getPagedList(p);
     };
   }
 

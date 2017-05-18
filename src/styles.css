@@ -3,18 +3,6 @@
     font-size: 14px;
 }*/
 
-@page :first {
-    @bottom-center {
-        content: "11111111111111";
-    }
-}
-
-@page { color: red;
-  @top-center {
-    content: "Page " counter(page);
-  }
-}
-
 .bg-inverse{
     background-color: #2d384b!important;
 }
@@ -23,6 +11,7 @@
 }
 
 .card-block{
+    min-height: 50vh;
     overflow: auto;
 }
 
