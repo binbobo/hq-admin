@@ -236,7 +236,11 @@ export class DropDownItem {
         if (!items || !nodes) return;
         for (let i = 0; i < items.length; i++) {
             let item = items[i];
-            if (item.children) this.SelectedNodes(item.children, nodes);
+            if (item.children) {
+                this.SelectedNodes(item.children, nodes);
+                item.checked=item.getCheckedItems().length==item.children.length
+                continue;
+            }
             this.CheckedNodes(item, nodes);
         }
     }
