@@ -212,7 +212,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       seriesId: customerVehicle.seriesId,
       vehicleName: customerVehicle.vehicleName,
       vehicleId: customerVehicle.vehicleId,
-
       customerVehicleId: customerVehicle.id,
       customerId: customerVehicle.customerId,
     });

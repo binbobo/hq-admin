@@ -1,10 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
-#hq-printing .print-page{
-    page-break-after:always;
-}
 /*html{
     font-size: 14px;
 }*/
+
+@page :first {
+    @bottom-center {
+        content: "11111111111111";
+    }
+}
+
+@page { color: red;
+  @top-center {
+    content: "Page " counter(page);
+  }
+}
+
 .bg-inverse{
     background-color: #2d384b!important;
 }
@@ -14,14 +24,6 @@
 
 .card-block{
     overflow: auto;
-}
-
-#hq-printing .no-print{
-    display: none;
-}
-
-#hq-printing .hq-visible{
-    visibility: visible!important;
 }
 
 .cursor-pointer{

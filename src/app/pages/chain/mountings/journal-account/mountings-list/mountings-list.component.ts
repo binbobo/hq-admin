@@ -45,8 +45,4 @@ export class MountingsListComponent {
       return this.service.getMountings(p);
     };
   }
-
-  private onSearch() {
-
-  }
 }

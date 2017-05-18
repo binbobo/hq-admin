@@ -94,7 +94,7 @@ export class AddMaintenanceItemComponent implements OnInit {
       price: ['', Validators.compose([Validators.required, Validators.pattern(regex)])],
       discount: [100, [Validators.required, CustomValidators.digits, CustomValidators.range([0, 100])]],
       amount: [{ value: '', disabled: true }],
-      operationTime: [{ value: moment().format('YYYY-MM-DD hh:mm:ss'), disabled: true }],
+      operationTime: [{ value: moment().format('YYYY-MM-DD HH:mm:ss'), disabled: true }],
     });
 
     this.maintenanceItemForm.controls.price.valueChanges.subscribe(newValue => {

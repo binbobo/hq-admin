@@ -33,6 +33,7 @@ export class SuspendBillComponent implements OnInit {
   }
 
   loadList() {
+    this.result = null;
     this.service.get(this.type)
       .then(result => this.result = result)
       .catch(err => console.error(err));
