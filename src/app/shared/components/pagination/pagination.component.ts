@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewEncapsulation, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'hq-pagination',
   templateUrl: './pagination.component.html',
-  styleUrls: ['./pagination.component.css']
+  styleUrls: ['./pagination.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class PaginationComponent {
 
@@ -19,12 +20,32 @@ export class PaginationComponent {
 
   constructor() { }
 
-  onPageChanged($event) {
-    this.currentPageChange.emit(this.currentPage);
-    this.pageChanged.emit($event);
+  get totalPages() {
+    return Math.ceil(this.totalItems / this.itemsPerPage);
   }
 
-  onNumPages($event) {
-    this.numPages.emit($event);
+  onPageChanged(event) {
+    this.currentPageChange.emit(this.currentPage);
+    this.pageChanged.emit(event);
   }
+
+  onNumPages(event) {
+    this.numPages.emit(event);
+  }
+
+  onIndexChange(event: Event) {
+    let ele = event.target as HTMLInputElement;
+    let value = parseInt(ele.value);
+    if (isNaN(value)) return;
+    this.currentPage = value;
+  }
+
+  onSizeChange($event: Event) {
+    let ele = event.target as HTMLSelectElement;
+    let value = parseInt(ele.value);
+    if (isNaN(value)) return;
+    this.itemsPerPage = value;
+    this.pageChanged.emit({ page: this.currentPage, itemsPerPage: value });
+  }
+
 }

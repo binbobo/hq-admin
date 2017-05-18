@@ -1,24 +1,27 @@
 import { NgModule } from '@angular/core';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
-import { ServerTranslateLoader, HttpService, requestOptionsProvider, UserService, EventDispatcher } from 'app/shared/services';
-import { PaginationComponent, MenuComponent, LoadingComponent, ClippedWordComponent, SmartTableComponent } from "./components";
-import { HtmlPipe, SplitPipe, CentToYuanPipe, DurationHumanizePipe } from './pipes';
+import * as services from 'app/shared/services';
+import * as components from "./components";
+import * as pipes from './pipes';
+import * as directives from './directives';
 import { FormsModule } from '@angular/forms';
 import { PaginationModule, PopoverModule, AlertModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
 import { TranslateStore } from "@ngx-translate/core/src/translate.store";
-import * as directives from 'app/shared/directives';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgPipesModule } from 'ngx-pipes';
 import { TreeviewModule } from "ngx-treeview";
+import { StandardDatetimePipe } from './pipes/standard-datetime/standard-datetime.pipe';
+import { StandardDatePipe } from './pipes/standard-datetime/standard-date.pipe';
+import { StandardTimePipe } from './pipes/standard-datetime/standard-time.pipe';
 
 const HQ_COMPONENTS = [
-    PaginationComponent,
-    ClippedWordComponent,
-    MenuComponent,
-    LoadingComponent,
-    SmartTableComponent,
+    components.PaginationComponent,
+    components.ClippedWordComponent,
+    components.MenuComponent,
+    components.LoadingComponent,
+    components.SmartTableComponent,
 ];
 
 const HQ_DIRECTIVE_COMPONENTS = [
@@ -26,6 +29,7 @@ const HQ_DIRECTIVE_COMPONENTS = [
     directives.HqAlerterComponent,
     directives.TableTypeaheadComponent,
     directives.FormControlErrorComponent,
+    directives.PrintComponent,
 ];
 
 const HQ_DIRECTIVES = [
@@ -38,17 +42,19 @@ const HQ_DIRECTIVES = [
 ]
 
 const HQ_PIPES = [
-    HtmlPipe,
-    SplitPipe,
-    CentToYuanPipe,
-    DurationHumanizePipe
+    pipes.SplitPipe,
+    pipes.CentToYuanPipe,
+    pipes.DurationHumanizePipe,
+    pipes.StandardDatePipe,
+    pipes.StandardDatetimePipe,
+    pipes.StandardTimePipe
 ];
 
 const HQ_SERVICES = [
-    UserService,
-    requestOptionsProvider,
-    HttpService,
-    EventDispatcher,
+    services.UserService,
+    services.requestOptionsProvider,
+    services.HttpService,
+    services.EventDispatcher,
 ]
 
 @NgModule({
@@ -62,7 +68,7 @@ const HQ_SERVICES = [
         PopoverModule.forRoot(),
         Ng2SmartTableModule,
         TranslateModule.forChild({
-            loader: { provide: TranslateLoader, useClass: ServerTranslateLoader },
+            loader: { provide: TranslateLoader, useClass: services.ServerTranslateLoader },
         }),
     ],
     exports: [
@@ -73,7 +79,7 @@ const HQ_SERVICES = [
         HQ_PIPES,
         HQ_DIRECTIVES,
     ],
-    declarations: [HQ_COMPONENTS, HQ_PIPES, HQ_DIRECTIVE_COMPONENTS, HQ_DIRECTIVES, SplitPipe, CentToYuanPipe],
+    declarations: [HQ_COMPONENTS, HQ_PIPES, HQ_DIRECTIVE_COMPONENTS, HQ_DIRECTIVES],
     entryComponents: [HQ_DIRECTIVE_COMPONENTS]
 })
 export class SharedModule {
