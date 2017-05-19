@@ -9,6 +9,8 @@ export class SpinnerDirective implements OnChanges, OnInit {
   public loading: boolean;
   @Input()
   public size: number;
+  @Input()
+  public color: string = "#2d384b";
   private el: HTMLElement;
   private spinner: HTMLElement;
   private timer: any;
@@ -31,12 +33,13 @@ export class SpinnerDirective implements OnChanges, OnInit {
     if (this.size) {
       this.spinner.style.fontSize = `${this.size}px`;
     }
+    this.spinner.style.color = this.color;
     this.spinner.classList.remove('d-none');
     let rotate = 0;
     this.timer = setInterval(() => {
-      rotate = (rotate + 10) % 360;
+      rotate = (rotate + 6) % 360;
       this.spinner.style.transform = `rotate(${rotate}deg)`;
-    }, 20);
+    }, 33);
   }
 
   private clear() {
@@ -60,14 +63,17 @@ export class SpinnerDirective implements OnChanges, OnInit {
       } else {
         this.clear();
       }
-    }else{
-      
     }
   }
 
   ngOnInit(): void {
     this.spinner = document.createElement('i');
-    this.spinner.className = 'fa fa-spinner ml-1 d-none';
+    this.spinner.className = 'fa fa-spinner ml-1';
+    if (!this.loading) {
+      this.spinner.classList.add('d-none');
+    } else {
+      this.init();
+    }
     this.el.appendChild(this.spinner);
   }
 

@@ -1,11 +1,9 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { ProviderService, ProviderListRequest } from '../../../provider/provider.service';
 import { TypeaheadRequestParams, HqAlerter, PrintDirective } from 'app/shared/directives';
-import { PurchaseReturnRequest } from "app/pages/chain/mountings/outbound/purchase-return/purchase-return.service";
-import { Location } from '@angular/common';
 import { SuspendBillDirective } from 'app/pages/chain/chain-shared';
 import { ModalDirective } from 'ngx-bootstrap';
-import { PurchaseReturnPrintItem, PurchaseReturnItem, PurchaseReturnService, GetBillCodeRequest, GetProductsRequest } from '../purchase-return.service';
+import { PurchaseReturnPrintItem, PurchaseReturnItem, PurchaseReturnService, GetBillCodeRequest, GetProductsRequest, PurchaseReturnRequest } from '../purchase-return.service';
 import { SelectOption, DataList } from 'app/shared/models';
 
 @Component({
@@ -32,7 +30,6 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
     injector: Injector,
     private providerService: ProviderService,
     private returnService: PurchaseReturnService,
-    private location: Location
   ) {
     super(injector, returnService);
     this.size = 5;
@@ -149,9 +146,5 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
         el.disabled = false;
         this.alerter.error(err);
       })
-  }
-
-  private cancel() {
-    this.location.back();
   }
 }

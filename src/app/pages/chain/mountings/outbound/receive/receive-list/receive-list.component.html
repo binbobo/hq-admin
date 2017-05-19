@@ -55,7 +55,6 @@
   </div>
   <div class="card-footer text-muted">
     <button class="btn btn-primary" (click)="generate($event)">生成内部领用单</button>
-    <button class="btn btn-warning" (click)="cancel($event)">取消</button>
     <button [disabled]="!model?.list?.length" class="btn btn-info" (click)="suspend($event)">挂单</button>
   </div>
 </div>

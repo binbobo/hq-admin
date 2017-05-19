@@ -5,3 +5,9 @@
 .hq-pagination .goto{
     width:80px;
 }
+
+.loading{
+    margin: 0 auto;
+    padding: 120px;
+    width: 60px;
+}

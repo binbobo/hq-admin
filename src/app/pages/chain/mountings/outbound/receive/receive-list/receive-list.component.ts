@@ -4,7 +4,6 @@ import { SelectOption, PagedResult } from 'app/shared/models';
 import { ModalDirective } from 'ngx-bootstrap';
 import { ReceiveService, ReceiveListRequest, ReceiveListItem, ReceivePrintItem } from '../receive.service';
 import { SuspendBillDirective } from 'app/pages/chain/chain-shared';
-import { Location } from '@angular/common';
 
 @Component({
   selector: 'hq-receive-list',
@@ -27,7 +26,6 @@ export class ReceiveListComponent implements OnInit {
 
   constructor(
     private receiveService: ReceiveService,
-    private location: Location
   ) { }
 
   ngOnInit() {
@@ -124,10 +122,6 @@ export class ReceiveListComponent implements OnInit {
       .then(options => this.departments = options)
       .then(options => this.reset())
       .catch(err => this.alerter.error(err));
-  }
-
-  cancel() {
-    this.location.back();
   }
 }
 
