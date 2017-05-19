@@ -8,6 +8,10 @@ table{
     margin: 2px;
 }
 
+td{
+    padding: 3px 10px;
+}
+
 tbody tr{
     cursor: pointer;
 }

@@ -224,6 +224,8 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
         }
       }
     }
+
+    this.onSearch();
   }
 
   /**

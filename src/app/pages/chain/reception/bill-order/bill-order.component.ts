@@ -1,8 +1,9 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DataList, StorageKeys } from "app/shared/models";
 import { BillOrderService, OrderListSearch } from "./bill-order.service";
 import { Router } from "@angular/router";
+import { HqAlerter } from "app/shared/directives";
 
 @Component({
     selector: 'app-bill-order',
@@ -11,6 +12,7 @@ import { Router } from "@angular/router";
 })
 
 export class BillOrderComponent extends DataList<any>{
+
     sumFee: number;
     otherFee: number;
     billId: any;
@@ -18,6 +20,8 @@ export class BillOrderComponent extends DataList<any>{
     orderStatusData: any;
     selectedOrder = null;
     workSheetSearchForm: FormGroup;
+    @ViewChild(HqAlerter)
+    protected alerter: HqAlerter;
     params: OrderListSearch;
     materialFee = 0;
     workHourFee = 0;
@@ -55,10 +59,12 @@ export class BillOrderComponent extends DataList<any>{
         this.onLoadList();
     }
     // 点击结算事件
-    orderDetailsDialog(evt, id, dialog) {
+    orderDetailsDialog(evt, id, dialog, item) {
+        console.log(item)
         this.isShowCostDetail = false;
         this.isShowCost = true;
         this.isShowPrint = false;
+        this.leaveMileage = "";
         evt.preventDefault();
         // 显示窗口
         dialog.show();
@@ -80,7 +86,8 @@ export class BillOrderComponent extends DataList<any>{
             // 其它费： 0
             this.otherFee = 0;
             // 总计费： 
-            this.sumFee = (data.workHourCost + data.materialCost + this.otherFee);
+            this.sumFee = data.amount;
+            this.billPrice = (Number(this.sumFee) / 100).toFixed(2);
             // this.billPrice = this.sumFee;           
         })
 
@@ -98,11 +105,12 @@ export class BillOrderComponent extends DataList<any>{
         confirmModal.hide();
         console.log(confirmModal.id)
         this.service.put(confirmModal.id).then(() => {
-            console.log("撤销结算成功"), this.onLoadList()
+            this.alerter.info('撤销结算成功!', true, 3000);
+            this.onLoadList()
         }).catch(err => console.log("撤销结算失败" + err));
 
     }
-
+    private billPrice: any;
     // 点击详情事件
     DetailsDialog(evt, id, dialog) {
         this.isShowCost = false;
@@ -133,26 +141,35 @@ export class BillOrderComponent extends DataList<any>{
             // 其它费： 0
             this.otherFee = 0;
             // 总计费： 
-            this.sumFee = (data.workHourCost + data.materialCost + this.otherFee);
+            this.sumFee = data.amount;
 
             // this.billPrice = this.sumFee;
         })
     }
     private billData = {};
-    private billPrice;
-    private leaveMileage;
+
+    private leaveMileage = "";
     // 点击确定生成结算单
     BillClick(evt, dialog) {
-        this.isShowCost = false;
-        evt.preventDefault();
-        dialog.hide();
-        // this.billData["id"] = this.billId;
-        this.billData["price"] = this.billPrice;
-        this.billData["leaveMileage"]=this.leaveMileage;
-        this.service.post(this.billData, this.billId).then(() => {
-            console.log('生成结算单成功'); this.onLoadList();
-        }).catch(err => console.log("结算失败" + err));
 
+        evt.preventDefault();
+
+        // this.billData["id"] = this.billId;
+        this.billData["price"] = this.billPrice * 100;
+        this.billData["leaveMileage"] = this.leaveMileage;
+        this.billData=JSON.stringify(this.billData);
+        console.log(this.billData)
+        if (this.leaveMileage.length === 0) {
+            this.alerter.error("出厂里程不能为空", true, 3000);
+            return false;
+        } else {
+            this.service.post(this.billData, this.billId).then((result) => {
+                this.alerter.info("生成结算单成功", true, 3000);
+                this.isShowCost = false;
+                setTimeout(dialog.hide(), 6000);
+                this.onLoadList();
+            }).catch(err => this.alerter.error(err, true, 3000));
+        }
 
     }
     // 点击打印事件

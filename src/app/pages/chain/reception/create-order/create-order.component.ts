@@ -50,9 +50,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   // 新创建的维修工单数据  用于打印
   newWorkOrderData: any;
 
-  // 是否打印
-  confirmPrint = false;
-
   // 费用计算相关
   fee = {
     workHour: 0,
@@ -62,7 +59,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   regex = {
     plateNo: /^[\u4e00-\u9fa5]{1}[A-Z]{1}[A-Z_0-9]{5}$/,
-    phone: /^1[3|4|5|8]\d{9}$/,
+    phone: /^1[3|4|5|7|8]\d{9}$/,
     mileage: /^[0-9]+([.]{1}[0-9]{1,2})?$/
   };
 
@@ -301,18 +298,16 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       this.newMaintenanceItemData.splice(index, 1, data);
 
       // 更新价格
-      this.fee.workHour += (parseFloat(data.amount) - parseFloat(this.selectedItem.amount));
-      this.fee.workHour = this.fee.workHour * 100;
+      const diff: number = parseFloat(data.amount) - parseFloat(this.selectedItem.amount);
+      this.fee.workHour += diff * 100;
 
       // 清空当前编辑的维修项目记录
       this.selectedItem = null;
     } else {
       // 新增
       this.newMaintenanceItemData.push(data);
-
       // 费用计算
-      this.fee.workHour += parseFloat(data.amount);
-      this.fee.workHour = this.fee.workHour * 100;
+      this.fee.workHour += parseFloat(data.amount) * 100;
     }
     // 记录当前选择的维修项目
     this.selectedServices = this.getSelectedServices();
@@ -557,8 +552,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.enableCustomerVehicleField();
 
     this.newWorkOrderData = null;
-
-    this.confirmPrint = false;
   }
 
   print() {
@@ -583,7 +576,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
         // this.alerter.success('创建工单成功！');
         // 创建订单成功之后  做一些重置操作
         if (confirm('创建工单成功！ 是否打印？')) {
-          this.confirmPrint = true;
           setTimeout(() => {
             this.print();
             // 清空数据

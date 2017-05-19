@@ -1,27 +1,15 @@
-/*mileage unit*/
-.mileageUnit {
-    background: transparent;
-    border:0;
-}
-
-
 .textInputBtn {
     border: 1px solid #eed;
 }
 
 hr {
     border-top:1px dotted #ccc;
-    /*Rest of stuff here*/
-}
-
-.btn-sm.my-sm {
-    padding: .01rem .1rem;
 }
 input.ng-valid[required], input.ng-valid.required  {
-  border-left: 5px solid #42A948 !important; /* green */
+  border-left: 5px solid #42A948 !important; 
 }
 input.ng-touched.ng-invalid  {
-  border-left: 5px solid #a94442; /* red */
+  border-left: 5px solid #a94442; 
   border-radius: .2rem
 }
 
