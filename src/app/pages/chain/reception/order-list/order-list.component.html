@@ -59,7 +59,7 @@
             <i class="fa fa-angle-double-down" [hidden]="!isCollapsed"></i>
           </a>
         </legend>
-        <div [collapse]="isCollapsed" class="card mt-3 card-block">
+        <div [collapse]="isCollapsed" class="mt-3">
           <div class="well well-lg">
             <div class="form-group row">
               <label for="brand" class="col-1 col-form-label col-form-label">品牌</label>
@@ -198,8 +198,13 @@
           </tr>
         </tfoot>
       </table>
+<<<<<<< HEAD
       <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
     </div>
+=======
+    </div>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+>>>>>>> f48f484cb7a8b90677591228e33951e46c266546
 
 
     <!--详情 begin-->

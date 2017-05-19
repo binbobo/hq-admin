@@ -363,6 +363,9 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             this.alerter.success('执行' + msg + '操作成功！');
             // 设置按钮不可用
             this.selectedOrder.serviceOutputs.enableAssignment = false;
+
+            // 刷新页面
+            this.load();
         }).catch(err => {
             this.alerter.error('执行' + msg + '操作成功！' + err);
         });
