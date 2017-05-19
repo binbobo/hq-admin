@@ -72,9 +72,9 @@
                 <td>&nbsp;</td>
                 <td>{{item.serviceName}}</td>
                 <td>{{item.workHour}}</td>
-                <td>{{item.price/100}}</td>
+                <td>{{item.price|centToYuan}}</td>
                 <td>{{item.discount}}</td>
-                <td>{{item.amount/100}}</td>
+                <td>{{item.amount|centToYuan}}</td>
                 <td>{{item.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
               </tr>
 
@@ -85,9 +85,9 @@
                 </td>
                 <td>{{item?.serviceName}}</td>
                 <td>{{item?.workHour}}</td>
-                <td>{{item?.price}}</td>
+                <td>{{item?.price|centToYuan}}</td>
                 <td>{{item?.discount}}</td>
-                <td>{{item?.amount}}</td>
+                <td>{{item?.amount|centToYuan}}</td>
                 <td>{{item?.operationTime}}</td>
               </tr>
             </tbody>
@@ -118,7 +118,7 @@
             </tr>
           </table>
           <div>
-            <button class="btn btn-sm btn-secondary mr-2" [disabled]="!!((newAttachData.length)>=1)" (click)="attachModal.show()" placement="right">新增</button>
+            <button class="btn btn-sm btn-secondary mr-2" [disabled]="!!((newAttachData?.length)>=1)" (click)="attachModal.show()" placement="right">新增</button>
           </div>
         </tab>
 
@@ -177,8 +177,8 @@
               <tr *ngFor="let item of lastDataProjectList ">
                 <td>{{item.serviceName}}</td>
                 <td>{{item.workHour}}</td>
-                <td>{{item.price}}</td>
-                <td>{{item.amount}}</td>
+                <td>{{item.price|centToYuan}}</td>
+                <td>{{item.amount|centToYuan}}</td>
                 <td>{{item.discount}}</td>
                 <td>{{item.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
                 <td>{{item.operatorName}}</td>
@@ -249,10 +249,11 @@
 
       <div class="card" style="margin-top:40px;">
         <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
-          折前费用: 工时费<span class="ml-2 mr-2">{{workHourFee|centToYuan}}</span> | 材料费
+          工时费<span class="ml-2 mr-2">{{workHourFee|centToYuan}}</span> | 材料费
           <span class="ml-2 mr-2">{{materialFee|centToYuan}}</span> | 其它
-          <span class="ml-2 mr-2">{{otherFee|centToYuan}}</span> | 合计
-          <span class="ml-2 mr-2">{{sumFee|centToYuan}}</span>|
+          <span class="ml-2 mr-2">{{otherFee|centToYuan}}</span> | 应收金额
+          <span class="ml-2 mr-2">{{sumFee|centToYuan}}</span>| 折扣金额
+          <span class="ml-2 mr-2">{{(workHourFee-sumFee)|centToYuan}}</span>
         </div>
       </div>
 
@@ -261,7 +262,7 @@
   </div>
   <div class="card-footer text-muted">
     <button type="button" class="btn  btn-primary" [disabled]="!isableAppend" (click)="submitAddOrder()">提交增项</button>
-    <button type="button" class="btn  btn-success" (click)="suspend()">挂单</button>
+    <button type="button" class="btn  btn-success" [disabled]="!isableSuspend" (click)="suspend()">挂单</button>
   </div>
 
 </div>

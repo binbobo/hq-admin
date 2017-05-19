@@ -170,7 +170,7 @@
   <!--提交按钮-->
   <div class="card-footer text-muted">
     <button class="btn btn-primary" (click)="OnCreatReturnBill()">生成维修退料单</button>
-    <button class="btn btn-secondary" (click)="finishedOrder($event,  confirmModal)">取消</button>
+    <!--<button class="btn btn-secondary" (click)="finishedOrder($event,  confirmModal)">取消</button>-->
     <button class="btn btn-success" (click)="suspend()">挂单</button>
     <button class="btn btn-secondary " options="printOptions" (onConfirm)="onConfirmNumber($event)" [hqMutilSelect]="numberPrintList"
       title="选择流水号" href="#" placement="right">打印</button>
