@@ -57,8 +57,14 @@ export class PurchaseReturnRequest {
     public list: Array<PurchaseReturnItem> = [],
     public provider?: string,
     public inunit?: string,
+    public originalBillId?: string,
     public suspendedBillId?: string,
+    public billCode?: string
   ) { }
+
+  get valid() {
+    return this.inunit && this.originalBillId && this.list && this.list.length;
+  }
 }
 
 export class PurchaseReturnItem {
@@ -74,14 +80,14 @@ export class PurchaseReturnItem {
     public productName?: string,
     public productCode?: string,
     public productCategory?: string,
-    public productSpecification?: string,
+    public specification?: string,
     public storeId?: string,
     public locationId?: string,
     public packingCode?: string,
     public description?: string,
-
+    public originalId?: string,
     public locationName?: string,
-    public houseName?: string,
+    public storeName?: string,
     public vehicleName?: string,
   ) { }
 }

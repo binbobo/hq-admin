@@ -15,13 +15,10 @@
       </div>
       <div class="form-group mb-2">
         <label>*入库单号</label>
-        <select class="mx-sm-3 form-control" (change)="onBillCodeChange($event)">
+        <select class="mx-sm-3 form-control" name="suppliers" (change)="onBillCodeChange($event)">
           <option>请选择入库单号</option>
-          <option [value]="item.value" *ngFor="let item of billCodes">{{item.text}}</option>
+          <option [value]="item.value" [attr.selected]="item.checked" *ngFor="let item of billCodes">{{item.text}}</option>
         </select>
-      </div>
-      <div class="form-group mb-2">
-        <button (click)="createModal.show()" class="btn btn-primary mx-sm-1" translate>新增</button>
       </div>
     </form>
     <div class="overflow-auto">
@@ -47,7 +44,7 @@
         <tbody>
           <tr *ngFor="let item of list">
             <td class="text-center">
-              <button (click)="onProviderEdit(item)" class="btn btn-sm btn-info">退库</button>
+              <button [disabled]="getAddedCount(item)>=item.count" (click)="onProductSelect(item)" class="btn btn-sm btn-info">退库</button>
             </td>
             <td>{{item.storeName}}</td>
             <td>{{item.brand}}</td>
@@ -71,7 +68,7 @@
       <table class="table table-bordered table-striped">
         <thead>
           <tr>
-            <th translate>装箱单号</th>
+            <th translate>操作</th>
             <th translate>仓库</th>
             <th translate>品牌</th>
             <th translate>配件编码</th>
@@ -89,7 +86,9 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of model.list;let i=index">
-            <td>{{item.packingCode }}</td>
+            <td class="text-center">
+              <button (click)="onProductRemove(item)" class="btn btn-sm btn-warning">删除</button>
+            </td>
             <td>{{item.storeName}}</td>
             <td>{{item.brand}}</td>
             <td>{{item.productCode }}</td>
@@ -109,8 +108,8 @@
     </div>
   </div>
   <div class="card-footer text-muted">
-    <button class="btn btn-primary" (click)="generate($event)">生成采购退库单</button>
-    <button [disabled]="!model?.list?.length" class="btn btn-info" (click)="suspend($event)">挂单</button>
+    <button [disabled]="!model?.valid" class="btn btn-primary" (click)="generate($event)">生成采购退库单</button>
+    <button [disabled]="!model?.valid" class="btn btn-info" (click)="suspend($event)">挂单</button>   
   </div>
 </div>
 
@@ -121,8 +120,8 @@
         <h5 class="modal-title pull-left">新增</h5>
         <button class="close pull-right" (click)="createModal.hide()">&times;</button>
       </div>
-      <div class="modal-body">
-        <hq-return-create (formSubmit)="onCreate($event)"></hq-return-create>
+      <div class="modal-body" *ngIf="createModal.isShown">
+        <hq-return-create [model]="product" (close)="createModal.hide()" (submit)="onCreate($event)"></hq-return-create>
       </div>
     </div>
   </div>

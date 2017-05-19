@@ -8,7 +8,7 @@ export class ProcurementService {
   constructor(private httpService: HttpService) { }
 
   public getProducts(request: GetProductsRequest): Promise<PagedResult<any>> {
-    let url = Urls.chain.concat('/PurchaseDetails/GetPageList');
+    let url = Urls.chain.concat('/Products/GetListByNameOrCode');
     let search = request.serialize();
     return this.httpService.get<PagedResult<any>>(url, search)
       .catch(err => Promise.reject(`获取配件信息失败：${err}`));
@@ -32,8 +32,8 @@ export class ProcurementService {
 
 export class GetProductsRequest extends PagedParams {
   constructor(
-    public productCode?: string,
-    public productName?: string,
+    public code?: string,
+    public name?: string,
   ) {
     super();
   }
