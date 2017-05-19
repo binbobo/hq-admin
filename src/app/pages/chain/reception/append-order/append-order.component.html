@@ -1,6 +1,6 @@
 <ng-template hq-alerter></ng-template>
 <div class="card append-order">
-  <div class="card-header">
+  <div class="card-header"> 
     <span>增项</span>
     <ng-template hqSuspendBill="MWIM" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
@@ -70,7 +70,7 @@
             <tbody>
               <tr *ngFor="let item of maintenanceProjectData">
                 <td>&nbsp;</td>
-                <td>{{item.serviceName}}</td>
+                <td><span  [class.triangle]="item.type === 3"></span>{{item.serviceName}}</td>
                 <td>{{item.workHour}}</td>
                 <td>{{item.price|centToYuan}}</td>
                 <td>{{item.discount}}</td>
@@ -249,11 +249,11 @@
 
       <div class="card" style="margin-top:40px;">
         <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
-          工时费<span class="ml-2 mr-2">{{workHourFee|centToYuan}}</span> | 材料费
-          <span class="ml-2 mr-2">{{materialFee|centToYuan}}</span> | 其它
-          <span class="ml-2 mr-2">{{otherFee|centToYuan}}</span> | 应收金额
-          <span class="ml-2 mr-2">{{sumFee|centToYuan}}</span>| 折扣金额
-          <span class="ml-2 mr-2">{{(workHourFee-sumFee)|centToYuan}}</span>
+          工时费：<span class="ml-2 mr-2">{{workHourFee|centToYuan}}元</span> | 材料费：
+          <span class="ml-2 mr-2">{{materialFee|centToYuan}}元</span> | 其它：
+          <span class="ml-2 mr-2">{{otherFee|centToYuan}}元</span> | 应收金额：
+          <span class="ml-2 mr-2">{{sumFee|centToYuan}}元</span>| 折扣金额：
+          <span class="ml-2 mr-2">{{(workHourFee-sumFee)|centToYuan}}元</span>
         </div>
       </div>
 

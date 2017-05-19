@@ -170,7 +170,8 @@ export class AppendOrderComponent {
     };
     console.log(postData);
 
-    this.service1.put(postData, this.listId).then(() => {
+    this.service1.put(postData, this.listId).then((result) => {
+      console.log(result)
       this.alerter.info('增项成功!', true, 2000);
       this.suspendBill.refresh();
       // this.initOrderData();
