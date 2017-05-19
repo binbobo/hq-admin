@@ -264,25 +264,25 @@
           </tbody>
         </table>
       </tab>
-      <br>
-      <!--只有前4个选项卡显示-->
-      <div *ngIf="true" class="card">
-        <div class="card-header" style="color:gray;padding: 3px 5px;">
-          折前费用: 工时费
-          <span class="ml-2 mr-2">{{fee.workHour|centToYuan}}</span> | 材料费
-          <span class="ml-2 mr-2">{{fee.material|centToYuan}}</span> | 其它
-          <span class="ml-2 mr-2">{{fee.other|centToYuan}}</span> | 合计
-          <span class="ml-2 mr-2">{{fee.workHour+fee.material+fee.other|centToYuan}}</span>|
-        </div>
-        <div class="card-block text-center">
-          <input type="text" class="btn textInputBtn" readonly [disabled]="!enableCreateWorkSheet" (click)="createWorkSheet()" value="生成工单">
-          <input type="text" class="btn textInputBtn" readonly [disabled]="!enableSuspendWorkSheet" (click)="suspendOrder()" value="挂单">
-        </div>
-      </div>
     </tabset>
+    <br>
+    <!--只有前4个选项卡显示-->
+    <div *ngIf="true" class="card">
+      <div class="card-header" style="color:gray;padding: 3px 5px;">
+        折前费用: 工时费
+        <span class="ml-2 mr-2">{{fee.workHour|centToYuan}}</span> | 材料费
+        <span class="ml-2 mr-2">{{fee.material|centToYuan}}</span> | 其它
+        <span class="ml-2 mr-2">{{fee.other|centToYuan}}</span> | 合计
+        <span class="ml-2 mr-2">{{fee.workHour+fee.material+fee.other|centToYuan}}</span>|
+      </div>
+    </div>
+    <br>
+    <div class="text-center">
+      <input type="text" class="btn textInputBtn" readonly [disabled]="!enableCreateWorkSheet" (click)="createWorkSheet()" value="生成工单">
+      <input type="text" class="btn textInputBtn" readonly [disabled]="!enableSuspendWorkSheet" (click)="suspendOrder()" value="挂单">
+    </div>
   </div>
-
-  <div bsModal #addModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div bsModal #addModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
     <!--每次都创建一个新的 为了清空表单-->
     <div *ngIf="addModal.isShown" class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -298,4 +298,4 @@
       </div>
     </div>
   </div>
-  <hq-workorder-detail-print *ngIf="confirmPrint" class="invisible" [data]="newWorkOrderData" hqPrint #printer="hq-print"></hq-workorder-detail-print>
+  <hq-workorder-detail-print *ngIf="newWorkOrderData" class="invisible" [data]="newWorkOrderData" hqPrint #printer="hq-print"></hq-workorder-detail-print>
