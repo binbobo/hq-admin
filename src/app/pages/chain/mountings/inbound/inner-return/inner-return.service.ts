@@ -4,6 +4,10 @@ import { SelectOption, ListResult, PagedParams, BasicService, PagedResult, ApiRe
 
 @Injectable()
 export class InnerReturnService implements BasicService<any>{
+    // get(id: string): Promise<any> {
+    //   throw new Error('Method not implemented.');
+    // }
+
     create(body: any): Promise<any> {
       throw new Error('Method not implemented.');
     }
@@ -40,11 +44,7 @@ getUseDetailsList(params: BillCodeSearchRequest): Promise<PagedResult<any>> {
       })
       .catch(err => Promise.reject(`获取配件信息数据失败：${err}`));
   }
-  
-
-
- 
-
+  //打印
   get(code: string): Promise<InnerPrintItem> {
     if (!code) return Promise.resolve({});
     let url = Urls.chain.concat('/UseReturnDetails/Print?BillCode=', code);
@@ -55,9 +55,9 @@ getUseDetailsList(params: BillCodeSearchRequest): Promise<PagedResult<any>> {
       .catch(err => Promise.reject(`获取内部退料单信息失败：${err}`));
   }
   //生成退料单
-  createReturnList(data: InnerListRequest): Promise<string> {
+  createReturnList(data: any): Promise<any> {
     let url = Urls.chain.concat('/StoreInOutDetails/CreateUseReturnBill');
-    return this.httpService.post<ApiResult<string>>(url, data)
+    return this.httpService.post<ApiResult<any>>(url, data)
       .then(result => result.data)
       .catch(err => Promise.reject(`生成退料清单失败：${err}`))
   }

@@ -1,4 +1,4 @@
-.card {
+.card{
     border: none;
     font-size: 14px;
 }
@@ -11,10 +11,13 @@
     border: 1px solid #333333;
     font-weight: 400;
 }
-.clearborder{
+.card .clearborder{
     border: none;
     padding-top: 0;
     font-size: 12px;
+}
+.card .clearborder p{
+    font-size: 14px;
 }
 .card-block label {
     width: 70px;

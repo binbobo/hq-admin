@@ -8,9 +8,10 @@
 </div>
 <hr>
 <div class="print-page">
-  <table class="table table-bordered table-sm table-striped">
+  <table class="table table-bordered table-striped">
     <thead>
       <tr>
+        <th>序号</th>
         <th translate>配件编码</th>
         <th translate>配件名称</th>
         <th translate>仓库</th>
@@ -21,7 +22,8 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let item of model?.list;let i=index">
+      <tr *ngFor="let item of model?.list;">
+        <td class="text-center">{{item.number}}</td>
         <td class="text-center">{{item.productCode }}</td>
         <td class="text-center">{{item.productName}}</td>
         <td class="text-center">{{item.storeName }}</td>
