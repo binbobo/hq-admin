@@ -1,3 +1,69 @@
+<!--<div class="card">
+  <div class="card-header">
+    新增车主
+  </div>
+  <div class="card-block">
+    <form>
+      <div class="form-group row">
+        <label for="customerName" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车主</label>
+        <div class="col-2">
+          <input type="text" class="form-control" value="">
+        </div>
+        <label for="sex" class="col-1 col-form-label">性别</label>
+        <div class="col-2">
+          <input type="text" class="form-control" value="">
+        </div>
+        <label for="birthday" class="col-1 col-form-label">生日</label>
+        <div class="col-2">
+          <input type="text" class="form-control" value="">
+        </div>
+        <label for="identityCard" class="col-1 col-form-label">身份证号</label>
+        <div class="col-2">
+          <input type="text" class="form-control" value="">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="phone" class="col-1 col-form-label">手机号</label>
+        <div class="col-2">
+          <input type="text" class="form-control" value="">
+        </div>
+        <label for="tel" class="col-1 col-form-label">电话</label>
+        <div class="col-2">
+          <input type="text" class="form-control" value="">
+        </div>
+        <label for="fax" class="col-1 col-form-label">传真</label>
+        <div class="col-2">
+          <input type="text" class="form-control" value="">
+        </div>
+        <label for="email" class="col-1 col-form-label">Email</label>
+        <div class="col-2">
+          <input type="text" class="form-control" value="">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="province" class="col-1 col-form-label">省份</label>
+        <div class="col-2">
+          <input type="text" class="form-control" value="">
+        </div>
+        <label for="city" class="col-1 col-form-label">城市</label>
+        <div class="col-2">
+          <input type="text" class="form-control" value="">
+        </div>
+        <label for="area" class="col-1 col-form-label">区县</label>
+        <div class="col-2">
+          <input type="text" class="form-control" value="">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="address" class="col-1 col-form-label">详细地址</label>
+        <div class="col-5">
+          <input type="text" class="form-control" value="">
+        </div>
+      </div>
+    </form>
+    <hr>
+  </div>
+</div>-->
 <div class="container">
   <div class="row">
     <label>车主: </label>
@@ -10,7 +76,7 @@
     </div>
     <label>生日: </label>
     <div class="col-2">
-      {{data?.birthday|date:"yyyy/MM/dd"}}
+      {{data?.birthday|sDate}}
     </div>
     <label>身份证号: </label>
     <div class="col-2">
@@ -62,37 +128,39 @@
 <hr>
 <tabset>
   <tab heading="车辆信息">
-    <table class="table table-striped table-bordered">
-      <thead>
-        <tr>
-          <th>车牌号</th>
-          <th>品牌</th>
-          <th>车系</th>
-          <th>车型</th>
-          <th>动机号</th>
-          <th>VIN</th>
-          <th>车身颜色</th>
-          <th>购车日期</th>
-          <th>验车时间</th>
-          <th>保险到期日期</th>
-          <th>保险公司</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of data?.customerVehicles">
-          <td>{{item.plateNo}}</td>
-          <td>{{item.brand}}</td>
-          <td>{{item.model}}</td>
-          <td>{{item.series}}</td>
-          <td>{{item.engineNo}}</td>
-          <td>{{item.vin}}</td>
-          <td>{{item.vehicleColor}}</td>
-          <td>{{item.purchaseDate|date:"yyyy/MM/dd"}}</td>
-          <td>{{item.validate|date:"yyyy/MM/dd"}}</td>
-          <td>{{item.insuranceDueDate|date:"yyyy/MM/dd"}}</td>
-          <td>{{item.insuranceCompany}}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="overflow-auto">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>车牌号</th>
+            <th>品牌</th>
+            <th>车系</th>
+            <th>车型</th>
+            <th>动机号</th>
+            <th>VIN</th>
+            <th>车身颜色</th>
+            <th>购车日期</th>
+            <th>验车时间</th>
+            <th>保险到期日期</th>
+            <th>保险公司</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data?.customerVehicles">
+            <td>{{item.plateNo}}</td>
+            <td>{{item.brand}}</td>
+            <td>{{item.model}}</td>
+            <td>{{item.series}}</td>
+            <td>{{item.engineNo}}</td>
+            <td>{{item.vin}}</td>
+            <td>{{item.vehicleColor}}</td>
+            <td>{{item.purchaseDate|sDate}}</td>
+            <td>{{item.validate|sDate}}</td>
+            <td>{{item.insuranceDueDate|sDate}}</td>
+            <td>{{item.insuranceCompany}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </tab>
 </tabset>

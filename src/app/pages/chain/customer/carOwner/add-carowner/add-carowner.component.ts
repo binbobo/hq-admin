@@ -2,11 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CustomerService, CustomerNameSearchRequest, CustomerPhoneSearchRequest } from '../../customer.service';
 import { OrderService } from '../../../reception/order.service';
-import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { TypeaheadRequestParams, HqAlerter } from 'app/shared/directives';
 import * as moment from 'moment';
-import { ModalDirective } from 'ngx-bootstrap';
 
 @Component({
   selector: 'hq-add-carowner',
@@ -42,10 +40,8 @@ export class AddCarownerComponent implements OnInit {
     protected orderService: OrderService,
     private fb: FormBuilder,
 
-    private route: ActivatedRoute,
     private location: Location,
   ) {
-
   }
 
   goBack() {
@@ -61,14 +57,12 @@ export class AddCarownerComponent implements OnInit {
 
   // 删除一条车辆记录 处理程序
   onDelVehicleConfirmHandler(plateNo) {
-    //
     this.newVehiclesData.filter((item, index) => {
       if (item.plateNo === plateNo) {
         this.newVehiclesData.splice(index, 1);
         return;
       }
     });
-
     this.enableSaveCustomer = true;
   }
 

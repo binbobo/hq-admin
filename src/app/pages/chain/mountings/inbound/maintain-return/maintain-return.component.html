@@ -17,7 +17,7 @@
       <div class="serach-list">车主:&nbsp;&nbsp;{{orderDetail?.customerName}}</div>
       <div class="serach-list">VIN:&nbsp;&nbsp;{{orderDetail?.vin}}</div>
       <div class="serach-list">维修类型:&nbsp;&nbsp;{{orderDetail?.typeName}}</div>
-      <div class="serach-list">开单时间：&nbsp;&nbsp;{{orderDetail?.createdOnUtc |date:"yyyy/MM/dd HH:mm:ss"}}</div>
+      <div class="serach-list">开单时间：&nbsp;&nbsp;{{orderDetail?.createdOnUtc |sDatetime}}</div>
     </div>
     <!--维修项目-->
     <div class="tab-title">维修项目</div>
@@ -177,8 +177,7 @@
   </div>
 
   <!--提示是否确认退出-->
-  <div bsModal #confirmModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
-    aria-hidden="true">
+  <div bsModal #confirmModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header">

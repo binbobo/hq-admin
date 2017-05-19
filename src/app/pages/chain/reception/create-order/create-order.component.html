@@ -37,24 +37,21 @@
         </div>
         <label for="brand" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>品牌</label>
         <div class="col-2">
-          <!--hqError="品牌"-->
-          <input forceRefresh="true" [hqTableTypeahead]="brandTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onBrandSelect($event)"
+          <input hqError="品牌"  forceRefresh="true" [hqTableTypeahead]="brandTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onBrandSelect($event)"
             type="text" class="form-control" formControlName="brand" id="brand" placeholder="请输入品牌名称">
           <!--品牌id-->
           <input type="hidden" formControlName="brandId" />
         </div>
         <label for="series" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车系</label>
         <div class="col-2">
-          <!--hqError="车系"-->
           <input forceRefresh="true" [hqTableTypeahead]="seriesTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onSeriesSelect($event)"
-            type="text" class="form-control" formControlName="series" id="series" placeholder="输入车系名称">
+            type="text" hqError="车系" class="form-control" formControlName="series" id="series" placeholder="输入车系名称">
           <!--车系id-->
           <input type="hidden" formControlName="seriesId" />
         </div>
         <label for="vehicleName" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车型</label>
         <div class="col-2">
-          <!--hqError="车型" -->
-          <input forceRefresh="true" [hqTableTypeahead]="modelTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onModelSelect($event)"
+          <input hqError="车型" forceRefresh="true" [hqTableTypeahead]="modelTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onModelSelect($event)"
             type="text" class="form-control" formControlName="vehicleName" id="vehicleName" placeholder="输入车型名称">
           <!--车辆id-->
           <input type="hidden" formControlName="vehicleId" />
@@ -166,9 +163,9 @@
               </td>
               <td>{{item.serviceName}}</td>
               <td>{{item.workHour}}</td>
-              <td>{{item.price}}</td>
+              <td>{{item.price|centToYuan}}</td>
               <td>{{item.discount}}</td>
-              <td>{{item.amount}}</td>
+              <td>{{item.amount|centToYuan}}</td>
               <td>{{item.operationTime}}</td>
             </tr>
           </tbody>
@@ -198,7 +195,7 @@
               <td>{{record?.price|centToYuan}}</td>
               <td>{{record?.amount|centToYuan}}</td>
               <td>{{record?.discount}}</td>
-              <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+              <td>{{record?.operateDateTime|sDatetime}}</td>
               <td>{{user.username}}</td>
             </tr>
           </tbody>
@@ -225,9 +222,9 @@
               <td>{{record?.brandName}}</td>
               <td>{{record?.specification}}</td>
               <td>{{record?.count}}</td>
-              <td>{{record?.price}}</td>
-              <td>{{record?.price * record?.count}}</td>
-              <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+              <td>{{record?.price|centToYuan}}</td>
+              <td>{{record?.amount|centToYuan}</td>
+              <td>{{record?.operateDateTime|sDatetime}}</td>
             </tr>
           </tbody>
         </table>
@@ -258,7 +255,7 @@
           <tbody>
             <tr *ngFor="let record of lastOrderData?.suggestServiceOutputs">
               <td>{{record?.content}}</td>
-              <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+              <td>{{record?.operateDateTime|sDatetime}}</td>
               <td>{{record?.description}}</td>
             </tr>
           </tbody>

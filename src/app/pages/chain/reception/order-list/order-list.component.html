@@ -170,8 +170,8 @@
             <td>{{item.statusName}}</td>
             <td>{{item.typeName}}</td>
             <td>{{item.billCode}}</td>
-            <td>{{item.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-            <td>{{item.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+            <td>{{item.createdOnUtc|sDatetime}}</td>
+            <td>{{item.expectLeave|sDatetime}}</td>
             <td>{{item.overTime|durationHumanize}}</td>
             <td>{{item.createdUserName}}</td>
             <td>{{item.brand}}</td>
@@ -189,7 +189,7 @@
               <!--如果转派  追加显示转派人-->
               <!--<span *ngIf="item.teamType === 2">,{{item.turnEmployeeNames}}</span>-->
             </td>
-            <td>{{item.leaveTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+            <td>{{item.leaveTime|sDatetime}}</td>
           </tr>
         </tbody>
         <tfoot *ngIf="list?.length <= 0">
@@ -202,9 +202,8 @@
     </div>
 
     <!--详情 begin-->
-    <div bsModal #lgModal="bs-modal" class="modal" style='background-color: rgba(0, 0, 0, 0.47);' tabindex="-1" role="dialog"
-      aria-labelledby="myLargeModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
+    <div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+      <div *ngIf="lgModal.isShown" class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="btn btn-secondary pull-left" aria-label="Close" (click)="print()">打印</button>

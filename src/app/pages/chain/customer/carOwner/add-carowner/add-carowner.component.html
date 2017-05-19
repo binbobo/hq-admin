@@ -12,8 +12,8 @@
           <!--新增的时候模糊搜索-->
           <input type="text" [hqTableTypeahead]="customerNameTypeaheadSource" [columns]="customerTypeaheadColumns" (onSelect)="onCustomerNameSelect($event)"
             hqError="车主" class="form-control form-control" formControlName="name" placeholder="车主">
-            <!--客户id 用于更新-->
-          <input type="hidden" formControlName="id" >
+          <!--客户id 用于更新-->
+          <input type="hidden" formControlName="id">
         </div>
         <label for="sex" class="col-1 col-form-label">性别</label>
         <div class="col-2">
@@ -85,46 +85,48 @@
     <hr>
     <tabset>
       <tab heading="车辆信息">
-        <table class="table table-striped table-bordered">
-          <thead>
-            <tr>
-              <th>操作</th>
-              <th><span class="asterisk mr-1">*</span>车牌号</th>
-              <th><span class="asterisk mr-1">*</span>品牌</th>
-              <th><span class="asterisk mr-1">*</span>车系</th>
-              <th><span class="asterisk mr-1">*</span>车型</th>
-              <th><span class="asterisk mr-1">*</span>VIN</th>
-              <th>发动机号</th>
-              <th>车身颜色</th>
-              <th>购车日期</th>
-              <th>验车日期</th>
-              <th>保险到期日期</th>
-              <th>保险公司</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let vehicle of newVehiclesData">
-              <td width="75">
-                <!--更新车主信息的时候才显示编辑操作 编辑的时候 有车辆id  添加的时候木有-->
-                <a *ngIf="false" href="#" (click)="$event.preventDefault();onEditVehicle(vehicle.id);">编辑|</a>
-                <a href="#" (click)="$event.preventDefault();onDelVehicleConfirmHandler(vehicle.plateNo);">删除</a>
-              </td>
-              <td>{{vehicle.plateNo}}</td>
-              <td>{{vehicle.brand}}</td>
-              <td>{{vehicle.series}}</td>
-              <td>{{vehicle.vehicleName}}</td>
-              <td>{{vehicle.vin}}</td>
-              <td>{{vehicle.engineNo}}</td>
-              <td>{{vehicle.vehicleColor}}</td>
-              <td>{{vehicle.purchaseDate|date:"yyyy/MM/dd"}}</td>
-              <td>{{vehicle.validate|date:"yyyy/MM/dd"}}</td>
-              <td>{{vehicle.insuranceDue|date:"yyyy/MM/dd"}}</td>
-              <td>{{vehicle.insuranceCompany}}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="overflow-auto">
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>操作</th>
+                <th><span class="asterisk mr-1">*</span>车牌号</th>
+                <th><span class="asterisk mr-1">*</span>品牌</th>
+                <th><span class="asterisk mr-1">*</span>车系</th>
+                <th><span class="asterisk mr-1">*</span>车型</th>
+                <th><span class="asterisk mr-1">*</span>VIN</th>
+                <th>发动机号</th>
+                <th>车身颜色</th>
+                <th>购车日期</th>
+                <th>验车日期</th>
+                <th>保险到期日期</th>
+                <th>保险公司</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let vehicle of newVehiclesData">
+                <td width="75">
+                  <!--更新车主信息的时候才显示编辑操作 编辑的时候 有车辆id  添加的时候木有-->
+                  <a *ngIf="false" href="#" (click)="$event.preventDefault();onEditVehicle(vehicle.id);">编辑|</a>
+                  <a href="#" (click)="$event.preventDefault();onDelVehicleConfirmHandler(vehicle.plateNo);">删除</a>
+                </td>
+                <td>{{vehicle.plateNo}}</td>
+                <td>{{vehicle.brand}}</td>
+                <td>{{vehicle.series}}</td>
+                <td>{{vehicle.vehicleName}}</td>
+                <td>{{vehicle.vin}}</td>
+                <td>{{vehicle.engineNo}}</td>
+                <td>{{vehicle.vehicleColor}}</td>
+                <td>{{vehicle.purchaseDate|sDate}}</td>
+                <td>{{vehicle.validate|sDate}}</td>
+                <td>{{vehicle.insuranceDue|sDate}}</td>
+                <td>{{vehicle.insuranceCompany}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <div>
-          <button class="btn btn btn-secondary mr-2" (click)="addVehicleModal.show()">新增车辆</button>
+          <button class="btn btn btn-secondary mr-2" (click)="vehicleModal.show()">新增车辆</button>
         </div>
       </tab>
     </tabset>
@@ -136,17 +138,17 @@
   </div>
 </div>
 
-<div bsModal #addVehicleModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+<div bsModal #vehicleModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div *ngIf="vehicleModal.isShown" class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h6 class="modal-title pull-left">新增车主信息</h6>
-        <button type="button" class="close pull-right" (click)="addVehicleModal.hide()" aria-label="Close">
+        <button type="button" class="close pull-right" (click)="vehicleModal.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <hq-add-vehicle (onAddVehicleCancel)="addVehicleModal.hide()" (onAddVehicleConfirm)="addVehicleModal.hide();onAddVehicleConfirmHandler($event)" ></hq-add-vehicle>
+        <hq-add-vehicle (onAddVehicleCancel)="vehicleModal.hide()" (onAddVehicleConfirm)="vehicleModal.hide();onAddVehicleConfirmHandler($event)"></hq-add-vehicle>
       </div>
     </div>
   </div>

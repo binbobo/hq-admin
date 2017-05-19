@@ -40,7 +40,8 @@ export class AddVehicleComponent implements OnInit {
   onAddVehicleConfirmHandler() {
     // 验证数据合法性
     if (!this.vehicleForm.value.vehicleId) {
-      alert('请选择车系');
+      alert('请选择车型');
+      this.vehicleForm.controls.vehicleName.setValue('');
       return;
     }
     this.onAddVehicleConfirm.emit(this.vehicleForm.value);
@@ -78,6 +79,8 @@ export class AddVehicleComponent implements OnInit {
     console.log('当前选择的车型', evt);
     this.vehicleForm.controls.vehicleId.setValue(evt.id);
     this.vehicleForm.controls.vehicleName.setValue(evt.name);
+
+    this.enableSaveVehicle = this.vehicleForm.valid;
   }
 
   createForm() {
@@ -102,7 +105,7 @@ export class AddVehicleComponent implements OnInit {
     // 表单域中的值改变事件监听
     this.vehicleForm.valueChanges.subscribe(data => {
       // 只有表单域合法 保存车主按钮才可用
-      this.enableSaveVehicle = this.vehicleForm.valid;
+      this.enableSaveVehicle = this.vehicleForm.controls.vehicleName.enabled && this.vehicleForm.valid;
     });
 
     // 品牌表单域值改变事件监听

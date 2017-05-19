@@ -29,7 +29,7 @@
         <td>结算员:</td>
         <td>{{data?.updateUser}}</td>
         <td>结算时间：</td>
-        <td>{{data?.updateOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+        <td>{{data?.updateOnUtc|sDatetime}}</td>
         <td>结算方：</td>
         <td>{{data?.settlementParty}}</td>
       </tr>
@@ -49,7 +49,7 @@
         <td>维修类型:</td>
         <td>{{data?.typeName}}</td>
         <td>进店时间:</td>
-        <td>{{data?.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+        <td>{{data?.createdOnUtc|sDatetime}}</td>
         <td>进店里程(KM):</td>
         <td>{{data?.mileage}}</td>
         <td>出厂时间:</td>
@@ -144,7 +144,7 @@
     </table>
     <hr>
     <div class="print-bot">
-      <div class="pull-left"> 打印时间：{{data?.printOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</div>
+      <div class="pull-left"> 打印时间：{{data?.printOnUtc|sDatetime}}</div>
       <div class="pull-right">操作人：<span class='nbspx'></span> 客户签名： <span class='nbspx'></span>日期：<span class="nbspx-sm"></span> 年 <span class="nbspx-sm"></span>月
         <span class="nbspx-sm"></span>日</div>
     </div>

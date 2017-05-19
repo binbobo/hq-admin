@@ -30,15 +30,15 @@
       <td>{{data?.statusName}}</td>
       <td>{{data?.typeName}}</td>
       <td>{{data?.billCode}}</td>
-      <td>{{data?.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-      <td>{{data?.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+      <td>{{data?.createdOnUtc|sDatetime}}</td>
+      <td>{{data?.expectLeave|sDatetime}}</td>
       <td>{{data?.overTime|durationHumanize}}</td>
       <td>{{data?.createdUserName}}</td>
       <td>{{data?.brand}}</td>
       <td>{{data?.model}}</td>
       <td>{{data?.plateNo}}</td>
       <td>{{data?.mileage}}</td>
-      <td>{{data?.purchaseDate|date:"yyyy/MM/dd"}}</td>
+      <td>{{data?.purchaseDate|sDate}}</td>
       <td>{{data?.customerName}}</td>
       <td>{{data?.contactUser}}</td>
       <td>{{data?.contactInfo}}</td>
@@ -49,7 +49,7 @@
         <span *ngIf="teamType === 1">{{data?.employeeNames.join(',')}}</span>
         <span *ngIf="teamType === 2">{{data?.turnEmployeeNames.join(',')}}</span>
       </td>
-      <td>{{data?.leaveTime|date:"yyyy/MM/dd HH:mm:ss" }}</td>
+      <td>{{data?.leaveTime|sDatetime }}</td>
     </tr>
   </tbody>
 </table>
@@ -74,7 +74,7 @@
           <td>{{record?.price|centToYuan}}</td>
           <td>{{record?.amount|centToYuan}}</td>
           <td>{{record?.discount}}</td>
-          <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+          <td>{{record?.operateDateTime|sDatetime}}</td>
         </tr>
       </tbody>
     </table>
@@ -102,7 +102,7 @@
           <td>{{record?.count}}</td>
           <td>{{record?.price|centToYuan}}</td>
           <td>{{record?.amount|centToYuan}}</td>
-          <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+          <td>{{record?.operateDateTime|sDatetime}}</td>
         </tr>
       </tbody>
     </table>
@@ -134,7 +134,7 @@
       <tbody>
         <tr *ngFor="let record of data?.suggestServiceOutputs">
           <td>{{record?.content}}</td>
-          <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+          <td>{{record?.operateDateTime|sDatetime}}</td>
           <td>{{record?.description}}</td>
         </tr>
       </tbody>
