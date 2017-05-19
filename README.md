@@ -48,7 +48,7 @@ this.form = this.formBuilder.group({
 
 `name:string(hqErrors)`：可以为空，字段名称，用于错误提示，也用于自定义错误提示时`{name}`的绑定；
 
-`errors:object`：自定义错误消息，键为错误类型，值为错误提示消息，比如`{required:'{name}不能为空',minLength:'{name}长度不满足需求'}`;
+`errors:object`：自定义错误消息，键为错误类型，值为错误提示消息，比如`{required:'{name}不能为空',minLength:'长度不满足需求'}`;
 
 ### methods:
 

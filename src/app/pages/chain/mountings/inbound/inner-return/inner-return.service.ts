@@ -13,25 +13,37 @@ export class InnerReturnService implements BasicService<any>{
   patch(body: any): Promise<void> {
     throw new Error('Method not implemented.');
   }
-//获取内部领用信息
+  delete(id: string): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+ constructor(private httpService: HttpService) { }
+
+//获取内部领用单号信息
   getPagedList(params: BillCodeSearchRequest): Promise<PagedResult<any>> {
-    const url = Urls.chain.concat('/Use/GetPagedList?', params.serialize());
-    console.log("url",url);
+    const url = Urls.chain.concat('/Uses/GetPagedList?', params.serialize());
+    // console.log("领用单url",url);
     return this.httpService.get<PagedResult<any>>(url)
       .then(result => {
-        console.log('领用单数据', result);
+        // console.log('领用单数据', result);
         return result;
       })
       .catch(err => Promise.reject(`获取内部领用数据失败：${err}`));
   }
-
-
-  delete(id: string): Promise<void> {
-    throw new Error('Method not implemented.');
+//获取配件信息
+getUseDetailsList(params: BillCodeSearchRequest): Promise<PagedResult<any>> {
+    const url = Urls.chain.concat('/UseDetails/GetPageList?', params.serialize());
+    // console.log("配件信息url",url);
+    return this.httpService.get<PagedResult<any>>(url)
+      .then(result => {
+        // console.log('配件信息数据', result);
+        return result;
+      })
+      .catch(err => Promise.reject(`获取配件信息数据失败：${err}`));
   }
+  
 
 
-  constructor(private httpService: HttpService) { }
+ 
 
   get(code: string): Promise<InnerPrintItem> {
     if (!code) return Promise.resolve({});
@@ -90,24 +102,25 @@ export class InnerListRequest {
   ) {
   }
 }
+//配件信息参数
 export class InnerListItem {
   constructor(
-    public count: number = 0,
-    public price: number = 0,
-    public amount: number = 0,
-    public productCategory?: string,
+    public count: number,
+    public returnCount: number,
+    public price: number,
+    public amount: number ,
+    // public productCategory?: string,
     public productName?: string,
-    public brand?: string,
-    public productId?: string,
+    public brandName?: string,
+    public takeUser?: string,
     public productCode?: string,
-    public productSpecification?: string,
-    public storeId?: string,
-    public locationId?: string,
-    public description?: string,
+    public specification?: string,
+    public operator?: string,
+    public createBillTime?: string,
     public locationName?: string,
-    public houseName?: string,
     public storeName?:string
-  ) { }
+  ) {
+   }
 }
 //领用单号模糊查询参数
 export class BillCodeSearchRequest extends PagedParams {
@@ -115,6 +128,8 @@ export class BillCodeSearchRequest extends PagedParams {
     public takeUserId?: string, // 领用人ID
     public takeDepartId?: string, // 部门ID
     public billCode?: string, // 领用单号
+    // public pageIndex = 1,
+    // public pageSize = 5,
   ) {
     super();
   }

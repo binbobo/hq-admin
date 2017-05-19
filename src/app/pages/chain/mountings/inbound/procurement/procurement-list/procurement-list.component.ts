@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProviderService, ProviderListRequest } from '../../../provider/provider.service';
 import { TypeaheadRequestParams, HqAlerter, PrintDirective } from 'app/shared/directives';
-import { Location } from '@angular/common';
 import { SuspendBillDirective } from 'app/pages/chain/chain-shared';
 import { ModalDirective } from 'ngx-bootstrap';
 import { ProcurementService, ProcurementPrintItem, ProcurementItem, ProcurementRequest } from '../procurement.service';
@@ -27,7 +26,6 @@ export class ProcurementListComponent implements OnInit {
   constructor(
     private providerService: ProviderService,
     private procurementService: ProcurementService,
-    private location: Location
   ) { }
 
   ngOnInit() {
@@ -124,9 +122,5 @@ export class ProcurementListComponent implements OnInit {
         el.disabled = false;
         this.alerter.error(err);
       })
-  }
-
-  private cancel() {
-    this.location.back();
   }
 }

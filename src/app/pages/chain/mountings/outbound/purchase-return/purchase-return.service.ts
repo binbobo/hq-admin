@@ -1,17 +1,22 @@
 import { Injectable } from '@angular/core';
-import { PagedResult, PagedParams, ApiResult } from 'app/shared/models';
+import { PagedResult, PagedParams, ApiResult, PagedService } from 'app/shared/models';
 import { Urls, HttpService } from 'app/shared/services';
 
 @Injectable()
-export class PurchaseReturnService {
+export class PurchaseReturnService implements PagedService<any> {
 
   constructor(private httpService: HttpService) { }
 
-  public getProducts(request: GetProductsRequest): Promise<PagedResult<any>> {
+  public getPagedList(request: GetProductsRequest): Promise<PagedResult<any>> {
     let url = Urls.chain.concat('/PurchaseDetails/GetPageList');
-    let search = request.serialize();
-    return this.httpService.get<PagedResult<any>>(url, search)
+    return this.httpService.getPagedList(url, request)
       .catch(err => Promise.reject(`获取配件信息失败：${err}`));
+  }
+
+  getBillCodeListByProvider(request: GetBillCodeRequest) {
+    let url = Urls.chain.concat('/PurchaseDetails/GetPageList');
+    return this.httpService.getPagedList<any>(url, request)
+      .catch(err => Promise.reject(`获取入库单号失败：${err}`));
   }
 
   get(code: string): Promise<PurchaseReturnPrintItem> {
@@ -30,10 +35,18 @@ export class PurchaseReturnService {
   }
 }
 
+export class GetBillCodeRequest extends PagedParams {
+  constructor(
+    public suppliers: string
+  ) {
+    super();
+  }
+}
+
 export class GetProductsRequest extends PagedParams {
   constructor(
-    public productCode?: string,
-    public productName?: string,
+    public suppliers?: string,
+    public billCode?: string,
   ) {
     super();
   }

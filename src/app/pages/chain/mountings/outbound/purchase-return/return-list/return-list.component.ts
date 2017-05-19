@@ -1,18 +1,17 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { ProviderService, ProviderListRequest } from '../../../provider/provider.service';
 import { TypeaheadRequestParams, HqAlerter, PrintDirective } from 'app/shared/directives';
-import { PurchaseReturnRequest } from "app/pages/chain/mountings/outbound/purchase-return/purchase-return.service";
-import { Location } from '@angular/common';
 import { SuspendBillDirective } from 'app/pages/chain/chain-shared';
 import { ModalDirective } from 'ngx-bootstrap';
-import { PurchaseReturnPrintItem, PurchaseReturnItem, PurchaseReturnService } from '../purchase-return.service';
+import { PurchaseReturnPrintItem, PurchaseReturnItem, PurchaseReturnService, GetBillCodeRequest, GetProductsRequest, PurchaseReturnRequest } from '../purchase-return.service';
+import { SelectOption, DataList } from 'app/shared/models';
 
 @Component({
   selector: 'hq-return-list',
   templateUrl: './return-list.component.html',
   styleUrls: ['./return-list.component.css']
 })
-export class ReturnListComponent implements OnInit {
+export class ReturnListComponent extends DataList<any> implements OnInit {
 
   @ViewChild(SuspendBillDirective)
   private suspendBill: SuspendBillDirective;
@@ -22,16 +21,24 @@ export class ReturnListComponent implements OnInit {
   protected alerter: HqAlerter;
   @ViewChild('printer')
   public printer: PrintDirective;
+  params: GetProductsRequest;
+  private billCodes: Array<SelectOption>;
   private printModel: PurchaseReturnPrintItem;
   private model = new PurchaseReturnRequest();
 
   constructor(
+    injector: Injector,
     private providerService: ProviderService,
     private returnService: PurchaseReturnService,
-    private location: Location
-  ) { }
+  ) {
+    super(injector, returnService);
+    this.size = 5;
+    this.params = new GetProductsRequest();
+  }
 
   ngOnInit() {
+    this.lazyLoad = true;
+    super.ngOnInit();
   }
 
   onSuspendSelect(item: { id: string, value: any }) {
@@ -63,9 +70,22 @@ export class ReturnListComponent implements OnInit {
     ];
   }
 
+  private onBillCodeChange(event: Event) {
+    let el = event.target as HTMLSelectElement;
+    this.params.billCode = el.value;
+    this.loadList();
+  }
+
   public onProviderSelect(event) {
     this.model.provider = event.name;
     this.model.inunit = event.id;
+    this.params.suppliers = event.id;
+    let request = new GetBillCodeRequest(event.id);
+    this.billCodes = null;
+    this.returnService.getBillCodeListByProvider(request)
+      .then(result => result.data.map(m => new SelectOption(m.billCode, m.billCode)))
+      .then(data => this.billCodes = data)
+      .catch(err => this.alerter.error(err));
   }
 
   onSuspendRemove(event) {
@@ -118,7 +138,6 @@ export class ReturnListComponent implements OnInit {
       .then(code => code && this.returnService.get(code))
       .then(data => {
         if (data) {
-          console.log(data);
           this.printModel = data;
           setTimeout(() => this.printer.print(), 300);
         }
@@ -127,9 +146,5 @@ export class ReturnListComponent implements OnInit {
         el.disabled = false;
         this.alerter.error(err);
       })
-  }
-
-  private cancel() {
-    this.location.back();
   }
 }

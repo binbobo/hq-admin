@@ -83,12 +83,15 @@ export class AddMaintenanceItemComponent implements OnInit {
   }
 
   createForm() {
+    // 保留一位小数正则
+    const regex = /^[0-9]+([.]{1}[0-9]{1})?$/;
+
     this.maintenanceItemForm = this.fb.group({
       serviceName: ['', [Validators.required]],
       serviceId: [''],
       type: 1, // 1表示维修项目/
-      workHour: ['', [Validators.required, CustomValidators.number, CustomValidators.gt(0)]],
-      price: ['', [Validators.required, CustomValidators.number, CustomValidators.gt(0)]],
+      workHour: ['', Validators.compose([Validators.required, Validators.pattern(regex)])],
+      price: ['', Validators.compose([Validators.required, Validators.pattern(regex)])],
       discount: [100, [Validators.required, CustomValidators.digits, CustomValidators.range([0, 100])]],
       amount: [{ value: '', disabled: true }],
       operationTime: [{ value: moment().format('YYYY-MM-DD HH:mm:ss'), disabled: true }],
@@ -115,7 +118,7 @@ export class AddMaintenanceItemComponent implements OnInit {
     const workHour = this.maintenanceItemForm.controls.workHour.value;
     const workHourPrice = this.maintenanceItemForm.controls.price.value;
     const discount = this.maintenanceItemForm.controls.discount.value / 100;
-    this.maintenanceItemForm.controls.amount.patchValue(workHour * workHourPrice * discount, { emitEvent: false });
+    this.maintenanceItemForm.controls.amount.patchValue((workHour * workHourPrice * discount).toFixed(2), { emitEvent: false });
   }
   // 定义维修项目模糊查询要显示的列
   public get nameTypeaheadColumns() {

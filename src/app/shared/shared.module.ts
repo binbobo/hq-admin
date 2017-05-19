@@ -12,15 +12,11 @@ import { TranslateStore } from "@ngx-translate/core/src/translate.store";
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgPipesModule } from 'ngx-pipes';
 import { TreeviewModule } from "ngx-treeview";
-import { StandardDatetimePipe } from './pipes/standard-datetime/standard-datetime.pipe';
-import { StandardDatePipe } from './pipes/standard-datetime/standard-date.pipe';
-import { StandardTimePipe } from './pipes/standard-datetime/standard-time.pipe';
 
 const HQ_COMPONENTS = [
     components.PaginationComponent,
     components.ClippedWordComponent,
     components.MenuComponent,
-    components.LoadingComponent,
     components.SmartTableComponent,
 ];
 
@@ -39,6 +35,7 @@ const HQ_DIRECTIVES = [
     directives.PrintDirective,
     directives.FormControlErrorDirective,
     directives.SpinnerDirective,
+    directives.TrimDirective,
 ]
 
 const HQ_PIPES = [

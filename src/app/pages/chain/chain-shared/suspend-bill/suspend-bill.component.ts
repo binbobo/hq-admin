@@ -42,7 +42,7 @@ export class SuspendBillComponent implements OnInit {
   remove(event: Event, item) {
     event.preventDefault();
     event.stopPropagation();
-    if (confirm('确定要删除当前挂单信息？')) {
+    if (confirm('作废后将不可恢复，是否确认作废？')) {
       this.service.delete(item.id)
         .then(() => this.onRemove.emit(item))
         .then(() => this.loadList())

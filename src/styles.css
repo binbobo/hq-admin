@@ -3,18 +3,6 @@
     font-size: 14px;
 }*/
 
-@page :first {
-    @bottom-center {
-        content: "11111111111111";
-    }
-}
-
-@page { color: red;
-  @top-center {
-    content: "Page " counter(page);
-  }
-}
-
 .bg-inverse{
     background-color: #2d384b!important;
 }
@@ -22,18 +10,17 @@
     background-color: #fff;
 }
 
-.card-block{
-    overflow: auto;
-}
-
 .cursor-pointer{
     cursor:pointer;
+}
+
+.overflow-auto{
+    overflow: auto;
 }
 
 input.ng-touched.ng-invalid,select.ng-touched.ng-invalid{
     border:1px solid #a94442;
 }
-
 
 select.form-control{
     padding: 0 12px;
@@ -46,18 +33,6 @@ td,th{
 table th{
     text-align: center;
 }
-
-/*下拉树组件样式复写*/
-/*ngx-dropdown-treeview.sm button.dropdown-toggle{
-    padding: .25rem .5rem;
-    font-size: .875rem;
-    border-radius: .2rem;
-}
-ngx-dropdown-treeview.sm input.form-control{
-    padding: .25rem .5rem;
-    font-size: .875rem;
-    border-radius: .2rem;
-}*/
 
 /*ngx-bootstrap popver 样式复写  用于挂单列表显示*/
 .popover-content {

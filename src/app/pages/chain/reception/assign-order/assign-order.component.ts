@@ -48,21 +48,11 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
                 }].concat(data);
 
                 // 页面初始化的时候  就要加入状态参数
-                this.params.states = this.maintenanceAssignTypes
+                this.params.status = this.maintenanceAssignTypes
                     .filter(item => item.id !== 'all')
                     .map(item => item.id);
                 // 加载列表
-                this.loadList().then(() => {
-                    // this.statistics = {};
-                    // this.statistics['all'] = 0;
-                    // // 统计各种状态下面的工单数量
-                    // this.params.states.forEach(state => {
-                    //     console.log('111111111111：', this.list);
-                    //     this.statistics[state] = this.list.filter(item => item.status === state).length;
-                    //     this.statistics['all'] += this.statistics[state];
-                    // });
-                    // console.log('testesttestestset:', JSON.stringify(this.statistics));
-                });
+                this.load();
             });
     }
 
@@ -113,6 +103,25 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             keyword: '', // 车牌号
         });
     }
+    // 加载派工列表
+    load() {
+        this.statistics = null;
+
+        this.params.setPage(1);
+        this.loadList().then((result: any) => {
+            console.log('维修派工列表统计数据：', result.tabList);
+            this.statistics = {};
+            // 统计各种状态下面的工单数量
+            result.tabList.forEach(item => {
+                // 处理全部状态
+                if (!item.status) {
+                    this.statistics['all'] = item.count;
+                } else {
+                    this.statistics[item.status] = item.count;
+                }
+            });
+        });
+    }
 
 
     /**
@@ -126,12 +135,12 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         if (checkedStatus.length === 0) {
             checkedStatus = this.maintenanceAssignTypes;
         }
-        this.params.states = checkedStatus.filter(item => item.id !== 'all').map(item => item.id);
+        this.params.status = checkedStatus.filter(item => item.id !== 'all').map(item => item.id);
 
-        console.log('当前选择的工单状态为：', JSON.stringify(this.params.states));
+        console.log('当前选择的工单状态为：', JSON.stringify(this.params.status));
 
         // 执行查询
-        this.onLoadList();
+        this.load();
     }
 
     /**
@@ -153,6 +162,8 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
                 }
             }
         }
+        // 获取数据
+        this.onSearch();
     }
 
     /**
@@ -256,7 +267,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
 
     confirmOrderFinish(id) {
         this.service.update({ id: id }).then(() => {
-            this.onLoadList();
+            this.load();
         }).catch(err => this.alerter.error('执行完工操作失败: ' + err));
     }
 
@@ -354,6 +365,9 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             this.alerter.success('执行' + msg + '操作成功！');
             // 设置按钮不可用
             this.selectedOrder.serviceOutputs.enableAssignment = false;
+
+            // 刷新页面
+            this.load();
         }).catch(err => {
             this.alerter.error('执行' + msg + '操作成功！' + err);
         });

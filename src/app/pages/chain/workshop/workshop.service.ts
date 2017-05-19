@@ -39,7 +39,7 @@ export class WorkshopService implements BasicService<any> {
      * @param params
      */
     public getPagedList(params: PagedParams): Promise<PagedResult<any>> {
-        const url = Urls.chain.concat('/Maintenances?', params.serialize());
+        const url = Urls.chain.concat('/MaintenanceTeams/Check/search?', params.serialize());
         console.log('查询维修验收数据列表url: ', url);
         return this.httpService
             .get<PagedResult<any>>(url)
@@ -105,7 +105,7 @@ export class WorkshopService implements BasicService<any> {
 export class WorkshopListRequest extends PagedParams {
     constructor(
         // 工单列表页面查询参数
-        public states?: Array<string>, // 工单状态
+        public status?: Array<string>, // 工单状态
         public plateNo?: string, // 车牌号
         public billCode?: string, // 工单号
         public keyword?: string // 车牌号或者工单号

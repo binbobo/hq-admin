@@ -1,6 +1,9 @@
 nav{
     background-color: #2d384b!important;
-    z-index: 1;
+    z-index: 3;
+}
+.container-fluid{
+    margin-top: 54px;
 }
 .menus{
     padding: 54px 3px 0 0;

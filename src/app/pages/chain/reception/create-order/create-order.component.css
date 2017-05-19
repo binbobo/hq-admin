@@ -1,42 +1,15 @@
-/*mileage unit*/
-.mileageUnit {
-    background: transparent;
-    border:0;
-}
-
-
 .textInputBtn {
     border: 1px solid #eed;
 }
 
-/*重写ngui-datetimer-picker表单input样式*/
-.datetime-picker {
-    width: 100%;
-    border-radius:0;
-}
-
 hr {
     border-top:1px dotted #ccc;
-    /*Rest of stuff here*/
 }
-
-/*智能表格日期时间类型单元格样式*/
-.datetime-editor {
-    width: 100%;
-    line-height: normal;
-    padding: .375rem .75rem;
-}
-
-.btn-sm.my-sm {
-    padding: .01rem .1rem;
-}
-
-
 input.ng-valid[required], input.ng-valid.required  {
-  border-left: 5px solid #42A948 !important; /* green */
+  border-left: 5px solid #42A948 !important; 
 }
 input.ng-touched.ng-invalid  {
-  border-left: 5px solid #a94442; /* red */
+  border-left: 5px solid #a94442; 
   border-radius: .2rem
 }
 

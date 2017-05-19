@@ -28,6 +28,8 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
   // 当前登录用户信息
   public user = null;
 
+  statistics: any = null; // 各种状态数量统计
+
 
   constructor(injector: Injector,
     protected service: WorkshopService,
@@ -56,11 +58,11 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
           value: '全部'
         }].concat(data);
         // 页面初始化的时候  就要加入状态参数
-        this.params.states = this.maintenanceCheckTypes
+        this.params.status = this.maintenanceCheckTypes
           .filter(item => item.id !== 'all')
           .map(item => item.id);
         // 加载列表
-        this.loadList();
+        this.load();
       });
 
   }
@@ -158,7 +160,7 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
       this.alerter.success('执行验收通过操作成功！');
 
       // 刷新列表
-      this.onLoadList();
+      this.load();
     }).catch(err => this.alerter.error(err));
   }
 
@@ -174,13 +176,34 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
     if (checkedStatus.length === 0) {
       checkedStatus = this.maintenanceCheckTypes;
     }
-    this.params.states = checkedStatus.filter(item => item.id !== 'all').map(item => item.id);
+    this.params.status = checkedStatus.filter(item => item.id !== 'all').map(item => item.id);
 
-    console.log('当前选择的工单状态为：', this.params.states);
+    console.log('当前选择的工单状态为：', this.params.status);
 
     // 执行查询
-    this.onLoadList();
+    this.load();
   }
+
+  // 加载派工列表
+  load() {
+    this.statistics = null;
+
+    this.params.setPage(1);
+    this.loadList().then((result: any) => {
+      console.log('维修验收列表统计数据：', result.tabList);
+      this.statistics = {};
+      // 统计各种状态下面的工单数量
+      result.tabList.forEach(item => {
+        // 处理全部状态
+        if (!item.status) {
+          this.statistics['all'] = item.count;
+        } else {
+          this.statistics[item.status] = item.count;
+        }
+      });
+    });
+  }
+
 
   /**
      * 状态改变事件处理程序
@@ -201,6 +224,8 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
         }
       }
     }
+
+    this.onSearch();
   }
 
   /**

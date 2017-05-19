@@ -8,7 +8,7 @@
       <div class="input-group col-8 offset-2">
         <input style="border-radius: 5px;" [(ngModel)]="params.keyword" formControlName="keyword" placeholder="请输入车牌号/工单号" class="form-control mr-3">
         <span class="input-group-btn">
-          <button class="btn btn-primary" type="submit">搜索</button>
+          <button class="btn btn-primary" type="submit">查询</button>
         </span>
       </div>
       <hr>
@@ -16,6 +16,7 @@
         <div class="form-check form-check-inline" *ngFor="let type of maintenanceCheckTypes">
           <label class="form-check-label mr-2">
             <input class="form-check-input" (change)='onStatusChange(type)' [checked]="type.checked"  type="checkbox" value="{{type.id}}"> {{type.value}}
+            <span *ngIf="statistics">({{statistics[type.id]}})</span>
           </label>
         </div>
       </div>
@@ -47,7 +48,7 @@
       <tbody>
         <tr *ngFor="let item of list">
           <td width="40">
-            <a href="#" (click)="orderDetailsHandler($event, item.id, lgModal)">详情</a>
+            <a href="#" (click)="orderDetailsHandler($event, item.id, lgModal)">验收</a>
           </td>
           <td>{{item.statusName}}</td>
           <td>
@@ -93,7 +94,7 @@
         <div class="modal-body" style='overflow: scroll;'>
           <!--导出详情begin-->
           <tabset>
-            <tab heading="维修项目" *ngIf="selectedOrder?.serviceOutputs&&selectedOrder?.serviceOutputs.length>0">
+            <tab heading="维修项目" *ngIf="selectedOrder?.serviceOutputs?.length>0">
               <table class="table table-striped table-bordered">
                 <thead>
                   <tr>
@@ -125,7 +126,7 @@
                 <button class="btn btn-secondary" [disabled]="!selectedOrder?.serviceOutputs?.enableCheck" (click)="onOrderCheckPass()">通过</button>
               </div>
             </tab>
-            <tab heading="维修配件" *ngIf="selectedOrder?.productOutputs&&selectedOrder?.productOutputs.length>0">
+            <tab heading="维修配件" *ngIf="selectedOrder?.productOutputs?.length>0">
               <table class="table table-striped table-bordered">
                 <thead>
                   <tr>
@@ -153,7 +154,7 @@
                 </tbody>
               </table>
             </tab>
-            <tab heading="附加项目" *ngIf="selectedOrder?.attachServiceOutputs&&selectedOrder?.attachServiceOutputs.length>0">
+            <tab heading="附加项目" *ngIf="selectedOrder?.attachServiceOutputs?.length>0">
               <table class="table table-striped table-bordered">
                 <thead>
                   <tr>
@@ -167,7 +168,7 @@
                 </tbody>
               </table>
             </tab>
-            <tab heading="建议维修项目" *ngIf="selectedOrder?.suggestServiceOutputs&&selectedOrder?.suggestServiceOutputs.length>0">
+            <tab heading="建议维修项目" *ngIf="selectedOrder?.suggestServiceOutputs?.length>0">
               <table class="table table-striped table-bordered">
                 <thead>
                   <tr>

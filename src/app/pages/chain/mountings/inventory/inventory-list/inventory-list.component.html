@@ -33,58 +33,60 @@
         <input type="text" class="form-control mx-sm-3" name="categoryName" [(ngModel)]="params.categoryName" placeholder="类别">
       </div>
       <div class="form-group mb-2">
-        <button type="submit" class="btn btn-primary mx-sm-3" translate>搜索</button>
+        <button type="submit" class="btn btn-primary mx-sm-3" translate>查询</button>
       </div>
     </form>
-    <table class="table table-bordered table-striped">
-      <thead>
-        <tr>
-          <th><input (change)="onCheckChange($event)" type="checkbox"></th>
-          <th translate>操作</th>
-          <th translate>库位</th>
-          <th translate>类别</th>
-          <th translate>品牌</th>
-          <th translate>配件编码</th>
-          <th translate>配件名称</th>
-          <th translate>库存量</th>
-          <th translate>车型</th>
-          <th translate>单位</th>
-          <th translate>销售价</th>
-          <th translate>最新进价</th>
-          <th translate>最大库存</th>
-          <th translate>最小库存</th>
-          <th translate>包装规格</th>
-          <th translate>产地</th>
-          <th translate>属性</th>
-          <th translate>备注</th>
-          <th>状态</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of list">
-          <td class="text-center"><input [(ngModel)]="item.checked" type="checkbox"></td>
-          <td class="text-center"><button class="btn btn-sm btn-success" [disabled]="!item.enable" (click)="onEdit($event,item)">编辑</button></td>
-          <td>{{ item.storageLocationName}}</td>
-          <td>{{item.category}}</td>
-          <td>{{item.brand}}</td>
-          <td>{{ item.code}}</td>
-          <td>{{item.name}}</td>
-          <td class="text-center">{{item.count}}</td>
-          <td>{{ item.vehicleName}}</td>
-          <td>{{item.unit}}</td>
-          <td class="text-right">{{item.suggPrice|centToYuan}}</td>
-          <td class="text-right">{{ item.newPrice|centToYuan}}</td>
-          <td class="text-center">{{item.maxCount}}</td>
-          <td class="text-center">{{item.minCount}}</td>
-          <td>{{ item.packageInfo}}</td>
-          <td>{{item.madeIn}}</td>
-          <td>{{item.properties}}</td>
-          <td>{{ item.description}}</td>
-          <td class="text-center">{{item.enable?'可用':'停用'}}</td>
-        </tr>
-      </tbody>
-    </table>
-    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    <div class="overflow-auto">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th><input (change)="onCheckChange($event)" type="checkbox"></th>
+            <th translate>操作</th>
+            <th translate>库位</th>
+            <th translate>类别</th>
+            <th translate>品牌</th>
+            <th translate>配件编码</th>
+            <th translate>配件名称</th>
+            <th translate>库存量</th>
+            <th translate>车型</th>
+            <th translate>单位</th>
+            <th translate>销售价</th>
+            <th translate>最新进价</th>
+            <th translate>最大库存</th>
+            <th translate>最小库存</th>
+            <th translate>包装规格</th>
+            <th translate>产地</th>
+            <th translate>属性</th>
+            <th translate>备注</th>
+            <th>状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of list">
+            <td class="text-center"><input [(ngModel)]="item.checked" type="checkbox"></td>
+            <td class="text-center"><button class="btn btn-sm btn-success" [disabled]="!item.enable" (click)="onEdit($event,item)">编辑</button></td>
+            <td>{{ item.storageLocationName}}</td>
+            <td>{{item.category}}</td>
+            <td>{{item.brand}}</td>
+            <td>{{ item.code}}</td>
+            <td>{{item.name}}</td>
+            <td class="text-center">{{item.count}}</td>
+            <td>{{ item.vehicleName}}</td>
+            <td>{{item.unit}}</td>
+            <td class="text-right">{{item.suggPrice|centToYuan}}</td>
+            <td class="text-right">{{ item.newPrice|centToYuan}}</td>
+            <td class="text-center">{{item.maxCount}}</td>
+            <td class="text-center">{{item.minCount}}</td>
+            <td>{{ item.packageInfo}}</td>
+            <td>{{item.madeIn}}</td>
+            <td>{{item.properties}}</td>
+            <td>{{ item.description}}</td>
+            <td class="text-center">{{item.enable?'可用':'停用'}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    </div>
   </div>
   <div class="card-footer text-muted">
     <button class="btn btn-primary" (click)="createModal.show()">新增</button>

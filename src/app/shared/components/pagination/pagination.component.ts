@@ -4,6 +4,9 @@ import { Component, EventEmitter, Input, Output, ViewEncapsulation, OnChanges } 
   selector: 'hq-pagination',
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.css'],
+  host: {
+    style: 'margin-bottom:10px;display:block'
+  },
   encapsulation: ViewEncapsulation.None,
 })
 export class PaginationComponent {

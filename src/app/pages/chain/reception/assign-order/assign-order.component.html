@@ -8,7 +8,7 @@
       <div class="input-group col-8 offset-2">
         <input style="border-radius: 5px;" [(ngModel)]="params.keyword" formControlName="keyword" placeholder="请输入车牌号/工单号" class="form-control mr-3">
         <span class="input-group-btn">
-          <button class="btn btn-primary" type="submit">搜索</button>
+          <button class="btn btn-primary" type="submit">查询</button>
         </span>
       </div>
       <hr>
@@ -16,6 +16,7 @@
         <div class="form-check form-check-inline" *ngFor="let type of maintenanceAssignTypes">
           <label class="form-check-label mr-2">
             <input class="form-check-input" (change)='onStatusChange(type)' [checked]="type.checked"  type="checkbox" value="{{type.id}}"> {{type.value}}
+            <span *ngIf="statistics">({{statistics[type.id]}})</span>
           </label>
         </div>
       </div>
@@ -45,7 +46,7 @@
       <tbody>
         <tr *ngFor="let item of list">
           <td width="75">
-            <a href="#" (click)="orderDetailsHandler($event, item.id, lgModal)">详情</a> |
+            <a href="#" (click)="orderDetailsHandler($event, item.id, lgModal)">派工</a> |
             <a href="#" (click)="$event.preventDefault();finishedOrder(item)">完工</a>
           </td>
           <td>
