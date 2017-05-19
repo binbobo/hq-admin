@@ -1,4 +1,4 @@
-<hq-loading [loading]="loading"></hq-loading>
+<div [hidden]="!loading" class="loading" [hqSpinner]="loading" size="60"></div>
 <div [hidden]="loading||totalItems">没有数据</div>
 <div *ngIf="totalItems" class="form-inline hq-pagination" [hidden]="totalItems<=10||loading">
   <label>每页显示</label>

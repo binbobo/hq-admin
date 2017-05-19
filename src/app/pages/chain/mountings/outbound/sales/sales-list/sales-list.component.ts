@@ -5,7 +5,6 @@ import { SelectOption, PagedResult } from 'app/shared/models';
 import { ModalDirective } from 'ngx-bootstrap';
 import { Router } from '@angular/router';
 import { SuspendBillDirective } from "app/pages/chain/chain-shared";
-import { Location } from '@angular/common';
 
 @Component({
   selector: 'hq-sales-list',
@@ -28,7 +27,6 @@ export class SalesListComponent implements OnInit {
 
   constructor(
     private salesService: SalesService,
-    private location: Location
   ) { }
 
   ngOnInit() {
@@ -126,8 +124,5 @@ export class SalesListComponent implements OnInit {
       { name: 'custPhone', title: '手机号码' },
       { name: 'operator', title: '操作人' },
     ]
-  }
-  cancel() {
-    this.location.back();
   }
 }

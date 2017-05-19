@@ -64,7 +64,7 @@
         </tr>
       </tbody>
     </table>
-    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" [itemsPerPage]="size" (pageChanged)="onPageChanged($event)"></hq-pagination>
     <table class="table table-bordered table-striped">
       <thead>
         <tr>
@@ -106,7 +106,6 @@
   </div>
   <div class="card-footer text-muted">
     <button class="btn btn-primary" (click)="generate($event)">生成采购退库单</button>
-    <button class="btn btn-warning" (click)="cancel($event)">取消</button>
     <button [disabled]="!model?.list?.length" class="btn btn-info" (click)="suspend($event)">挂单</button>
   </div>
 </div>
