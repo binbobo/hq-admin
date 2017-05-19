@@ -21,43 +21,45 @@
         <button type="submit" class="btn btn-primary mx-sm-1" translate>search</button>
       </div>
     </form>
-    <table class="table table-bordered table-striped">
-      <thead>
-        <tr *ngIf="!loading">
-          <th translate><input (change)="onCheckChange($event)" type="checkbox"></th>
-          <th translate>操作</th>
-          <th translate>代码</th>
-          <th translate>名称</th>
-          <th translate>简称</th>
-          <th translate>联系人</th>
-          <th translate>联系人电话</th>
-          <th translate>地址</th>
-          <th translate>邮编</th>
-          <th translate>传真</th>
-          <th translate>备注</th>
-          <th translate>状态</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of list">
-          <td class="text-center"><input [(ngModel)]="item.checked" type="checkbox"></td>
-          <td class="text-center">
-            <button (click)="onProviderEdit(item)" class="btn btn-sm btn-success">编辑</button>
-          </td>
-          <td>{{item.code}}</td>
-          <td>{{item.name}}</td>
-          <td>{{item.shortName}}</td>
-          <td>{{item.contactUser}}</td>
-          <td class="text-center">{{item.tel}}</td>
-          <td>{{item.address}}</td>
-          <td>{{item.postal}}</td>
-          <td>{{item.fax}}</td>
-          <td>{{item.description}}</td>
-          <td class="text-center">{{item.status}}</td>
-        </tr>
-      </tbody>
-    </table>
-    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    <div class="overflow-auto">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr *ngIf="!loading">
+            <th translate><input (change)="onCheckChange($event)" type="checkbox"></th>
+            <th translate>操作</th>
+            <th translate>代码</th>
+            <th translate>名称</th>
+            <th translate>简称</th>
+            <th translate>联系人</th>
+            <th translate>联系人电话</th>
+            <th translate>地址</th>
+            <th translate>邮编</th>
+            <th translate>传真</th>
+            <th translate>备注</th>
+            <th translate>状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of list">
+            <td class="text-center"><input [(ngModel)]="item.checked" type="checkbox"></td>
+            <td class="text-center">
+              <button (click)="onProviderEdit(item)" class="btn btn-sm btn-success">编辑</button>
+            </td>
+            <td>{{item.code}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.shortName}}</td>
+            <td>{{item.contactUser}}</td>
+            <td class="text-center">{{item.tel}}</td>
+            <td>{{item.address}}</td>
+            <td>{{item.postal}}</td>
+            <td>{{item.fax}}</td>
+            <td>{{item.description}}</td>
+            <td class="text-center">{{item.status}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    </div>
   </div>
   <div class="card-footer text-muted">
     <button class="btn btn-primary" (click)="createModal.show()">新增</button>

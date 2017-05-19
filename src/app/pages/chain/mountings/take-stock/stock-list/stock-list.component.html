@@ -27,29 +27,31 @@
         <button type="submit" class="btn btn-primary mx-sm-3" translate>search</button>
       </div>
     </form>
-    <table class="table table-bordered table-striped">
-      <thead>
-        <tr>
-          <th translate>操作</th>
-          <th translate>盘点单号</th>
-          <th translate>生成时间</th>
-          <th translate>仓库</th>
-          <th translate>操作人</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of list">
-          <td class="text-center">
-            <button [routerLink]="['detail',item.billCode]" class="btn btn-sm btn-info">详情</button>
-          </td>
-          <td class="text-center">{{item.billCode}}</td>
-          <td class="text-center">{{ item.createdOnUtc}}</td>
-          <td>{{item.houseName }}</td>
-          <td>{{item.operator}}</td>
-        </tr>
-      </tbody>
-    </table>
-    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    <div class="overflow-auto">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th translate>操作</th>
+            <th translate>盘点单号</th>
+            <th translate>生成时间</th>
+            <th translate>仓库</th>
+            <th translate>操作人</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of list">
+            <td class="text-center">
+              <button [routerLink]="['detail',item.billCode]" class="btn btn-sm btn-info">详情</button>
+            </td>
+            <td class="text-center">{{item.billCode}}</td>
+            <td class="text-center">{{ item.createdOnUtc}}</td>
+            <td>{{item.houseName }}</td>
+            <td>{{item.operator}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    </div>
   </div>
   <div class="card-footer text-muted">
     <button class="btn btn-primary" (click)="generateModal.show()">创建盘点单</button>
