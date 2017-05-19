@@ -29,43 +29,45 @@
         </button>
       </div>
       <hr>
-      <table class="table table-bordered table-striped">
-        <thead>
-          <tr *ngIf="!loading">
-            <th translate>单号</th>
-            <th translate>发生时间</th>
-            <th translate>进出类型</th>
-            <th translate>进出量</th>
-            <th translate>成本</th>
-            <th translate>金额</th>
-            <th translate>销售单价</th>
-            <th translate>销售金额</th>
-            <th translate>库存量</th>
-            <th translate>车牌号</th>
-            <th translate>供应商</th>
-            <th translate>客户名称</th>
-            <th translate>操作人</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of list">
-            <td>{{item.billCode}}</td>
-            <td class="text-center">{{item.createTime}}</td>
-            <td>{{item.billType}}</td>
-            <td class="text-center">{{item.outCount}}</td>
-            <td class="text-right">{{item.price|centToYuan}}</td>
-            <td class="text-center">{{item.amount}}</td>
-            <td class="text-right">{{item.salePrice|centToYuan}}</td>
-            <td class="text-center">{{item.saleAmount}}</td>
-            <td class="text-center">{{item.count}}</td>
-            <td class="text-center">{{item.plateNo}}</td>
-            <td>{{item.supplier}}</td>
-            <td>{{item.customer}}</td>
-            <td>{{item.operator}}</td>
-          </tr>
-        </tbody>
-      </table>
-      <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+      <div class="overflow-auto">
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr *ngIf="!loading">
+              <th translate>单号</th>
+              <th translate>发生时间</th>
+              <th translate>进出类型</th>
+              <th translate>进出量</th>
+              <th translate>成本</th>
+              <th translate>金额</th>
+              <th translate>销售单价</th>
+              <th translate>销售金额</th>
+              <th translate>库存量</th>
+              <th translate>车牌号</th>
+              <th translate>供应商</th>
+              <th translate>客户名称</th>
+              <th translate>操作人</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of list">
+              <td>{{item.billCode}}</td>
+              <td class="text-center">{{item.createTime}}</td>
+              <td>{{item.billType}}</td>
+              <td class="text-center">{{item.outCount}}</td>
+              <td class="text-right">{{item.price|centToYuan}}</td>
+              <td class="text-center">{{item.amount}}</td>
+              <td class="text-right">{{item.salePrice|centToYuan}}</td>
+              <td class="text-center">{{item.saleAmount}}</td>
+              <td class="text-center">{{item.count}}</td>
+              <td class="text-center">{{item.plateNo}}</td>
+              <td>{{item.supplier}}</td>
+              <td>{{item.customer}}</td>
+              <td>{{item.operator}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+      </div>
     </div>
   </div>
   <div class="card-footer text-muted">

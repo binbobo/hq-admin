@@ -133,71 +133,73 @@
       </fieldset>
     </form>
     <hr>
-    <table class="table table-striped table-bordered">
-      <thead>
-        <tr>
-          <th>操作</th>
-          <th>店名</th>
-          <th>状态</th>
-          <th>维修类型</th>
-          <th>工单号</th>
-          <th>进店时间</th>
-          <th>预计交车时间</th>
-          <th>超时</th>
-          <th>服务顾问</th>
-          <th>品牌</th>
-          <th>车型</th>
-          <th>车牌号</th>
-          <th>行驶里程</th>
-          <th>购车时间</th>
-          <th>车主</th>
-          <th>送修人</th>
-          <th>送修人电话</th>
-          <th>介绍人</th>
-          <th>介绍人电话</th>
-          <th>维修技师</th>
-          <th>出厂时间</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of list">
-          <td width="75">
-            <!--<a href="#" (click)="nullifyHandler($event, item.id)">作废</a> |-->
-            <a href="#" (click)="orderDetailsHandler($event, item.id, lgModal)">详情</a>
-          </td>
-          <td>{{item.orgName}}</td>
-          <td>{{item.statusName}}</td>
-          <td>{{item.typeName}}</td>
-          <td>{{item.billCode}}</td>
-          <td>{{item.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-          <td>{{item.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-          <td>{{item.overTime|durationHumanize}}</td>
-          <td>{{item.createdUserName}}</td>
-          <td>{{item.brand}}</td>
-          <td>{{item.vehicleName}}</td>
-          <td>{{item.plateNo}}</td>
-          <td>{{item.mileage}}</td>
-          <td>{{item.purchaseDate}}</td>
-          <td>{{item.customerName}}</td>
-          <td>{{item.contactUser}}</td>
-          <td>{{item.contactInfo}}</td>
-          <td>{{item.introducer}}</td>
-          <td>{{item.introPhone}}</td>
-          <td>
-            {{item.employeeNames}}
-            <!--如果转派  追加显示转派人-->
-            <!--<span *ngIf="item.teamType === 2">,{{item.turnEmployeeNames}}</span>-->
-          </td>
-          <td>{{item.leaveTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-        </tr>
-      </tbody>
-      <tfoot *ngIf="list?.length <= 0">
-        <tr>
-          <td colspan="21">查询结果为空</td>
-        </tr>
-      </tfoot>
-    </table>
-    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    <div class="overflow-auto">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>操作</th>
+            <th>店名</th>
+            <th>状态</th>
+            <th>维修类型</th>
+            <th>工单号</th>
+            <th>进店时间</th>
+            <th>预计交车时间</th>
+            <th>超时</th>
+            <th>服务顾问</th>
+            <th>品牌</th>
+            <th>车型</th>
+            <th>车牌号</th>
+            <th>行驶里程</th>
+            <th>购车时间</th>
+            <th>车主</th>
+            <th>送修人</th>
+            <th>送修人电话</th>
+            <th>介绍人</th>
+            <th>介绍人电话</th>
+            <th>维修技师</th>
+            <th>出厂时间</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of list">
+            <td width="75">
+              <!--<a href="#" (click)="nullifyHandler($event, item.id)">作废</a> |-->
+              <a href="#" (click)="orderDetailsHandler($event, item.id, lgModal)">详情</a>
+            </td>
+            <td>{{item.orgName}}</td>
+            <td>{{item.statusName}}</td>
+            <td>{{item.typeName}}</td>
+            <td>{{item.billCode}}</td>
+            <td>{{item.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+            <td>{{item.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+            <td>{{item.overTime|durationHumanize}}</td>
+            <td>{{item.createdUserName}}</td>
+            <td>{{item.brand}}</td>
+            <td>{{item.vehicleName}}</td>
+            <td>{{item.plateNo}}</td>
+            <td>{{item.mileage}}</td>
+            <td>{{item.purchaseDate}}</td>
+            <td>{{item.customerName}}</td>
+            <td>{{item.contactUser}}</td>
+            <td>{{item.contactInfo}}</td>
+            <td>{{item.introducer}}</td>
+            <td>{{item.introPhone}}</td>
+            <td>
+              {{item.employeeNames}}
+              <!--如果转派  追加显示转派人-->
+              <!--<span *ngIf="item.teamType === 2">,{{item.turnEmployeeNames}}</span>-->
+            </td>
+            <td>{{item.leaveTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+          </tr>
+        </tbody>
+        <tfoot *ngIf="list?.length <= 0">
+          <tr>
+            <td colspan="21">查询结果为空</td>
+          </tr>
+        </tfoot>
+      </table>
+      <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    </div>
 
 
     <!--详情 begin-->

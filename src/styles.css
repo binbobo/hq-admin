@@ -10,18 +10,17 @@
     background-color: #fff;
 }
 
-.card-block{
-    overflow: auto;
-}
-
 .cursor-pointer{
     cursor:pointer;
+}
+
+.overflow-auto{
+    overflow: auto;
 }
 
 input.ng-touched.ng-invalid,select.ng-touched.ng-invalid{
     border:1px solid #a94442;
 }
-
 
 select.form-control{
     padding: 0 12px;

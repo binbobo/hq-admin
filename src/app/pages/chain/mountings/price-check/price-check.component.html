@@ -32,32 +32,34 @@
         <button type="submit" class="btn btn-primary mx-sm-3" translate>search</button>
       </div>
     </form>
-    <table class="table table-bordered table-striped">
-      <thead>
-        <tr>
-          <th translate>仓库</th>
-          <th translate>品牌</th>
-          <th translate>配件编码</th>
-          <th translate>配件名称</th>
-          <th translate>库存量</th>
-          <th translate>车型</th>
-          <th translate>销售价</th>
-          <th translate>类别</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of list">
-          <td>{{item.houseName}}</td>
-          <td>{{item.brand}}</td>
-          <td>{{item.code}}</td>
-          <td>{{item.name}}</td>
-          <td class="text-center">{{item.count}}</td>
-          <td>{{item.vehicleName}}</td>
-          <td class="text-right">{{item.price|centToYuan}}</td>
-          <td>{{ item.category}}</td>
-        </tr>
-      </tbody>
-    </table>
-    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    <div class="overflow-auto">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th translate>仓库</th>
+            <th translate>品牌</th>
+            <th translate>配件编码</th>
+            <th translate>配件名称</th>
+            <th translate>库存量</th>
+            <th translate>车型</th>
+            <th translate>销售价</th>
+            <th translate>类别</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of list">
+            <td>{{item.houseName}}</td>
+            <td>{{item.brand}}</td>
+            <td>{{item.code}}</td>
+            <td>{{item.name}}</td>
+            <td class="text-center">{{item.count}}</td>
+            <td>{{item.vehicleName}}</td>
+            <td class="text-right">{{item.price|centToYuan}}</td>
+            <td>{{ item.category}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    </div>
   </div>
 </div>
