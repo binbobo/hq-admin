@@ -198,19 +198,19 @@ export class MaintainReturnComponent implements OnInit {
   inputData: any;
   // 点击退料弹出弹框
 
-  OnCreatBound(ele, id) {   
+  OnCreatBound(ele, id) {
     console.log(ele);
     ele.maintenanceItemId = ele.id; //维修明细id
     this.OriginalBillId = id;
     this.inputData = ele;
     this.createModal.show();
   }
-hasList:any;
+  hasList: any;
   onCreate(e) {
     if (this.newMainData) {
-      this.hasList=this.newMainData.filter(item=>item.id===e.id);
-      if(this.hasList){
-        
+      this.hasList = this.newMainData.filter(item => item.id === e.id);
+      if (this.hasList) {
+
       }
       this.newMainData.push(e);
     } else {

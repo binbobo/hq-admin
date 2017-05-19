@@ -33,3 +33,9 @@ table th,table td{
     width:23%;
     vertical-align: top;
 }
+/*增项标志*/
+.triangle{
+border-top: 10px solid gray;
+border-left: 10px solid transparent;
+float: right;
+}

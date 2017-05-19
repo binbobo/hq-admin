@@ -14,14 +14,8 @@ export class AddAttachItemComponent implements OnInit {
   private form: FormGroup;
   @Output()
   private formSubmit = new EventEmitter<any>();
-  private model = {
-    description: "",
-    serviceName: "",
-    type: 2
-  };
+
   @Output() onCancel = new EventEmitter<any>();
-  @ViewChildren(FormControlErrorDirective)
-  private controls: QueryList<FormControlErrorDirective>;
   @Input()
   item: any = null; // 当前编辑的维修项目
   @ViewChild(HqAlerter)
@@ -34,18 +28,15 @@ export class AddAttachItemComponent implements OnInit {
 
   ngOnInit() {
     this.buildForm();
-    console.log(this.item)
+
     if (this.item) {
-      this.form.patchValue(this.item);
-      Object.assign(this.model, this.item);
+      this.form.patchValue(this.item)
     }
   }
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      description: [this.model.description, [Validators.required]],
-      serviceName: [this.model.serviceName]
-
+      description: ["", [Validators.required]]
     })
   }
   onCancelHandler() {
@@ -53,21 +44,14 @@ export class AddAttachItemComponent implements OnInit {
   }
 
   public onSubmit(event: Event) {
-    this.model.serviceName = this.model.description;
-    Object.assign(this.form.value, this.model);
-
-    if (!this.model.description) {
-      this.alerter.error("项目内容不能为空", true, 3000);
+    console.log(this.form.value)
+    if (!this.form.controls.description.value) {
+      this.alerter.error("备注不能为空", true, 3000);
       return false;
     } else {
       this.formSubmit.emit(this.form.value);
-      this.form.reset(this.model);
       this.onCancel.emit();
     }
   }
-
-
-
-
 
 }

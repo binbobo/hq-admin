@@ -162,6 +162,8 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
                 }
             }
         }
+        // 获取数据
+        this.onSearch();
     }
 
     /**
