@@ -8,7 +8,7 @@
     <div>
       <form class="form-in serach-input">
         <input [hqTableTypeahead]="PlatNoSource" [columns]="typeaheadColumns" (onSelect)="onPlateNoSelect($event)" class="form-control input-left"
-          placeholder="请输入车牌号/工单号/车主姓名">
+          placeholder="请输入车牌号/工单号">
         <span class='button-right'>
         </span>
       </form>
@@ -22,6 +22,7 @@
     <div class="tab-title">
       维修项目
     </div>
+    <div class="overflow-auto">
     <table class="table  table-striped table-bordered">
 
       <thead>
@@ -40,10 +41,12 @@
         </tr>
       </tbody>
     </table>
+    </div>
     <div *ngIf="newMainData.length>0">
       <div class="tab-title">
         新增维修发料
       </div>
+      <div class="overflow-auto">
       <table class="table  table-striped table-borderd">
         <thead>
           <tr>
@@ -86,6 +89,7 @@
           </tr>
         </tbody>
       </table>
+      </div>
     </div>
 
     <tabset #staticTabs>
@@ -171,7 +175,7 @@
   </div>
   <div class="card-footer text-muted">
     <button class="btn btn-primary" (click)="OnCreatBill()">生成维修发料单</button>
-    <button class="btn btn-secondary" (click)="finishedOrder($event,  confirmModal)">取消</button>
+    <!--<button class="btn btn-secondary" (click)="finishedOrder($event,  confirmModal)">取消</button>-->
     <button class="btn btn-info" (click)="suspend($event)">挂单</button>
     <button class="btn btn-secondary " options="printOptions" (onConfirm)="onConfirmNumber($event)" [hqMutilSelect]="numberPrintList"
       title="选择流水号" href="#" placement="right">打印</button>

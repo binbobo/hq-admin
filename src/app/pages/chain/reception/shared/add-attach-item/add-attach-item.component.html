@@ -1,11 +1,10 @@
 <ng-template hq-alerter></ng-template>
-<ng-template hq-alerter></ng-template>
 <div class="card">
-  <form *ngIf="form" class="card-block row" [formGroup]="form" (ngSubmit)="onSubmit($event)">
+  <form *ngIf="form" class="card-block row" [formGroup]="form">
     <div class="col-12">
       <div class="form-group">
         <label class="form-control-label">备注</label>
-        <textarea type="textarea" formControlName="description" [(ngModel)]="model.description" class="form-control" placeholder="备注"></textarea>
+        <textarea type="textarea" formControlName="description" class="form-control" placeholder="备注"></textarea>
       </div>
     </div>
   </form>

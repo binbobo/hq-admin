@@ -60,22 +60,30 @@ export class AppendOrderService implements BasicService<any> {
       .then(data => data || Promise.reject('获取数据无效！'))
       .catch(err => Promise.reject(`加载失败：${err}`));
   }
+  //  增项 /Maintenances/increase/{id}
+
+  public put(body: any, id: string): Promise<any> {
+    const url = Urls.chain.concat('/Maintenances/increase/', id);
+    return this.httpService
+      .put<ApiResult<any>>(url, body)
+      .catch(err => Promise.reject(`${err}`));
+  }
 
   // 新增维修项目及附加项目
-  public post(body: any): Promise<any> {
-    const url = Urls.chain.concat('/MaintenanceItems/list');
-    return this.httpService
-      .post<ApiResult<any>>(url, body)
-      .catch(err => Promise.reject(`${err}`));
-  }
+  // public post(body: any): Promise<any> {
+  //   const url = Urls.chain.concat('/MaintenanceItems/list');
+  //   return this.httpService
+  //     .post<ApiResult<any>>(url, body)
+  //     .catch(err => Promise.reject(`${err}`));
+  // }
 
   // 新增建议维修项目
-  public suggestpost(body: any): Promise<any> {
-    const url = Urls.chain.concat('/MaintenanceRecommends/list');
-    return this.httpService
-      .post<ApiResult<any>>(url, body)
-      .catch(err => Promise.reject(`${err}`));
-  }
+  // public suggestpost(body: any): Promise<any> {
+  //   const url = Urls.chain.concat('/MaintenanceRecommends/list');
+  //   return this.httpService
+  //     .post<ApiResult<any>>(url, body)
+  //     .catch(err => Promise.reject(`${err}`));
+  // }
   /**
  * 获取维修类型数据
  * @memberOf OrderService
