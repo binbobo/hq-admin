@@ -11,9 +11,6 @@
       <input #name [hqTableTypeahead]="nameSource" [columns]="columns" (onSelect)="onItemSelect($event)" class="form-control" placeholder="配件名称">
     </div>
   </div>
-  <div class="form-group mb-2">
-    <button (click)="onSearch()" class="btn btn-primary mx-sm-1" translate>搜索</button>
-  </div>
 </form>
 <table class="table table-bordered table-striped">
   <thead>

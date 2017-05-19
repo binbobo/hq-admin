@@ -91,10 +91,7 @@
               <div class="form-group">
                 <em>*</em><label class="form-control-label">角色：</label>
                 <div>
-                  <ngx-dropdown-treeview
-                    [items]="roleItem.items" 
-                    [config]="roleItem.config"
-                    (selectedChange)="onSelectedCahngeForRoleItem($event)">
+                  <ngx-dropdown-treeview [items]="roleItem.items" [config]="roleItem.config" (selectedChange)="onSelectedCahngeForRoleItem($event)">
                   </ngx-dropdown-treeview>
                 </div>
               </div>
@@ -124,10 +121,15 @@
                 </div>
               </div>
             </div>
+
+            <div class="col-6">
+              <button type="submit" class="btn btn-primary" [disabled]="!createUserModel.valid">确定</button>
+            </div>
+
           </div>
         </div>
       </form>
-      
+
     </div>
   </div>
 </div>

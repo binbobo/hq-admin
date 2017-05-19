@@ -1,4 +1,4 @@
-import { Directive, Input, OnInit, Host, OnDestroy, ViewContainerRef, ComponentFactoryResolver, ElementRef, HostListener } from '@angular/core';
+import { Directive, Input, OnInit, Host, OnDestroy, ViewContainerRef, ComponentFactoryResolver, ElementRef, HostListener, ComponentRef } from '@angular/core';
 import { ControlContainer, FormGroupDirective, FormGroup, FormControl, FormControlName } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import { FormControlErrorComponent } from './form-control-error/form-control-error.component';
@@ -14,9 +14,11 @@ export class FormControlErrorDirective implements OnInit, OnDestroy {
   @Input()
   private placeholder: string;
   @Input()
+  private errors: any;
+  @Input()
   private readonly: boolean;
   private valueChange: Subscription;
-  private component: FormControlErrorComponent;
+  private componentRef: ComponentRef<FormControlErrorComponent>;
 
   @HostListener('blur', ['$event'])
   private onblur(event: Event) {
@@ -30,21 +32,25 @@ export class FormControlErrorDirective implements OnInit, OnDestroy {
     private formControl: FormControlName,
     private viewContainerRef: ViewContainerRef,
     private componentFactoryResolver: ComponentFactoryResolver
-  ) {
-    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(FormControlErrorComponent);
-    let componentRef = viewContainerRef.createComponent(componentFactory);
-    this.component = (<FormControlErrorComponent>componentRef.instance);
-  }
+  ) { }
 
   ngOnInit() {
+    if (this.errors) {
+      Object.keys(this.errors).forEach(key => this.errors[key.toLowerCase()] = this.errors[key]);
+    }
+    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(FormControlErrorComponent);
+    this.componentRef = this.viewContainerRef.createComponent(componentFactory);
     let input = this.el.nativeElement as HTMLInputElement;
     if (!this.placeholder && this.name && (this.el.nativeElement instanceof HTMLInputElement)) {
       input.placeholder = `请输入${this.name}`;
     }
+    if (input.parentElement.classList.contains('input-group')) {
+      input.parentElement.insertAdjacentElement('afterend', this.componentRef.location.nativeElement);
+    }
     this.name = this.name || this.formControl.name;
     let control = this.formControl;
     this.valueChange = control.valueChanges.subscribe(data => {
-      this.component.errors = [];
+      this.componentRef.instance.errors = [];
       this.validate(false);
     });
   }
@@ -59,12 +65,15 @@ export class FormControlErrorDirective implements OnInit, OnDestroy {
     let control = this.formControl;
     if (control.invalid && (compulsive || control.dirty || control.touched)) {
       let keys = Object.keys(control.errors);
-      this.component.errors = keys.map(m => this.getError(m, control.errors));
+      this.componentRef.instance.errors = keys.map(m => this.getError(m.toLowerCase(), control.errors));
     }
     return control.valid;
   }
 
   private getError(key: string, errors: Object): string {
+    if (this.errors && key in this.errors) {
+      return this.errors[key].replace(/{name}/g, this.name);
+    }
     let error = errors[key];
     if (key === 'maxlength') {
       return `${this.name}长度不能超过${error.requiredLength}位，当前长度${error.actualLength}`;
@@ -72,7 +81,7 @@ export class FormControlErrorDirective implements OnInit, OnDestroy {
       return `${this.name}不能为空`;
     } else if (key === 'minlength') {
       return `${this.name}长度不能少于${error.requiredLength}位，当前长度${error.actualLength}`;
-    } else if (key === 'equalTo') {
+    } else if (key === 'equalto') {
       return `${this.name}输入不一致`;
     } else if (key === 'pattern') {
       return `无效的${this.name}`;

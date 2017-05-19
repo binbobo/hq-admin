@@ -16,6 +16,7 @@
         <div class="form-check form-check-inline" *ngFor="let type of maintenanceCheckTypes">
           <label class="form-check-label mr-2">
             <input class="form-check-input" (change)='onStatusChange(type)' [checked]="type.checked"  type="checkbox" value="{{type.id}}"> {{type.value}}
+            <span *ngIf="statistics">({{statistics[type.id]}})</span>
           </label>
         </div>
       </div>
@@ -47,7 +48,7 @@
       <tbody>
         <tr *ngFor="let item of list">
           <td width="40">
-            <a href="#" (click)="orderDetailsHandler($event, item.id, lgModal)">详情</a>
+            <a href="#" (click)="orderDetailsHandler($event, item.id, lgModal)">验收</a>
           </td>
           <td>{{item.statusName}}</td>
           <td>

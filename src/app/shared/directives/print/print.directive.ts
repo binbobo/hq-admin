@@ -1,4 +1,5 @@
-import { Directive, ElementRef } from '@angular/core';
+import { Directive, ElementRef, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
+import { PrintComponent } from './print.component';
 
 @Directive({
   selector: '[hqPrint]',
@@ -6,21 +7,29 @@ import { Directive, ElementRef } from '@angular/core';
 })
 export class PrintDirective {
 
-  constructor(private el: ElementRef) { }
+  constructor(
+    private el: ElementRef,
+    private viewContainerRef: ViewContainerRef,
+    private componentFactoryResolver: ComponentFactoryResolver
+  ) { }
 
   public print() {
     let el = this.el.nativeElement as HTMLElement;
     let copy = el.cloneNode(true) as HTMLElement;
     copy.classList.add('hq-visible');
     copy.style.display = 'contents';
+    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(PrintComponent);
+    let componentRef = this.viewContainerRef.createComponent(componentFactory);
+    componentRef.instance.html = copy.outerHTML;
     this.hideOthers();
-    let container = document.createElement("div");
-    container.id = 'hq-printing';
-    container.appendChild(copy);
-    document.body.appendChild(container);
-    window.print();
-    container.remove();
-    this.showOthers();
+    document.body.appendChild(componentRef.location.nativeElement);
+    setTimeout(() => {
+      window.print();
+      this.showOthers();
+      componentRef.location.nativeElement.remove();
+      copy = null;
+    }, 100);
+
   }
 
   private hideOthers() {

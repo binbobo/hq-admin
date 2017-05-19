@@ -5,15 +5,19 @@ import { TreeviewItem, TreeviewConfig } from "ngx-treeview"
 
 @Injectable()
 export class UserCenterService implements BasicService<any>{
+    /**搜索接口 */
     private static Url_Chain_UserSearch: string = "/SystemManager/Search";
+    /**创建接口 */
     private static Url_Chain_CreateUser: string = "/SystemManager";
+    /**编辑接口 */
     private static Url_Chain_EditUser: string = "/SystemManager/EditUserInfo/";
-
-    private static Url_Chain_PositionOption: string = "/Positions/Options";
+    /**获取部门接口 */
     private static Url_Chain_DepartmentOption: string = "/Departments/Options/Position";
-
+    /**冻结 解冻 接口 */
     private static Url_Platfrom_Enabled: string = "Users/Enabled/";
+    /**重置密码 */
     private static Url_Platfrom_ResetPassword: string = "Users/ResetPassword/";
+    /**角色下拉接口 */
     private static Url_Platfrom_RoleOption: string = "Roles/Options";
 
     constructor(
@@ -124,21 +128,36 @@ export class UserCenterService implements BasicService<any>{
  * 用户结构
  */
 export class UserModel {
+    /**主键*/
     id: string;
+    /** 名称  */
     name: string;
+    /**电话号码 */
     phone: string;
+    /**true:启用 false:冻结*/
     enabled: boolean;
+    /**创建时间 */
     createTime:string;
+    /**备注 */
     description: string;
+    /**角色集合-后台返回*/
     roles: UserRole[];
+    /**角色ID 集合-从后台返回集合中找出来  创建时间做为参数*/
     roleIds: string[];
+    /** 职位ID集合-从后台返回集合中找出来  创建时间做为参数*/
     positionIds: string[];
+    /**职位集合-后台返回 */
     partPositionItems: PartPositionInfo[];
+    /**角色名-列表显示  从返回数据中处理的结果 */
     userRoleName: string;
+    /** 职位名称-列表显示 从返回数据中处理的结果 */
     positionName: string;
+    /**部门名称-列表显示 从返回数据中处理的结果 */
     partName: string;
+    /**密码-创建时做为参数 */
     passWord:string;
 
+    /**清空所有数据 */
     public ClearData() {
         this.id = "";
         this.name = "";
@@ -152,6 +171,9 @@ export class UserModel {
         this.positionName = "";
         this.userRoleName = "";
         this.partName = "";
+        this.passWord="";
+        this.partPositionItems=[];
+        this.roles=[];
     }
 }
 
@@ -189,9 +211,13 @@ export class PostionInfo {
  * 下拉列表模型
  */
 export class DropDownItem {
+    /**下拉列表配置 */
     public config = {
+        /**ture:显示全选 false:不显示*/
         isShowAllCheckBox: false,
+        /**true:显示搜索 false:不显示 */
         isShowFilter: true,
+        /**true:折叠 false:展开*/
         isShowCollapseExpand: true,
         maxHeight: 500
     };
@@ -236,7 +262,11 @@ export class DropDownItem {
         if (!items || !nodes) return;
         for (let i = 0; i < items.length; i++) {
             let item = items[i];
-            if (item.children) this.SelectedNodes(item.children, nodes);
+            if (item.children) {
+                this.SelectedNodes(item.children, nodes);
+                item.checked=item.getCheckedItems().length==item.children.length
+                continue;
+            }
             this.CheckedNodes(item, nodes);
         }
     }
