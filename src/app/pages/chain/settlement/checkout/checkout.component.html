@@ -89,9 +89,17 @@
       </div>
       <div class="modal-body">
         <!--工单详情 start-->
-        <hq-workorder-detail [data]="selectedOrder"></hq-workorder-detail>
-        <!--建议维修项 end-->
-        <!--导出详情end-->
+        <hq-checkout-print-detail [data]="selectedOrder"></hq-checkout-print-detail>
+        <div class="card">
+          <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
+             工时费
+            <span class="ml-2 mr-2">{{workHourFee}}元</span> | 材料费
+            <span class="ml-2 mr-2">{{materialFee}}元</span> | 其它
+            <span class="ml-2 mr-2">{{otherFee}}元</span> | 合计
+            <span class="ml-2 mr-2">{{sumFee}}元</span>|
+            <span class="ml-2 mr-2">实收金额：{{billPrice}}元</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>

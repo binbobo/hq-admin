@@ -14,6 +14,7 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { SharedModule } from 'app/shared/shared.module';
 import { BillOrderService } from "app/pages/chain/reception/bill-order/bill-order.service";
 import { CheckOutService } from "app/pages/chain/settlement/checkout/checkout.service";
+import { CheckoutPrintDetailComponent } from './checkout/checkout-print-detail/checkout-print-detail.component';
 
 @NgModule({
   imports: [
@@ -30,7 +31,7 @@ import { CheckOutService } from "app/pages/chain/settlement/checkout/checkout.se
     ReactiveFormsModule,
     NguiDatetimePickerModule
   ],
-   declarations: [routedComponents],
+   declarations: [routedComponents, CheckoutPrintDetailComponent],
   providers: [CheckOutService],
   entryComponents: [routedComponents[0]],
 })
