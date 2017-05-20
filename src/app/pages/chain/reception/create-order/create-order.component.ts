@@ -55,12 +55,21 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     workHour: 0,
     material: 0,
     other: 0,
+    discount: 0
   };
 
   regex = {
     plateNo: /^[\u4e00-\u9fa5]{1}[A-Z]{1}[A-Z_0-9]{5}$/,
     phone: /^1[3|4|5|7|8]\d{9}$/,
-    mileage: /^[0-9]+([.]{1}[0-9]{1,2})?$/
+    mileage: /^[0-9]+([.]{1}[0-9]{1,2})?$/,
+    vin: /^[A-HJ-NPR-Z\d]{8}[\dX][A-HJ-NPR-Z\d]{2}\d{6}$/
+  };
+  formValadationErrors = {
+    common: {
+      required: '{name}不能为空',
+      pattern: '无效的{name}',
+      date: '非法的日期类型'
+    },
   };
 
   // 当前登录用户信息
@@ -303,10 +312,13 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       });
       // 使用新的元素替换以前的元素
       this.newMaintenanceItemData.splice(index, 1, data);
-
+      console.log('testsetst:', data, this.selectedItem)
       // 更新价格
-      const diff: number = parseFloat(data.amount) - parseFloat(this.selectedItem.amount) * 100;
-      this.fee.workHour += diff * 1;
+      const workHourFeediff: number = data.price * data.workHour - (this.selectedItem.price * 100) * this.selectedItem.workHour;
+      this.fee.workHour += workHourFeediff * 1;
+      // 看看折扣了多少钱
+      const discountFeediff: number = (data.price * data.workHour - data.amount) - ((this.selectedItem.price * 100) * this.selectedItem.workHour - this.selectedItem.amount * 100);
+      this.fee.discount += discountFeediff * 1;
 
       // 清空当前编辑的维修项目记录
       this.selectedItem = null;
@@ -314,7 +326,9 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       // 新增
       this.newMaintenanceItemData.push(data);
       // 费用计算
-      this.fee.workHour += data.amount;
+      this.fee.workHour += data.price * data.workHour;
+      //
+      this.fee.discount += data.price * data.workHour - data.amount;
     }
     // 记录当前选择的维修项目
     this.selectedServices = this.getSelectedServices();
@@ -329,7 +343,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       if (item.serviceId === serviceId) {
         this.newMaintenanceItemData.splice(index, 1);
         // 费用计算
-        this.fee.workHour -= item.amount * 1;
+        this.fee.workHour -= item.price * item.workHour;
+        this.fee.discount -= item.price * item.workHour - item.amount;
         // 如果新增项目为0 设置生成工单按钮不可用
         this.enableCreateWorkSheet = (this.newMaintenanceItemData.length > 0) && this.workSheetForm.valid;
         return;
@@ -408,13 +423,14 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
     // 计算费用
     this.fee.workHour = order.maintenanceItems.reduce((accumulator, currentValue) => {
-      return accumulator + parseFloat(currentValue.amount);
+      return accumulator + currentValue.price * currentValue.workHour;
+    }, 0);
+    this.fee.discount = this.fee.workHour - order.maintenanceItems.reduce((accumulator, currentValue) => {
+      return accumulator + currentValue.amount * 1;
     }, 0);
 
     // 需要深copy order对象  不能改变原对象 
     // 因为每次选择一个挂掉的时候，挂单记录不会从列表中消失 只有点击创建工单之后  才消失
-    // const copiedOrder = Object.assign({}, order);
-    // copiedOrder.maintenanceItems = this.deepCopyArray(order.maintenanceItems);
 
     // 记录当前选择的挂单
     this.newMaintenanceItemData = this.deepCopyArray(order.maintenanceItems);
@@ -446,14 +462,14 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       series: [{ value: '', disabled: true }, [Validators.required]], // 车系
       vehicleName: [{ value: '', disabled: true }, [Validators.required]], // 车型
       plateNo: ['', Validators.compose([Validators.required, Validators.pattern(this.regex.plateNo)])], // 车牌号
-      vin: ['', [Validators.required]], // vin  底盘号
-      validate: ['', [CustomValidators.date]], // 验车日期
+      vin: ['', Validators.compose([Validators.required, Validators.pattern(this.regex.vin)])], // vin  底盘号
+      validate: [null, [CustomValidators.date]], // 验车日期
       type: ['', [Validators.required]], // 维修类型
-      expectLeave: ['', [Validators.required, CustomValidators.date]], // 预计交车时间
+      expectLeave: [null, [Validators.required, CustomValidators.date]], // 预计交车时间
       mileage: ['', Validators.compose([Validators.required, Validators.pattern(this.regex.mileage)])], // 行驶里程
-      lastEnter: [{ value: '', disabled: true }], // 上次进店时间
+      lastEnter: [{ value: null, disabled: true }], // 上次进店时间
       location: '', // 维修工位
-      nextDate: ['', [CustomValidators.date]], // 建议下次保养日期
+      nextDate: [null, [CustomValidators.date]], // 建议下次保养日期
       lastMileage: [{ value: '', disabled: true }], // 上次进店里程
       nextMileage: ['', Validators.compose([Validators.pattern(this.regex.mileage)])], // 建议下次保养里程
 
@@ -636,10 +652,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   public get customerNametypeaheadSource() {
     return this.typeaheadSource(this.service.getCustomerVehicleByCustomerName);
   }
-  // // 根据维修项目名称模糊查询数据源
-  // public get serviceNameTypeaheadSource() {
-  //   return this.typeaheadSource(this.service.getMaintenanceItemsByName);
-  // }
+
   // 根据品牌名称模糊查询数据源
   public get brandTypeaheadSource() {
     return (params: TypeaheadRequestParams) => {

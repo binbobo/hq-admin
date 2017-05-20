@@ -28,20 +28,18 @@
           <tr>
             <th>操作</th>
             <th>状态</th>
-            <th>维修类型</th>
+            <th>车牌号</th>
             <th>工单号</th>
-            <th>进店时间</th>
+            <th>维修类型</th>
+            <th>维修技师</th>
+            <th>进厂时间</th>
             <th>预计交车时间</th>
             <th>超时</th>
-            <th>服务顾问</th>
-            <th>品牌</th>
             <th>车型</th>
-            <th>车牌号</th>
-            <th>行驶里程</th>
-            <th>购车时间</th>
-            <th>车主</th>
+            <th>VIN</th>
             <th>送修人</th>
-            <th>电话</th>
+            <th>送修人电话</th>
+            <th>服务顾问</th>
           </tr>
         </thead>
         <tbody>
@@ -53,22 +51,24 @@
             <td>
               {{item.statusName}}
             </td>
+            <td>{{item.plateNo}}</td>
+            <td>{{item.billCode}}</td>
             <td>
               {{item.typeName}}
             </td>
-            <td>{{item.billCode}}</td>
+            <td>
+              {{item.employeeNames}}
+              <!--如果转派  追加显示转派人-->
+              <!--<span *ngIf="item.teamType === 2">,{{item.turnEmployeeNames}}</span>-->
+            </td>
             <td>{{item.createdOnUtc|sDatetime}}</td>
             <td>{{item.expectLeave|sDatetime}}</td>
             <td>{{item.overTime|durationHumanize}}</td>
-            <td>{{item.createdUserName}}</td>
-            <td>{{item.brand}}</td>
             <td>{{item.vehicleName}}</td>
-            <td>{{item.plateNo}}</td>
-            <td>{{item.mileage}}</td>
-            <td>{{item.purchaseDate}}</td>
-            <td>{{item.customerName}}</td>
+            <td>{{item.vin}}</td>
             <td>{{item.contactUser}}</td>
             <td>{{item.contactInfo}}</td>
+            <td>{{item.createdUserName}}</td>
           </tr>
         </tbody>
       </table>
@@ -90,7 +90,7 @@
 
   <!--详情 begin-->
   <div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
-    <div *ngIf="lgModal.isShown"  class="modal-dialog modal-lg">
+    <div *ngIf="lgModal.isShown" class="modal-dialog modal-lg">
       <div class="modal-content">
         <ng-template *ngIf="isDetailModalShown" hq-alerter></ng-template>
         <div class="modal-header">
@@ -99,10 +99,10 @@
           <span aria-hidden="true">&times;</span>
         </button>
         </div>
-        <div class="modal-body" style='overflow: scroll;'>
+        <div class="modal-body">
           <!--导出详情begin-->
           <tabset>
-            <tab heading="维修项目" *ngIf="selectedOrder?.serviceOutputs&&selectedOrder?.serviceOutputs.length>0">
+            <tab heading="维修项目" *ngIf="selectedOrder?.serviceOutputs?.length>0">
               <table class="table table-striped table-bordered">
                 <thead>
                   <tr>

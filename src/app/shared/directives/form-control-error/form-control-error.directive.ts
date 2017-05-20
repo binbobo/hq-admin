@@ -91,6 +91,8 @@ export class FormControlErrorDirective implements OnInit, OnDestroy {
       return `${this.name}不能低于最小限制范围`;
     } else if (key === "lte") {
       return `${this.name}不能高于最高限制范围`;
+    } else if (key === "range") {
+      return `${this.name}不能超出限定范围限制范围`;
     }
     else {
       console.log(key, errors);

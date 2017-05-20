@@ -1,61 +1,102 @@
-<table class="table table-striped table-bordered">
-  <caption>工单详情</caption>
-  <thead>
-    <tr>
-      <th>店名</th>
-      <th>状态</th>
-      <th>维修类型</th>
-      <th>工单号</th>
-      <th>进店时间</th>
-      <th>预计交车时间</th>
-      <th>超时</th>
-      <th>服务顾问</th>
-      <th>品牌</th>
-      <th>车型</th>
-      <th>车牌号</th>
-      <th>行驶里程</th>
-      <th>购车时间</th>
-      <th>车主</th>
-      <th>送修人</th>
-      <th>送修人电话</th>
-      <th>介绍人</th>
-      <th>介绍人电话</th>
-      <th>维修技师</th>
-      <th>出厂时间</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>{{data?.orgName}}</td>
-      <td>{{data?.statusName}}</td>
-      <td>{{data?.typeName}}</td>
-      <td>{{data?.billCode}}</td>
-      <td>{{data?.createdOnUtc|sDatetime}}</td>
-      <td>{{data?.expectLeave|sDatetime}}</td>
-      <td>{{data?.overTime|durationHumanize}}</td>
-      <td>{{data?.createdUserName}}</td>
-      <td>{{data?.brand}}</td>
-      <td>{{data?.model}}</td>
-      <td>{{data?.plateNo}}</td>
-      <td>{{data?.mileage}}</td>
-      <td>{{data?.purchaseDate|sDate}}</td>
-      <td>{{data?.customerName}}</td>
-      <td>{{data?.contactUser}}</td>
-      <td>{{data?.contactInfo}}</td>
-      <td>{{data?.introducer}}</td>
-      <td>{{data?.introPhone}}</td>
-      <td>
-        <!-- teamType (string, optional): 工单指派类型 0.没指派 1.指派 2.转派 -->
-        <span *ngIf="teamType === 1">{{data?.employeeNames.join(',')}}</span>
-        <span *ngIf="teamType === 2">{{data?.turnEmployeeNames.join(',')}}</span>
-      </td>
-      <td>{{data?.leaveTime|sDatetime }}</td>
-    </tr>
-  </tbody>
-</table>
-<br>
+<form>
+  <div class="form-group row">
+    <div class="col-4">
+      <label>车牌号：</label>
+      <span>{{data?.plateNo}}</span>
+    </div>
+    <div class="col-4">
+      <label>车型：</label>
+      <span>{{data?.vehicleName}}</span>
+    </div>
+    <div class="col-4">
+      <label>VIN：</label>
+      <span>{{data?.vin}}</span>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-4">
+      <label>送修人：</label>
+      <span>{{data?.contactUser}}</span>
+    </div>
+    <div class="col-4">
+      <label>送修人手机：</label>
+      <span>{{data?.contactInfo}}</span>
+    </div>
+    <div class="col-4">
+      <label>工单号：</label>
+      <span>{{data?.billCode}}</span>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-4">
+      <label>车主：</label>
+      <span>{{data?.customerName}}</span>
+    </div>
+    <div class="col-4">
+      <label>购车时间：</label>
+      <span>{{data?.purchaseDate|sDate}}</span>
+    </div>
+    <div class="col-4">
+      <label>预计交车时间：</label>
+      <span>{{data?.expectLeave|sDatetime}}</span>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-4">
+      <label>维修技师：</label>
+      <span>{{data?.employeeNames}}</span>
+      <!--如果转派  追加显示转派人-->
+      <!--<span *ngIf="data?.teamType === 2">,{{data?.turnEmployeeNames}}</span>-->
+      <!-- teamType (string, optional): 工单指派类型 0.没指派 1.指派 2.转派 -->
+      <!--<span *ngIf="teamType === 1">{{data?.employeeNames.join(',')}}</span>
+        <span *ngIf="teamType === 2">{{data?.turnEmployeeNames.join(',')}}</span>-->
+    </div>
+    <div class="col-4">
+      <label>服务顾问：</label>
+      <span>{{data?.createdUserName}}</span>
+    </div>
+    <div class="col-4">
+      <label>介绍人：</label>
+      <span>{{data?.introducer}}</span>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-4">
+      <label>介绍人电话：</label>
+      <span>{{data?.introPhone}}</span>
+    </div>
+  </div>
+  <hr>
+  <div class="form-group row">
+    <div class="col-4">
+      <label>维修类型：</label>
+      <span>{{data?.typeName}}</span>
+    </div>
+    <div class="col-4">
+      <label>进店时间：</label>
+      <span>{{data?.createdOnUtc|sDatetime}}</span>
+    </div>
+    <div class="col-4">
+      <label>进店里程：</label>
+      <span>{{data?.mileage}}</span>
+      <span class="ml-2">KM</span>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-4">
+      <label>出厂时间：</label>
+      <span>{{data?.leaveTime|sDatetime}}</span>
+    </div>
+    <div class="col-4">
+      <label>出厂里程：</label>
+      <span>{{data?.mileage}}</span>
+      <span class="ml-2">KM</span>
+    </div>
+  </div>
+</form>
+<hr>
 <tabset>
-  <tab heading="维修项目"  *ngIf="data?.serviceOutputs?.length>0">
+  <tab heading="维修项目" *ngIf="data?.serviceOutputs?.length>0">
     <table class="table table-striped table-bordered">
       <thead>
         <tr>
@@ -107,7 +148,7 @@
       </tbody>
     </table>
   </tab>
-  <tab heading="附加项目"  *ngIf="data?.attachServiceOutputs?.length>0">
+  <tab heading="附加项目" *ngIf="data?.attachServiceOutputs?.length>0">
     <table class="table table-striped table-bordered">
       <thead>
         <tr>
@@ -121,7 +162,6 @@
       </tbody>
     </table>
   </tab>
-
   <tab heading="建议维修项目" *ngIf="data?.suggestServiceOutputs?.length>0">
     <table class="table table-striped table-bordered">
       <thead>
@@ -140,14 +180,4 @@
       </tbody>
     </table>
   </tab>
-  <!--只有前4个选项卡显示-->
-  <div *ngIf="true" class="card">
-    <div class="card-header" style="color:gray;padding: 3px 5px;">
-      折前费用: 工时费
-      <span class="ml-2 mr-2">{{data?.workHourFee|centToYuan}}</span> | 材料费
-      <span class="ml-2 mr-2">{{data?.materialFee|centToYuan}}</span> | 其它
-      <span class="ml-2 mr-2">{{data?.otherFee|centToYuan}}</span> | 合计
-      <span class="ml-2 mr-2">{{data?.sumFee|centToYuan}}</span>|
-    </div>
-  </div>
 </tabset>

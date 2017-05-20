@@ -1,130 +1,54 @@
-<!--<div class="card">
-  <div class="card-header">
-    新增车主
-  </div>
-  <div class="card-block">
-    <form>
-      <div class="form-group row">
-        <label for="customerName" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车主</label>
-        <div class="col-2">
-          <input type="text" class="form-control" value="">
-        </div>
-        <label for="sex" class="col-1 col-form-label">性别</label>
-        <div class="col-2">
-          <input type="text" class="form-control" value="">
-        </div>
-        <label for="birthday" class="col-1 col-form-label">生日</label>
-        <div class="col-2">
-          <input type="text" class="form-control" value="">
-        </div>
-        <label for="identityCard" class="col-1 col-form-label">身份证号</label>
-        <div class="col-2">
-          <input type="text" class="form-control" value="">
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="phone" class="col-1 col-form-label">手机号</label>
-        <div class="col-2">
-          <input type="text" class="form-control" value="">
-        </div>
-        <label for="tel" class="col-1 col-form-label">电话</label>
-        <div class="col-2">
-          <input type="text" class="form-control" value="">
-        </div>
-        <label for="fax" class="col-1 col-form-label">传真</label>
-        <div class="col-2">
-          <input type="text" class="form-control" value="">
-        </div>
-        <label for="email" class="col-1 col-form-label">Email</label>
-        <div class="col-2">
-          <input type="text" class="form-control" value="">
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="province" class="col-1 col-form-label">省份</label>
-        <div class="col-2">
-          <input type="text" class="form-control" value="">
-        </div>
-        <label for="city" class="col-1 col-form-label">城市</label>
-        <div class="col-2">
-          <input type="text" class="form-control" value="">
-        </div>
-        <label for="area" class="col-1 col-form-label">区县</label>
-        <div class="col-2">
-          <input type="text" class="form-control" value="">
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="address" class="col-1 col-form-label">详细地址</label>
-        <div class="col-5">
-          <input type="text" class="form-control" value="">
-        </div>
-      </div>
-    </form>
-    <hr>
-  </div>
-</div>-->
-<div class="container">
-  <div class="row">
-    <label>车主: </label>
-    <div class="col-2">
-      {{data?.name}}
+<form>
+  <div class="form-group row">
+    <div class="col-4">
+      <label>车主: </label> {{data?.name}}
     </div>
-    <label>性别: </label>
-    <div class="col-2">
-      {{data?.sex}}
+    <div class="col-4">
+      <label>性别: </label> {{data?.sex}}
     </div>
-    <label>生日: </label>
-    <div class="col-2">
-      {{data?.birthday|sDate}}
-    </div>
-    <label>身份证号: </label>
-    <div class="col-2">
-      {{data?.identityCard}}
+    <div class="col-4">
+      <label>生日: </label> {{data?.birthday|sDate}}
     </div>
   </div>
   <hr>
-  <div class="row">
-    <label>手机号: </label>
-    <div class="col-2">
-      {{data?.phone}}
+  <div class="form-group row">
+    <div class="col-4">
+      <label>身份证号: </label> {{data?.identityCard}}
     </div>
-    <label>电话: </label>
-    <div class="col-2">
-      {{data?.tel}}
+    <div class="col-4">
+      <label>手机号: </label> {{data?.phone}}
     </div>
-    <label>传真: </label>
-    <div class="col-2">
-      {{data?.fax}}
+    <div class="col-4">
+      <label>电话: </label> {{data?.tel}}
     </div>
-    <label>Email: </label>
-    <div class="col-2">
-      {{data?.email}}
+  </div>
+  <div class="form-group row">
+    <div class="col-4">
+      <label>传真: </label> {{data?.fax}}
+    </div>
+    <div class="col-4">
+      <label>Email: </label> {{data?.email}}
     </div>
   </div>
   <br>
-  <div class="row">
-    <label>省份: </label>
-    <div class="col-2">
-      {{data?.cityNameList?.split(',')[0]}}
+  <div class="form-group row">
+    <div class="col-4">
+      <label>省份: </label> {{data?.cityNameList?.split(',')[0]}}
     </div>
-    <label>城市: </label>
-    <div class="col-2">
-      {{data?.cityNameList?.split(',')[1]}}
+    <div class="col-4">
+      <label>城市 : </label> {{data?.cityNameList?.split(',')[1]}}
     </div>
-    <label>区县: </label>
-    <div class="col-2">
-      {{data?.cityNameList?.split(',')[2]}}
+    <div class="col-4">
+      <label>区县: </label> {{data?.cityNameList?.split(',')[2]}}
     </div>
   </div>
   <br>
-  <div class="row">
-    <label>详细地址: </label>
+  <div class="form-group row">
     <div class="col-8">
-      {{data?.address}}
+      <label>详细地址: </label> {{data?.address}}
     </div>
   </div>
-</div>
+</form>
 <hr>
 <tabset>
   <tab heading="车辆信息">

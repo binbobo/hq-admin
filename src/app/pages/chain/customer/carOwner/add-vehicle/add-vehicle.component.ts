@@ -23,6 +23,16 @@ export class AddVehicleComponent implements OnInit {
 
   regex = {
     plateNo: /^[\u4e00-\u9fa5]{1}[A-Z]{1}[A-Z_0-9]{5}$/,
+    vin: /^[A-HJ-NPR-Z\d]{8}[\dX][A-HJ-NPR-Z\d]{2}\d{6}$/,
+    engineNo: /^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/
+  };
+
+  formValadationErrors = {
+    common: {
+      required: '{name}不能为空',
+      pattern: '无效的{name}',
+      date: '非法的日期类型',
+    }
   };
 
   constructor(
@@ -93,8 +103,8 @@ export class AddVehicleComponent implements OnInit {
       brandId: '',
       seriesId: '',
       vehicleId: '',
-      engineNo: '',
-      vin: ['', [Validators.required]],
+      engineNo: ['', Validators.compose([Validators.pattern(this.regex.engineNo)])],
+      vin: ['', Validators.compose([Validators.required, Validators.pattern(this.regex.vin)])],
       vehicleColor: '',
       purchaseDate: ['', [CustomValidators.date]],
       validate: ['', [CustomValidators.date]],
