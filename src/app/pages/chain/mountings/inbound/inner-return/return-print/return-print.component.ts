@@ -9,7 +9,7 @@ import { InnerPrintItem } from "../inner-return.service";
 export class ReturnPrintComponent implements OnInit {
 
   @Input()
-  private model: InnerPrintItem;
+  private model: any;
 
   constructor() { }
 

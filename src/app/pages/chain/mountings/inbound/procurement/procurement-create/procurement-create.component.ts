@@ -49,8 +49,6 @@ export class ProcurementCreateComponent implements OnInit {
       productCode: [this.model.productCode],
       productName: [this.model.productName],
       productCategory: [this.model.productCategory],
-      packingCode: [this.model.packingCode],
-      taxRate: [this.model.taxRate],
       productId: [this.model.productId, [Validators.required, Validators.maxLength(36)]],
       productSpecification: [this.model.productSpecification],
       storeId: [this.model.storeId, [Validators.required, Validators.maxLength(36)]],
@@ -88,8 +86,8 @@ export class ProcurementCreateComponent implements OnInit {
   private itemColumns(isName: boolean) {
     return [
       { name: 'brand', title: '品牌' },
-      { name: 'productName', title: '名称', weight: isName ? 1 : 0 },
-      { name: 'productCode', title: '编码', weight: isName ? 0 : 1 },
+      { name: 'code', title: '编码', weight: isName ? 0 : 1 },
+      { name: 'name', title: '名称', weight: isName ? 1 : 0 },
       { name: 'specification', title: '规格' },
       { name: 'vehicleName', title: '车型' },
     ];
@@ -97,15 +95,14 @@ export class ProcurementCreateComponent implements OnInit {
 
   private onItemSelect(event) {
     let item = {
-      productCode: event.productCode,
-      productName: event.productName,
-      packingCode: event.packingCode,
+      productCode: event.code,
+      productName: event.name,
       productSpecification: event.specification,
       productId: event.productId,
       brand: event.brand,
       brandId: event.brandId,
       storeId: event.storeId,
-      storeName: event.storeName,
+      storeName: event.houseName,
       locationId: event.locationId,
       locationName: event.locationName,
       stockCount: event.count,
@@ -113,7 +110,7 @@ export class ProcurementCreateComponent implements OnInit {
       yuan: event.price / 100,
       taxRate: event.taxRate,
       exTaxPrice: event.exTaxPrice,
-      productCategory: event.productCategory,
+      productCategory: event.category,
     }
     this.form.patchValue(item);
     this.calculate();

@@ -75,6 +75,7 @@ export class Inventory extends BasicModel {
     public vehicleId: Array<string> = [],
     public vehicleList: Array<any> = [],
     public categoryList: Array<any> = [],
+    public vehicleInfoList: Array<any> = [],
     public number?: number,
     public storeId?: string,
     public locationName?: string,

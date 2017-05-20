@@ -22,7 +22,7 @@ export class PrintDirective {
     let componentRef = this.viewContainerRef.createComponent(componentFactory);
     componentRef.instance.html = copy.outerHTML;
     this.hideOthers();
-    document.body.appendChild(componentRef.location.nativeElement);
+    document.body.insertAdjacentElement('afterbegin', componentRef.location.nativeElement);
     setTimeout(() => {
       window.print();
       this.showOthers();

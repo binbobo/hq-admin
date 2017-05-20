@@ -65,12 +65,14 @@ export class FormControlErrorDirective implements OnInit, OnDestroy {
     let control = this.formControl;
     if (control.invalid && (compulsive || control.dirty || control.touched)) {
       let keys = Object.keys(control.errors);
-      this.componentRef.instance.errors = keys.map(m => this.getError(m.toLowerCase(), control.errors));
+      this.componentRef.instance.errors = keys
+        .filter(m => control.errors[m] === true || typeof control.errors[m] === 'object')
+        .map(m => this.getError(m.toLowerCase(), control.errors));
     }
     return control.valid;
   }
 
-  private getError(key: string, errors: Object): string {
+  private getError(key: string, errors: any): string {
     if (this.errors && key in this.errors) {
       return this.errors[key].replace(/{name}/g, this.name);
     }
@@ -93,9 +95,12 @@ export class FormControlErrorDirective implements OnInit, OnDestroy {
       return `${this.name}不能高于最高限制范围`;
     } else if (key === "range") {
       return `${this.name}不能超出限定范围限制范围`;
-    }
-    else {
-      console.log(key, errors);
+    } else if (key === "max") {
+      return `${this.name}超出最大值${errors.requiredValue}限制`;
+    } else if (key === "min") {
+      return `${this.name}超出最小值${errors.requiredValue}限制`;
+    } else {
+      console.log(key, error, errors);
       return `无效的${this.name}`;
     }
   }
