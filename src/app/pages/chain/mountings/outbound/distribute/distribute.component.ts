@@ -15,7 +15,7 @@ import { SuspendBillDirective } from "app/pages/chain/chain-shared";
   providers: [DistributeService]
 })
 export class DistributeComponent implements OnInit {
-  MRData: any;
+  MRData: any=[];
   suspendedBillId: any;
   numberPrintList: SelectOption[];
   @ViewChild('createModal')
@@ -31,7 +31,7 @@ export class DistributeComponent implements OnInit {
   billCode: any;
   newMainData = [];
   productData: any;
-  serviceData: any;
+  serviceData: any=[];
   listId: any;
   SearchappendList: any;
   ChooseOrderForm: FormGroup;
@@ -76,13 +76,13 @@ export class DistributeComponent implements OnInit {
         this.serviceData = data.serviceOutputs;
         this.suspendData.serviceData = this.serviceData;
         this.productData = data.productOutputs;
-        this.employeesData = data.maintenanceEmployees;
+        // this.employeesData = data.maintenanceEmployees;
         // 去重
-        var hash = {};
-        this.InputData.employeesData = this.employeesData.reduce(function (item, next) {
-          hash[next.name] ? '' : hash[next.name] = true && item.push(next);
-          return item
-        }, [])
+        // var hash = {};
+        // this.InputData.employeesData = this.employeesData.reduce(function (item, next) {
+        //   hash[next.name] ? '' : hash[next.name] = true && item.push(next);
+        //   return item
+        // }, [])
       });
 
     // 根据工单号获取已发料流水号列表
@@ -123,7 +123,7 @@ export class DistributeComponent implements OnInit {
 
   }
   numberList: any;
-  serialData: any;
+  serialData: any=[];
   serialDataList: any;
   // 车牌号模糊搜索接口调用
   public get PlatNoSource() {
@@ -147,9 +147,12 @@ export class DistributeComponent implements OnInit {
 
   // 点击发料弹出发料弹框
   OnCreatBound(item) {
+    
+
     this.createModal.show();
     this.InputData.serviceName = item.serviceName; //维修项目名称
     this.InputData.maintenanceItemId = item.id; //维修明细id
+    this.InputData.employeesData=item.maintenanceEmployees;
     this.InputData = { ...this.InputData };
 
   }

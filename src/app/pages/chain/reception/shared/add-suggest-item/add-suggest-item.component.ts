@@ -13,7 +13,7 @@ import { CustomValidators } from 'ng2-validation';
 })
 export class AddSuggestItemComponent implements OnInit {
 
-   suggestItemForm: FormGroup;
+  suggestItemForm: FormGroup;
 
   @Output() onCancel = new EventEmitter<any>();
   @Output() onConfirm = new EventEmitter<any>();
@@ -33,7 +33,7 @@ export class AddSuggestItemComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
-     console.log('当前已经选择的维修项目列表为：', this.services);
+    console.log('当前已经选择的维修项目列表为：', this.services);
     // 编辑
     if (this.item) {
       this.suggestItemForm.patchValue(this.item);
@@ -49,21 +49,19 @@ export class AddSuggestItemComponent implements OnInit {
     this.onCancel.emit();
   }
   onConfirmHandler() {
-     
-      // 验证数据合法性
-      this.onConfirm.emit({
-        data: this.suggestItemForm.getRawValue(),
-        isEdit: this.item ? true : false
-      });
-  
+    // 验证数据合法性
+    this.onConfirm.emit({
+      data: this.suggestItemForm.getRawValue(),
+      isEdit: this.item ? true : false
+    });
+
   }
 
   createForm() {
     this.suggestItemForm = this.fb.group({
-  
       serviceName: ['', [Validators.required]],
       serviceId: [''],
-      description:[''],
+      description: [''],
       operationTime: [{ value: moment().format('YYYY-MM-DD HH:mm:ss'), disabled: true }],
     });
 
