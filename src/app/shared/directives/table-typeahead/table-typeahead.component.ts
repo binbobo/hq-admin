@@ -8,7 +8,12 @@ import { PagedParams, PagedResult } from 'app/shared/models';
   host: {
     style: 'position:absolute;z-index:99999999;display:table-column',
   },
-  styleUrls: ['./table-typeahead.component.css']
+  styleUrls: ['./table-typeahead.component.css'],
+  // host: {
+  //   '[class]': '"popover in popover-bottom bottom show"',
+  //   role: 'tooltip',
+  //   style: 'display:block;z-index:1'
+  // },
 })
 export class TableTypeaheadComponent implements OnInit {
 

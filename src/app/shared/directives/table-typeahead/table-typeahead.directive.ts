@@ -24,8 +24,6 @@ export class TableTypeaheadDirective implements OnInit {
   private pageSize: number = 10;
   @Input()
   private multiple: boolean;
-  @Input()
-  private showTitle = true;
   @Output()
   private onSelect = new EventEmitter<any>();
   @Output()
@@ -49,8 +47,8 @@ export class TableTypeaheadDirective implements OnInit {
     if (!this.multiple) {
       setTimeout(() => {
         if (this.paging) {
-          this.el.focus();
           this.paging = false;
+          this.el.focus();
         } else {
           this.hide();
         }
@@ -61,7 +59,7 @@ export class TableTypeaheadDirective implements OnInit {
   @HostListener('focus', ['$event'])
   onFocus(event) {
     this.show();
-    if (!this.paging && this.forceRefresh || !this.componentRef.instance.result) {
+    if (this.forceRefresh || !this.componentRef.instance.result) {
       this.componentRef.instance.result = null;
       this.search();
     }
@@ -144,17 +142,11 @@ export class TableTypeaheadDirective implements OnInit {
     let ne = this.componentRef.location.nativeElement;
     ne.style.transition = 'height 0.3s ease-in';
     wrapper.appendChild(ne);
-    if (this.showTitle) {
-      if (!this.columns || this.columns.length < 2) {
-        this.showTitle = false;
-      }
-    }
     let component = this.componentRef.instance;
     component.columns = this.columns;
     component.onRemove = this.onRemove;
     component.size = this.pageSize;
     component.multiple = this.multiple;
-    component.showTitle = this.showTitle;
     component.onPageChange.subscribe(params => {
       this.paging = true;
       this.search(params.pageIndex);

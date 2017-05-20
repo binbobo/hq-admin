@@ -101,6 +101,8 @@ export class FormControlErrorDirective<T extends FormControlErrorComponent> impl
       return `${this.label}不能低于最小限制范围`;
     } else if (key === "lte") {
       return `${this.label}不能高于最高限制范围`;
+    } else if (key === "range") {
+      return `${this.label}不能超出限定范围限制范围`;
     } else if (key === "max") {
       return `${this.label}超出最大值${errors.requiredValue}限制`;
     } else if (key === "min") {

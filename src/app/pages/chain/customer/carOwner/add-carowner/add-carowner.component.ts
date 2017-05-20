@@ -2,11 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CustomerService, CustomerNameSearchRequest, CustomerPhoneSearchRequest } from '../../customer.service';
 import { OrderService } from '../../../reception/order.service';
-import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { TypeaheadRequestParams, HqAlerter } from 'app/shared/directives';
 import * as moment from 'moment';
-import { ModalDirective } from 'ngx-bootstrap';
+import { CustomValidators } from 'ng2-validation';
 
 @Component({
   selector: 'hq-add-carowner',
@@ -37,15 +36,30 @@ export class AddCarownerComponent implements OnInit {
 
   newVehiclesData = []; // 保存所有添加的车辆
 
+  regex = {
+    phone: /^1[3|4|5|7|8]\d{9}$/,
+    idCard: /\d{15}(\d\d[0-9xX])?/,
+    tel: /\d{3}-\d{8}|\d{4}-\d{7}/,
+    fax: /^(\d{3,4}-)?\d{7,8}$/
+  };
+  formValadationErrors = {
+    common: {
+      required: '{name}不能为空',
+      pattern: '无效的{name}',
+      date: '非法的日期类型',
+      fax: '非法的传真格式',
+      tel: '非法的固定电话格式',
+      email: '非法的电子邮箱格式'
+    }
+  };
+
   constructor(
     protected service: CustomerService,
     protected orderService: OrderService,
     private fb: FormBuilder,
 
-    private route: ActivatedRoute,
     private location: Location,
   ) {
-
   }
 
   goBack() {
@@ -61,14 +75,12 @@ export class AddCarownerComponent implements OnInit {
 
   // 删除一条车辆记录 处理程序
   onDelVehicleConfirmHandler(plateNo) {
-    //
     this.newVehiclesData.filter((item, index) => {
       if (item.plateNo === plateNo) {
         this.newVehiclesData.splice(index, 1);
         return;
       }
     });
-
     this.enableSaveCustomer = true;
   }
 
@@ -79,6 +91,7 @@ export class AddCarownerComponent implements OnInit {
 
     // 获取表单信息
     const carOwnerBody = this.carOwnerForm.value;
+    if (!carOwnerBody.birthday) { delete carOwnerBody.birthday; }
 
     // 添加省份 城市 区县id, name列表
     carOwnerBody.cityIdList = this.cityIdList.join(',');
@@ -181,13 +194,13 @@ export class AddCarownerComponent implements OnInit {
     this.carOwnerForm = this.fb.group({
       id: '', // 车主主键 用于更新
       name: ['', [Validators.required]], // 车主
-      phone: '', // 车主手机号
+      phone: ['', Validators.compose([Validators.pattern(this.regex.phone)])], // 车主手机号
       sex: '', // 车主性别
-      birthday: '', // 车主生日
-      identityCard: '', // 身份证号
-      tel: '', // 电话
-      fax: '', // 传真
-      email: '', // 电子邮箱
+      birthday: [null, [CustomValidators.date]], // 车主生日
+      identityCard: ['', Validators.compose([Validators.pattern(this.regex.idCard)])], // 身份证号
+      tel: ['', Validators.compose([Validators.pattern(this.regex.tel)])], // 电话
+      fax: ['', Validators.compose([Validators.pattern(this.regex.fax)])], // 传真
+      email: ['', [CustomValidators.email]], // 电子邮箱
       province: '', // 省份id,name
       city: '', // 城市id,name
       area: '', // 区县id,name

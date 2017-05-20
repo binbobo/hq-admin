@@ -23,6 +23,16 @@ export class AddVehicleComponent implements OnInit {
 
   regex = {
     plateNo: /^[\u4e00-\u9fa5]{1}[A-Z]{1}[A-Z_0-9]{5}$/,
+    vin: /^[A-HJ-NPR-Z\d]{8}[\dX][A-HJ-NPR-Z\d]{2}\d{6}$/,
+    engineNo: /^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/
+  };
+
+  formValadationErrors = {
+    common: {
+      required: '{name}不能为空',
+      pattern: '无效的{name}',
+      date: '非法的日期类型',
+    }
   };
 
   constructor(
@@ -40,9 +50,14 @@ export class AddVehicleComponent implements OnInit {
   onAddVehicleConfirmHandler() {
     // 验证数据合法性
     if (!this.vehicleForm.value.vehicleId) {
-      alert('请选择车系');
+      alert('请选择车型');
+      this.vehicleForm.controls.vehicleName.setValue('');
       return;
     }
+    // 日期类型没选的话 不传
+    if (!this.vehicleForm.value.purchaseDate) { delete this.vehicleForm.value.purchaseDate; };
+    if (!this.vehicleForm.value.validate) { delete this.vehicleForm.value.validate; };
+    if (!this.vehicleForm.value.insuranceDue) { delete this.vehicleForm.value.insuranceDue; };
     this.onAddVehicleConfirm.emit(this.vehicleForm.value);
     this.vehicleForm.reset();
   }
@@ -78,6 +93,8 @@ export class AddVehicleComponent implements OnInit {
     console.log('当前选择的车型', evt);
     this.vehicleForm.controls.vehicleId.setValue(evt.id);
     this.vehicleForm.controls.vehicleName.setValue(evt.name);
+
+    this.enableSaveVehicle = this.vehicleForm.valid;
   }
 
   createForm() {
@@ -90,19 +107,19 @@ export class AddVehicleComponent implements OnInit {
       brandId: '',
       seriesId: '',
       vehicleId: '',
-      engineNo: '',
-      vin: ['', [Validators.required]],
+      engineNo: ['', Validators.compose([Validators.pattern(this.regex.engineNo)])],
+      vin: ['', Validators.compose([Validators.required, Validators.pattern(this.regex.vin)])],
       vehicleColor: '',
-      purchaseDate: ['', [CustomValidators.date]],
-      validate: ['', [CustomValidators.date]],
-      insuranceDue: ['', [CustomValidators.date]],
+      purchaseDate: [null, [CustomValidators.date]],
+      validate: [null, [CustomValidators.date]],
+      insuranceDue: [null, [CustomValidators.date]],
       insuranceCompany: '',
     });
 
     // 表单域中的值改变事件监听
     this.vehicleForm.valueChanges.subscribe(data => {
       // 只有表单域合法 保存车主按钮才可用
-      this.enableSaveVehicle = this.vehicleForm.valid;
+      this.enableSaveVehicle = this.vehicleForm.controls.vehicleName.enabled && this.vehicleForm.valid;
     });
 
     // 品牌表单域值改变事件监听
