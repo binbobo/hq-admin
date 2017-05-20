@@ -26,6 +26,15 @@ export class AddMaintenanceItemComponent implements OnInit {
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
 
+  formValadationErrors = {
+    common: {
+      required: '{name}不能为空, 请输入',
+      pattern: '无效的{name}, 请输入数字, 最多保留一位小数的',
+      range: '{name}只能是0~100之间的数字',
+      digits: '{name}只能是整数'
+    },
+  };
+
   constructor(
     private fb: FormBuilder,
     protected service: OrderService,
@@ -82,6 +91,7 @@ export class AddMaintenanceItemComponent implements OnInit {
 
   }
 
+
   createForm() {
     // 保留一位小数正则
     const regex = /^[0-9]+([.]{1}[0-9]{1})?$/;
@@ -118,7 +128,7 @@ export class AddMaintenanceItemComponent implements OnInit {
     const workHour = this.maintenanceItemForm.controls.workHour.value;
     const workHourPrice = this.maintenanceItemForm.controls.price.value;
     const discount = this.maintenanceItemForm.controls.discount.value / 100;
-    this.maintenanceItemForm.controls.amount.patchValue((workHour * workHourPrice * discount).toFixed(2), { emitEvent: false });
+    this.maintenanceItemForm.controls.amount.setValue((workHour * workHourPrice * discount).toFixed(2));
   }
   // 定义维修项目模糊查询要显示的列
   public get nameTypeaheadColumns() {

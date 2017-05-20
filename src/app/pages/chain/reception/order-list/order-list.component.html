@@ -43,7 +43,7 @@
             placeholder="送修人电话">
         </div>
         <label class="col-1 col-form-label col-form-label"></label>
-        <div class="col-3" *ngIf="isCollapsed">
+        <div class="col-6" *ngIf="isCollapsed">
           <button type="submit" [disabled]="false" class="btn btn btn-primary mr-2">查询</button>
           <button type="reset" (click)="reset()" class="btn btn btn-secondary mr-2">清空</button>
           <button type="button" (click)="export()" class=" btn btn btn-secondary mr-2">导出</button>
@@ -70,10 +70,10 @@
               <div class="col-2">
                 <input type="text" [(ngModel)]="params.series" class="form-control form-control" formControlName="series" id="series" placeholder="车系">
               </div>
-              <label for="billCode" class="col-1 col-form-label col-form-label">工单号</label>
+              <label for="vehicleName" class="col-1 col-form-label col-form-label">车型</label>
               <div class="col-2">
-                <input type="text" [(ngModel)]="params.billCode" class="form-control form-control" formControlName="billCode" id="billCode"
-                  placeholder="工单号">
+                <input type="text" [(ngModel)]="params.vehicleName" class="form-control form-control" formControlName="vehicleName" id="vehicleName"
+                  placeholder="车型">
               </div>
               <label for="createdUserName" class="col-1 col-form-label col-form-label">服务顾问</label>
               <div class="col-2">
@@ -82,17 +82,15 @@
               </div>
             </div>
             <div class="form-group row">
-              <label for="vehicleName" class="col-1 col-form-label col-form-label">车型</label>
+              <label for="leaveFactoryTime" class="col-1 col-form-label col-form-label">出厂时间</label>
               <div class="col-2">
-                <input type="text" [(ngModel)]="params.vehicleName" class="form-control form-control" formControlName="vehicleName" id="vehicleName"
-                  placeholder="车型">
+                <input [(ngModel)]="params.leaveStartTimeDate" class="form-control form-control datetime-picker" type="text" readonly formControlName="leaveFactoryTimeStart"
+                  ngui-datetime-picker [close-on-select]="false" />
               </div>
-              <label for="type" class="col-1 col-form-label col-form-label">维修类型</label>
+              <label class="col-1 col-form-label col-form-label">至</label>
               <div class="col-2">
-                <select id="type" [(ngModel)]="params.type" formControlName="type" class="form-control form-control">
-                  <option style="display:none">
-                  <option *ngFor="let type of maintenanceTypeData" value="{{type.id}}">{{type.value}}</option>
-                </select>
+                <input [(ngModel)]="params.leaveEndTimeDate" class="form-control form-control datetime-picker" type="text" readonly formControlName="leaveFactoryTimeEnd"
+                  ngui-datetime-picker [close-on-select]="false" />
               </div>
               <label for="enterStoreTime" class="col-1 col-form-label col-form-label">进店时间</label>
               <div class="col-2">
@@ -107,22 +105,24 @@
             </div>
 
             <div class="form-group row">
-              <label for="leaveFactoryTime" class="col-1 col-form-label col-form-label">出厂时间</label>
+              <label for="billCode" class="col-1 col-form-label col-form-label">工单号</label>
               <div class="col-2">
-                <input [(ngModel)]="params.leaveStartTimeDate" class="form-control form-control datetime-picker" type="text" readonly formControlName="leaveFactoryTimeStart"
-                  ngui-datetime-picker [close-on-select]="false" />
+                <input type="text" [(ngModel)]="params.billCode" class="form-control form-control" formControlName="billCode" id="billCode"
+                  placeholder="工单号">
               </div>
-              <label class="col-1 col-form-label col-form-label">至</label>
+              <label for="type" class="col-1 col-form-label col-form-label">维修类型</label>
               <div class="col-2">
-                <input [(ngModel)]="params.leaveEndTimeDate" class="form-control form-control datetime-picker" type="text" readonly formControlName="leaveFactoryTimeEnd"
-                  ngui-datetime-picker [close-on-select]="false" />
+                <select id="type" [(ngModel)]="params.type" formControlName="type" class="form-control form-control">
+                  <option style="display:none">
+                  <option *ngFor="let type of maintenanceTypeData" value="{{type.id}}">{{type.value}}</option>
+                </select>
               </div>
-              <label for="searchRange" class="col-1 col-form-label col-form-label">查询范围</label>
+              <!--<label for="searchRange" class="col-1 col-form-label col-form-label">查询范围</label>
               <div class="col-2">
                 <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)"> >
                 </ngx-dropdown-treeview>
-              </div>
-              <div class="col-offset-9 col-3" *ngIf="!isCollapsed">
+              </div>-->
+              <div class="col-6" *ngIf="!isCollapsed">
                 <button type="submit" [disabled]="false" class="btn btn-primary mr-2">查询</button>
                 <button type="reset" (click)="reset()" class=" btn btn-secondary mr-2">清空</button>
                 <button type="button" (click)="export()" class=" btn btn-secondary mr-2">导出</button>
@@ -138,26 +138,20 @@
         <thead>
           <tr>
             <th>操作</th>
-            <th>店名</th>
             <th>状态</th>
-            <th>维修类型</th>
+            <th>车牌号</th>
             <th>工单号</th>
-            <th>进店时间</th>
+            <th>维修类型</th>
+            <th>进厂时间</th>
             <th>预计交车时间</th>
             <th>超时</th>
-            <th>服务顾问</th>
-            <th>品牌</th>
             <th>车型</th>
-            <th>车牌号</th>
-            <th>行驶里程</th>
-            <th>购车时间</th>
-            <th>车主</th>
+            <th>VIN</th>
             <th>送修人</th>
             <th>送修人电话</th>
-            <th>介绍人</th>
-            <th>介绍人电话</th>
             <th>维修技师</th>
             <th>出厂时间</th>
+            <th>服务顾问</th>
           </tr>
         </thead>
         <tbody>
@@ -166,30 +160,24 @@
               <!--<a href="#" (click)="nullifyHandler($event, item.id)">作废</a> |-->
               <a href="#" (click)="orderDetailsHandler($event, item.id, lgModal)">详情</a>
             </td>
-            <td>{{item.orgName}}</td>
             <td>{{item.statusName}}</td>
-            <td>{{item.typeName}}</td>
-            <td>{{item.billCode}}</td>
-            <td>{{item.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-            <td>{{item.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-            <td>{{item.overTime|durationHumanize}}</td>
-            <td>{{item.createdUserName}}</td>
-            <td>{{item.brand}}</td>
-            <td>{{item.vehicleName}}</td>
             <td>{{item.plateNo}}</td>
-            <td>{{item.mileage}}</td>
-            <td>{{item.purchaseDate}}</td>
-            <td>{{item.customerName}}</td>
+            <td>{{item.billCode}}</td>
+            <td>{{item.typeName}}</td>
+            <td>{{item.createdOnUtc|sDatetime}}</td>
+            <td>{{item.expectLeave|sDatetime}}</td>
+            <td>{{item.overTime|durationHumanize}}</td>
+            <td>{{item.vehicleName}}</td>
+            <td>{{item.vin}}</td>
             <td>{{item.contactUser}}</td>
             <td>{{item.contactInfo}}</td>
-            <td>{{item.introducer}}</td>
-            <td>{{item.introPhone}}</td>
             <td>
               {{item.employeeNames}}
               <!--如果转派  追加显示转派人-->
               <!--<span *ngIf="item.teamType === 2">,{{item.turnEmployeeNames}}</span>-->
             </td>
-            <td>{{item.leaveTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+            <td>{{item.leaveTime|sDatetime}}</td>
+            <td>{{item.createdUserName}}</td>
           </tr>
         </tbody>
         <tfoot *ngIf="list?.length <= 0">
@@ -202,9 +190,8 @@
     </div>
 
     <!--详情 begin-->
-    <div bsModal #lgModal="bs-modal" class="modal" style='background-color: rgba(0, 0, 0, 0.47);' tabindex="-1" role="dialog"
-      aria-labelledby="myLargeModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
+    <div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+      <div *ngIf="lgModal.isShown" class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="btn btn-secondary pull-left" aria-label="Close" (click)="print()">打印</button>
@@ -212,8 +199,19 @@
           <span aria-hidden="true">&times;</span>
         </button>
           </div>
-          <div class="modal-body" style='overflow: scroll;'>
+          <div class="modal-body">
             <hq-workorder-detail [data]="selectedOrder"></hq-workorder-detail>
+            <!--只有前4个选项卡显示-->
+            <div *ngIf="true" class="card">
+              <div class="card-header" style="color:gray;padding: 3px 5px;">
+                工时费
+                <span class="ml-2 mr-2">{{selectedOrder?.workHourFee|centToYuan}}</span> | 材料费
+                <span class="ml-2 mr-2">{{selectedOrder?.materialFee|centToYuan}}</span> | 其它
+                <span class="ml-2 mr-2">{{selectedOrder?.otherFee|centToYuan}}</span> | 应收金额
+                <span class="ml-2 mr-2">{{selectedOrder?.sumFee|centToYuan}}</span>| 折扣金额
+                <span class="ml-2 mr-2">{{selectedOrder?.discountFee|centToYuan}}</span>|
+              </div>
+            </div>
           </div>
         </div>
       </div>

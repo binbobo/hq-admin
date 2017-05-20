@@ -25,6 +25,7 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
   private billCodes: Array<SelectOption>;
   private printModel: PurchaseReturnPrintItem;
   private model = new PurchaseReturnRequest();
+  private product: PurchaseReturnItem;
 
   constructor(
     injector: Injector,
@@ -33,7 +34,7 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
   ) {
     super(injector, returnService);
     this.size = 5;
-    this.params = new GetProductsRequest();
+    this.reset();
   }
 
   ngOnInit() {
@@ -44,18 +45,40 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
   onSuspendSelect(item: { id: string, value: any }) {
     Object.assign(this.model, item.value);
     this.model.suspendedBillId = item.id;
+    this.params.suppliers = item.value.inunit;
+    this.params.billCode = item.value.billCode;
+    this.loadList();
+    this.loadBillCodeList()
+      .then(() => this.billCodes.forEach(m => m.checked = this.model.originalBillId === m.value || undefined));
   }
 
-  onCreate(event: PurchaseReturnItem) {
-    this.model.list.push(event);
+  onCreate(item: PurchaseReturnItem) {
+    if (this.product.count == 0) {
+      this.alerter.warn('配件库存不足，无法完成退库操作！');
+      return;
+    }
+    let exists = this.model.list.find(m => m.productId === item.productId);
+    if (exists) {
+      if (exists.count + item.count >= this.product.count) {
+        exists.count = this.product.count;
+      } else {
+        exists.count = exists.count + item.count;
+      }
+    } else {
+      item.count = item.count > this.product.count ? this.product.count : item.count;
+      this.model.list.push(item);
+    }
     this.createModal.hide();
   }
 
-  reset() {
+  private reset() {
+    this.billCodes = [];
+    this.list = [];
+    this.params = new GetProductsRequest();
     this.model = new PurchaseReturnRequest();
   }
 
-  public get suspendedColumns() {
+  private get suspendedColumns() {
     return [
       { name: 'provider', title: '供应商' },
       { name: 'createBillTime', title: '挂单时间' },
@@ -71,19 +94,33 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
   }
 
   private onBillCodeChange(event: Event) {
+    this.model.list = [];
     let el = event.target as HTMLSelectElement;
-    this.params.billCode = el.value;
-    this.loadList();
+    this.model.originalBillId = el.value;
+    if (el.value) {
+      this.params.billCode = el.selectedOptions[0].innerHTML;
+      this.model.billCode = el.selectedOptions[0].innerHTML;
+      this.loadList();
+    } else {
+      this.model.billCode = undefined;
+      this.params.billCode = undefined;
+    }
   }
 
   public onProviderSelect(event) {
+    this.model.list = [];
+    this.list = [];
     this.model.provider = event.name;
     this.model.inunit = event.id;
     this.params.suppliers = event.id;
-    let request = new GetBillCodeRequest(event.id);
+    this.loadBillCodeList();
+  }
+
+  private loadBillCodeList() {
     this.billCodes = null;
-    this.returnService.getBillCodeListByProvider(request)
-      .then(result => result.data.map(m => new SelectOption(m.billCode, m.billCode)))
+    let request = new GetBillCodeRequest(this.params.suppliers);
+    return this.returnService.getBillCodeListByProvider(request)
+      .then(result => result.data.map(m => new SelectOption(m.billCode, m.id)))
       .then(data => this.billCodes = data)
       .catch(err => this.alerter.error(err));
   }
@@ -94,7 +131,6 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
     }
   }
 
-
   public get source() {
     return (params: TypeaheadRequestParams) => {
       let p = new ProviderListRequest(params.text, params.text);
@@ -104,15 +140,11 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
   }
 
   suspend(event: Event) {
-    if (!this.model.inunit) {
-      alert('请选择供应商名称');
-      return false;
-    }
     let el = event.target as HTMLButtonElement;
     el.disabled = true;
     this.suspendBill.suspend(this.model)
       .then(() => el.disabled = false)
-      .then(() => el.disabled = false)
+      .then(() => this.reset())
       .then(() => this.suspendBill.refresh())
       .then(() => this.alerter.success('挂单成功！'))
       .catch(err => {
@@ -122,10 +154,6 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
   }
 
   generate(event: Event) {
-    if (!this.model.inunit) {
-      alert('请选择供应商名称');
-      return false;
-    }
     let el = event.target as HTMLButtonElement;
     el.disabled = true;
     this.returnService.generate(this.model)
@@ -146,5 +174,24 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
         el.disabled = false;
         this.alerter.error(err);
       })
+  }
+
+  onProductSelect(item) {
+    this.product = item;
+    this.createModal.show();
+  }
+
+  onProductRemove(item: PurchaseReturnItem) {
+    if (!confirm('确定要删除？')) return;
+    let index = this.model.list.indexOf(item);
+    this.model.list.splice(index, 1);
+  }
+
+  getAddedCount(item: PurchaseReturnItem): number {
+    if (!item) return 0;
+    return this.model.list
+      .filter(m => m.productId === item.productId)
+      .map(m => +m.count)
+      .reduce((pre, cur) => pre + cur, 0);
   }
 }

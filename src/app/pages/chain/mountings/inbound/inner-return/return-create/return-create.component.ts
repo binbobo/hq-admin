@@ -24,6 +24,8 @@ export class ReturnCreateComponent implements OnInit {
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
 
+private originalId:any;//每一条数据ID
+private locationId:any;//库位ID
 
   @Input()
   selectReturnData: any;
@@ -37,6 +39,9 @@ export class ReturnCreateComponent implements OnInit {
     this.buildForm();
     console.log('传过来的数据',this.selectReturnData);
     if (this.selectReturnData) {
+      this.originalId = this.selectReturnData.id;
+      this.locationId = this.selectReturnData.locationId;
+
       this.form.patchValue(this.selectReturnData);
     }
 
@@ -50,6 +55,7 @@ export class ReturnCreateComponent implements OnInit {
       specification: ['', [Validators.required]],
       count: ['', [Validators.required, CustomValidators.digits]],
       price: [''],
+      counts: [''],
       amount: [''],
       locationName: ['', [Validators.required]],
       storeName: ['', [Validators.required]],
@@ -57,9 +63,13 @@ export class ReturnCreateComponent implements OnInit {
   }
 
   public onSubmit() {
-    let count = this.form.controls['count'].value;
+    let count = this.form.controls['counts'].value;
     if (count > (this.selectReturnData.count - this.selectReturnData.returnCount)) {
       this.alerter.error("数量不能高于当前可退数量，请重新填写", true, 2000);
+      return false;
+    }
+    if (count <= 0) {
+      this.alerter.error("数量必须大于0，请重新填写", true, 2000);
       return false;
     }
     // let invalid = this.controls
@@ -69,6 +79,8 @@ export class ReturnCreateComponent implements OnInit {
     //   event.preventDefault();
     //   return false;
     // } else {
+    this.form.value['originalId'] = this.originalId;
+    this.form.value['locationId'] = this.locationId;
     console.log('表单数据', this.form.value);
     this.formSubmit.emit(this.form.value);
     // this.form.reset(this.model);
@@ -139,9 +151,13 @@ export class ReturnCreateComponent implements OnInit {
 
   //数量改变控制
   private calculate() {
-    let count = this.form.controls['count'].value;
+    let count = this.form.controls['counts'].value;
     if (count > (this.selectReturnData.count - this.selectReturnData.returnCount)) {
       this.alerter.error("数量不能高于当前可退数量，请重新填写", true, 2000);
+      return false;
+    }
+    if (count <= 0) {
+      this.alerter.error("数量必须大于0，请重新填写", true, 2000);
       return false;
     }
     let price = this.form.controls['price'].value;

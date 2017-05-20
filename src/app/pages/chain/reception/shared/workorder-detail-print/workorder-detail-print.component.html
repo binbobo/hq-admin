@@ -44,11 +44,11 @@
       </div>
       <div class="col-4">
         <label>购车日期: </label>
-        <span>{{data?.purchaseDate|date:"yyyy/MM/dd"}}1990-12-12</span>
+        <span>{{data?.purchaseDate|sDate}}</span>
       </div>
       <div class="col-4">
         <label>预计交车时间: </label>
-        <span>{{data?.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</span>
+        <span>{{data?.expectLeave|sDatetime}}</span>
       </div>
     </div>
     <div class="row">
@@ -84,11 +84,11 @@
     <div class="row">
       <div class="col-5">
         <label>进店时间: </label>
-        <span>{{data?.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</span>
+        <span>{{data?.createdOnUtc|sDatetime}}</span>
       </div>
       <div class="col-5">
         <label>出厂时间: </label>
-        <span>{{data?.leaveTim|date:"yyyy/MM/dd HH:mm:ss" }}</span>
+        <span>{{data?.leaveTim|sDatetime }}</span>
       </div>
     </div>
   </div>

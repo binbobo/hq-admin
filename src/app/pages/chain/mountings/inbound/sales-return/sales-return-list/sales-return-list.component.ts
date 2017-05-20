@@ -15,6 +15,9 @@ import * as moment from 'moment';
 })
 export class SalesReturnListComponent implements OnInit {
 
+private returnData = [];
+
+
   @ViewChild(SuspendBillDirective)
   private suspendBill: SuspendBillDirective;
   @ViewChild('createModal')
@@ -26,6 +29,7 @@ export class SalesReturnListComponent implements OnInit {
   private salesmen: Array<SelectOption>;
   private printModel: SalesReturnPrintItem;
   private model: SalesReturnListRequest = new SalesReturnListRequest();
+  // private model;
 
   constructor(
     private salesReturnService: SalesReturnService,
@@ -38,6 +42,22 @@ export class SalesReturnListComponent implements OnInit {
       .then(data => this.reset())
       .catch(err => this.alerter.error(err));
   }
+
+onItemCodeSelect(){}
+
+onItemNameSelect(){}
+
+nameSource(){}
+
+itemNameColumns(){}
+
+codeSource(){}
+
+itemCodeColumns(){}
+
+OnCreatBound(item,id){}
+
+onDelCreat(i){}
 
   onCreate(event: SalesReturnListItem) {
     this.model.list.push(event);
@@ -60,9 +80,6 @@ export class SalesReturnListComponent implements OnInit {
   createReturnList(event: Event) {
     if (!this.model.custName) {
       alert('请输入客户名称');
-      return false;
-    } else if (!this.model.custPhone) {
-      alert('请输入手机号码');
       return false;
     } else if (!this.model.seller) {
       alert('请选择销售员');
