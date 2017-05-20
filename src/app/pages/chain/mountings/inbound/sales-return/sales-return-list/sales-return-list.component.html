@@ -6,17 +6,17 @@
   </div>
   <div class="card-block">
     <form class="form-inline mb-2">
-      <div class="form-group mb-2">
+      <div class="form-group mx-sm-3 mb-2">
         <label>*客户名称：</label>
-        <input class="form-control" forceRefresh (onSelect)="onItemNameSelect($event)"  [hqTableTypeahead]="nameSource" [columns]="itemNameColumns()" name="custName" placeholder="客户名称">
+        <input type="text" class="form-control" forceRefresh (onSelect)="onItemNameSelect($event)"  [hqTableTypeahead]="nameSource" [columns]="itemNameColumns" name="custName" placeholder="客户名称">
       </div>
-      <div class="form-group mb-2">
+      <div class="form-group mx-sm-3 mb-2">
         <label>手机号：</label>
         <input class="form-control" name="custPhone" placeholder="手机号">
       </div>
-      <div class="form-group mb-2">
-        <label>*销售入库单：</label>
-        <input type="text" forceRefresh (onSelect)="onItemCodeSelect($event)" [hqTableTypeahead]="codeSource" [columns]="itemCodeColumns()" class="form-control" placeholder="请输入销售入库单号">
+      <div class="form-group mx-sm-3 mb-2">
+        <label>*销售出库单：</label>
+        <input type="text" forceRefresh (onSelect)="onItemCodeSelect($event)" [hqTableTypeahead]="codeSource" [columns]="itemCodeColumns" class="form-control" placeholder="请输入出库单号">
       </div>
       <!--<div class="form-group mb-2">
         <button (click)="createModal.show()" class="btn btn-primary mx-sm-1" translate>新增</button>
@@ -28,64 +28,73 @@
       <table class="table table-bordered table-striped">
         <thead>
           <tr>
-            <th translate>操作</th>
-            <th translate>品牌</th>
-            <th translate>配件编码</th>
-            <th translate>配件名称</th>
-            <th translate>规格型号</th>
-            <th translate>仓库</th>
-            <th translate>库位</th>
-            <th translate>数量（个）</th>
-            <th translate>已退数量</th>
-            <th translate>单价（元/个）</th>
-            <th translate>金额（元）</th>
+            <th>操作</th>
+            <th>配件编码</th>
+            <th>配件分类</th>
+            <th>配件名称</th>
+            <th>品牌</th>
+            <th>规格型号</th>
+            <th>单位</th>
+            <th>仓库</th>
+            <th>库位</th>
+            <th>单价（元）</th>
+            <th>数量</th>
+            <th>已退数量</th>
+            <th>金额（元）</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let item of model?.list">
             <td><button class="btn btn-primary" (click)="OnCreatBound(item,item.id)">退库</button></td>
-            <td>{{item.brand }}</td>
+            <td class="text-center">{{item.productCode }}</td>
             <td class="text-center">{{item.productCode }}</td>
             <td>{{item.productName}}</td>
-            <td>{{item.productSpecification}}</td>
-            <td>{{item.houseName }}</td>
+            <td>{{item.brand }}</td>
+            <td>{{item.specification}}</td>
+            <td>{{item.specification}}</td>
+            <td>{{item.storeName }}</td>
             <td>{{item.locationName }}</td>
-            <td class="text-center">{{item.count}}</td>
-            <td class="text-center">{{item.count}}</td>
             <td class="text-right">{{item.price|centToYuan }}</td>
+            <td class="text-center">{{item.count}}</td>
+            <td class="text-center">{{item.returnCount}}</td>
             <td class="text-right">{{item.amount|centToYuan }}</td>
           </tr>
         </tbody>
       </table>
+      <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
     </div>
     <div class="tab-title">销售退库信息</div>
     <div class="overflow-auto">
       <table class="table table-bordered table-striped">
         <thead>
           <tr>
-            <th translate>操作</th>
-            <th translate>品牌</th>
-            <th translate>配件编码</th>
-            <th translate>配件名称</th>
-            <th translate>规格型号</th>
-            <th translate>仓库</th>
-            <th translate>库位</th>
-            <th translate>数量（个）</th>
-            <th translate>单价（元/个）</th>
-            <th translate>金额（元）</th>
+            <th>操作</th>
+            <th>配件编码</th>
+            <th>配件分类</th>
+            <th>配件名称</th>
+            <th>品牌</th>
+            <th>规格型号</th>
+            <th>单位</th>
+            <th>仓库</th>
+            <th>库位</th>
+            <th>单价（元）</th>
+            <th>数量</th>
+            <th>金额（元）</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let item of returnData">
             <td><button class="btn btn-danger" (click)="onDelCreat(i)">删除</button></td>
-            <td>{{item.brand }}</td>
+            <td class="text-center">{{item.productCode }}</td>
             <td class="text-center">{{item.productCode }}</td>
             <td>{{item.productName}}</td>
-            <td>{{item.productSpecification}}</td>
-            <td>{{item.houseName }}</td>
+            <td>{{item.brand }}</td>
+            <td>{{item.specification}}</td>
+            <td>{{item.specification}}</td>
+            <td>{{item.storeName }}</td>
             <td>{{item.locationName }}</td>
-            <td class="text-center">{{item.count}}</td>
             <td class="text-right">{{item.price|centToYuan }}</td>
+            <td class="text-center">{{item.count}}</td>
             <td class="text-right">{{item.amount|centToYuan }}</td>
           </tr>
         </tbody>
@@ -93,9 +102,9 @@
     </div>
   </div>
   <div class="card-footer text-muted">
-    <button class="btn btn-primary" (click)="createReturnList($event)">生成销售退库单</button>
+    <button class="btn btn-primary" (click)="createReturnList()">生成销售退库单</button>
     <!--<button class="btn btn-warning" (click)="cancel($event)">取消</button>-->
-    <button [disabled]="!model?.list?.length" class="btn btn-info" (click)="suspend($event)">挂单</button>
+    <button [disabled]="!model?.list?.length" class="btn btn-info" (click)="suspend()">挂单</button>
   </div>
 </div>
 

@@ -32,19 +32,19 @@ export class SalesReturnCreateComponent implements OnInit {
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      brand: [this.model.brand, [Validators.required]],
-      productCode: [this.model.productCode],
-      productName: [this.model.productName],
-      productId: [this.model.productId, [Validators.required, Validators.maxLength(36)]],
-      productSpecification: [this.model.productSpecification, [Validators.required]],
-      storeId: [this.model.storeId],
-      locationId: [this.model.locationId],
-      count: [this.model.count, [Validators.required, CustomValidators.digits]],
-      price: [this.model.price],
-      amount: [this.model.amount],
-      locationName: [this.model.locationName, [Validators.required]],
-      houseName: [this.model.houseName, [Validators.required]],
-      yuan: [0, [Validators.required]],
+      brandName: ['', [Validators.required]],
+      productCode: [''],
+      productName: [''],
+      productId: ['', [Validators.required, Validators.maxLength(36)]],
+      specification: ['', [Validators.required]],
+      storeId: [''],
+      locationId: [''],
+      count: ['', [Validators.required, CustomValidators.digits]],
+      price: [''],
+      amount: [''],
+      locationName: ['', [Validators.required]],
+      storeName: ['', [Validators.required]],
+      counts: [1, [Validators.required]],
     })
   }
 

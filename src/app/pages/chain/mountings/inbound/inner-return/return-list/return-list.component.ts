@@ -13,14 +13,14 @@ import { FormGroup, FormBuilder } from "@angular/forms/";
 })
 export class ReturnListComponent implements OnInit {
 
-  private takeUserId: any;//领用人ID
-  private takeUser: any;//领用人
+  // private takeUserId: any;//领用人
+  private takeUser: any;//领用人ID
   private returnUser: any;//退料人
   private returnDepart: any;//退料人
   private takeDepartId: any;//查部门ID
   private selectReturnData: any;//选择的退料数据
   private returnData = [];//修改后的退料数据
-  // private newReturnData: any;//
+  // private billCodeList: any;//
   private billCode: any;//退料单号
   private suspendData: any;//挂单数据
   private suspendSelectData: any;//选择挂单数据
@@ -43,8 +43,8 @@ export class ReturnListComponent implements OnInit {
   protected alerter: HqAlerter;
   @ViewChild('printer')
   public printer: PrintDirective;
-  private employees: Array<SelectOption>;
-  private departments: Array<SelectOption>;
+  private employees: any;
+  private departments: any;
   private model;//配件信息
   private printModel: any;
 
@@ -58,10 +58,14 @@ export class ReturnListComponent implements OnInit {
     this.innerReturnService.getInnerOptions()
       .then(data => {
         console.log('领用人数据', data);
-        this.takeUser = data[0].value;
-        return this.employees = data
+        this.takeUser = data[0].takeUser;
+        this.employees = data;
+        this.departments = this.employees.find(m=>m.value = this.takeUser);
+        this.takeDepartId = this.departments.departList[0].id;
+        // this.billCodeList = this.departments.billCodeList;
+        console.log('部门数据',this.departments,this.takeDepartId);
       })
-      .then(data => data.length && this.loadDepartments(data[0].value))
+      // .then(data => data.length && this.loadDepartments(data[0].value))
       // .then(data => this.reset())
       .catch(err => this.alerter.error(err));
   }
@@ -71,8 +75,22 @@ export class ReturnListComponent implements OnInit {
   //选择领用人带出所在部门
   onInnerSelect(event: Event) {
     let el = event.target as HTMLSelectElement;
-    console.log('选择领用人', el.value);
-    this.loadDepartments(el.value);
+    console.log('选择领用人ID', el.value);
+    // this.loadDepartments(el.value);
+    this.takeUser = el.value;
+    this.departments = this.employees.find(m=>m.value = el.value);
+    this.takeDepartId = this.departments.departList[0].id;
+    console.log('选择部门',this.departments,this.takeDepartId);
+    this.billCode = null;
+    this.model = null;
+    this.OriginalBillId = null;
+    this.returnData = [];
+  }
+//选择部门
+  onDepartSelect(event: Event){
+    let el = event.target as HTMLSelectElement;
+    console.log('选择部门ID', el.value);
+    this.takeDepartId = el.value;
   }
 
   //生成退料单
@@ -80,14 +98,14 @@ export class ReturnListComponent implements OnInit {
     // let el = event.target as HTMLButtonElement;
     // el.disabled = true;
     // this.returnData['OriginalBillId'] = this.OriginalBillId;
-    let inner = this.employees.find(m => m.value == this.takeUserId);
+    let inner = this.employees.find(m => m.value == this.takeUser);
     let department = this.departments.find(m => m.value == this.takeDepartId);
     this.returnUser = inner && inner.text;
     this.billData = {
       OriginalBillId: this.OriginalBillId,
       suspendedBillId: this.suspendedBillId,
       billCode: this.billCode,
-      returnUser: this.takeUserId,
+      returnUser: this.takeUser,
       returnDepart: this.takeDepartId,
       list: this.returnData,
     }
@@ -133,7 +151,7 @@ export class ReturnListComponent implements OnInit {
     if (confirm('是否确认挂单？')) {
       // let el = event.target as HTMLButtonElement;
       // el.disabled = true;
-      let inner = this.employees.find(m => m.value == this.takeUserId);
+      let inner = this.employees.find(m => m.value == this.takeUser);
       let department = this.departments.find(m => m.value == this.takeDepartId);
       this.innerReturner = inner && inner.text;
       this.innerDepartment = department && department.text;
@@ -141,7 +159,7 @@ export class ReturnListComponent implements OnInit {
         model: this.model,
         returnData: this.returnData,
         billCode: this.billCode,
-        takeUserId: this.takeUserId,
+        takeUserId: this.takeUser,
         takeDepartId: this.takeDepartId,
         suspendedBillId: this.suspendedBillId,
         innerReturner: this.innerReturner,
@@ -177,19 +195,19 @@ export class ReturnListComponent implements OnInit {
     this.createModel.hide();
   }
 
-  private loadDepartments(id: string) {
-    this.departments = [];
-    this.takeUserId = id;
-    this.innerReturnService.getDepartmentsByInner(id)
-      .then(options => {
-        console.log('部门数据', options);
-        this.departments = options;
-        this.takeDepartId = options[0].value
-      })
-      // .then(options => this.reset())
-      .catch(err => this.alerter.error(err));
-    // console.log('领用人ID',this.takePartId,this.takeUserId);
-  }
+  // private loadDepartments(id: string) {
+  //   this.departments = [];
+  //   this.takeUserId = id;
+  //   this.innerReturnService.getDepartmentsByInner(id)
+  //     .then(options => {
+  //       console.log('部门数据', options);
+  //       this.departments = options;
+  //       this.takeDepartId = options[0].value
+  //     })
+  //     // .then(options => this.reset())
+  //     .catch(err => this.alerter.error(err));
+  //   // console.log('领用人ID',this.takePartId,this.takeUserId);
+  // }
 
   //选择挂单信息
   onSuspendSelect(item) {
@@ -222,7 +240,7 @@ export class ReturnListComponent implements OnInit {
   }
 
   //领用单号列表
-  public itemColumns() {
+  public get itemColumns() {
     return [
       { name: 'billCode', title: '内部领用单号' },
     ];
@@ -230,12 +248,41 @@ export class ReturnListComponent implements OnInit {
   //模糊查询单号
   public get codeSource() {
     return (params: TypeaheadRequestParams) => {
-      let p = new BillCodeSearchRequest(this.takeUserId, this.takeDepartId, params.text);
+      let p = new BillCodeSearchRequest(this.takeUser,this.takeDepartId,params.text);
       p.setPage(params.pageIndex, params.pageSize);
       // console.log('ppppppppp',p);
-      return this.innerReturnService.getPagedList(p);
+      return this.innerReturnService.getPagedList(p)
+      .then(data=>{
+        let p = {
+          total:0,
+          totalCount:0,
+          data: []
+        };
+        // let o = { billCode: '' };
+        data.data[0].billCodeList.map(m => {
+          // o.billCode = m;
+          p.data.push({ billCode: m });
+        })
+        p.totalCount = data.data[0].billCodeList.length;
+        console.log('pppppppp', p);
+        console.log('领用单数据', data);
+        return p;
+      });
+      
     };
   }
+
+  // nameSource(){}
+
+  //领用人列表
+  // public itemNameColumns() {
+  //   return [
+  //     { name: 'takeUser', title: '领用人' },
+  //     { name: 'takeDepart', title: '部门' },
+  //   ];
+  // }
+
+  // onItemNameSelect(){}
 
   //选择单号带出配件信息
   onItemSelect(event) {
@@ -243,8 +290,8 @@ export class ReturnListComponent implements OnInit {
     this.OriginalBillId = event.id;
     this.billCode = event.billCode;
     this.returnData = [];
-    let item = new BillCodeSearchRequest(this.takeUserId, this.takeDepartId, this.billCode);
-    // console.log('iiiiiiii',item);
+    let item = new BillCodeSearchRequest(this.takeUser, this.takeDepartId, this.billCode);
+    console.log('iiiiiiii',item);
     this.innerReturnService.getUseDetailsList(item)
       .then(data => {
         console.log('iiiiii配件信息', data);
