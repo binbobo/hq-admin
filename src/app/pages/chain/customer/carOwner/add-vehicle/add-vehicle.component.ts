@@ -54,6 +54,10 @@ export class AddVehicleComponent implements OnInit {
       this.vehicleForm.controls.vehicleName.setValue('');
       return;
     }
+    // 日期类型没选的话 不传
+    if (!this.vehicleForm.value.purchaseDate) { delete this.vehicleForm.value.purchaseDate; };
+    if (!this.vehicleForm.value.validate) { delete this.vehicleForm.value.validate; };
+    if (!this.vehicleForm.value.insuranceDue) { delete this.vehicleForm.value.insuranceDue; };
     this.onAddVehicleConfirm.emit(this.vehicleForm.value);
     this.vehicleForm.reset();
   }
@@ -106,9 +110,9 @@ export class AddVehicleComponent implements OnInit {
       engineNo: ['', Validators.compose([Validators.pattern(this.regex.engineNo)])],
       vin: ['', Validators.compose([Validators.required, Validators.pattern(this.regex.vin)])],
       vehicleColor: '',
-      purchaseDate: ['', [CustomValidators.date]],
-      validate: ['', [CustomValidators.date]],
-      insuranceDue: ['', [CustomValidators.date]],
+      purchaseDate: [null, [CustomValidators.date]],
+      validate: [null, [CustomValidators.date]],
+      insuranceDue: [null, [CustomValidators.date]],
       insuranceCompany: '',
     });
 

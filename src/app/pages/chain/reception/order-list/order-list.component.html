@@ -95,7 +95,7 @@
               <label for="enterStoreTime" class="col-1 col-form-label col-form-label">进店时间</label>
               <div class="col-2">
                 <input [(ngModel)]="params.enterStartTimeDate" class="form-control form-control datetime-picker" type="text" readonly formControlName="enterStoreTimeStart"
-                  ngui-datetime-picker date-format="YYYY-MM-DD hh:mm" hour="2" minute='59' [close-on-select]="false" />
+                  ngui-datetime-picker [close-on-select]="false" />
               </div>
               <label class="col-1 col-form-label col-form-label">至</label>
               <div class="  col-2">
@@ -180,11 +180,6 @@
             <td>{{item.createdUserName}}</td>
           </tr>
         </tbody>
-        <tfoot *ngIf="list?.length <= 0">
-          <tr>
-            <td colspan="21">查询结果为空</td>
-          </tr>
-        </tfoot>
       </table>
       <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
     </div>

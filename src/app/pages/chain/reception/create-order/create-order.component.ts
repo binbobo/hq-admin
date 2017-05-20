@@ -492,14 +492,12 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.workSheetForm.controls.plateNo.valueChanges.subscribe((newValue) => {
       if (this.isSelected) {
         this.initOrderData();
-        // this.workSheetForm.controls.plateNo.setValue(newValue);
       }
     });
     // 车主表单域值改变事件监听
     this.workSheetForm.controls.customerName.valueChanges.subscribe((newValue) => {
       if (this.isSelected) {
         this.initOrderData();
-        // this.workSheetForm.controls.customerName.setValue(newValue);
       }
     });
     // 品牌表单域值改变事件监听
@@ -536,6 +534,9 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
     // 1.表单基础数据  getRawValue获取表单所有数据  包括disabled (value属性不能获取disabled表单域值)
     const workSheet = this.workSheetForm.getRawValue();
+    if (!workSheet.validate) { delete workSheet.validate; }
+    if (!workSheet.lastEnter) { delete workSheet.lastEnter; }
+    if (!workSheet.nextDate) { delete workSheet.nextDate; }
     // 2.新增维修项目数据
     workSheet.maintenanceItems = this.newMaintenanceItemData;
     return workSheet;
