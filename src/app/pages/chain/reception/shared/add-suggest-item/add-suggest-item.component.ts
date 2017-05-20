@@ -49,7 +49,6 @@ export class AddSuggestItemComponent implements OnInit {
     this.onCancel.emit();
   }
   onConfirmHandler() {
-
     // 验证数据合法性
     this.onConfirm.emit({
       data: this.suggestItemForm.getRawValue(),

@@ -98,7 +98,7 @@ export class CheckoutComponent extends DataList<any> {
   OnCheckout(evt, amount, id, dialog) {
     evt.preventDefault();
     // 显示窗口
-     this.payData.map(item=>item.amount="");
+    this.payData.map(item => item.amount = "");
     dialog.show();
     this.billId = id;
     this.costMoney = amount;
@@ -110,15 +110,15 @@ export class CheckoutComponent extends DataList<any> {
     this.payCheckSingle = this.payData.filter(item => item.amount || item.amount == 0).map(item => {
       let paycheck: any = {};
       paycheck.paymentMethod = item.id;
-      cost += item.amount*100;
+      cost += item.amount * 100;
       paycheck.amount = Number(item.amount * 100);
       return paycheck;
     })
     if (cost != this.costMoney) {
-      this.alerter.error('支付金额与应收金额不相等!', true, 3000);
+      this.alerter.error('输入金额与应收金额不符，请重新填写！', true, 3000);
     } else {
       this.service.postPay(this.payCheckSingle, this.billId).then(() => {
-        this.alerter.info('收银成功!', true, 2000).onClose(()=>dialog.hide());
+        this.alerter.info('收银成功!', true, 2000).onClose(() => dialog.hide());
         this.payCheckSingle = [];
         this.onLoadList();
       }).catch(err => this.alerter.error(err, true, 2000));

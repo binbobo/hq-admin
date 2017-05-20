@@ -13,8 +13,16 @@ import { PrintDirective } from 'app/shared/directives';
 })
 
 export class BillOrderComponent extends DataList<any>{
+
+    moneyObj: any;
+
     mileage: any;
 
+    costCountMoney: number;
+    workCostMoney: number;
+    AmaterialMoney: number;
+    discountMoney: any;
+    costMoney: number;
     sumFee: number;
     otherFee: number;
     billId: any;
@@ -24,6 +32,7 @@ export class BillOrderComponent extends DataList<any>{
     workSheetSearchForm: FormGroup;
     @ViewChild(HqAlerter)
     protected alerter: HqAlerter;
+    @ViewChild('printer')
     public printer: PrintDirective;
     params: OrderListSearch;
     materialFee = 0;
@@ -122,6 +131,22 @@ export class BillOrderComponent extends DataList<any>{
     private billPrice: any;
     // 点击详情事件
     amountStatus: string;
+    private printData = {
+        maindata:{},
+        costData: [],
+        workHourData: [],
+        materialData: [],
+        appendItems: [],
+        adviceItems: [],
+        moneyObj: {
+            workCostMoney: 0,
+            discountMoney: 0,
+            materialMoney: 0,
+            costMoney: 0,
+            costCountMoney: 0,
+            workItemMoney: 0
+        }
+    }
     DetailsDialog(evt, id, dialog, item) {
         console.log(item);
         if (item.updateOnUtc) {
@@ -161,6 +186,35 @@ export class BillOrderComponent extends DataList<any>{
 
             // this.billPrice = this.sumFee;
         })
+
+        this.service.getPrintDetail(id)
+            .then(data => {
+                console.log('结算单', data)
+                this.printData.maindata=data;
+                this.printData.costData = data.totalCost; //收费结算单
+                this.printData.workHourData = data.workHours;//工时明细
+                this.printData.materialData = data.matereialDetails; //材料明细
+                this.printData.appendItems = data.appendItems;
+                this.printData.adviceItems = data.adviceItems;
+                this.printData.workHourData.forEach(item => {
+                    //金额
+                    this.printData.moneyObj.workItemMoney = item.amount * item.discount
+                    // 工时明细的应收金额和折扣金额
+                    this.printData.moneyObj.workCostMoney += item.discountCost;
+                    this.printData.moneyObj.discountMoney += item.amount * (1 - item.discount / 100);
+                });
+                this.printData.materialData.forEach(item => {
+                    // 材料明细的应收金额
+                    this.printData.moneyObj.materialMoney += item.amount;
+                })
+                // 收费结算金额
+                this.printData.costData.forEach(item => {
+                    this.printData.moneyObj.costMoney += item.receivableCost;
+                    this.printData.moneyObj.costCountMoney += (item.receivableCost - item.discountCost);
+                });
+                console.log(this.printData)
+            })
+            .catch(err => console.log(err));
     }
     private billData = {};
 
@@ -172,24 +226,25 @@ export class BillOrderComponent extends DataList<any>{
 
         // this.billData["id"] = this.billId;
         this.billData["price"] = this.billPrice * 100;
-        this.billData["leaveMileage"] = this.leaveMileage+"";
+        this.billData["leaveMileage"] = this.leaveMileage + "";
         console.log(this.billData)
         if (this.leaveMileage.length === 0) {
             this.alerter.error("出厂里程不能为空", true, 3000);
             return false;
+        } else if (this.leaveMileage < this.mileage) {
+            this.alerter.error("出厂里程不能小于进店里程", true, 3000);
+            return false;
         } else {
             this.service.post(this.billData, this.billId).then((result) => {
+                console.log(result)
                 if (confirm('生成结算单成功！ 是否打印？')) {
                     setTimeout(() => {
                         this.print();
                         // 清空数据
-                        // 刷新挂单列表
 
                     }, 1000);
                 } else {
                     // 清空数据
-
-                    // 刷新挂单列表
 
                 }
                 this.alerter.info("生成结算单成功", true, 3000).onClose(() => dialog.hide());
