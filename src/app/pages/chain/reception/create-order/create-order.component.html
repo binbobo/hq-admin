@@ -55,8 +55,7 @@
         </div>
         <label for="vehicleName" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车型</label>
         <div class="col-2">
-          <input  onBlur="onVehicleBlur()" [errors]="formValadationErrors.common" forceRefresh="true" [hqTableTypeahead]="modelTypeaheadSource"
-          <input label="车型" [errors]="formValadationErrors.common" forceRefresh="true" [hqTableTypeahead]="modelTypeaheadSource"
+          <input onBlur="onVehicleBlur()" label="车型" [errors]="formValadationErrors.common" forceRefresh="true" [hqTableTypeahead]="modelTypeaheadSource"
             [columns]="nameTypeaheadColumns" (onSelect)="onModelSelect($event)" type="text" class="form-control" formControlName="vehicleName"
             id="vehicleName" placeholder="输入车型名称">
           <!--车辆id-->
