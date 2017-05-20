@@ -10,21 +10,21 @@
   <form *ngIf="form" class="card-block" [formGroup]="form" (ngSubmit)="onUpdate()">
     <div class="form-group">
       <label class="form-control-label">语言名称</label>
-      <input hqError="语言名称" type="text" formControlName="name" class="form-control" placeholder="语言名称,例：中文简体">
+      <input label="语言名称" type="text" formControlName="name" class="form-control" placeholder="语言名称,例：中文简体">
     </div>
     <div class="form-group">
       <label class="form-control-label">语言文化</label>
-      <input hqError="语言文化" type="text" formControlName="culture" class="form-control" placeholder="语言文化,例：zh-CN">
+      <input label="语言文化" type="text" formControlName="culture" class="form-control" placeholder="语言文化,例：zh-CN">
     </div>
     <div class="form-group">
       <label class="form-control-label">编码</label>
-      <input hqError="编码" type="text" formControlName="code" class="form-control" placeholder="唯一搜索优化编码，例：zh">
+      <input label="编码" type="text" formControlName="code" class="form-control" placeholder="唯一搜索优化编码，例：zh">
     </div>
     <div class="form-group">
       <label class="form-control-label">标识</label>
       <div class="input-group">
         <span class="input-group-addon addon-left flag-icon flag-icon-{{flag.value}}"></span>
-        <input hqError="标识" type="text" #flag formControlName="flag" class="form-control" placeholder="国家或地区代表标识">
+        <input label="标识" type="text" #flag formControlName="flag" class="form-control" placeholder="国家或地区代表标识">
       </div>
     </div>
     <div class="form-group">

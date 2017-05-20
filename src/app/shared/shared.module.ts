@@ -24,8 +24,9 @@ const HQ_DIRECTIVE_COMPONENTS = [
     directives.MultiSelectorComponent,
     directives.HqAlerterComponent,
     directives.TableTypeaheadComponent,
-    directives.FormControlErrorComponent,
     directives.PrintComponent,
+    directives.FormGroupControlErrorComponent,
+    directives.FormInlineControlErrorComponent,
 ];
 
 const HQ_DIRECTIVES = [
@@ -33,7 +34,8 @@ const HQ_DIRECTIVES = [
     directives.HqAlerter,
     directives.TableTypeaheadDirective,
     directives.PrintDirective,
-    directives.FormControlErrorDirective,
+    directives.FormGroupControlErrorDirective,
+    directives.FormInlineControlErrorDirective,
     directives.SpinnerDirective,
     directives.TrimDirective,
 ]

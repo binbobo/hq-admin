@@ -3,9 +3,9 @@
   <img src="http://sinoauto.com/Themes/SinoAutoAdaption/Content/logonew.png" class="d-inline-block align-middle">
   </a>
   <div class="navbar-right">
-    <div dropdown class="dropdown d-inline">
+    <!--<div dropdown class="dropdown d-inline">
       <a dropdownToggle class="btn cursor-pointer">
-        <span [hidden]="language" class="fa fa-globe" translate> language</span>
+        <span [hidden]="language" class="fa fa-globe"> language</span>
         <p *ngIf="language" class="d-inline">
           <span class="flag-icon flag-icon-{{language.flag}}"></span> {{language.name}}
         </p>
@@ -16,7 +16,7 @@
           <span class="flag-icon flag-icon-{{item.flag}}"></span> {{item.name}}
         </a>
       </div>
-    </div>
+    </div>-->
     <div dropdown class="dropdown d-inline">
       <a dropdownToggle class="btn cursor-pointer">
         <a><i class="fa fa-user-circle"> {{userService?.user?.username}}</i></a>

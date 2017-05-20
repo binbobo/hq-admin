@@ -3,7 +3,7 @@ import { FormHandle } from 'app/shared/models';
 import { DistributeListItem } from '../distribute.service';
 import { Observable } from "rxjs/Rx";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { FormControlErrorDirective, TypeaheadRequestParams, HqAlerter } from 'app/shared/directives';
+import { FormGroupControlErrorDirective, TypeaheadRequestParams, HqAlerter } from 'app/shared/directives';
 import { GetMountingsListRequest, MountingsService } from '../../../mountings.service';
 import { CustomValidators } from 'ng2-validation';
 import { CentToYuanPipe } from "app/shared/pipes";
@@ -23,10 +23,10 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
   @Output()
   private formSubmit = new EventEmitter<DistributeListItem>();
   private model: DistributeListItem = new DistributeListItem();
-  @ViewChildren(FormControlErrorDirective)
-  private controls: QueryList<FormControlErrorDirective>;
+  @ViewChildren(FormGroupControlErrorDirective)
+  private controls: QueryList<FormGroupControlErrorDirective>;
   @ViewChild('priceControl')
-  private priceControl: FormControlErrorDirective
+  private priceControl: FormGroupControlErrorDirective
   private price: number = 0;
 
   constructor(

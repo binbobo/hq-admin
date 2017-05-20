@@ -9,15 +9,15 @@
   <form *ngIf="form" class="card-block" [formGroup]="form" (ngSubmit)="onCreate()">
     <div class="form-group">
       <label class="form-control-label">分组名称</label>
-      <input hqError="分组名称" type="text" formControlName="groupName" class="form-control" placeholder="请输入资源分组名称">
+      <input label="分组名称" type="text" formControlName="groupName" class="form-control" placeholder="请输入资源分组名称">
     </div>
     <div class="form-group">
       <label class="form-control-label">分组显示顺序</label>
-      <input hqError="显示顺序" type="number" formControlName="displayOrder" class="form-control" placeholder="请输入资源分组顺序">
+      <input label="显示顺序" type="number" formControlName="displayOrder" class="form-control" placeholder="请输入资源分组顺序">
     </div>
     <div class="form-group">
       <label class="form-control-label">分组描述</label>
-      <textarea hqError="分组描述" formControlName="description" class="form-control" placeholder="请输入资源分组描述"></textarea>
+      <textarea label="分组描述" formControlName="description" class="form-control" placeholder="请输入资源分组描述"></textarea>
     </div>
     <div class="form-group">
       <button type="submit" [disabled]="submitting" class="btn btn-primary mr-3">提交</button>

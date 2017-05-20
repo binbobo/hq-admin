@@ -10,17 +10,17 @@
         <input type="text" class="form-control mx-sm-3" name="name" [(ngModel)]="params.name" placeholder="角色名称">
       </div>
       <div class="form-group mb-2">
-        <button type="submit" class="btn btn-primary mx-sm-1" translate>查询</button>
-        <button type="button" (click)="createModal.show()" class="btn btn-secondary mx-sm-1" translate>新增</button>
+        <button type="submit" class="btn btn-primary mx-sm-1">查询</button>
+        <button type="button" (click)="createModal.show()" class="btn btn-secondary mx-sm-1">新增</button>
       </div>
     </form>
     <table class="table table-bordered table-sm table-striped">
       <thead>
         <tr *ngIf="!loading">
-          <th translate>操作</th>
-          <th translate>角色</th>
-          <th translate>创建时间</th>
-          <th translate>备注</th>
+          <th>操作</th>
+          <th>角色</th>
+          <th>创建时间</th>
+          <th>备注</th>
         </tr>
       </thead>
       <tbody>
