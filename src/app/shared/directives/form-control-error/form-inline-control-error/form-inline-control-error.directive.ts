@@ -14,16 +14,16 @@ export class FormInlineControlErrorDirective extends FormControlErrorDirective<F
   private _popover: ComponentLoader<FormInlineControlErrorComponent>;
 
   constructor(
-    injector: Injector,
     protected el: ElementRef,
     protected viewContainerRef: ViewContainerRef,
     protected componentFactoryResolver: ComponentFactoryResolver,
     private config: PopoverConfig,
+    ngModel: NgModel,
     renderer: Renderer,
     cis: ComponentLoaderFactory,
     private positionService: PositioningService,
   ) {
-    super(el, viewContainerRef, componentFactoryResolver, undefined);
+    super(el, viewContainerRef, componentFactoryResolver, ngModel.control);
     this._popover = cis
       .createLoader<FormInlineControlErrorComponent>(el, viewContainerRef, renderer)
       .provide({ provide: PopoverConfig, useValue: config });
