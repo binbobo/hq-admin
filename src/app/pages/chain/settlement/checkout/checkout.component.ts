@@ -1,8 +1,9 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DataList, StorageKeys } from "app/shared/models";
 import { Router } from "@angular/router";
 import { OrderListSearch, CheckOutService } from "./checkout.service";
+import { HqAlerter } from "app/shared/directives";
 
 @Component({
   selector: 'hq-checkout',
@@ -10,8 +11,8 @@ import { OrderListSearch, CheckOutService } from "./checkout.service";
   styleUrls: ['./checkout.component.css']
 })
 export class CheckoutComponent extends DataList<any> {
-  payCheckSingle: any;
   costMoney: any;
+  payCheckSingle: any;
   payData: any;
   sumFee: number;
   otherFee: number;
@@ -23,7 +24,8 @@ export class CheckoutComponent extends DataList<any> {
   params: OrderListSearch;
   materialFee = 0;
   workHourFee = 0;
-
+  @ViewChild(HqAlerter)
+  protected alerter: HqAlerter;
   public user = null;
   constructor(
     private router: Router,
@@ -96,39 +98,35 @@ export class CheckoutComponent extends DataList<any> {
   OnCheckout(evt, amount, id, dialog) {
     evt.preventDefault();
     // 显示窗口
+     this.payData.map(item=>item.amount="");
     dialog.show();
-    this.costMoney = amount / 100;
     this.billId = id;
+    this.costMoney = amount;
   }
   //确定收银接口
-  private payCheckArr = [];
-  private payChecoutData = {
-    paymentMethod: '',
-    amount: 0
-  };
-  
   OnPostPay(dialog) {
-    dialog.hide();
-    this.payData.forEach(item => {
-      this.payChecoutData.paymentMethod = item.id;
-      this.payChecoutData.amount = Number(item.amount * 100);
-      this.payCheckArr.push(this.payChecoutData)
-      this.payChecoutData = {
-        paymentMethod: '',
-        amount: 0
-      }
-    });
-    this.payCheckSingle = this.payCheckArr.filter(item => !item.amount == false)
-    console.log(this.payCheckSingle)
 
-    this.service.postPay(this.payCheckSingle, this.billId).then(() => {
-      this.alerter.info('收银成功!', true, 2000);; this.onLoadList();
-    }).catch(err => this.alerter.error(err, true, 2000))
-
-    this.payData.forEach(item => {
-      console.log(this.payData)
-      item.amount = null;
+    let cost: any = 0;
+    this.payCheckSingle = this.payData.filter(item => item.amount || item.amount == 0).map(item => {
+      let paycheck: any = {};
+      paycheck.paymentMethod = item.id;
+      cost += item.amount*100;
+      paycheck.amount = Number(item.amount * 100);
+      return paycheck;
     })
+    if (cost != this.costMoney) {
+      this.alerter.error('支付金额与应收金额不相等!', true, 3000);
+    } else {
+      this.service.postPay(this.payCheckSingle, this.billId).then(() => {
+        this.alerter.info('收银成功!', true, 2000).onClose(()=>dialog.hide());
+        this.payCheckSingle = [];
+        this.onLoadList();
+      }).catch(err => this.alerter.error(err, true, 2000));
+    }
+    console.log(this.payCheckSingle);
+
+
+
   }
   createForm() {
     // 初始化数组类型参数

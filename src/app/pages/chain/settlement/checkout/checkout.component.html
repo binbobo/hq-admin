@@ -1,5 +1,4 @@
 <div class="checkout card">
-  <div hq-alerter></div>
   <div class="card-header">
     <span>维修收银</span>
   </div>
@@ -15,26 +14,25 @@
       <div class="form-group row">
         <label for="serviceId">工单号：</label>
         <div class="col-sm-2">
-          <input type="text" class="form-control form-control-sm" [(ngModel)]="params.billcode" id="billcode" formControlName="billcode"
-            placeholder="工单号">
+          <input type="text" class="form-control" [(ngModel)]="params.billcode" id="billcode" formControlName="billcode" placeholder="工单号">
         </div>
         <label for="plateNo">车牌号：</label>
         <div class="col-sm-2">
-          <input type="text" [(ngModel)]="params.carnumber" class="form-control form-control-sm" id="carnumber" formControlName="carnumber"
-            placeholder="车牌号">
+          <input type="text" [(ngModel)]="params.carnumber" class="form-control" id="carnumber" formControlName="carnumber" placeholder="车牌号">
         </div>
         <label for="createdTime">进店时间：</label>
         <div class="col-sm-2">
-          <input class="form-control form-control-sm datetime-picker" [(ngModel)]="params.starttime" id="starttime" formControlName="starttime"
-            type="text" ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
+          <input class="form-control datetime-picker" [(ngModel)]="params.starttime" id="starttime" formControlName="starttime" type="text"
+            ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
         </div>
         至：
         <div class="col-sm-2">
-          <input class="form-control form-control-sm datetime-picker" id="endtime" [(ngModel)]="params.endtime" formControlName="endtime"
-            type="text" ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
+          <input class="form-control  datetime-picker" id="endtime" [(ngModel)]="params.endtime" formControlName="endtime" type="text"
+            ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
         </div>
+        <div class="col-sm-2"><button class="btn btn-primary">查询</button></div>
       </div>
-      <div class="search-button"><button class="btn btn-primary">查询</button></div>
+
     </form>
     <hr>
     <div class="overflow-auto">
@@ -43,17 +41,14 @@
           <tr>
             <th>操作</th>
             <th>状态</th>
-            <th>维修类型</th>
-            <th>工单号</th>
-            <th>开单时间</th>
-            <th>预计交车时间</th>
-            <th>服务顾问</th>
-            <th>车型</th>
             <th>车牌号</th>
-            <th>行驶里程(KM)</th>
-            <th>购车日期</th>
-            <th>车主</th>
-            <th>实收金额</th>
+            <th>工单号</th>
+            <th>应收金额</th>
+            <th>维修类型</th>
+            <th>预计交车时间</th>
+            <th>车型</th>
+            <th>送修人</th>
+            <th>服务顾问</th>
             <th>支付方式</th>
             <th>收银时间</th>
           </tr>
@@ -64,19 +59,16 @@
                 (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
             <td *ngIf="item.updateOnUtc"><a href="javascript:void(0)" (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
             <td>{{item.statusName}}</td>
-            <td>{{item.typeName}}</td>
-            <td>{{item.billCode}}</td>
-            <td>{{item.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-            <td>{{item.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-            <td>{{item.createdUserName}}</td>
-            <td>{{item.model}}</td>
             <td>{{item.plateNo}}</td>
-            <td>{{item.mileage}}</td>
-            <td>{{item.purchaseDate|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+            <td>{{item.billCode}}</td>
+            <td>{{item.amount|centToYuan}}</td>
+            <td>{{item.typeName}}</td>
+            <td>{{item.expectLeave|sDatetime}}</td>
+            <td>{{item.model}}</td>
             <td>{{item.customerName}}</td>
-            <td>{{item.amount/100}}</td>
+            <td>{{item.createdUserName}}</td>
             <td>{{item.paymentName}}</td>
-            <td>{{item.updateOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+            <td>{{item.updateOnUtc|sDatetime}}</td>
           </tr>
         </tbody>
       </table>
@@ -197,7 +189,7 @@
                   <td>{{record?.count}}</td>
                   <td>{{record?.price|centToYuan}}</td>
                   <td>{{record?.amount|centToYuan}}</td>
-                  <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                  <td>{{record?.operateDateTime|sDatetime}}</td>
                 </tr>
               </tbody>
             </table>
@@ -266,12 +258,13 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <ng-template hq-alerter></ng-template>
       <div class="modal-body">
-        <div class="cost-money">应收金额：{{costMoney}}元</div>
+        <div class="cost-money">应收金额：{{costMoney|centToYuan}}元</div>
 
         <div class="input-group checkout-item" *ngFor="let item of payData;">
           <span class="input-group-addon" id="sizing-addon2" style="width:150px;">{{item.value}}(元)</span>
-          <input type="text" class="form-control" [(ngModel)]="item.amount" aria-label="Username" aria-describedby="sizing-addon1">
+          <input type="number" class="form-control" [(ngModel)]="item.amount" aria-label="Username" aria-describedby="sizing-addon1">
         </div>
 
       </div>

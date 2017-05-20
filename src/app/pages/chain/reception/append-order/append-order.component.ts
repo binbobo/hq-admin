@@ -49,7 +49,7 @@ export class AppendOrderComponent {
   maintenanceProjectData;
   attachServiceOutputs;
   suggestServiceOutputs;
-  lastManufactureDetailOutput;
+ 
   lastDataProjectList;
   lastRepairList;
   lastAddList;
@@ -91,8 +91,8 @@ export class AppendOrderComponent {
     this.isableSuspend = true;
     this.SearchappendList = $event;
     this.listId = $event.id;
-    this.workHourFee=0;
-    this.sumFee=0;
+    this.workHourFee = 0;
+    this.sumFee = 0;
     console.log($event);
     this.suspendData = $event;
     this.service1.get(this.listId)
@@ -115,7 +115,7 @@ export class AppendOrderComponent {
         this.suggestServiceOutputs = data.suggestServiceOutputs;
         this.suspendData.suggestServiceOutputs = this.suggestServiceOutputs;
         // // 上次维修记录
-        this.lastManufactureDetailOutput = data.lastManufactureDetailOutput;
+        let lastManufactureDetailOutput = data.lastManufactureDetailOutput; 
         this.lastDataProjectList = data.lastManufactureDetailOutput.serviceOutputs;
         this.suspendData.lastDataProjectList = this.lastDataProjectList;
         this.lastRepairList = data.lastManufactureDetailOutput.productOutputs;
@@ -168,15 +168,34 @@ export class AppendOrderComponent {
       MaintenanceRecommends: this.newSuggestData,
       suspendedBillId: this.suspendedBillId
     };
+
     console.log(postData);
+    let dada = JSON.stringify(postData);
+    console.log(dada);
 
     this.service1.put(postData, this.listId).then((result) => {
-      console.log(result)
+      let returnData = result.data;
+      this.maintenanceProjectData = returnData.serviceOutputs;
+      this.suspendData.maintenanceProjectData = this.maintenanceProjectData;
+      (this.maintenanceProjectData).forEach((item, index) => {
+        this.workHourFee += Number(item.price) * Number(item.workHour);
+        this.sumFee += Number(item.amount);
+      })
+      //附加项目
+      this.attachServiceOutputs = returnData.attachServiceOutputs;
+      this.suspendData.attachServiceOutputs = this.attachServiceOutputs;
+      // // //建议维修项
+      this.suggestServiceOutputs = returnData.suggestServiceOutputs;
+      this.suspendData.suggestServiceOutputs = this.suggestServiceOutputs;
+
       this.alerter.info('增项成功!', true, 2000);
       this.suspendBill.refresh();
       // this.initOrderData();
       this.isableSuspend = false;
       this.isableAppend = false;
+      this.newSuggestData = [],
+        this.newAttachData = [],
+        this.newMaintenanceItemData = []
     }).catch(err => this.alerter.error(err, true, 2000));
   }
 
@@ -293,7 +312,7 @@ export class AppendOrderComponent {
 
     }
 
-    if (this.newMaintenanceItemData.length > 0 ||  this.newAttachData.length > 0 ||  this.newSuggestData.length > 0) {
+    if (this.newMaintenanceItemData.length > 0 || this.newAttachData.length > 0 || this.newSuggestData.length > 0) {
       this.isableAppend = true;
       this.isableSuspend = true;
     } else {
@@ -315,7 +334,7 @@ export class AppendOrderComponent {
   onDelAttachItem(i) {
     console.log(i);
     this.newAttachData.splice(i, 1);
-    if (this.newMaintenanceItemData.length > 0 ||  this.newAttachData.length > 0 ||  this.newSuggestData.length > 0) {
+    if (this.newMaintenanceItemData.length > 0 || this.newAttachData.length > 0 || this.newSuggestData.length > 0) {
       this.isableAppend = true;
       this.isableSuspend = true;
     } else {
@@ -346,6 +365,7 @@ export class AppendOrderComponent {
   onConfirmNewSuggestItem(evt, addModal) {
     console.log('新增的建议维修项目数据为：', evt);
     evt.maintenanceId = this.maintenanceId;
+
     if (!this.newSuggestData) {
       this.newSuggestData = []
     }
@@ -371,7 +391,7 @@ export class AppendOrderComponent {
     // 记录当前选择的维修项目
     this.selectedSuggestServices = this.getSelectedSuggestServices();
     addModal.hide();
-    if (this.newMaintenanceItemData.length > 0 ||  this.newAttachData.length > 0 ||  this.newSuggestData.length > 0) {
+    if (this.newMaintenanceItemData.length > 0 || this.newAttachData.length > 0 || this.newSuggestData.length > 0) {
       this.isableAppend = true;
       this.isableSuspend = true;
     } else {
@@ -391,7 +411,7 @@ export class AppendOrderComponent {
       }
     });
     this.selectedSuggestServices = this.getSelectedSuggestServices();
-    if (this.newMaintenanceItemData.length > 0 ||  this.newAttachData.length > 0 ||  this.newSuggestData.length > 0) {
+    if (this.newMaintenanceItemData.length > 0 || this.newAttachData.length > 0 || this.newSuggestData.length > 0) {
       this.isableAppend = true;
       this.isableSuspend = true;
     } else {

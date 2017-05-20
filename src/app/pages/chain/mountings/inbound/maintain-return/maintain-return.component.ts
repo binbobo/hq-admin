@@ -14,9 +14,9 @@ import { SuspendBillDirective } from "app/pages/chain/chain-shared";
 export class MaintainReturnComponent implements OnInit {
   [name: string]: any;
   numberList: SelectOption[];
-  mrData: any;
+  mrData: any = [];
   suspendedBillId: any;
-  serialData: any;
+  serialData: any = [];
   @ViewChild('createModal')
   private createModal: ModalDirective;
   @ViewChild(HqAlerter)
@@ -26,7 +26,7 @@ export class MaintainReturnComponent implements OnInit {
   billCode: any;
   printId: any;
   productData: any;
-  serviceData: any;
+  serviceData: any = [];
   listId: any;
   SearchappendList: any;
   private newItem: any;

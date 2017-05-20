@@ -9,6 +9,8 @@ import { PrintDirective } from 'app/shared/directives';
   styleUrls: ['./print-order.component.css']
 })
 export class PrintOrderComponent implements OnInit {
+    adviceItems: any=[];
+    appendItems: any=[];
   costCountMoney: number;
   workCostMoney: number;
   AmaterialMoney: number;
@@ -20,7 +22,7 @@ export class PrintOrderComponent implements OnInit {
   private data: any;
   private costData: any;
   private workHourData: any;
-  private materialData: any;
+  private materialData: any=[];
   private moneyObj: any = null;
   constructor(
     private route: ActivatedRoute,
@@ -36,6 +38,8 @@ export class PrintOrderComponent implements OnInit {
           this.costData = data.totalCost; //收费结算单
           this.workHourData = data.workHours;//工时明细
           this.materialData = data.matereialDetails; //材料明细
+          this.appendItems=data.appendItems;
+          this.adviceItems=data.adviceItems;
           this.workHourData.forEach(item => {
             //金额
             this.moneyObj.workItemMoney = item.amount * item.discount 

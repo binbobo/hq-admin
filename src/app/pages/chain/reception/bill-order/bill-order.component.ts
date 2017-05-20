@@ -4,6 +4,7 @@ import { DataList, StorageKeys } from "app/shared/models";
 import { BillOrderService, OrderListSearch } from "./bill-order.service";
 import { Router } from "@angular/router";
 import { HqAlerter } from "app/shared/directives";
+import { PrintDirective } from 'app/shared/directives';
 
 @Component({
     selector: 'app-bill-order',
@@ -12,6 +13,7 @@ import { HqAlerter } from "app/shared/directives";
 })
 
 export class BillOrderComponent extends DataList<any>{
+    mileage: any;
 
     sumFee: number;
     otherFee: number;
@@ -22,6 +24,7 @@ export class BillOrderComponent extends DataList<any>{
     workSheetSearchForm: FormGroup;
     @ViewChild(HqAlerter)
     protected alerter: HqAlerter;
+    public printer: PrintDirective;
     params: OrderListSearch;
     materialFee = 0;
     workHourFee = 0;
@@ -45,7 +48,6 @@ export class BillOrderComponent extends DataList<any>{
         // 构建表单
         this.createForm();
     }
-
     // 点击查询
     onSearch() {
         // 组织工单状态数据
@@ -59,6 +61,9 @@ export class BillOrderComponent extends DataList<any>{
         this.onLoadList();
     }
     // 点击结算事件
+    productOutputs: any = [];
+    attachServiceOutputs: any = [];
+    suggestServiceOutputs: any = [];
     orderDetailsDialog(evt, id, dialog, item) {
         console.log(item)
         this.isShowCostDetail = false;
@@ -71,9 +76,13 @@ export class BillOrderComponent extends DataList<any>{
         // 根据id获取工单详细信息
         this.service.get(id).then(data => {
             console.log('根据工单id获取工单详情数据：', data);
-
+            this.leaveMileage = data.mileage;
+            this.mileage = data.mileage;
             // 记录当前操作的工单记录
             this.selectedOrder = data;
+            this.productOutputs = data.serviceOutputs;
+            this.attachServiceOutputs = data.attachServiceOutputs;
+            this.suggestServiceOutputs = data.suggestServiceOutputs;
             this.billId = this.selectedOrder["id"]
 
         });
@@ -112,7 +121,14 @@ export class BillOrderComponent extends DataList<any>{
     }
     private billPrice: any;
     // 点击详情事件
-    DetailsDialog(evt, id, dialog) {
+    amountStatus: string;
+    DetailsDialog(evt, id, dialog, item) {
+        console.log(item);
+        if (item.updateOnUtc) {
+            this.amountStatus = "实收金额"
+        } else {
+            this.amountStatus = "应收金额"
+        }
         this.isShowCost = false;
         this.isShowCostDetail = true;
         evt.preventDefault();
@@ -148,25 +164,36 @@ export class BillOrderComponent extends DataList<any>{
     }
     private billData = {};
 
-    private leaveMileage = "";
-    // 点击确定生成结算单
+    private leaveMileage: any;
+    // 点击确定生成结算
     BillClick(evt, dialog) {
 
         evt.preventDefault();
 
         // this.billData["id"] = this.billId;
         this.billData["price"] = this.billPrice * 100;
-        this.billData["leaveMileage"] = this.leaveMileage;
-        this.billData=JSON.stringify(this.billData);
+        this.billData["leaveMileage"] = this.leaveMileage+"";
         console.log(this.billData)
         if (this.leaveMileage.length === 0) {
             this.alerter.error("出厂里程不能为空", true, 3000);
             return false;
         } else {
             this.service.post(this.billData, this.billId).then((result) => {
-                this.alerter.info("生成结算单成功", true, 3000);
+                if (confirm('生成结算单成功！ 是否打印？')) {
+                    setTimeout(() => {
+                        this.print();
+                        // 清空数据
+                        // 刷新挂单列表
+
+                    }, 1000);
+                } else {
+                    // 清空数据
+
+                    // 刷新挂单列表
+
+                }
+                this.alerter.info("生成结算单成功", true, 3000).onClose(() => dialog.hide());
                 this.isShowCost = false;
-                setTimeout(dialog.hide(), 6000);
                 this.onLoadList();
             }).catch(err => this.alerter.error(err, true, 3000));
         }
@@ -176,6 +203,10 @@ export class BillOrderComponent extends DataList<any>{
     private pathname;
     OnPrintClick() {
         this.router.navigate(['/chain/reception/bill/print', this.billId])
+    }
+
+    print() {
+        this.printer.print();
     }
     createForm() {
         // 初始化数组类型参数
