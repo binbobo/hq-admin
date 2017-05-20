@@ -48,13 +48,14 @@
         <label for="series" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车系</label>
         <div class="col-2">
           <input forceRefresh="true" [hqTableTypeahead]="seriesTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onSeriesSelect($event)"
-            type="text" hqError="车系" [errors]="formValadationErrors.common" class="form-control" formControlName="series" id="series"
+            type="text"  [errors]="formValadationErrors.common" class="form-control" formControlName="series" id="series"
             placeholder="输入车系名称">
           <!--车系id-->
           <input type="hidden" formControlName="seriesId" />
         </div>
         <label for="vehicleName" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车型</label>
         <div class="col-2">
+          <input  onBlur="onVehicleBlur()" [errors]="formValadationErrors.common" forceRefresh="true" [hqTableTypeahead]="modelTypeaheadSource"
           <input label="车型" [errors]="formValadationErrors.common" forceRefresh="true" [hqTableTypeahead]="modelTypeaheadSource"
             [columns]="nameTypeaheadColumns" (onSelect)="onModelSelect($event)" type="text" class="form-control" formControlName="vehicleName"
             id="vehicleName" placeholder="输入车型名称">
@@ -100,12 +101,12 @@
         </div>
         <label for="introPhone" class="col-1 col-form-label">介绍人电话</label>
         <div class="col-2">
-          <input type="text" hqError="介绍人电话" [errors]="formValadationErrors.common" class="form-control" formControlName="introPhone"
+          <input type="text" [errors]="formValadationErrors.common" class="form-control" formControlName="introPhone"
             id="introPhone" placeholder="介绍人电话">
         </div>
         <label for="validate" class="col-1 col-form-label">验车日期</label>
         <div class="  col-2">
-          <input class="form-control" hqError="验车日期" [errors]="formValadationErrors.common" type="text" formControlName="validate"
+          <input class="form-control" [errors]="formValadationErrors.common" type="text" formControlName="validate"
             ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
         </div>
       </div>
@@ -117,7 +118,7 @@
         </div>
         <label for="nextDate" class="col-1 col-form-label">建议下次保养日期</label>
         <div class="col-2">
-          <input class="form-control" hqError="建议下次保养日期" [errors]="formValadationErrors.common" type="text" formControlName="nextDate"
+          <input class="form-control" [errors]="formValadationErrors.common" type="text" formControlName="nextDate"
             ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
         </div>
         <label for="nextMileage" class="col-1 col-form-label">建议下次保养里程</label>

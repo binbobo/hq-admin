@@ -30,9 +30,8 @@
           <input class="form-control  datetime-picker" id="endtime" [(ngModel)]="params.endtime" formControlName="endtime" type="text"
             ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
         </div>
+        <div class="col-sm-2"><button class="btn btn-primary">查询</button></div>
       </div>
-      <div class="search-button"><button class="btn btn-primary">查询</button></div>
-
     </form>
     <div class="overflow-auto">
       <table class='table table-striped table-bordered'>
@@ -55,9 +54,9 @@
         <tbody>
           <tr *ngFor="let item of list">
             <td *ngIf="!item.updateOnUtc"><a href="javascript:void(0)" (click)='orderDetailsDialog($event, item.id,lgModal,item)'>结算</a> | <a href="javascript:void(0)"
-                (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
+                (click)='DetailsDialog($event, item.id,lgModal,item)'>详情</a></td>
             <td *ngIf="item.updateOnUtc"><a href="javascript:void(0)" (click)='finishedOrder($event, item.id, confirmModal)'>撤销结算</a> | <a href="javascript:void(0)"
-                (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
+                (click)='DetailsDialog($event, item.id,lgModal,item)'>详情</a></td>
             <td>{{item.statusName}}</td>
             <td>{{item.plateNo}}</td>
             <td>{{item.billCode}}</td>
@@ -101,12 +100,11 @@
   </div>
 </div>
 <!--详情 begin-->
-<div bsModal #lgModal="bs-modal" class="modal" style='background-color: rgba(0, 0, 0, 0.47);' tabindex="-1" role="dialog"
-  aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+<div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div *ngIf="lgModal.isShown" class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header pos-top">
-        <button type="button" class="btn btn-secondary pull-left" aria-label="Close" [hidden]="!isShowPrint" (click)='OnPrintClick()'>打印</button>
+        <button type="button" class="btn btn-secondary pull-left" aria-label="Close" [hidden]="!isShowPrint" (click)='print()'>打印</button>
         <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
           <span aria-hidden="true" class="pull-right close-right">&times;</span>
         </button>
@@ -116,173 +114,36 @@
 
         <!--工单详情 start-->
         <ng-template hq-alerter></ng-template>
-        <table class="table table-striped table-bordered">
-          <caption>维修结算单详情</caption>
-          <thead>
-            <tr>
-              <th>维修类型</th>
-              <th>工单号</th>
-              <th>进店时间</th>
-              <th>预计交车时间</th>
-              <th>超时</th>
-              <th>服务顾问</th>
-              <th>品牌</th>
-              <th>车型</th>
-              <th>车牌号</th>
-              <th>行驶里程</th>
-              <th>购车时间</th>
-              <th>车主</th>
-              <th>送修人</th>
-              <th>送修人电话</th>
-              <th>介绍人</th>
-              <th>介绍人电话</th>
-              <th>维修技师</th>
-              <th>出厂时间</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{{selectedOrder?.typeName}}</td>
-              <td>{{selectedOrder?.billCode}}</td>
-              <td>{{selectedOrder?.createdOnUtc |date:"yyyy/MM/dd HH:mm:ss"}}</td>
-              <td>{{selectedOrder?.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-              <td>{{selectedOrder?.overTime |durationHumanize}}</td>
-              <td>{{selectedOrder?.createdUserName}}</td>
-              <td>{{selectedOrder?.brand}}</td>
-              <td>{{selectedOrder?.vehicleName}}</td>
-              <td>{{selectedOrder?.plateNo}}</td>
-              <td>{{selectedOrder?.mileage }}</td>
-              <td>{{selectedOrder?.purchaseDate|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-              <td>{{selectedOrder?.customerName}}</td>
-              <td>{{selectedOrder?.contactUser}}</td>
-              <td>{{selectedOrder?.contactInfo}}</td>
-              <td>{{selectedOrder?.introducer}}</td>
-              <td>{{selectedOrder?.introPhone}}</td>
-              <td>{{selectedOrder?.employeeNames?.join(',')}}，{{selectedOrder?.turnEmployeeNames?.join(',')}}</td>
-              <td>{{selectedOrder?.leaveTime |date:"yyyy/MM/dd HH:mm:ss" }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <hq-workorder-detail [data]="selectedOrder"></hq-workorder-detail>
 
-        <br>
-        <tabset>
-          <tab heading="维修项目">
-            <table class="table table-striped table-bordered">
-              <thead>
-                <tr>
-                  <th>项目名称</th>
-                  <th>维修工时(个)</th>
-                  <th>工时单价(元)</th>
-                  <th>折扣率(%)</th>
-                  <th>金额(元)</th>
-                  <th>操作时间</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let record of selectedOrder?.serviceOutputs">
-                  <td>{{record?.serviceName}}</td>
-                  <td>{{record?.workHour}}</td>
-                  <td>{{record?.price|centToYuan}}</td>
-                  <td>{{record?.discount}}</td>
-                  <td>{{record?.amount|centToYuan}}</td>
-                  <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-
-                </tr>
-              </tbody>
-            </table>
-          </tab>
-          <tab heading="维修配件">
-            <table class="table  table-bordered">
-              <thead>
-                <tr>
-                  <th>维修项目</th>
-                  <th>配件编码</th>
-                  <th>品牌</th>
-                  <th>配件名称</th>
-                  <th>规格型号</th>
-                  <th>数量(个)</th>
-                  <th>单价(元)</th>
-                  <th>金额(元)</th>
-                  <th>操作时间</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let record of selectedOrder?.productOutputs">
-                  <td>{{record?.serviceName}}</td>
-                  <td>{{record?.productCode}}</td>
-                  <td>{{record?.brandName}}</td>
-                  <td>{{record?.productName}}</td>
-                  <td>{{record?.specification}}</td>
-                  <td>{{record?.count}}</td>
-                  <td>{{record?.price|centToYuan}}</td>
-                  <td>{{record?.amount|centToYuan}}</td>
-                  <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </tab>
-          <tab heading="附加项目">
-            <table class="table table-striped table-bordered">
-              <thead>
-                <tr>
-                  <th>备注</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let record of selectedOrder?.attachServiceOutputs">
-                  <td>{{record?.description}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </tab>
-
-          <tab heading="建议维修项目">
-            <table class="table table-striped table-bordered">
-              <thead>
-                <tr>
-                  <th>建议维修项目</th>
-                  <th>操作时间</th>
-                  <th>备注</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let record of selectedOrder?.suggestServiceOutputs">
-                  <td>{{record?.content}}</td>
-                  <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-                  <td>{{record?.description}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </tab>
-          <!--结算费用-->
-          <div class="card" [hidden]="!isShowCost">
-            <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;padding-left: 28px;">
-              工时费：
-              <span class="ml-2 mr-2">{{workHourFee|centToYuan}}元</span> | 材料费：
-              <span class="ml-2 mr-2">{{materialFee|centToYuan}}元</span> | 其它：
-              <span class="ml-2 mr-2">{{otherFee|centToYuan}}元</span> | 应收金额:
-              <span class="ml-2 mr-2">{{sumFee|centToYuan}}元</span>
-            </div>
-            <div class="card-header">
-              <span class="ml-2 mr-2">实收金额(元)：
+        <!--结算费用-->
+        <div class="card" [hidden]="!isShowCost">
+          <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;padding-left: 28px;">
+            工时费：
+            <span class="ml-2 mr-2">{{workHourFee|centToYuan}}元</span> | 材料费：
+            <span class="ml-2 mr-2">{{materialFee|centToYuan}}元</span> | 其它：
+            <span class="ml-2 mr-2">{{otherFee|centToYuan}}元</span> | 应收金额:
+            <span class="ml-2 mr-2">{{sumFee|centToYuan}}元</span>
+          </div>
+          <div class="card-header">
+            <span class="ml-2 mr-2">实收金额(元)：
                 <input type="number"   [(ngModel)]="billPrice"></span>
-              <span class="ml-2 mr-2">出厂里程(KM)：
+            <span class="ml-2 mr-2">出厂里程(KM)：
                 <input type="number"  [(ngModel)]="leaveMileage"></span>
-              <button type="button" class="btn btn-primary" aria-label="Close" (click)="BillClick($event,lgModal)">确定</button>
-            </div>
+            <button type="button" class="btn btn-primary" aria-label="Close" (click)="BillClick($event,lgModal)">确定</button>
           </div>
-          <!--详情费用-->
-          <div class="card" [hidden]="!isShowCostDetail">
-            <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
-              工时费
-              <span class="ml-2 mr-2">{{workHourFee|centToYuan}}元</span> | 材料费
-              <span class="ml-2 mr-2">{{materialFee|centToYuan}}元</span> | 其它：
-              <span class="ml-2 mr-2">{{otherFee|centToYuan}}元</span> | 应收金额：
-              <span class="ml-2 mr-2">{{sumFee|centToYuan}}元</span>
-              <span class="ml-2 mr-2" *ngIf="resultPrice">实收金额：{{resultPrice|centToYuan}}元</span>
-            </div>
+        </div>
+        <!--详情费用-->
+        <div class="card" [hidden]="!isShowCostDetail">
+          <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
+            工时费
+            <span class="ml-2 mr-2">{{workHourFee|centToYuan}}元</span> | 材料费
+            <span class="ml-2 mr-2">{{materialFee|centToYuan}}元</span> | 其它：
+            <span class="ml-2 mr-2">{{otherFee|centToYuan}}元</span> | {{amountStatus}}：
+            <span class="ml-2 mr-2">{{sumFee|centToYuan}}元</span>
+
           </div>
-        </tabset>
+        </div>
         <!--建议维修项 end-->
         <!--导出详情end-->
       </div>
@@ -290,3 +151,5 @@
   </div>
 </div>
 <!--详情 end-->
+
+<hq-print-order *ngIf="lgModal.isShown" [data]="printData" hqPrint #printer="hq-print"></hq-print-order>

@@ -28,5 +28,9 @@ caption {
     position: absolute;
         right: 14px;
     top: 13px;
-
+}
+@media (min-width: 992px) {
+.modal-lg {
+max-width: 1000px;
+}
 }

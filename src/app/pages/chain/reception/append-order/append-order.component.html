@@ -1,6 +1,6 @@
 <ng-template hq-alerter></ng-template>
 <div class="card append-order">
-  <div class="card-header"> 
+  <div class="card-header">
     <span>增项</span>
     <ng-template hqSuspendBill="MWIM" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
@@ -70,12 +70,12 @@
             <tbody>
               <tr *ngFor="let item of maintenanceProjectData">
                 <td>&nbsp;</td>
-                <td><span  [class.triangle]="item.type === 3"></span>{{item.serviceName}}</td>
+                <td><span [class.triangle]="item.type === 3"></span>{{item.serviceName}}</td>
                 <td>{{item.workHour}}</td>
                 <td>{{item.price|centToYuan}}</td>
                 <td>{{item.discount}}</td>
                 <td>{{item.amount|centToYuan}}</td>
-                <td>{{item.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                <td>{{item.operateDateTime|sDatetime}}</td>
               </tr>
 
               <tr *ngFor="let item of newMaintenanceItemData">
@@ -88,7 +88,7 @@
                 <td>{{item?.price|centToYuan}}</td>
                 <td>{{item?.discount}}</td>
                 <td>{{item?.amount|centToYuan}}</td>
-                <td>{{item?.operationTime}}</td>
+                <td>{{item?.operationTime|sDatetime}}</td>
               </tr>
             </tbody>
           </table>
@@ -137,7 +137,7 @@
             <tr *ngFor="let item of suggestServiceOutputs">
               <td></td>
               <td>{{item.content}}</td>
-              <td>{{item.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+              <td>{{item.operateDateTime|sDatetime}}</td>
               <td>{{item.description}}</td>
 
             </tr>
@@ -147,7 +147,7 @@
                 <a href="#" (click)="$event.preventDefault();onDelSuggestItem(item.serviceId)">删除</a>
               </td>
               <td>{{item.serviceName}}</td>
-              <td>{{item.operationTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+              <td>{{item.operationTime|sDatetime}}</td>
               <td>{{item.description}}</td>
 
             </tr>
@@ -159,33 +159,33 @@
         </tab>
 
         <!--上次维修记录-->
-        <tab heading="上次维修记录" [hidden]="!isLast">
+        <tab heading="上次维修记录" *ngIf="lastManufactureDetailOutput">
           <table class="table table-striped table-bordered">
             <caption>维修项目</caption>
             <thead>
               <tr>
                 <th>项目名称</th>
-                <th>维修工时</th>
+                <th>维修工时(小时)</th>
                 <th>工时单价(元)</th>
                 <th>金额(元)</th>
-                <th>折扣率</th>
+                <th>折扣率(100%)</th>
                 <th>操作时间</th>
-                <th>操作员</th>
+
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let item of lastDataProjectList ">
-                <td>{{item.serviceName}}</td>
+                <td><span [class.triangle]="item.type === 3"></span>{{item.serviceName}}</td>
                 <td>{{item.workHour}}</td>
                 <td>{{item.price|centToYuan}}</td>
                 <td>{{item.amount|centToYuan}}</td>
                 <td>{{item.discount}}</td>
-                <td>{{item.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-                <td>{{item.operatorName}}</td>
+                <td>{{item.operateDateTime|sDatetime}}</td>
+
               </tr>
             </tbody>
           </table>
-          <!--<table class="table table-hover table-bordered table-sm table-tab">
+          <table class="table table-striped table-bordered">
             <caption>维修配件</caption>
             <thead>
               <tr>
@@ -193,7 +193,7 @@
                 <th>配件名称</th>
                 <th>品牌</th>
                 <th>规格型号</th>
-                <th>数量</th>
+                <th>数量(个)</th>
                 <th>单价(元)</th>
                 <th>金额(元)</th>
                 <th>操作时间</th>
@@ -206,12 +206,12 @@
                 <td>{{item.brandName}}</td>
                 <td>{{item.specification}}</td>
                 <td>{{item.count}}</td>
-                <td>{{item.price}}</td>
-                <td></td>
-                <td>{{item.operateDateTime}}</td>
+                <td>{{item.price|centToYuan}}</td>
+                <td>{{item.amount|centToYuan}}</td>
+                <td>{{item.operateDateTime|sDatetime}}</td>
               </tr>
             </tbody>
-          </table>-->
+          </table>
 
           <table class="table  table-striped table-bordered">
             <caption>附加项目</caption>
@@ -239,7 +239,7 @@
             <tbody>
               <tr *ngFor="let item of lastSuggestList">
                 <td>{{item.content}}</td>
-                <td>{{item.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                <td>{{item.operateDateTime|sDatetime}}</td>
                 <td>{{item.description}}</td>
               </tr>
             </tbody>
@@ -252,7 +252,7 @@
           工时费：<span class="ml-2 mr-2">{{workHourFee|centToYuan}}元</span> | 材料费：
           <span class="ml-2 mr-2">{{materialFee|centToYuan}}元</span> | 其它：
           <span class="ml-2 mr-2">{{otherFee|centToYuan}}元</span> | 应收金额：
-          <span class="ml-2 mr-2">{{sumFee|centToYuan}}元</span>| 折扣金额：
+          <span class="ml-2 mr-2">{{(workHourFee+materialFee+otherFee)|centToYuan}}元</span>| 折扣金额：
           <span class="ml-2 mr-2">{{(workHourFee-sumFee)|centToYuan}}元</span>
         </div>
       </div>

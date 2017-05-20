@@ -75,6 +75,11 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   // 当前登录用户信息
   public user = null;
 
+  isBrandSelected = false;
+  isSeriesSelected = false;
+  isVehicleSelected = false;
+
+
   // 覆盖父类的初始化方法
   ngOnInit() { }
 
@@ -117,35 +122,44 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   // 从模糊查询下拉列表中选择一个品牌事件处理程序
   onBrandSelect(evt) {
+    this.isBrandSelected = true;
     if (this.workSheetForm.controls.series.enabled) {
       this.brandChange();
     }
     // 设置当前选择的品牌id
     this.workSheetForm.controls.brandId.setValue(evt.id);
-    this.workSheetForm.controls.brand.patchValue(evt.name, { emitEvent: false });
+    this.workSheetForm.controls.brand.setValue(evt.name);
     // enable车系选择
     this.workSheetForm.controls.series.enable();
   }
   // 从模糊查询下拉列表中选择一个车系事件处理程序
   onSeriesSelect(evt) {
+    this.isSeriesSelected = true;
     if (this.workSheetForm.controls.vehicleName.enabled) {
       this.seriesChange();
     }
     // 设置当前选择的车系id
     this.workSheetForm.controls.seriesId.setValue(evt.id);
-    this.workSheetForm.controls.series.patchValue(evt.name, { emitEvent: false });
+    this.workSheetForm.controls.series.setValue(evt.name);
     // enable车型选择
     this.workSheetForm.controls.vehicleName.enable();
   }
 
+  onVehicleBlur() {
+    if (!this.workSheetForm.controls.vehicleId) {
+      this.workSheetForm.controls.vehicleName.setValue('');
+    }
+  }
+
   // 从模糊查询下拉列表中选择一个车型事件处理程序
   onModelSelect(evt) {
+    this.isVehicleSelected = true;
     // 设置当前选择的车系id
     // console.log('车型选择:', evt);
 
     // 如果手动选择了车型  以该车型id为准
     this.workSheetForm.controls.vehicleId.setValue(evt.id);
-    this.workSheetForm.controls.vehicleName.patchValue(evt.name, { emitEvent: false });
+    this.workSheetForm.controls.vehicleName.setValue(evt.name);
 
     this.enableCreateWorkSheet = (this.newMaintenanceItemData.length > 0) && this.workSheetForm.valid;
   }
@@ -502,27 +516,31 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     });
     // 品牌表单域值改变事件监听
     this.workSheetForm.controls.brand.valueChanges.subscribe((newValue) => {
-      if (!this.workSheetForm.controls.brand.disabled) {
-        // 设置当前选择的品牌id为null
-        this.workSheetForm.controls.brandId.reset();
-
-        this.brandChange();
+      if (this.isBrandSelected) {
+        this.isBrandSelected = false;
+        return;
       }
+      // 设置当前选择的品牌id为null
+      this.workSheetForm.controls.brandId.reset();
+      this.brandChange();
     });
     // 车系表单域值改变事件监听
     this.workSheetForm.controls.series.valueChanges.subscribe((newValue) => {
-      if (!this.workSheetForm.controls.series.disabled) {
-        // 设置当前选择的车系id为null
-        this.workSheetForm.controls.seriesId.reset();
-
-        this.seriesChange();
+      if (this.isSeriesSelected) {
+        this.isSeriesSelected = false;
+        return;
       }
+      // 设置当前选择的车系id为null
+      this.workSheetForm.controls.seriesId.reset();
+      this.seriesChange();
     });
     // 车型表单域值改变事件监听
     this.workSheetForm.controls.vehicleName.valueChanges.subscribe((newValue) => {
-      if (!this.workSheetForm.controls.vehicleName.disabled) {
-        this.workSheetForm.controls.vehicleId.reset();
+      if (this.isVehicleSelected) {
+        this.isVehicleSelected = false;
+        return;
       }
+      this.workSheetForm.controls.vehicleId.reset();
     });
   }
 
@@ -569,6 +587,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.enableCustomerVehicleField();
 
     this.newWorkOrderData = null;
+
+    this.isBrandSelected = this.isSeriesSelected = this.isVehicleSelected = false;
   }
 
   print() {
