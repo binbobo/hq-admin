@@ -49,7 +49,7 @@ export class AppendOrderComponent {
   maintenanceProjectData;
   attachServiceOutputs;
   suggestServiceOutputs;
- 
+
   lastDataProjectList;
   lastRepairList;
   lastAddList;
@@ -115,7 +115,7 @@ export class AppendOrderComponent {
         this.suggestServiceOutputs = data.suggestServiceOutputs;
         this.suspendData.suggestServiceOutputs = this.suggestServiceOutputs;
         // // 上次维修记录
-        let lastManufactureDetailOutput = data.lastManufactureDetailOutput; 
+        let lastManufactureDetailOutput = data.lastManufactureDetailOutput;
         this.lastDataProjectList = data.lastManufactureDetailOutput.serviceOutputs;
         this.suspendData.lastDataProjectList = this.lastDataProjectList;
         this.lastRepairList = data.lastManufactureDetailOutput.productOutputs;
@@ -177,10 +177,10 @@ export class AppendOrderComponent {
       let returnData = result.data;
       this.maintenanceProjectData = returnData.serviceOutputs;
       this.suspendData.maintenanceProjectData = this.maintenanceProjectData;
-      (this.maintenanceProjectData).forEach((item, index) => {
-        this.workHourFee += Number(item.price) * Number(item.workHour);
-        this.sumFee += Number(item.amount);
-      })
+      // (this.maintenanceProjectData).forEach((item, index) => {
+      //   this.workHourFee += Number(item.price) * Number(item.workHour);
+      //   this.sumFee += Number(item.amount);
+      // })
       //附加项目
       this.attachServiceOutputs = returnData.attachServiceOutputs;
       this.suspendData.attachServiceOutputs = this.attachServiceOutputs;
@@ -300,7 +300,6 @@ export class AppendOrderComponent {
   onCreateAttach(evt) {
 
     evt.maintenanceId = this.maintenanceId;
-    console.log('新增的附加项目数据为：', evt);
     if (this.selectedAttachItem) {
 
       // 使用新的元素替换以前的元素
