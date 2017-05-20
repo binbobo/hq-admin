@@ -8,8 +8,8 @@ table{
     margin: 2px;
 }
 
-td{
-    padding: 3px 10px;
+td,th{
+    padding: 3px 10px!important;
 }
 
 tbody tr{

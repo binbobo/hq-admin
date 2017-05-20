@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Location } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { BasicService } from 'app/shared/models';
-import { HqAlerter, FormControlErrorDirective } from 'app/shared/directives';
+import { HqAlerter, FormGroupControlErrorDirective } from 'app/shared/directives';
 
 export abstract class FormHandle<T> implements OnInit {
 
@@ -15,8 +15,8 @@ export abstract class FormHandle<T> implements OnInit {
     protected location: Location;
     @ViewChild(HqAlerter)
     protected alerter: HqAlerter;
-    @ViewChildren(FormControlErrorDirective)
-    private controls: QueryList<FormControlErrorDirective>;
+    @ViewChildren(FormGroupControlErrorDirective)
+    private controls: QueryList<FormGroupControlErrorDirective>;
     @Output()
     protected onSubmit = new EventEmitter<T>();
 

@@ -16,6 +16,8 @@ export class TableTypeaheadComponent implements OnInit {
   @Input()
   public size: number = 10;
   @Input()
+  public showTitle = true;
+  @Input()
   public columns: Array<TableTypeaheadColumn>;
   @Output()
   public onSelect: EventEmitter<any> = new EventEmitter();

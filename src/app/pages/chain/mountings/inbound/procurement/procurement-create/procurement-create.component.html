@@ -4,7 +4,7 @@
     <div class="col-6">
       <div class="form-group">
         <label class="form-control-label">*仓库</label>
-        <select [attr.disabled]="editable" hqError="仓库" formControlName="storeId" class="form-control">
+        <select [attr.disabled]="editable" label="仓库" formControlName="storeId" class="form-control">
           <option *ngFor="let item of warehouses" value="{{item.value}}">{{item.text}}</option>
         </select>
       </div>
@@ -12,54 +12,54 @@
         <label class="form-control-label">*配件编码</label>
         <input [hqTableTypeahead]="codeSource" [columns]="itemColumns(false)" (onSelect)="onItemSelect($event)" formControlName="productCode"
           class="form-control" placeholder="请输入配件编码">
-        <input type="hidden" hqError="配件编码" formControlName="productId">
+        <input type="hidden" label="配件编码" formControlName="productId">
       </div>
       <div class="form-group">
         <label class="form-control-label">*配件名称</label>
         <input (input)="onItemChange($event)" [hqTableTypeahead]="nameSource" [columns]="itemColumns(true)" (onSelect)="onItemSelect($event)"
           formControlName="productName" class="form-control" placeholder="请输入配件名称">
-        <input type="hidden" hqError="配件名称" formControlName="productId">
+        <input type="hidden" label="配件名称" formControlName="productId">
       </div>
       <div class="form-group">
         <label class="form-control-label">*品牌</label>
-        <input [attr.readonly]="editable" hqError="品牌" formControlName="brand" class="form-control">
+        <input [attr.readonly]="editable" label="品牌" formControlName="brand" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*规格型号</label>
-        <input [attr.readonly]="editable" hqError="规格型号" formControlName="productSpecification" class="form-control">
+        <input [attr.readonly]="editable" label="规格型号" formControlName="productSpecification" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*类别</label>
-        <input [attr.readonly]="editable" hqError="配件类别" formControlName="productCategory" class="form-control">
+        <input [attr.readonly]="editable" label="配件类别" formControlName="productCategory" class="form-control">
       </div>
     </div>
     <div class="col-6">
       <div class="form-group">
         <label class="form-control-label">库位</label>
-        <input [attr.readonly]="editable" hqError="库位" formControlName="locationName" class="form-control">
+        <input [attr.readonly]="editable" label="库位" formControlName="locationName" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*数量（个）</label>
-        <input hqError="数量" (input)="calculate()" type="number" formControlName="count" class="form-control">
+        <input label="数量" (input)="calculate()" type="number" formControlName="count" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*含税单价（元/个）</label>
-        <input type="number" hqError="单价" formControlName="yuan" (input)="onPriceChange($event)" class="form-control">
+        <input type="number" label="单价" formControlName="yuan" (input)="onPriceChange($event)" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*不含税单价（元/个）</label>
         <input readonly class="form-control" value="{{form?.controls['exTaxPrice']?.value|centToYuan}}">
-        <input type="hidden" readonly hqError="不含税单价" formControlName="exTaxPrice" class="form-control">
+        <input type="hidden" readonly label="不含税单价" formControlName="exTaxPrice" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*含税总金额</label>
         <input readonly class="form-control" value="{{form?.controls['amount']?.value|centToYuan}}">
-        <input type="hidden" readonly hqError="金额" formControlName="amount" [value]="centToYuan|centToYuan" class="form-control">
+        <input type="hidden" readonly label="金额" formControlName="amount" [value]="centToYuan|centToYuan" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*不含税总金额</label>
         <input readonly class="form-control" value="{{form?.controls['exTaxAmount']?.value|centToYuan}}">
-        <input type="hidden" readonly hqError="金额" formControlName="exTaxAmount" [value]="centToYuan|centToYuan" class="form-control">
+        <input type="hidden" readonly label="金额" formControlName="exTaxAmount" [value]="centToYuan|centToYuan" class="form-control">
       </div>
     </div>
     <div class="col-12">

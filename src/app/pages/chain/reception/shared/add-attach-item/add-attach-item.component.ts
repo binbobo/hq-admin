@@ -2,7 +2,7 @@ import { Component, OnInit, Injector, OnChanges, Output, EventEmitter, ViewChild
 import { FormHandle } from 'app/shared/models';
 import { Observable } from "rxjs/Rx";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { FormControlErrorDirective, TypeaheadRequestParams, HqAlerter } from 'app/shared/directives';
+import { FormGroupControlErrorDirective, TypeaheadRequestParams, HqAlerter } from 'app/shared/directives';
 import { CustomValidators } from 'ng2-validation';
 
 @Component({

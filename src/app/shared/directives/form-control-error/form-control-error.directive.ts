@@ -1,24 +1,18 @@
-import { Directive, Input, OnInit, Host, OnDestroy, ViewContainerRef, ComponentFactoryResolver, ElementRef, HostListener, ComponentRef } from '@angular/core';
+import { Directive, Input, OnInit, Host, ViewContainerRef, ComponentFactoryResolver, ElementRef, HostListener, ComponentRef, Type } from '@angular/core';
 import { ControlContainer, FormGroupDirective, FormGroup, FormControl, FormControlName } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
-import { FormControlErrorComponent } from './form-control-error/form-control-error.component';
+import { FormControlErrorComponent } from './form-control-error.component';
 
-@Directive({
-  selector: '[hqError]',
-  exportAs: 'hq-error'
-})
-export class FormControlErrorDirective implements OnInit, OnDestroy {
+export class FormControlErrorDirective<T extends FormControlErrorComponent> implements OnInit {
 
-  @Input('hqError')
-  private name: string;
   @Input()
-  private placeholder: string;
+  protected label: string = "";
   @Input()
-  private errors: any;
+  protected errors: any;
   @Input()
-  private readonly: boolean;
-  private valueChange: Subscription;
-  private componentRef: ComponentRef<FormControlErrorComponent>;
+  protected readonly: boolean;
+  protected controlErrors: Array<string>;
+  protected componentRef: ComponentRef<T>;
 
   @HostListener('blur', ['$event'])
   private onblur(event: Event) {
@@ -28,78 +22,92 @@ export class FormControlErrorDirective implements OnInit, OnDestroy {
   }
 
   constructor(
-    private el: ElementRef,
-    private formControl: FormControlName,
-    private viewContainerRef: ViewContainerRef,
-    private componentFactoryResolver: ComponentFactoryResolver
+    protected el: ElementRef,
+    protected viewContainerRef: ViewContainerRef,
+    protected componentFactoryResolver: ComponentFactoryResolver,
+    protected control: FormControl,
   ) { }
 
   ngOnInit() {
     if (this.errors) {
       Object.keys(this.errors).forEach(key => this.errors[key.toLowerCase()] = this.errors[key]);
     }
-    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(FormControlErrorComponent);
-    this.componentRef = this.viewContainerRef.createComponent(componentFactory);
-    let input = this.el.nativeElement as HTMLInputElement;
-    if (!this.placeholder && this.name && (this.el.nativeElement instanceof HTMLInputElement)) {
-      input.placeholder = `请输入${this.name}`;
+    if (!this.readonly) {
+      let element = this.el.nativeElement as HTMLInputElement;
+      element.addEventListener('input', () => {
+        this.controlErrors = [];
+        this.validate(false);
+      })
     }
-    if (input.parentElement.classList.contains('input-group')) {
-      input.parentElement.insertAdjacentElement('afterend', this.componentRef.location.nativeElement);
-    }
-    this.name = this.name || this.formControl.name;
-    let control = this.formControl;
-    this.valueChange = control.valueChanges.subscribe(data => {
-      this.componentRef.instance.errors = [];
-      this.validate(false);
-    });
   }
 
-  ngOnDestroy(): void {
-    if (this.valueChange) {
-      this.valueChange.unsubscribe();
+  protected show(): void {
+
+  }
+
+  protected hide(): void {
+
+  }
+
+  protected createComponent(type: Type<T>, position: string = "afterend") {
+    let input = this.el.nativeElement as HTMLInputElement;
+    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(type);
+    this.componentRef = this.viewContainerRef.createComponent(componentFactory);
+    if (input.parentElement.classList.contains('input-group')) {
+      input.parentElement.insertAdjacentElement(position, this.componentRef.location.nativeElement);
+    } else {
+      input.insertAdjacentElement(position, this.componentRef.location.nativeElement);
     }
+    this.componentRef.instance.errors = this.controlErrors;
   }
 
   public validate(compulsive = true): boolean {
-    let control = this.formControl;
+    let control = this.control;
     if (control.invalid && (compulsive || control.dirty || control.touched)) {
       let keys = Object.keys(control.errors);
-      this.componentRef.instance.errors = keys
+      this.controlErrors = keys
         .filter(m => control.errors[m] === true || typeof control.errors[m] === 'object')
         .map(m => this.getError(m.toLowerCase(), control.errors));
+    }
+    if (!control.valid && this.controlErrors && this.controlErrors.length) {
+      this.show();
+    } else {
+      this.hide();
+    }
+    if (this.componentRef) {
+      this.componentRef.instance.errors = this.controlErrors;
     }
     return control.valid;
   }
 
   private getError(key: string, errors: any): string {
     if (this.errors && key in this.errors) {
-      return this.errors[key].replace(/{name}/g, this.name);
+      return this.errors[key].replace(/{name}/g, this.label);
     }
     let error = errors[key];
     if (key === 'maxlength') {
-      return `${this.name}长度不能超过${error.requiredLength}位，当前长度${error.actualLength}`;
+      return `${this.label}长度不能超过${error.requiredLength}位，当前长度${error.actualLength}`;
     } else if (key === 'required') {
-      return `${this.name}不能为空`;
+      return `${this.label}不能为空`;
     } else if (key === 'minlength') {
-      return `${this.name}长度不能少于${error.requiredLength}位，当前长度${error.actualLength}`;
+      return `${this.label}长度不能少于${error.requiredLength}位，当前长度${error.actualLength}`;
     } else if (key === 'equalto') {
-      return `${this.name}输入不一致`;
+      return `${this.label}输入不一致`;
     } else if (key === 'pattern') {
-      return `无效的${this.name}`;
+      return `无效的${this.label}`;
     } else if (key === 'digits') {
-      return `${this.name}必须是整数`;
+      return `${this.label}必须是有效的自然数`;
     } else if (key === "gte") {
-      return `${this.name}不能低于最小限制范围`;
+      return `${this.label}不能低于最小限制范围`;
     } else if (key === "lte") {
-      return `${this.name}不能高于最高限制范围`;
+      return `${this.label}不能高于最高限制范围`;
     } else if (key === "max") {
-      return `${this.name}超出最大值${errors.requiredValue}限制`;
+      return `${this.label}超出最大值${errors.requiredValue}限制`;
     } else if (key === "min") {
-      return `${this.name}超出最小值${errors.requiredValue}限制`;
+      return `${this.label}超出最小值${errors.requiredValue}限制`;
     } else {
       console.log(key, error, errors);
-      return `无效的${this.name}`;
+      return `无效的${this.label}`;
     }
   }
 }

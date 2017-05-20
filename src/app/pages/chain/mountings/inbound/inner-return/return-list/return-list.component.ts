@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { ModalDirective } from "ngx-bootstrap";
-import { HqAlerter, PrintDirective, TypeaheadRequestParams, FormControlErrorDirective } from "app/shared/directives";
+import { HqAlerter, PrintDirective, TypeaheadRequestParams, FormGroupControlErrorDirective } from "app/shared/directives";
 import { SelectOption, PagedResult } from "app/shared/models";
 import { InnerListRequest, InnerListItem, InnerReturnService, InnerPrintItem, BillCodeSearchRequest } from "../inner-return.service";
 import { SuspendBillDirective } from "app/pages/chain/chain-shared";
@@ -32,8 +32,8 @@ export class ReturnListComponent implements OnInit {
 
 
   private form: FormGroup;
-  @ViewChildren(FormControlErrorDirective)
-  private controls: QueryList<FormControlErrorDirective>;
+  @ViewChildren(FormGroupControlErrorDirective)
+  private controls: QueryList<FormGroupControlErrorDirective>;
 
   @ViewChild(SuspendBillDirective)
   private suspendBill: SuspendBillDirective;

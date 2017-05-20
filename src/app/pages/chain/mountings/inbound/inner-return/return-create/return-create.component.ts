@@ -1,7 +1,7 @@
 import { Component, OnInit, Injector, Output, EventEmitter, ViewChildren, QueryList, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { CentToYuanPipe } from "app/shared/pipes";
-import { FormControlErrorDirective, TypeaheadRequestParams, HqAlerter } from "app/shared/directives";
+import { FormGroupControlErrorDirective, TypeaheadRequestParams, HqAlerter } from "app/shared/directives";
 import { MountingsService, GetMountingsListRequest } from "../../../mountings.service";
 import { CustomValidators } from "ng2-validation/dist";
 import { InnerListItem, InnerReturnService } from "../inner-return.service";
@@ -19,13 +19,13 @@ export class ReturnCreateComponent implements OnInit {
   @Output()
   private formSubmit = new EventEmitter<InnerListItem>();
   private model: InnerListItem;
-  @ViewChildren(FormControlErrorDirective)
-  private controls: QueryList<FormControlErrorDirective>;
+  @ViewChildren(FormGroupControlErrorDirective)
+  private controls: QueryList<FormGroupControlErrorDirective>;
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
 
-private originalId:any;//每一条数据ID
-private locationId:any;//库位ID
+  private originalId: any;//每一条数据ID
+  private locationId: any;//库位ID
 
   @Input()
   selectReturnData: any;
@@ -37,7 +37,7 @@ private locationId:any;//库位ID
 
   ngOnInit() {
     this.buildForm();
-    console.log('传过来的数据',this.selectReturnData);
+    console.log('传过来的数据', this.selectReturnData);
     if (this.selectReturnData) {
       this.originalId = this.selectReturnData.id;
       this.locationId = this.selectReturnData.locationId;

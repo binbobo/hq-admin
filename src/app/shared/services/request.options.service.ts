@@ -3,6 +3,7 @@ import { BaseRequestOptions, RequestOptions } from '@angular/http';
 import { UserService } from "app/shared/services/user.service";
 import { TranslateService } from '@ngx-translate/core';
 import { EventDispatcher } from './event-dispatcher.service';
+import * as moment from 'moment';
 
 @Injectable()
 export class DefaultRequestOptions extends BaseRequestOptions {
@@ -14,6 +15,8 @@ export class DefaultRequestOptions extends BaseRequestOptions {
         super();
         let user = userService.user;
         this.setAuthorization(user);
+        let utfOffset = moment().utcOffset();
+        this.headers.append('x-timezoneutc', utfOffset.toString());
         this.headers.append('Content-Type', 'application/json');
         userService.onUserLogin.subscribe(user => this.setAuthorization(user));
         this.dispatcher.subscribe('LanguageChanged', lang => this.setAcceptLanguage(lang))

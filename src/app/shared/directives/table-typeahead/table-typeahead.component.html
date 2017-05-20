@@ -3,7 +3,7 @@
     <span>&times;</span>
   </button>
   <table class="table table-sm table-bordered table-hover">
-    <thead>
+    <thead *ngIf="showTitle">
       <tr>
         <th [hidden]="!multiple"><input [checked]="allChecked" (change)="onSelectAll($event)" type="checkbox" /></th>
         <th *ngFor="let col of columns">{{col.title||col.name}}</th>
@@ -18,7 +18,6 @@
       </tr>
     </tbody>
   </table>
-  <pagination [hidden]="!showPagination" class="pagination-sm" [maxSize]="3" [boundaryLinks]="true" [itemsPerPage]="size"
-    previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" [totalItems]="result?.totalCount" [(ngModel)]="index"
-    (pageChanged)="pageChanged($event)"></pagination>
+  <pagination [hidden]="!showPagination" class="pagination-sm" [maxSize]="3" [boundaryLinks]="true" [itemsPerPage]="size" previousText="&lsaquo;"
+    nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" [totalItems]="result?.totalCount" [(ngModel)]="index" (pageChanged)="pageChanged($event)"></pagination>
 </div>

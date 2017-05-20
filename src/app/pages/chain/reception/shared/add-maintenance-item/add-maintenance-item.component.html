@@ -4,30 +4,30 @@
     <div class="col-4">
       <label for="serviceName" class="col-form-label"><span class="asterisk mr-1">*</span>维修项目名称</label>
       <input [hqTableTypeahead]="serviceNameTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="serviceTypeaheadOnSelect($event)"
-        type="text" hqError="维修项目名称" class="form-control" formControlName="serviceName" placeholder="维修项目名称">
+        type="text" label="维修项目名称" class="form-control" formControlName="serviceName" placeholder="维修项目名称">
       <input type="hidden" formControlName="serviceId">
       <input type="hidden" formControlName="type">
     </div>
     <div class="col-4">
       <label for="workHour" class="col-form-label"><span class="asterisk mr-1">*</span>维修工时</label>
-      <input hqError="维修工时" formControlName="workHour" type="text" class="form-control" placeholder="保留一位小数">
+      <input label="维修工时" formControlName="workHour" type="text" class="form-control" placeholder="保留一位小数">
     </div>
     <div class="col-4">
       <label for="price" class="col-form-label"><span class="asterisk mr-1">*</span>工时单价</label>
-      <input hqError="工时单价" formControlName="price" type="text" class="form-control" placeholder="保留一位小数">
+      <input label="工时单价" formControlName="price" type="text" class="form-control" placeholder="保留一位小数">
     </div>
   </div>
   <div class="form-group row">
     <div class="col-4">
       <label for="discount" class="col-form-label"><span class="asterisk mr-1">*</span>折扣率</label>
       <div class="input-group">
-        <input hqError="折扣率" formControlName="discount" type="text" class="form-control" placeholder="0~100之间的整数">
+        <input label="折扣率" formControlName="discount" type="text" class="form-control" placeholder="0~100之间的整数">
         <span class="input-group-addon">%</span>
       </div>
     </div>
     <div class="col-4">
       <label for="amount" class="col-form-label">金额</label>
-      <input hqError="金额" formControlName="amount" type="text" class="form-control">
+      <input label="金额" formControlName="amount" type="text" class="form-control">
     </div>
     <div class="col-4">
       <label for="operationTime" class="col-form-label">操作时间</label>
