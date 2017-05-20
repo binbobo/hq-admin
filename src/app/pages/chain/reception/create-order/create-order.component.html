@@ -14,7 +14,7 @@
         <label for="plateNo" class="col-1 col-form-label col-form-label"><span class="asterisk mr-1">*</span>车牌号</label>
         <div class="col-2">
           <input [hqTableTypeahead]="plateNotypeaheadSource" [columns]="typeaheadColumns" (onSelect)="plateNoOnSelect($event)" class="form-control"
-            formControlName="plateNo" id="plateNo" hqError="车牌号" [errors]="formValadationErrors.common" type="text" />
+            formControlName="plateNo" id="plateNo" label="车牌号" [errors]="formValadationErrors.common" type="text" />
           <!--客户车辆id-->
           <input type="hidden" formControlName="customerVehicleId" />
           <!--客户id-->
@@ -22,24 +22,24 @@
         </div>
         <label for="customerName" class="col-1 col-form-label col-form-label"><span class="asterisk mr-1">*</span>车主</label>
         <div class="col-2">
-          <input [hqTableTypeahead]="customerNametypeaheadSource" hqError="车主" [columns]="typeaheadColumns" (onSelect)="onCustomerNameSelect($event)"
+          <input [hqTableTypeahead]="customerNametypeaheadSource" label="车主" [columns]="typeaheadColumns" (onSelect)="onCustomerNameSelect($event)"
             type="text" class="form-control" formControlName="customerName" id="customerName" placeholder="输入车主名称">
         </div>
         <label for="phone" class="col-1 col-form-label">车主电话</label>
         <div class="col-2">
-          <input type="text" hqError="手机号" [errors]="formValadationErrors.common" class="form-control" formControlName="phone" id="phone"
+          <input type="text" label="手机号" [errors]="formValadationErrors.common" class="form-control" formControlName="phone" id="phone"
             placeholder="车主电话">
         </div>
       </div>
       <div class="form-group row">
         <label for="vin" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>VIN</label>
         <div class="col-2">
-          <input hqError="车辆识别码" [errors]="formValadationErrors.common" type="text" class="form-control" formControlName="vin" id="vin"
+          <input label="车辆识别码" [errors]="formValadationErrors.common" type="text" class="form-control" formControlName="vin" id="vin"
             placeholder="VIN">
         </div>
         <label for="brand" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>品牌</label>
         <div class="col-2">
-          <input hqError="品牌" [errors]="formValadationErrors.common" forceRefresh="true" [hqTableTypeahead]="brandTypeaheadSource"
+          <input label="品牌" [errors]="formValadationErrors.common" forceRefresh="true" [hqTableTypeahead]="brandTypeaheadSource"
             [columns]="nameTypeaheadColumns" (onSelect)="onBrandSelect($event)" type="text" class="form-control" formControlName="brand"
             id="brand" placeholder="请输入品牌名称">
           <!--品牌id-->
@@ -56,6 +56,7 @@
         <label for="vehicleName" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车型</label>
         <div class="col-2">
           <input hqError="车型" onBlur="onVehicleBlur()" [errors]="formValadationErrors.common" forceRefresh="true" [hqTableTypeahead]="modelTypeaheadSource"
+          <input label="车型" [errors]="formValadationErrors.common" forceRefresh="true" [hqTableTypeahead]="modelTypeaheadSource"
             [columns]="nameTypeaheadColumns" (onSelect)="onModelSelect($event)" type="text" class="form-control" formControlName="vehicleName"
             id="vehicleName" placeholder="输入车型名称">
           <!--车辆id-->
@@ -66,23 +67,23 @@
       <div class="form-group row">
         <label for="type" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>维修类型</label>
         <div class="col-2">
-          <select hqError="维修类型" [errors]="formValadationErrors.common" id="type" formControlName="type" class="form-control">
+          <select label="维修类型" [errors]="formValadationErrors.common" id="type" formControlName="type" class="form-control">
             <option style="display:none">
             <option *ngFor="let type of maintenanceTypeData" value="{{type.id}}">{{type.value}}</option>
           </select>
         </div>
         <label for="expectLeave" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>预计交车时间</label>
         <div class=" col-2">
-          <input [close-on-select]="false" hqError="预计交车时间" [errors]="formValadationErrors.common" class="form-control" type="text"
+          <input [close-on-select]="false" label="预计交车时间" [errors]="formValadationErrors.common" class="form-control" type="text"
             formControlName="expectLeave" ngui-datetime-picker />
         </div>
         <label for="contactUser" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>送修人</label>
         <div class="col-2">
-          <input type="text" hqError="送修人" class="form-control" formControlName="contactUser" id="contactUser" placeholder="送修人">
+          <input type="text" label="送修人" class="form-control" formControlName="contactUser" id="contactUser" placeholder="送修人">
         </div>
         <label for="contactInfo" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>送修人电话</label>
         <div class="col-2">
-          <input type="text" hqError="送修人电话" [errors]="formValadationErrors.common" class="form-control" formControlName="contactInfo"
+          <input type="text" label="送修人电话" [errors]="formValadationErrors.common" class="form-control" formControlName="contactInfo"
             id="contactInfo" placeholder="送修人电话">
         </div>
       </div>
@@ -90,7 +91,7 @@
         <label for="mileage" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>行驶里程</label>
         <div class="col-2">
           <div class="input-group">
-            <input hqError="行驶里程" [errors]="formValadationErrors.common" type="text" class="form-control" formControlName="mileage" id="mileage">
+            <input label="行驶里程" [errors]="formValadationErrors.common" type="text" class="form-control" formControlName="mileage" id="mileage">
             <span class="input-group-addon">KM</span>
           </div>
         </div>
@@ -123,7 +124,7 @@
         <label for="nextMileage" class="col-1 col-form-label">建议下次保养里程</label>
         <div class="col-2">
           <div class="input-group">
-            <input hqError="建议下次保养里程" [errors]="formValadationErrors.common" type="text" class="form-control" formControlName="nextMileage"
+            <input label="建议下次保养里程" [errors]="formValadationErrors.common" type="text" class="form-control" formControlName="nextMileage"
               id="nextMileage">
             <span class="input-group-addon">KM</span>
           </div>

@@ -3,7 +3,7 @@ import { FormHandle } from 'app/shared/models';
 import { MaintainReturnListItem } from '../maintain-return.service';
 import { Observable } from "rxjs/Rx";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { FormControlErrorDirective, TypeaheadRequestParams, HqAlerter } from 'app/shared/directives';
+import { FormGroupControlErrorDirective, TypeaheadRequestParams, HqAlerter } from 'app/shared/directives';
 import { CustomValidators } from 'ng2-validation';
 import { CentToYuanPipe } from "app/shared/pipes";
 
@@ -18,8 +18,8 @@ export class MaintainCreatComponent implements OnInit, OnChanges {
   @Output()
   private formSubmit = new EventEmitter<MaintainReturnListItem>();
   private model: MaintainReturnListItem = new MaintainReturnListItem();
-  @ViewChildren(FormControlErrorDirective)
-  private controls: QueryList<FormControlErrorDirective>;
+  @ViewChildren(FormGroupControlErrorDirective)
+  private controls: QueryList<FormGroupControlErrorDirective>;
    @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
   constructor(

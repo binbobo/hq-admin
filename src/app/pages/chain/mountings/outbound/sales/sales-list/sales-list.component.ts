@@ -4,6 +4,7 @@ import { SalesListItem, SalesService, SalesListRequest, SalesPrintItem } from '.
 import { SelectOption, PagedResult } from 'app/shared/models';
 import { ModalDirective } from 'ngx-bootstrap';
 import { Router } from '@angular/router';
+import { NgForm } from "@angular/forms";
 import { SuspendBillDirective } from "app/pages/chain/chain-shared";
 
 @Component({
@@ -18,6 +19,8 @@ export class SalesListComponent implements OnInit {
   private createModal: ModalDirective;
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
+  @ViewChild('form')
+  private form: NgForm;
   @ViewChild('printer')
   public printer: PrintDirective;
   private salesmen: Array<SelectOption>;
@@ -62,16 +65,6 @@ export class SalesListComponent implements OnInit {
   }
 
   generate(event: Event) {
-    if (!this.model.custName) {
-      alert('请输入客户名称');
-      return false;
-    } else if (!this.model.custPhone) {
-      alert('请如手机号码');
-      return false;
-    } else if (!this.model.seller) {
-      alert('请选择销售员');
-      return false;
-    }
     let el = event.target as HTMLButtonElement;
     el.disabled = true;
     this.salesService.generate(this.model)
@@ -124,5 +117,11 @@ export class SalesListComponent implements OnInit {
       { name: 'custPhone', title: '手机号码' },
       { name: 'operator', title: '操作人' },
     ]
+  }
+
+  private onProductRemove(item) {
+    if (!confirm('确定要删除？')) return;
+    let index = this.model.list.indexOf(item);
+    this.model.list.splice(index, 1);
   }
 }

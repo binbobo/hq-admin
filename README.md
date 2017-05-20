@@ -40,8 +40,8 @@ this.form = this.formBuilder.group({
 ```
 ```
 <form *ngIf="form" [formGroup]="form" (ngSubmit)="onSubmit()">
-    <input hqError="用户名" [errors]="{minLength:'{name}太短了'}" formControlName="username">
-    <input hqError="密码" type="password" formControlName="password">
+    <input label="用户名" [errors]="{minLength:'{name}太短了'}" formControlName="username">
+    <input label="密码" type="password" formControlName="password">
 </form>
 ```
 ### inputs:

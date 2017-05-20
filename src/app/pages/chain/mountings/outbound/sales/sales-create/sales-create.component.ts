@@ -3,7 +3,7 @@ import { FormHandle } from 'app/shared/models';
 import { SalesListItem } from '../sales.service';
 import { Observable } from "rxjs/Rx";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { FormControlErrorDirective, TypeaheadRequestParams } from 'app/shared/directives';
+import { TypeaheadRequestParams, FormGroupControlErrorDirective } from 'app/shared/directives';
 import { GetMountingsListRequest, MountingsService } from '../../../mountings.service';
 import { CustomValidators } from 'ng2-validation';
 import { CentToYuanPipe } from "app/shared/pipes";
@@ -20,8 +20,8 @@ export class SalesCreateComponent implements OnInit {
   @Output()
   private formSubmit = new EventEmitter<SalesListItem>();
   private model: SalesListItem = new SalesListItem();
-  @ViewChildren(FormControlErrorDirective)
-  private controls: QueryList<FormControlErrorDirective>;
+  @ViewChildren(FormGroupControlErrorDirective)
+  private controls: QueryList<FormGroupControlErrorDirective>;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -48,7 +48,7 @@ export class SalesCreateComponent implements OnInit {
       productSpecification: [this.model.productSpecification, [Validators.required]],
       storeId: [this.model.storeId],
       locationId: [this.model.locationId],
-      count: [this.model.count, [Validators.required, CustomValidators.digits]],
+      count: [this.model.count, [Validators.required, CustomValidators.min(1), CustomValidators.digits]],
       price: [this.model.price],
       amount: [this.model.amount],
       stockCount: [this.model.stockCount, [Validators.required]],

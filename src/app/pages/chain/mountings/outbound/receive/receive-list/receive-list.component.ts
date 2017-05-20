@@ -123,5 +123,11 @@ export class ReceiveListComponent implements OnInit {
       .then(options => this.reset())
       .catch(err => this.alerter.error(err));
   }
+
+  private onProductRemove(item) {
+    if (!confirm('确定要删除？')) return;
+    let index = this.model.list.indexOf(item);
+    this.model.list.splice(index, 1);
+  }
 }
 

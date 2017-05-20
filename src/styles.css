@@ -26,7 +26,8 @@ select.form-control{
     padding: 0 12px;
 }
 
-td,th{
+table td,th{
+    padding: 0.5rem!important;
     white-space: nowrap;
 }
 
@@ -35,7 +36,7 @@ table th{
 }
 
 /*ngx-bootstrap popver 样式复写  用于挂单列表显示*/
-.popover-content {
+/*.popover-content {
     padding: 0;
     margin: 0;
 }
@@ -45,7 +46,7 @@ table th{
 }
 caption {
     caption-side: top;
-}
+}*/
 
 /*必选项前面的星号样式*/ 
 .asterisk {
