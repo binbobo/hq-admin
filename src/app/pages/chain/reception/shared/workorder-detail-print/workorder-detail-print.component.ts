@@ -9,9 +9,6 @@ export class WorkorderDetailPrintComponent implements OnInit {
   @Input()
   data: any;
 
-  tableCaption: Array<string> = ['表一: ', '表二: ', '表三: ', '表四: '];
-  currentIndex = 0;
-
   constructor() { }
 
   ngOnInit() {

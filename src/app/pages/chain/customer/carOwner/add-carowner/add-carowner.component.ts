@@ -91,6 +91,7 @@ export class AddCarownerComponent implements OnInit {
 
     // 获取表单信息
     const carOwnerBody = this.carOwnerForm.value;
+    if (!carOwnerBody.birthday) { delete carOwnerBody.birthday; }
 
     // 添加省份 城市 区县id, name列表
     carOwnerBody.cityIdList = this.cityIdList.join(',');
