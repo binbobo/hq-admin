@@ -105,7 +105,7 @@ export class ProcurementListComponent implements OnInit {
         this.generating = false;
         this.reset();
         this.suspendBill.refresh();
-        return confirm('已生成出库单，是否需要打印？') ? data : null;
+        return confirm('已生成采购入库单，是否需要打印？') ? data : null;
       })
       .then(code => code && this.procurementService.get(code))
       .then(data => {
