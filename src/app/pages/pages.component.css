@@ -5,6 +5,14 @@ nav{
 .container-fluid{
     margin-top: 54px;
 }
+
+#main-container{
+    overflow: auto;
+    padding-top: 65px!important;
+    margin-top: -54px;
+    height: 100vh;
+}
+
 .menus{
     padding: 54px 3px 0 0;
     margin-top: -54px;

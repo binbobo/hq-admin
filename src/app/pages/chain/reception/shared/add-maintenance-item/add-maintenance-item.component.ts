@@ -100,7 +100,7 @@ export class AddMaintenanceItemComponent implements OnInit {
       serviceName: ['', [Validators.required]],
       serviceId: [''],
       type: 1, // 1表示维修项目/
-      workHour: ['', Validators.compose([Validators.required, CustomValidators.lt(0), Validators.pattern(regex)])],
+      workHour: ['', Validators.compose([Validators.required, Validators.pattern(regex)])],
       price: ['', Validators.compose([Validators.required, Validators.pattern(regex)])],
       discount: [100, [Validators.required, CustomValidators.digits, CustomValidators.range([0, 100])]],
       amount: [{ value: '', disabled: true }],
