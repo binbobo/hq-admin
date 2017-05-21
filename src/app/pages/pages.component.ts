@@ -37,7 +37,7 @@ export class PagesComponent implements OnInit {
 
   ngOnInit() {
     this.loadMenus();
-    this.loadLanguages();
+    //this.loadLanguages();
   }
 
   loadMenus() {

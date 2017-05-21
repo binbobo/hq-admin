@@ -2,7 +2,7 @@ import { Component, OnInit, Output, ViewChildren, EventEmitter, QueryList } from
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { CentToYuanPipe } from "app/shared/pipes";
 import { SalesReturnListItem } from "../sales-return.service";
-import { FormControlErrorDirective, TypeaheadRequestParams } from "app/shared/directives";
+import { TypeaheadRequestParams, FormGroupControlErrorDirective } from "app/shared/directives";
 import { MountingsService, GetMountingsListRequest } from "app/pages/chain/mountings/mountings.service";
 import { CustomValidators } from "ng2-validation/dist";
 
@@ -18,8 +18,8 @@ export class SalesReturnCreateComponent implements OnInit {
   @Output()
   private formSubmit = new EventEmitter<SalesReturnListItem>();
   private model: SalesReturnListItem = new SalesReturnListItem();
-  @ViewChildren(FormControlErrorDirective)
-  private controls: QueryList<FormControlErrorDirective>;
+  @ViewChildren(FormGroupControlErrorDirective)
+  private controls: QueryList<FormGroupControlErrorDirective>;
 
   constructor(
     private formBuilder: FormBuilder,

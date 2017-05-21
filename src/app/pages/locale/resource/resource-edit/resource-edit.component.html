@@ -10,15 +10,15 @@
   <form *ngIf="form" class="card-block" [formGroup]="form" (ngSubmit)="onUpdate()">
     <div class="form-group">
       <label class="form-control-label">资源名称</label>
-      <input hqError="资源名称" type="text" formControlName="key" class="form-control" placeholder="请输入资源名称">
+      <input label="资源名称" type="text" formControlName="key" class="form-control" placeholder="请输入资源名称">
     </div>
     <div class="form-group">
       <label class="form-control-label">资源值</label>
-      <input hqError="资源值" type="text" formControlName="value" class="form-control" placeholder="请输入资源值">
+      <input label="资源值" type="text" formControlName="value" class="form-control" placeholder="请输入资源值">
     </div>
     <div class="form-group">
       <label class="form-control-label">资源语言</label>
-      <select hqError="资源语言" name="languageId" class="form-control" formControlName="languageId">
+      <select label="资源语言" name="languageId" class="form-control" formControlName="languageId">
         <option *ngFor="let item of languages" value="{{item.id}}">{{item.name}}</option>
       </select>
     </div>

@@ -1,98 +1,90 @@
-<div class="container">
-  <div class="row">
-    <label>车主: </label>
-    <div class="col-2">
-      {{data?.name}}
+<form>
+  <div class="form-group row">
+    <div class="col-4">
+      <label>车主: </label> {{data?.name}}
     </div>
-    <label>性别: </label>
-    <div class="col-2">
-      {{data?.sex}}
+    <div class="col-4">
+      <label>性别: </label> {{data?.sex}}
     </div>
-    <label>生日: </label>
-    <div class="col-2">
-      {{data?.birthday|date:"yyyy/MM/dd"}}
-    </div>
-    <label>身份证号: </label>
-    <div class="col-2">
-      {{data?.identityCard}}
+    <div class="col-4">
+      <label>生日: </label> {{data?.birthday|sDate}}
     </div>
   </div>
   <hr>
-  <div class="row">
-    <label>手机号: </label>
-    <div class="col-2">
-      {{data?.phone}}
+  <div class="form-group row">
+    <div class="col-4">
+      <label>身份证号: </label> {{data?.identityCard}}
     </div>
-    <label>电话: </label>
-    <div class="col-2">
-      {{data?.tel}}
+    <div class="col-4">
+      <label>手机号: </label> {{data?.phone}}
     </div>
-    <label>传真: </label>
-    <div class="col-2">
-      {{data?.fax}}
+    <div class="col-4">
+      <label>电话: </label> {{data?.tel}}
     </div>
-    <label>Email: </label>
-    <div class="col-2">
-      {{data?.email}}
+  </div>
+  <div class="form-group row">
+    <div class="col-4">
+      <label>传真: </label> {{data?.fax}}
+    </div>
+    <div class="col-4">
+      <label>Email: </label> {{data?.email}}
     </div>
   </div>
   <br>
-  <div class="row">
-    <label>省份: </label>
-    <div class="col-2">
-      {{data?.cityNameList?.split(',')[0]}}
+  <div class="form-group row">
+    <div class="col-4">
+      <label>省份: </label> {{data?.cityNameList?.split(',')[0]}}
     </div>
-    <label>城市: </label>
-    <div class="col-2">
-      {{data?.cityNameList?.split(',')[1]}}
+    <div class="col-4">
+      <label>城市 : </label> {{data?.cityNameList?.split(',')[1]}}
     </div>
-    <label>区县: </label>
-    <div class="col-2">
-      {{data?.cityNameList?.split(',')[2]}}
+    <div class="col-4">
+      <label>区县: </label> {{data?.cityNameList?.split(',')[2]}}
     </div>
   </div>
   <br>
-  <div class="row">
-    <label>详细地址: </label>
+  <div class="form-group row">
     <div class="col-8">
-      {{data?.address}}
+      <label>详细地址: </label> {{data?.address}}
     </div>
   </div>
-</div>
+</form>
 <hr>
 <tabset>
   <tab heading="车辆信息">
-    <table class="table table-striped table-bordered">
-      <thead>
-        <tr>
-          <th>车牌号</th>
-          <th>品牌</th>
-          <th>车系</th>
-          <th>车型</th>
-          <th>动机号</th>
-          <th>VIN</th>
-          <th>车身颜色</th>
-          <th>购车日期</th>
-          <th>验车时间</th>
-          <th>保险到期日期</th>
-          <th>保险公司</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of data?.customerVehicles">
-          <td>{{item.plateNo}}</td>
-          <td>{{item.brand}}</td>
-          <td>{{item.model}}</td>
-          <td>{{item.series}}</td>
-          <td>{{item.engineNo}}</td>
-          <td>{{item.vin}}</td>
-          <td>{{item.vehicleColor}}</td>
-          <td>{{item.purchaseDate|date:"yyyy/MM/dd"}}</td>
-          <td>{{item.validate|date:"yyyy/MM/dd"}}</td>
-          <td>{{item.insuranceDueDate|date:"yyyy/MM/dd"}}</td>
-          <td>{{item.insuranceCompany}}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="overflow-auto">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>车牌号</th>
+            <th>品牌</th>
+            <th>车系</th>
+            <th>车型</th>
+            <th>动机号</th>
+            <th>VIN</th>
+            <th>车身颜色</th>
+            <th>购车日期</th>
+            <th>验车时间</th>
+            <th>保险到期日期</th>
+            <th>保险公司</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data?.customerVehicles">
+            <td>{{item.plateNo}}</td>
+            <td>{{item.brand}}</td>
+            <td>{{item.model}}</td>
+            <td>{{item.series}}</td>
+            <td>{{item.engineNo}}</td>
+            <td>{{item.vin}}</td>
+            <td>{{item.vehicleColor}}</td>
+            <td>{{item.purchaseDate|sDate}}</td>
+            <td>{{item.validate|sDate}}</td>
+            <td>{{item.insuranceDueDate|sDate}}</td>
+            <td>{{item.insuranceCompany}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </tab>
 </tabset>

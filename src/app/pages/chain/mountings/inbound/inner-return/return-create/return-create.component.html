@@ -21,14 +21,26 @@
       <div class="form-group">
         <label class="form-control-label">单价（元）</label>
         <input readonly type="number" hqError="单价" formControlName="price" class="form-control">
+
+        <label class="form-control-label">*配件编码</label>
+        <input readonly label="配件编码"  formControlName="productCode" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">单位</label>
-        <input readonly hqError="单位" formControlName="price" class="form-control">
+        <label class="form-control-label">*配件名称</label>
+        <input readonly label="配件名称" formControlName="productName" class="form-control">
       </div>
-    </div>
-    <div class="col-6">
       <div class="form-group">
+        <label class="form-control-label">*品牌</label>
+        <input readonly label="品牌" formControlName="brandName" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*规格型号</label>
+        <input readonly label="规格型号" formControlName="specification" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*单价（元/个）</label>
+        <input readonly type="number" label="单价" formControlName="price" class="form-control">
+
         <label class="form-control-label">仓库</label>
         <input readonly hqError="仓库" formControlName="storeName" class="form-control">
       </div>
@@ -47,6 +59,7 @@
       <div class="form-group">
         <label class="form-control-label">金额</label>
         <input type="number" readonly hqError="金额" formControlName="amount" class="form-control">
+
       </div>
       <div class="form-group">
         <button type="submit" [disabled]="submitting" class="btn btn-primary mr-3">提交</button>

@@ -4,15 +4,10 @@ table th,table td{
      overflow:hidden;
      text-align: center;
 }
-.checkout .search-button{
-    text-align: center;
-    margin-bottom:8px;
-}
-.checkout .search-button button{
-    display: inline-block;
-}
+
 .checkout .row{
     margin-left: 0;
+    line-height: 2.2;
 }
 caption {
     caption-side: top;
@@ -38,4 +33,9 @@ caption {
 .cost-money{
     margin-bottom: 12px;
     font-size: 17px;
+}
+@media (min-width: 992px) {
+.modal-lg {
+max-width: 1000px;
+}
 }

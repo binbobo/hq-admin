@@ -3,57 +3,57 @@
     <div class="col-6">
       <div class="form-group">
         <label class="form-control-label">*配件编码</label>
-        <input readonly hqError="配件编码" formControlName="productCode" class="form-control">
+        <input readonly label="配件编码" formControlName="productCode" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*配件名称</label>
-        <input readonly hqError="配件名称" formControlName="productName" class="form-control">
+        <input readonly label="配件名称" formControlName="productName" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*品牌</label>
-        <input readonly hqError="品牌" formControlName="brand" class="form-control">
+        <input readonly label="品牌" formControlName="brand" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*规格型号</label>
-        <input readonly hqError="规格型号" formControlName="specification" class="form-control">
+        <input readonly label="规格型号" formControlName="specification" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*配件类别</label>
-        <input readonly hqError="配件类别" formControlName="productCategory" class="form-control">
+        <input readonly label="配件类别" formControlName="productCategory" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*仓库</label>
-        <input readonly hqError="仓库" formControlName="storeName" class="form-control">
+        <input readonly label="仓库" formControlName="storeName" class="form-control">
       </div>
     </div>
     <div class="col-6">
       <div class="form-group">
         <label class="form-control-label">*库位</label>
-        <input readonly hqError="库位" formControlName="locationName" class="form-control">
+        <input readonly label="库位" formControlName="locationName" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*数量（个）</label>
-        <input hqError="数量" (input)="calculate()" type="number" formControlName="count" class="form-control">
+        <input label="数量" (input)="calculate()" type="number" formControlName="count" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*含税单价（元/个）</label>
         <input readonly class="form-control" value="{{form?.controls['price']?.value|centToYuan}}">
-        <input type="hidden" readonly hqError="单价" formControlName="price" class="form-control">
+        <input type="hidden" readonly label="单价" formControlName="price" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*不含税单价（元/个）</label>
         <input readonly class="form-control" value="{{form?.controls['exTaxPrice']?.value|centToYuan}}">
-        <input type="hidden" readonly hqError="不含税单价" formControlName="exTaxPrice" class="form-control">
+        <input type="hidden" readonly label="不含税单价" formControlName="exTaxPrice" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*含税总金额</label>
         <input readonly class="form-control" value="{{form?.controls['amount']?.value|centToYuan}}">
-        <input type="hidden" readonly hqError="金额" formControlName="amount">
+        <input type="hidden" readonly label="金额" formControlName="amount">
       </div>
       <div class="form-group">
         <label class="form-control-label">*不含税总金额</label>
         <input readonly class="form-control" value="{{form?.controls['exTaxAmount']?.value|centToYuan}}">
-        <input type="hidden" readonly hqError="金额" formControlName="exTaxAmount">
+        <input type="hidden" readonly label="金额" formControlName="exTaxAmount">
       </div>
     </div>
     <div class="col-12">

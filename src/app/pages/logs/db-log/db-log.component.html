@@ -6,18 +6,18 @@
   <div class="card-block">
     <form class="form-inline mb-2">
       <input type="text" class="form-control mb-2 mr-2" placeholder="请输入菜单名称">
-      <button type="submit" class="btn btn-primary mb-2 mr-2" translate>search</button>
+      <button type="submit" class="btn btn-primary mb-2 mr-2">search</button>
     </form>
     <table class="table table-bordered table-sm table-striped">
       <thead>
         <tr>
-          <th translate>environment</th>
-          <th translate>level</th>
-          <th translate>database</th>
-          <th translate>command</th>
-          <th translate>timestamp</th>
-          <th translate>time.consuming</th>
-          <th translate>operators</th>
+          <th>environment</th>
+          <th>level</th>
+          <th>database</th>
+          <th>command</th>
+          <th>timestamp</th>
+          <th>time.consuming</th>
+          <th>operators</th>
         </tr>
       </thead>
       <tbody>
@@ -51,61 +51,61 @@
       </div>
       <div class="modal-body" *ngIf="model">
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label" translate>session.id</label>
+          <label class="col-sm-2 col-form-label">session.id</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.sessionId}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label" translate>level</label>
+          <label class="col-sm-2 col-form-label">level</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.logLevel}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label" translate>application</label>
+          <label class="col-sm-2 col-form-label">application</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.applicationName}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label" translate>timestamp</label>
+          <label class="col-sm-2 col-form-label">timestamp</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.timestamp|date:"yyyy/MM/dd HH:mm:ss"}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label" translate>environment</label>
+          <label class="col-sm-2 col-form-label">environment</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.environmentName}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label" translate>source</label>
+          <label class="col-sm-2 col-form-label">source</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.sourceName}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label" translate>database</label>
+          <label class="col-sm-2 col-form-label">database</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.databaseName}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label" translate>command</label>
+          <label class="col-sm-2 col-form-label">command</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.commandText}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label" translate>result</label>
+          <label class="col-sm-2 col-form-label">result</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.result}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label" translate>time.consuming</label>
+          <label class="col-sm-2 col-form-label">time.consuming</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.takeTime}}</p>
           </div>

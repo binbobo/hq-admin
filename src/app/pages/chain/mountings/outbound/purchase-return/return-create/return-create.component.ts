@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, ViewChildren, QueryList, Input } from '@angular/core';
-import { TypeaheadRequestParams, FormControlErrorDirective } from 'app/shared/directives';
+import { TypeaheadRequestParams, FormGroupControlErrorDirective, } from 'app/shared/directives';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { CentToYuanPipe } from 'app/shared/pipes';
@@ -20,8 +20,8 @@ export class ReturnCreateComponent implements OnInit {
   private close = new EventEmitter();
   @Input()
   private model: PurchaseReturnItem;
-  @ViewChildren(FormControlErrorDirective)
-  private controls: QueryList<FormControlErrorDirective>;
+  @ViewChildren(FormGroupControlErrorDirective)
+  private controls: QueryList<FormGroupControlErrorDirective>;
 
   constructor(
     private formBuilder: FormBuilder,
