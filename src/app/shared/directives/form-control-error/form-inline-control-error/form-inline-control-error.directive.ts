@@ -1,7 +1,7 @@
 import { Directive, Input, ComponentRef, HostListener, ElementRef, ViewContainerRef, ComponentFactoryResolver, Renderer, Injector } from '@angular/core';
 import { FormInlineControlErrorComponent } from './form-inline-control-error.component';
 import { Subscription } from 'rxjs/Subscription';
-import { NgModel } from "@angular/forms";
+import { NgModel, NgForm } from '@angular/forms';
 import { FormControlErrorDirective } from '../form-control-error.directive';
 import { ComponentLoader, ComponentLoaderFactory, PopoverConfig, PositioningService } from 'ngx-bootstrap';
 
@@ -23,7 +23,7 @@ export class FormInlineControlErrorDirective extends FormControlErrorDirective<F
     cis: ComponentLoaderFactory,
     private positionService: PositioningService,
   ) {
-    super(el, viewContainerRef, componentFactoryResolver, ngModel.control);
+    super(el, viewContainerRef, componentFactoryResolver, ngModel.control);NgForm
     this._popover = cis
       .createLoader<FormInlineControlErrorComponent>(el, viewContainerRef, renderer)
       .provide({ provide: PopoverConfig, useValue: config });

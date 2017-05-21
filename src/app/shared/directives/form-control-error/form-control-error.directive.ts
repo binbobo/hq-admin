@@ -21,7 +21,9 @@ export class FormControlErrorDirective<T extends FormControlErrorComponent> impl
   @HostListener('blur', ['$event'])
   private onblur(event: Event) {
     if (this.readonly === undefined) {
-      this.validate();
+      setTimeout(() => {
+        this.validate();
+      }, 100);
     }
   }
 
@@ -39,7 +41,7 @@ export class FormControlErrorDirective<T extends FormControlErrorComponent> impl
     if (!this.readonly) {
       Observable.fromEvent(this.el.nativeElement, 'input')
         .map((e: any) => e.target.value)
-        .debounceTime(500)
+        .debounceTime(100)
         .subscribe(value => {
           this.controlErrors = [];
           this.validate(false);
