@@ -60,3 +60,7 @@ caption {
 .form-inline .form-group{
     margin: 6px;
 }
+
+input[readonly]{
+  background-color:transparent !important;
+}

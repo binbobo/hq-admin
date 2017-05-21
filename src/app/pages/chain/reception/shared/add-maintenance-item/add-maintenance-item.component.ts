@@ -78,7 +78,7 @@ export class AddMaintenanceItemComponent implements OnInit {
               isEdit: this.item ? true : false  // 是否为编辑标志
             });
           }).catch(err => {
-            this.alerter.error('新建维修项目失败：' + err + '请重新输入维修项目名称');
+            this.alerter.error('新增维修项目失败：' + err, true, 3000);
           });
       }
     } else {

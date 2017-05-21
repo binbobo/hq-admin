@@ -22,12 +22,12 @@
         </div>
         <label for="customerName" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车主</label>
         <div class="col-2">
-          <input [hqTableTypeahead]="customerNametypeaheadSource" label="车主" [columns]="typeaheadColumns" (onSelect)="onCustomerNameSelect($event)"
+          <input #customerName (blur)="onCustomerNameBlur(customerName.value)" [hqTableTypeahead]="customerNametypeaheadSource" label="车主" [columns]="typeaheadColumns" (onSelect)="onCustomerNameSelect($event)"
             type="text" class="form-control" formControlName="customerName" id="customerName" placeholder="输入车主名称">
         </div>
         <label for="phone" class="col-1 col-form-label">车主电话</label>
         <div class="col-2">
-          <input type="text" label="手机号" class="form-control" formControlName="phone" id="phone"
+          <input #phone (blur)="onPhoneBlur(phone.value)" type="text" label="手机号" class="form-control" formControlName="phone" id="phone"
             placeholder="车主电话">
         </div>
       </div>
@@ -73,7 +73,7 @@
         </div>
         <label for="expectLeave" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>预计交车时间</label>
         <div class=" col-2">
-          <input [close-on-select]="false" label="预计交车时间" [min-date]="currentDate" [min-hour]="currentHours" class="form-control" type="text" formControlName="expectLeave" ngui-datetime-picker />
+          <input readonly [close-on-select]="false" label="预计交车时间" [min-date]="currentDate" [min-hour]="currentHours" class="form-control" type="text" formControlName="expectLeave" ngui-datetime-picker />
         </div>
         <label for="contactUser" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>送修人</label>
         <div class="col-2">
@@ -103,8 +103,8 @@
             id="introPhone" placeholder="介绍人电话">
         </div>
         <label for="validate" class="col-1 col-form-label">验车日期</label>
-        <div class="  col-2">
-          <input class="form-control" type="text" formControlName="validate"
+        <div class="col-2">
+          <input readonly class="form-control" type="text" formControlName="validate"
             ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
         </div>
       </div>
@@ -116,8 +116,7 @@
         </div>
         <label for="nextDate" class="col-1 col-form-label">建议下次保养日期</label>
         <div class="col-2">
-          <input class="form-control" type="text" formControlName="nextDate"
-            ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
+          <input readonly class="form-control" type="text" formControlName="nextDate" ngui-datetime-picker date-only="true" />
         </div>
         <label for="nextMileage" class="col-1 col-form-label">建议下次保养里程</label>
         <div class="col-2">
@@ -139,7 +138,7 @@
         </div>
         <label for="lastEnter" class="col-1 col-form-label">上次进店时间</label>
         <div class="col-2">
-          <input type="text" class="form-control" formControlName="lastEnter" id="lastEnter">
+          <input type="text" readonly class="form-control" formControlName="lastEnter" id="lastEnter">
         </div>
         <label for="lastMileage" class="col-1 col-form-label">上次进店里程</label>
         <div class="col-2">
@@ -181,7 +180,7 @@
           </tbody>
         </table>
         <div>
-          <button class="btn btn-secondary mr-2" (click)="addModal.show();">新增</button>
+          <button class="btn btn-info mr-2" (click)="addModal.show();">新增</button>
         </div>
       </tab>
       <tab heading="上次维修记录">
@@ -190,10 +189,10 @@
           <thead>
             <tr>
               <th>项目名称</th>
-              <th>维修工时</th>
+              <th>维修工时(小时)</th>
               <th>工时单价(元)</th>
               <th>金额(元)</th>
-              <th>折扣率</th>
+              <th>折扣率(%)</th>
               <th>操作时间</th>
               <th>操作员</th>
             </tr>

@@ -23,7 +23,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   // 生产工单按钮是否可用
   public enableCreateWorkSheet = false;
   // 挂单按钮是否可用
-  public enableSuspendWorkSheet = true;
+  public enableSuspendWorkSheet = false;
 
   @ViewChild(SuspendBillDirective)
   private suspendBill: SuspendBillDirective;
@@ -152,6 +152,17 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     }
   }
 
+  onCustomerNameBlur(val) {
+    if (!this.isSelected && this.workSheetForm.controls.customerName.valid) {
+      this.workSheetForm.controls.contactUser.setValue(val);
+    }
+  }
+  onPhoneBlur(val) {
+    if (this.workSheetForm.controls.phone.valid) {
+      this.workSheetForm.controls.contactInfo.setValue(val);
+    }
+  }
+
   // 从模糊查询下拉列表中选择一个车型事件处理程序
   onModelSelect(evt) {
     this.isVehicleSelected = true;
@@ -203,14 +214,14 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   loadLastOrderInfo(lastOrder) {
     // 加载上次工单信息
     this.workSheetForm.patchValue({
-      type: lastOrder.type,
+      // type: lastOrder.type,
       contactUser: lastOrder.contactUser,
       contactInfo: lastOrder.contactInfo,
       // mileage: lastOrder.mileage,
-      introducer: lastOrder.introducer,
-      introintroPhoneducer: lastOrder.introPhone,
-      validate: moment(lastOrder.validate).format('YYYY-MM-DD'),
-      location: lastOrder.location,
+      // introducer: lastOrder.introducer,
+      // introintroPhoneducer: lastOrder.introPhone,
+      // validate: moment(lastOrder.validate).format('YYYY-MM-DD'),
+      // location: lastOrder.location,
       lastEnter: moment(lastOrder.lastEnter).format('YYYY-MM-DD HH:mm'),
       lastMileage: lastOrder.lastMileage,
     });
@@ -385,20 +396,19 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     const workSheet = this.getEdittingOrder();
 
     // console.log('提交的挂掉对象为：', JSON.stringify(workSheet));
-
     this.suspendBill.suspend(workSheet)
       .then(() => this.suspendBill.refresh())
       .then(() => {
         this.alerter.success('挂单成功！');
         // 挂单按钮不可用  防止重复提交
-        this.enableSuspendWorkSheet = true;
+        this.enableSuspendWorkSheet = false;
         // 清空数据
         this.initOrderData();
       })
       .catch(err => {
-        // 挂单按钮不可用  防止重复提交
+        // 挂单按钮可用
         this.enableSuspendWorkSheet = true;
-        this.alerter.error(err);
+        this.alerter.error('挂单失败：' + err, true, 3000);
       });
   }
   /**
@@ -497,11 +507,13 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 表单域中的值改变事件监听
     this.workSheetForm.valueChanges.subscribe(data => {
       // 只有表单域合法并且有新增维修项目数据的时候， 生成订单按钮才可用
-      this.enableCreateWorkSheet = this.workSheetForm.controls.vehicleName.enabled && this.workSheetForm.valid && this.newMaintenanceItemData.length > 0;
+      this.enableCreateWorkSheet = this.workSheetForm.controls.vehicleId.value && this.workSheetForm.valid && this.newMaintenanceItemData.length > 0;
     });
 
     // 车牌号表单域值改变事件监听
     this.workSheetForm.controls.plateNo.valueChanges.subscribe((newValue) => {
+      this.enableSuspendWorkSheet = this.workSheetForm.controls.plateNo.valid;
+
       if (this.isSelected) {
         this.initOrderData();
         this.workSheetForm.controls.plateNo.setValue(newValue);
@@ -616,19 +628,22 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
     this.service.create(workSheet)
       .then(data => {
-        this.newWorkOrderData = data;
-        console.log('创建工单成功之后， 返回的工单对象：', data);
+        console.log('创建工单成功之后， 返回的工单对象：', JSON.stringify(data));
         // 创建订单成功之后  做一些重置操作
         if (confirm('创建工单成功！ 是否打印？')) {
+          this.newWorkOrderData = data;
+          // 延迟打印
           setTimeout(() => {
             this.print();
-            // 清空数据
-            this.initOrderData();
-            // 刷新挂单列表
-            if (workSheet.suspendedBillId) {
-              this.suspendBill.refresh();
-            }
-          }, 1000);
+            // 延迟清空数据
+            setTimeout(() => {
+              this.initOrderData();
+              // 刷新挂单列表
+              if (workSheet.suspendedBillId) {
+                this.suspendBill.refresh();
+              }
+            }, 100);
+          }, 100);
         } else {
           // 清空数据
           this.initOrderData();
@@ -641,7 +656,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
         // 出错的话  允许再次提交
         this.enableCreateWorkSheet = true;
 
-        this.alerter.error('创建工单失败:' + err);
+        this.alerter.error('创建工单失败:' + err, true, 3000);
       });
   }
 

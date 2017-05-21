@@ -1,6 +1,6 @@
 <div>
-    <img class="pull-left" src="http://sinoauto.com/Themes/SinoAutoAdaption/Content/logonew.png" alt="华汽">
-    <p class="text-center">维修工单</p>
+  <img class="pull-left" src="http://sinoauto.com/Themes/SinoAutoAdaption/Content/logonew.png" alt="华汽">
+  <p class="text-center">维修工单</p>
 </div>
 <hr>
 <form>
@@ -75,7 +75,7 @@
     </div>
     <div class="col-4">
       <label>出厂里程: </label>
-      <span></span>
+      <span>{{data?.leaveMileage}}</span>
     </div>
   </div>
   <div class="form-group row">
@@ -85,7 +85,7 @@
     </div>
     <div class="col-4">
       <label>出厂时间: </label>
-      <span>{{data?.leaveTim|sDatetime }}</span>
+      <span>{{data?.leaveTime|sDatetime }}</span>
     </div>
   </div>
 </form>

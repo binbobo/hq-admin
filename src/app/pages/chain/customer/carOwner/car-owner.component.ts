@@ -2,6 +2,7 @@ import { Component, OnInit, Injector } from '@angular/core';
 import { CustomerListRequest } from '../../customer/customer.service';
 import { CustomerService } from '../customer.service';
 import { DataList } from 'app/shared/models';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-car-owner',
@@ -51,5 +52,15 @@ export class CarOwnerComponent extends DataList<any>  {
     this.service.export(this.params).then(() => {
       console.log('导出客户车主信息成功！');
     });
+  }
+
+  public get maxCreatedStartDate() {
+    return this.params.createdEndDate || moment().format('YYYY-MM-DD');
+  }
+  public get minCreatedEndDate() {
+    return this.params.createdStartDate || '';
+  }
+  public get maxCreatedEndDate() {
+    return moment().format('YYYY-MM-DD');
   }
 }

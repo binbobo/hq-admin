@@ -25,7 +25,7 @@ export class CustomerService implements BasicService<any> {
         return this.httpService
             .request(url)
             .map(response => {
-                // console.log('查询省份数据：', response.json().data);
+                console.log('查询省份数据：', response.json().data);
                 return response.json().data as any[];
             });
     }

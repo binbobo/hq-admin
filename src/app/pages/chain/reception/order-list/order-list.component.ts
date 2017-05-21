@@ -4,6 +4,7 @@ import { OrderService, OrderListRequest, Order, MaintenanceType } from '../order
 import { Validators, NgForm } from '@angular/forms';
 import { StorageKeys, DataList } from 'app/shared/models';
 import { PrintDirective } from 'app/shared/directives';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-order-list',
@@ -169,6 +170,28 @@ export class OrderListComponent extends DataList<Order> {
 
     console.log('当前选择的查询范围列表：', this.params.orgIds);
   }
+
+
+  // 时间选择限制
+  public get maxLeaveStartDate() {
+    return this.params.leaveEndTimeDate || moment().format('YYYY-MM-DD');
+  }
+  public get minLeaveEndDate() {
+    return this.params.leaveStartTimeDate || '';
+  }
+  public get maxLeaveEndDate() {
+    return moment().format('YYYY-MM-DD');
+  }
+  public get maxEnterStartDate() {
+    return this.params.enterEndTimeDate || moment().format('YYYY-MM-DD');
+  }
+  public get minEnterEndDate() {
+    return this.params.enterStartTimeDate || '';
+  }
+  public get maxEnterEndDate() {
+    return moment().format('YYYY-MM-DD');
+  }
+
 
   // 重置为初始查询条件
   reset(form?: NgForm) {

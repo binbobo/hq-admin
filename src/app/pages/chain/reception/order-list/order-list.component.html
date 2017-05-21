@@ -78,19 +78,22 @@
             <div class="form-group row">
               <label for="leaveFactoryTime" class="col-1 col-form-label">出厂时间</label>
               <div class="col-2">
-                <input [(ngModel)]="params.leaveStartTimeDate" name="leaveStartTimeDate" class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
+                <!--[max-hour]="maxLeaveStartHours" -->
+                <input readonly [max-date]="maxLeaveStartDate" [(ngModel)]="params.leaveStartTimeDate" name="leaveStartTimeDate" class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
               </div>
               <label class="col-1 col-form-label">至</label>
               <div class="col-2">
-                <input [(ngModel)]="params.leaveEndTimeDate" name="leaveEndTimeDate" class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
+                <!--[min-hour]="minLeaveEndHours" 
+                 [max-hour]="maxLeaveEndHours" -->
+                <input readonly [min-date]="minLeaveEndDate"  [max-date]="maxLeaveEndDate" [(ngModel)]="params.leaveEndTimeDate" name="leaveEndTimeDate" class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
               </div>
-              <label for="enterStoreTime" class="col-1 col-form-label">进店时间</label>
+              <label class="col-1 col-form-label">进店时间</label>
               <div class="col-2">
-                <input [(ngModel)]="params.enterStartTimeDate"  name="enterStartTimeDate" class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
+                <input readonly  [max-date]="maxEnterStartDate" [(ngModel)]="params.enterStartTimeDate"  name="enterStartTimeDate" class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
               </div>
               <label class="col-1 col-form-label col-form-label">至</label>
               <div class="col-2">
-                <input [(ngModel)]="params.enterEndTimeDate" name="enterEndTimeDate" class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
+                <input readonly [min-date]="minEnterEndDate"  [max-date]="maxEnterEndDate" [(ngModel)]="params.enterEndTimeDate" name="enterEndTimeDate" class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
               </div>
             </div>
 
