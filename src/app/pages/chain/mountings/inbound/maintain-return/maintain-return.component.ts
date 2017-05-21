@@ -237,12 +237,12 @@ export class MaintainReturnComponent implements OnInit {
   }
   hasList: any;
   onCreate(e) {
-    this.item.returnCount += Number(e.count);
+    // this.item.returnCount += Number(e.count);
     this.hasList = this.newMainData.filter(item => item.curId === e.curId && item.maintenanceItemId === e.maintenanceItemId);
     if (this.hasList.length > 0) {
       this.newMainData.forEach((item, index) => {
         if (item.curId === e.curId && item.maintenanceItemId === e.maintenanceItemId) {
-          item.count += Number(e.count);
+          item.count = Number(e.count);
         }
       })
     } else {
@@ -250,14 +250,14 @@ export class MaintainReturnComponent implements OnInit {
     }
 
     if ((this.item.count - this.item.returnCount) === 0) {
-       this.item.isable=false;
-       
+      this.item.isable = false;
+
     }
     this.createModal.hide();
   }
   onDelCreat(e, i) {
     console.log(e, this.serialData);
-    this.serialData.find(item => item.id = e.curId).list.find(cur => cur.maintenanceItemId === e.maintenanceItemId).returnCount -= Number(e.count);
+    // this.serialData.find(item => item.id = e.curId).list.find(cur => cur.maintenanceItemId === e.maintenanceItemId).returnCount -= Number(e.count);
     this.newMainData.splice(i, 1);
   }
   get columns() {
