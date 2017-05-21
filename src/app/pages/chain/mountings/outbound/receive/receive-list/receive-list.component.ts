@@ -23,6 +23,7 @@ export class ReceiveListComponent implements OnInit {
   private departments: Array<SelectOption>;
   private printModel: ReceivePrintItem;
   private model: ReceiveListRequest = new ReceiveListRequest();
+  private generating: boolean;
 
   constructor(
     private receiveService: ReceiveService,
@@ -54,12 +55,10 @@ export class ReceiveListComponent implements OnInit {
   }
 
   generate(event: Event) {
-    let el = event.target as HTMLButtonElement;
-    el.disabled = true;
-    console.log(JSON.stringify(this.model));
+    this.generating = true;
     this.receiveService.generate(this.model)
       .then(data => {
-        el.disabled = false;
+        this.generating = false;
         this.reset();
         return confirm('已生成出库单，是否需要打印？') ? data : null;
       })
@@ -71,7 +70,7 @@ export class ReceiveListComponent implements OnInit {
         }
       })
       .catch(err => {
-        el.disabled = false;
+        this.generating = false;
         this.alerter.error(err);
       })
   }
@@ -87,19 +86,15 @@ export class ReceiveListComponent implements OnInit {
   }
 
   suspend(event: Event) {
-    let el = event.target as HTMLButtonElement;
-    el.disabled = true;
     let reveiver = this.employees.find(m => m.value == this.model.takeUser);
     let department = this.departments.find(m => m.value == this.model.takeDepart);
     this.model['reveiver'] = reveiver && reveiver.text;
     this.model['department'] = department && department.text;
     this.suspendBill.suspend(this.model)
       .then(() => this.reset())
-      .then(() => el.disabled = false)
       .then(() => this.suspendBill.refresh())
       .then(() => this.alerter.success('挂单成功！'))
       .catch(err => {
-        el.disabled = false;
         this.alerter.error(err);
       })
   }

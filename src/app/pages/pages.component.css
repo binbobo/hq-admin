@@ -1,6 +1,6 @@
 nav{
     background-color: #2d384b!important;
-    z-index: 9999;
+    z-index: 1049;
 }
 .container-fluid{
     margin-top: 54px;
@@ -8,8 +8,12 @@ nav{
 .menus{
     padding: 54px 3px 0 0;
     margin-top: -54px;
-    min-height: 100vh;
+    height: 100vh;
     background-color: #2d384b!important;
+}
+.menu-container{
+    overflow: auto;
+    height: 100%;
 }
 .navbar-right{
     width:100%;

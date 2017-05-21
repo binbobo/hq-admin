@@ -26,7 +26,7 @@ export class SalesListComponent implements OnInit {
   private salesmen: Array<SelectOption>;
   private printModel: SalesPrintItem;
   private model: SalesListRequest = new SalesListRequest();
-
+  private generating: boolean;
 
   constructor(
     private salesService: SalesService,
@@ -65,11 +65,10 @@ export class SalesListComponent implements OnInit {
   }
 
   generate(event: Event) {
-    let el = event.target as HTMLButtonElement;
-    el.disabled = true;
+    this.generating = true;
     this.salesService.generate(this.model)
       .then(data => {
-        el.disabled = false;
+        this.generating = false;
         this.reset();
         this.suspendBill.refresh();
         return confirm('已生成出库单，是否需要打印？') ? data : null;
@@ -82,7 +81,7 @@ export class SalesListComponent implements OnInit {
         }
       })
       .catch(err => {
-        el.disabled = false;
+        this.generating = false;
         this.alerter.error(err);
       })
   }

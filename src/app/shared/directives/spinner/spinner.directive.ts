@@ -1,7 +1,8 @@
 import { OnChanges, Directive, ViewContainerRef, ComponentFactoryResolver, Input, SimpleChanges, OnInit } from '@angular/core';
 
 @Directive({
-  selector: '[hqSpinner]'
+  selector: '[hqSpinner]',
+  exportAs: 'hq-spinner'
 })
 export class SpinnerDirective implements OnChanges, OnInit {
 

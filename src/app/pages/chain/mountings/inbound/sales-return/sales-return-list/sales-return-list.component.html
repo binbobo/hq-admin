@@ -6,21 +6,20 @@
   </div>
   <div class="card-block">
     <form class="form-inline mb-2">
-      <div class="form-group mb-2">
+      <div class="form-group">
         <label>*客户名称：</label>
-        <input class="form-control" forceRefresh (onSelect)="onItemNameSelect($event)"  [hqTableTypeahead]="nameSource" [columns]="itemNameColumns()" name="custName" placeholder="客户名称">
+        <input class="form-control" forceRefresh (onSelect)="onItemNameSelect($event)" [hqTableTypeahead]="nameSource" [columns]="itemNameColumns()"
+          name="custName" placeholder="客户名称">
       </div>
-      <div class="form-group mb-2">
+      <div class="form-group">
         <label>手机号：</label>
         <input class="form-control" name="custPhone" placeholder="手机号">
       </div>
-      <div class="form-group mb-2">
+      <div class="form-group">
         <label>*销售入库单：</label>
-        <input type="text" forceRefresh (onSelect)="onItemCodeSelect($event)" [hqTableTypeahead]="codeSource" [columns]="itemCodeColumns()" class="form-control" placeholder="请输入销售入库单号">
+        <input type="text" forceRefresh (onSelect)="onItemCodeSelect($event)" [hqTableTypeahead]="codeSource" [columns]="itemCodeColumns()"
+          class="form-control" placeholder="请输入销售入库单号">
       </div>
-      <!--<div class="form-group mb-2">
-        <button (click)="createModal.show()" class="btn btn-primary mx-sm-1">新增</button>
-      </div>-->
     </form>
 
     <div class="tab-title">销售出库信息</div>

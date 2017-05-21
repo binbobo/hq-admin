@@ -76,10 +76,9 @@ export class FormControlErrorDirective<T extends FormControlErrorComponent> impl
       this.controlErrors = keys
         .filter(m => control.errors[m] === true || typeof control.errors[m] === 'object')
         .map(m => this.getError(m.toLowerCase(), control.errors));
-    }
-    if (!control.valid && this.controlErrors && this.controlErrors.length) {
       this.show();
     } else {
+      this.controlErrors = null;
       this.hide();
     }
     if (this.componentRef) {
