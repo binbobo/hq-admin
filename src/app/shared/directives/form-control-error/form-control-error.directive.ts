@@ -2,6 +2,10 @@ import { Directive, Input, OnInit, Host, ViewContainerRef, ComponentFactoryResol
 import { ControlContainer, FormGroupDirective, FormGroup, FormControl, FormControlName } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import { FormControlErrorComponent } from './form-control-error.component';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/debounceTime';
 
 export class FormControlErrorDirective<T extends FormControlErrorComponent> implements OnInit {
 
@@ -33,11 +37,13 @@ export class FormControlErrorDirective<T extends FormControlErrorComponent> impl
       Object.keys(this.errors).forEach(key => this.errors[key.toLowerCase()] = this.errors[key]);
     }
     if (!this.readonly) {
-      let element = this.el.nativeElement as HTMLInputElement;
-      element.addEventListener('input', () => {
-        this.controlErrors = [];
-        this.validate(false);
-      })
+      Observable.fromEvent(this.el.nativeElement, 'input')
+        .map((e: any) => e.target.value)
+        .debounceTime(500)
+        .subscribe(value => {
+          this.controlErrors = [];
+          this.validate(false);
+        });
     }
   }
 

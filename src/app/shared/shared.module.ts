@@ -5,7 +5,7 @@ import * as services from 'app/shared/services';
 import * as components from "./components";
 import * as pipes from './pipes';
 import * as directives from './directives';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgModel } from '@angular/forms';
 import { PaginationModule, PopoverModule, AlertModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
 import { TranslateStore } from "@ngx-translate/core/src/translate.store";
@@ -85,7 +85,7 @@ export class SharedModule {
     static forRoot() {
         return {
             ngModule: SharedModule,
-            providers: [HQ_SERVICES, TranslateStore]
+            providers: [HQ_SERVICES, TranslateStore, NgModel]
         }
     }
 }

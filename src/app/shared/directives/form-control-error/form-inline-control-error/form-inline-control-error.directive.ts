@@ -1,4 +1,4 @@
-import { Directive, Input, ComponentRef, HostListener, ElementRef, ViewContainerRef, ComponentFactoryResolver, Renderer } from '@angular/core';
+import { Directive, Input, ComponentRef, HostListener, ElementRef, ViewContainerRef, ComponentFactoryResolver, Renderer, Injector } from '@angular/core';
 import { FormInlineControlErrorComponent } from './form-inline-control-error.component';
 import { Subscription } from 'rxjs/Subscription';
 import { NgModel } from "@angular/forms";
@@ -15,10 +15,10 @@ export class FormInlineControlErrorDirective extends FormControlErrorDirective<F
 
   constructor(
     protected el: ElementRef,
-    protected ngModel: NgModel,
     protected viewContainerRef: ViewContainerRef,
     protected componentFactoryResolver: ComponentFactoryResolver,
     private config: PopoverConfig,
+    ngModel: NgModel,
     renderer: Renderer,
     cis: ComponentLoaderFactory,
     private positionService: PositioningService,

@@ -59,7 +59,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   };
 
   regex = {
-    plateNo: /^[\u4e00-\u9fa5]{1}[A-Z]{1}[A-Z_0-9]{5}$/,
+    plateNo: /^[\u4e00-\u9fa5]{1}[A-Z]{1}[A-Z_0-9]{5}$/i,
     phone: /^1[3|4|5|7|8]\d{9}$/,
     mileage: /^[0-9]+([.]{1}[0-9]{1,2})?$/,
     vin: /^[A-HJ-NPR-Z\d]{8}[\dX][A-HJ-NPR-Z\d]{2}\d{6}$/

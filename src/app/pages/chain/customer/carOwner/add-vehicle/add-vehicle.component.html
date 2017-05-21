@@ -2,7 +2,7 @@
   <div class="form-group row">
     <div class="col-4">
       <label for="plateNo" class="col-form-label"><span class="asterisk mr-1">*</span>车牌号</label>
-      <input type="text" label="车牌号" [errors]="formValadationErrors.common" class="form-control" formControlName="plateNo" placeholder="车牌号">
+      <input type="text" label="车牌号" class="form-control" formControlName="plateNo" placeholder="车牌号">
     </div>
     <div class="col-4">
       <label for="brand" class="col-form-label"><span class="asterisk mr-1">*</span>品牌</label>
@@ -26,12 +26,12 @@
     </div>
     <div class="col-4">
       <label for="vin" class="col-form-label"><span class="asterisk mr-1">*</span>vin</label>
-      <input label="车辆标识码" [errors]="formValadationErrors.common" type="text" class="form-control" formControlName="vin" id="vin"
+      <input label="车辆标识码" type="text" class="form-control" formControlName="vin" id="vin"
         placeholder="vin">
     </div>
     <div class="col-4">
       <label for="engineNo" class="col-form-label">发动机号</label>
-      <input hqError="发动机号" [errors]="formValadationErrors.common" type="text" class="form-control" formControlName="engineNo"
+      <input  type="text" class="form-control" formControlName="engineNo"
         placeholder="发动机号">
     </div>
   </div>
