@@ -55,7 +55,7 @@
         </div>
         <label for="vehicleName" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车型</label>
         <div class="col-2">
-          <input onBlur="onVehicleBlur()" forceRefresh="true" [hqTableTypeahead]="modelTypeaheadSource"
+          <input (blur)="onVehicleBlur()" forceRefresh="true" [hqTableTypeahead]="modelTypeaheadSource"
             [columns]="nameTypeaheadColumns" (onSelect)="onModelSelect($event)" type="text" class="form-control" formControlName="vehicleName"
             id="vehicleName" placeholder="输入车型名称">
           <!--车辆id-->
@@ -73,8 +73,7 @@
         </div>
         <label for="expectLeave" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>预计交车时间</label>
         <div class=" col-2">
-          <input [close-on-select]="false" label="预计交车时间" class="form-control" type="text"
-            formControlName="expectLeave" ngui-datetime-picker />
+          <input [close-on-select]="false" label="预计交车时间" [min-date]="currentDate" [min-hour]="currentHours" class="form-control" type="text" formControlName="expectLeave" ngui-datetime-picker />
         </div>
         <label for="contactUser" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>送修人</label>
         <div class="col-2">

@@ -35,18 +35,9 @@ table th{
     text-align: center;
 }
 
-/*ngx-bootstrap popver 样式复写  用于挂单列表显示*/
-/*.popover-content {
-    padding: 0;
-    margin: 0;
-}
-.popover {
-    padding: 0;
-    max-width: 100%;
-}
 caption {
     caption-side: top;
-}*/
+}
 
 /*必选项前面的星号样式*/ 
 .asterisk {

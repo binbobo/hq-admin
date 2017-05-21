@@ -95,6 +95,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
 
         this.params.setPage(1);
         this.loadList().then((result: any) => {
+            if (!result || !result.tabList) { return; }
             console.log('维修派工列表统计数据：', result.tabList);
             this.statistics = {};
             // 统计各种状态下面的工单数量
