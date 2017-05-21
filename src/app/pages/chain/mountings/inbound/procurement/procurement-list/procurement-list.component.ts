@@ -20,6 +20,7 @@ export class ProcurementListComponent implements OnInit {
   protected alerter: HqAlerter;
   @ViewChild('printer')
   public printer: PrintDirective;
+  private generating: boolean;
   private printModel: ProcurementPrintItem;
   private model = new ProcurementRequest();
 
@@ -84,15 +85,11 @@ export class ProcurementListComponent implements OnInit {
       alert('请选择供应商名称');
       return false;
     }
-    let el = event.target as HTMLButtonElement;
-    el.disabled = true;
     this.suspendBill.suspend(this.model)
       .then(() => this.reset())
-      .then(() => el.disabled = false)
       .then(() => this.suspendBill.refresh())
       .then(() => this.alerter.success('挂单成功！'))
       .catch(err => {
-        el.disabled = false;
         this.alerter.error(err);
       })
   }
@@ -102,11 +99,10 @@ export class ProcurementListComponent implements OnInit {
       alert('请选择供应商名称');
       return false;
     }
-    let el = event.target as HTMLButtonElement;
-    el.disabled = true;
+    this.generating = true;
     this.procurementService.generate(this.model)
       .then(data => {
-        el.disabled = false;
+        this.generating = false;
         this.reset();
         this.suspendBill.refresh();
         return confirm('已生成出库单，是否需要打印？') ? data : null;
@@ -119,8 +115,14 @@ export class ProcurementListComponent implements OnInit {
         }
       })
       .catch(err => {
-        el.disabled = false;
+        this.generating = false;
         this.alerter.error(err);
       })
+  }
+
+  private onProductRemove(item) {
+    if (!confirm('确定要删除？')) return;
+    let index = this.model.list.indexOf(item);
+    this.model.list.splice(index, 1);
   }
 }

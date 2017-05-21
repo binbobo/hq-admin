@@ -46,11 +46,15 @@ export class ProcurementRequest {
     public outunit?: string,
     public suspendedBillId?: string,
   ) { }
+
+  get valid() {
+    return this.outunit && this.list && this.list.length;
+  }
 }
 
 export class ProcurementItem {
   constructor(
-    public count: number = 0,
+    public count: number = 1,
     public price: number = 0,
     public amount: number = 0,
     public taxRate: number = 17,

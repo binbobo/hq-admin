@@ -65,3 +65,7 @@ caption {
     font-weight: bold;
     font-size: 16px;
 }
+
+.form-inline .form-group{
+    margin: 6px;
+}

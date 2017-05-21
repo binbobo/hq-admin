@@ -60,6 +60,10 @@ export class ReceiveListRequest {
     public takeDepart?: string,
     public suspendedBillId?: string,
   ) { }
+
+  get valid() {
+    return this.takeUser && this.takeDepart && this.list && this.list.length;
+  }
 }
 
 export class ReceiveListItem {

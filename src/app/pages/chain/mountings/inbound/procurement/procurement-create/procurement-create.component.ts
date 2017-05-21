@@ -24,6 +24,7 @@ export class ProcurementCreateComponent implements OnInit {
   @ViewChildren(FormGroupControlErrorDirective)
   private controls: QueryList<FormGroupControlErrorDirective>;
   private warehouses: Array<SelectOption>;
+  private isHQProduct = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -53,9 +54,9 @@ export class ProcurementCreateComponent implements OnInit {
       productSpecification: [this.model.productSpecification],
       storeId: [this.model.storeId, [Validators.required, Validators.maxLength(36)]],
       locationId: [this.model.locationId],
-      count: [this.model.count, [Validators.required, CustomValidators.digits]],
-      price: [this.model.price],
-      yuan: [this.model.price / 100, [Validators.required]],
+      count: [this.model.count, [Validators.required, CustomValidators.min(1), CustomValidators.digits]],
+      price: [this.model.price, [Validators.required, CustomValidators.min(0)]],
+      yuan: [this.model.price / 100, [Validators.required, CustomValidators.min(0)]],
       amount: [this.model.amount],
       exTaxPrice: [this.model.exTaxPrice],
       exTaxAmount: [this.model.exTaxAmount],
@@ -113,7 +114,9 @@ export class ProcurementCreateComponent implements OnInit {
       productCategory: event.category,
     }
     this.form.patchValue(item);
+    this.isHQProduct = true;
     this.calculate();
+    this.controls.forEach(m => m.validate());
   }
 
   get editable() {
@@ -129,8 +132,11 @@ export class ProcurementCreateComponent implements OnInit {
 
   public get codeSource() {
     return (params: TypeaheadRequestParams) => {
-      let model = Object.assign({}, this.model, { productCode: params.text });
-      this.form.reset(model);
+      if (this.isHQProduct) {
+        let model = Object.assign({}, this.model, { productCode: params.text });
+        this.form.reset(model);
+        this.isHQProduct = false;
+      }
       let p = new GetProductsRequest(params.text);
       p.setPage(params.pageIndex, params.pageSize);
       return this.procurementService.getProducts(p);
@@ -139,8 +145,11 @@ export class ProcurementCreateComponent implements OnInit {
 
   public get nameSource() {
     return (params: TypeaheadRequestParams) => {
-      let model = Object.assign({}, this.model, { productName: params.text });
-      this.form.reset(model);
+      if (this.isHQProduct) {
+        let model = Object.assign({}, this.model, { productName: params.text });
+        this.form.reset(model);
+        this.isHQProduct = false;
+      }
       let p = new GetProductsRequest(undefined, params.text);
       p.setPage(params.pageIndex, params.pageSize);
       return this.procurementService.getProducts(p);
@@ -150,10 +159,11 @@ export class ProcurementCreateComponent implements OnInit {
   private calculate() {
     let count = this.form.controls['count'].value || 0;
     let price = this.form.controls['price'].value || 0;
-    let tax = this.form.controls['taxRate'].value || 0;
+    let tax = this.model.taxRate || 0;
     let exTaxPrice = price / (tax * 0.01 + 1);
     let amount = count * price;
     let exTaxAmount = count * exTaxPrice;
+    console.log(exTaxPrice);
     this.form.patchValue({
       amount: amount,
       count: count,
