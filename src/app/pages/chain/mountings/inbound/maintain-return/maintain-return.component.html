@@ -14,7 +14,11 @@
       </form>
     </div>
     <div class="serach-main">
+      <div class="serach-list">工单号:&nbsp;&nbsp;{{orderDetail?.billCode}}</div>
       <div class="serach-list">车主:&nbsp;&nbsp;{{orderDetail?.customerName}}</div>
+    </div>
+    <div class="serach-main">
+      <div class="serach-list">车型:&nbsp;&nbsp;{{orderDetail?.vehicleName}}</div>
       <div class="serach-list">VIN:&nbsp;&nbsp;{{orderDetail?.vin}}</div>
       <div class="serach-list">维修类型:&nbsp;&nbsp;{{orderDetail?.typeName}}</div>
       <div class="serach-list">开单时间：&nbsp;&nbsp;{{orderDetail?.createdOnUtc |sDatetime}}</div>
@@ -113,7 +117,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let ele of newMainData;let i=index">
-              <td><button class="btn btn-danger" (click)="onDelCreat(i)">删除</button></td>
+              <td><button class="btn btn-danger" (click)="onDelCreat(ele,i)">删除</button></td>
 
               <td>{{ele.serviceName}}</td>
               <td>{{ele.brandName}}</td>
@@ -201,8 +205,9 @@
           <p>您确定要取消退料吗</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-sm" data-dismiss="confirmModal" (click)="confirmModal.hide();">取消</button>
-          <button type="button" class="btn btn-sm" data-dismiss="modal" (click)="onConfirmFinished(confirmModal);">确定</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="onConfirmFinished(confirmModal);">确定</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="confirmModal" (click)="confirmModal.hide();">取消</button>
+
         </div>
       </div>
     </div>
@@ -222,3 +227,5 @@
     </div>
   </div>
 </div>
+
+<hq-maintain-print *ngIf="printList" [data]="printList" hqPrint #printer="hq-print"></hq-maintain-print>

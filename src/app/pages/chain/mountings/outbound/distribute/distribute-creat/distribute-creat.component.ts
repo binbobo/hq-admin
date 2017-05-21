@@ -3,7 +3,7 @@ import { FormHandle } from 'app/shared/models';
 import { DistributeListItem } from '../distribute.service';
 import { Observable } from "rxjs/Rx";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { FormGroupControlErrorDirective, TypeaheadRequestParams, HqAlerter } from 'app/shared/directives';
+import { FormGroupControlErrorDirective, TypeaheadRequestParams, HqAlerter, PrintDirective } from 'app/shared/directives';
 import { GetMountingsListRequest, MountingsService } from '../../../mountings.service';
 import { CustomValidators } from 'ng2-validation';
 import { CentToYuanPipe } from "app/shared/pipes";
@@ -16,7 +16,7 @@ import { CentToYuanPipe } from "app/shared/pipes";
 })
 export class DistributeCreatComponent implements OnInit, OnChanges {
   selectCount: any;
-   @ViewChild(HqAlerter)
+  @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
   private form: FormGroup;
   private converter: CentToYuanPipe = new CentToYuanPipe();
@@ -25,6 +25,8 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
   private model: DistributeListItem = new DistributeListItem();
   @ViewChildren(FormGroupControlErrorDirective)
   private controls: QueryList<FormGroupControlErrorDirective>;
+  @ViewChild('printer')
+  public printer: PrintDirective;
   @ViewChild('priceControl')
   private priceControl: FormGroupControlErrorDirective
   private price: number = 0;
@@ -74,20 +76,20 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
       productCode: [this.model.productCode, [Validators.required]],
       productName: [this.model.productName, [Validators.required]],
       productId: [this.model.productId],
-      productSpecification: [this.model.productSpecification,[Validators.required]],
-      specifications:[this.model.specifications],
+      productSpecification: [this.model.productSpecification, [Validators.required]],
+      specifications: [this.model.specifications],
       storeId: [this.model.storeId],
       locationId: [this.model.locationId],
       vehicleName: [this.model.vehicleName],
-      vihicleName:[this.model.vihicleName],
-      count: [this.model.count, [Validators.required, CustomValidators.lte(this.fcount), CustomValidators.digits]],
+      vihicleName: [this.model.vihicleName],
+      count: [this.model.count, [Validators.required, CustomValidators.digits]],
       initcount: [this.model.initcount, [Validators.required, CustomValidators.gt(0), CustomValidators.digits]],
-      price: [this.model.price, [Validators.required, CustomValidators.gte(this.price)]],
+      price: [this.model.price, [Validators.required]],
       amount: [this.model.amount],
-      locationName: [this.model.locationName,[Validators.required]],
-      houseName: [this.model.houseName,[Validators.required]],
-      storeName:[this.model.storeName],
-      storeHouse:[this.model.storeHouse],
+      locationName: [this.model.locationName, [Validators.required]],
+      houseName: [this.model.houseName, [Validators.required]],
+      storeName: [this.model.storeName],
+      storeHouse: [this.model.storeHouse],
       createUser: [this.model.createUser, [Validators.required]],
       createUserName: [this.model.createUserName],
       description: [this.model.description],
@@ -98,16 +100,14 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
 
   public onSubmit(event: Event) {
     this.model.count = this.model.initcount;
-    this.model.amount = this.model.amount;
-    this.model.vihicleName=this.model.vehicleName;
-    this.model.storeName=this.model.houseName;
-    this.model.specifications=this.model.specifications;
-    this.model.storeHouse=this.model.storeHouse;
+    this.model.amount = this.model.amount * 100;
+    this.model.price = this.model.price * 100;
+    this.model.vihicleName = this.model.vehicleName;
+    this.model.storeName = this.model.houseName;
+    this.model.specifications = this.model.specifications;
+    this.model.storeHouse = this.model.storeHouse;
     Object.assign(this.form.value, this.model);
-    if(this.model.count>this.fcount){
-       this.alerter.error("数量不能高于当前库存，请重新填写", true, 3000);
-      return false;
-    }
+
     let invalid = this.controls
       .map(c => c.validate())
       .some(m => !m);
@@ -139,17 +139,19 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
   }
 
   public onPriceChange(evt) {
+
     // evt.preventDefault();
     let price = evt.target.value || 0;
-    this.model.price = price*100;
+    this.model.price = price;
     this.model.amount = (this.model.price) * (this.model.initcount);
     this.form.patchValue(this.model);
-    this.priceControl.validate();
+    // this.priceControl.validate();
   }
   public onChangeCount(evt) {
     evt.preventDefault();
     this.model.initcount = evt.target.value;
     this.model.amount = (this.model.initcount) * (this.model.price);
+    this.form.patchValue(this.model);
   }
   private fcount;
   public onItemSelect(event) {
@@ -169,16 +171,19 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
       price: event.costPrice,
       count: event.count,
     }
-    this.fcount=item.count;
+    this.fcount = item.count;
     this.price = 0;
     setTimeout(() => this.price = item.price, 1);
     setTimeout(() => this.fcount = item.count, 1);
     Object.assign(this.model, item);
     console.log(this.model)
     this.form.patchValue(item);
-    this.form.controls['price'].setValidators(CustomValidators.gte(item.price));   
+    this.form.controls['price'].setValidators(CustomValidators.gte(item.price / 100));
+    this.form.controls['initcount'].setValidators([CustomValidators.lte(this.fcount), CustomValidators.gt(0)]);
+    this.model.price = this.model.price / 100;
+    this.model.amount = (this.model.initcount) * (this.model.price) ;
     Object.assign(this.form.value, this.model);
-    this.model.amount = (this.model.initcount) * (this.model.price);
+    this.form.patchValue(this.model);
   }
 
   public get codeSource() {

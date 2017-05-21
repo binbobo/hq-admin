@@ -1,23 +1,23 @@
 <div class="print card">
   <div class="card-header">
-    <span>维修发料单</span>
+    <span>维修退料单</span>
   </div>
-  <div class='card-block' hqPrint #printer="hq-print">
-    <div *ngFor="let item of printList">
+  <div class='card-block'>
+    <div *ngFor="let item of data">
+
       <div class="container">
         <div class="row">
-          <h4 class="col-md-12">维修发料单</h4>
+          <h4 class="col-md-12">维修退料单</h4>
         </div>
       </div>
       <div class="container">
         <div class="row">
-          <div class="col-md-3">发料单号：{{item.billCode}}</div>
-          <div class="col-md-3">流水号：{{item.serialNum}}</div>
-          <div class="col-md-3">车牌号：{{item.plateNo}}</div>
-          <div class="col-md-3">开单时间：{{item.createBillDateTime}}</div>
+          <div class="col-md-4">退料单号：{{item.billCode}}</div>
+          <div class="col-md-4">流水号：{{item.serialNum}}</div>
+          <div class="col-md-4">开单时间：{{item.createBillDateTime}}</div>
         </div>
       </div>
-      <table class="table   table-striped table-borderd">
+      <table class="table  table-striped table-borderd">
         <thead>
           <tr>
             <th>维修项目</th>
@@ -30,7 +30,7 @@
             <th>价格</th>
             <th>金额</th>
             <th>备注</th>
-            <th>领料人</th>
+            <th>退料人</th>
           </tr>
         </thead>
         <tbody>
@@ -51,16 +51,12 @@
       </table>
       <div class="container">
         <div class="row">
-          <div class="col-md-6">打印时间：{{item.printDateTime}}</div>
-          <div class="col-md-6">操作人：{{item.operator}}</div>
+          <div class="col-md-3">打印时间：</div>
+          <div class="col-md-3">操作人：</div>
+          <div class="col-md-3">退料人：</div>
         </div>
       </div>
       <div class="print-page"></div>
-    </div>
-  </div>
-  <div class="card-footer text-muted">
-    <div class="center">
-      <button type="button" class="btn btn-primary" (click)="print()">打印</button>
     </div>
   </div>
 </div>

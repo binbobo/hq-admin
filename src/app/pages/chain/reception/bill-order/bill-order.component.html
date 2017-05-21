@@ -92,8 +92,9 @@
           <p>您确定要撤销结算吗</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-sm" data-dismiss="confirmModal" (click)="confirmModal.hide();">取消</button>
-          <button type="button" class="btn btn-sm" data-dismiss="modal" (click)="unBill(confirmModal);">确定</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="unBill(confirmModal);">确定</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="confirmModal" (click)="confirmModal.hide();">取消</button>
+
         </div>
       </div>
     </div>

@@ -14,10 +14,14 @@
       </form>
     </div>
     <div class="serach-main">
+      <div class="serach-list">工单号:&nbsp;&nbsp;{{orderDetail?.billCode}}</div>
       <div class="serach-list">车主:&nbsp;&nbsp;{{orderDetail?.customerName}}</div>
+    </div>
+    <div class="serach-main">
+      <div class="serach-list">车型:&nbsp;&nbsp;{{orderDetail?.vehicleName}}</div>
       <div class="serach-list">VIN:&nbsp;&nbsp;{{orderDetail?.vin}}</div>
       <div class="serach-list">维修类型:&nbsp;&nbsp;{{orderDetail?.typeName}}</div>
-      <div class="serach-list">开单时间：&nbsp;&nbsp;{{orderDetail?.createdOnUtc |date:"yyyy/MM/dd HH:mm:ss"}}</div>
+      <div class="serach-list">开单时间：&nbsp;&nbsp;{{orderDetail?.createdOnUtc |sDatetime}}</div>
     </div>
     <div *ngIf="serviceData.length>0">
       <div class="tab-title">
@@ -34,10 +38,9 @@
           </thead>
           <tbody>
             <tr *ngFor='let item of serviceData;let index=index'>
-              <td><button class="btn btn-primary" (dataName)="item.serviceName" (click)="OnCreatBound(item)">发料</button></td>
-
-              <td>{{item.serviceName}}</td>
-              <td>{{item?.employeeNames.concat(item?.turnEmployeeNames).join(',')}}</td>
+              <td><button class="btn btn-primary" (dataName)="item.serviceName" [disabled]="!(item.employeeNames.length>0)" (click)="OnCreatBound(item)">发料</button></td>
+              <td><span [class.triangle]="item.type === 3"></span>{{item.serviceName}}</td>
+              <td>{{item.employeeNames}}</td>
             </tr>
           </tbody>
         </table>
@@ -171,8 +174,6 @@
         </table>
       </tab>
     </tabset>
-
-
   </div>
   <div class="card-footer text-muted">
     <button class="btn btn-primary" [disabled]="!(newMainData.length>0)" (click)="OnCreatBill()">生成维修发料单</button>
@@ -197,8 +198,9 @@
           <p>您确定要取消发料吗</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-sm" data-dismiss="confirmModal" (click)="confirmModal.hide();">取消</button>
-          <button type="button" class="btn btn-sm" data-dismiss="modal" (click)="onConfirmFinished(confirmModal);">确定</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="onConfirmFinished(confirmModal);">确定</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="confirmModal" (click)="confirmModal.hide();">取消</button>
+        
         </div>
       </div>
     </div>
@@ -218,3 +220,5 @@
     </div>
   </div>
 </div>
+
+<hq-distribute-print  *ngIf="printList" [data]="printList" hqPrint #printer="hq-print"></hq-distribute-print>

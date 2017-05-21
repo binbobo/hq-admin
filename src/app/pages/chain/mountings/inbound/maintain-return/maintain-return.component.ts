@@ -3,7 +3,7 @@ import { DataList, StorageKeys, SelectOption } from "app/shared/models";
 import { Router, ActivatedRoute } from "@angular/router";
 import { MaintainReturnService, MaintainRequest } from "./maintain-return.service";
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { TypeaheadRequestParams, HqAlerter } from "app/shared/directives";
+import { TypeaheadRequestParams, HqAlerter, PrintDirective } from "app/shared/directives";
 import { ModalDirective } from "ngx-bootstrap";
 import { SuspendBillDirective } from "app/pages/chain/chain-shared";
 @Component({
@@ -23,6 +23,8 @@ export class MaintainReturnComponent implements OnInit {
   protected alerter: HqAlerter;
   @ViewChild(SuspendBillDirective)
   private suspendBill: SuspendBillDirective;
+  @ViewChild('printer')
+  public printer: PrintDirective;
   billCode: any;
   printId: any;
   productData: any;
@@ -53,7 +55,7 @@ export class MaintainReturnComponent implements OnInit {
       { name: 'billCode', title: '工单号' },
       { name: 'customerName', title: '车主' },
       { name: 'brand', title: '品牌' },
-      { name: 'model', title: '车型' }
+      { name: 'vehicleName', title: '车型' }
     ];
   }
   suspendData: any;
@@ -84,6 +86,7 @@ export class MaintainReturnComponent implements OnInit {
             } else {
               element.isable = false;
             }
+            ele.curId = element.id;
           })
 
         });
@@ -118,12 +121,21 @@ export class MaintainReturnComponent implements OnInit {
       });
 
   }
-
+  print() {
+    this.printer.print();
+  }
   onConfirmNumber(evt) {
     console.log(evt);
     this.SerialNumsList = evt.value;
     console.log(this.SerialNumsList)
-    this.router.navigate(['./print', this.listId, this.billCode, this.SerialNumsList.join("-")], { relativeTo: this.route });
+    this.service.getPrintList(this.listId, this.billCode, this.SerialNumsList).toPromise()
+      .then(data => {
+        console.log(data)
+        this.printList = data;
+        setTimeout(() => { this.print(); }, 200);
+        setTimeout(() => { this.printList = null }, 400)
+      })
+      .catch(err => console.log(err));
   }
   // 车牌号模糊搜索接口调用
   public get PlatNoSource() {
@@ -139,17 +151,17 @@ export class MaintainReturnComponent implements OnInit {
       keyword: '', // 车牌号或车主姓名或工单号
     });
   }
-  // 是否取消退料
-  finishedOrder(evt, confirmModal) {
-    evt.preventDefault();
-    // 显示确认框
-    confirmModal.show();
-  }
-  // 取消退料
-  onConfirmFinished(confirmModal) {
-    confirmModal.hide();
-    history.go(-1);
-  }
+  // // 是否取消退料
+  // finishedOrder(evt, confirmModal) {
+  //   evt.preventDefault();
+  //   // 显示确认框
+  //   confirmModal.show();
+  // }
+  // // 取消退料
+  // onConfirmFinished(confirmModal) {
+  //   confirmModal.hide();
+  //   history.go(-1);
+  // }
 
   private newMainData = [];
 
@@ -191,35 +203,61 @@ export class MaintainReturnComponent implements OnInit {
       this.numberPrintList.sort((a, b) => {
         return a.value - b.value
       });
-      this.alerter.info('生成退料单成功', true, 2000);
+      if (confirm('生成退料单成功！ 是否打印？')) {
+        this.service.getPrintList(this.listId, this.billCode, num).toPromise()
+          .then(data => {
+            console.log(data)
+            this.printList = data;
+            setTimeout(() => { this.print(); }, 200);
+            setTimeout(() => { this.printList = null }, 400)
+          })
+          .catch(err => console.log(err));
+      } else {
+
+      }
+
+
+
+
     }).catch(err => this.alerter.error(err, true, 2000));
   }
 
+
   inputData: any;
   // 点击退料弹出弹框
-
+  private item: any;
   OnCreatBound(ele, id) {
-    console.log(ele);
+    console.log(ele, id);
+    this.item = ele;
     ele.maintenanceItemId = ele.id; //维修明细id
+    ele.curId = id;//记录点击的id
     this.OriginalBillId = id;
     this.inputData = ele;
     this.createModal.show();
   }
   hasList: any;
   onCreate(e) {
-    if (this.newMainData) {
-      this.hasList = this.newMainData.filter(item => item.id === e.id);
-      if (this.hasList) {
-
-      }
-      this.newMainData.push(e);
+    this.item.returnCount += Number(e.count);
+    this.hasList = this.newMainData.filter(item => item.curId === e.curId && item.maintenanceItemId === e.maintenanceItemId);
+    if (this.hasList.length > 0) {
+      this.newMainData.forEach((item, index) => {
+        if (item.curId === e.curId && item.maintenanceItemId === e.maintenanceItemId) {
+          item.count += Number(e.count);
+        }
+      })
     } else {
-      this.newMainData = []
+      this.newMainData.push(e);
     }
 
+    if ((this.item.count - this.item.returnCount) === 0) {
+       this.item.isable=false;
+       
+    }
     this.createModal.hide();
   }
-  onDelCreat(i) {
+  onDelCreat(e, i) {
+    console.log(e, this.serialData);
+    this.serialData.find(item => item.id = e.curId).list.find(cur => cur.maintenanceItemId === e.maintenanceItemId).returnCount -= Number(e.count);
     this.newMainData.splice(i, 1);
   }
   get columns() {

@@ -16,7 +16,6 @@ import { ReturnListComponent } from './inner-return/return-list/return-list.comp
 import { ReturnCreateComponent } from './inner-return/return-create/return-create.component';
 import { ReturnPrintComponent } from './inner-return/return-print/return-print.component';
 import { InnerReturnService } from "./inner-return/inner-return.service";
-import { PrintComponent } from './maintain-return/print/print.component';
 import { MaintainCreatComponent } from './maintain-return/maintain-creat/maintain-creat.component';
 import { ChainSharedModule } from "app/pages/chain/chain-shared/chain-shared.module";
 import { SalesReturnListComponent } from './sales-return/sales-return-list/sales-return-list.component';
@@ -29,6 +28,7 @@ import { ProcurementCreateComponent } from './procurement/procurement-create/pro
 import { ProcurementPrintComponent } from './procurement/procurement-print/procurement-print.component';
 import { ProcurementService } from './procurement/procurement.service';
 import { ProviderService } from '../provider/provider.service';
+import { MaintainPrintComponent } from './maintain-return/maintain-print/maintain-print.component';
 
 
 @NgModule({
@@ -51,7 +51,7 @@ import { ProviderService } from '../provider/provider.service';
   ],
 
 
-  declarations: [routedComponents, ReturnListComponent, ReturnCreateComponent, ReturnPrintComponent, PrintComponent, routedComponents, SalesReturnListComponent, SalesReturnCreateComponent, SalesReturnPrintComponent, PrintComponent, ProcurementListComponent, ProcurementCreateComponent, ProcurementPrintComponent, PrintComponent, MaintainCreatComponent],
+  declarations: [routedComponents, ReturnListComponent, ReturnCreateComponent, ReturnPrintComponent, routedComponents, SalesReturnListComponent, SalesReturnCreateComponent, SalesReturnPrintComponent,   ProcurementListComponent, ProcurementCreateComponent, ProcurementPrintComponent,  MaintainCreatComponent, MaintainPrintComponent],
   providers: [MaintainReturnService, ProcurementService, ProviderService, InnerReturnService, SalesReturnService],
 
   entryComponents: [routedComponents[0]],
