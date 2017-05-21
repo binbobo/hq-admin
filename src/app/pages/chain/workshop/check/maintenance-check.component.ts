@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
 import { StorageKeys, SelectOption, DataList } from 'app/shared/models';
 import { Observable } from 'rxjs/Observable';
 import { WorkshopListRequest, WorkshopService } from '../workshop.service';
@@ -12,9 +11,6 @@ import { WorkshopListRequest, WorkshopService } from '../workshop.service';
 })
 
 export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
-  // 表单
-  checkOrderForm: FormGroup;
-
   // 查询参数对象
   params: WorkshopListRequest;
 
@@ -32,17 +28,13 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
 
 
   constructor(injector: Injector,
-    protected service: WorkshopService,
-    private fb: FormBuilder) {
+    protected service: WorkshopService) {
     super(injector, service);
     this.params = new WorkshopListRequest();
 
     // 获取当前登录用户信息
     this.user = JSON.parse(sessionStorage.getItem(StorageKeys.Identity));
     console.log('当前登陆用户: ', this.user);
-
-    // 创建表单
-    this.createForm();
   }
 
   ngOnInit() {
@@ -65,12 +57,6 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
         this.load();
       });
 
-  }
-
-  createForm() {
-    this.checkOrderForm = this.fb.group({
-      keyword: '', // 车牌号
-    });
   }
 
   /**

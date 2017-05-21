@@ -1,6 +1,5 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { AssignService, AssignListRequest } from '../assign.service';
-import { FormGroup, FormBuilder } from '@angular/forms';
 import { StorageKeys, SelectOption, DataList } from 'app/shared/models';
 import * as fileSaver from 'file-saver';
 
@@ -12,9 +11,6 @@ import * as fileSaver from 'file-saver';
 })
 
 export class AssignOrderComponent extends DataList<any> implements OnInit {
-    // 表单
-    assignOrderForm: FormGroup;
-
     // 查询参数对象
     params: AssignListRequest;
 
@@ -58,18 +54,13 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
 
 
     constructor(injector: Injector,
-        protected service: AssignService,
-
-        private fb: FormBuilder) {
+        protected service: AssignService) {
         super(injector, service);
         this.params = new AssignListRequest();
 
         // 获取当前登录用户信息
         this.user = JSON.parse(sessionStorage.getItem(StorageKeys.Identity));
         console.log('当前登陆用户: ', this.user);
-
-        // 创建表单
-        this.createForm();
 
         // 初始化维修技师数据
         this.service.getMaintenanceTechnicians()
@@ -98,11 +89,6 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         });
     }
 
-    createForm() {
-        this.assignOrderForm = this.fb.group({
-            keyword: '', // 车牌号
-        });
-    }
     // 加载派工列表
     load() {
         this.statistics = null;

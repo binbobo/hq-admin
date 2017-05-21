@@ -59,7 +59,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   };
 
   regex = {
-    plateNo: /^[\u4e00-\u9fa5]{1}[A-Z]{1}[A-Z_0-9]{5}$/i,
+    plateNo: /^[\u4e00-\u9fa5]{1}[A-Z]{1}[A-Z_0-9]{5}$/,
     phone: /^1[3|4|5|7|8]\d{9}$/,
     mileage: /^[0-9]+([.]{1}[0-9]{1,2})?$/,
     vin: /^[A-HJ-NPR-Z\d]{8}[\dX][A-HJ-NPR-Z\d]{2}\d{6}$/
@@ -243,11 +243,12 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   * @memberOf CreateOrderComponent
   */
   plateNoOnSelect(evt) {
+    // 车牌号输入框可用  其他客户车辆相关输入框不可用
+    this.workSheetForm.controls.plateNo.setValue(evt.plateNo);
+    this.workSheetForm.controls.plateNo.enable();
+
     // console.log('根据车牌号模糊查询客户车辆信息selected: ', JSON.stringify(evt));
     this.getLastOrderByCustomerVechileId(evt);
-    // 车牌号输入框可用  其他客户车辆相关输入框不可用
-    this.workSheetForm.controls.plateNo.enable();
-    this.workSheetForm.controls.plateNo.patchValue(evt.plateNo, { emitEvent: false });
   }
   /**
 * @memberOf CreateOrderComponent
@@ -256,9 +257,9 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // console.log('根据车主姓名模糊查询客户车辆信息selected: ', JSON.stringify(evt));
     this.getLastOrderByCustomerVechileId(evt);
     // 车主输入框可用  其他客户车辆相关输入框不可用
-    this.workSheetForm.controls.customerName.enable();
 
-    this.workSheetForm.controls.customerName.patchValue(evt.customerName, { emitEvent: false });
+    this.workSheetForm.controls.customerName.setValue(evt.customerName);
+    this.workSheetForm.controls.customerName.enable();
   }
 
   // 客户车辆相关输入框可用

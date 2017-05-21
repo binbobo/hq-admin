@@ -4,9 +4,9 @@
     维修派工
   </div>
   <div class='card-block'>
-    <form [formGroup]="assignOrderForm" (ngSubmit)="onSearch()">
+    <form (ngSubmit)="onSearch()">
       <div class="input-group col-8 offset-2">
-        <input style="border-radius: 5px;" [(ngModel)]="params.keyword" formControlName="keyword" placeholder="请输入车牌号/工单号" class="form-control mr-3">
+        <input style="border-radius: 5px;" [(ngModel)]="params.keyword" name="keyword" placeholder="请输入车牌号/工单号" class="form-control mr-3">
         <span class="input-group-btn">
           <button class="btn btn-primary" type="submit">查询</button>
         </span>
