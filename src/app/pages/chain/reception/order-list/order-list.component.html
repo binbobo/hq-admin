@@ -4,7 +4,7 @@
     工单列表
   </div>
   <div class="card-block">
-    <form [formGroup]="workSheetFilterForm" (ngSubmit)="onSearch()">
+    <form #form="ngForm" (ngSubmit)="onSearch()">
       <!--不同工单状态工单复选框部分-->
       <div class="form-group">
         <div class="form-check form-check-inline" *ngFor="let status of orderStatusData">
@@ -18,35 +18,31 @@
       <div class="form-group row">
         <label for="plateNo" class="col-1 col-form-label col-form-label">车牌号</label>
         <div class="col-2">
-          <input type="text" [(ngModel)]="params.plateNo" class="form-control form-control" formControlName="plateNo" id="plateNo"
-            placeholder="车牌号">
+          <input type="text" [(ngModel)]="params.plateNo" name="plateNo" class="form-control" placeholder="车牌号">
         </div>
-        <label for="customerName" class="col-1 col-form-label col-form-label">车主</label>
+        <label for="customerName" class="col-1 col-form-label">车主</label>
         <div class="col-2">
-          <input type="text" [(ngModel)]="params.customerName" class="form-control form-control" formControlName="customerName" id="customerName"
-            placeholder="车主">
+          <input type="text" [(ngModel)]="params.customerName" name="customerName" class="form-control">
         </div>
-        <label for="phone" class="col-1 col-form-label col-form-label">车主电话</label>
+        <label for="phone" class="col-1 col-form-label">车主电话</label>
         <div class="col-2">
-          <input type="tel" [(ngModel)]="params.phone" class="form-control form-control" formControlName="phone" id="phone" placeholder="车主电话">
+          <input type="text" [(ngModel)]="params.phone" name="phone" class="form-control" placeholder="车主电话">
         </div>
-        <label for="contactUser" class="col-1 col-form-label col-form-label">送修人</label>
+        <label for="contactUser" class="col-1 col-form-label">送修人</label>
         <div class="col-2">
-          <input type="email" [(ngModel)]="params.contactUser" class="form-control form-control" formControlName="contactUser" id="contactUser"
-            placeholder="送修人">
+          <input type="text" [(ngModel)]="params.contactUser" name="contactUser" class="form-control" placeholder="送修人">
         </div>
       </div>
       <div class="form-group row">
-        <label for="contactInfo" class="col-1 col-form-label col-form-label">送修人电话</label>
+        <label for="contactInfo" class="col-1 col-form-label">送修人电话</label>
         <div class="col-2">
-          <input type="tel" [(ngModel)]="params.contactInfo" class="form-control form-control" formControlName="contactInfo" id="contactInfo"
-            placeholder="送修人电话">
+          <input type="text" [(ngModel)]="params.contactInfo"  name="contactInfo" class="form-control" placeholder="送修人电话">
         </div>
-        <label class="col-1 col-form-label col-form-label"></label>
+        <label class="col-1 col-form-label"></label>
         <div class="col-6" *ngIf="isCollapsed">
-          <button type="submit" [disabled]="false" class="btn btn btn-primary mr-2">查询</button>
-          <button type="reset" (click)="reset()" class="btn btn btn-secondary mr-2">清空</button>
-          <button type="button" (click)="export()" class=" btn btn btn-secondary mr-2">导出</button>
+          <button type="submit" [disabled]="false" class="btn btn-primary mr-2">查询</button>
+          <button type="reset" (click)="reset(form)" class="btn btn-secondary mr-2">清空</button>
+          <button type="button" (click)="export()" class="btn btn-secondary mr-2">导出</button>
         </div>
       </div>
       <hr>
@@ -62,57 +58,50 @@
         <div [collapse]="isCollapsed" class="mt-3">
           <div class="well well-lg">
             <div class="form-group row">
-              <label for="brand" class="col-1 col-form-label col-form-label">品牌</label>
+              <label for="brand" class="col-1 col-form-label">品牌</label>
               <div class="col-2">
-                <input type="text" [(ngModel)]="params.brand" class="form-control form-control" formControlName="brand" id="brand" placeholder="品牌">
+                <input type="text" [(ngModel)]="params.brand" name="brand" class="form-control" placeholder="品牌">
               </div>
-              <label for="series" class="col-1 col-form-label col-form-label">车系</label>
+              <label for="series" class="col-1 col-form-label">车系</label>
               <div class="col-2">
-                <input type="text" [(ngModel)]="params.series" class="form-control form-control" formControlName="series" id="series" placeholder="车系">
+                <input type="text" [(ngModel)]="params.series" name="series" class="form-control" placeholder="车系">
               </div>
-              <label for="vehicleName" class="col-1 col-form-label col-form-label">车型</label>
+              <label for="vehicleName" class="col-1 col-form-label">车型</label>
               <div class="col-2">
-                <input type="text" [(ngModel)]="params.vehicleName" class="form-control form-control" formControlName="vehicleName" id="vehicleName"
-                  placeholder="车型">
+                <input type="text" [(ngModel)]="params.vehicleName" name="vehicleName" class="form-control" placeholder="车型">
               </div>
               <label for="createdUserName" class="col-1 col-form-label col-form-label">服务顾问</label>
               <div class="col-2">
-                <input type="text" [(ngModel)]="params.createdUserName" class="form-control form-control" formControlName="createdUserName"
-                  id="createdUserName" placeholder="服务顾问">
+                <input type="text" [(ngModel)]="params.createdUserName" name="createdUserName" class="form-control" placeholder="服务顾问">
               </div>
             </div>
             <div class="form-group row">
-              <label for="leaveFactoryTime" class="col-1 col-form-label col-form-label">出厂时间</label>
+              <label for="leaveFactoryTime" class="col-1 col-form-label">出厂时间</label>
               <div class="col-2">
-                <input [(ngModel)]="params.leaveStartTimeDate" class="form-control form-control datetime-picker" type="text" readonly formControlName="leaveFactoryTimeStart"
-                  ngui-datetime-picker [close-on-select]="false" />
+                <input [(ngModel)]="params.leaveStartTimeDate" name="leaveStartTimeDate" class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
+              </div>
+              <label class="col-1 col-form-label">至</label>
+              <div class="col-2">
+                <input [(ngModel)]="params.leaveEndTimeDate" name="leaveEndTimeDate" class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
+              </div>
+              <label for="enterStoreTime" class="col-1 col-form-label">进店时间</label>
+              <div class="col-2">
+                <input [(ngModel)]="params.enterStartTimeDate"  name="enterStartTimeDate" class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
               </div>
               <label class="col-1 col-form-label col-form-label">至</label>
               <div class="col-2">
-                <input [(ngModel)]="params.leaveEndTimeDate" class="form-control form-control datetime-picker" type="text" readonly formControlName="leaveFactoryTimeEnd"
-                  ngui-datetime-picker [close-on-select]="false" />
-              </div>
-              <label for="enterStoreTime" class="col-1 col-form-label col-form-label">进店时间</label>
-              <div class="col-2">
-                <input [(ngModel)]="params.enterStartTimeDate" class="form-control form-control datetime-picker" type="text" readonly formControlName="enterStoreTimeStart"
-                  ngui-datetime-picker [close-on-select]="false" />
-              </div>
-              <label class="col-1 col-form-label col-form-label">至</label>
-              <div class="  col-2">
-                <input [(ngModel)]="params.enterEndTimeDate" class="form-control form-control datetime-picker" type="text" readonly formControlName="enterStoreTimeEnd"
-                  ngui-datetime-picker [close-on-select]="false" />
+                <input [(ngModel)]="params.enterEndTimeDate" name="enterEndTimeDate" class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
               </div>
             </div>
 
             <div class="form-group row">
               <label for="billCode" class="col-1 col-form-label col-form-label">工单号</label>
               <div class="col-2">
-                <input type="text" [(ngModel)]="params.billCode" class="form-control form-control" formControlName="billCode" id="billCode"
-                  placeholder="工单号">
+                <input type="text" [(ngModel)]="params.billCode"  name="billCode" class="form-control"  placeholder="工单号">
               </div>
               <label for="type" class="col-1 col-form-label col-form-label">维修类型</label>
               <div class="col-2">
-                <select id="type" [(ngModel)]="params.type" formControlName="type" class="form-control form-control">
+                <select id="type" [(ngModel)]="params.type" name="type"  class="form-control">
                   <option style="display:none">
                   <option *ngFor="let type of maintenanceTypeData" value="{{type.id}}">{{type.value}}</option>
                 </select>
@@ -124,8 +113,8 @@
               </div>-->
               <div class="col-6" *ngIf="!isCollapsed">
                 <button type="submit" [disabled]="false" class="btn btn-primary mr-2">查询</button>
-                <button type="reset" (click)="reset()" class=" btn btn-secondary mr-2">清空</button>
-                <button type="button" (click)="export()" class=" btn btn-secondary mr-2">导出</button>
+                <button type="reset" (click)="reset(form)" class="btn btn-secondary mr-2">清空</button>
+                <button type="button" (click)="export()" class="btn btn-secondary mr-2">导出</button>
               </div>
             </div>
           </div>

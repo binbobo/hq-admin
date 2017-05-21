@@ -1,5 +1,4 @@
 import { Component, OnInit, Injector } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
 import { CustomerListRequest } from '../../customer/customer.service';
 import { CustomerService } from '../customer.service';
 import { DataList } from 'app/shared/models';
@@ -10,9 +9,6 @@ import { DataList } from 'app/shared/models';
   styleUrls: ['./car-owner.component.css'],
 })
 export class CarOwnerComponent extends DataList<any>  {
-
-  // 车主列表查询表单
-  customerManagementForm: FormGroup;
   // 车主列表查询参数
   params: CustomerListRequest;
 
@@ -21,25 +17,9 @@ export class CarOwnerComponent extends DataList<any>  {
 
   constructor(
     injector: Injector,
-    protected service: CustomerService,
-
-    private fb: FormBuilder) {
+    protected service: CustomerService) {
     super(injector, service);
     this.params = new CustomerListRequest();
-
-    // 初始化FormGroup
-    this.createForm();
-  }
-
-  createForm() {
-    // 车主列表查询表单
-    this.customerManagementForm = this.fb.group({
-      plateNo: '', // 车牌号
-      name: '', // 车主
-      phone: '', // 车主电话
-      createdStartDate: '', // 建档开始日期
-      createdEndDate: '', // 建档结束日期
-    });
   }
 
   /**

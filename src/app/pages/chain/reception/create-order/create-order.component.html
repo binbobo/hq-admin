@@ -11,7 +11,7 @@
       <input type="hidden" formControlName="suspendedBillId" />
       <!--工单基本筛选条件面板-->
       <div class="form-group row">
-        <label for="plateNo" class="col-1 col-form-label col-form-label"><span class="asterisk mr-1">*</span>车牌号</label>
+        <label for="plateNo" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车牌号</label>
         <div class="col-2">
           <input [hqTableTypeahead]="plateNotypeaheadSource" [columns]="typeaheadColumns" (onSelect)="plateNoOnSelect($event)" class="form-control"
             formControlName="plateNo" id="plateNo" label="车牌号" type="text" />
@@ -20,7 +20,7 @@
           <!--客户id-->
           <input type="hidden" formControlName="customerId" />
         </div>
-        <label for="customerName" class="col-1 col-form-label col-form-label"><span class="asterisk mr-1">*</span>车主</label>
+        <label for="customerName" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车主</label>
         <div class="col-2">
           <input [hqTableTypeahead]="customerNametypeaheadSource" label="车主" [columns]="typeaheadColumns" (onSelect)="onCustomerNameSelect($event)"
             type="text" class="form-control" formControlName="customerName" id="customerName" placeholder="输入车主名称">
