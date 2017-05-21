@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UsercenterComponent } from './usercenter.component';
+import { DistributePrintComponent } from './distribute-print.component';
 
-describe('UsercenterComponent', () => {
-  let component: UsercenterComponent;
-  let fixture: ComponentFixture<UsercenterComponent>;
+describe('DistributePrintComponent', () => {
+  let component: DistributePrintComponent;
+  let fixture: ComponentFixture<DistributePrintComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UsercenterComponent ]
+      declarations: [ DistributePrintComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UsercenterComponent);
+    fixture = TestBed.createComponent(DistributePrintComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

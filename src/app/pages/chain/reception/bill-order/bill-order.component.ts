@@ -129,10 +129,10 @@ export class BillOrderComponent extends DataList<any>{
 
     }
     private billPrice: any;
-    // 点击详情事件
+    
     amountStatus: string;
     private printData = {
-        maindata:{},
+        maindata: {},
         costData: [],
         workHourData: [],
         materialData: [],
@@ -147,6 +147,7 @@ export class BillOrderComponent extends DataList<any>{
             workItemMoney: 0
         }
     }
+    // 点击详情事件
     DetailsDialog(evt, id, dialog, item) {
         console.log(item);
         if (item.updateOnUtc) {
@@ -157,8 +158,7 @@ export class BillOrderComponent extends DataList<any>{
         this.isShowCost = false;
         this.isShowCostDetail = true;
         evt.preventDefault();
-        // 显示窗口
-        dialog.show();
+       
         // 根据id获取工单详细信息
         this.service.get(id).then(data => {
             console.log('根据工单id获取工单详情数据：', data);
@@ -166,7 +166,8 @@ export class BillOrderComponent extends DataList<any>{
             // 记录当前操作的工单记录
             this.selectedOrder = data;
             this.billId = this.selectedOrder["id"]
-
+             // 显示窗口
+        dialog.show();
         });
         this.service.getCost(id).then(data => {
             if (!data.isSettlement) {
@@ -189,8 +190,9 @@ export class BillOrderComponent extends DataList<any>{
 
         this.service.getPrintDetail(id)
             .then(data => {
+
                 console.log('结算单', data)
-                this.printData.maindata=data;
+                this.printData.maindata = data;
                 this.printData.costData = data.totalCost; //收费结算单
                 this.printData.workHourData = data.workHours;//工时明细
                 this.printData.materialData = data.matereialDetails; //材料明细
@@ -242,7 +244,7 @@ export class BillOrderComponent extends DataList<any>{
                         this.print();
                         // 清空数据
 
-                    }, 1000);
+                    }, 200);
                 } else {
                     // 清空数据
 
@@ -256,9 +258,7 @@ export class BillOrderComponent extends DataList<any>{
     }
     // 点击打印事件
     private pathname;
-    OnPrintClick() {
-        this.router.navigate(['/chain/reception/bill/print', this.billId])
-    }
+
 
     print() {
         this.printer.print();

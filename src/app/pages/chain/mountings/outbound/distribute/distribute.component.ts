@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { DistributeService, DistributeRequest, SearchReturnData, ProductRequest } from "./distribute.service";
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ModalDirective, TabsetComponent } from 'ngx-bootstrap';
-import { TypeaheadRequestParams, HqAlerter } from "app/shared/directives";
+import { TypeaheadRequestParams, HqAlerter, PrintDirective } from "app/shared/directives";
 import * as moment from 'moment';
 import { SuspendBillDirective } from "app/pages/chain/chain-shared";
 
@@ -15,7 +15,7 @@ import { SuspendBillDirective } from "app/pages/chain/chain-shared";
   providers: [DistributeService]
 })
 export class DistributeComponent implements OnInit {
-  MRData: any=[];
+  MRData: any = [];
   suspendedBillId: any;
   numberPrintList: SelectOption[];
   @ViewChild('createModal')
@@ -24,6 +24,8 @@ export class DistributeComponent implements OnInit {
   protected alerter: HqAlerter;
   @ViewChild(SuspendBillDirective)
   private suspendBill: SuspendBillDirective;
+  @ViewChild('printer')
+  public printer: PrintDirective;
   employeesData: any;
   maintenanceEmployees: any;
   isablePrint = false;
@@ -31,10 +33,11 @@ export class DistributeComponent implements OnInit {
   billCode: any;
   newMainData = [];
   productData: any;
-  serviceData: any=[];
+  serviceData: any = [];
   listId: any;
   SearchappendList: any;
   ChooseOrderForm: FormGroup;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -54,7 +57,7 @@ export class DistributeComponent implements OnInit {
       { name: 'billCode', title: '工单号' },
       { name: 'customerName', title: '车主' },
       { name: 'brand', title: '品牌' },
-      { name: 'model', title: '车型' }
+      { name: 'vehicleName', title: '车型' }
     ];
   }
 
@@ -123,7 +126,7 @@ export class DistributeComponent implements OnInit {
 
   }
   numberList: any;
-  serialData: any=[];
+  serialData: any = [];
   serialDataList: any;
   // 车牌号模糊搜索接口调用
   public get PlatNoSource() {
@@ -146,15 +149,14 @@ export class DistributeComponent implements OnInit {
   }
 
   // 点击发料弹出发料弹框
+  item: any;
   OnCreatBound(item) {
-    
-
+    this.item = item;
     this.createModal.show();
     this.InputData.serviceName = item.serviceName; //维修项目名称
     this.InputData.maintenanceItemId = item.id; //维修明细id
-    this.InputData.employeesData=item.maintenanceEmployees;
+    this.InputData.employeesData = item.maintenanceEmployees;
     this.InputData = { ...this.InputData };
-
   }
   // 生成发料单
   billData: any;
@@ -174,7 +176,20 @@ export class DistributeComponent implements OnInit {
       console.log(result)
       el.disabled = false;
       this.suspendBill.refresh();
-      this.alerter.info('生成发料单成功', true, 2000);
+
+      if (confirm('生成发料单成功！ 是否打印？')) {
+        this.service.getPrintList(this.listId, this.billCode, result.data[0].serialNum).toPromise()
+          .then(data => {
+            console.log(data)
+            this.printList = data;
+            setTimeout(() => { this.print() }, 200);
+            setTimeout(() => { this.printList = null }, 400)
+          })
+          .catch(err => console.log(err));
+      } else {
+        // 清空数据
+      }
+
       this.isablePrint = true;
       let num = result.data[0].serialNum;
       this.serialData = this.serialData.concat(result.data);
@@ -182,12 +197,12 @@ export class DistributeComponent implements OnInit {
       this.serialData.sort((a, b) => {
         return a.serialNum - b.serialNum
       })
-     
+
       this.numberList = this.serialData.map(item => {
         return {
           value: item.serialNum,
           text: item.serialNum,
-          checked:item.serialNum===num,
+          checked: item.serialNum === num,
         };
       });
       console.log(this.numberList)
@@ -215,16 +230,24 @@ export class DistributeComponent implements OnInit {
     confirmModal.hide();
     history.go(-1);
   }
-
+  hasList: any;
   onCreate(evt) {
     console.log(evt);
     evt.amount = evt.amount;
-    if (this.newMainData) {
-      this.newMainData = this.newMainData;
+    this.hasList = this.newMainData.filter(item => item.maintenanceItemId === evt.maintenanceItemId && item.productId === evt.productId);
+
+    if (this.hasList.length > 0) {
+      this.newMainData.forEach((item, index) => {
+        if (item.maintenanceItemId === evt.maintenanceItemId && item.productId === evt.productId) {
+          item.count += Number(evt.count);
+        }
+      })
     } else {
-      this.newMainData = []
+      this.newMainData.push(evt);
     }
-    this.newMainData.push(evt)
+
+
+
     this.suspendData.newMainData = this.newMainData;
     this.createModal.hide();
   }
@@ -240,12 +263,22 @@ export class DistributeComponent implements OnInit {
     billCode: "",
     SerialNumsList: []
   }
+  printList: any;
+
+  print() {
+    this.printer.print();
+  }
   onConfirmNumber(evt) {
-    console.log(evt);
     this.SerialNumsList = evt.value;
     console.log(this.SerialNumsList)
-
-    this.router.navigate(['./print', this.listId, this.billCode, this.SerialNumsList.join("-")], { relativeTo: this.route });
+    this.service.getPrintList(this.listId, this.billCode, this.SerialNumsList).toPromise()
+      .then(data => {
+        console.log(data)
+        this.printList = data;
+        setTimeout(() => { this.print(); }, 200);
+        setTimeout(() => { this.printList = null }, 400)
+      })
+      .catch(err => console.log(err));
   }
 
   get columns() {
