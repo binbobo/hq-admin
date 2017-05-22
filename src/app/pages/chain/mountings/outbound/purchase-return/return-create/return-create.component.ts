@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, ViewChildren, QueryList, Input } from '@angular/core';
-import { TypeaheadRequestParams, FormGroupControlErrorDirective } from 'app/shared/directives';
+import { TypeaheadRequestParams, FormGroupControlErrorDirective, } from 'app/shared/directives';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { CentToYuanPipe } from 'app/shared/pipes';

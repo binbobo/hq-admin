@@ -10,6 +10,7 @@ import { TreeviewModule } from "ngx-treeview/lib";
 import { ChainSharedModule } from "app/pages/chain/chain-shared/chain-shared.module";
 import { SharedModule } from "app/shared/shared.module";
 import { PrintViewComponent } from './business/print-view/print-view.component';
+import { OrderService } from "app/pages/chain/reception/order.service";
 
 @NgModule({
   imports: [
@@ -31,6 +32,6 @@ import { PrintViewComponent } from './business/print-view/print-view.component';
     
   ],
   declarations: [BusinessListComponent, PrintViewComponent],
-  providers:[BusinessService]
+  providers:[BusinessService,OrderService]
 })
 export class MaintenanceModule { }

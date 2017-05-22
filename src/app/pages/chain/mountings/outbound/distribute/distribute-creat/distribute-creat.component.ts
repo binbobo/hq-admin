@@ -92,7 +92,6 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
       storeHouse: [this.model.storeHouse],
       createUser: [this.model.createUser, [Validators.required]],
       createUserName: [this.model.createUserName],
-      description: [this.model.description],
       serviceName: this.model.serviceName,
       maintenanceItemId: this.model.maintenanceItemId
     })
@@ -181,7 +180,7 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
     this.form.controls['price'].setValidators(CustomValidators.gte(item.price / 100));
     this.form.controls['initcount'].setValidators([CustomValidators.lte(this.fcount), CustomValidators.gt(0)]);
     this.model.price = this.model.price / 100;
-    this.model.amount = (this.model.initcount) * (this.model.price) ;
+    this.model.amount = (this.model.initcount) * (this.model.price);
     Object.assign(this.form.value, this.model);
     this.form.patchValue(this.model);
   }

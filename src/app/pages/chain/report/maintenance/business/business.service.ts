@@ -80,9 +80,7 @@ export class BusinessListRequest extends PagedParams {
     public enterEndTimeDate?: string, // 进店结束时间
     public leaveStartTimeDate?: string, // 出厂开始时间
     public leaveEndTimeDate?: string, // 出厂结束时间
-    // public billCode?: string, // 工单号
-    // public keyword?: string, // 关键字
-    // public orgIds?: Array<string> // 查询范围
+    public orgIds?: Array<string> // 查询范围
   ) {
     super();
   }

@@ -5,7 +5,7 @@ import { Component, EventEmitter, Input, Output, ViewEncapsulation, OnChanges } 
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.css'],
   host: {
-    style: 'margin-bottom:10px;display:block'
+    style: 'margin-bottom:10px;display:block;margin-top:20px;'
   },
   encapsulation: ViewEncapsulation.None,
 })

@@ -4,6 +4,8 @@ import { DataList, StorageKeys } from "app/shared/models";
 import { BusinessService, BusinessListRequest, FuzzySearchRequest } from "../business.service";
 import { TypeaheadRequestParams, PrintDirective } from "app/shared/directives";
 import { CentToYuanPipe, DurationHumanizePipe } from "app/shared/pipes";
+import { TreeviewItem, TreeviewConfig } from "ngx-treeview/lib";
+import { OrderService } from "app/pages/chain/reception/order.service";
 
 @Component({
   selector: 'hq-business-list',
@@ -20,19 +22,32 @@ export class BusinessListComponent extends DataList<any> {
   private pipe: DurationHumanizePipe = new DurationHumanizePipe();
   @ViewChild('printer')
   public printer: PrintDirective;
-  // private costData: any;//收费结算单
-  // private workHourData: any;//工时明细
-  // private matereialData: any;//配件明细
   private businessData: any;//维修历史详情
   private moneyObj = null;
+
+  // 用于ngx-treeview组件
+  public items: TreeviewItem[];
+  public config: TreeviewConfig = {
+    isShowAllCheckBox: true,
+    isShowFilter: true,
+    isShowCollapseExpand: true,
+    maxHeight: 500
+  };
 
   constructor(
     injector: Injector,
     protected service: BusinessService,
+    protected orderService: OrderService,
     private formBuilder: FormBuilder,
   ) {
     super(injector, service);
     this.params = new BusinessListRequest();
+    // 获取可以选择的店名, 用于查询范围筛选
+    this.orderService.getSelectableStores().subscribe(data => {
+      console.log('门店数据', data);
+      if (data[0].children && data[0].children.length > 0)
+        this.items = data;
+    });
     this.createForm();
 
   }
@@ -77,6 +92,14 @@ export class BusinessListComponent extends DataList<any> {
   public get plateNotypeaheadSource() {
     return this.typeaheadSource(this.service.getCustomerVehicleByPlateNo);
   }
+  //门店下拉框选择
+  onSearchRangeChange(evt) {
+    // 更新查询范围参数
+    this.params.orgIds = evt;
+
+    console.log('当前选择的查询范围列表：', this.params.orgIds);
+  }
+
   //条件查询维修历史
   onSearch() {
     this.isSearch = false;
@@ -128,10 +151,11 @@ export class BusinessListComponent extends DataList<any> {
         this.moneyObj.amountReceivable1 += item.receivableCost;//应收金额
       });
       this.businessData['moneyObj'] = this.moneyObj;
-      console.log('打印数据',this.businessData);
+      modalDialog.show()
+      console.log('打印数据', this.businessData);
     })
       .catch(err => Promise.reject(`获取维修历史详情失败：${err}`));
-    setTimeout(() => modalDialog.show(), 300);
+    // setTimeout(() => modalDialog.show(), 300);
 
   }
   print() {

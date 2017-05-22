@@ -24,8 +24,10 @@ export class ReturnCreateComponent implements OnInit {
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
 
-  private originalId: any;//每一条数据ID
+  private originalBillId: any;//每一条数据ID
   private locationId: any;//库位ID
+  private productId: any;//库位ID
+  private existCounts: any;//库存
 
   @Input()
   selectReturnData: any;
@@ -39,9 +41,11 @@ export class ReturnCreateComponent implements OnInit {
     this.buildForm();
     console.log('传过来的数据', this.selectReturnData);
     if (this.selectReturnData) {
-      this.originalId = this.selectReturnData.id;
+      this.originalBillId = this.selectReturnData.id;
       this.locationId = this.selectReturnData.locationId;
-
+      this.productId = this.selectReturnData.productId;
+      this.existCounts = this.selectReturnData.existCount;
+      this.selectReturnData.amount = (this.selectReturnData.price * 1).toFixed(2);
       this.form.patchValue(this.selectReturnData);
     }
 
@@ -51,12 +55,14 @@ export class ReturnCreateComponent implements OnInit {
     this.form = this.formBuilder.group({
       brandName: ['', [Validators.required]],
       productCode: [''],
+      productTypes: [''],
       productName: [''],
       specification: ['', [Validators.required]],
       count: ['', [Validators.required, CustomValidators.digits]],
       price: [''],
       counts: [''],
       amount: [''],
+      unit: [''],
       locationName: ['', [Validators.required]],
       storeName: ['', [Validators.required]],
     })
@@ -79,8 +85,11 @@ export class ReturnCreateComponent implements OnInit {
     //   event.preventDefault();
     //   return false;
     // } else {
-    this.form.value['originalId'] = this.originalId;
+    this.form.value['originalId'] = this.originalBillId;
     this.form.value['locationId'] = this.locationId;
+    this.form.value['productId'] = this.productId;
+    this.form.value['existCounts'] = this.existCounts + count;
+    this.form.value.count = count;
     console.log('表单数据', this.form.value);
     this.formSubmit.emit(this.form.value);
     // this.form.reset(this.model);

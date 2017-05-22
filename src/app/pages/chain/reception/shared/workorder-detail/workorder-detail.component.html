@@ -73,24 +73,24 @@
       <span>{{data?.typeName}}</span>
     </div>
     <div class="col-4">
-      <label>进店时间：</label>
+      <label>进厂时间：</label>
       <span>{{data?.createdOnUtc|sDatetime}}</span>
     </div>
     <div class="col-4">
-      <label>进店里程：</label>
+      <label>进厂里程：</label>
       <span>{{data?.mileage}}</span>
       <span class="ml-2">KM</span>
     </div>
   </div>
   <div class="form-group row">
-    <div class="col-4">
+    <div class="col-4" *ngIf="data.leaveTime">
       <label>出厂时间：</label>
       <span>{{data?.leaveTime|sDatetime}}</span>
     </div>
-    <div class="col-4">
+    <div class="col-4" *ngIf="data.mileage">
       <label>出厂里程：</label>
       <span>{{data?.mileage}}</span>
-      <span class="ml-2">KM</span>
+      <span class="ml-2" *ngIf="data.mileage">KM</span>
     </div>
   </div>
 </form>

@@ -42,7 +42,7 @@
             <th>操作</th>
             <th>状态</th>
             <th>车牌号</th>
-            <th>工单号</th>
+            <th>结算单号</th>
             <th>应收金额</th>
             <th>维修类型</th>
             <th>预计交车时间</th>
@@ -60,7 +60,7 @@
             <td *ngIf="item.updateOnUtc"><a href="javascript:void(0)" (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
             <td>{{item.statusName}}</td>
             <td>{{item.plateNo}}</td>
-            <td>{{item.billCode}}</td>
+            <td></td>
             <td>{{item.amount|centToYuan}}</td>
             <td>{{item.typeName}}</td>
             <td>{{item.expectLeave|sDatetime}}</td>
@@ -92,7 +92,7 @@
         <hq-checkout-print-detail [data]="selectedOrder"></hq-checkout-print-detail>
         <div class="card">
           <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
-             工时费
+            工时费
             <span class="ml-2 mr-2">{{workHourFee}}元</span> | 材料费
             <span class="ml-2 mr-2">{{materialFee}}元</span> | 其它
             <span class="ml-2 mr-2">{{otherFee}}元</span> | 合计

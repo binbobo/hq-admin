@@ -33,15 +33,9 @@
       <span>{{data?.customerName}}</span>
     </div>
     <div class="col-4">
-      <label>购车时间：</label>
-      <span>{{data?.purchaseDate|sDate}}</span>
+      <label>车主电话：</label>
+      <span></span>
     </div>
-    <div class="col-4">
-      <label>预计交车时间：</label>
-      <span>{{data?.expectLeave|sDatetime}}</span>
-    </div>
-  </div>
-  <div class="form-group row">
     <div class="col-4">
       <label>维修技师：</label>
       <span>{{data?.employeeNames}}</span>
@@ -51,46 +45,94 @@
       <!--<span *ngIf="teamType === 1">{{data?.employeeNames.join(',')}}</span>
         <span *ngIf="teamType === 2">{{data?.turnEmployeeNames.join(',')}}</span>-->
     </div>
-    <div class="col-4">
-      <label>服务顾问：</label>
-      <span>{{data?.createdUserName}}</span>
-    </div>
-    <div class="col-4">
-      <label>介绍人：</label>
-      <span>{{data?.introducer}}</span>
-    </div>
   </div>
-  <div class="form-group row">
-    <div class="col-4">
-      <label>介绍人电话：</label>
-      <span>{{data?.introPhone}}</span>
-    </div>
-  </div>
-  <hr>
   <div class="form-group row">
     <div class="col-4">
       <label>维修类型：</label>
       <span>{{data?.typeName}}</span>
     </div>
     <div class="col-4">
-      <label>进店时间：</label>
-      <span>{{data?.createdOnUtc|sDatetime}}</span>
+      <label>介绍人：</label>
+      <span>{{data?.introducer}}</span>
     </div>
     <div class="col-4">
-      <label>进店里程：</label>
-      <span>{{data?.mileage}}</span>
-      <span class="ml-2">KM</span>
+      <label>服务顾问：</label>
+      <span>{{data?.createdUserName}}</span>
     </div>
   </div>
   <div class="form-group row">
     <div class="col-4">
+      <label>介绍人：</label>
+      <span>{{data?.introducer}}</span>
+    </div>
+    <div class="col-4">
+      <label>介绍人电话：</label>
+      <span>{{data?.introPhone}}</span>
+    </div>
+    <div class="col-4">
+      <label>预计交车时间：</label>
+      <span>{{data?.expectLeave|sDatetime}}</span>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-4">
+      <label>超时：</label>
+      <span></span>
+    </div>
+    <div class="col-4">
+      <label>结算方：</label>
+      <span></span>
+    </div>
+    <div class="col-4">
+      <label>结算单号：</label>
+      <span></span>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-4">
+      <label>结算员：</label>
+      <span></span>
+    </div>
+    <div class="col-4">
+      <label>结算时间：</label>
+      <span></span>
+    </div>
+    <div class="col-4">
+      <label>出厂时间：</label>
+      <span></span>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-4">
+      <label>出厂里程：</label>
+      <span></span>
+    </div>
+  </div>
+  <hr>
+  <div class="form-group row">
+    <div class="col-4">
+      <label>进厂时间：</label>
+      <span>{{data?.createdOnUtc|sDatetime}}</span>
+    </div>
+    <div class="col-4">
+      <label>进厂里程：</label>
+      <span>{{data?.mileage}}</span>
+      <span class="ml-2">KM</span>
+    </div>
+    <div class="col-4">
       <label>出厂时间：</label>
       <span>{{data?.leaveTime|sDatetime}}</span>
     </div>
+  </div>
+  <div class="form-group row">
     <div class="col-4">
       <label>出厂里程：</label>
       <span>{{data?.mileage}}</span>
       <span class="ml-2">KM</span>
+    </div>
+    <div class="col-4">
+      <label>服务顾问：</label>
+      <span></span>
     </div>
   </div>
 </form>

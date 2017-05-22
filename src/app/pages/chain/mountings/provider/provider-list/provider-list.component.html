@@ -56,8 +56,8 @@
           </tr>
         </tbody>
       </table>
-      <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
     </div>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
   <div class="card-footer text-muted">
     <button class="btn btn-primary" (click)="createModal.show()">新增</button>
