@@ -55,7 +55,7 @@ export class UserListComponent extends DataList<User> implements OnInit {
   }
 
   onUserUpdate(event: Event, user: User) {
-    this.user = user;
+    this.user = Object.assign({}, user);
     this.editModal.show();
   }
 
