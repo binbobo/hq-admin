@@ -77,14 +77,20 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
       this.billId = event.id;
     }
     this.salesReturnData = [];
-    let item = new SaleDetailsRequest(this.customerId, this.customerName, this.billCode, this.billId);
-    console.log('iiiiiiii', item);
-    this.salesReturnservice.getSaleDetailsList(item)
-      .then(data => {
-        console.log('iiiiii配件信息', data);
-        this.model = data.data;
-      })
-      .catch(err => Promise.reject(`获取配件信息失败：${err}`));
+    this.params.customerId = this.customerId;
+    this.params.customerName = this.customerName;
+    this.params.billCode = this.billCode;
+    this.params.billId = this.billId;
+    this.onLoadList();
+    // .then(()=>this.model = this.list)
+    // let item = new SaleDetailsRequest(this.customerId, this.customerName, this.billCode, this.billId);
+    // console.log('iiiiiiii', item);
+    // this.salesReturnservice.getPagedList(item)
+    //   .then(data => {
+    //     console.log('iiiiii配件信息', data);
+    //     this.model = data.data;
+    //   })
+    //   .catch(err => Promise.reject(`获取配件信息失败：${err}`));
   }
   // //选择客户名称
   onItemNameSelect(event) {
@@ -97,7 +103,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
     this.customerPhone = event.customerPhone;
     this.billId = event.id;
     this.billCode = null;
-    this.model = null;
+    this.list = null;
     this.salesReturnData = [];
   }
 
@@ -162,7 +168,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
         if (item.originalId == e.originalId) {
           item.count = Number(e.count);
           item.amount = Number(e.amount);
-          item.existCounts = Number(e.existCounts);
+          item.stockCounts = Number(e.stockCounts);
         }
       })
     } else {
@@ -182,7 +188,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
     this.customerName = item.value.customerName;
     this.customerId = item.value.customerId;
     this.customerPhone = item.value.customerPhone;
-    this.model = item.value.model;
+    this.list = item.value.model;
     this.salesReturnData = item.value.salesReturnData;
     this.seller = item.value.seller;
     this.inUnit = item.value.inUnit;
@@ -232,7 +238,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
       })
       .then(() => {
         this.salesReturnData = [];
-        this.model = null;
+        this.list = null;
         this.billCode = null;
         this.customerName = null;
         this.customerPhone = null;
@@ -252,7 +258,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
       // this.model.createBillDateTime = moment(createTime).format('YYYY-MM-DD hh:mm:ss');
       // console.log(this.model);
       this.suspendData = {
-        model: this.model,
+        model: this.list,
         salesReturnData: this.salesReturnData,
         billCode: this.billCode,
         customerName: this.customerName,
@@ -271,7 +277,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
         // .then(() => this.reset())
         .then(() => {
           this.salesReturnData = [];
-          this.model = null;
+          this.list = null;
           this.billCode = null;
           this.customerName = null;
           this.customerPhone = null;

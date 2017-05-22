@@ -49,7 +49,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of model">
+          <tr *ngFor="let item of list">
             <td><button [disabled]="item.count<=item.returnCount" class="btn btn-primary" (click)="OnCreatBound(item,item.id)">退料</button></td>
             <td>{{item.productCode }}</td>
             <td>{{item.productTypes }}</td>
@@ -112,7 +112,7 @@
   <div class="card-footer text-muted">
     <button [hqSpinner]="loading" [disabled]="!returnData.length" class="btn btn-primary" (click)="createReturnList()">生成内部退料单</button>
     <!--<button class="btn btn-warning" (click)="cancel($event)">取消</button>-->
-    <button [hqSpinner]="loading" [disabled]="!model" class="btn btn-info" (click)="suspend()">挂单</button>
+    <button [hqSpinner]="loading" [disabled]="!list" class="btn btn-info" (click)="suspend()">挂单</button>
   </div>
 </div>
 

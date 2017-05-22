@@ -4,11 +4,7 @@ import { ApiResult, SelectOption, ListResult, BasicService, PagedParams, PagedRe
 
 @Injectable()
 export class SalesReturnService implements BasicService<any>{
-    
-
-  getPagedList(params: PagedParams): Promise<PagedResult<any>> {
-    throw new Error('Method not implemented.');
-  }
+   
 
   create(body: any): Promise<any> {
     throw new Error('Method not implemented.');
@@ -47,7 +43,7 @@ export class SalesReturnService implements BasicService<any>{
   }
 
 //   //获取配件信息
-  getSaleDetailsList(params: SaleDetailsRequest): Promise<PagedResult<any>> {
+  getPagedList(params: SaleDetailsRequest): Promise<PagedResult<any>> {
     const url = Urls.chain.concat('/SaleDetails/GetPageList?', params.serialize());
     console.log("配件信息url",url);
     return this.httpService.get<PagedResult<any>>(url)

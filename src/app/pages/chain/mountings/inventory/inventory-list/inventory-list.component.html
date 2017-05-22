@@ -80,7 +80,7 @@
                 <option disabled *ngFor="let item of item?.vehicleInfoList">{{item.vehicleName}}</option>
               </select>
             </td>
-            <td>{{item.unit}}</td>
+            <td>{{item?.unitItem?.text}}</td>
             <td class="text-right">{{item.costPrice|centToYuan}}</td>
             <td class="text-right">{{item.costAmount|centToYuan}}</td>
             <td class="text-right">{{item.suggPrice|centToYuan}}</td>

@@ -4,9 +4,6 @@ import { SelectOption, ListResult, PagedParams, BasicService, PagedResult, ApiRe
 
 @Injectable()
 export class InnerReturnService implements BasicService<any>{
-  // get(id: string): Promise<any> {
-  //   throw new Error('Method not implemented.');
-  // }
 
   create(body: any): Promise<any> {
     throw new Error('Method not implemented.');
@@ -23,7 +20,7 @@ export class InnerReturnService implements BasicService<any>{
   constructor(private httpService: HttpService) { }
 
   //获取内部领用单号信息
-  getPagedList(params: BillCodeSearchRequest): Promise<PagedResult<any>> {
+  getCodePagedList(params: BillCodeSearchRequest): Promise<PagedResult<any>> {
     const url = Urls.chain.concat('/Uses/SearchBillCode?', params.serialize());
     console.log("领用单url", url);
     return this.httpService.get<PagedResult<any>>(url)
@@ -46,7 +43,7 @@ export class InnerReturnService implements BasicService<any>{
       .catch(err => Promise.reject(`获取内部领用数据失败：${err}`));
   }
   //获取配件信息
-  getUseDetailsList(params: BillCodeSearchRequest): Promise<PagedResult<any>> {
+  getPagedList(params: BillCodeSearchRequest): Promise<PagedResult<any>> {
     const url = Urls.chain.concat('/UseDetails/Search?', params.serialize());
     console.log("配件信息url", url);
     return this.httpService.get<PagedResult<any>>(url)

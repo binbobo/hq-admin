@@ -10,12 +10,12 @@
       </div>
       <div class="form-group">
         <label class="form-control-label">*配件编码</label>
-        <input hqProductTypeahead (onSelect)="onItemSelect($event)" formControlName="productCode" class="form-control" placeholder="请输入配件编码">
+        <input [hqProductTypeahead]="'code'" (onSelect)="onItemSelect($event)" formControlName="productCode" class="form-control" placeholder="请输入配件编码">
         <input type="hidden" label="配件编码" formControlName="productId">
       </div>
       <div class="form-group">
         <label class="form-control-label">*配件名称</label>
-        <input hqProductTypeahead (onSelect)="onItemSelect($event)" formControlName="productName" class="form-control aa" placeholder="请输入配件名称">
+        <input [hqProductTypeahead]="'name'" (onSelect)="onItemSelect($event)" formControlName="productName" class="form-control" placeholder="请输入配件名称">
         <input type="hidden" label="配件名称" formControlName="productId">
       </div>
       <div class="form-group">
@@ -34,11 +34,11 @@
     <div class="col-6">
       <div class="form-group">
         <label class="form-control-label">库位</label>
-        <input [attr.readonly]="editable" label="库位" formControlName="locationName" #aa="hq-error" class="form-control aa" placeholder="请输入库位名称">
+        <input [attr.readonly]="editable" label="库位" formControlName="locationName" #aa="hq-error" class="form-control" placeholder="请输入库位名称">
       </div>
       <div class="form-group">
         <label class="form-control-label">*数量（个）</label>
-        <input label="数量" (input)="calculate()" type="number" formControlName="count" #aa="hq-error" class="form-control aa" placeholder="请输入采购数量">
+        <input label="数量" (input)="calculate()" type="number" formControlName="count" #aa="hq-error" class="form-control" placeholder="请输入采购数量">
       </div>
       <div class="form-group">
         <label class="form-control-label">*含税单价（元/个）</label>

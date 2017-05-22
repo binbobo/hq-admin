@@ -90,7 +90,7 @@ export class ReturnListComponent extends DataList<any> {
     this.takeDepartId = this.departments.departList[0].id;
     // console.log('选择部门', this.departments, this.takeDepartId);
     this.billCode = null;
-    this.model = null;
+    this.list = null;
     this.originalBillId = null;
     this.returnData = [];
   }
@@ -131,7 +131,7 @@ export class ReturnListComponent extends DataList<any> {
       })
       .then(() => {
         this.returnData = [];
-        this.model = null;
+        this.list = null;
         this.billCode = null;
         // this.printModel = null;
       })
@@ -157,7 +157,7 @@ export class ReturnListComponent extends DataList<any> {
       this.innerReturner = inner && inner.takeUserName;
       this.innerDepartment = department && department.name;
       this.suspendData = {
-        model: this.model,
+        model: this.list,
         returnData: this.returnData,
         billCode: this.billCode,
         takeUserId: this.takeUser,
@@ -173,7 +173,7 @@ export class ReturnListComponent extends DataList<any> {
         .then(() => this.suspendBill.refresh())
         .then(() => {
           this.returnData = [];
-          this.model = null;
+          this.list = null;
           this.billCode = null;
           this.originalBillId = null;
           // this.takeUser = this.employees[0].value;
@@ -222,7 +222,7 @@ export class ReturnListComponent extends DataList<any> {
     console.log(item.value.originalBillId);
     this.billCode = item.value.billCode;
     this.takeUser = item.value.takeUserId;
-    this.model = item.value.model;
+    this.list = item.value.model;
     this.returnData = item.value.returnData;
   }
   // reset() {
@@ -255,7 +255,7 @@ export class ReturnListComponent extends DataList<any> {
       let p = new BillCodeSearchRequest(this.takeUser, this.takeDepartId, params.text);
       p.setPage(params.pageIndex, params.pageSize);
       // console.log('ppppppppp',p);
-      return this.innerReturnService.getPagedList(p)
+      return this.innerReturnService.getCodePagedList(p)
     };
   }
 
@@ -266,14 +266,18 @@ export class ReturnListComponent extends DataList<any> {
     this.originalBillId = event.value;
     console.log('iiiiiiii', event);
     this.returnData = [];
-    let item = new BillCodeSearchRequest(this.takeUser, this.takeDepartId, this.billCode);
-    this.innerReturnService.getUseDetailsList(item)
-      .then(data => {
-        console.log('iiiiii配件信息', data);
-        this.model = data.data;
+    this.params.takeUserId = this.takeUser;
+    this.params.takeDepartId = this.takeDepartId;
+    this.params.billCode = this.billCode;
+    this.onLoadList();
+    // let item = new BillCodeSearchRequest(this.takeUser, this.takeDepartId, this.billCode);
+    // this.innerReturnService.getPagedList(item)
+    //   .then(data => {
+    //     console.log('iiiiii配件信息', data);
+    //     this.model = data.data;
        
-      })
-      .catch(err => Promise.reject(`获取配件信息失败：${err}`));
+    //   })
+    //   .catch(err => Promise.reject(`获取配件信息失败：${err}`));
   }
 
   //退料显示弹框

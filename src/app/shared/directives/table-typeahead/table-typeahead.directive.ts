@@ -55,6 +55,7 @@ export class TableTypeaheadDirective implements OnInit {
   }
   @HostListener('focus', ['$event'])
   onFocus(event) {
+    if (!event.sourceCapabilities) return false;
     this.show();
     if (!this.paging && this.forceRefresh || !this.componentRef.instance.result) {
       this.search();
