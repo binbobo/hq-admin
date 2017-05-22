@@ -13,7 +13,7 @@
       <div class="form-group row">
         <label for="plateNo" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车牌号</label>
         <div class="col-2">
-          <input [hqTableTypeahead]="plateNotypeaheadSource" [columns]="typeaheadColumns" (onSelect)="plateNoOnSelect($event)" class="form-control"
+          <input (blur)="onPlateNoBlur()" [hqTableTypeahead]="plateNotypeaheadSource" [columns]="typeaheadColumns" (onSelect)="plateNoOnSelect($event)" class="form-control"
             formControlName="plateNo" id="plateNo" label="车牌号" type="text" />
           <!--客户车辆id-->
           <input type="hidden" formControlName="customerVehicleId" />
@@ -21,9 +21,14 @@
           <input type="hidden" formControlName="customerId" />
         </div>
         <label for="customerName" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车主</label>
-        <div class="col-2">
-          <input #customerName (blur)="onCustomerNameBlur(customerName.value)" [hqTableTypeahead]="customerNametypeaheadSource" label="车主" [columns]="typeaheadColumns" (onSelect)="onCustomerNameSelect($event)"
-            type="text" class="form-control" formControlName="customerName" id="customerName" placeholder="输入车主名称">
+        <div *ngIf="isFuzzySearchEnable" class="col-2">
+          <input #customerName (blur)="onCustomerNameBlur(customerName.value)" [hqTableTypeahead]="customerNametypeaheadSource" label="车主"
+            [columns]="typeaheadColumns" (onSelect)="onCustomerNameSelect($event)" type="text" class="form-control" formControlName="customerName"
+            id="customerName" placeholder="输入车主名称">
+        </div>
+        <div *ngIf="!isFuzzySearchEnable" class="col-2">
+          <input #customerName (blur)="onCustomerNameBlur(customerName.value)" type="text" class="form-control" formControlName="customerName"
+            id="customerName" placeholder="输入车主名称">
         </div>
         <label for="phone" class="col-1 col-form-label">车主电话</label>
         <div class="col-2">
@@ -34,30 +39,27 @@
       <div class="form-group row">
         <label for="vin" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>VIN</label>
         <div class="col-2">
-          <input label="车辆识别码" type="text" class="form-control" formControlName="vin" id="vin"
-            placeholder="VIN">
+          <input label="车辆识别码" type="text" class="form-control" formControlName="vin" id="vin" placeholder="VIN">
         </div>
         <label for="brand" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>品牌</label>
         <div class="col-2">
-          <input label="品牌" forceRefresh="true" [hqTableTypeahead]="brandTypeaheadSource"
-            [columns]="nameTypeaheadColumns" (onSelect)="onBrandSelect($event)" type="text" class="form-control" formControlName="brand"
-            id="brand" placeholder="请输入品牌名称">
+          <input label="品牌" forceRefresh="true" [hqTableTypeahead]="brandTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onBrandSelect($event)"
+            type="text" class="form-control" formControlName="brand" id="brand" placeholder="请输入品牌名称">
           <!--品牌id-->
           <input type="hidden" formControlName="brandId" />
         </div>
         <label for="series" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车系</label>
         <div class="col-2">
           <input forceRefresh="true" [hqTableTypeahead]="seriesTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onSeriesSelect($event)"
-            type="text"  class="form-control" formControlName="series" id="series"
-            placeholder="输入车系名称">
+            type="text" class="form-control" formControlName="series" id="series" placeholder="输入车系名称">
           <!--车系id-->
           <input type="hidden" formControlName="seriesId" />
         </div>
         <label for="vehicleName" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车型</label>
         <div class="col-2">
-          <input (blur)="onVehicleBlur()" forceRefresh="true" [hqTableTypeahead]="modelTypeaheadSource"
-            [columns]="nameTypeaheadColumns" (onSelect)="onModelSelect($event)" type="text" class="form-control" formControlName="vehicleName"
-            id="vehicleName" placeholder="输入车型名称">
+          <input (blur)="onVehicleBlur()" forceRefresh="true" [hqTableTypeahead]="modelTypeaheadSource" [columns]="nameTypeaheadColumns"
+            (onSelect)="onModelSelect($event)" type="text" class="form-control" formControlName="vehicleName" id="vehicleName"
+            placeholder="输入车型名称">
           <!--车辆id-->
           <input type="hidden" formControlName="vehicleId" />
         </div>
@@ -73,7 +75,8 @@
         </div>
         <label for="expectLeave" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>预计交车时间</label>
         <div class=" col-2">
-          <input readonly [close-on-select]="false" label="预计交车时间" [min-date]="currentDate" [min-hour]="currentHours" class="form-control" type="text" formControlName="expectLeave" ngui-datetime-picker />
+          <input readonly [close-on-select]="false" label="预计交车时间" [min-date]="currentDate" [min-hour]="currentHours" class="form-control"
+            type="text" formControlName="expectLeave" ngui-datetime-picker />
         </div>
         <label for="contactUser" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>送修人</label>
         <div class="col-2">
@@ -81,8 +84,7 @@
         </div>
         <label for="contactInfo" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>送修人电话</label>
         <div class="col-2">
-          <input type="text" label="送修人电话" class="form-control" formControlName="contactInfo"
-            id="contactInfo" placeholder="送修人电话">
+          <input type="text" label="送修人电话" class="form-control" formControlName="contactInfo" id="contactInfo" placeholder="送修人电话">
         </div>
       </div>
       <div class="form-group row">
@@ -99,13 +101,12 @@
         </div>
         <label for="introPhone" class="col-1 col-form-label">介绍人电话</label>
         <div class="col-2">
-          <input type="text" class="form-control" formControlName="introPhone"
-            id="introPhone" placeholder="介绍人电话">
+          <input type="text" class="form-control" formControlName="introPhone" id="introPhone" placeholder="介绍人电话">
         </div>
         <label for="validate" class="col-1 col-form-label">验车日期</label>
         <div class="col-2">
-          <input readonly class="form-control" type="text" formControlName="validate"
-            ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
+          <input readonly class="form-control" type="text" formControlName="validate" ngui-datetime-picker date-format="YYYY-MM-DD"
+            date-only="true" />
         </div>
       </div>
       <!--<hr>-->
@@ -121,8 +122,7 @@
         <label for="nextMileage" class="col-1 col-form-label">建议下次保养里程</label>
         <div class="col-2">
           <div class="input-group">
-            <input label="建议下次保养里程" type="text" class="form-control" formControlName="nextMileage"
-              id="nextMileage">
+            <input label="建议下次保养里程" type="text" class="form-control" formControlName="nextMileage" id="nextMileage">
             <span class="input-group-addon">KM</span>
           </div>
         </div>
@@ -280,7 +280,7 @@
         <span class="ml-2 mr-2">{{fee.material|centToYuan}}</span> | 其它
         <span class="ml-2 mr-2">{{fee.other|centToYuan}}</span> | 应收金额
         <span class="ml-2 mr-2">{{fee.workHour+fee.material+fee.other|centToYuan}}</span> | 折扣金额
-        <span class="ml-2 mr-2">{{fee.discount|centToYuan}}</span> | 
+        <span class="ml-2 mr-2">{{fee.discount|centToYuan}}</span> |
       </div>
     </div>
     <br>

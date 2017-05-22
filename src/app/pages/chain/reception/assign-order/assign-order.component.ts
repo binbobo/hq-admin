@@ -301,7 +301,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             if (notAssigned.length > 0) {
                 notAssigned = notAssigned.map(item => item.serviceName);
                 // 给出提示
-                this.alerter.warn(notAssigned.join(',') + ' 未指派, 不可以转派， 请先派');
+                this.alerter.warn(notAssigned.join(',') + ' 未指派, 不可以转派， 请先指派');
             }
         }
         // 获取可以选择的工项id列表
@@ -310,7 +310,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         console.log('选择的维修工单为：', maintenanceItemIds);
         // 判断是否选择维修工项
         if (maintenanceItemIds.length === 0) {
-            this.alerter.warn('请选择维修工项！');
+            // this.alerter.warn('请选择维修工项！');
             return;
         }
 

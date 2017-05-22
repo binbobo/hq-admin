@@ -79,6 +79,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   isSeriesSelected = false;
   isVehicleSelected = false;
 
+  isFuzzySearchEnable = true;
+
 
   // 覆盖父类的初始化方法
   ngOnInit() { }
@@ -152,6 +154,13 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     }
   }
 
+  onPlateNoBlur(val) {
+    if (!this.isSelected && this.workSheetForm.controls.plateNo.valid) {
+      this.isFuzzySearchEnable = false;
+    } else {
+      this.isFuzzySearchEnable = true;
+    }
+  }
   onCustomerNameBlur(val) {
     if (!this.isSelected && this.workSheetForm.controls.customerName.valid) {
       this.workSheetForm.controls.contactUser.setValue(val);
@@ -334,7 +343,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       });
       // 使用新的元素替换以前的元素
       this.newMaintenanceItemData.splice(index, 1, data);
-      console.log('testsetst:', data, this.selectedItem)
       // 更新价格
       const workHourFeediff: number = data.price * data.workHour - (this.selectedItem.price * 100) * this.selectedItem.workHour;
       this.fee.workHour += workHourFeediff * 1;
@@ -600,6 +608,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.lastOrderData = null;
 
     this.isSelected = false;
+    this.isFuzzySearchEnable = true;
     this.enableCustomerVehicleField();
     // 重置新添加的工单记录
     this.newWorkOrderData = null;
