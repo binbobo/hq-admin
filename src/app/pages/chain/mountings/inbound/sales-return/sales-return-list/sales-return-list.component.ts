@@ -162,7 +162,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
         if (item.originalId == e.originalId) {
           item.count = Number(e.count);
           item.amount = Number(e.amount);
-          item.existCounts = Number(e.existCounts);
+          item.stockCounts = Number(e.stockCounts);
         }
       })
     } else {

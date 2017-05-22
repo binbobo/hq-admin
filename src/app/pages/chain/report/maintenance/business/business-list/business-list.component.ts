@@ -18,6 +18,7 @@ export class BusinessListComponent extends DataList<any> {
   params: BusinessListRequest;
   public isShow = false;//查询范围是否显示
   public isSearch = false;//温馨提示是否显示
+  public generating = false;//加载动画
   private converter: CentToYuanPipe = new CentToYuanPipe();
   private pipe: DurationHumanizePipe = new DurationHumanizePipe();
   @ViewChild('printer')
@@ -118,22 +119,18 @@ export class BusinessListComponent extends DataList<any> {
   //详情
   businessDetailsHandler(evt, id, modalDialog) {
     evt.preventDefault();
+    this.generating  =true;
     this.moneyObj = {
       amountReceivable1: 0,//表一应收金额
       amountReceivable2: 0,//表二应收金额（工时费）
       amountReceivable3: 0,//表三应收金额（材料费）
       discountMoney1: 0,//表一折扣金额
       discountMoney2: 0,//表二折扣金额
-      // workHourPrice:0,//工时费
-      // productPrice:0,//材料费
     }
     //根据ID获取维修历史详情
     this.service.get(id).then(data => {
       this.businessData = data;
       console.log('根据ID获取维修详情', this.businessData);
-      // this.costData = data.totalCost;
-      // this.workHourData = data.workHours;
-      // this.matereialData = data.matereialDetails;
       //表二
       this.businessData.workHours.forEach(item => {
         this.moneyObj.amountReceivable2 += item.amount;//应收金额(待校验)
@@ -151,6 +148,7 @@ export class BusinessListComponent extends DataList<any> {
         this.moneyObj.amountReceivable1 += item.receivableCost;//应收金额
       });
       this.businessData['moneyObj'] = this.moneyObj;
+      this.generating = false;
       modalDialog.show()
       console.log('打印数据', this.businessData);
     })

@@ -77,7 +77,8 @@
         <tbody>
           <tr *ngFor="let item of list">
             <td width="75">
-              <a href="javascript:void(0)" (click)="businessDetailsHandler($event, item.id, bdModal)">详情</a>
+              <button [hqSpinner]="generating" type="button" class="btn btn-info btn-sm" (click)="businessDetailsHandler($event, item.id, bdModal)">详情</button>
+              <!--<a href="javascript:void(0)" (click)="businessDetailsHandler($event, item.id, bdModal)">详情</a>-->
             </td>
             <td>{{item.plateNo}}</td>
             <td>{{item.billCode}}</td>
