@@ -25,7 +25,7 @@ const routes: Routes = [
     NgPipesModule,
     SharedModule,
     FormsModule,
-    TreeviewModule,
+    TreeviewModule.forRoot(),
     ReactiveFormsModule,
     ModalModule.forRoot(),
     RouterModule.forChild(routes),

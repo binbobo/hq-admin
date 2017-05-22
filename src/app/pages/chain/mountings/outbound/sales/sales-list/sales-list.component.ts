@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HqAlerter, PrintDirective } from 'app/shared/directives';
+import { HqAlerter, PrintDirective, TypeaheadRequestParams } from 'app/shared/directives';
 import { SalesListItem, SalesService, SalesListRequest, SalesPrintItem } from '../sales.service';
 import { SelectOption, PagedResult } from 'app/shared/models';
 import { ModalDirective } from 'ngx-bootstrap';
@@ -87,16 +87,6 @@ export class SalesListComponent implements OnInit {
   }
 
   suspend(event: Event) {
-    if (!this.model.custName) {
-      alert('请输入客户名称');
-      return false;
-    } else if (!this.model.custPhone) {
-      alert('请如手机号码');
-      return false;
-    } else if (!this.model.seller) {
-      alert('请选择销售员');
-      return false;
-    }
     let el = event.target as HTMLButtonElement;
     el.disabled = true;
     this.suspendBill.suspend(this.model)
@@ -123,4 +113,25 @@ export class SalesListComponent implements OnInit {
     let index = this.model.list.indexOf(item);
     this.model.list.splice(index, 1);
   }
+
+  private get customerSource() {
+    return 1;
+    // return (params: TypeaheadRequestParams) => {
+    //   let p = new ProviderListRequest(params.text, params.text);
+    //   p.setPage(params.pageIndex, params.pageSize);
+    //   return this.providerService.getPagedList(p);
+    // };
+  }
+
+  private get customerColumns() {
+    return [
+      { name: '客户名称', title: '客户名称', weight: 1 },
+      { name: 'name', title: '手机号' },
+    ];
+  }
+
+  private onCustomerSelect(event) {
+    this.model.custName = event.name;
+  }
+
 }

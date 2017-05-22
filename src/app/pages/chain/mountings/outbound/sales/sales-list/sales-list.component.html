@@ -8,7 +8,7 @@
     <form #form="ngForm" class="form-inline mb-2">
       <div class="form-group">
         <label>*客户名称：</label>
-        <input class="form-control" name="custName" required [(ngModel)]="model.custName" placeholder="请输入客户名称">
+        <input class="form-control" [hqTableTypeahead]="source" [columns]="providerColumns" (onSelect)="onProviderSelect($event)" [hqTableTypeahead]="customerSource" name="custName" required [(ngModel)]="model.custName" placeholder="请输入客户名称">
       </div>
       <div class="form-group">
         <label class="mr-sm-1">手机号：</label>

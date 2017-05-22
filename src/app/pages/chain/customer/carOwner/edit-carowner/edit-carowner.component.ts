@@ -134,8 +134,6 @@ export class EditCarownerComponent implements OnInit {
     const provinceId = provinceValue.split(',')[0];
     const provinceName = provinceValue.split(',')[1];
 
-    console.log('testse', this.carOwnerForm.value.cityIdList);
-
     // 保存选择的省份id和省份名称
     this.cityIdList[0] = provinceId;
     this.cityNameList[0] = provinceName;

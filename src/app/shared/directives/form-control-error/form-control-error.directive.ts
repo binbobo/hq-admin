@@ -27,6 +27,11 @@ export class FormControlErrorDirective<T extends FormControlErrorComponent> impl
     }
   }
 
+  @HostListener('focus', ['$event'])
+  private onfocus(event: Event) {
+    this.hide();
+  }
+
   constructor(
     protected el: ElementRef,
     protected viewContainerRef: ViewContainerRef,
@@ -37,6 +42,13 @@ export class FormControlErrorDirective<T extends FormControlErrorComponent> impl
   ngOnInit() {
     if (this.errors) {
       Object.keys(this.errors).forEach(key => this.errors[key.toLowerCase()] = this.errors[key]);
+    }
+    if (this.control) {
+      this.control.valueChanges.subscribe((a) => {
+        if (document.activeElement !== this.el.nativeElement) {
+          this.validate(false);
+        }
+      });
     }
     // if (!this.readonly) {
     //   Observable.fromEvent(this.el.nativeElement, 'input')
@@ -50,11 +62,16 @@ export class FormControlErrorDirective<T extends FormControlErrorComponent> impl
   }
 
   protected show(): void {
-
+    if (this.componentRef) {
+      this.componentRef.instance.errors = this.controlErrors;
+    }
   }
 
   protected hide(): void {
-
+    this.controlErrors = null;
+    if (this.componentRef) {
+      this.componentRef.instance.errors = this.controlErrors;
+    }
   }
 
   protected createComponent(type: Type<T>, position: string = "afterend") {
@@ -78,11 +95,7 @@ export class FormControlErrorDirective<T extends FormControlErrorComponent> impl
         .map(m => this.getError(m.toLowerCase(), control.errors));
       this.show();
     } else {
-      this.controlErrors = null;
       this.hide();
-    }
-    if (this.componentRef) {
-      this.componentRef.instance.errors = this.controlErrors;
     }
     return control.valid;
   }

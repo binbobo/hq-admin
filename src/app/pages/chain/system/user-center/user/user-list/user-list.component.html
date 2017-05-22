@@ -37,22 +37,13 @@
             </td>
             <td>{{item.name}}</td>
             <td>
-              <select class="form-control form-control-sm" [hidden]="!item?.roles?.length">
-              <option>点击查看</option>
-              <option disabled *ngFor="let item of item.roles">{{item.name}}</option>
-            </select>
+              {{item?.roles?.slice(0,3)|pluck:'name'}}
             </td>
             <td>
-              <select class="form-control form-control-sm" [hidden]="!item?.partPositionItems?.length">
-              <option>点击查看</option>
-              <option disabled *ngFor="let item of item.partPositionItems|pluck:'positionItems'|flatten">{{item.name}}</option>
-            </select>
+              {{item?.partPositionItems?.slice(0,3)|pluck:'positionItems'|flatten|pluck:'name'}}
             </td>
             <td>
-              <select class="form-control form-control-sm" [hidden]="!item?.partPositionItems?.length">
-              <option>点击查看</option>
-              <option disabled *ngFor="let item of item.partPositionItems">{{item.name}}</option>
-            </select>
+              {{item?.partPositionItems?.slice(0,3)|pluck:'name'}}
             </td>
             <td class="text-center">{{item.phone}}</td>
             <td class="text-center">{{item.createTime|date:'y/MM/dd HH:mm:ss'}}</td>

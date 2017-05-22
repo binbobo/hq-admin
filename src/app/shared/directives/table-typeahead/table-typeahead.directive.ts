@@ -50,14 +50,13 @@ export class TableTypeaheadDirective implements OnInit {
         } else {
           this.hide();
         }
-      }, 500);
+      }, 200);
     }
   }
   @HostListener('focus', ['$event'])
   onFocus(event) {
     this.show();
     if (!this.paging && this.forceRefresh || !this.componentRef.instance.result) {
-      this.componentRef.instance.result = null;
       this.search();
     }
   }
@@ -77,6 +76,9 @@ export class TableTypeaheadDirective implements OnInit {
   }
   private search(pageIndex = 1) {
     if (this.disabled) return;
+    if (!this.paging) {
+      this.componentRef.instance.result = null;
+    }
     let param = new TypeaheadRequestParams(this.el.value);
     param.setPage(pageIndex, this.pageSize);
     this.statusElement.classList.add('fa-spinner');
