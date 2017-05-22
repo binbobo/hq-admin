@@ -4,64 +4,53 @@
     <div class="col-6">
       <div class="form-group">
         <label class="form-control-label">配件编码</label>
-        <input readonly hqError="配件编码" formControlName="productCode" class="form-control">
+        <input readonly formControlName="productCode" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">配件名称</label>
-        <input readonly hqError="配件名称" formControlName="productName" class="form-control">
+        <input readonly formControlName="productName" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">品牌</label>
-        <input readonly hqError="品牌" formControlName="brandName" class="form-control">
+        <input readonly formControlName="brandName" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">规格型号</label>
-        <input readonly hqError="规格型号" formControlName="specification" class="form-control">
+        <input readonly formControlName="specification" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">单位</label>
+        <input readonly formControlName="unit" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">单价（元）</label>
-        <input readonly type="number" hqError="单价" formControlName="price" class="form-control">
-
-        <label class="form-control-label">*配件编码</label>
-        <input readonly label="配件编码"  formControlName="productCode" class="form-control">
+        <input readonly formControlName="price" class="form-control">
       </div>
+    </div>
+    <div class="col-6">
       <div class="form-group">
-        <label class="form-control-label">*配件名称</label>
-        <input readonly label="配件名称" formControlName="productName" class="form-control">
-      </div>
-      <div class="form-group">
-        <label class="form-control-label">*品牌</label>
-        <input readonly label="品牌" formControlName="brandName" class="form-control">
-      </div>
-      <div class="form-group">
-        <label class="form-control-label">*规格型号</label>
-        <input readonly label="规格型号" formControlName="specification" class="form-control">
-      </div>
-      <div class="form-group">
-        <label class="form-control-label">*单价（元/个）</label>
-        <input readonly type="number" label="单价" formControlName="price" class="form-control">
-
         <label class="form-control-label">仓库</label>
-        <input readonly hqError="仓库" formControlName="storeName" class="form-control">
+        <input readonly formControlName="storeName" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">库位</label>
-        <input readonly hqError="库位" formControlName="locationName" class="form-control">
+        <input readonly formControlName="locationName" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">配件分类</label>
-        <input readonly hqError="配件类别" formControlName="locationName" class="form-control">
+        <input readonly formControlName="productTypes" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">数量（个）</label>
-        <input hqError="数量" (input)="calculate()" type="number" formControlName="counts" class="form-control">
+        <input (input)="calculate()" type="number" formControlName="counts" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">金额</label>
-        <input type="number" readonly hqError="金额" formControlName="amount" class="form-control">
+        <input readonly formControlName="amount" class="form-control">
 
       </div>
       <div class="form-group">
+        <label class="form-control-label invisible">提交</label>
         <button type="submit" [disabled]="submitting" class="btn btn-primary mr-3">提交</button>
         <!--<button (click)="onReset()" class="btn btn-secondary mr-3">重置</button>-->
       </div>

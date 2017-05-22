@@ -24,17 +24,30 @@ export class InnerReturnService implements BasicService<any>{
 
   //获取内部领用单号信息
   getPagedList(params: BillCodeSearchRequest): Promise<PagedResult<any>> {
-    const url = Urls.chain.concat('/Uses/GetPagedList?', params.serialize());
+    const url = Urls.chain.concat('/Uses/SearchBillCode?', params.serialize());
     console.log("领用单url", url);
     return this.httpService.get<PagedResult<any>>(url)
       .then(result => {
+        console.log('领用单号数据',result);
+        // let p = {
+        //   totalCount:0,
+        //   total:0,
+        //   data:[]
+        // }
+        // result.data.map(m=>{
+        //    p.data.push({billCode:m});
+        // })
+        // p.totalCount = result.data.length;
+        // p.total = result.data.length;
+        // console.log('pppp',p);
+        // return p;
         return result;
       })
       .catch(err => Promise.reject(`获取内部领用数据失败：${err}`));
   }
   //获取配件信息
   getUseDetailsList(params: BillCodeSearchRequest): Promise<PagedResult<any>> {
-    const url = Urls.chain.concat('/UseDetails/GetPageList?', params.serialize());
+    const url = Urls.chain.concat('/UseDetails/Search?', params.serialize());
     console.log("配件信息url", url);
     return this.httpService.get<PagedResult<any>>(url)
       .then(result => {
@@ -128,11 +141,9 @@ export class InnerListItem {
 //领用单号模糊查询参数
 export class BillCodeSearchRequest extends PagedParams {
   constructor(
-    public takeUser?: string, // 领用人ID
+    public takeUserId?: string, // 领用人ID
     public takeDepartId?: string, // 部门ID
     public billCode?: string, // 领用单号
-    // public pageIndex = 1,
-    // public pageSize = 5,
   ) {
     super();
   }

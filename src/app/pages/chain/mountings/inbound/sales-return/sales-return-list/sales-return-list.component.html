@@ -8,18 +8,18 @@
     <form class="form-inline mb-2">
       <div class="form-group mx-sm-3 mb-2">
         <label>*客户名称：</label>
-        <input type="text" class="form-control" forceRefresh (onSelect)="onItemNameSelect($event)"  [hqTableTypeahead]="nameSource" [columns]="itemNameColumns" name="custName" placeholder="客户名称">
+        <input type="text" [(ngModel)]="customerName" class="form-control" forceRefresh (onSelect)="onItemNameSelect($event)"  [hqTableTypeahead]="nameSource" [columns]="itemNameColumns" name="custName" placeholder="客户名称">
       </div>
       <div class="form-group mx-sm-3 mb-2">
         <label>手机号：</label>
-        <input class="form-control" name="custPhone" placeholder="手机号">
+        <input class="form-control" [(ngModel)]="customerPhone" name="custPhone" placeholder="手机号">
       </div>
       <div class="form-group mx-sm-3 mb-2">
         <label>*销售出库单：</label>
-        <input type="text" forceRefresh (onSelect)="onItemCodeSelect($event)" [hqTableTypeahead]="codeSource" [columns]="itemCodeColumns" class="form-control" placeholder="请输入出库单号">
+        <input type="text" forceRefresh [(ngModel)]="billCode" name="billCode" (onSelect)="onItemCodeSelect($event)" [hqTableTypeahead]="codeSource" [columns]="itemCodeColumns" class="form-control" placeholder="请输入出库单号">
       </div>
       <!--<div class="form-group mb-2">
-        <button (click)="createModal.show()" class="btn btn-primary mx-sm-1">新增</button>
+        <button (click)="createModel.show()" class="btn btn-primary mx-sm-1">新增</button>
       </div>-->
     </form>
 
@@ -37,24 +37,25 @@
             <th>单位</th>
             <th>仓库</th>
             <th>库位</th>
+            <th>库存量</th>
             <th>单价（元）</th>
             <th>数量</th>
             <th>已退数量</th>
-
             <th>金额（元）</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of model?.list">
-            <td><button class="btn btn-primary" (click)="OnCreatBound(item,item.id)">退库</button></td>
+          <tr *ngFor="let item of model">
+            <td><button [disabled]="item.count<=item.returnCount" class="btn btn-primary" (click)="OnCreatBound(item,item.id)">退库</button></td>
             <td class="text-center">{{item.productCode }}</td>
-            <td class="text-center">{{item.productCode }}</td>
+            <td class="text-center">{{item.productTypes }}</td>
             <td>{{item.productName}}</td>
-            <td>{{item.brand }}</td>
+            <td>{{item.brandName }}</td>
             <td>{{item.specification}}</td>
-            <td>{{item.specification}}</td>
+            <td>{{item.unit}}</td>
             <td>{{item.storeName }}</td>
             <td>{{item.locationName }}</td>
+            <td>{{item.existCount }}</td>
             <td class="text-right">{{item.price|centToYuan }}</td>
             <td class="text-center">{{item.count}}</td>
             <td class="text-center">{{item.returnCount}}</td>
@@ -78,22 +79,24 @@
             <th>单位</th>
             <th>仓库</th>
             <th>库位</th>
+            <th>库存量</th>
             <th>单价（元）</th>
             <th>数量</th>
             <th>金额（元）</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of returnData">
-            <td><button class="btn btn-danger" (click)="onDelCreat(i)">删除</button></td>
+          <tr *ngFor="let item of salesReturnData;let i = index">
+            <td><button class="btn btn-danger" (click)="onDelCreat(e,i)">删除</button></td>
             <td class="text-center">{{item.productCode }}</td>
-            <td class="text-center">{{item.productCode }}</td>
+            <td class="text-center">{{item.productTypes }}</td>
             <td>{{item.productName}}</td>
-            <td>{{item.brand }}</td>
+            <td>{{item.brandName }}</td>
             <td>{{item.specification}}</td>
-            <td>{{item.specification}}</td>
+            <td>{{item.unit}}</td>
             <td>{{item.storeName }}</td>
             <td>{{item.locationName }}</td>
+            <td>{{item.existCounts }}</td>
             <td class="text-right">{{item.price|centToYuan }}</td>
             <td class="text-center">{{item.count}}</td>
             <td class="text-right">{{item.amount|centToYuan }}</td>
@@ -103,21 +106,21 @@
     </div>
   </div>
   <div class="card-footer text-muted">
-    <button class="btn btn-primary" (click)="createReturnList()">生成销售退库单</button>
+    <button [disabled]="!salesReturnData.length" class="btn btn-primary" (click)="createReturnList()">生成销售退库单</button>
     <!--<button class="btn btn-warning" (click)="cancel($event)">取消</button>-->
-    <button [disabled]="!model?.list?.length" class="btn btn-info" (click)="suspend()">挂单</button>
+    <button [disabled]="!model" class="btn btn-info" (click)="suspend()">挂单</button>
   </div>
 </div>
 
-<div class="modal fade" bsModal #createModal="bs-modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg">
+<div class="modal fade" bsModal #createModel="bs-modal" tabindex="-1" role="dialog">
+  <div *ngIf="createModel.isShown" class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title pull-left">退库</h5>
-        <button class="close pull-right" (click)="createModal.hide()">&times;</button>
+        <button class="close pull-right" (click)="createModel.hide()">&times;</button>
       </div>
       <div class="modal-body">
-        <hq-sales-return-create (formSubmit)="onCreate($event)"></hq-sales-return-create>
+        <hq-sales-return-create [selectSalesData]="selectSalesData" (formSubmit)="onCreate($event)"></hq-sales-return-create>
       </div>
     </div>
   </div>

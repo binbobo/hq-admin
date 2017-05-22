@@ -4,6 +4,8 @@ import { ApiResult, SelectOption, ListResult, BasicService, PagedParams, PagedRe
 
 @Injectable()
 export class SalesReturnService implements BasicService<any>{
+    
+
   getPagedList(params: PagedParams): Promise<PagedResult<any>> {
     throw new Error('Method not implemented.');
   }
@@ -21,7 +23,7 @@ export class SalesReturnService implements BasicService<any>{
     throw new Error('Method not implemented.');
   }
 
-  //客户信息模糊查询
+//   //客户信息模糊查询
   getCustomerPagedList(params: CustomerRequest): Promise<PagedResult<any>> {
     const url = Urls.chain.concat('/Sales/GetPagedList?', params.serialize());
     console.log("客户信息url",url);
@@ -32,7 +34,7 @@ export class SalesReturnService implements BasicService<any>{
       })
       .catch(err => Promise.reject(`获取客户信息失败：${err}`));
   }
-  //退库单号模糊查询
+//   //退库单号模糊查询
   getBillCodePagedList(params: BillCodeRequest): Promise<PagedResult<any>> {
     const url = Urls.chain.concat('/Sales/GetPagedList?', params.serialize());
     console.log("退库单url",url);
@@ -44,8 +46,8 @@ export class SalesReturnService implements BasicService<any>{
       .catch(err => Promise.reject(`获取退库单号信息失败：${err}`));
   }
 
-  //获取配件信息
-  getSaleDetailsList(params: BillCodeRequest): Promise<PagedResult<any>> {
+//   //获取配件信息
+  getSaleDetailsList(params: SaleDetailsRequest): Promise<PagedResult<any>> {
     const url = Urls.chain.concat('/SaleDetails/GetPageList?', params.serialize());
     console.log("配件信息url",url);
     return this.httpService.get<PagedResult<any>>(url)
@@ -57,14 +59,14 @@ export class SalesReturnService implements BasicService<any>{
   }
 
   constructor(private httpService: HttpService) { }
-
-  createReturnList(data: SalesReturnListRequest): Promise<string> {
+//生成退库单
+  createReturnList(data: any): Promise<any> {
     let url = Urls.chain.concat('/StoreInOutDetails/CreateSaleReturnBill');
-    return this.httpService.post<ApiResult<string>>(url, data)
+    return this.httpService.post<ApiResult<any>>(url, data)
       .then(result => result.data)
       .catch(err => Promise.reject(`生成销售退库单失败：${err}`))
   }
-
+//打印
   get(code: string): Promise<SalesReturnPrintItem> {
     if (!code) return Promise.resolve({});
     let url = Urls.chain.concat('/SaleReturnDetails/Print?BillCode=', code);
@@ -73,24 +75,31 @@ export class SalesReturnService implements BasicService<any>{
       .catch(err => Promise.reject(`获取销售退库单信息失败：${err}`));
   }
 
-  // getSalesmanOptions(): Promise<Array<SelectOption>> {
-  //   let url = Urls.chain.concat('/Employees/GetByKey?key=Seller');
-  //   return this.httpService.get<ListResult<any>>(url)
-  //     .then(result => result.data)
-  //     .then(data => Array.isArray(data) ? data : [])
-  //     .then(data => data.map(m => new SelectOption(m.name, m.id)))
-  //     .catch(err => Promise.reject(`获取销售员选项失败：${err}`));
-  // }
+//   // getSalesmanOptions(): Promise<Array<SelectOption>> {
+//   //   let url = Urls.chain.concat('/Employees/GetByKey?key=Seller');
+//   //   return this.httpService.get<ListResult<any>>(url)
+//   //     .then(result => result.data)
+//   //     .then(data => Array.isArray(data) ? data : [])
+//   //     .then(data => data.map(m => new SelectOption(m.name, m.id)))
+//   //     .catch(err => Promise.reject(`获取销售员选项失败：${err}`));
+//   // }
 
 }
+
+// export class FuzzySearchRequest extends PagedParams {
+//     constructor(
+//         public keyword: string, // 模糊搜索关键字
+//     ) {
+//         // super('FuzzySearchRequestParams');
+//         super();
+//     }
+// }
+
 
 
 export class CustomerRequest extends PagedParams {
   constructor(
     public customerName?: string,//客户名称
-    public phone?: string,//电话
-    // public pageIndex = 1,
-    // public pageSize = 5,
   ) {
     super();
   }
@@ -99,10 +108,19 @@ export class CustomerRequest extends PagedParams {
 export class BillCodeRequest extends PagedParams {
   constructor(
     public customerId?: string, // 客户ID
-    public customerName?: string, // 客户名称
-    public billCode?: string, // 退库单号
-    // public pageIndex = 1,
-    // public pageSize = 5,
+    public customerName?: string, // 客户I
+  ) {
+    super();
+  }
+}
+
+export class SaleDetailsRequest extends PagedParams {
+  constructor(
+    public customerId?: string, // 客户ID
+    public customerName?: string, // 客户I
+    public billCode?: string, // 单号
+    public billId?: string, // 标识
+    // public keyName?: string, // 标识
   ) {
     super();
   }
@@ -119,23 +137,25 @@ export class SalesReturnListRequest {
   ) { }
 }
 
-export class SalesReturnListItem {
+export class SalesReturnListItem extends PagedParams{
   constructor(
     public count: number = 0,
     public price: number = 0,
     public amount: number = 0,
-    public stockCount: number = 0,
+    // public stockCount: number = 0,
     public productName?: string,
-    public brand?: string,
-    public productId?: string,
+    public brandName?: string,
+    public operator?: string,
     public productCode?: string,
-    public productSpecification?: string,
+    public specification?: string,
     public storeId?: string,
     public locationId?: string,
-    public description?: string,
+    public returnCount?: string,
     public locationName?: string,
-    public houseName?: string
-  ) { }
+    public storeName?: string
+  ) {
+    super()
+   }
 }
 
 export class SalesReturnPrintItem {
