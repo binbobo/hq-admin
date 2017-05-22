@@ -243,16 +243,16 @@ export class MaintainReturnComponent implements OnInit {
       this.newMainData.forEach((item, index) => {
         if (item.curId === e.curId && item.maintenanceItemId === e.maintenanceItemId) {
           item.count = Number(e.count);
+          item.amount = Number(e.amount);
         }
       })
     } else {
       this.newMainData.push(e);
     }
 
-    if ((this.item.count - this.item.returnCount) === 0) {
-      this.item.isable = false;
-
-    }
+    // if ((this.item.count - this.item.returnCount) === 0) {
+    //   this.item.isable = false;
+    // }
     this.createModal.hide();
   }
   onDelCreat(e, i) {
