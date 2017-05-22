@@ -239,7 +239,9 @@ export class DistributeComponent implements OnInit {
     if (this.hasList.length > 0) {
       this.newMainData.forEach((item, index) => {
         if (item.maintenanceItemId === evt.maintenanceItemId && item.productId === evt.productId) {
-          item.count += Number(evt.count);
+          item.count = Number(evt.count);
+          item.amount = Number(evt.amount);
+          item.price= Number(evt.price);
         }
       })
     } else {

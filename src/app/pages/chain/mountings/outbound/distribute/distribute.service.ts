@@ -57,12 +57,12 @@ export class DistributeService implements BasicService<any>{
     }
 
     // 根据配件编码或配件名称搜索编码列表 
-    getProductList(params: ProductRequest): Promise<PagedResult<ProductsParams>> {
-        let search = params.serialize();
-        const url = Urls.chain.concat('/products/getListByNameOrCode');
-        return this.httpService
-            .get<PagedResult<ProductsParams>>(url, search)
-    }
+    // getProductList(params: ProductRequest): Promise<PagedResult<ProductsParams>> {
+    //     let search = params.serialize();
+    //     const url = Urls.chain.concat('/Products/SearchInventory');
+    //     return this.httpService
+    //         .get<PagedResult<ProductsParams>>(url, search)
+    // }
 
     //生成维修发料单
     public postBill(body: any): Promise<any> {
@@ -117,7 +117,7 @@ export class DistributeService implements BasicService<any>{
             });
     }
     //已有发料接口
-    
+
     getMMList(billCode: string): Observable<any> {
         const url = Urls.chain.concat('/StoreInOutDetails/GetMainList');
         return this.httpService
@@ -248,9 +248,9 @@ export class DistributeListItem {
         public createUserName?: string,
         public maintenanceItemId?: string,
         public number?: any,
-        public initcount:number=1,
-        public storeName?:string,
-        public specifications?:string,
-        public storeHouse?:string,
+        public initcount: number = 1,
+        public storeName?: string,
+        public specifications?: string,
+        public storeHouse?: string,
     ) { }
 }
