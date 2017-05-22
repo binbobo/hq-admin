@@ -62,7 +62,6 @@ export class AddMaintenanceItemComponent implements OnInit {
             this.alerter.success('新建维修项目成功, 返回的数据为：', data);
             this.maintenanceItemForm.value.serviceId = data.id;
 
-
             // 验证数据合法性
             this.onConfirm.emit({
               data: this.maintenanceItemForm.getRawValue(), // 维修项目数据
@@ -86,13 +85,13 @@ export class AddMaintenanceItemComponent implements OnInit {
   createForm() {
     // 保留一位小数正则
     const workHourRegex = /^[1-9]+(\.\d{1})?$|^[0]{1}(\.[1-9]{1}){1}$/; // 正浮点数  保留一位小数 不能为0 只能有一个前导0(不可以000.3) 
-    const workHourPriceRegex = /^[1-9]+(\.\d{1})?$|^[0]{1}(\.\d{1})?$/; //
+    const workHourPriceRegex = /^[1-9]+(\.\d{1})?$|^[0]{1}(\.\d{1})?$/; // 可以为0
 
     this.maintenanceItemForm = this.fb.group({
       serviceName: ['', [Validators.required]],
       serviceId: [''],
       type: 1, // 1表示维修项目/
-      workHour: ['', Validators.compose([Validators.required, Validators.pattern(workHourRegex)])],
+      workHour: ['', Validators.compose([Validators.required, Validators.pattern(workHourPriceRegex)])],
       price: ['', Validators.compose([Validators.required, Validators.pattern(workHourPriceRegex)])],
       discount: [100, [Validators.required, CustomValidators.digits, CustomValidators.range([0, 100])]],
       amount: [{ value: '', disabled: true }],
