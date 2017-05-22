@@ -85,14 +85,6 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
     ];
   }
 
-  private get providerColumns() {
-    return [
-      { name: 'code', title: '代码' },
-      { name: 'name', title: '名称' },
-      { name: 'contactUser', title: '联系人' },
-    ];
-  }
-
   private onBillCodeChange(event: Event) {
     this.model.list = [];
     let el = event.target as HTMLSelectElement;
@@ -129,14 +121,6 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
     if (event.id === this.model.suspendedBillId) {
       this.reset();
     }
-  }
-
-  public get source() {
-    return (params: TypeaheadRequestParams) => {
-      let p = new ProviderListRequest(params.text, params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.providerService.getPagedList(p);
-    };
   }
 
   suspend(event: Event) {

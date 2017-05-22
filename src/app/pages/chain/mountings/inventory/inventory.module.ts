@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalModule, TypeaheadModule } from 'ngx-bootstrap';
 import { TreeviewModule } from 'ngx-treeview';
 import { NgPipesModule } from 'ngx-pipes';
+import { ChainSharedModule } from '../../chain-shared/chain-shared.module';
 
 const routes: Routes = [
   { path: '', component: InventoryListComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
 @NgModule({
   imports: [
     SharedModule,
+    ChainSharedModule,
     FormsModule,
     ReactiveFormsModule,
     ModalModule,

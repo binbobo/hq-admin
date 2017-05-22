@@ -27,8 +27,6 @@ export class TableTypeaheadComponent implements OnInit {
   @Output()
   public onSelect: EventEmitter<any> = new EventEmitter();
   @Output()
-  public onRemove: EventEmitter<any> = new EventEmitter();
-  @Output()
   public onPageChange: EventEmitter<PagedParams> = new EventEmitter<PagedParams>();
   @Input()
   public result: PagedResult<any>;
@@ -69,11 +67,7 @@ export class TableTypeaheadComponent implements OnInit {
 
   private check(item: any, checked: boolean) {
     item.checked = checked;
-    if (checked) {
-      this.onSelect.emit(item)
-    } else {
-      this.onRemove.emit(item);
-    }
+    this.onSelect.emit(item)
   }
 
   public onSelectAll($event: Event) {

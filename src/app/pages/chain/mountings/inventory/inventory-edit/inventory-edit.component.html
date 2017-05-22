@@ -16,8 +16,8 @@
             <i class="cursor-pointer fa fa-times" (click)="onVehicleRemove(item)"></i>
           </div>
         </div>
-        <input type="text" [hqTableTypeahead]="vehicleSource" (onSelect)="onVehicleSelect($event)" (onRemove)="onVehicleRemove($event)"
-          [columns]="vehicleColumns" multiple="true" class="form-control" placeholder="请输入车型">
+        <input type="text" hqVehicleTypeahead [checkStrategy]="vehicleCheckStrategy" (onSelect)="onVehicleSelect($event)" class="form-control"
+          placeholder="请输入车型">
       </div>
     </div>
     <div class="col-6">

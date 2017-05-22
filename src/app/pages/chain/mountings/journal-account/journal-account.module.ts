@@ -6,6 +6,7 @@ import { MountingsListComponent } from './mountings-list/mountings-list.componen
 import { AccountListComponent } from './account-list/account-list.component';
 import { JournalAccountService } from './journal-account.service';
 import { NguiDatetimePickerModule } from '@ngui/datetime-picker';
+import { ChainSharedModule } from '../../chain-shared/chain-shared.module';
 
 const routes: Routes = [
   { path: '', component: AccountListComponent }
@@ -14,6 +15,7 @@ const routes: Routes = [
 @NgModule({
   imports: [
     SharedModule,
+    ChainSharedModule,
     RouterModule.forChild(routes),
     NguiDatetimePickerModule,
   ],

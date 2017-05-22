@@ -55,48 +55,22 @@ export class InventoryEditComponent extends FormHandle<Inventory> implements OnI
       .catch(err => this.alerter.warn(err));
     if (Array.isArray(this.model.vehicleList)) {
       this.vehicles = this.model.vehicleList.map(v => ({ id: v.vehicleId, name: v.vehicleName }));
-      this._vehicles = this.model.vehicleList.map(v => v.vehicleId);
     }
   }
 
   public vehicles: Array<any> = [];
-  private _vehicles: Array<any> = [];
 
   onVehicleSelect(event) {
     let index = this.vehicles.findIndex(m => m.id === event.id);
-    if (!~index) {
+    if (event.checked && !~index) {
       this.vehicles.push(event);
-    }
-  }
-
-  onVehicleRemove(event) {
-    let index = this.vehicles.findIndex(m => m.id === event.id);
-    if (~index) {
+    } else if (!event.checked && ~index) {
       this.vehicles.splice(index, 1);
     }
-    let item = this._vehicles.find(m => m.id === event.id);
-    if (item) {
-      item.checked = false;
-    }
   }
 
-  public get vehicleColumns() {
-    return [
-      { name: 'brandName', title: '品牌' },
-      { name: 'seriesName', title: '车系' },
-      { name: 'name', title: '车型', checked: true },
-    ];
-  }
-
-  public get vehicleSource() {
-    return (params: TypeaheadRequestParams) => {
-      return this.moutingsService.get(params.text)
-        .then(result => {
-          result.data.forEach(m => m.checked = m.id && this.vehicles.some(n => m.id === n.id))
-          this._vehicles = result.data;
-          return result;
-        });
-    };
+  public get vehicleCheckStrategy() {
+    return (item) => this.vehicles.some(m => m.id && m.id === item.id);
   }
 
 

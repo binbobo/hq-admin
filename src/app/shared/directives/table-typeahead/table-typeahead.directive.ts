@@ -11,23 +11,23 @@ import 'rxjs/add/operator/debounceTime';
 })
 export class TableTypeaheadDirective implements OnInit {
   @Input("hqTableTypeahead")
-  private source: (params: TypeaheadRequestParams) => Promise<PagedResult<any>>;
+  protected source: (params: TypeaheadRequestParams) => Promise<PagedResult<any>>;
   @Input()
-  private delay: number = 600;
+  protected delay: number = 600;
   @Input()
-  private forceRefresh: boolean;
+  protected forceRefresh: boolean;
   @Input()
-  private columns: Array<TableTypeaheadColumn>;
+  protected columns: Array<TableTypeaheadColumn>;
   @Input()
-  private pageSize: number = 10;
+  protected pageSize: number = 10;
   @Input()
-  private multiple: boolean;
+  protected multiple: boolean;
   @Input()
-  private showTitle = true;
+  protected showTitle = true;
+  @Input()
+  protected checkStrategy: (item: any) => boolean;
   @Output()
-  private onSelect = new EventEmitter<any>();
-  @Output()
-  private onRemove = new EventEmitter();
+  protected onSelect = new EventEmitter<any>();
   private el: HTMLInputElement;
   private componentRef: ComponentRef<TableTypeaheadComponent>;
   private paging = false;
@@ -35,8 +35,8 @@ export class TableTypeaheadDirective implements OnInit {
   private statusElement: HTMLElement;
   private disabled = false;
   constructor(
-    private viewContainerRef: ViewContainerRef,
-    private componentFactoryResolver: ComponentFactoryResolver
+    protected viewContainerRef: ViewContainerRef,
+    protected componentFactoryResolver: ComponentFactoryResolver
   ) {
     this.el = this.viewContainerRef.element.nativeElement;
   }
@@ -96,6 +96,12 @@ export class TableTypeaheadDirective implements OnInit {
       this.source(param)
         .then(result => result || new PagedResult())
         .then(result => {
+          if (this.multiple && this.checkStrategy) {
+            result.data.forEach(m => {
+              m.checked = this.checkStrategy(m);
+              console.log(m.checked);
+            });
+          }
           this.componentRef.instance.result = result;
           this.show();
         })
@@ -144,7 +150,6 @@ export class TableTypeaheadDirective implements OnInit {
     }
     let component = this.componentRef.instance;
     component.columns = this.columns;
-    component.onRemove = this.onRemove;
     component.size = this.pageSize;
     component.multiple = this.multiple;
     component.showTitle = this.showTitle;

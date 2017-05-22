@@ -114,24 +114,9 @@ export class SalesListComponent implements OnInit {
     this.model.list.splice(index, 1);
   }
 
-  private get customerSource() {
-    return 1;
-    // return (params: TypeaheadRequestParams) => {
-    //   let p = new ProviderListRequest(params.text, params.text);
-    //   p.setPage(params.pageIndex, params.pageSize);
-    //   return this.providerService.getPagedList(p);
-    // };
-  }
-
-  private get customerColumns() {
-    return [
-      { name: '客户名称', title: '客户名称', weight: 1 },
-      { name: 'name', title: '手机号' },
-    ];
-  }
-
   private onCustomerSelect(event) {
     this.model.custName = event.name;
+    this.model.custPhone = event.phone;
   }
 
 }

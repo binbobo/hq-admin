@@ -11,7 +11,7 @@
       </div>
       <div class="form-group mb-2">
         <button type="submit" class="btn btn-primary mx-sm-1">查询</button>
-        <button type="button" (click)="createModal.show()" class="btn btn-secondary mx-sm-1">新增</button>
+        <!--<button type="button" (click)="createModal.show()" class="btn btn-secondary mx-sm-1">新增</button>-->
       </div>
     </form>
     <table class="table table-bordered table-sm table-striped">
@@ -26,7 +26,7 @@
       <tbody>
         <tr *ngFor="let item of list;let i=index">
           <td class="text-center">
-            <button (click)="onEdit($event,item)" class="btn btn-sm btn-info">编辑</button>
+            <!--<button (click)="onEdit($event,item)" class="btn btn-sm btn-info">编辑</button>-->
             <button (click)="onAllocate($event,item)" class="btn btn-sm btn-success">分配权限</button>
           </td>
           <td>{{item.name}}</td>

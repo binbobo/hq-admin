@@ -9,8 +9,8 @@
       <div class="form-group">
         <label>*供应商名称：</label>
         <div>
-          <input [hqTableTypeahead]="source" [columns]="providerColumns" (onSelect)="onProviderSelect($event)" [(ngModel)]="model.custName"
-            name="custName" class="form-control" placeholder="请输入供应商名称" required />
+          <input hqProviderTypeahead (onSelect)="onProviderSelect($event)" [(ngModel)]="model.custName" name="custName" class="form-control"
+            placeholder="请输入供应商名称" required />
         </div>
       </div>
       <div class="form-group">

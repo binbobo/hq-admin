@@ -120,7 +120,7 @@ export class AddVehicleComponent implements OnInit {
     // 表单域中的值改变事件监听
     this.vehicleForm.valueChanges.subscribe(data => {
       // 只有表单域合法 保存车主按钮才可用
-      this.enableSaveVehicle = this.vehicleForm.controls.vehicleName.enabled && this.vehicleForm.valid;
+      this.enableSaveVehicle = this.vehicleForm.controls.vehicleId.value && this.vehicleForm.valid;
     });
 
     // 品牌表单域值改变事件监听

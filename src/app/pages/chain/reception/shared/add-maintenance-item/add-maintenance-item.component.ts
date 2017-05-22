@@ -26,15 +26,6 @@ export class AddMaintenanceItemComponent implements OnInit {
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
 
-  formValadationErrors = {
-    common: {
-      required: '{name}不能为空, 请输入',
-      pattern: '无效的{name}, 请输入数字, 最多保留一位小数的',
-      range: '{name}只能是0~100之间的数字',
-      digits: '{name}只能是整数'
-    },
-  };
-
   constructor(
     private fb: FormBuilder,
     protected service: OrderService,
@@ -94,14 +85,15 @@ export class AddMaintenanceItemComponent implements OnInit {
 
   createForm() {
     // 保留一位小数正则
-    const regex = /^[0-9]+([.]{1}[0-9]{1})?$/;
+    const workHourRegex = /^[1-9]+(\.\d{1})?$|^[0]{1}(\.[1-9]{1}){1}$/; // 正浮点数  保留一位小数 不能为0 只能有一个前导0(不可以000.3) 
+    const workHourPriceRegex = /^[1-9]+(\.\d{1})?$|^[0]{1}(\.\d{1})?$/; //
 
     this.maintenanceItemForm = this.fb.group({
       serviceName: ['', [Validators.required]],
       serviceId: [''],
       type: 1, // 1表示维修项目/
-      workHour: ['', Validators.compose([Validators.required, Validators.pattern(regex)])],
-      price: ['', Validators.compose([Validators.required, Validators.pattern(regex)])],
+      workHour: ['', Validators.compose([Validators.required, Validators.pattern(workHourRegex)])],
+      price: ['', Validators.compose([Validators.required, Validators.pattern(workHourPriceRegex)])],
       discount: [100, [Validators.required, CustomValidators.digits, CustomValidators.range([0, 100])]],
       amount: [{ value: '', disabled: true }],
       operationTime: [{ value: moment().format('YYYY-MM-DD HH:mm:ss'), disabled: true }],
