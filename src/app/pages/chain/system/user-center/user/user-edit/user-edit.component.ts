@@ -54,6 +54,7 @@ export class UserEditComponent extends FormHandle<User> implements OnInit {
     this.userService.getRoleOptions()
       .then(options => this.roles = this.convertToTreeView(options, this.model.roles))
       .catch(err => this.alerter.error(err));
+    console.log(this.model.partPositionItems, this.model.positions);
     this.userService.getPositionOptions()
       .then(options => this.positions = this.convertToTreeView(options, this.model.positions))
       .catch(err => this.alerter.error(err));
@@ -72,7 +73,7 @@ export class UserEditComponent extends FormHandle<User> implements OnInit {
     return options.map(m => {
       let item = new TreeviewItem({ value: m.value, text: m.text });
       item.checked = checkedList && checkedList.includes(item.value);
-      item.children = this.convertToTreeView(item.children, checkedList);
+      item.children = this.convertToTreeView(m['children'], checkedList);
       return item;
     });
   }

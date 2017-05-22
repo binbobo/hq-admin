@@ -23,7 +23,7 @@ export class FormInlineControlErrorDirective extends FormControlErrorDirective<F
     cis: ComponentLoaderFactory,
     private positionService: PositioningService,
   ) {
-    super(el, viewContainerRef, componentFactoryResolver, ngModel.control);NgForm
+    super(el, viewContainerRef, componentFactoryResolver, ngModel.control); NgForm
     this._popover = cis
       .createLoader<FormInlineControlErrorComponent>(el, viewContainerRef, renderer)
       .provide({ provide: PopoverConfig, useValue: config });
@@ -33,14 +33,15 @@ export class FormInlineControlErrorDirective extends FormControlErrorDirective<F
     if (this._popover.isShown) {
       return;
     }
-    let aa = this._popover
+    super.show();
+    this._popover
       .attach(FormInlineControlErrorComponent)
       .position({ attachment: this.config.placement })
       .show();
-    aa.instance.errors = this.controlErrors;
   }
 
   public hide(): void {
+    super.hide();
     this._popover.hide();
   }
 

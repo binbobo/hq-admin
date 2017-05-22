@@ -58,8 +58,8 @@ export class UserCreateComponent extends FormHandle<User> implements OnInit {
   convertToTreeView(options: Array<SelectOption>): Array<TreeviewItem> {
     if (!Array.isArray(options) || !options.length) return null;
     return options.map(m => {
-      let item = new TreeviewItem({ value: m.value, text: m.text });
-      item.children = this.convertToTreeView(item.children);
+      let item = new TreeviewItem({ value: m.value, text: m.text, checked: false });
+      item.children = this.convertToTreeView(m['children']);
       return item;
     });
   }
