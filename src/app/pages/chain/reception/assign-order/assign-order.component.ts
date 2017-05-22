@@ -1,6 +1,5 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { AssignService, AssignListRequest } from '../assign.service';
-import { FormGroup, FormBuilder } from '@angular/forms';
 import { StorageKeys, SelectOption, DataList } from 'app/shared/models';
 import * as fileSaver from 'file-saver';
 
@@ -12,9 +11,6 @@ import * as fileSaver from 'file-saver';
 })
 
 export class AssignOrderComponent extends DataList<any> implements OnInit {
-    // 表单
-    assignOrderForm: FormGroup;
-
     // 查询参数对象
     params: AssignListRequest;
 
@@ -58,18 +54,13 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
 
 
     constructor(injector: Injector,
-        protected service: AssignService,
-
-        private fb: FormBuilder) {
+        protected service: AssignService) {
         super(injector, service);
         this.params = new AssignListRequest();
 
         // 获取当前登录用户信息
         this.user = JSON.parse(sessionStorage.getItem(StorageKeys.Identity));
         console.log('当前登陆用户: ', this.user);
-
-        // 创建表单
-        this.createForm();
 
         // 初始化维修技师数据
         this.service.getMaintenanceTechnicians()
@@ -98,17 +89,13 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         });
     }
 
-    createForm() {
-        this.assignOrderForm = this.fb.group({
-            keyword: '', // 车牌号
-        });
-    }
     // 加载派工列表
     load() {
         this.statistics = null;
 
         this.params.setPage(1);
         this.loadList().then((result: any) => {
+            if (!result || !result.tabList) { return; }
             console.log('维修派工列表统计数据：', result.tabList);
             this.statistics = {};
             // 统计各种状态下面的工单数量
@@ -314,7 +301,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             if (notAssigned.length > 0) {
                 notAssigned = notAssigned.map(item => item.serviceName);
                 // 给出提示
-                this.alerter.warn(notAssigned.join(',') + ' 未指派, 不可以转派， 请先派');
+                this.alerter.warn(notAssigned.join(',') + ' 未指派, 不可以转派， 请先指派');
             }
         }
         // 获取可以选择的工项id列表
@@ -323,7 +310,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         console.log('选择的维修工单为：', maintenanceItemIds);
         // 判断是否选择维修工项
         if (maintenanceItemIds.length === 0) {
-            this.alerter.warn('请选择维修工项！');
+            // this.alerter.warn('请选择维修工项！');
             return;
         }
 

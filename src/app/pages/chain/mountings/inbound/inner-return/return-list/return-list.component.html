@@ -13,7 +13,7 @@
           <option *ngFor="let employee of employees" [value]="employee.takeUser">{{employee.takeUserName}}</option>
         </select>
       </div>
-      <div class="form-group mb-2">
+      <div class="form-group">
         <label>部门：</label>
         <select class="form-control mx-sm-3" [value]="takeDepartId" (change)="onDepartSelect($event)">
           <option *ngFor="let department of departments?.departList" [value]="department.id">{{department.name}}</option>

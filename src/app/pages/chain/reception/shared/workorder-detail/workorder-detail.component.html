@@ -73,24 +73,24 @@
       <span>{{data?.typeName}}</span>
     </div>
     <div class="col-4">
-      <label>进店时间：</label>
+      <label>进厂时间：</label>
       <span>{{data?.createdOnUtc|sDatetime}}</span>
     </div>
     <div class="col-4">
-      <label>进店里程：</label>
+      <label>进厂里程：</label>
       <span>{{data?.mileage}}</span>
       <span class="ml-2">KM</span>
     </div>
   </div>
   <div class="form-group row">
-    <div class="col-4">
+    <div class="col-4" *ngIf="data.leaveTime">
       <label>出厂时间：</label>
       <span>{{data?.leaveTime|sDatetime}}</span>
     </div>
-    <div class="col-4">
+    <div class="col-4" *ngIf="data.mileage">
       <label>出厂里程：</label>
       <span>{{data?.mileage}}</span>
-      <span class="ml-2">KM</span>
+      <span class="ml-2" *ngIf="data.mileage">KM</span>
     </div>
   </div>
 </form>
@@ -101,16 +101,16 @@
       <thead>
         <tr>
           <th>项目名称</th>
-          <th>维修工时</th>
+          <th>维修工时(小时)</th>
           <th>工时单价(元)</th>
           <th>金额(元)</th>
-          <th>折扣率</th>
+          <th>折扣率(%)</th>
           <th>操作时间</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let record of data?.serviceOutputs">
-          <td>{{record?.serviceName}}</td>
+          <td><span [class.triangle]="record.type === 3"></span>{{record?.serviceName}}</td>
           <td>{{record?.workHour}}</td>
           <td>{{record?.price|centToYuan}}</td>
           <td>{{record?.amount|centToYuan}}</td>

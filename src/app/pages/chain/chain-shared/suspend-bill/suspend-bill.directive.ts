@@ -17,7 +17,7 @@ export class SuspendBillDirective implements OnInit {
   private onSelect = new EventEmitter<SuspendedBillItem>();
   @Output()
   private onRemove: EventEmitter<SuspendedBillItem> = new EventEmitter<SuspendedBillItem>();
-
+  public suspending: boolean;
   private selectedItem: SuspendedBillItem;
   private component: SuspendBillComponent;
   constructor(
@@ -45,10 +45,21 @@ export class SuspendBillDirective implements OnInit {
   }
 
   public suspend(data: any): Promise<void> {
+    this.suspending = true;
     if (this.selectedItem) {
-      return this.service.update(data, this.type, this.selectedItem.id);
+      return this.service.update(data, this.type, this.selectedItem.id)
+        .then(() => { this.suspending = false })
+        .catch(err => {
+          this.suspending = true;
+          return Promise.reject(err);
+        });
     } else {
-      return this.service.create(data, this.type);
+      return this.service.create(data, this.type)
+        .then(() => { this.suspending = false })
+        .catch(err => {
+          this.suspending = true;
+          return Promise.reject(err);
+        });
     }
   }
 

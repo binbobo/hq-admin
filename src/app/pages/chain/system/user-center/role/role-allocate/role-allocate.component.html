@@ -3,7 +3,6 @@
 </div>
 <div class="card">
   <div class="card-block">
-    <hq-loading [loading]="!items"></hq-loading>
     <ngx-treeview [hidden]="!items" [items]="items" [config]="config" (selectedChange)="onSelectedChange($event)">
     </ngx-treeview>
   </div>

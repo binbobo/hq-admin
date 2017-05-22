@@ -1,9 +1,10 @@
 import { Component, Injector, ViewChild } from '@angular/core';
 import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
 import { OrderService, OrderListRequest, Order, MaintenanceType } from '../order.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Validators, NgForm } from '@angular/forms';
 import { StorageKeys, DataList } from 'app/shared/models';
 import { PrintDirective } from 'app/shared/directives';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-order-list',
@@ -31,9 +32,6 @@ export class OrderListComponent extends DataList<Order> {
   // 工单状态数据
   public orderStatusData;
 
-  // 表单
-  workSheetFilterForm: FormGroup;
-
   // 当前选择的工单记录   用于查看工单详情  执行作废等功能
   selectedOrder = null;
 
@@ -49,8 +47,6 @@ export class OrderListComponent extends DataList<Order> {
   constructor(
     injector: Injector,
     protected service: OrderService,
-
-    private fb: FormBuilder
   ) {
     super(injector, service);
     this.params = new OrderListRequest();
@@ -70,8 +66,8 @@ export class OrderListComponent extends DataList<Order> {
     // 获取当前登录用户信息
     this.user = JSON.parse(sessionStorage.getItem(StorageKeys.Identity));
     console.log('当前登陆用户: ', this.user);
-    // 构建表单
-    this.createForm();
+    //
+    this.reset();
   }
 
   /**
@@ -162,31 +158,6 @@ export class OrderListComponent extends DataList<Order> {
     });
   }
 
-
-  createForm() {
-    // 初始化数组类型参数
-    this.params.states = [];
-    this.params.orgIds = [];
-
-    this.workSheetFilterForm = this.fb.group({
-      plateNo: '', // 车牌号
-      customerName: '', // 车主
-      phone: '', // 车主电话
-      contactUser: '', // 送修人
-      contactInfo: '', // 送修人电话
-      brand: '', // 品牌
-      series: '', // 车系
-      billCode: '', // 工单号
-      createdUserName: '', // 服务顾问
-      vehicleName: '', // 车型
-      type: '', // 维修类型
-      enterStoreTimeStart: '',
-      enterStoreTimeEnd: '',
-      leaveFactoryTimeStart: '',
-      leaveFactoryTimeEnd: '',
-    });
-  }
-
   /**
    * 查询范围下拉框选择事件
    * @param {any} evt
@@ -200,9 +171,33 @@ export class OrderListComponent extends DataList<Order> {
     console.log('当前选择的查询范围列表：', this.params.orgIds);
   }
 
+
+  // 时间选择限制
+  public get maxLeaveStartDate() {
+    return this.params.leaveEndTimeDate || moment().format('YYYY-MM-DD');
+  }
+  public get minLeaveEndDate() {
+    return this.params.leaveStartTimeDate || '';
+  }
+  public get maxLeaveEndDate() {
+    return moment().format('YYYY-MM-DD');
+  }
+  public get maxEnterStartDate() {
+    return this.params.enterEndTimeDate || moment().format('YYYY-MM-DD');
+  }
+  public get minEnterEndDate() {
+    return this.params.enterStartTimeDate || '';
+  }
+  public get maxEnterEndDate() {
+    return moment().format('YYYY-MM-DD');
+  }
+
+
   // 重置为初始查询条件
-  reset() {
-    this.workSheetFilterForm.reset();
+  reset(form?: NgForm) {
+    if (form) {
+      form.reset();
+    }
 
     this.params.states = [];
     this.params.orgIds = [];

@@ -9,8 +9,8 @@
       </div>
       <div class="form-group">
         <label class="form-control-label">*配件名称</label>
-        <input label="配件名称" [hqTableTypeahead]="nameSource" [columns]="itemColumns(true)" (onSelect)="onItemSelect($event)"
-          formControlName="productName" class="form-control" placeholder="请输入配件名称">
+        <input label="配件名称" [hqTableTypeahead]="nameSource" [columns]="itemColumns(true)" (onSelect)="onItemSelect($event)" formControlName="productName"
+          class="form-control" placeholder="请输入配件名称">
         <input type="hidden" label="配件名称" formControlName="productId">
       </div>
       <div class="form-group">
@@ -23,7 +23,7 @@
       </div>
       <div class="form-group">
         <label class="form-control-label">*单价（元/个）</label>
-        <input type="number" label="单价" formControlName="yuan" class="form-control" (input)="onPriceChange($event)"/>
+        <input type="number" label="单价" formControlName="yuan" class="form-control" (input)="onPriceChange($event)" />
       </div>
     </div>
     <div class="col-6">
@@ -37,7 +37,7 @@
       </div>
       <div class="form-group">
         <label class="form-control-label">*库存</label>
-        <input readonly label="库存" formControlName="stockCount" class="form-control">
+        <input readonly label="库存" formControlName="stockCount" [errors]="{min:'库存不足'}" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*数量（个）</label>

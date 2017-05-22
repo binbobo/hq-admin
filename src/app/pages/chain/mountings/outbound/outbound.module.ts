@@ -8,7 +8,6 @@ import { SalesCreateComponent } from './sales/sales-create/sales-create.componen
 import { ModalModule, BsDropdownModule } from 'ngx-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomFormsModule } from "ng2-validation/dist";
-import { PrintComponent } from './distribute/print/print.component';
 import { ReceiveListComponent } from './receive/receive-list/receive-list.component';
 import { ReceiveCreateComponent } from './receive/receive-create/receive-create.component';
 import { ReceiveService } from './receive/receive.service';
@@ -22,13 +21,13 @@ import { ReturnCreateComponent } from './purchase-return/return-create/return-cr
 import { ReturnPrintComponent } from './purchase-return/return-print/return-print.component';
 import { PurchaseReturnService } from './purchase-return/purchase-return.service';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { DistributePrintComponent } from './distribute/distribute-print/distribute-print.component';
 
 const routes: Routes = [
   { path: 'maintain-distribute', component: DistributeComponent },
   { path: 'sell', component: SalesListComponent },
   { path: 'inner-receive', component: ReceiveListComponent },
-  { path: 'purchase-return', component: ReturnListComponent },
-  { path: 'maintain-distribute/print/:billId/:billCode/:SerialNumsList', component: PrintComponent }
+  { path: 'purchase-return', component: ReturnListComponent }
 ]
 
 @NgModule({
@@ -44,7 +43,7 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
   providers: [SalesService, ReceiveService, ProviderService, PurchaseReturnService],
-  declarations: [DistributeComponent, SalesListComponent, SalesCreateComponent, ReceiveListComponent, ReceiveCreateComponent, ReceivePrintComponent, SalesPrintComponent, PrintComponent, ReturnListComponent, ReturnCreateComponent, ReturnPrintComponent, DistributeCreatComponent]
+  declarations: [DistributeComponent, SalesListComponent, SalesCreateComponent, ReceiveListComponent, ReceiveCreateComponent, ReceivePrintComponent, SalesPrintComponent, ReturnListComponent, ReturnCreateComponent, ReturnPrintComponent, DistributeCreatComponent, DistributePrintComponent]
 
 
 })

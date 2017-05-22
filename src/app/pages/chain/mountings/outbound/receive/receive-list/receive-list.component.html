@@ -5,21 +5,21 @@
     <ng-template hqSuspendBill="IU" (onRemove)="onSuspendRemove($event)" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
   <div class="card-block">
-    <form class="form-inline mb-2">
-      <div class="form-group mb-2">
+    <form #form="ngForm" class="form-inline mb-2">
+      <div class="form-group">
         <label>*领用人：</label>
-        <select class="form-control mx-sm-3" (change)="onReceiverSelect($event)">
+        <select class="form-control" name="takeUser" [(ngModel)]="model.takeUser" (change)="onReceiverSelect($event)">
           <option *ngFor="let item of employees" [value]="item.value">{{item.text}}</option>
         </select>
       </div>
-      <div class="form-group mb-2">
-        <label class="mr-sm-2">部门：</label>
-        <select class="form-control mx-sm-3">
+      <div class="form-group">
+        <label class="mr-sm-1">部门：</label>
+        <select class="form-control" name="takeDepart" [(ngModel)]="model.takeDepart">
           <option *ngFor="let item of departments" [value]="item.value">{{item.text}}</option>
         </select>
       </div>
-      <div class="form-group mb-2">
-        <button (click)="createModal.show()" class="btn btn-primary mx-sm-1">新增</button>
+      <div class="form-group">
+        <button [disabled]="form.invalid" (click)="createModal.show()" class="btn btn-primary">新增</button>
       </div>
     </form>
     <div class="overflow-auto">
@@ -58,8 +58,8 @@
     </div>
   </div>
   <div class="card-footer text-muted">
-    <button class="btn btn-primary" (click)="generate($event)">生成内部领用单</button>
-    <button [disabled]="!model?.list?.length" class="btn btn-info" (click)="suspend($event)">挂单</button>
+    <button [hqSpinner]="generating" [disabled]="form.invalid||!model.valid" class="btn btn-primary" (click)="generate($event)">生成内部领用单</button>
+    <button [hqSpinner]="suspendBill.suspending" [disabled]="form.invalid||!model.valid" class="btn btn-info" (click)="suspend($event)">挂单</button>
   </div>
 </div>
 

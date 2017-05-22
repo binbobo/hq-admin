@@ -21,8 +21,15 @@ export class FormControlErrorDirective<T extends FormControlErrorComponent> impl
   @HostListener('blur', ['$event'])
   private onblur(event: Event) {
     if (this.readonly === undefined) {
-      this.validate();
+      setTimeout(() => {
+        this.validate();
+      }, 100);
     }
+  }
+
+  @HostListener('focus', ['$event'])
+  private onfocus(event: Event) {
+    this.hide();
   }
 
   constructor(
@@ -36,23 +43,35 @@ export class FormControlErrorDirective<T extends FormControlErrorComponent> impl
     if (this.errors) {
       Object.keys(this.errors).forEach(key => this.errors[key.toLowerCase()] = this.errors[key]);
     }
-    if (!this.readonly) {
-      Observable.fromEvent(this.el.nativeElement, 'input')
-        .map((e: any) => e.target.value)
-        .debounceTime(500)
-        .subscribe(value => {
-          this.controlErrors = [];
+    if (this.control) {
+      this.control.valueChanges.subscribe((a) => {
+        if (document.activeElement !== this.el.nativeElement) {
           this.validate(false);
-        });
+        }
+      });
     }
+    // if (!this.readonly) {
+    //   Observable.fromEvent(this.el.nativeElement, 'input')
+    //     .map((e: any) => e.target.value)
+    //     .debounceTime(100)
+    //     .subscribe(value => {
+    //       this.controlErrors = [];
+    //       this.validate(false);
+    //     });
+    // }
   }
 
   protected show(): void {
-
+    if (this.componentRef) {
+      this.componentRef.instance.errors = this.controlErrors;
+    }
   }
 
   protected hide(): void {
-
+    this.controlErrors = null;
+    if (this.componentRef) {
+      this.componentRef.instance.errors = this.controlErrors;
+    }
   }
 
   protected createComponent(type: Type<T>, position: string = "afterend") {
@@ -74,14 +93,9 @@ export class FormControlErrorDirective<T extends FormControlErrorComponent> impl
       this.controlErrors = keys
         .filter(m => control.errors[m] === true || typeof control.errors[m] === 'object')
         .map(m => this.getError(m.toLowerCase(), control.errors));
-    }
-    if (!control.valid && this.controlErrors && this.controlErrors.length) {
       this.show();
     } else {
       this.hide();
-    }
-    if (this.componentRef) {
-      this.componentRef.instance.errors = this.controlErrors;
     }
     return control.valid;
   }

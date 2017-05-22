@@ -33,6 +33,7 @@ export class TableTypeaheadDirective implements OnInit {
   private paging = false;
   private sortedKeys: Array<string> = [];
   private statusElement: HTMLElement;
+  private disabled = false;
   constructor(
     private viewContainerRef: ViewContainerRef,
     private componentFactoryResolver: ComponentFactoryResolver
@@ -49,14 +50,13 @@ export class TableTypeaheadDirective implements OnInit {
         } else {
           this.hide();
         }
-      }, 500);
+      }, 200);
     }
   }
   @HostListener('focus', ['$event'])
   onFocus(event) {
     this.show();
     if (!this.paging && this.forceRefresh || !this.componentRef.instance.result) {
-      this.componentRef.instance.result = null;
       this.search();
     }
   }
@@ -75,6 +75,10 @@ export class TableTypeaheadDirective implements OnInit {
     this.componentRef.instance.hide();
   }
   private search(pageIndex = 1) {
+    if (this.disabled) return;
+    if (!this.paging) {
+      this.componentRef.instance.result = null;
+    }
     let param = new TypeaheadRequestParams(this.el.value);
     param.setPage(pageIndex, this.pageSize);
     this.statusElement.classList.add('fa-spinner');
@@ -156,7 +160,12 @@ export class TableTypeaheadDirective implements OnInit {
           .map(key => item[key].toString())
           .find(value => value.includes(originValue));
         if (selectedValue) {
+          this.disabled = true;
           this.el.value = selectedValue.trim();
+          let event = new Event('input');
+          this.el.dispatchEvent(event);
+          this.el.focus();
+          setTimeout(() => this.disabled = false, this.delay + 100);
         }
       }
       this.onSelect.emit(item);

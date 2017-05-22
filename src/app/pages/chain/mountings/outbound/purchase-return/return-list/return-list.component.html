@@ -6,16 +6,14 @@
   </div>
   <div class="card-block">
     <form class="form-inline mb-2">
-      <div class="form-group mb-2">
-        <label>*供应商名称</label>
-        <div class="mx-sm-3">
-          <input [hqTableTypeahead]="source" [columns]="providerColumns" (onSelect)="onProviderSelect($event)" value="{{model?.provider||''}}"
-            class="form-control" placeholder="请输入供应商名称" />
-        </div>
+      <div class="form-group">
+        <label>*供应商名称：</label>
+        <input [hqTableTypeahead]="source" [columns]="providerColumns" (onSelect)="onProviderSelect($event)" value="{{model?.provider||''}}"
+          class="form-control" placeholder="请输入供应商名称" />
       </div>
-      <div class="form-group mb-2">
-        <label>*入库单号</label>
-        <select class="mx-sm-3 form-control" name="suppliers" (change)="onBillCodeChange($event)">
+      <div class="form-group">
+        <label>*入库单号：</label>
+        <select class="form-control" name="suppliers" (change)="onBillCodeChange($event)">
           <option>请选择入库单号</option>
           <option [value]="item.value" [attr.selected]="item.checked" *ngFor="let item of billCodes">{{item.text}}</option>
         </select>
@@ -109,7 +107,7 @@
   </div>
   <div class="card-footer text-muted">
     <button [disabled]="!model?.valid" class="btn btn-primary" (click)="generate($event)">生成采购退库单</button>
-    <button [disabled]="!model?.valid" class="btn btn-info" (click)="suspend($event)">挂单</button>   
+    <button [disabled]="!model?.valid" class="btn btn-info" (click)="suspend($event)">挂单</button>
   </div>
 </div>
 

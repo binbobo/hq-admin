@@ -4,35 +4,33 @@
     车主信息
   </div>
   <div class="card-block">
-    <form [formGroup]="customerManagementForm" (ngSubmit)="onLoadList()">
+    <form (ngSubmit)="onLoadList()">
       <div class="form-group row">
         <label for="name" class="col-1 col-form-label">车主</label>
         <div class="col-2">
-          <input type="text" [(ngModel)]="params.name" class="form-control" formControlName="name" id="name" placeholder="车主">
+          <input type="text" [(ngModel)]="params.name" class="form-control" name="name" id="name" placeholder="车主">
         </div>
-        <label for="plateNo" class="col-1 col-form-label col-form-label">车牌号</label>
+        <label for="plateNo" class="col-1 col-form-label">车牌号</label>
         <div class="col-2">
-          <input type="text" [(ngModel)]="params.plateNo" class="form-control" formControlName="plateNo" id="plateNo" placeholder="车牌号">
+          <input type="text" [(ngModel)]="params.plateNo" class="form-control" name="plateNo" id="plateNo" placeholder="车牌号">
         </div>
-        <label for="phone" class="col-1 col-form-label col-form-label">车主电话</label>
+        <label for="phone" class="col-1 col-form-label">车主电话</label>
         <div class="col-2">
-          <input type="tel" [(ngModel)]="params.phone" class="form-control" formControlName="plateNo" id="phone" placeholder="车主电话">
+          <input type="tel" [(ngModel)]="params.phone" class="form-control" name="plateNo" id="phone" placeholder="车主电话">
         </div>
       </div>
       <div class="form-group row">
-        <label for="createdStartDate" class="col-1 col-form-label col-form-label">建档日期</label>
+        <label for="createdStartDate" class="col-1 col-form-label">建档日期</label>
         <div class="col-2">
-          <input [(ngModel)]="params.createdStartDate" class="form-control datetime-picker" type="text" formControlName="createdStartDate"
-            ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
+          <input readonly [max-date]="maxCreatedStartDate"  [(ngModel)]="params.createdStartDate" class="form-control" type="text" name="createdStartDate" ngui-datetime-picker date-only="true" />
         </div>
-        <label class="col-1 col-form-label col-form-label">至</label>
+        <label class="col-1 col-form-label">至</label>
         <div class="col-2">
-          <input [(ngModel)]="params.createdEndDate" class="form-control datetime-picker" type="text" formControlName="createdEndDate"
-            ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
+          <input readonly [min-date]="minCreatedEndDate"  [max-date]="maxCreatedEndDate"  [(ngModel)]="params.createdEndDate" class="form-control" type="text" name="createdEndDate" ngui-datetime-picker date-only="true" />
         </div>
         <div class="col-offset-6 col-3">
           <button type="submit" class="btn btn-primary">查询</button>
-          <button type="button" class="btn btn-secondary mr-2" (click)="export()">导出</button>
+
         </div>
       </div>
     </form>
@@ -52,7 +50,6 @@
       <tbody>
         <tr *ngFor="let item of list">
           <td width="75">
-            <a href="#" [routerLink]="['add']">新增</a> |
             <a href="#" [routerLink]="['edit', item.id]">编辑</a> |
             <a href="#" (click)="$event.preventDefault();customerDetail(item.id, detailLgModal)">详情</a>
           </td>
@@ -65,6 +62,11 @@
         </tr>
       </tbody>
     </table>
+    <div style="margin-bottom:10px;">
+      <button type="button" class="btn btn-info" [routerLink]="['add']">新增</button>
+      <button type="button" class="btn btn-secondary mr-2" (click)="export()">导出</button>
+    </div>
+    <br>
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
 </div>

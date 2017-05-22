@@ -23,7 +23,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   // 生产工单按钮是否可用
   public enableCreateWorkSheet = false;
   // 挂单按钮是否可用
-  public enableSuspendWorkSheet = true;
+  public enableSuspendWorkSheet = false;
 
   @ViewChild(SuspendBillDirective)
   private suspendBill: SuspendBillDirective;
@@ -59,7 +59,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   };
 
   regex = {
-    plateNo: /^[\u4e00-\u9fa5]{1}[A-Z]{1}[A-Z_0-9]{5}$/i,
+    plateNo: /^[\u4e00-\u9fa5]{1}[A-Za-z]{1}[A-Za-z_0-9]{5}$/,
     phone: /^1[3|4|5|7|8]\d{9}$/,
     mileage: /^[0-9]+([.]{1}[0-9]{1,2})?$/,
     vin: /^[A-HJ-NPR-Z\d]{8}[\dX][A-HJ-NPR-Z\d]{2}\d{6}$/
@@ -78,6 +78,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   isBrandSelected = false;
   isSeriesSelected = false;
   isVehicleSelected = false;
+
+  isFuzzySearchEnable = true;
 
 
   // 覆盖父类的初始化方法
@@ -146,18 +148,35 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   }
 
   onVehicleBlur() {
-    if (!this.workSheetForm.controls.vehicleId) {
+    console.log('vehicle on blur');
+    if (!this.workSheetForm.controls.vehicleId.value) {
       this.workSheetForm.controls.vehicleName.setValue('');
+    }
+  }
+
+  onPlateNoBlur(val) {
+    if (!this.isSelected && this.workSheetForm.controls.plateNo.valid) {
+      this.isFuzzySearchEnable = false;
+    } else {
+      this.isFuzzySearchEnable = true;
+    }
+  }
+  onCustomerNameBlur(val) {
+    if (!this.isSelected && this.workSheetForm.controls.customerName.valid) {
+      this.workSheetForm.controls.contactUser.setValue(val);
+    }
+  }
+  onPhoneBlur(val) {
+    if (this.workSheetForm.controls.phone.valid) {
+      this.workSheetForm.controls.contactInfo.setValue(val);
     }
   }
 
   // 从模糊查询下拉列表中选择一个车型事件处理程序
   onModelSelect(evt) {
     this.isVehicleSelected = true;
-    // 设置当前选择的车系id
     // console.log('车型选择:', evt);
 
-    // 如果手动选择了车型  以该车型id为准
     this.workSheetForm.controls.vehicleId.setValue(evt.id);
     this.workSheetForm.controls.vehicleName.setValue(evt.name);
 
@@ -179,25 +198,23 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.disableCustomerVehicleField();
 
     if (!evt.id) {
-      this.alerter.error('加载上次工单信息失败！缺少客户车辆ID');
+      console.log('加载上次工单信息失败！缺少客户车辆ID');
       return;
     }
 
     // 根据客户车辆id查询上次工单信息
     this.service.getLastOrderInfo(evt.id).then(lastOrder => {
-      // console.log('根据客户车辆id自动带出的上次工单信息：', lastOrder);
-      // 判断是否有上次历史工单记录
+      // console.log('根据客户车辆id自动带出的上次工单信息：', JSON.stringify(lastOrder));
       if (lastOrder) {
+        // 加载上次维修记录
         this.loadLastOrderInfo(lastOrder);
         // 保存上次工单记录
         this.lastOrderData = lastOrder;
-        // 设置选择为true
-        this.isSelected = true;
       }
+      // 设置选择为true
+      this.isSelected = true;
     }).catch(err => {
       // 没有上次工单记录  或者  接口出错
-      // this.alerter.error('获取上次工单信息失败：' + err);
-
       this.isSelected = true;
     });
   }
@@ -206,22 +223,22 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   loadLastOrderInfo(lastOrder) {
     // 加载上次工单信息
     this.workSheetForm.patchValue({
-      type: lastOrder.type,
+      // type: lastOrder.type,
       contactUser: lastOrder.contactUser,
       contactInfo: lastOrder.contactInfo,
       // mileage: lastOrder.mileage,
-      introducer: lastOrder.introducer,
-      introintroPhoneducer: lastOrder.introPhone,
-      validate: moment(lastOrder.validate).format('YYYY-MM-DD'),
-      location: lastOrder.location,
-      lastEnter: moment(lastOrder.lastEnter).format('YYYY-MM-DD hh:mm:ss'),
+      // introducer: lastOrder.introducer,
+      // introintroPhoneducer: lastOrder.introPhone,
+      // validate: moment(lastOrder.validate).format('YYYY-MM-DD'),
+      // location: lastOrder.location,
+      lastEnter: moment(lastOrder.lastEnter).format('YYYY-MM-DD HH:mm'),
       lastMileage: lastOrder.lastMileage,
     });
   }
 
   // 根据车牌号， 车主， vin 自动带出客户车辆信息
   loadCustomerVehicleInfo(customerVehicle) {
-    console.log('客户车辆信息', customerVehicle);
+    console.log('当前选择的客户车辆信息', customerVehicle);
     // 加载客户车辆信息
     this.workSheetForm.patchValue({
       plateNo: customerVehicle.plateNo,
@@ -237,6 +254,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       customerVehicleId: customerVehicle.id,
       customerId: customerVehicle.customerId,
     });
+    // 设置品牌 车系 车型选中状态为true
+    this.isBrandSelected = this.isSeriesSelected = this.isVehicleSelected = true;
   }
 
   /**
@@ -247,7 +266,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.getLastOrderByCustomerVechileId(evt);
     // 车牌号输入框可用  其他客户车辆相关输入框不可用
     this.workSheetForm.controls.plateNo.enable();
-    this.workSheetForm.controls.plateNo.patchValue(evt.plateNo, { emitEvent: false });
+
   }
   /**
 * @memberOf CreateOrderComponent
@@ -257,8 +276,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.getLastOrderByCustomerVechileId(evt);
     // 车主输入框可用  其他客户车辆相关输入框不可用
     this.workSheetForm.controls.customerName.enable();
-
-    this.workSheetForm.controls.customerName.patchValue(evt.customerName, { emitEvent: false });
   }
 
   // 客户车辆相关输入框可用
@@ -326,7 +343,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       });
       // 使用新的元素替换以前的元素
       this.newMaintenanceItemData.splice(index, 1, data);
-      console.log('testsetst:', data, this.selectedItem)
       // 更新价格
       const workHourFeediff: number = data.price * data.workHour - (this.selectedItem.price * 100) * this.selectedItem.workHour;
       this.fee.workHour += workHourFeediff * 1;
@@ -388,20 +404,19 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     const workSheet = this.getEdittingOrder();
 
     // console.log('提交的挂掉对象为：', JSON.stringify(workSheet));
-
     this.suspendBill.suspend(workSheet)
       .then(() => this.suspendBill.refresh())
       .then(() => {
         this.alerter.success('挂单成功！');
         // 挂单按钮不可用  防止重复提交
-        this.enableSuspendWorkSheet = true;
+        this.enableSuspendWorkSheet = false;
         // 清空数据
         this.initOrderData();
       })
       .catch(err => {
-        // 挂单按钮不可用  防止重复提交
+        // 挂单按钮可用
         this.enableSuspendWorkSheet = true;
-        this.alerter.error(err);
+        this.alerter.error('挂单失败：' + err, true, 3000);
       });
   }
   /**
@@ -427,13 +442,16 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 保存挂单id
     order.suspendedBillId = evt.id;
 
+    // 如果当前选择的挂单记录是通过模糊查询带出来的
+    if (order.customerVehicleId) {
+      // 客户车辆信息不可修改
+      this.disableCustomerVehicleField();
+      // 设置车辆选择为true
+      this.isBrandSelected = this.isSeriesSelected = this.isVehicleSelected = true;
+    }
+
     // 表单赋值
     this.workSheetForm.patchValue(order);
-
-    // 如果当前选择的挂单记录是通过模糊查询带出来的   那么客户车辆信息不可修改
-    if (order.customerVehicleId) {
-      this.disableCustomerVehicleField();
-    }
 
     // 计算费用
     this.fee.workHour = order.maintenanceItems.reduce((accumulator, currentValue) => {
@@ -443,13 +461,11 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       return accumulator + currentValue.amount * 1;
     }, 0);
 
-    // 需要深copy order对象  不能改变原对象 
+    // 需要深copy 维修项目记录  不能改变原对象 
     // 因为每次选择一个挂掉的时候，挂单记录不会从列表中消失 只有点击创建工单之后  才消失
-
-    // 记录当前选择的挂单
     this.newMaintenanceItemData = this.deepCopyArray(order.maintenanceItems);
 
-    // // 判断生成工单按钮是否可用
+    // 判断生成工单按钮是否可用
     this.enableCreateWorkSheet = this.workSheetForm.valid && this.newMaintenanceItemData.length > 0;
   }
 
@@ -466,7 +482,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.workSheetForm = this.fb.group({
       customerName: ['', [Validators.required]], // 车主
       phone: ['', Validators.compose([Validators.pattern(this.regex.phone)])], // 车主电话
-      createdOnUtc: [{ value: moment().format('YYYY-MM-DD hh:mm:ss'), disabled: true }], // 进店时间 / 开单时间
+      createdOnUtc: [{ value: moment().format('YYYY-MM-DD HH:mm'), disabled: true }], // 进店时间 / 开单时间
       contactUser: ['', [Validators.required]], // 送修人
       contactInfo: ['', Validators.compose([Validators.required, Validators.pattern(this.regex.phone)])], // 送修人电话
       createdUserName: [{ value: this.user.username, disabled: true }], // 服务顾问
@@ -479,7 +495,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       vin: ['', Validators.compose([Validators.required, Validators.pattern(this.regex.vin)])], // vin  底盘号
       validate: [null, [CustomValidators.date]], // 验车日期
       type: ['', [Validators.required]], // 维修类型
-      expectLeave: [null, [Validators.required, CustomValidators.date]], // 预计交车时间
+      expectLeave: [moment().add(2, 'hours').format('YYYY-MM-DD HH:mm'), [Validators.required, CustomValidators.date]], // 预计交车时间
       mileage: ['', Validators.compose([Validators.required, Validators.pattern(this.regex.mileage)])], // 行驶里程
       lastEnter: [{ value: null, disabled: true }], // 上次进店时间
       location: '', // 维修工位
@@ -499,19 +515,23 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 表单域中的值改变事件监听
     this.workSheetForm.valueChanges.subscribe(data => {
       // 只有表单域合法并且有新增维修项目数据的时候， 生成订单按钮才可用
-      this.enableCreateWorkSheet = this.workSheetForm.controls.vehicleName.enabled && this.workSheetForm.valid && this.newMaintenanceItemData.length > 0;
+      this.enableCreateWorkSheet = this.workSheetForm.controls.vehicleId.value && this.workSheetForm.valid && this.newMaintenanceItemData.length > 0;
     });
 
     // 车牌号表单域值改变事件监听
     this.workSheetForm.controls.plateNo.valueChanges.subscribe((newValue) => {
+      this.enableSuspendWorkSheet = this.workSheetForm.controls.plateNo.valid;
+
       if (this.isSelected) {
         this.initOrderData();
+        this.workSheetForm.controls.plateNo.setValue(newValue);
       }
     });
     // 车主表单域值改变事件监听
     this.workSheetForm.controls.customerName.valueChanges.subscribe((newValue) => {
       if (this.isSelected) {
         this.initOrderData();
+        this.workSheetForm.controls.customerName.setValue(newValue);
       }
     });
     // 品牌表单域值改变事件监听
@@ -552,9 +572,12 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
     // 1.表单基础数据  getRawValue获取表单所有数据  包括disabled (value属性不能获取disabled表单域值)
     const workSheet = this.workSheetForm.getRawValue();
+    // 时间类型的输入框  如果没有值的话 不传到后台
     if (!workSheet.validate) { delete workSheet.validate; }
     if (!workSheet.lastEnter) { delete workSheet.lastEnter; }
     if (!workSheet.nextDate) { delete workSheet.nextDate; }
+    // 车牌号转成大写
+    workSheet.plateNo = workSheet.plateNo.toUpperCase();
     // 2.新增维修项目数据
     workSheet.maintenanceItems = this.newMaintenanceItemData;
     return workSheet;
@@ -568,8 +591,9 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 表单重置
     this.workSheetForm.reset({
       // 初始化开单时间和服务顾问
-      createdOnUtc: { value: moment().format('YYYY-MM-DD hh:mm:ss'), disabled: true },
-      createdUserName: this.user.username
+      createdOnUtc: { value: moment().format('YYYY-MM-DD HH:mm'), disabled: true },
+      createdUserName: this.user.username,
+      expectLeave: moment().add(2, 'hours').format('YYYY-MM-DD HH:mm')
     }, { emitEvent: false }); // 不触发valueChanges事件
 
     // 清空客户车辆信息数据   上次选择的品牌id和车系id,车型id
@@ -584,8 +608,9 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.lastOrderData = null;
 
     this.isSelected = false;
+    this.isFuzzySearchEnable = true;
     this.enableCustomerVehicleField();
-
+    // 重置新添加的工单记录
     this.newWorkOrderData = null;
 
     this.isBrandSelected = this.isSeriesSelected = this.isVehicleSelected = false;
@@ -603,7 +628,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 获取当前录入的工单信息
     const workSheet = this.getEdittingOrder();
     if (!workSheet.vehicleId) {
-      alert('请选择车型');
       this.workSheetForm.controls.vehicleName.setValue('');
       return;
     }
@@ -613,19 +637,22 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
     this.service.create(workSheet)
       .then(data => {
-        this.newWorkOrderData = data;
-        console.log('创建工单成功之后， 返回的工单对象：', data);
+        console.log('创建工单成功之后， 返回的工单对象：', JSON.stringify(data));
         // 创建订单成功之后  做一些重置操作
         if (confirm('创建工单成功！ 是否打印？')) {
+          this.newWorkOrderData = data;
+          // 延迟打印
           setTimeout(() => {
             this.print();
-            // 清空数据
-            this.initOrderData();
-            // 刷新挂单列表
-            if (workSheet.suspendedBillId) {
-              this.suspendBill.refresh();
-            }
-          }, 1000);
+            // 延迟清空数据
+            setTimeout(() => {
+              this.initOrderData();
+              // 刷新挂单列表
+              if (workSheet.suspendedBillId) {
+                this.suspendBill.refresh();
+              }
+            }, 100);
+          }, 100);
         } else {
           // 清空数据
           this.initOrderData();
@@ -638,8 +665,16 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
         // 出错的话  允许再次提交
         this.enableCreateWorkSheet = true;
 
-        this.alerter.error('创建工单失败:' + err);
+        this.alerter.error('创建工单失败:' + err, true, 3000);
       });
+  }
+
+  public get currentDate() {
+    return moment().format('YYYY-MM-DD');
+  }
+
+  public get currentHours() {
+    return moment().hours();
   }
 
 

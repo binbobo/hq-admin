@@ -1,4 +1,4 @@
- <ng-template hq-alerter></ng-template>
+<ng-template hq-alerter></ng-template>
 <div class="card">
   <form *ngIf="form" class="card-block row" [formGroup]="form" (ngSubmit)="onSubmit($event)">
     <div class="col-6">
@@ -17,30 +17,30 @@
           class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*品牌</label>
+        <label class="form-control-label">品牌</label>
         <input readonly label="品牌" formControlName="brand" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*规格型号</label>
+        <label class="form-control-label">规格型号</label>
         <input readonly label="规格型号" formControlName="productSpecification" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*单价（元/个）</label>
-        <input type="number" value="{{price|centToYuan}}" (input)="onPriceChange($event)" class="form-control">
-        <input label="单价" #priceControl="hq-error" type="hidden" formControlName="price" class="form-control">
+        <input type="number" value="{{price|centToYuan}}" (input)="onPriceChange($event)" formControlName="price" class="form-control">
+        <!--<input label="单价" #priceControl="hq-error" type="hidden" formControlName="price" class="form-control">-->
       </div>
     </div>
     <div class="col-6">
       <div class="form-group">
-        <label class="form-control-label">*车型</label>
+        <label class="form-control-label">车型</label>
         <input readonly label="车型" formControlName="vehicleName" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*仓库</label>
+        <label class="form-control-label">仓库</label>
         <input readonly label="仓库" formControlName="houseName" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*库位</label>
+        <label class="form-control-label">库位</label>
         <input readonly label="库位" formControlName="locationName" class="form-control">
       </div>
       <div class="form-group">
@@ -48,8 +48,8 @@
         <input label="数量" type="number" formControlName="initcount" (change)="onChangeCount($event)" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*金额(元)</label>
-        <input readonly class="form-control" [ngModel]="model.amount|centToYuan" formControlName="amount">
+        <label class="form-control-label">金额(元)</label>
+        <input readonly class="form-control" value="{{amount|centToYuan}}" formControlName="amount">
       </div>
       <div class="form-group">
         <label class="form-control-label">*领料人</label>

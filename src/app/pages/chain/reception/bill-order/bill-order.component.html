@@ -30,6 +30,10 @@
           <input class="form-control  datetime-picker" id="endtime" [(ngModel)]="params.endtime" formControlName="endtime" type="text"
             ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
         </div>
+        <label for="createdTime">结算单号：</label>
+        <div class="col-sm-2">
+          <input class="form-control"  type="text"  placeholder="结算单号" />
+        </div>
         <div class="col-sm-2"><button class="btn btn-primary">查询</button></div>
       </div>
     </form>
@@ -40,6 +44,7 @@
             <th>操作</th>
             <th>状态</th>
             <th>车牌号</th>
+            <th>结算单号</th>
             <th>工单号</th>
             <th>实收金额</th>
             <th>维修类型</th>
@@ -59,6 +64,7 @@
                 (click)='DetailsDialog($event, item.id,lgModal,item)'>详情</a></td>
             <td>{{item.statusName}}</td>
             <td>{{item.plateNo}}</td>
+            <td> </td>
             <td>{{item.billCode}}</td>
             <td>{{item.amount|centToYuan}}</td>
             <td>{{item.typeName}}</td>
@@ -92,8 +98,9 @@
           <p>您确定要撤销结算吗</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-sm" data-dismiss="confirmModal" (click)="confirmModal.hide();">取消</button>
-          <button type="button" class="btn btn-sm" data-dismiss="modal" (click)="unBill(confirmModal);">确定</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="unBill(confirmModal);">确定</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="confirmModal" (click)="confirmModal.hide();">取消</button>
+
         </div>
       </div>
     </div>
@@ -152,4 +159,4 @@
 </div>
 <!--详情 end-->
 
-<hq-print-order *ngIf="lgModal.isShown" [data]="printData" hqPrint #printer="hq-print"></hq-print-order>
+<hq-print-order *ngIf="lgModal.isShown" [hidden]="true" [data]="printData" hqPrint #printer="hq-print"></hq-print-order>

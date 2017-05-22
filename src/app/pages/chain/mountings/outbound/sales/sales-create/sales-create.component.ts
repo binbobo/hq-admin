@@ -48,10 +48,10 @@ export class SalesCreateComponent implements OnInit {
       productSpecification: [this.model.productSpecification, [Validators.required]],
       storeId: [this.model.storeId],
       locationId: [this.model.locationId],
-      count: [this.model.count, [Validators.required, CustomValidators.min(1), CustomValidators.digits]],
+      count: [this.model.count, [Validators.required, CustomValidators.min(1), CustomValidators.min(this.model.count), CustomValidators.digits]],
       price: [this.model.price],
       amount: [this.model.amount],
-      stockCount: [this.model.stockCount, [Validators.required]],
+      stockCount: [this.model.stockCount, [Validators.required, CustomValidators.min(1)]],
       locationName: [this.model.locationName, [Validators.required]],
       houseName: [this.model.houseName, [Validators.required]],
       yuan: [0, [Validators.required]]
@@ -106,6 +106,7 @@ export class SalesCreateComponent implements OnInit {
     this.form.controls['yuan'].setValidators(CustomValidators.gte(item.price / 100))
     setTimeout(() => {
       this.form.patchValue(item);
+      this.controls.forEach(m => m.validate());
       this.calculate();
     }, 1);
   }

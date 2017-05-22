@@ -22,7 +22,7 @@ export class AddVehicleComponent implements OnInit {
   isVehicleSelected = false;
 
   regex = {
-    plateNo: /^[\u4e00-\u9fa5]{1}[A-Z]{1}[A-Z_0-9]{5}$/,
+    plateNo: /^[\u4e00-\u9fa5]{1}[A-Za-z]{1}[A-Za-z_0-9]{5}$/,
     vin: /^[A-HJ-NPR-Z\d]{8}[\dX][A-HJ-NPR-Z\d]{2}\d{6}$/,
     engineNo: /^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/
   };
@@ -58,6 +58,7 @@ export class AddVehicleComponent implements OnInit {
     if (!this.vehicleForm.value.purchaseDate) { delete this.vehicleForm.value.purchaseDate; };
     if (!this.vehicleForm.value.validate) { delete this.vehicleForm.value.validate; };
     if (!this.vehicleForm.value.insuranceDue) { delete this.vehicleForm.value.insuranceDue; };
+    this.vehicleForm.value.plateNo = this.vehicleForm.value.plateNo.toUpperCase();
     this.onAddVehicleConfirm.emit(this.vehicleForm.value);
     this.vehicleForm.reset();
   }

@@ -6,22 +6,22 @@
   </div>
   <div class="card-block">
     <form #form="ngForm" class="form-inline mb-2">
-      <div class="form-group mb-2">
-        <label>*客户名称</label>
-        <input class="form-control mx-sm-3" name="custName" required [(ngModel)]="model.custName" placeholder="请输入客户名称">
+      <div class="form-group">
+        <label>*客户名称：</label>
+        <input class="form-control" [hqTableTypeahead]="source" [columns]="providerColumns" (onSelect)="onProviderSelect($event)" [hqTableTypeahead]="customerSource" name="custName" required [(ngModel)]="model.custName" placeholder="请输入客户名称">
       </div>
-      <div class="form-group mb-2">
-        <label class="mr-sm-2">手机号：</label>
-        <input class="form-control mx-sm-3" label="手机号" required name="custPhone" [(ngModel)]="model.custPhone" placeholder="请输入手机号">
+      <div class="form-group">
+        <label class="mr-sm-1">手机号：</label>
+        <input class="form-control" label="手机号" pattern="1\d{10}" required name="custPhone" [(ngModel)]="model.custPhone" placeholder="请输入手机号">
       </div>
-      <div class="form-group mb-2">
-        <label class="mr-sm-2">销售员：</label>
-        <select class="form-control mx-sm-3" required name="seller" [(ngModel)]="model.seller">
+      <div class="form-group">
+        <label class="mr-sm-1">销售员：</label>
+        <select class="form-control" required name="seller" [(ngModel)]="model.seller">
           <option *ngFor="let item of salesmen" [value]="item.value">{{item.text}}</option>
         </select>
       </div>
-      <div class="form-group mb-2">
-        <button [disabled]="form.invalid" (click)="createModal.show()" class="btn btn-primary mx-sm-1">新增</button>
+      <div class="form-group">
+        <button [disabled]="form.invalid" (click)="createModal.show()" class="btn btn-primary">新增</button>
       </div>
     </form>
     <div class="overflow-auto">
@@ -60,8 +60,8 @@
     </div>
   </div>
   <div class="card-footer text-muted">
-    <button [disabled]="form.invalid||!model?.list?.length" class="btn btn-primary" (click)="generate($event)">生成销售出库单</button>
-    <button [disabled]="form.invalid||!model?.list?.length" class="btn btn-info" (click)="suspend($event)">挂单</button>
+    <button [hqSpinner]="suspendBill.generating" [disabled]="form.invalid||!model?.list?.length" class="btn btn-primary" (click)="generate($event)">生成销售出库单</button>
+    <button [hqSpinner]="suspendBill.suspending" [disabled]="form.invalid||!model?.list?.length" class="btn btn-info" (click)="suspend($event)">挂单</button>
   </div>
 </div>
 

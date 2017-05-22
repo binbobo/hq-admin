@@ -56,7 +56,7 @@ export class SalesListRequest {
 
 export class SalesListItem {
   constructor(
-    public count: number = 0,
+    public count: number = 1,
     public price: number = 0,
     public amount: number = 0,
     public stockCount: number = 0,

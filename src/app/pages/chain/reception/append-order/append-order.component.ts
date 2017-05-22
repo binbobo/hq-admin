@@ -268,8 +268,8 @@ export class AppendOrderComponent {
       if (item.serviceId === serviceId) {
         this.newMaintenanceItemData.splice(index, 1);
         // 费用计算
-        this.workHourFee -= Number(item.price * item.workHour) * 100;
-        this.sumFee -= Number(item.amount) * 100;
+        this.workHourFee -= Number(item.price * item.workHour);
+        this.sumFee -= Number(item.amount);
         return;
       }
     });
