@@ -1,6 +1,6 @@
 import { Component, OnInit, Injector, OnChanges, Output, EventEmitter, ViewChildren, QueryList, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { FormHandle } from 'app/shared/models';
-import { DistributeListItem } from '../distribute.service';
+import { DistributeListItem, DistributeService } from '../distribute.service';
 import { Observable } from "rxjs/Rx";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FormGroupControlErrorDirective, TypeaheadRequestParams, HqAlerter, PrintDirective } from 'app/shared/directives';
@@ -33,7 +33,7 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
 
   constructor(
     private formBuilder: FormBuilder,
-    private moutingsService: MountingsService,
+    private DistributeService: DistributeService,
   ) {
 
   }
@@ -86,8 +86,8 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
       initcount: [this.model.initcount, [Validators.required, CustomValidators.gt(0), CustomValidators.digits]],
       price: [this.model.price, [Validators.required]],
       amount: [this.model.amount],
-      locationName: [this.model.locationName, [Validators.required]],
-      houseName: [this.model.houseName, [Validators.required]],
+      locationName: [this.model.locationName],
+      houseName: [this.model.houseName],
       storeName: [this.model.storeName],
       storeHouse: [this.model.storeHouse],
       createUser: [this.model.createUser, [Validators.required]],
@@ -138,7 +138,6 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
   }
 
   public onPriceChange(evt) {
-
     // evt.preventDefault();
     let price = evt.target.value || 0;
     this.model.price = price;
@@ -185,21 +184,21 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
     this.form.patchValue(this.model);
   }
 
-  public get codeSource() {
-    return (params: TypeaheadRequestParams) => {
-      let p = new GetMountingsListRequest(params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.moutingsService.getListByCodeOrName(p);
-    };
-  }
+  // public get codeSource() {
+  //   return (params: TypeaheadRequestParams) => {
+  //     let p = new GetMountingsListRequest(params.text);
+  //     p.setPage(params.pageIndex, params.pageSize);
+  //     return this.DistributeService.getProductList(p);
+  //   };
+  // }
 
-  public get nameSource() {
-    return (params: TypeaheadRequestParams) => {
-      let p = new GetMountingsListRequest(undefined, params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.moutingsService.getListByCodeOrName(p);
-    };
-  }
+  // public get nameSource() {
+  //   return (params: TypeaheadRequestParams) => {
+  //     let p = new GetMountingsListRequest(undefined, params.text);
+  //     p.setPage(params.pageIndex, params.pageSize);
+  //     return this.DistributeService.getProductList(p);
+  //   };
+  // }
 
 
 }

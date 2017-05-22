@@ -60,7 +60,7 @@
             <td *ngIf="item.updateOnUtc"><a href="javascript:void(0)" (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
             <td>{{item.statusName}}</td>
             <td>{{item.plateNo}}</td>
-            <td></td>
+            <td>{{item?.settlementCode}}</td>
             <td>{{item.amount|centToYuan}}</td>
             <td>{{item.typeName}}</td>
             <td>{{item.expectLeave|sDatetime}}</td>
@@ -72,8 +72,8 @@
           </tr>
         </tbody>
       </table>
-      <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
     </div>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
 </div>
 
