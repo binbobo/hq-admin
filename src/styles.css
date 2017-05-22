@@ -50,6 +50,6 @@ caption {
     margin: 6px;
 }
 
-input[readonly]{
+input[readonly][ngui-datetime-picker]{
   background-color:transparent !important;
 }
