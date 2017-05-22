@@ -31,7 +31,7 @@ export class SalesReturnCreateComponent implements OnInit {
   private originalBillId: any;//每一条数据ID
   private locationId: any;//库位ID
   private productId: any;//配件ID
-  private existCounts: any;//库存
+  private stockCounts: any;//库存
 
   constructor(
     private formBuilder: FormBuilder,
@@ -46,7 +46,7 @@ export class SalesReturnCreateComponent implements OnInit {
       this.originalBillId = this.selectSalesData.id;
       this.locationId = this.selectSalesData.locationId;
       this.productId = this.selectSalesData.productId;
-      this.existCounts = this.selectSalesData.existCount;
+      this.stockCounts = this.selectSalesData.stockCount;
       this.selectSalesData.amount = (this.selectSalesData.price * 1).toFixed(2);
       this.form.patchValue(this.selectSalesData);
     }
@@ -57,7 +57,7 @@ export class SalesReturnCreateComponent implements OnInit {
       brandName: [''],
       productCode: [''],
       productName: [''],
-      productTypes: [''],
+      categoryName: [''],
       // productId: ['', [Validators.required, Validators.maxLength(36)]],
       specification: [''],
       // storeId: [''],
@@ -85,7 +85,7 @@ export class SalesReturnCreateComponent implements OnInit {
     this.form.value['originalId'] = this.originalBillId;
     this.form.value['locationId'] = this.locationId;
     this.form.value['productId'] = this.productId;
-    this.form.value['existCounts'] = this.existCounts + count;
+    this.form.value['stockCounts'] = this.stockCounts + count;
     this.form.value.count = count;
     console.log('表单数据', this.form.value);
     this.formSubmit.emit(this.form.value);
