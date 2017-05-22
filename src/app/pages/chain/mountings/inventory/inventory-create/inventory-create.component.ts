@@ -84,51 +84,18 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
   }
 
   public vehicles: Array<any> = [];
-  private _vehicles: Array<any> = [];
 
   onVehicleSelect(event) {
     let index = this.vehicles.findIndex(m => m.id === event.id);
-    if (!~index) {
+    if (event.checked && !~index) {
       this.vehicles.push(event);
-    }
-  }
-
-  onVehicleRemove(event) {
-    let index = this.vehicles.findIndex(m => m.id === event.id);
-    if (~index) {
+    } else if (!event.checked && ~index) {
       this.vehicles.splice(index, 1);
     }
-    let item = this._vehicles.find(m => m.id === event.id);
-    if (item) {
-      item.checked = false;
-    }
   }
 
-  public get vehicleColumns() {
-    return [
-      { name: 'brandName', title: '品牌' },
-      { name: 'seriesName', title: '车系' },
-      { name: 'name', title: '车型', checked: true },
-    ];
-  }
-
-  public get vehicleSource() {
-    return (params: TypeaheadRequestParams) => {
-      return this.moutingsService.get(params.text)
-        .then(result => {
-          result.data.forEach(m => m.checked = this.vehicles.some(n => m.id === n.id))
-          this._vehicles = result.data;
-          return result;
-        });
-    };
-  }
-
-  public itemColumns(isName: boolean) {
-    return [
-      { name: 'name', title: '名称', weight: isName ? 1 : 0 },
-      { name: 'code', title: '编码', weight: isName ? 0 : 1 },
-      { name: 'brand', title: '品牌' },
-    ];
+  public get vehicleCheckStrategy() {
+    return (item) => this.vehicles.some(m => m.id === item.id);
   }
 
   onItemChange(event) {
@@ -158,22 +125,6 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
         this.form.controls[key].setValue('');
       });
     }
-  }
-
-  public get codeSource() {
-    return (params: TypeaheadRequestParams) => {
-      let p = new GetMountingsListRequest(params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.moutingsService.getListByCodeOrName(p);
-    };
-  }
-
-  public get nameSource() {
-    return (params: TypeaheadRequestParams) => {
-      let p = new GetMountingsListRequest(undefined, params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.moutingsService.getListByCodeOrName(p);
-    };
   }
 
   onCategorySelect(event) {

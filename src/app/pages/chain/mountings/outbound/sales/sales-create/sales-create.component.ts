@@ -77,16 +77,6 @@ export class SalesCreateComponent implements OnInit {
     return false;
   }
 
-  public itemColumns(isName: boolean) {
-    return [
-      { name: 'name', title: '名称', weight: isName ? 1 : 0 },
-      { name: 'code', title: '编码', weight: isName ? 0 : 1 },
-      { name: 'brand', title: '品牌' },
-      { name: 'houseName', title: '仓库' },
-      { name: 'locationName', title: '库位' },
-    ];
-  }
-
   public onItemSelect(event) {
     let item = {
       productCode: event.code,
@@ -106,25 +96,8 @@ export class SalesCreateComponent implements OnInit {
     this.form.controls['yuan'].setValidators(CustomValidators.gte(item.price / 100))
     setTimeout(() => {
       this.form.patchValue(item);
-      this.controls.forEach(m => m.validate());
       this.calculate();
     }, 1);
-  }
-
-  public get codeSource() {
-    return (params: TypeaheadRequestParams) => {
-      let p = new GetMountingsListRequest(params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.moutingsService.getListByCodeOrName(p);
-    };
-  }
-
-  public get nameSource() {
-    return (params: TypeaheadRequestParams) => {
-      let p = new GetMountingsListRequest(undefined, params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.moutingsService.getListByCodeOrName(p);
-    };
   }
 
   private calculate() {

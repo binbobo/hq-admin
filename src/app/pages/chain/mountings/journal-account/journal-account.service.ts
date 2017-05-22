@@ -15,18 +15,11 @@ export class JournalAccountService implements PagedService<JournalAccount> {
     return this.httpService.get<JournalAccountListResponse>(url, search)
       .then(result => {
         if (result.tabList) {
-          result.tabList.forEach(m => m.checked = m.type === params.billType);
+          result.tabList.forEach(m => m.checked = m.type === params.billTypeKey);
         }
         return result;
       })
       .catch(err => Promise.reject(`账单加载失败：${err}`));
-  }
-
-  public getMountings(params: MountingListRequest): Promise<PagedResult<any>> {
-    let url = Urls.chain.concat('/products/getListByNameOrCode');
-    let search = params.serialize();
-    return this.httpService.get<PagedResult<any>>(url, search)
-      .catch(err => Promise.reject(`配件加载失败：${err}`));
   }
 
   public export(params: JournalAccountListRequest): Promise<void> {
@@ -70,22 +63,15 @@ export class JournalAcountType {
 }
 
 export class JournalAccountListRequest extends PagedParams {
+  public readonly listBillTypes: Array<string> = ['MM,MR', 'IM,IR', 'VM,VR', 'PM,PR'];
   constructor(
-    public billType: string = '',
+    public billTypeKey?: string,
     public productId?: string,
-    public CreateStartTime?: string,
-    public CreateEndTime?: string
+    public createStartTime?: string,
+    public createEndTime?: string,
   ) {
     super();
-  }
-}
-
-export class MountingListRequest extends PagedParams {
-  constructor(
-    public code?: string,
-    public name?: string,
-  ) {
-    super();
+    this.billTypeKey = this.billTypeKey || this.listBillTypes[0];
   }
 }
 

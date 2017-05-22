@@ -59,25 +59,9 @@ export class ProcurementListComponent implements OnInit {
     ];
   }
 
-  private get providerColumns() {
-    return [
-      { name: 'code', title: '代码' },
-      { name: 'name', title: '名称', weight: 1 },
-      { name: 'contactUser', title: '联系人' },
-    ];
-  }
-
   public onProviderSelect(event) {
     this.model.custName = event.name;
     this.model.outunit = event.id;
-  }
-
-  public get source() {
-    return (params: TypeaheadRequestParams) => {
-      let p = new ProviderListRequest(params.text, params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.providerService.getPagedList(p);
-    };
   }
 
   suspend(event: Event) {

@@ -85,16 +85,6 @@ export class ProcurementCreateComponent implements OnInit {
     return false;
   }
 
-  private itemColumns(isName: boolean) {
-    return [
-      { name: 'brand', title: '品牌' },
-      { name: 'code', title: '编码', weight: isName ? 0 : 1 },
-      { name: 'name', title: '名称', weight: isName ? 1 : 0 },
-      { name: 'specification', title: '规格' },
-      { name: 'vehicleName', title: '车型' },
-    ];
-  }
-
   private onItemSelect(event) {
     let item = {
       productCode: event.code,
@@ -130,31 +120,18 @@ export class ProcurementCreateComponent implements OnInit {
     this.calculate();
   }
 
-  public get codeSource() {
-    return (params: TypeaheadRequestParams) => {
-      if (this.isHQProduct) {
-        let model = Object.assign({}, this.model, { productCode: params.text });
-        this.form.reset(model);
-        this.isHQProduct = false;
-      }
-      let p = new GetProductsRequest(params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.procurementService.getProducts(p);
-    };
-  }
-
-  public get nameSource() {
-    return (params: TypeaheadRequestParams) => {
-      if (this.isHQProduct) {
-        let model = Object.assign({}, this.model, { productName: params.text });
-        this.form.reset(model);
-        this.isHQProduct = false;
-      }
-      let p = new GetProductsRequest(undefined, params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.procurementService.getProducts(p);
-    };
-  }
+  // public get codeSource() {
+  //   return (params: TypeaheadRequestParams) => {
+  //     if (this.isHQProduct) {
+  //       let model = Object.assign({}, this.model, { productCode: params.text });
+  //       this.form.reset(model);
+  //       this.isHQProduct = false;
+  //     }
+  //     let p = new GetProductsRequest(params.text);
+  //     p.setPage(params.pageIndex, params.pageSize);
+  //     return this.procurementService.getProducts(p);
+  //   };
+  // }
 
   private calculate() {
     let count = this.form.controls['count'].value || 0;
