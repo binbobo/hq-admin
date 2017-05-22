@@ -30,14 +30,15 @@ export class FormInlineControlErrorDirective extends FormControlErrorDirective<F
   }
 
   public show(): void {
+    super.show();
     if (this._popover.isShown) {
       return;
     }
-    super.show();
-    this._popover
+    let componentRef = this._popover
       .attach(FormInlineControlErrorComponent)
       .position({ attachment: this.config.placement })
       .show();
+    componentRef.instance.errors=this.controlErrors;
   }
 
   public hide(): void {

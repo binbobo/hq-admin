@@ -43,6 +43,13 @@ export class FormControlErrorDirective<T extends FormControlErrorComponent> impl
     if (this.errors) {
       Object.keys(this.errors).forEach(key => this.errors[key.toLowerCase()] = this.errors[key]);
     }
+    if (this.control) {
+      this.control.valueChanges.subscribe((a) => {
+        if (document.activeElement !== this.el.nativeElement) {
+          this.validate(false);
+        }
+      });
+    }
     // if (!this.readonly) {
     //   Observable.fromEvent(this.el.nativeElement, 'input')
     //     .map((e: any) => e.target.value)

@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, ViewChildren, QueryList, ViewChild } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, ViewChildren, QueryList, ViewChild, ElementRef } from '@angular/core';
 import { TypeaheadRequestParams, FormGroupControlErrorDirective, HqAlerter } from 'app/shared/directives';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
@@ -27,6 +27,7 @@ export class ProcurementCreateComponent implements OnInit {
   private isHQProduct = false;
 
   constructor(
+    private el: ElementRef,
     private formBuilder: FormBuilder,
     private procurementService: ProcurementService,
     private moutingsService: MountingsService,
@@ -116,7 +117,6 @@ export class ProcurementCreateComponent implements OnInit {
     this.form.patchValue(item);
     this.isHQProduct = true;
     this.calculate();
-    this.controls.forEach(m => m.validate());
   }
 
   get editable() {
@@ -163,7 +163,6 @@ export class ProcurementCreateComponent implements OnInit {
     let exTaxPrice = price / (tax * 0.01 + 1);
     let amount = count * price;
     let exTaxAmount = count * exTaxPrice;
-    console.log(exTaxPrice);
     this.form.patchValue({
       amount: amount,
       count: count,
