@@ -50,31 +50,30 @@
           <thead>
             <tr>
               <th>操作</th>
-              <th>流水号</th>
+              <!--<th>流水号</th>-->
               <th>维修项目</th>
-              <th>品牌</th>
               <th>配件编码</th>
+              <th>品牌</th>
               <th>配件名称</th>
               <th>规格型号</th>
               <th>车型</th>
               <th>仓库</th>
               <th>库位</th>
-              <th>*数量（个）</th>
-              <th>已退数量(个)</th>
-              <th>单价（元/个）</th>
+              <th>数量</th>
+              <th>已退数量</th>
+              <th>单价（元）</th>
               <th>金额（元）</th>
               <!--<th>备注</th>-->
               <th>领料人</th>
-
             </tr>
           </thead>
           <tbody *ngFor="let item of serialData">
             <tr *ngFor="let ele of item.list">
               <td><button class="btn btn-primary" [disabled]="!item.isable" (click)="OnCreatBound(ele,item.id)">退料</button></td>
-              <td>{{item.serialNum}}</td>
+              <!--<td>{{item.serialNum}}</td>-->
               <td>{{ele.serviceName}}</td>
-              <td>{{ele.brandName}}</td>
               <td>{{ele.productCode}}</td>
+              <td>{{ele.brandName}}</td>
               <td>{{ele.productName }}</td>
               <td>{{ele.productSpecification}}</td>
               <td>{{ele.vihicleName}}</td>
@@ -86,7 +85,7 @@
               <td>{{ele.amount|centToYuan}}</td>
               <!--<td>{{ele.description}}</td>-->
               <td>{{ele.takeUser}}</td>
-
+            </tr>
           </tbody>
         </table>
       </div>
@@ -100,15 +99,15 @@
             <tr>
               <th>操作</th>
               <th>维修项目</th>
-              <th>品牌</th>
               <th>配件编码</th>
               <th>配件名称</th>
+              <th>品牌</th>
               <th>规格型号</th>
               <th>车型</th>
               <th>仓库</th>
               <th>库位</th>
-              <th>数量（个）</th>
-              <th>单价（元/个）</th>
+              <th>数量</th>
+              <th>单价（元）</th>
               <th>金额（元）</th>
               <!--<th>备注</th>-->
               <th>退料人</th>
@@ -118,11 +117,10 @@
           <tbody>
             <tr *ngFor="let ele of newMainData;let i=index">
               <td><button class="btn btn-danger" (click)="onDelCreat(ele,i)">删除</button></td>
-
               <td>{{ele.serviceName}}</td>
-              <td>{{ele.brandName}}</td>
               <td>{{ele.productCode}}</td>
               <td>{{ele.productName }}</td>
+              <td>{{ele.brandName}}</td>
               <td>{{ele.productSpecification}}</td>
               <td>{{ele.vihicleName}}</td>
               <td>{{ele.storeName}}</td>
@@ -228,4 +226,4 @@
   </div>
 </div>
 
-<hq-maintain-print *ngIf="printList" [data]="printList" hqPrint #printer="hq-print"></hq-maintain-print>
+<hq-maintain-print *ngIf="printList" [hidden]="true" [data]="printList" hqPrint #printer="hq-print"></hq-maintain-print>

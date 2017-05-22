@@ -4,13 +4,13 @@ import { SelectOption, ListResult, PagedParams, BasicService, PagedResult, ApiRe
 
 @Injectable()
 export class InnerReturnService implements BasicService<any>{
-    // get(id: string): Promise<any> {
-    //   throw new Error('Method not implemented.');
-    // }
+  // get(id: string): Promise<any> {
+  //   throw new Error('Method not implemented.');
+  // }
 
-    create(body: any): Promise<any> {
-      throw new Error('Method not implemented.');
-    }
+  create(body: any): Promise<any> {
+    throw new Error('Method not implemented.');
+  }
   update(body: any): Promise<void> {
     throw new Error('Method not implemented.');
   }
@@ -20,26 +20,38 @@ export class InnerReturnService implements BasicService<any>{
   delete(id: string): Promise<void> {
     throw new Error('Method not implemented.');
   }
- constructor(private httpService: HttpService) { }
+  constructor(private httpService: HttpService) { }
 
-//获取内部领用单号信息
+  //获取内部领用单号信息
   getPagedList(params: BillCodeSearchRequest): Promise<PagedResult<any>> {
-    const url = Urls.chain.concat('/Uses/GetPagedList?', params.serialize());
-    // console.log("领用单url",url);
+    const url = Urls.chain.concat('/Uses/SearchBillCode?', params.serialize());
+    console.log("领用单url", url);
     return this.httpService.get<PagedResult<any>>(url)
       .then(result => {
-        // console.log('领用单数据', result);
+        console.log('领用单号数据',result);
+        // let p = {
+        //   totalCount:0,
+        //   total:0,
+        //   data:[]
+        // }
+        // result.data.map(m=>{
+        //    p.data.push({billCode:m});
+        // })
+        // p.totalCount = result.data.length;
+        // p.total = result.data.length;
+        // console.log('pppp',p);
+        // return p;
         return result;
       })
       .catch(err => Promise.reject(`获取内部领用数据失败：${err}`));
   }
-//获取配件信息
-getUseDetailsList(params: BillCodeSearchRequest): Promise<PagedResult<any>> {
-    const url = Urls.chain.concat('/UseDetails/GetPageList?', params.serialize());
-    // console.log("配件信息url",url);
+  //获取配件信息
+  getUseDetailsList(params: BillCodeSearchRequest): Promise<PagedResult<any>> {
+    const url = Urls.chain.concat('/UseDetails/Search?', params.serialize());
+    console.log("配件信息url", url);
     return this.httpService.get<PagedResult<any>>(url)
       .then(result => {
-        // console.log('配件信息数据', result);
+        console.log('配件信息数据', result);
         return result;
       })
       .catch(err => Promise.reject(`获取配件信息数据失败：${err}`));
@@ -51,7 +63,8 @@ getUseDetailsList(params: BillCodeSearchRequest): Promise<PagedResult<any>> {
     return this.httpService.get<ApiResult<any>>(url)
       .then(result => {
         // console.log(result.data);
-        return result.data;})
+        return result.data;
+      })
       .catch(err => Promise.reject(`获取内部退料单信息失败：${err}`));
   }
   //生成退料单
@@ -62,23 +75,26 @@ getUseDetailsList(params: BillCodeSearchRequest): Promise<PagedResult<any>> {
       .catch(err => Promise.reject(`生成退料清单失败：${err}`))
   }
   //获取退料人
-  getInnerOptions(): Promise<Array<SelectOption>> {
-    let url = Urls.chain.concat('/Employees/GetByKey?key=ST');
-    return this.httpService.get<ListResult<any>>(url)
-      .then(result => result.data)
-      .then(data => Array.isArray(data) ? data : [])
-      .then(data => data.map(m => new SelectOption(m.name, m.id)))
+  getInnerOptions(): Promise<any> {
+    let url = Urls.chain.concat('/Uses/GetPagedList');
+    return this.httpService.get<ApiResult<any>>(url)
+      .then(result => {
+        console.log('人人人人', result);
+        return result.data
+      })
+      // .then(data => Array.isArray(data) ? data : [])
+      // .then(data => data.map(m => new SelectOption(m.name, m.id)))
       .catch(err => Promise.reject(`获取退料人选项失败：${err}`));
   }
   //获取部门
-  getDepartmentsByInner(id: string): Promise<Array<SelectOption>> {
-    let url = Urls.chain.concat('/Departments/GetDataByEmployee/', id);
-    return this.httpService.get<ListResult<any>>(url)
-      .then(result => result.data)
-      .then(data => Array.isArray(data) ? data : [])
-      .then(data => data.map(m => new SelectOption(m.name, m.id)))
-      .catch(err => Promise.reject(`获取部门选项失败：${err}`))
-  }
+  // getDepartmentsByInner(id: string): Promise<Array<SelectOption>> {
+  //   let url = Urls.chain.concat('/Departments/GetDataByEmployee/', id);
+  //   return this.httpService.get<ListResult<any>>(url)
+  //     .then(result => result.data)
+  //     .then(data => Array.isArray(data) ? data : [])
+  //     .then(data => data.map(m => new SelectOption(m.name, m.id)))
+  //     .catch(err => Promise.reject(`获取部门选项失败：${err}`))
+  // }
 
 }
 
@@ -108,7 +124,7 @@ export class InnerListItem {
     public count: number,
     public returnCount: number,
     public price: number,
-    public amount: number ,
+    public amount: number,
     // public productCategory?: string,
     public productName?: string,
     public brandName?: string,
@@ -118,9 +134,9 @@ export class InnerListItem {
     public operator?: string,
     public createBillTime?: string,
     public locationName?: string,
-    public storeName?:string
+    public storeName?: string
   ) {
-   }
+  }
 }
 //领用单号模糊查询参数
 export class BillCodeSearchRequest extends PagedParams {
@@ -128,8 +144,6 @@ export class BillCodeSearchRequest extends PagedParams {
     public takeUserId?: string, // 领用人ID
     public takeDepartId?: string, // 部门ID
     public billCode?: string, // 领用单号
-    // public pageIndex = 1,
-    // public pageSize = 5,
   ) {
     super();
   }

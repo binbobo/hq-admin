@@ -21,10 +21,10 @@
       <div class="serach-list">车牌号:{{SearchappendList.plateNo}}</div>
       <div class="serach-list">车主:{{SearchappendList.customerName}} </div>
       <div class="serach-list">车主电话:{{SearchappendList.phone}} </div>
-      <div class="serach-list">验车时间:{{SearchappendList.validate |date:"yyyy/MM/dd HH:mm:ss"}} </div>
+      <div class="serach-list">验车时间:{{SearchappendList.validate |sDatetime}} </div>
     </div>
     <div class="serach-main">
-      <div class="serach-list">开单时间:{{SearchappendList.createdOnUtc |date:"yyyy/MM/dd HH:mm:ss"}} </div>
+      <div class="serach-list">开单时间:{{SearchappendList.createdOnUtc |sDatetime}} </div>
       <div class="serach-list">送修人:{{SearchappendList.contactUser}} </div>
       <div class="serach-list">送修人电话:{{SearchappendList.contactInfo}}</div>
       <div class="serach-list">服务顾问:{{SearchappendList.createdUserName}}</div>
@@ -32,14 +32,14 @@
     <div class="serach-main">
       <div class="serach-list">品牌:{{SearchappendList.brand}} </div>
       <div class="serach-list">车系:{{SearchappendList.series}}</div>
-      <div class="serach-list">车型:{{SearchappendList.model}}</div>
+      <div class="serach-list">车型:{{SearchappendList.vehicleName}}</div>
       <div class="serach-list">VIN:{{SearchappendList.vin}}</div>
     </div>
     <div class="serach-main">
       <div class="serach-list">维修类型:{{SearchappendList.typeName}}</div>
-      <div class="serach-list">预计交车时间:{{SearchappendList.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</div>
+      <div class="serach-list">预计交车时间:{{SearchappendList.expectLeave|sDatetime}}</div>
       <div class="serach-list">行驶里程(KM):{{SearchappendList.mileage}}</div>
-      <div class="serach-list">上次进店时间:{{SearchappendList.lastEnterDate|date:"yyyy/MM/dd HH:mm:ss"}}</div>
+      <div class="serach-list">上次进店时间:{{SearchappendList.lastEnterDate|sDatetime}}</div>
     </div>
     <div class="serach-main">
       <div class="serach-list">维修工位:{{SearchappendList.location}}</div>

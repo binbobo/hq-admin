@@ -1,5 +1,5 @@
-import { Component, OnInit, Input} from '@angular/core';
-import { SalesReturnPrintItem } from '../sales-return.service';
+import { Component, OnInit, Input } from '@angular/core';
+// import { SalesReturnPrintItem } from '../sales-return.service';
 
 @Component({
   selector: 'hq-sales-return-print',
@@ -8,11 +8,11 @@ import { SalesReturnPrintItem } from '../sales-return.service';
 })
 export class SalesReturnPrintComponent implements OnInit {
 
-@Input()
-  private model: SalesReturnPrintItem;
-  
+  @Input()
+  private model:any;
+
   constructor() { }
- 
+
   ngOnInit() {
   }
 
