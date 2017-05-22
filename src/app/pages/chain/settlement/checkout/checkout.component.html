@@ -55,9 +55,8 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of list">
-            <td *ngIf="!item.updateOnUtc"><a href="javascript:void(0)" (click)="OnCheckout($event,item.amount,item.id,CheckoutModal)">收银</a> | <a href="javascript:void(0)"
-                (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
-            <td *ngIf="item.updateOnUtc"><a href="javascript:void(0)" (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
+            <td><button *ngIf="!item.updateOnUtc" type="button" class="btn btn-sm btn-primary" (click)="OnCheckout($event,item.amount,item.id,CheckoutModal)">收银</button>&nbsp;<button type="button" class="btn btn-sm btn-info"  [hqSpinner]="item.generating" (click)='DetailsDialog($event,item,item.id,lgModal)'>详情</button></td>
+
             <td>{{item.statusName}}</td>
             <td>{{item.plateNo}}</td>
             <td>{{item?.settlementCode}}</td>
@@ -119,12 +118,10 @@
       <ng-template hq-alerter></ng-template>
       <div class="modal-body">
         <div class="cost-money">应收金额：{{costMoney|centToYuan}}元</div>
-
         <div class="input-group checkout-item" *ngFor="let item of payData;">
           <span class="input-group-addon" id="sizing-addon2" style="width:150px;">{{item.value}}(元)</span>
           <input type="number" class="form-control" [(ngModel)]="item.amount" aria-label="Username" aria-describedby="sizing-addon1">
         </div>
-
       </div>
       <div class="btn-center"><button type="button" class="btn btn-primary" aria-label="Close" (click)="OnPostPay(CheckoutModal)">确定收银</button></div>
     </div>

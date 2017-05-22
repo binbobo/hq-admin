@@ -59,11 +59,14 @@
           </tr>
         </thead>
         <tbody>
+
           <tr *ngFor="let item of list">
-            <td *ngIf="!item.updateOnUtc"><a href="javascript:void(0)" (click)='orderDetailsDialog($event, item.id,lgModal,item)'>结算</a> | <a href="javascript:void(0)"
-                (click)='DetailsDialog($event, item.id,lgModal,item)'>详情</a></td>
-            <td *ngIf="item.updateOnUtc"><a href="javascript:void(0)" (click)='finishedOrder($event, item.id, confirmModal)'>撤销结算</a> | <a href="javascript:void(0)"
-                (click)='DetailsDialog($event, item.id,lgModal,item)'>详情</a></td>
+            <td *ngIf="!item.updateOnUtc" style="text-align:right"><button type="button" class="btn btn-sm btn-primary" [disabled]="item.generating"
+                (click)='orderDetailsDialog($event, item.id,lgModal,item)'>结算</button>&nbsp;<button [hqSpinner]="item.generating"
+                type="button" class="btn btn-sm btn-info" [disabled]="item.generating" (click)='DetailsDialog($event, item.id,lgModal,item)'>详情</button></td>
+            <td *ngIf="item.updateOnUtc"  style="text-align:right"><button type="button" class="btn btn-sm btn-danger" [disabled]="item.generating"
+                (click)='finishedOrder($event, item.id, confirmModal)'>撤销结算</button>&nbsp;<button [hqSpinner]="item.generating"
+                type="button" class="btn btn-sm btn-info" [disabled]="item.generating" (click)='DetailsDialog($event, item.id,lgModal,item)'>详情</button></td>
             <td>{{item.statusName}}</td>
             <td>{{item.plateNo}}</td>
             <td>{{item?.settlementCode}}</td>

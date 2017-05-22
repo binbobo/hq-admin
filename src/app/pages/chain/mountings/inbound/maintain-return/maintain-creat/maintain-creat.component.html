@@ -1,4 +1,4 @@
- <ng-template hq-alerter></ng-template>
+<ng-template hq-alerter></ng-template>
 <div class="card">
   <form *ngIf="form" class="card-block row" [formGroup]="form" (ngSubmit)="onSubmit($event)">
     <div class="col-6">
@@ -31,7 +31,7 @@
     <div class="col-6">
       <div class="form-group">
         <label class="form-control-label">车型</label>
-        <input readonly type="text" formControlName="vihicleName" class="form-control">
+        <input readonly formControlName="vihicleName" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">仓库</label>
@@ -47,7 +47,7 @@
       </div>
       <div class="form-group">
         <label class="form-control-label">金额(元)</label>
-        <input readonly class="form-control"  label="金额" [value]="model.initamount|centToYuan" formControlName="initamount">
+        <input readonly class="form-control" label="金额" [value]="model.initamount|centToYuan" formControlName="initamount">
       </div>
       <div class="form-group">
         <label class="form-control-label">退料人</label>
