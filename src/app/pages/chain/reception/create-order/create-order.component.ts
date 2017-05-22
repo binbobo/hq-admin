@@ -1,9 +1,9 @@
-import { Component, Injector, OnInit, ViewChild } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild} from '@angular/core';
 import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType, CustomerVehicle, FuzzySearchRequest, VehicleSeriesSearchRequest, VehicleBrandSearchRequest, VehicleSearchRequest } from '../order.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TabsetComponent, ModalDirective } from 'ngx-bootstrap';
 import * as moment from 'moment';
-import { TypeaheadRequestParams, PrintDirective } from 'app/shared/directives';
+import { TypeaheadRequestParams, PrintDirective} from 'app/shared/directives';
 import { DataList, StorageKeys } from 'app/shared/models';
 import { SuspendBillDirective } from 'app/pages/chain/chain-shared';
 import { CustomValidators } from 'ng2-validation';
@@ -50,6 +50,9 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   // 新创建的维修工单数据  用于打印
   newWorkOrderData: any;
 
+  // 加载动画是否显示标志
+  generating = false;
+
   // 费用计算相关
   fee = {
     workHour: 0,
@@ -63,13 +66,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     phone: /^1[3|4|5|7|8]\d{9}$/,
     mileage: /^[0-9]+([.]{1}[0-9]{1,2})?$/,
     vin: /^[A-HJ-NPR-Z\d]{8}[\dX][A-HJ-NPR-Z\d]{2}\d{6}$/
-  };
-  formValadationErrors = {
-    common: {
-      required: '{name}不能为空',
-      pattern: '无效的{name}',
-      date: '非法的日期类型'
-    },
   };
 
   // 当前登录用户信息
@@ -224,13 +220,13 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 加载上次工单信息
     this.workSheetForm.patchValue({
       // type: lastOrder.type,
-      contactUser: lastOrder.contactUser,
-      contactInfo: lastOrder.contactInfo,
       // mileage: lastOrder.mileage,
       // introducer: lastOrder.introducer,
       // introintroPhoneducer: lastOrder.introPhone,
       // validate: moment(lastOrder.validate).format('YYYY-MM-DD'),
       // location: lastOrder.location,
+      contactUser: lastOrder.contactUser,
+      contactInfo: lastOrder.contactInfo,
       lastEnter: moment(lastOrder.lastEnter).format('YYYY-MM-DD HH:mm'),
       lastMileage: lastOrder.lastMileage,
     });
@@ -266,7 +262,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.getLastOrderByCustomerVechileId(evt);
     // 车牌号输入框可用  其他客户车辆相关输入框不可用
     this.workSheetForm.controls.plateNo.enable();
-
   }
   /**
 * @memberOf CreateOrderComponent
@@ -312,9 +307,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   }
 
   // 编辑维修项目
-  onMaintenanceItemEdit(evt, addModal, item) {
-    evt.preventDefault();
-
+  onMaintenanceItemEdit(addModal, item) {
     this.selectedItem = {};
     Object.assign(this.selectedItem, item);
     this.selectedItem.price = this.selectedItem.price / 100;
@@ -623,6 +616,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   // 创建工单按钮点击事件处理程序
   createWorkSheet() {
+    this.generating = true;
+
     // 设置创建工单按钮不可用
     this.enableCreateWorkSheet = false;
     // 获取当前录入的工单信息
@@ -637,6 +632,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
     this.service.create(workSheet)
       .then(data => {
+        this.generating = false;
         console.log('创建工单成功之后， 返回的工单对象：', JSON.stringify(data));
         // 创建订单成功之后  做一些重置操作
         if (confirm('创建工单成功！ 是否打印？')) {
@@ -662,6 +658,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
           }
         }
       }).catch(err => {
+        this.generating = false;
         // 出错的话  允许再次提交
         this.enableCreateWorkSheet = true;
 

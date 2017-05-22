@@ -36,7 +36,7 @@
       <div class="form-group row">
         <label for="contactInfo" class="col-1 col-form-label">送修人电话</label>
         <div class="col-2">
-          <input type="text" [(ngModel)]="params.contactInfo"  name="contactInfo" class="form-control" placeholder="送修人电话">
+          <input type="text" [(ngModel)]="params.contactInfo" name="contactInfo" class="form-control" placeholder="送修人电话">
         </div>
         <label class="col-1 col-form-label"></label>
         <div class="col-6" *ngIf="isCollapsed">
@@ -79,32 +79,36 @@
               <label for="leaveFactoryTime" class="col-1 col-form-label">出厂时间</label>
               <div class="col-2">
                 <!--[max-hour]="maxLeaveStartHours" -->
-                <input readonly [max-date]="maxLeaveStartDate" [(ngModel)]="params.leaveStartTimeDate" name="leaveStartTimeDate" class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
+                <input readonly [max-date]="maxLeaveStartDate" [(ngModel)]="params.leaveStartTimeDate" name="leaveStartTimeDate" class="form-control"
+                  type="text" ngui-datetime-picker [close-on-select]="false" />
               </div>
               <label class="col-1 col-form-label">至</label>
               <div class="col-2">
                 <!--[min-hour]="minLeaveEndHours" 
                  [max-hour]="maxLeaveEndHours" -->
-                <input readonly [min-date]="minLeaveEndDate"  [max-date]="maxLeaveEndDate" [(ngModel)]="params.leaveEndTimeDate" name="leaveEndTimeDate" class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
+                <input readonly [min-date]="minLeaveEndDate" [max-date]="maxLeaveEndDate" [(ngModel)]="params.leaveEndTimeDate" name="leaveEndTimeDate"
+                  class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
               </div>
               <label class="col-1 col-form-label">进店时间</label>
               <div class="col-2">
-                <input readonly  [max-date]="maxEnterStartDate" [(ngModel)]="params.enterStartTimeDate"  name="enterStartTimeDate" class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
+                <input readonly [max-date]="maxEnterStartDate" [(ngModel)]="params.enterStartTimeDate" name="enterStartTimeDate" class="form-control"
+                  type="text" ngui-datetime-picker [close-on-select]="false" />
               </div>
               <label class="col-1 col-form-label col-form-label">至</label>
               <div class="col-2">
-                <input readonly [min-date]="minEnterEndDate"  [max-date]="maxEnterEndDate" [(ngModel)]="params.enterEndTimeDate" name="enterEndTimeDate" class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
+                <input readonly [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" [(ngModel)]="params.enterEndTimeDate" name="enterEndTimeDate"
+                  class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
               </div>
             </div>
 
             <div class="form-group row">
               <label for="billCode" class="col-1 col-form-label col-form-label">工单号</label>
               <div class="col-2">
-                <input type="text" [(ngModel)]="params.billCode"  name="billCode" class="form-control"  placeholder="工单号">
+                <input type="text" [(ngModel)]="params.billCode" name="billCode" class="form-control" placeholder="工单号">
               </div>
               <label for="type" class="col-1 col-form-label col-form-label">维修类型</label>
               <div class="col-2">
-                <select id="type" [(ngModel)]="params.type" name="type"  class="form-control">
+                <select id="type" [(ngModel)]="params.type" name="type" class="form-control">
                   <option style="display:none">
                   <option *ngFor="let type of maintenanceTypeData" value="{{type.id}}">{{type.value}}</option>
                 </select>
@@ -148,9 +152,9 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of list">
-            <td width="75">
+            <td>
               <!--<a href="#" (click)="nullifyHandler($event, item.id)">作废</a> |-->
-              <a href="#" (click)="orderDetailsHandler($event, item.id, lgModal)">详情</a>
+              <button [hqSpinner]="item.generating" type="button" class="btn btn-sm btn-info" [disabled]="item.generating" (click)="orderDetailsHandler(item, lgModal)">详情</button>
             </td>
             <td>{{item.statusName}}</td>
             <td>{{item.plateNo}}</td>
@@ -173,8 +177,9 @@
           </tr>
         </tbody>
       </table>
-      <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
     </div>
+    <br>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
 
     <!--详情 begin-->
     <div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
