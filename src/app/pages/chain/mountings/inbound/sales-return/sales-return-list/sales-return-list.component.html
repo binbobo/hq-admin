@@ -45,7 +45,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of model">
+          <tr *ngFor="let item of list">
             <td><button [disabled]="item.count<=item.returnCount" class="btn btn-primary" (click)="OnCreatBound(item,item.id)">退库</button></td>
             <td class="text-center">{{item.productCode }}</td>
             <td class="text-center">{{item.categoryName}}</td>
@@ -108,7 +108,7 @@
   <div class="card-footer text-muted">
     <button [disabled]="!salesReturnData.length" class="btn btn-primary" (click)="createReturnList()">生成销售退库单</button>
     <!--<button class="btn btn-warning" (click)="cancel($event)">取消</button>-->
-    <button [disabled]="!model" class="btn btn-info" (click)="suspend()">挂单</button>
+    <button [disabled]="!list" class="btn btn-info" (click)="suspend()">挂单</button>
   </div>
 </div>
 
