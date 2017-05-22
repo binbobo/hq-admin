@@ -30,6 +30,11 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
     // 当前登录用户信息
     public user = null;
 
+    generating = {
+        assign: false,
+        reassign: false
+    };
+
     ngOnInit() {
         // 解决缓存问题
         this.lazyLoad = true;
@@ -321,16 +326,17 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         console.log('选择的维修工单为：', maintenanceItemIds);
         // 判断是否选择维修工项
         if (maintenanceItemIds.length === 0) {
-            // this.alerter.warn('请选择维修工项！');
+            this.generatingReset(type);
             return;
         }
 
         // 获取选中的维修技师
         const employeeIds = this.selectedTechnicians;
-        console.log('选择的维修技师为：', employeeIds);
+        // console.log('选择的维修技师为：', employeeIds);
         // 判断是否选择维修技师
         if (employeeIds.length === 0) {
-            this.alerter.warn('请选择维修技师！');
+            this.alerter.warn('请先选择维修技师！', true);
+            this.generatingReset(type);
             return;
         }
 
@@ -342,16 +348,11 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             employeeIds: employeeIds,
             maintenanceItemIds: maintenanceItemIds
         }).then(data => {
-            if (type === 1) {
-                msg = '指派';
-            } else if (type === 2) {
-                msg = '转派';
-            }
+            this.generatingReset(type);
             // 更新页面
-            console.log('执行指派转派操作之后返回的数据为：', data);
+            // console.log('执行指派转派操作之后返回的数据为：', data);
 
             // forEach不可修改list数据, 只能遍历
-
             data.forEach(ele => {
                 const index = this.selectedOrder.serviceOutputs.findIndex(m => m.id === ele.id);
                 if (index > -1) {
@@ -367,8 +368,17 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             // 刷新页面
             this.load();
         }).catch(err => {
-            this.alerter.error('执行' + msg + '操作成功！' + err);
+            this.alerter.error('执行' + msg + '操作失败：' + err, true, 3000);
+            this.generatingReset(type);
         });
+    }
+
+    private generatingReset(type) {
+        if (type === 1) {
+            this.generating.assign = false;
+        } else if (type === 2) {
+            this.generating.reassign = false;
+        }
     }
 
     /**
@@ -380,6 +390,11 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
      */
     onConfirmTechnicians(evt, type) {
         this.selectedTechnicians = evt.value;
+        if (type === 1) {
+            this.generating.assign = true;
+        } else if (type === 2) {
+            this.generating.reassign = true;
+        }
         this.assignOrderHandler(type);
     }
 }

@@ -146,12 +146,10 @@
                 </tbody>
               </table>
               <div>
-                <button class="btn btn btn-secondary mr-2" (onConfirm)="onConfirmTechnicians($event, 1)" [hqMutilSelect]="maintenanceTechnicians"
-                  mTitle="选择维修技师" href="#" [disabled]="!selectedOrder?.serviceOutputs?.enableAssignment" (click)="onMultiSelectorClick($event)"
-                  placement="right">指派</button>
-                <button class="btn btn btn-secondary" (onConfirm)="onConfirmTechnicians($event, 2)" [hqMutilSelect]="maintenanceTechnicians"
-                  mTitle="选择维修技师" href="#" [disabled]="!selectedOrder?.serviceOutputs?.enableAssignment" (click)="onMultiSelectorClick($event)"
-                  placement="right">转派</button>
+                <button [hqSpinner]="generating.assign" class="btn btn-secondary mr-2" (onConfirm)="onConfirmTechnicians($event, 1)" [hqMutilSelect]="maintenanceTechnicians"
+                  mTitle="选择维修技师" [disabled]="!selectedOrder?.serviceOutputs?.enableAssignment" (click)="onMultiSelectorClick($event)">指派</button>
+                <button [hqSpinner]="generating.reassign" class="btn btn-secondary" (onConfirm)="onConfirmTechnicians($event, 2)" [hqMutilSelect]="maintenanceTechnicians"
+                  mTitle="选择维修技师" [disabled]="!selectedOrder?.serviceOutputs?.enableAssignment" (click)="onMultiSelectorClick($event)">转派</button>
               </div>
             </tab>
             <tab heading="附加项目" *ngIf="selectedOrder?.attachServiceOutputs&&selectedOrder?.attachServiceOutputs.length>0">
