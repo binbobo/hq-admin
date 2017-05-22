@@ -110,14 +110,15 @@ export class OrderListComponent extends DataList<Order> {
 
   /**
    * 点击工单详情按钮处理程序
-   * @param {any} id 
+   * @param {any} item 
    * @param {any} modalDialog 
    * 
    * @memberOf OrderListComponent
    */
-  orderDetailsHandler(evt, id, modalDialog) {
-    evt.preventDefault();
+  orderDetailsHandler(item, modalDialog) {
+    item.generating = true;
 
+    const id = item.id;
     // 根据id获取工单详细信息
     this.service.get(id).then(data => {
       console.log('根据工单id获取工单详情数据：', data);
@@ -144,8 +145,13 @@ export class OrderListComponent extends DataList<Order> {
       this.selectedOrder.discountFee = this.selectedOrder.workHourFee - data.serviceOutputs.reduce((accumulator, currentValue) => {
         return accumulator + currentValue.amount;
       }, 0);
+
+      item.generating = false;
       // 显示窗口
       modalDialog.show();
+    }).catch(err => {
+      this.alerter.error('获取工单信息失败: ' + err, true, 2000);
+      item.generating = false;
     });
   }
 

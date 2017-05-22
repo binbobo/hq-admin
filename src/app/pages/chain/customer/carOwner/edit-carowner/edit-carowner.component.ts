@@ -31,6 +31,9 @@ export class EditCarownerComponent implements OnInit {
   // 保存区县数据
   areasData: any[];
 
+  // 是否为直辖市标志
+  isProvinceLevelMunicipality = false;
+
   // 添加车主
   // 1.省市县
   cityIdList = []; // 保存省份,城市, 区县id
@@ -38,21 +41,14 @@ export class EditCarownerComponent implements OnInit {
 
   newVehiclesData = []; // 保存所有添加的车辆
 
+  // 保存车主加载动画
+  generating = false;
+
   regex = {
     phone: /^1[3|4|5|7|8]\d{9}$/,
     idCard: /\d{15}(\d\d[0-9xX])?/,
     tel: /\d{3}-\d{8}|\d{4}-\d{7}/,
     fax: /^(\d{3,4}-)?\d{7,8}$/
-  };
-  formValadationErrors = {
-    common: {
-      required: '{name}不能为空',
-      pattern: '无效的{name}',
-      date: '非法的日期类型',
-      fax: '非法的传真格式',
-      tel: '非法的固定电话格式',
-      email: '非法的电子邮箱格式'
-    }
   };
 
   constructor(
@@ -92,6 +88,8 @@ export class EditCarownerComponent implements OnInit {
 
   // 添加车主
   saveCustomer() {
+    this.generating = true;
+
     // 设置保存按钮不可用
     this.enableSaveCustomer = false;
 
@@ -120,11 +118,11 @@ export class EditCarownerComponent implements OnInit {
 
       // // 返回车主列表
       // this.goBack();
+      this.generating = false;
     }).catch(err => {
-      console.log('更新车主失败：' + err);
-
       this.enableSaveCustomer = true;
-      this.alerter.error('更新车主失败');
+      this.alerter.error('更新车主失败: ' + err, true, 2000);
+      this.generating = false;
     });
   }
   // 省份选择事件处理程序
@@ -133,6 +131,13 @@ export class EditCarownerComponent implements OnInit {
 
     const provinceId = provinceValue.split(',')[0];
     const provinceName = provinceValue.split(',')[1];
+
+    // 判断当前选择的省份是否为直辖市
+    if (provinceName.indexOf('北京') > -1 || provinceName.indexOf('天津') > -1 || provinceName.indexOf('重庆') > -1 || provinceName.indexOf('上海') > -1) {
+      this.isProvinceLevelMunicipality = true;
+    } else {
+      this.isProvinceLevelMunicipality = false;
+    }
 
     // 保存选择的省份id和省份名称
     this.cityIdList[0] = provinceId;
@@ -213,7 +218,7 @@ export class EditCarownerComponent implements OnInit {
     });
   }
 
-  // 从模糊 查询列表中 选择一条车主记录后 加载客户信息 
+  //  加载客户信息 
   loadCustomer(customer) {
     // 组织省份数据
     let provinceId = '', provinceName = '';
@@ -249,6 +254,13 @@ export class EditCarownerComponent implements OnInit {
     customer.city = cityId + ',' + cityName;
     customer.area = areaId + ',' + areaName;
     customer.birthday = moment(customer.birthday).format('YYYY-MM-DD');
+
+    // 判断当前选择的省份是否为直辖市
+    if (provinceName.indexOf('北京') > -1 || provinceName.indexOf('天津') > -1 || provinceName.indexOf('重庆') > -1 || provinceName.indexOf('上海') > -1) {
+      this.isProvinceLevelMunicipality = true;
+    } else {
+      this.isProvinceLevelMunicipality = false;
+    }
     // 初始化车主表单数据
     this.carOwnerForm.patchValue(customer);
 

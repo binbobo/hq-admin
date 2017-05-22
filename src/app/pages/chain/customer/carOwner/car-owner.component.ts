@@ -15,6 +15,8 @@ export class CarOwnerComponent extends DataList<any>  {
 
   // 当前选择的车主记录
   selectedCustomer = null;
+  // 导出加载动画
+  generating = false;
 
   constructor(
     injector: Injector,
@@ -25,32 +27,40 @@ export class CarOwnerComponent extends DataList<any>  {
 
   /**
    * 查看客户详情按钮 处理程序
-   * @param {any} evt 
-   * @param {any} id 车主记录id
+   * @param {any} item 车主记录id
    * @param {any} lgModal 模态框
    * 
    * @memberOf CarOwnerComponent
    */
-  customerDetail(id, lgModal) {
+  customerDetail(item, lgModal) {
+    item.detailGenerating = true;
     // 清空上次详情记录
     this.selectedCustomer = null;
 
     // 根据id获取客户详细信息
-    this.service.get(id).then(data => {
+    this.service.get(item.id).then(data => {
       console.log('根据客户id获取客户详情数据：', data);
 
       // 记录当前操作的客户记录
       this.selectedCustomer = data;
 
+      item.detailGenerating = false;
       // 显示窗口
       lgModal.show();
+    }).catch(err => {
+      this.alerter.error('获取客户信息失败: ' + err, true, 2000);
+      item.detailGenerating = false;
     });
   }
 
   // 导出当前查询条件下的车主信息
   export() {
+    this.generating = true;
     this.service.export(this.params).then(() => {
-      console.log('导出客户车主信息成功！');
+      this.generating = false;
+    }).catch(err => {
+      this.alerter.error('导出车主列表失败: ' + err, true, 2000);
+      this.generating = false;
     });
   }
 

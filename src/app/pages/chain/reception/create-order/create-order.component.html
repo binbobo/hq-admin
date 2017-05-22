@@ -13,8 +13,8 @@
       <div class="form-group row">
         <label for="plateNo" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车牌号</label>
         <div class="col-2">
-          <input (blur)="onPlateNoBlur()" [hqTableTypeahead]="plateNotypeaheadSource" [columns]="typeaheadColumns" (onSelect)="plateNoOnSelect($event)" class="form-control"
-            formControlName="plateNo" id="plateNo" label="车牌号" type="text" />
+          <input (blur)="onPlateNoBlur()" [hqTableTypeahead]="plateNotypeaheadSource" [columns]="typeaheadColumns" (onSelect)="plateNoOnSelect($event)"
+            class="form-control" formControlName="plateNo" id="plateNo" label="车牌号" type="text" />
           <!--客户车辆id-->
           <input type="hidden" formControlName="customerVehicleId" />
           <!--客户id-->
@@ -166,9 +166,9 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of newMaintenanceItemData">
-              <td width="40">
-                <a href="#" (click)="onMaintenanceItemEdit($event, addModal, item)">编辑</a>
-                <a href="#" (click)="$event.preventDefault();onDelMaintenanceItem(item.serviceId)">删除</a>
+              <td>
+                <button type="button" class="btn btn-sm btn-success" (click)="onMaintenanceItemEdit(addModal, item)">编辑</button>
+                <button type="button" class="btn btn-sm btn-danger"  (click)="onDelMaintenanceItem(item.serviceId)">删除</button>
               </td>
               <td>{{item.serviceName}}</td>
               <td>{{item.workHour}}</td>
@@ -180,7 +180,7 @@
           </tbody>
         </table>
         <div>
-          <button class="btn btn-info mr-2" (click)="addModal.show();">新增</button>
+          <button class="btn btn-sm btn-info mr-2" (click)="addModal.show();">新增</button>
         </div>
       </tab>
       <tab heading="上次维修记录">
@@ -284,9 +284,12 @@
       </div>
     </div>
     <br>
-    <div class="text-center">
-      <input type="text" class="btn textInputBtn" readonly [disabled]="!enableCreateWorkSheet" (click)="createWorkSheet()" value="生成工单">
-      <input type="text" class="btn textInputBtn" readonly [disabled]="!enableSuspendWorkSheet" (click)="suspendOrder()" value="挂单">
+    <div>
+      <!--<input type="text" class="btn textInputBtn" readonly [disabled]="!enableCreateWorkSheet" (click)="createWorkSheet()" value="生成工单">
+      <input type="text" class="btn textInputBtn" readonly [disabled]="!enableSuspendWorkSheet" (click)="suspendOrder()" value="挂单">-->
+      <button [hqSpinner]="generating" type="button" class="btn btn-primary" [disabled]="!enableCreateWorkSheet" (click)="createWorkSheet()">生成工单</button>
+      <button [hqSpinner]="suspendBill.suspending" type="button" class="btn btn-secondary" [disabled]="!enableSuspendWorkSheet"
+        (click)="suspendOrder()">挂单</button>
     </div>
   </div>
   <div bsModal #addModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">

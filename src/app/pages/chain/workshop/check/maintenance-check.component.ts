@@ -143,11 +143,13 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
       this.selectedOrder.serviceOutputs.checkedAll = false;
       this.selectedOrder.serviceOutputs.enableCheck = false;
       // 验收通过
-      this.alerter.success('执行验收通过操作成功！');
+      this.alerter.success('执行验收通过操作成功！', true, 2000);
 
       // 刷新列表
       this.load();
-    }).catch(err => this.alerter.error(err));
+    }).catch(err => {
+      this.alerter.error('执行验收通过操作失败：' + err, true, 2000);
+    });
   }
 
 
@@ -216,16 +218,16 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
 
   /**
 * 点击工单详情按钮处理程序
-* @param {any} id 
+* @param {any} item
 * @param {any} modalDialog 
 * 
 * @memberOf OrderListComponent
 */
-  orderDetailsHandler(evt, id, modalDialog) {
-    evt.preventDefault();
+  orderDetailsHandler(item, modalDialog) {
+    item.checkGenerating = true;
 
     // 根据id获取工单详细信息
-    this.service.get(id).then(data => {
+    this.service.get(item.id).then(data => {
       console.log('根据工单id获取工单详情数据：', data);
 
       // 记录当前操作的工单记录
@@ -235,10 +237,14 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
       // 全选复选框是否选中标志
       this.selectedOrder.serviceOutputs.checkedAll = false;
 
+      item.checkGenerating = false;
       // 显示窗口
       modalDialog.show();
       this.isDetailModalShown = true;
-    }).catch(err => this.alerter.error(err));
+    }).catch(err => {
+      this.alerter.error('获取工单信息失败: ' + err, true, 2000);
+      item.checkGenerating = false;
+    });
   }
 }
 

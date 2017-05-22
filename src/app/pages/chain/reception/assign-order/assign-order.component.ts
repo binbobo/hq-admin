@@ -205,16 +205,16 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
 
     /**
     * 点击工单详情按钮处理程序
-    * @param {any} id 
+    * @param {any} item
     * @param {any} modalDialog 
     * 
     * @memberOf OrderListComponent
     */
-    orderDetailsHandler(evt, id, modalDialog) {
-        evt.preventDefault();
+    orderDetailsHandler(item, modalDialog) {
+        item.assignGenerating = true;
 
         // 根据id获取工单详细信息
-        this.service.get(id).then(data => {
+        this.service.get(item.id).then(data => {
             console.log('根据工单id获取工单详情数据：', data);
 
             // 记录当前操作的工单记录
@@ -223,10 +223,15 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             this.selectedOrder.serviceOutputs.enableAssignment = false;
             // 全选复选框是否选中标志
             this.selectedOrder.serviceOutputs.checkedAll = false;
+
+            item.assignGenerating = false;
             // 显示窗口
             modalDialog.show();
             this.isDetailModalShown = true;
-        }).catch(err => this.alerter.error(err));
+        }).catch(err => {
+            this.alerter.error('获取工单信息失败: ' + err, true, 2000);
+            item.assignGenerating = false;
+        });
     }
 
     /**
@@ -244,18 +249,24 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         if (!item.productOutputs || item.productOutputs.length === 0) {
             if (confirm('用户' + item.createdUserName + '工项没有发料，是否确认完工？')) {
                 // 调用完工接口
-                this.confirmOrderFinish(item.id);
+                this.confirmOrderFinish(item);
             }
         } else {
             // 调用完工接口
-            this.confirmOrderFinish(item.id);
+            this.confirmOrderFinish(item);
         }
     }
 
-    confirmOrderFinish(id) {
-        this.service.update({ id: id }).then(() => {
+    confirmOrderFinish(item) {
+        item.finishGenerating = true;
+
+        this.service.update({ id: item.id }).then(() => {
+            item.finishGenerating = false;
             this.load();
-        }).catch(err => this.alerter.error('执行完工操作失败: ' + err));
+        }).catch(err => {
+            this.alerter.error('执行完工操作失败: ' + err, true, 2000);
+            item.finishGenerating = false;
+        });
     }
 
     /**

@@ -22,15 +22,16 @@
       <div class="form-group row">
         <label for="createdStartDate" class="col-1 col-form-label">建档日期</label>
         <div class="col-2">
-          <input readonly [max-date]="maxCreatedStartDate"  [(ngModel)]="params.createdStartDate" class="form-control" type="text" name="createdStartDate" ngui-datetime-picker date-only="true" />
+          <input readonly [max-date]="maxCreatedStartDate" [(ngModel)]="params.createdStartDate" class="form-control" type="text" name="createdStartDate"
+            ngui-datetime-picker date-only="true" />
         </div>
         <label class="col-1 col-form-label">至</label>
         <div class="col-2">
-          <input readonly [min-date]="minCreatedEndDate"  [max-date]="maxCreatedEndDate"  [(ngModel)]="params.createdEndDate" class="form-control" type="text" name="createdEndDate" ngui-datetime-picker date-only="true" />
+          <input readonly [min-date]="minCreatedEndDate" [max-date]="maxCreatedEndDate" [(ngModel)]="params.createdEndDate" class="form-control"
+            type="text" name="createdEndDate" ngui-datetime-picker date-only="true" />
         </div>
         <div class="col-offset-6 col-3">
           <button type="submit" class="btn btn-primary">查询</button>
-
         </div>
       </div>
     </form>
@@ -49,9 +50,10 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of list">
-          <td width="75">
-            <a href="#" [routerLink]="['edit', item.id]">编辑</a> |
-            <a href="#" (click)="$event.preventDefault();customerDetail(item.id, detailLgModal)">详情</a>
+          <td>
+            <button [routerLink]="['edit', item.id]" type="button" class="btn btn-sm btn-success">编辑</button>
+            <button [hqSpinner]="item.detailGenerating" type="button" class="btn btn-sm btn-info" [disabled]="item.detailGenerating"
+              (click)="customerDetail(item, detailLgModal)">详情</button>
           </td>
           <td>{{item.createdOnUtc|sDate}}</td>
           <td>{{item.name}}</td>
@@ -63,8 +65,8 @@
       </tbody>
     </table>
     <div style="margin-bottom:10px;">
-      <button type="button" class="btn btn-info" [routerLink]="['add']">新增</button>
-      <button type="button" class="btn btn-secondary mr-2" (click)="export()">导出</button>
+      <button type="button" class="btn btn-primary" [routerLink]="['add']">新增</button>
+      <button [hqSpinner]="generating" type="button" class="btn btn-secondary mr-2" (click)="export()">导出</button>
     </div>
     <br>
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
