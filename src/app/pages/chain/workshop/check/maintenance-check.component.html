@@ -60,7 +60,7 @@
             <td>{{item.typeName}}</td>
             <td>{{item.createdOnUtc|sDatetime}}</td>
             <td>{{item.expectLeave|sDatetime}}</td>
-            <td>{{item.overTime|durationHumanize}}</td>
+            <td [class.overtime]="item.overTime">{{item.overTime|durationHumanize}}</td>
             <td>{{item.vehicleName}}</td>
             <td>{{item.vin}}</td>
             <td>{{item.createdUserName}}</td>
