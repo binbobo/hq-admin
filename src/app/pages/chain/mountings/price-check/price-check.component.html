@@ -55,7 +55,7 @@
             <td class="text-center">{{item.count}}</td>
             <td>{{item.vehicleName}}</td>
             <td class="text-right">{{item.price|centToYuan}}</td>
-            <td>{{ item.category}}</td>
+            <td>{{ item.category|split|sample }}</td>
           </tr>
         </tbody>
       </table>

@@ -115,7 +115,11 @@ export class ReceiveListComponent implements OnInit {
     this.departments = [];
     this.receiveService.getDepartmentsByReceiver(id)
       .then(options => this.departments = options)
-      .then(options => this.reset())
+      .then(() => {
+        if (Array.isArray(this.departments) && this.departments.length) {
+          this.model.takeDepart = this.departments[0].value;
+        }
+      })
       .catch(err => this.alerter.error(err));
   }
 
