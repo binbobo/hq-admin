@@ -31,7 +31,7 @@ export class ReturnListComponent extends DataList<any> {
   private billData;//生成退料单数据
   private createLoading = false;//生成退料单按钮加载动画
   private suspendLoading = false;//挂单按钮加载动画
-  private isOk = true;//按钮禁用控制
+  // private isOk = true;//按钮禁用控制
   params: BillCodeSearchRequest;
 
 
@@ -108,7 +108,7 @@ export class ReturnListComponent extends DataList<any> {
   //生成退料单
   createReturnList() {
     this.createLoading = true;
-    this.isOk = true;
+    // this.isOk = true;
     let inner = this.employees.find(m => m.takeUser == this.takeUser);
     let department = this.departments.departList.find(m => m.id == this.takeDepartId);
     this.returnUser = inner && inner.takeUserName;
@@ -139,7 +139,7 @@ export class ReturnListComponent extends DataList<any> {
         this.returnData = [];
         this.list = null;
         this.billCode = null;
-        console.log('生成单子后isok的值', this.isOk);
+        // console.log('生成单子后isok的值', this.isOk);
       })
       .catch(err => {
         this.alerter.error(err);
@@ -158,8 +158,8 @@ export class ReturnListComponent extends DataList<any> {
     if (confirm('是否确认挂单？')) {
       // let el = event.target as HTMLButtonElement;
       // el.disabled = true;
-      // this.suspendLoading = true;
-      this.isOk = true;
+      this.suspendLoading = true;
+      // this.isOk = true;
       let inner = this.employees.find(m => m.takeUser == this.takeUser);
       let department = this.departments.departList.find(m => m.id == this.takeDepartId);
       this.innerReturner = inner && inner.takeUserName;
@@ -181,19 +181,20 @@ export class ReturnListComponent extends DataList<any> {
         .then(() => this.suspendBill.refresh())
         .then(() => {
           this.alerter.success('挂单成功！');
-          this.isOk = true;
-          console.log('挂单成功后isok的值', this.isOk);
+          // this.isOk = true;
+          this.suspendLoading = false;
+          // console.log('挂单成功后isok的值', this.isOk);
         })
         .then(() => {
           this.returnData = [];
           this.list = null;
           this.billCode = null;
           this.originalBillId = null;
-          // this.suspendLoading = false;
         })
         .catch(err => {
           // el.disabled = false;
-          this.isOk = false;
+          // this.isOk = false;
+          this.suspendLoading = false;
           this.alerter.error(err);
         })
     }
@@ -215,7 +216,7 @@ export class ReturnListComponent extends DataList<any> {
       })
     } else {
       this.returnData.push(e);
-      this.isOk = false;
+      // this.isOk = false;
     }
     this.createModel.hide();
   }
@@ -238,7 +239,7 @@ export class ReturnListComponent extends DataList<any> {
     this.takeUser = item.value.takeUserId;
     this.list = item.value.model;
     this.returnData = item.value.returnData;
-    this.isOk = false;
+    // this.isOk = false;
   }
   // reset() {
   //   this.model = new InnerListRequest();

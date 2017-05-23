@@ -109,7 +109,7 @@ export class DistributeService implements BasicService<any>{
             .request(url, {
                 params: {
                     "BillCode": billCode,
-                    "BillTypeKey": "MM"
+                    "BillTypeKey": "RM"
                 }
             })
             .map(response => {
@@ -124,7 +124,7 @@ export class DistributeService implements BasicService<any>{
             .request(url, {
                 params: {
                     "BillCode": billCode,
-                    "BillTypeKey": "MM"
+                    "BillTypeKey": "RM"
                 }
             })
             .map(response => {
@@ -140,7 +140,7 @@ export class DistributeService implements BasicService<any>{
             .request(url, {
                 params: {
                     "BillCode": billCode,
-                    "BillTypeKey": "MR"
+                    "BillTypeKey": "RR"
                 }
             })
             .map(response => {
