@@ -24,7 +24,7 @@
       <div class="serach-list">开单时间：&nbsp;&nbsp;{{orderDetail?.createdOnUtc |sDatetime}}</div>
     </div>
     <!--维修项目-->
-    <div *ngIf="serviceData.length>0">
+    <div  [hqSpinner]="serviceisShow">
       <div class="tab-title">维修项目</div>
       <div class="overflow-auto">
         <table class="table   table-striped table-bordered">
@@ -43,11 +43,11 @@
         </table>
       </div>
     </div>
-    <div *ngIf="serialData.length>0">
+    <div *ngIf="serialData.length>0" [hqSpinner]="serviceisShow">
       <div class="tab-title">维修发料信息</div>
       <div class="overflow-auto">
         <table class="table  table-striped table-bordered" [hqSpinner]="showing">
-          <thead> 
+          <thead>
             <tr>
               <th>操作</th>
               <!--<th>流水号</th>-->
