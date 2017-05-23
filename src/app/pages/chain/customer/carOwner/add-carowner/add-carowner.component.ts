@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CustomerService, CustomerNameSearchRequest, CustomerPhoneSearchRequest } from '../../customer.service';
+import { CustomerService} from '../../customer.service';
 import { OrderService } from '../../../reception/order.service';
 import { Location } from '@angular/common';
 import { TypeaheadRequestParams, HqAlerter } from 'app/shared/directives';
