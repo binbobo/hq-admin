@@ -183,7 +183,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   // 根据客户车辆Id查询上次工单信息
   getLastOrderByCustomerVechileId(evt) {
     // 先清空上次工单数据  再查询新数据
-    this.lastOrderData = null;
+    // this.lastOrderData = null;
+    this.initOrderData();
 
     // 记录客户车辆id
     evt.customerVehicleId = evt.id;
@@ -323,7 +324,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   }
 
   onConfirmNewMaintenanceItem(evt, addModal) {
-    console.log('新增的维修项目数据为：', evt);
+    // console.log('新增的维修项目数据为：', evt);
 
     // 获取维修项目数据
     const data = evt.data;
@@ -357,7 +358,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 记录当前选择的维修项目
     this.selectedServices = this.getSelectedServices();
     // 判断生成工单按钮是否可用
-    this.enableCreateWorkSheet = this.workSheetForm.valid;
+    this.enableCreateWorkSheet = this.workSheetForm.controls.vehicleId.value && this.workSheetForm.valid;
     addModal.hide();
   }
 
@@ -370,7 +371,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
         this.fee.workHour -= item.price * item.workHour;
         this.fee.discount -= item.price * item.workHour - item.amount;
         // 如果新增项目为0 设置生成工单按钮不可用
-        this.enableCreateWorkSheet = (this.newMaintenanceItemData.length > 0) && this.workSheetForm.valid;
+        this.enableCreateWorkSheet = (this.newMaintenanceItemData.length > 0) && this.workSheetForm.controls.vehicleId.value && this.workSheetForm.valid;
         return;
       }
     });
@@ -637,7 +638,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
         console.log('创建工单成功之后， 返回的工单对象：', JSON.stringify(data));
         // 创建订单成功之后  做一些重置操作
         if (confirm('创建工单成功！ 是否打印？')) {
-          this.newWorkOrderData = data;
+          this.newWorkOrderData = workSheet;
           // 延迟打印
           setTimeout(() => {
             this.print();

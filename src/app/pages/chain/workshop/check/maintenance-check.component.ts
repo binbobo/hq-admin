@@ -26,6 +26,7 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
 
   statistics: any = null; // 各种状态数量统计
 
+  generating = false;
 
   constructor(injector: Injector,
     protected service: WorkshopService) {
@@ -117,6 +118,8 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
    * @memberOf MaintenanceCheckComponent
    */
   onOrderCheckPass() {
+    this.generating = true;
+
     // 获取选择的工项列表
     const maintenanceItemIds = this.selectedOrder.serviceOutputs.filter(item => item.checked).map(item => item.id);
     console.log('选择的工项列表为：', maintenanceItemIds);
@@ -144,11 +147,13 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
       this.selectedOrder.serviceOutputs.enableCheck = false;
       // 验收通过
       this.alerter.success('执行验收通过操作成功！', true, 2000);
+      this.generating = false;
 
       // 刷新列表
       this.load();
     }).catch(err => {
       this.alerter.error('执行验收通过操作失败：' + err, true, 2000);
+      this.generating = false;
     });
   }
 
