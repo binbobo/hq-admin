@@ -6,6 +6,7 @@ import { Location } from '@angular/common';
 import { TypeaheadRequestParams, HqAlerter } from 'app/shared/directives';
 import * as moment from 'moment';
 import { CustomValidators } from 'ng2-validation';
+import { HQ_VALIDATORS } from 'app/shared/shared.module';
 
 @Component({
   selector: 'hq-add-carowner',
@@ -39,7 +40,7 @@ export class AddCarownerComponent implements OnInit {
 
   newVehiclesData = []; // 保存所有添加的车辆
 
-   // 保存车主加载动画
+  // 保存车主加载动画
   generating = false;
 
   regex = {
@@ -179,12 +180,12 @@ export class AddCarownerComponent implements OnInit {
     this.carOwnerForm = this.fb.group({
       id: '', // 车主主键 用于更新
       name: ['', [Validators.required]], // 车主
-      phone: ['', Validators.compose([Validators.pattern(this.regex.phone)])], // 车主手机号
+      phone: ['', [HQ_VALIDATORS.mobile]], // 车主手机号
       sex: '', // 车主性别
       birthday: [null, [CustomValidators.date]], // 车主生日
       identityCard: ['', Validators.compose([Validators.pattern(this.regex.idCard)])], // 身份证号
-      tel: ['', Validators.compose([Validators.pattern(this.regex.tel)])], // 电话
-      fax: ['', Validators.compose([Validators.pattern(this.regex.fax)])], // 传真
+      tel: ['', [HQ_VALIDATORS.tel]], // 电话
+      fax: ['', [HQ_VALIDATORS.tel]], // 传真
       email: ['', [CustomValidators.email]], // 电子邮箱
       province: '', // 省份id,name
       city: '', // 城市id,name
