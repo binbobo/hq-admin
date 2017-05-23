@@ -250,16 +250,17 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             alert('此工单还没有指派维修技师, 不可以执行完工操作。请先指派维修技师');
             return;
         }
-        // 判断用户是否领料
-        if (!item.productOutputs || item.productOutputs.length === 0) {
-            if (confirm('用户' + item.createdUserName + '工项没有发料，是否确认完工？')) {
-                // 调用完工接口
-                this.confirmOrderFinish(item);
-            }
-        } else {
-            // 调用完工接口
-            this.confirmOrderFinish(item);
-        }
+        // // 判断用户是否领料
+        // if (!item.productOutputs || item.productOutputs.length === 0) {
+        //     if (confirm('用户' + item.createdUserName + '工项没有发料，是否确认完工？')) {
+        //         // 调用完工接口
+        //         this.confirmOrderFinish(item);
+        //     }
+        // } else {
+        //     // 调用完工接口
+        //     this.confirmOrderFinish(item);
+        // }
+        this.confirmOrderFinish(item);
     }
 
     confirmOrderFinish(item) {
