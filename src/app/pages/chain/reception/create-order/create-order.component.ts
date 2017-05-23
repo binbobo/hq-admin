@@ -8,6 +8,7 @@ import { DataList, StorageKeys } from 'app/shared/models';
 import { SuspendBillDirective } from 'app/pages/chain/chain-shared';
 import { CustomValidators } from 'ng2-validation';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HQ_VALIDATORS } from '../../../../shared/shared.module';
 
 
 @Component({
@@ -144,7 +145,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   }
 
   onVehicleBlur() {
-    console.log('vehicle on blur');
     if (!this.workSheetForm.controls.vehicleId.value) {
       this.workSheetForm.controls.vehicleName.setValue('');
     }
@@ -475,10 +475,10 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   createForm() {
     this.workSheetForm = this.fb.group({
       customerName: ['', [Validators.required]], // 车主
-      phone: ['', Validators.compose([Validators.pattern(this.regex.phone)])], // 车主电话
+      phone: ['', [HQ_VALIDATORS.mobile]], // 车主电话
       createdOnUtc: [{ value: moment().format('YYYY-MM-DD HH:mm'), disabled: true }], // 进店时间 / 开单时间
       contactUser: ['', [Validators.required]], // 送修人
-      contactInfo: ['', Validators.compose([Validators.required, Validators.pattern(this.regex.phone)])], // 送修人电话
+      contactInfo: ['', [Validators.required, HQ_VALIDATORS.mobile]], // 送修人电话
       createdUserName: [{ value: this.user.username, disabled: true }], // 服务顾问
       introducer: '', // 介绍人
       introPhone: '', // 介绍人电话
@@ -698,23 +698,23 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       return service.call(this.service, p);
     };
   }
-  // 根据车牌号模糊查询数据源
-  public get plateNotypeaheadSource() {
-    return this.typeaheadSource(this.service.getCustomerVehicleByPlateNo);
-  }
-  // 根据车主姓名模糊查询数据源
-  public get customerNametypeaheadSource() {
-    return this.typeaheadSource(this.service.getCustomerVehicleByCustomerName);
-  }
+  // // 根据车牌号模糊查询数据源
+  // public get plateNotypeaheadSource() {
+  //   return this.typeaheadSource(this.service.getCustomerVehicleByPlateNo);
+  // }
+  // // 根据车主姓名模糊查询数据源
+  // public get customerNametypeaheadSource() {
+  //   return this.typeaheadSource(this.service.getCustomerVehicleByCustomerName);
+  // }
 
-  // 根据品牌名称模糊查询数据源
-  public get brandTypeaheadSource() {
-    return (params: TypeaheadRequestParams) => {
-      const p = new VehicleBrandSearchRequest(params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.service.getVehicleByBrand(p);
-    };
-  }
+  // // 根据品牌名称模糊查询数据源
+  // public get brandTypeaheadSource() {
+  //   return (params: TypeaheadRequestParams) => {
+  //     const p = new VehicleBrandSearchRequest(params.text);
+  //     p.setPage(params.pageIndex, params.pageSize);
+  //     return this.service.getVehicleByBrand(p);
+  //   };
+  // }
   // 根据车系名称模糊查询数据源
   public get seriesTypeaheadSource() {
     return (params: TypeaheadRequestParams) => {

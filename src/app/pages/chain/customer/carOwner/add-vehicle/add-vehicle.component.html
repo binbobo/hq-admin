@@ -33,7 +33,7 @@
     <div class="col-6">
       <div class="form-group">
         <label for="brand" class="col-form-label"><span class="asterisk mr-1">*</span>品牌</label>
-        <input label="品牌" forceRefresh="true" [hqTableTypeahead]="brandTypeaheadSource" [columns]="vehicleTypeaheadColumns" (onSelect)="onBrandSelect($event)"
+        <input label="品牌" forceRefresh="true" hqBrandTypeahead="brandName" (onSelect)="onBrandSelect($event)"
           formControlName="brand" type="text" class="form-control">
         <input type="hidden" formControlName="brandId" class="form-control">
       </div>
