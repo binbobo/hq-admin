@@ -3,7 +3,7 @@
     <span>维修收银</span>
   </div>
   <div class='card-block'>
-    <form [formGroup]="CheckoutForm" (ngSubmit)="onSearch()">
+    <form (ngSubmit)="onSearch()">
       <div class="form-group">
         <div class="form-check form-check-inline" *ngFor="let status of orderStatusData">
           <label class="form-check-label">
@@ -12,23 +12,23 @@
         </div>
       </div>
       <div class="form-group row">
-        <label for="serviceId">工单号：</label>
+        <label for="serviceId">结算单号：</label>
         <div class="col-sm-2">
-          <input type="text" class="form-control" [(ngModel)]="params.billcode" id="billcode" formControlName="billcode" placeholder="工单号">
+          <input type="text" class="form-control" [(ngModel)]="params.SettlementCode" id="SettlementCode" name="SettlementCode" placeholder="结算单号">
         </div>
         <label for="plateNo">车牌号：</label>
         <div class="col-sm-2">
-          <input type="text" [(ngModel)]="params.carnumber" class="form-control" id="carnumber" formControlName="carnumber" placeholder="车牌号">
+          <input type="text" [(ngModel)]="params.carnumber" class="form-control" id="carnumber" name="carnumber" placeholder="车牌号">
         </div>
         <label for="createdTime">进店时间：</label>
         <div class="col-sm-2">
-          <input class="form-control datetime-picker" [(ngModel)]="params.starttime" id="starttime" formControlName="starttime" type="text"
-            ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
+          <input class="form-control datetime-picker" [(ngModel)]="params.starttime" id="starttime" name="starttime" type="text" ngui-datetime-picker
+            date-format="YYYY-MM-DD" date-only="true" />
         </div>
         至：
         <div class="col-sm-2">
-          <input class="form-control  datetime-picker" id="endtime" [(ngModel)]="params.endtime" formControlName="endtime" type="text"
-            ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
+          <input class="form-control  datetime-picker" id="endtime" [(ngModel)]="params.endtime" name="endtime" type="text" ngui-datetime-picker
+            date-format="YYYY-MM-DD" date-only="true" />
         </div>
         <div class="col-sm-2"><button class="btn btn-primary">查询</button></div>
       </div>
@@ -55,9 +55,9 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of list">
-            <td *ngIf="!item.updateOnUtc"><a href="javascript:void(0)" (click)="OnCheckout($event,item.amount,item.id,CheckoutModal)">收银</a> | <a href="javascript:void(0)"
-                (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
-            <td *ngIf="item.updateOnUtc"><a href="javascript:void(0)" (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
+            <td><button *ngIf="!item.updateOnUtc" type="button" class="btn btn-sm btn-primary" (click)="OnCheckout($event,item.amount,item.id,CheckoutModal)">收银</button>&nbsp;
+              <button type="button" class="btn btn-sm btn-info" [hqSpinner]="item.generating" (click)='DetailsDialog($event,item,item.id,lgModal)'>详情</button>
+            </td>
             <td>{{item.statusName}}</td>
             <td>{{item.plateNo}}</td>
             <td>{{item?.settlementCode}}</td>
@@ -79,7 +79,7 @@
 
 <!--详情 begin-->
 <div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg">
+  <div *ngIf="lgModal.isShown" class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header pos-top">
 
@@ -97,7 +97,7 @@
             <span class="ml-2 mr-2">{{materialFee}}元</span> | 其它
             <span class="ml-2 mr-2">{{otherFee}}元</span> | 合计
             <span class="ml-2 mr-2">{{sumFee}}元</span>|
-            <span class="ml-2 mr-2">实收金额：{{billPrice}}元</span>
+            <span class="ml-2 mr-2">应收金额：{{billPrice}}元</span>
           </div>
         </div>
       </div>
@@ -119,12 +119,10 @@
       <ng-template hq-alerter></ng-template>
       <div class="modal-body">
         <div class="cost-money">应收金额：{{costMoney|centToYuan}}元</div>
-
         <div class="input-group checkout-item" *ngFor="let item of payData;">
           <span class="input-group-addon" id="sizing-addon2" style="width:150px;">{{item.value}}(元)</span>
           <input type="number" class="form-control" [(ngModel)]="item.amount" aria-label="Username" aria-describedby="sizing-addon1">
         </div>
-
       </div>
       <div class="btn-center"><button type="button" class="btn btn-primary" aria-label="Close" (click)="OnPostPay(CheckoutModal)">确定收银</button></div>
     </div>

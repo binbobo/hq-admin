@@ -8,14 +8,14 @@
       </div>
       <div class="form-group">
         <label class="form-control-label">*配件编码</label>
-        <input hqProductTypeahead (onSelect)="onItemSelect($event)" formControlName="productCode" class="form-control" placeholder="请输入配件编码">
-        <input type="hidden" label="配件编码" formControlName="productId">
+        <input label="配件编码" [hqProductTypeahead]="code" (onSelect)="onItemSelect($event)" formControlName="productCode" class="form-control"
+          placeholder="请输入配件编码">
+
       </div>
       <div class="form-group">
-          <label class="form-control-label">*配件名称</label>
-        <input label="配件名称" hqProductTypeahead (onSelect)="onItemSelect($event)" formControlName="productName" class="form-control"
+        <label class="form-control-label">*配件名称</label>
+        <input label="配件名称" [hqProductTypeahead]="name" (onSelect)="onItemSelect($event)" formControlName="productName" class="form-control"
           placeholder="请输入配件名称">
-        <input type="hidden" label="配件名称" formControlName="productId">
       </div>
       <div class="form-group">
         <label class="form-control-label">品牌</label>
@@ -23,12 +23,11 @@
       </div>
       <div class="form-group">
         <label class="form-control-label">规格型号</label>
-        <input readonly label="规格型号" formControlName="productSpecification" class="form-control">
+        <input readonly formControlName="productSpecification" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*单价（元/个）</label>
-        <input type="number" [value]="price|centToYuan" (input)="onPriceChange($event)" formControlName="price" class="form-control">
-        <!--<input label="单价" #priceControl="hq-error" type="hidden" formControlName="price" class="form-control">-->
+        <input label="单价" [value]="price|centToYuan" (input)="onPriceChange($event)" formControlName="price" class="form-control">
       </div>
     </div>
     <div class="col-6">
@@ -46,7 +45,7 @@
       </div>
       <div class="form-group">
         <label class="form-control-label">*数量（个）&nbsp;&nbsp;当前库存量：{{fcount}}</label>
-        <input label="数量" type="number" formControlName="initcount" (change)="onChangeCount($event)" class="form-control">
+        <input label="数量" type="text" formControlName="initcount" (change)="onChangeCount($event)" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">金额(元)</label>
@@ -57,7 +56,6 @@
         <select #person class="form-control" label="领料人" formControlName="createUser" id="person" (change)="onSellerSelect($event)">
           <option *ngFor="let item of InputData.employeesData" value="{{item.id}}">{{item.name}}</option>
         </select>
-        <input type="hidden" formControlName="createUserName">
       </div>
     </div>
     <div class="col-12">

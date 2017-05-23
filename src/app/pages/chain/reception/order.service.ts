@@ -270,7 +270,7 @@ export class OrderService implements BasicService<Order> {
      * @memberOf OrderService
      */
     public get(id: string): Promise<any> {
-        const url = Urls.chain.concat('/Maintenances/', id);
+        const url = Urls.chain.concat('/Maintenances/Detail/', id);
         return this.httpService
             .get<ApiResult<any>>(url)
             .then(result => result.data)

@@ -28,7 +28,7 @@ export class BillOrderComponent extends DataList<any>{
     billId: any;
     statekey: any[];
     orderStatusData: any;
-    selectedOrder = null;
+    selectedOrder: any;
     workSheetSearchForm: FormGroup;
     @ViewChild(HqAlerter)
     protected alerter: HqAlerter;
@@ -123,7 +123,7 @@ export class BillOrderComponent extends DataList<any>{
         confirmModal.hide();
         console.log(confirmModal.id)
         this.service.put(confirmModal.id).then(() => {
-            this.alerter.info('撤销结算成功!', true, 3000);
+            // this.alerter.info('撤销结算成功!', true, 3000);
             this.onLoadList()
         }).catch(err => console.log("撤销结算失败" + err));
 
@@ -189,6 +189,7 @@ export class BillOrderComponent extends DataList<any>{
     }
     // 点击详情事件
     DetailsDialog(evt, id, dialog, item) {
+        item.generating = true;
         console.log(item);
         if (item.updateOnUtc) {
             this.amountStatus = "实收金额"
@@ -210,8 +211,7 @@ export class BillOrderComponent extends DataList<any>{
             // 记录当前操作的工单记录
             this.selectedOrder = data;
             this.billId = this.selectedOrder["id"]
-            // 显示窗口
-            dialog.show();
+
         });
         this.service.getCost(id).then(data => {
             if (!data.isSettlement) {
@@ -220,6 +220,12 @@ export class BillOrderComponent extends DataList<any>{
                 this.service.getPrintDetail(id)
                     .then(data => {
                         console.log('结算单', data)
+                        Object.assign(this.selectedOrder, data);
+                        // this.selectedOrder.updateUser = data.updateUser;//结算人
+                        // this.selectedOrder.updateOnUtc = data.updateOnUtc;//结算时间
+                        // this.selectedOrder.settlementParty = data.settlementParty;//结算方
+                        // this.selectedOrder.settlementCode = data.settlementCode;//结算单号
+                        // this.selectedOrder.leaveMileage = data.leaveMileage;//出厂里程
                         this.printData.maindata = data;
                         this.printData.costData = data.totalCost; //收费结算单
                         this.printData.workHourData = data.workHours;//工时明细
@@ -245,10 +251,17 @@ export class BillOrderComponent extends DataList<any>{
                             this.printData.moneyObj.costCountMoney += (item.receivableCost - item.discountCost);
                         });
                         console.log(this.printData)
-                        this.isShowPrint = true
+                        this.isShowPrint = true;
+                        item.generating = false;
+                        // 显示窗口
+                        dialog.show();
                     })
-                    .catch(err => console.log(err));
-           
+                    .catch(err => {
+                        this.alerter.error('获取工单信息失败: ' + err, true, 2000);
+                        item.generating = false;
+                    });
+
+
             }
             console.log("根据工单id获取工单材料费和工时费", data);
             // 工时费： 维修项目金额总和
@@ -260,6 +273,10 @@ export class BillOrderComponent extends DataList<any>{
             // 总计费： 
             this.sumFee = data.amount;
             // this.billPrice = this.sumFee;
+            item.generating = false;
+            // 显示窗口
+            dialog.show();
+
         })
 
 
@@ -283,13 +300,45 @@ export class BillOrderComponent extends DataList<any>{
             return false;
         } else {
             this.service.post(this.billData, this.billId).then((result) => {
-                console.log(result)
-                if (confirm('生成结算单成功！ 是否打印？')) {
-                    setTimeout(() => {
-                        this.print();
-                        // 清空数据
 
-                    }, 200);
+                if (confirm('生成结算单成功！ 是否打印？')) {
+                    // 根据id获取工单详细信息
+
+                    this.service.getPrintDetail(this.billId)
+                        .then(data => {
+                            console.log('结算单', data)
+                            this.printData.maindata = data;
+                            this.printData.costData = data.totalCost; //收费结算单
+                            this.printData.workHourData = data.workHours;//工时明细
+                            this.printData.materialData = data.matereialDetails; //材料明细
+                            this.printData.appendItems = data.appendItems;
+                            this.printData.adviceItems = data.adviceItems;
+                            // 工时明细
+                            this.printData.workHourData.forEach(item => {
+                                //金额
+                                this.printData.moneyObj.workItemMoney = item.amount * item.discount
+                                // 工时明细的应收金额和折扣金额
+                                this.printData.moneyObj.workCostMoney += item.discountCost;
+                                this.printData.moneyObj.discountMoney += item.amount * (1 - item.discount / 100);
+                            });
+                            // 材料明细
+                            this.printData.materialData.forEach(item => {
+                                // 材料明细的应收金额
+                                this.printData.moneyObj.materialMoney += item.amount;
+                            })
+                            // 收费结算单金额
+                            this.printData.costData.forEach(item => {
+                                this.printData.moneyObj.costMoney += item.receivableCost;
+                                this.printData.moneyObj.costCountMoney += (item.receivableCost - item.discountCost);
+                            });
+                            setTimeout(() => this.print(), 200)
+
+                        })
+                        .catch(err => {
+                            this.alerter.error('获取工单信息失败: ' + err, true, 2000);
+                        });
+
+
                 } else {
                     // 清空数据
 
@@ -314,8 +363,10 @@ export class BillOrderComponent extends DataList<any>{
         this.workSheetSearchForm = this.fb.group({
             carnumber: '', // 车牌号
             billcode: '',//工单号
+            SettlementCode: '',
             starttime: '',
             endtime: '',
+
         });
     }
 }

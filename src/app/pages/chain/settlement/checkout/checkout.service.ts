@@ -76,6 +76,16 @@ export class CheckOutService implements BasicService<any>{
             .post<void>(url, body)
             .catch(err => Promise.reject(`${err}`));
     }
+    //    根据id获取结算单信息
+    public getPrintDetail(id: string): Promise<any> {
+        const url = Urls.chain.concat('/Settlements/PrintDetail/', id);
+        return this.httpService
+            .get<ApiResult<any>>(url)
+            .then(result => result.data)
+            .then(data => data || Promise.reject('获取打印数据无效'))
+            .catch(err => Promise.reject(`获取打印数据失败：${err}`))
+
+    }
 }
 
 // 工单请求参数类

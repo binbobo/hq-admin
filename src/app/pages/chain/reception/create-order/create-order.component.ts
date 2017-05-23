@@ -1,9 +1,9 @@
-import { Component, Injector, OnInit, ViewChild} from '@angular/core';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType, CustomerVehicle, FuzzySearchRequest, VehicleSeriesSearchRequest, VehicleBrandSearchRequest, VehicleSearchRequest } from '../order.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TabsetComponent, ModalDirective } from 'ngx-bootstrap';
 import * as moment from 'moment';
-import { TypeaheadRequestParams, PrintDirective} from 'app/shared/directives';
+import { TypeaheadRequestParams, PrintDirective } from 'app/shared/directives';
 import { DataList, StorageKeys } from 'app/shared/models';
 import { SuspendBillDirective } from 'app/pages/chain/chain-shared';
 import { CustomValidators } from 'ng2-validation';
@@ -327,6 +327,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
     // 获取维修项目数据
     const data = evt.data;
+    data.workHour = data.workHour * 1;
     data.price = data.price * 100;
     data.amount = data.amount * 100;
     if (evt.isEdit && this.selectedItem) {

@@ -146,6 +146,7 @@
               <th>维修项目</th>
               <th>品牌</th>
               <th>配件编码</th>
+              <th>配件分类</th>
               <th>配件名称</th>
               <th>规格型号</th>
               <th>车型</th>
@@ -164,6 +165,7 @@
               <td>{{ele.serviceName}}</td>
               <td>{{ele.brandName}}</td>
               <td>{{ele.productCode}}</td>
+              <td></td>
               <td>{{ele.productName }}</td>
               <td>{{ele.productSpecification?ele.productSpecification:ele.specifications}}</td>
               <td>{{ele.vihicleName?ele.vihicleName:ele.vehicleModel}}</td>
@@ -190,7 +192,7 @@
   </div>
 
   <!--提示是否确认退出-->
-  <div bsModal #confirmModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+  <!--<div bsModal #confirmModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header">
@@ -209,7 +211,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div>-->
 </div>
 
 <div class="modal fade" bsModal #createModal="bs-modal" tabindex="-1" role="dialog">

@@ -25,8 +25,7 @@ export class AuthService {
         return new User(user.id, model.username, null, user.accessToken, user.refreshToken, model.rememberMe);
       })
       .catch(err => {
-        console.error(err);
-        return Promise.reject(`用户登录失败！`);
+        return Promise.reject(this.httpService.getErrors(err));
       });
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TypeaheadRequestParams } from 'app/shared/directives';
 import { VehicleBrandSearchRequest, VehicleSeriesSearchRequest, VehicleSearchRequest, OrderService, Vehicle } from '../../../reception/order.service';
@@ -7,7 +7,8 @@ import { CustomValidators } from 'ng2-validation';
 @Component({
   selector: 'hq-add-vehicle',
   templateUrl: './add-vehicle.component.html',
-  styleUrls: ['./add-vehicle.component.css']
+  styleUrls: ['./add-vehicle.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AddVehicleComponent implements OnInit {
   vehicleForm: FormGroup;

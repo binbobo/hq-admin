@@ -65,13 +65,33 @@
       <label>介绍人电话：</label>
       <span>{{data?.introPhone}}</span>
     </div>
-  </div>
-  <hr>
-  <div class="form-group row">
     <div class="col-4">
       <label>维修类型：</label>
       <span>{{data?.typeName}}</span>
     </div>
+    <div class="col-4" *ngIf="data.settlementParty">
+      <label>结算方:</label>
+      <span>{{data?.settlementParty}}</span>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-4" *ngIf="data.settlementCode">
+      <label>结算单号:</label>
+      <span>{{data?.settlementCode}}</span>
+    </div>
+    <div class="col-4" *ngIf="data.updateUser">
+      <label>结算员:</label>
+      <span>{{data?.updateUser}}</span>
+    </div>
+    <div class="col-4" *ngIf="data.updateOnUtc">
+      <label>结算时间：</label>
+      <span>{{data?.updateOnUtc|sDatetime}}</span>
+
+    </div>
+  </div>
+
+  <hr>
+  <div class="form-group row">
     <div class="col-4">
       <label>进厂时间：</label>
       <span>{{data?.createdOnUtc|sDatetime}}</span>
@@ -81,18 +101,13 @@
       <span>{{data?.mileage}}</span>
       <span class="ml-2">KM</span>
     </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-4" *ngIf="data.leaveTime">
-      <label>出厂时间：</label>
-      <span>{{data?.leaveTime|sDatetime}}</span>
-    </div>
-    <div class="col-4" *ngIf="data.mileage">
+    <div class="col-4" *ngIf="data.leaveMileage">
       <label>出厂里程：</label>
-      <span>{{data?.mileage}}</span>
-      <span class="ml-2" *ngIf="data.mileage">KM</span>
+      <span>{{data?.leaveMileage}}</span>
+      <span class="ml-2" *ngIf="data.leaveMileage">KM</span>
     </div>
   </div>
+
 </form>
 <hr>
 <tabset>

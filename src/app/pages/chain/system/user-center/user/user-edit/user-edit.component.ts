@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { User, UserService } from '../user.service';
 import { FormGroup, Validators } from '@angular/forms';
 import { FormHandle, SelectOption } from 'app/shared/models';
+import { HQ_VALIDATORS } from "app/shared/shared.module";
 
 @Component({
   selector: 'hq-user-edit',
@@ -35,7 +36,7 @@ export class UserEditComponent extends FormHandle<User> implements OnInit {
     return this.formBuilder.group({
       id: [this.model.id],
       name: [this.model.name, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
-      phone: [this.model.phone, [Validators.required, Validators.pattern('1\\d{10}')]],
+      phone: [this.model.phone, [Validators.required, HQ_VALIDATORS.mobile]],
       description: [this.model.description, [Validators.maxLength(100)]],
       roles: [[]],
       positions: [[]],

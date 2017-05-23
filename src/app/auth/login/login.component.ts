@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService, LoginRequestModel } from '../auth.service';
 import { UserService, User } from "app/shared/services";
-import { HqAlerter }  from 'app/shared/directives';
+import { HqAlerter } from 'app/shared/directives';
 
 @Component({
   selector: 'app-login',

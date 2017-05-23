@@ -13,8 +13,8 @@
       <div class="form-group row">
         <label for="plateNo" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车牌号</label>
         <div class="col-2">
-          <input (blur)="onPlateNoBlur()" [hqTableTypeahead]="plateNotypeaheadSource" [columns]="typeaheadColumns" (onSelect)="plateNoOnSelect($event)"
-            class="form-control" formControlName="plateNo" id="plateNo" label="车牌号" type="text" />
+          <input (blur)="onPlateNoBlur()" hqPlateNoTypeahead="keyword" (onSelect)="plateNoOnSelect($event)" class="form-control" formControlName="plateNo"
+            id="plateNo" label="车牌号" type="text" />
           <!--客户车辆id-->
           <input type="hidden" formControlName="customerVehicleId" />
           <!--客户id-->
@@ -22,8 +22,7 @@
         </div>
         <label for="customerName" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车主</label>
         <div *ngIf="isFuzzySearchEnable" class="col-2">
-          <input #customerName (blur)="onCustomerNameBlur(customerName.value)" [hqTableTypeahead]="customerNametypeaheadSource" label="车主"
-            [columns]="typeaheadColumns" (onSelect)="onCustomerNameSelect($event)" type="text" class="form-control" formControlName="customerName"
+          <input #customerName (blur)="onCustomerNameBlur(customerName.value)" hqCustomerVehicleTypeahead="keyword" label="车主" (onSelect)="onCustomerNameSelect($event)" type="text" class="form-control" formControlName="customerName"
             id="customerName" placeholder="输入车主名称">
         </div>
         <div *ngIf="!isFuzzySearchEnable" class="col-2">
@@ -168,7 +167,7 @@
             <tr *ngFor="let item of newMaintenanceItemData">
               <td>
                 <button type="button" class="btn btn-sm btn-success" (click)="onMaintenanceItemEdit(addModal, item)">编辑</button>
-                <button type="button" class="btn btn-sm btn-danger"  (click)="onDelMaintenanceItem(item.serviceId)">删除</button>
+                <button type="button" class="btn btn-sm btn-danger" (click)="onDelMaintenanceItem(item.serviceId)">删除</button>
               </td>
               <td>{{item.serviceName}}</td>
               <td>{{item.workHour}}</td>
@@ -283,6 +282,7 @@
         <span class="ml-2 mr-2">{{fee.discount|centToYuan}}</span> |
       </div>
     </div>
+    <br>
     <br>
     <div>
       <!--<input type="text" class="btn textInputBtn" readonly [disabled]="!enableCreateWorkSheet" (click)="createWorkSheet()" value="生成工单">

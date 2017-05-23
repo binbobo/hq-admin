@@ -127,6 +127,8 @@ export class FormControlErrorDirective<T extends FormControlErrorComponent> impl
       return `${this.label}超出最大值${errors.requiredValue}限制`;
     } else if (key === "min") {
       return `${this.label}超出最小值${errors.requiredValue}限制`;
+    } else if (key === "mobile") {
+      return `无效的手机号码`;
     } else {
       console.log(key, error, errors);
       return `无效的${this.label}`;

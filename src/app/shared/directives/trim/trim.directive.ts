@@ -1,27 +1,32 @@
-import { Directive, Input, ElementRef } from '@angular/core';
+import { Directive, Input, ElementRef, Injector } from '@angular/core';
+import { FormControl, NgModel } from '@angular/forms';
 
-@Directive({
-  selector: 'input,textarea,[hqTrim]'
-})
-export class TrimDirective {
+export abstract class TrimDirective {
 
-  constructor(private el: ElementRef) { }
+  protected _control: FormControl;
+
+  constructor(
+    protected _el: ElementRef,
+  ) { }
+
+  protected trim() {
+    let target: any = this._el.nativeElement as HTMLElement;
+    let start = target.selectionStart;
+    let end = target.selectionEnd;
+    if (!target.value) return;
+    let trimValue = target.value.trim();
+    if (target.value === trimValue) return;
+    let index = target.value.indexOf(trimValue);
+    this._control.setValue(trimValue);
+    target.selectionStart = start - index;
+    target.selectionEnd = target.selectionStart;
+  }
 
   ngOnInit() {
-    let element = this.el.nativeElement;
-    if (element instanceof HTMLTextAreaElement || element instanceof HTMLInputElement && element.type === 'text') {
-      element.addEventListener('input', (event) => {
-        let target: any = event.target as HTMLElement;
-        let start = target.selectionStart;
-        let end = target.selectionEnd;
-        if (!target.value) return;
-        let trimValue = target.value.trim();
-        if (target.value === trimValue) return;
-        let index = target.value.indexOf(trimValue);
-        target.value = trimValue;
-        target.selectionStart = start - index;
-        target.selectionEnd = target.selectionStart;
-      });
+    if (this._el.nativeElement instanceof HTMLInputElement) {
+      if (this._el.nativeElement.type === "text") {
+        this._control.valueChanges.subscribe(() => this.trim());
+      }
     }
   }
 

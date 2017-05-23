@@ -12,6 +12,9 @@ import { TranslateStore } from "@ngx-translate/core/src/translate.store";
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgPipesModule } from 'ngx-pipes';
 import { TreeviewModule } from "ngx-treeview";
+import { PhoneDirective } from './directives/validators/phone.directive';
+import { TelValidator } from './directives/validators/tel.directive';
+import { MobileValidator } from './directives/validators/mobile.directive';
 
 const HQ_COMPONENTS = [
     components.PaginationComponent,
@@ -37,7 +40,11 @@ const HQ_DIRECTIVES = [
     directives.FormGroupControlErrorDirective,
     directives.FormInlineControlErrorDirective,
     directives.SpinnerDirective,
-    directives.TrimDirective,
+    directives.NgModelTrimDirective,
+    directives.FormControlTrimDirective,
+    directives.FormControlNameTrimDirective,
+    directives.MobileValidator,
+    directives.TelValidator,
 ]
 
 const HQ_PIPES = [
@@ -55,6 +62,11 @@ const HQ_SERVICES = [
     services.HttpService,
     services.EventDispatcher,
 ]
+
+export const HQ_VALIDATORS = {
+    mobile: directives.MobileValidator.validator,
+    tel: directives.TelValidator.validator,
+}
 
 @NgModule({
     imports: [

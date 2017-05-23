@@ -19,7 +19,7 @@ export class CheckoutComponent extends DataList<any> {
   billId: any;
   statekey: any[];
   orderStatusData: any;
-  selectedOrder = null;
+  selectedOrder: any;
   CheckoutForm: FormGroup;
   params: OrderListSearch;
   materialFee = 0;
@@ -62,17 +62,35 @@ export class CheckoutComponent extends DataList<any> {
   }
 
   // 点击详情事件
-  DetailsDialog(evt, id, dialog) {
+  DetailsDialog(evt, item, id, dialog) {
+    item.generating = true;
     evt.preventDefault();
-    // 显示窗口
-    dialog.show();
+
     // 根据id获取工单详细信息
     this.service.get(id).then(data => {
       // 记录当前操作的工单记录
       this.selectedOrder = data;
-      this.billId = this.selectedOrder["id"]
-
+      this.billId = this.selectedOrder["id"];
     });
+
+    this.service.getPrintDetail(id)
+      .then(data => {
+        console.log('结算单', data)
+        Object.assign(this.selectedOrder, data);
+        // this.selectedOrder.updateUser = data.updateUser;//结算人
+        // this.selectedOrder.updateOnUtc = data.updateOnUtc;//结算时间
+        // this.selectedOrder.settlementParty = data.settlementParty;//结算方
+        // this.selectedOrder.settlementCode = data.settlementCode;//结算单号
+        // this.selectedOrder.leaveMileage = data.leaveMileage;//出厂里程
+        if (item.updateOnUtc) {
+          this.selectedOrder.updataTime = item.updateOnUtc;//出厂时间
+        }
+        item.generating = false;
+        // 显示窗口
+        dialog.show();
+      })
+      .catch(err => console.log(err));
+
     // 根据工单id获取工单材料费和工时费
     this.service.getCost(id).then(data => {
       // 工时费： 维修项目金额总和
@@ -88,7 +106,8 @@ export class CheckoutComponent extends DataList<any> {
       this.sumFee.toFixed(2);
 
       this.billPrice = data.amount / 100;
-      this.billPrice.toFixed(2)
+      this.billPrice.toFixed(2);
+
     })
   }
   private billData = {};
@@ -105,7 +124,6 @@ export class CheckoutComponent extends DataList<any> {
   }
   //确定收银接口
   OnPostPay(dialog) {
-
     let cost: any = 0;
     this.payCheckSingle = this.payData.filter(item => item.amount || item.amount == 0).map(item => {
       let paycheck: any = {};
@@ -117,16 +135,13 @@ export class CheckoutComponent extends DataList<any> {
     if (cost != this.costMoney) {
       this.alerter.error('输入金额与应收金额不符，请重新填写！', true, 3000);
     } else {
+      console.log(this.payCheckSingle);
       this.service.postPay(this.payCheckSingle, this.billId).then(() => {
-        this.alerter.info('收银成功!', true, 2000).onClose(() => dialog.hide());
+        this.alerter.info('收银成功!', true, 2000).onClose(() => { dialog.hide(); this.onLoadList(); });
         this.payCheckSingle = [];
-        this.onLoadList();
+
       }).catch(err => this.alerter.error(err, true, 2000));
     }
-    console.log(this.payCheckSingle);
-
-
-
   }
   createForm() {
     // 初始化数组类型参数
@@ -134,6 +149,7 @@ export class CheckoutComponent extends DataList<any> {
     this.CheckoutForm = this.fb.group({
       carnumber: '', // 车牌号
       billcode: '',//工单号
+      SettlementCode:'',
       starttime: '',
       endtime: '',
     });

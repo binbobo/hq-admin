@@ -33,9 +33,15 @@
       <span>{{data?.customerName}}</span>
     </div>
     <div class="col-4">
-      <label>车主电话：</label>
-      <span></span>
+      <label>购车时间：</label>
+      <span>{{data?.purchaseDate|sDate}}</span>
     </div>
+    <div class="col-4">
+      <label>预计交车时间：</label>
+      <span>{{data?.expectLeave|sDatetime}}</span>
+    </div>
+  </div>
+  <div class="form-group row">
     <div class="col-4">
       <label>维修技师：</label>
       <span>{{data?.employeeNames}}</span>
@@ -45,69 +51,45 @@
       <!--<span *ngIf="teamType === 1">{{data?.employeeNames.join(',')}}</span>
         <span *ngIf="teamType === 2">{{data?.turnEmployeeNames.join(',')}}</span>-->
     </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-4">
-      <label>维修类型：</label>
-      <span>{{data?.typeName}}</span>
-    </div>
-    <div class="col-4">
-      <label>介绍人：</label>
-      <span>{{data?.introducer}}</span>
-    </div>
     <div class="col-4">
       <label>服务顾问：</label>
       <span>{{data?.createdUserName}}</span>
     </div>
-  </div>
-  <div class="form-group row">
     <div class="col-4">
       <label>介绍人：</label>
       <span>{{data?.introducer}}</span>
     </div>
+  </div>
+  <div class="form-group row">
     <div class="col-4">
       <label>介绍人电话：</label>
       <span>{{data?.introPhone}}</span>
     </div>
     <div class="col-4">
-      <label>预计交车时间：</label>
-      <span>{{data?.expectLeave|sDatetime}}</span>
+      <label>维修类型：</label>
+      <span>{{data?.typeName}}</span>
+    </div>
+    <div class="col-4">
+      <label>结算方:</label>
+      <span>{{data?.settlementParty}}</span>
     </div>
   </div>
   <div class="form-group row">
     <div class="col-4">
-      <label>超时：</label>
-      <span></span>
+      <label>结算单号:</label>
+      <span>{{data?.settlementCode}}</span>
     </div>
     <div class="col-4">
-      <label>结算方：</label>
-      <span></span>
-    </div>
-    <div class="col-4">
-      <label>结算单号：</label>
-      <span></span>
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-4">
-      <label>结算员：</label>
-      <span></span>
+      <label>结算员:</label>
+      <span>{{data?.updateUser}}</span>
     </div>
     <div class="col-4">
       <label>结算时间：</label>
-      <span></span>
-    </div>
-    <div class="col-4">
-      <label>出厂时间：</label>
-      <span></span>
+      <span>{{data?.updateOnUtc|sDatetime}}</span>
+
     </div>
   </div>
-  <div class="form-group row">
-    <div class="col-4">
-      <label>出厂里程：</label>
-      <span></span>
-    </div>
-  </div>
+
   <hr>
   <div class="form-group row">
     <div class="col-4">
@@ -120,19 +102,15 @@
       <span class="ml-2">KM</span>
     </div>
     <div class="col-4">
-      <label>出厂时间：</label>
-      <span>{{data?.leaveTime|sDatetime}}</span>
+      <label>出厂里程：</label>
+      <span>{{data?.leaveMileage}}</span>
+      <span class="ml-2">KM</span>
     </div>
   </div>
   <div class="form-group row">
-    <div class="col-4">
-      <label>出厂里程：</label>
-      <span>{{data?.mileage}}</span>
-      <span class="ml-2">KM</span>
-    </div>
-    <div class="col-4">
-      <label>服务顾问：</label>
-      <span></span>
+    <div class="col-4" >
+      <label>出厂时间：</label>
+      <span>{{data?.updataTime|sDatetime}}</span>
     </div>
   </div>
 </form>
@@ -143,7 +121,7 @@
       <thead>
         <tr>
           <th>项目名称</th>
-          <th>维修工时</th>
+          <th>维修工时(小时)</th>
           <th>工时单价(元)</th>
           <th>金额(元)</th>
           <th>折扣率(%)</th>
@@ -174,7 +152,7 @@
           <th>单价(元)</th>
           <th>金额(元)</th>
           <th>操作时间</th>
-        </tr>
+        </tr> 
       </thead>
       <tbody>
         <tr *ngFor="let record of data?.productOutputs">
