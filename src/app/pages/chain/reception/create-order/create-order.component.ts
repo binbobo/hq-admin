@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType, CustomerVehicle, FuzzySearchRequest, VehicleSeriesSearchRequest, VehicleBrandSearchRequest, VehicleSearchRequest } from '../order.service';
+import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType, FuzzySearchRequest, VehicleSeriesSearchRequest, VehicleSearchRequest } from '../order.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TabsetComponent, ModalDirective } from 'ngx-bootstrap';
 import * as moment from 'moment';
@@ -60,13 +60,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     material: 0,
     other: 0,
     discount: 0
-  };
-
-  regex = {
-    plateNo: /^[\u4e00-\u9fa5]{1}[A-Za-z]{1}[A-Za-z_0-9]{5}$/,
-    phone: /^1[3|4|5|7|8]\d{9}$/,
-    mileage: /^[0-9]+([.]{1}[0-9]{1,2})?$/,
-    vin: /^[A-HJ-NPR-Z\d]{8}[\dX][A-HJ-NPR-Z\d]{2}\d{6}$/
   };
 
   // 当前登录用户信息
@@ -487,16 +480,16 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       series: [{ value: '', disabled: true }, [Validators.required]], // 车系
       vehicleName: [{ value: '', disabled: true }, [Validators.required]], // 车型
       plateNo: ['', [Validators.required, HQ_VALIDATORS.plateNo]], // 车牌号
-      vin: ['', Validators.compose([Validators.required, Validators.pattern(this.regex.vin)])], // vin  底盘号
+      vin: ['', [Validators.required, HQ_VALIDATORS.vin]], // vin  底盘号
       validate: [null, [CustomValidators.date]], // 验车日期
       type: ['', [Validators.required]], // 维修类型
       expectLeave: [moment().add(2, 'hours').format('YYYY-MM-DD HH:mm'), [Validators.required, CustomValidators.date]], // 预计交车时间
-      mileage: ['', Validators.compose([Validators.required, Validators.pattern(this.regex.mileage)])], // 行驶里程
+      mileage: ['', [Validators.required, HQ_VALIDATORS.mileage]], // 行驶里程
       lastEnter: [{ value: null, disabled: true }], // 上次进店时间
       location: '', // 维修工位
       nextDate: [null, [CustomValidators.date]], // 建议下次保养日期
       lastMileage: [{ value: '', disabled: true }], // 上次进店里程
-      nextMileage: ['', Validators.compose([Validators.pattern(this.regex.mileage)])], // 建议下次保养里程
+      nextMileage: ['', [HQ_VALIDATORS.mileage]], // 建议下次保养里程
 
       suspendedBillId: '', // 挂单id
       customerVehicleId: '', // 客户车辆id

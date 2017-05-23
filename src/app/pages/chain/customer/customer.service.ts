@@ -7,8 +7,6 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class CustomerService implements BasicService<any> {
-
-
     constructor(private httpService: HttpService) {
     }
 
@@ -107,34 +105,6 @@ export class CustomerService implements BasicService<any> {
     }
 
     /**
- * 根据车主姓名模糊查询其它门店车主信息
- * @param {string} token
- * @returns {Observable<Vehicle[]>}
- * @memberOf OrderService
- */
-    getCustomerByName(params: CustomerNameSearchRequest): Promise<PagedResult<any>> {
-        const search = params.serialize();
-        const url = Urls.chain.concat('/Customers/search');
-        console.log('根据车主模糊查询其它门店的车主信息:', url, search);
-        return this.httpService
-            .get<PagedResult<any>>(url, search);
-    }
-
-    /**
-* 根据车主电话模糊查询其它门店车主信息
-* @param {string} token
-* @returns {Observable<Vehicle[]>}
-* @memberOf OrderService
-*/
-    getCustomerByPhone(params: CustomerPhoneSearchRequest): Promise<PagedResult<any>> {
-        const search = params.serialize();
-        const url = Urls.chain.concat('/Customers/search');
-        console.log('根据手机号模糊查询其它门店的车主信息:', url, search);
-        return this.httpService
-            .get<PagedResult<any>>(url, search);
-    }
-
-    /**
      * 创建车主
      * @param body 
      */
@@ -158,21 +128,6 @@ export class CustomerService implements BasicService<any> {
         return this.httpService
             .delete(url)
             .catch(err => Promise.reject(`删除工单失败：${err}`));
-    }
-}
-
-export class CustomerNameSearchRequest extends PagedParams {
-    constructor(
-        public name: string,
-    ) {
-        super();
-    }
-}
-export class CustomerPhoneSearchRequest extends PagedParams {
-    constructor(
-        public phone: string, // 模糊搜索关键字
-    ) {
-        super();
     }
 }
 

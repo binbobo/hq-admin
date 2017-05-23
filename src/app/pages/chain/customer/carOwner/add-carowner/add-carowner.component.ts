@@ -43,13 +43,6 @@ export class AddCarownerComponent implements OnInit {
   // 保存车主加载动画
   generating = false;
 
-  regex = {
-    phone: /^1[3|4|5|7|8]\d{9}$/,
-    idCard: /\d{15}(\d\d[0-9xX])?/,
-    tel: /\d{3}-\d{8}|\d{4}-\d{7}/,
-    fax: /^(\d{3,4}-)?\d{7,8}$/
-  };
-
   constructor(
     protected service: CustomerService,
     protected orderService: OrderService,
@@ -183,7 +176,7 @@ export class AddCarownerComponent implements OnInit {
       phone: ['', [HQ_VALIDATORS.mobile]], // 车主手机号
       sex: '', // 车主性别
       birthday: [null, [CustomValidators.date]], // 车主生日
-      identityCard: ['', Validators.compose([Validators.pattern(this.regex.idCard)])], // 身份证号
+      identityCard: ['', [HQ_VALIDATORS.idCard]], // 身份证号
       tel: ['', [HQ_VALIDATORS.tel]], // 电话
       fax: ['', [HQ_VALIDATORS.tel]], // 传真
       email: ['', [CustomValidators.email]], // 电子邮箱

@@ -1,8 +1,9 @@
 import { Component, OnInit, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TypeaheadRequestParams } from 'app/shared/directives';
-import { VehicleBrandSearchRequest, VehicleSeriesSearchRequest, VehicleSearchRequest, OrderService, Vehicle } from '../../../reception/order.service';
+import { VehicleSeriesSearchRequest, VehicleSearchRequest, OrderService, Vehicle } from '../../../reception/order.service';
 import { CustomValidators } from 'ng2-validation';
+import { HQ_VALIDATORS } from '../../../../../shared/shared.module';
 
 @Component({
   selector: 'hq-add-vehicle',
@@ -21,20 +22,6 @@ export class AddVehicleComponent implements OnInit {
   isBrandSelected = false;
   isSeriesSelected = false;
   isVehicleSelected = false;
-
-  regex = {
-    plateNo: /^[\u4e00-\u9fa5]{1}[A-Za-z]{1}[A-Za-z_0-9]{5}$/,
-    vin: /^[A-HJ-NPR-Z\d]{8}[\dX][A-HJ-NPR-Z\d]{2}\d{6}$/,
-    engineNo: /^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/
-  };
-
-  formValadationErrors = {
-    common: {
-      required: '{name}不能为空',
-      pattern: '无效的{name}',
-      date: '非法的日期类型',
-    }
-  };
 
   constructor(
     private fb: FormBuilder,
@@ -102,15 +89,15 @@ export class AddVehicleComponent implements OnInit {
   createForm() {
     // 添加车主表单
     this.vehicleForm = this.fb.group({
-      plateNo: ['', Validators.compose([Validators.required, Validators.pattern(this.regex.plateNo)])],
+      plateNo: ['', [Validators.required, HQ_VALIDATORS.plateNo]],
       brand: ['', [Validators.required]], // 品牌
       series: [{ value: '', disabled: true }, [Validators.required]], // 车系
       vehicleName: [{ value: '', disabled: true }, [Validators.required]], // 车型
       brandId: '',
       seriesId: '',
       vehicleId: '',
-      engineNo: ['', Validators.compose([Validators.pattern(this.regex.engineNo)])],
-      vin: ['', Validators.compose([Validators.required, Validators.pattern(this.regex.vin)])],
+      engineNo: ['', [HQ_VALIDATORS.engineNo]],
+      vin: ['', [Validators.required, HQ_VALIDATORS.vin]],
       vehicleColor: '',
       purchaseDate: [null, [CustomValidators.date]],
       validate: [null, [CustomValidators.date]],
