@@ -38,7 +38,7 @@ export class MaintainReturnService implements BasicService<any>{
     //  根据工单或者车牌号搜索
     getOrderPageData(params: MaintainRequest): Promise<PagedResult<SearchReturnData>> {
         let search = params.serialize();
-        const url = Urls.chain.concat('/Maintenances');
+        const url = Urls.chain.concat('/Maintenances/MaterialReturn');
         return this.httpService
             .get<PagedResult<SearchReturnData>>(url, search)
 
@@ -63,7 +63,7 @@ export class MaintainReturnService implements BasicService<any>{
             .request(url, {
                 params: {
                     "BillCode": billCode,
-                    "BillTypeKey": "MR"
+                    "BillTypeKey": "RR"
                 }
             })
             .map(response => {
@@ -78,7 +78,7 @@ export class MaintainReturnService implements BasicService<any>{
             .request(url, {
                 params: {
                     "BillCode": billCode,
-                    "BillTypeKey": "MM"
+                    "BillTypeKey": "RM"
                 }
             })
             .map(response => {

@@ -219,7 +219,7 @@ export class DistributeComponent implements OnInit {
       }, [])
 
 
-    }).catch(err => this.alerter.error(err, true, 2000));
+    }).catch(err => {this.alerter.error(err, true, 2000);this.generat = false;});
   }
 
   // 是否取消发料
