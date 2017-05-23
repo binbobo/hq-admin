@@ -153,6 +153,7 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
   }
   private fcount;
   public onItemSelect(event) {
+    console.log(event)
     let item = {
       productCode: event.code,
       productName: event.name,

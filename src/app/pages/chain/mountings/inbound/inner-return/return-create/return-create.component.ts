@@ -46,6 +46,7 @@ export class ReturnCreateComponent implements OnInit {
       this.productId = this.selectReturnData.productId;
       this.existCounts = this.selectReturnData.existCount;
       this.selectReturnData.amount = (this.selectReturnData.price * 1).toFixed(2);
+      this.selectReturnData.productTypes = this.selectReturnData.productTypes[0];
       this.form.patchValue(this.selectReturnData);
     }
 

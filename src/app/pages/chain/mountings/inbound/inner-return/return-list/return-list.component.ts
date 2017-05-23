@@ -46,7 +46,7 @@ export class ReturnListComponent extends DataList<any> {
   public printer: PrintDirective;
   private employees: any;
   private departments: any;
-  private model;//配件信息
+  // private model;//配件信息
   private printModel: any;
 
   constructor(
@@ -186,30 +186,31 @@ export class ReturnListComponent extends DataList<any> {
         })
     }
   }
-  historyData:any;
+  historyData: any;
   //退料提交
   onCreate(e) {
     console.log('返回数据', e);
     e.price = parseInt(e.price) * 100;
     e.amount = parseInt(e.amount) * 100;
-    this.historyData = this.returnData.filter(item=>item.originalId == e.originalId)
-    if(this.historyData.length>0){
-      this.returnData.forEach((item,index)=>{
-        if(item.originalId == e.originalId){
+    this.historyData = this.returnData.filter(item => item.originalId == e.originalId)
+    if (this.historyData.length > 0) {
+      this.returnData.forEach((item, index) => {
+        if (item.originalId == e.originalId) {
           item.count = Number(e.count);
           item.amount = Number(e.amount);
           item.existCounts = Number(e.existCounts);
         }
       })
-    }else{
-    this.returnData.push(e);
+    } else {
+      this.returnData.push(e);
     }
     this.createModel.hide();
   }
 
-//删除退料信息
-  onDelCreat(e,i) {
-    this.returnData.splice(i, 1);
+  //删除退料信息
+  onDelCreat(e, i) {
+    if (confirm('是否确认删除该条退料信息！'))
+      this.returnData.splice(i, 1);
   }
 
   //选择挂单信息
@@ -275,7 +276,7 @@ export class ReturnListComponent extends DataList<any> {
     //   .then(data => {
     //     console.log('iiiiii配件信息', data);
     //     this.model = data.data;
-       
+
     //   })
     //   .catch(err => Promise.reject(`获取配件信息失败：${err}`));
   }

@@ -43,7 +43,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   // private salesmen: Array<SelectOption>;
   private printModel: any;
   // private model: SalesReturnListRequest = new SalesReturnListRequest();
-  private model;
+  // private model;
 
   constructor(
     injector: Injector,
@@ -65,7 +65,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   // //选择退库单号
   onItemCodeSelect(event) {
     console.log('退库单号详细数据', event);
-    // this.OriginalBillId = event.id;
+    this.originalBillId = event.id;
     this.billCode = event.billCode;
     this.inUnit = event.inUnit;
     this.outUnit = event.outUnit;
@@ -141,7 +141,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   OnCreatBound(data, id) {
     console.log('弹框数据', data);
     this.selectSalesData = [];
-    this.originalBillId = data.id;
+    // this.originalBillId = data.id;
     // this.selectReturnData = data;
     Object.assign(this.selectSalesData, data);
 
@@ -153,7 +153,8 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   }
   //删除操作
   onDelCreat(e, i) {
-    this.salesReturnData.splice(i, 1);
+    if (confirm('是否要删除该条退库信息！'))
+      this.salesReturnData.splice(i, 1);
   }
 
   historyData: any;
@@ -210,8 +211,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
       originalBillId: this.originalBillId,
       suspendedBillId: this.suspendedBillId,
       billCode: this.billCode,
-      custName: this.customerName,
-      custPhone: this.customerPhone,
+      customerId:this.customerId,
       seller: this.seller,
       inUnit: this.inUnit,
       outUnit: this.outUnit,
