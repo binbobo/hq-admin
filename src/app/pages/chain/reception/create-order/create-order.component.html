@@ -13,7 +13,8 @@
       <div class="form-group row">
         <label for="plateNo" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车牌号</label>
         <div class="col-2">
-          <input (blur)="onPlateNoBlur()" hqPlateNoTypeahead (onSelect)="plateNoOnSelect($event)" class="form-control" formControlName="plateNo" id="plateNo" label="车牌号" type="text" />
+          <input (blur)="onPlateNoBlur()" hqPlateNoTypeahead="keyword" (onSelect)="plateNoOnSelect($event)" class="form-control" formControlName="plateNo"
+            id="plateNo" label="车牌号" type="text" />
           <!--客户车辆id-->
           <input type="hidden" formControlName="customerVehicleId" />
           <!--客户id-->
@@ -167,7 +168,7 @@
             <tr *ngFor="let item of newMaintenanceItemData">
               <td>
                 <button type="button" class="btn btn-sm btn-success" (click)="onMaintenanceItemEdit(addModal, item)">编辑</button>
-                <button type="button" class="btn btn-sm btn-danger"  (click)="onDelMaintenanceItem(item.serviceId)">删除</button>
+                <button type="button" class="btn btn-sm btn-danger" (click)="onDelMaintenanceItem(item.serviceId)">删除</button>
               </td>
               <td>{{item.serviceName}}</td>
               <td>{{item.workHour}}</td>
@@ -282,6 +283,7 @@
         <span class="ml-2 mr-2">{{fee.discount|centToYuan}}</span> |
       </div>
     </div>
+    <br>
     <br>
     <div>
       <!--<input type="text" class="btn textInputBtn" readonly [disabled]="!enableCreateWorkSheet" (click)="createWorkSheet()" value="生成工单">

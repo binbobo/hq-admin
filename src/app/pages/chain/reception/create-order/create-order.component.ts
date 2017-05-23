@@ -1,9 +1,9 @@
-import { Component, Injector, OnInit, ViewChild} from '@angular/core';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType, CustomerVehicle, FuzzySearchRequest, VehicleSeriesSearchRequest, VehicleBrandSearchRequest, VehicleSearchRequest } from '../order.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TabsetComponent, ModalDirective } from 'ngx-bootstrap';
 import * as moment from 'moment';
-import { TypeaheadRequestParams, PrintDirective} from 'app/shared/directives';
+import { TypeaheadRequestParams, PrintDirective } from 'app/shared/directives';
 import { DataList, StorageKeys } from 'app/shared/models';
 import { SuspendBillDirective } from 'app/pages/chain/chain-shared';
 import { CustomValidators } from 'ng2-validation';
@@ -631,40 +631,40 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 调用创建工单接口
     console.log('提交的工单对象： ', JSON.stringify(workSheet));
 
-    // this.service.create(workSheet)
-    //   .then(data => {
-    //     this.generating = false;
-    //     console.log('创建工单成功之后， 返回的工单对象：', JSON.stringify(data));
-    //     // 创建订单成功之后  做一些重置操作
-    //     if (confirm('创建工单成功！ 是否打印？')) {
-    //       this.newWorkOrderData = data;
-    //       // 延迟打印
-    //       setTimeout(() => {
-    //         this.print();
-    //         // 延迟清空数据
-    //         setTimeout(() => {
-    //           this.initOrderData();
-    //           // 刷新挂单列表
-    //           if (workSheet.suspendedBillId) {
-    //             this.suspendBill.refresh();
-    //           }
-    //         }, 100);
-    //       }, 100);
-    //     } else {
-    //       // 清空数据
-    //       this.initOrderData();
-    //       // 刷新挂单列表
-    //       if (workSheet.suspendedBillId) {
-    //         this.suspendBill.refresh();
-    //       }
-    //     }
-    //   }).catch(err => {
-    //     this.generating = false;
-    //     // 出错的话  允许再次提交
-    //     this.enableCreateWorkSheet = true;
+    this.service.create(workSheet)
+      .then(data => {
+        this.generating = false;
+        console.log('创建工单成功之后， 返回的工单对象：', JSON.stringify(data));
+        // 创建订单成功之后  做一些重置操作
+        if (confirm('创建工单成功！ 是否打印？')) {
+          this.newWorkOrderData = data;
+          // 延迟打印
+          setTimeout(() => {
+            this.print();
+            // 延迟清空数据
+            setTimeout(() => {
+              this.initOrderData();
+              // 刷新挂单列表
+              if (workSheet.suspendedBillId) {
+                this.suspendBill.refresh();
+              }
+            }, 100);
+          }, 100);
+        } else {
+          // 清空数据
+          this.initOrderData();
+          // 刷新挂单列表
+          if (workSheet.suspendedBillId) {
+            this.suspendBill.refresh();
+          }
+        }
+      }).catch(err => {
+        this.generating = false;
+        // 出错的话  允许再次提交
+        this.enableCreateWorkSheet = true;
 
-    //     this.alerter.error('创建工单失败:' + err, true, 3000);
-    //   });
+        this.alerter.error('创建工单失败:' + err, true, 3000);
+      });
   }
 
   public get currentDate() {

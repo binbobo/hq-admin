@@ -23,7 +23,7 @@ export class PlateNoTypeaheadDirective extends TableTypeaheadDirective {
     ] as Array<TableTypeaheadColumn>;
 
     @Input()
-    protected filed: string = 'plateNo';
+    protected filed: string = 'keyword';
 
     ngOnInit() {
         this.source = (params: TypeaheadRequestParams) => {
@@ -50,7 +50,7 @@ export class PlateNoTypeaheadDirective extends TableTypeaheadDirective {
 
 class PlateNoSearchRequest extends PagedParams {
     constructor(
-        public name?: string,
+        public keyword?: string,
     ) {
         super();
     }
