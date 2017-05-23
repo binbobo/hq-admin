@@ -18,9 +18,17 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
   private warehouses: Array<SelectOption>;
   private units: Array<SelectOption>;
   private categories: Array<TreeviewItem>;
-  private brands: Array<SelectOption>;
-  public items: Array<any> = [];
   private owned: boolean;
+  private selectedProduct: any;
+
+  private get exists() {
+    if (!this.selectedProduct) return false;
+    if (!this.form) return false;
+    let locations: Array<{ id: string }> = this.selectedProduct.locations;
+    let locationId = this.form.get('locationId').value;
+    let item = locations.find(m => m.id === locationId);
+    return item;
+  }
 
   constructor(
     injector: Injector,
@@ -36,11 +44,12 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
   protected buidForm(): FormGroup {
     return this.formBuilder.group({
       locationName: [this.model.locationName, [Validators.maxLength(50)]],
+      locationId: [this.model.locationId, [Validators.maxLength(50)]],
       storeId: [this.model.storeId, [Validators.required, Validators.maxLength(36)]],
       vehicleId: [this.model.vehicleId],
       unit: [this.model.unit, [Validators.required, Validators.maxLength(36)]],
       brandName: [this.model.brandName, [Validators.required, Validators.maxLength(50)]],
-      categoryId: [this.model.categoryId],
+      categoryId: [this.model.categoryId, [Validators.required]],
       code: [this.model.code, [Validators.required, Validators.maxLength(36)]],
       name: [this.model.name, [Validators.required, Validators.maxLength(60)]],
       productSpecification: [this.model.productSpecification, [Validators.required, Validators.maxLength(20)]],
@@ -71,17 +80,34 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
       .then(options => options.length ? options[0].value : '')
       .then(id => this.patchValue('unit', id))
       .catch(err => this.alerter.warn(err));
-    this.moutingsService.getBrands()
-      .then(options => this.brands = options)
-      .catch(err => this.alerter.warn(err));
   }
 
-  onBrandSelect(event: TypeaheadMatch) {
-    this.form.patchValue({ brandId: event.item.value });
+  get typeaheadParams() {
+    return { storeId: this.form.get('storeId').value };
+  }
+
+  onStorageChange(event) {
+    this.form.patchValue({ locationName: undefined, locationId: undefined });
+  }
+
+  onLocationChange(event: Event) {
+    if (event.isTrusted) {
+      this.form.patchValue({ locationId: undefined });
+    }
+  }
+
+  onLocationSelect(event) {
+    this.form.patchValue({ locationId: event.id });
+  }
+
+  onBrandSelect(event) {
+    this.form.patchValue({ brandId: event.id });
   }
 
   onBrandChange(event: Event) {
-    this.form.patchValue({ brandId: undefined });
+    if (event.isTrusted) {
+      this.form.patchValue({ brandId: undefined });
+    }
   }
 
   public vehicles: Array<any> = [];
@@ -104,14 +130,17 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
   }
 
   public onItemSelect(event) {
+    this.selectedProduct = event;
     let item = {
       code: event.code,
       name: event.name,
       packageInfo: event.packageInfo,
       madeIn: event.madeIn,
-      brandName: event.brand,
-      brandId: event.brandId
-    }
+      brandName: event.brandName,
+      brandId: event.brandId,
+      productSpecification: event.specification,
+      unit: event.unitId
+    };
     this.form.patchValue(item);
     this.disableItem(true);
   }
@@ -128,8 +157,9 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
     }
   }
 
-  onCategorySelect(event) {
-    this.form.patchValue({ categoryId: event });
+  onCategorySelect(event: Event) {
+    let el = event.target as HTMLSelectElement;
+    this.form.patchValue({ categoryId: [el.value] });
   }
 
   onReset() {

@@ -79,6 +79,7 @@ export class Inventory extends BasicModel {
     public number?: number,
     public storeId?: string,
     public locationName?: string,
+    public locationId?:string,
     public storageLocationName?: string,
     public category?: string,
     public brand?: string,

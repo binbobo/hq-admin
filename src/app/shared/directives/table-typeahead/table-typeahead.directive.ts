@@ -26,6 +26,8 @@ export class TableTypeaheadDirective implements OnInit {
   protected showTitle = true;
   @Input()
   protected checkStrategy: (item: any) => boolean;
+  @Input()
+  protected params: Object;
   @Output()
   protected onSelect = new EventEmitter<any>();
   private el: HTMLInputElement;
@@ -55,9 +57,7 @@ export class TableTypeaheadDirective implements OnInit {
   }
   @HostListener('focus', ['$event'])
   onFocus(event) {
-    if (!event.sourceCapabilities) return false;
-    this.show();
-    if (!this.paging && this.forceRefresh || !this.componentRef.instance.result) {
+    if (!this.paging && event.sourceCapabilities) {
       this.search();
     }
   }
@@ -108,6 +108,7 @@ export class TableTypeaheadDirective implements OnInit {
         })
         .then(() => stopAnimation())
         .catch(err => {
+          console.log(err);
           stopAnimation();
           this.componentRef.instance.result = null;
         });

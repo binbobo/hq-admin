@@ -21,7 +21,7 @@ export class UserService implements BasicService<User>{
       .catch(err => Promise.reject(`重置密码失败：${err}`));
   }
   enable(id: string, enabled: boolean) {
-    let url = Urls.platform.concat('/SystemManager/Enabled/', id);
+    let url = Urls.chain.concat('/SystemManager/Enabled/', id);
     return this.httpService.put(url, { enabled: enabled })
       .catch(err => Promise.reject(`${enabled ? "解冻" : "冻结"}操作失败：${err}`));
   }
