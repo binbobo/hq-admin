@@ -89,7 +89,7 @@ export class AppendOrderComponent {
   public onTypeaheadSelect($event) {
     this.isShowAppend = true;
     this.isableSuspend = true;
-    this.SearchappendList = $event;
+   
     this.listId = $event.id;
     this.workHourFee = 0;
     this.sumFee = 0;
@@ -99,6 +99,7 @@ export class AppendOrderComponent {
       .then(data => {
 
         console.log(data)
+         this.SearchappendList = data;
         this.maintenanceId = data.id;
         //维修项目
         this.maintenanceProjectData = data.serviceOutputs;

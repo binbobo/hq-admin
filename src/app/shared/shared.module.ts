@@ -37,7 +37,9 @@ const HQ_DIRECTIVES = [
     directives.FormGroupControlErrorDirective,
     directives.FormInlineControlErrorDirective,
     directives.SpinnerDirective,
-    directives.TrimDirective,
+    directives.NgModelTrimDirective,
+    directives.FormControlTrimDirective,
+    directives.FormControlNameTrimDirective,
 ]
 
 const HQ_PIPES = [

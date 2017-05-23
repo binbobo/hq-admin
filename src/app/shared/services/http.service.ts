@@ -133,20 +133,27 @@ export class HttpService {
                 errMsg = '没有找到请求的资源！';
             }
             else {
-                const body = error.json() || '';
-                if (body instanceof ProgressEvent) {
-                    errMsg = '服务端请求错误！'
-                }
-                else if (body) {
-                    errMsg = body.error || this.handleModelValidateError(body) || JSON.stringify(body);
-                }
+                errMsg = this.getErrors(error);
             }
         } else {
             errMsg = error.message ? error.message : error.toString();
         }
         return Promise.reject(errMsg);
     }
-    //.net core模型验证返回结果处理
+
+    public getErrors(response: Response) {
+        let errMsg: string = response.text();
+        let body = response.json() || '';
+        if (body instanceof ProgressEvent) {
+            errMsg = '服务端请求错误！'
+        }
+        else if (body && Object.keys(body).length) {
+            errMsg = body.error || this.handleModelValidateError(body) || JSON.stringify(body);
+        }
+        return errMsg;
+    }
+
+    //.net模型验证返回结果处理
     private handleModelValidateError(errors: any) {
         let errorArr = [];
         for (var err in errors) {

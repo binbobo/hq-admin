@@ -76,15 +76,15 @@ export class CheckoutComponent extends DataList<any> {
     this.service.getPrintDetail(id)
       .then(data => {
         console.log('结算单', data)
-        this.selectedOrder.updateUser = data.updateUser;//结算人
-        this.selectedOrder.updateOnUtc = data.updateOnUtc;//结算时间
-        this.selectedOrder.settlementParty = data.settlementParty;//结算方
-        this.selectedOrder.settlementCode = data.settlementCode;//结算单号
-        this.selectedOrder.leaveMileage = data.leaveMileage;//出厂里程
+        Object.assign(this.selectedOrder, data);
+        // this.selectedOrder.updateUser = data.updateUser;//结算人
+        // this.selectedOrder.updateOnUtc = data.updateOnUtc;//结算时间
+        // this.selectedOrder.settlementParty = data.settlementParty;//结算方
+        // this.selectedOrder.settlementCode = data.settlementCode;//结算单号
+        // this.selectedOrder.leaveMileage = data.leaveMileage;//出厂里程
         if (item.updateOnUtc) {
           this.selectedOrder.updataTime = item.updateOnUtc;//出厂时间
         }
-
         item.generating = false;
         // 显示窗口
         dialog.show();
@@ -135,10 +135,11 @@ export class CheckoutComponent extends DataList<any> {
     if (cost != this.costMoney) {
       this.alerter.error('输入金额与应收金额不符，请重新填写！', true, 3000);
     } else {
+      console.log(this.payCheckSingle);
       this.service.postPay(this.payCheckSingle, this.billId).then(() => {
-        this.alerter.info('收银成功!', true, 2000).onClose(() => dialog.hide());
+        this.alerter.info('收银成功!', true, 2000).onClose(() => { dialog.hide(); this.onLoadList(); });
         this.payCheckSingle = [];
-        this.onLoadList();
+
       }).catch(err => this.alerter.error(err, true, 2000));
     }
   }
@@ -148,6 +149,7 @@ export class CheckoutComponent extends DataList<any> {
     this.CheckoutForm = this.fb.group({
       carnumber: '', // 车牌号
       billcode: '',//工单号
+      SettlementCode:'',
       starttime: '',
       endtime: '',
     });
