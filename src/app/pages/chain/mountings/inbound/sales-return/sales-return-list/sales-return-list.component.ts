@@ -31,7 +31,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   private outUnit;//销售方ID
   private createLoading = false;//生成退库单按钮加载动画
   private suspendLoading = false;//挂单按钮加载动画
-  private isOk = true;//按钮禁用控制
+  // private isOk = true;//按钮禁用控制
 
   params: SaleDetailsRequest;
 
@@ -177,7 +177,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
       })
     } else {
       this.salesReturnData.push(e);
-      this.isOk = false;
+      // this.isOk = false;
     }
     this.createModel.hide();
   }
@@ -198,7 +198,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
     this.seller = item.value.seller;
     this.inUnit = item.value.inUnit;
     this.outUnit = item.value.outUnit;
-    this.isOk = false;
+    // this.isOk = false;
   }
 
   // reset() {
@@ -212,7 +212,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   createReturnList() {
     // let el = event.target as HTMLButtonElement;
     // el.disabled = true;
-    this.isOk = true;
+    // this.isOk = true;
     this.createLoading = true;
     this.billData = {
       originalBillId: this.originalBillId,
@@ -265,8 +265,8 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
       // let createTime = new Date();
       // this.model.createBillDateTime = moment(createTime).format('YYYY-MM-DD hh:mm:ss');
       // console.log(this.model);
-
-      this.isOk = true;
+      this.suspendLoading = true;
+      // this.isOk = true;
       this.suspendData = {
         model: this.list,
         salesReturnData: this.salesReturnData,
@@ -294,10 +294,14 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
           this.originalBillId = null;
           // this.takeUser = this.employees[0].value;
         })
-        .then(() => this.alerter.success('挂单成功！'))
+        .then(() => {
+          this.alerter.success('挂单成功！');
+          this.suspendLoading = false;
+        })
         .catch(err => {
           // el.disabled = false;
-          this.isOk = false;
+          // this.isOk = false;
+          this.suspendLoading = false;
           this.alerter.error(err);
         })
     }

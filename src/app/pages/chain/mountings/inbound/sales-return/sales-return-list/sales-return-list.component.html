@@ -108,9 +108,9 @@
     </div>
   </div>
   <div class="card-footer text-muted">
-    <button [hqSpinner]="createLoading" [disabled]="isOk" class="btn btn-primary" (click)="createReturnList()">生成销售退库单</button>
+    <button [hqSpinner]="createLoading" [disabled]="!(salesReturnData.length>0)" class="btn btn-primary" (click)="createReturnList()">生成销售退库单</button>
     <!--<button class="btn btn-warning" (click)="cancel($event)">取消</button>-->
-    <button [hqSpinner]="suspendLoading" [disabled]="isOk" class="btn btn-info" (click)="suspend()">挂单</button>
+    <button [hqSpinner]="suspendLoading" [disabled]="!(salesReturnData.length>0)" class="btn btn-info" (click)="suspend()">挂单</button>
   </div>
 </div>
 
