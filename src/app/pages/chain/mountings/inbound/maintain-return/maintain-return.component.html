@@ -184,7 +184,7 @@
   </div>
   <!--提交按钮-->
   <div class="card-footer text-muted">
-    <button class="btn btn-primary" [disabled]="!(newMainData.length>0)" (click)="OnCreatReturnBill()">生成维修退料单</button>
+    <button class="btn btn-primary" [disabled]="!(newMainData.length>0)" [hqSpinner]="generat" (click)="OnCreatReturnBill()">生成维修退料单</button>
     <!--<button class="btn btn-secondary" (click)="finishedOrder($event,  confirmModal)">取消</button>-->
     <button class="btn btn-success" [disabled]="!(newMainData.length>0)" (click)="suspend()">挂单</button>
     <button class="btn btn-secondary " [disabled]="!(mrData.length>0)" options="printOptions" (onConfirm)="onConfirmNumber($event)"
