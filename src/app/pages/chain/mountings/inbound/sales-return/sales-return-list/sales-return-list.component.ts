@@ -153,7 +153,8 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   }
   //删除操作
   onDelCreat(e, i) {
-    this.salesReturnData.splice(i, 1);
+    if (confirm('是否要删除该条退库信息！'))
+      this.salesReturnData.splice(i, 1);
   }
 
   historyData: any;
@@ -210,8 +211,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
       originalBillId: this.originalBillId,
       suspendedBillId: this.suspendedBillId,
       billCode: this.billCode,
-      custName: this.customerName,
-      custPhone: this.customerPhone,
+      customerId:this.customerId,
       seller: this.seller,
       inUnit: this.inUnit,
       outUnit: this.outUnit,
