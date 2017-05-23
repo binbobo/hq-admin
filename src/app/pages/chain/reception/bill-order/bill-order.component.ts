@@ -74,7 +74,7 @@ export class BillOrderComponent extends DataList<any>{
     attachServiceOutputs: any = [];
     suggestServiceOutputs: any = [];
     orderDetailsDialog(evt, id, dialog, item) {
-        item.generating = true;
+        item.generat = true;
         console.log(item)
         this.isShowCostDetail = false;
         this.isShowCost = true;
@@ -93,7 +93,7 @@ export class BillOrderComponent extends DataList<any>{
             this.attachServiceOutputs = data.attachServiceOutputs;
             this.suggestServiceOutputs = data.suggestServiceOutputs;
             this.billId = this.selectedOrder["id"];
-            item.generating = false;
+            item.generat = false;
             // 显示窗口
             dialog.show();
 
@@ -206,7 +206,6 @@ export class BillOrderComponent extends DataList<any>{
         // 根据id获取工单详细信息
         this.service.get(id).then(data => {
             console.log('根据工单id获取工单详情数据：', data);
-
             // 记录当前操作的工单记录
             this.selectedOrder = data;
             this.billId = this.selectedOrder["id"]
