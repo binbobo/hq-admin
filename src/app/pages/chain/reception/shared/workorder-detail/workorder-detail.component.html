@@ -6,7 +6,9 @@
     </div>
     <div class="col-4">
       <label>车型：</label>
-      <span>{{data?.vehicleName}}</span>
+      <span *ngIf="data?.brand">{{data?.brand}}</span>
+      <span *ngIf="data?.series">,{{data?.series}}</span>
+      <span *ngIf="data?.vehicleName">,{{data?.vehicleName}}</span>
     </div>
     <div class="col-4">
       <label>VIN：</label>
@@ -33,15 +35,23 @@
       <span>{{data?.customerName}}</span>
     </div>
     <div class="col-4">
-      <label>购车时间：</label>
+      <label>车主电话：</label>
+      <span>{{data?.phone}}</span>
+    </div>
+    <div class="col-4">
+      <label>购车日期：</label>
       <span>{{data?.purchaseDate|sDate}}</span>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-4">
+      <label>验车日期：</label>
+      <span>{{data?.validate|sDate}}</span>
     </div>
     <div class="col-4">
       <label>预计交车时间：</label>
       <span>{{data?.expectLeave|sDatetime}}</span>
     </div>
-  </div>
-  <div class="form-group row">
     <div class="col-4">
       <label>维修技师：</label>
       <span>{{data?.employeeNames}}</span>
@@ -51,6 +61,8 @@
       <!--<span *ngIf="teamType === 1">{{data?.employeeNames.join(',')}}</span>
         <span *ngIf="teamType === 2">{{data?.turnEmployeeNames.join(',')}}</span>-->
     </div>
+  </div>
+  <div class="form-group row">
     <div class="col-4">
       <label>服务顾问：</label>
       <span>{{data?.createdUserName}}</span>
@@ -59,15 +71,19 @@
       <label>介绍人：</label>
       <span>{{data?.introducer}}</span>
     </div>
-  </div>
-  <div class="form-group row">
     <div class="col-4">
       <label>介绍人电话：</label>
       <span>{{data?.introPhone}}</span>
     </div>
+  </div>
+  <div class="form-group row">
     <div class="col-4">
       <label>维修类型：</label>
       <span>{{data?.typeName}}</span>
+    </div>
+    <div class="col-4">
+      <label>超时</label>
+      <span>{{data?.overTime|durationHumanize}}</span>
     </div>
     <div class="col-4" *ngIf="data?.settlementParty">
       <label>结算方:</label>
@@ -86,10 +102,8 @@
     <div class="col-4" *ngIf="data?.updateOnUtc">
       <label>结算时间：</label>
       <span>{{data?.updateOnUtc|sDatetime}}</span>
-
     </div>
   </div>
-
   <hr>
   <div class="form-group row">
     <div class="col-4">
