@@ -250,7 +250,7 @@ export class MaintainReturnComponent implements OnInit {
 
 
 
-    }).catch(err => { this.alerter.error(err, true, 2000); this.showing = false; });
+    }).catch(err => {  this.showing = false;   this.showing = false});
   }
 
 
