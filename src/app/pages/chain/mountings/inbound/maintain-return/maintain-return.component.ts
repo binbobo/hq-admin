@@ -60,17 +60,20 @@ export class MaintainReturnComponent implements OnInit {
   }
   suspendData: any;
   // 选择之后根据id查找工单详情并替换数据
+  serviceisShow = false;
   public onPlateNoSelect($event) {
+    this.serviceisShow = true;
     this.SearchappendList = $event;
     this.listId = $event.id;
     this.billCode = $event.billCode;
     this.suspendData = $event;
     this.service.getOrderItemData(this.listId)
       .then(data => {
+        this.serviceisShow = false;
         this.orderDetail = data
         this.serviceData = data.serviceOutputs;
         this.productData = data.productOutputs;
-      });
+      }).catch(err => { this.alerter.error(err), this.serviceisShow = false });;
 
     this.service.getMMList(this.billCode).toPromise()
       .then(data => {
