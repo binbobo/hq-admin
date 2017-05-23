@@ -115,7 +115,7 @@
   </div>
 </div>
 
-<hq-print-view class="invisible" hqPrint #printer="hq-print" [businessData]="businessData"></hq-print-view>
+<hq-print-view *ngIf="businessData" class="invisible" hqPrint #printer="hq-print" [businessData]="businessData"></hq-print-view>
 
 <!--详情弹框-->
 <div class="modal fade" bsModal #bdModal="bs-modal" tabindex="-1" role="dialog">
