@@ -22,8 +22,7 @@
         </div>
         <label for="customerName" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车主</label>
         <div *ngIf="isFuzzySearchEnable" class="col-2">
-          <input #customerName (blur)="onCustomerNameBlur(customerName.value)" [hqTableTypeahead]="customerNametypeaheadSource" label="车主"
-            [columns]="typeaheadColumns" (onSelect)="onCustomerNameSelect($event)" type="text" class="form-control" formControlName="customerName"
+          <input #customerName (blur)="onCustomerNameBlur(customerName.value)" hqCustomerVehicleTypeahead="keyword" label="车主" (onSelect)="onCustomerNameSelect($event)" type="text" class="form-control" formControlName="customerName"
             id="customerName" placeholder="输入车主名称">
         </div>
         <div *ngIf="!isFuzzySearchEnable" class="col-2">
