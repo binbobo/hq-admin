@@ -3,7 +3,7 @@
     <span>结算单</span>
   </div>
   <div class='card-block'>
-    <form [formGroup]="workSheetSearchForm" (ngSubmit)="onSearch()">
+    <form (ngSubmit)="onSearch()">
       <div class="form-group">
         <div class="form-check form-check-inline" *ngFor="let status of orderStatusData">
           <label class="form-check-label">
@@ -14,27 +14,28 @@
       <div class="form-group row">
         <label for="serviceId">工单号：</label>
         <div class="col-sm-2">
-          <input type="text" [(ngModel)]="params.billcode" class="form-control" id="billcode" formControlName="billcode" placeholder="工单号">
+          <input type="text" [(ngModel)]="params.billcode" class="form-control" id="billcode" name="billcode" placeholder="工单号">
         </div>
         <label for="plateNo">车牌号：</label>
         <div class="col-sm-2">
-          <input type="text" [(ngModel)]="params.carnumber" class="form-control" id="carnumber" formControlName="carnumber" placeholder="车牌号">
+          <input type="text" [(ngModel)]="params.carnumber" class="form-control" id="carnumber" name="carnumber" placeholder="车牌号">
         </div>
         <label for="createdTime">进店时间：</label>
         <div class="col-sm-2">
-          <input class="form-control datetime-picker" [(ngModel)]="params.starttime" id="starttime" formControlName="starttime" type="text"
-            ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
+          <input class="form-control datetime-picker" [(ngModel)]="params.starttime" id="starttime" name="starttime" type="text" ngui-datetime-picker
+            date-format="YYYY-MM-DD" date-only="true" />
         </div>
         至：
         <div class="col-sm-2">
-          <input class="form-control  datetime-picker" id="endtime" [(ngModel)]="params.endtime" formControlName="endtime" type="text"
-            ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
+          <input class="form-control  datetime-picker" id="endtime" [(ngModel)]="params.endtime" name="endtime" type="text" ngui-datetime-picker
+            date-format="YYYY-MM-DD" date-only="true" />
         </div>
       </div>
       <div class="form-group row">
         <label>结算单号：</label>
         <div class="col-sm-2">
-          <input class="form-control" type="text" placeholder="结算单号" />
+          <input class="form-control" [(ngModel)]="params.SettlementCode" id="SettlementCode" name="SettlementCode" type="text" placeholder="结算单号"
+          />
         </div>
         <div class="col-sm-2"><button class="btn btn-primary">查询</button></div>
       </div>
@@ -48,7 +49,7 @@
             <th>车牌号</th>
             <th>结算单号</th>
             <th>工单号</th>
-            <th>实收金额</th>
+            <th>应收金额</th>
             <th>维修类型</th>
             <th>开单时间</th>
             <th>预计交车时间</th>
@@ -61,12 +62,12 @@
         <tbody>
 
           <tr *ngFor="let item of list">
-            <td *ngIf="!item.updateOnUtc" style="text-align:right"><button type="button" class="btn btn-sm btn-primary" [disabled]="item.generating"
-                (click)='orderDetailsDialog($event, item.id,lgModal,item)'>结算</button>&nbsp;<button [hqSpinner]="item.generating"
-                type="button" class="btn btn-sm btn-info" [disabled]="item.generating" (click)='DetailsDialog($event, item.id,lgModal,item)'>详情</button></td>
-            <td *ngIf="item.updateOnUtc"  style="text-align:right"><button type="button" class="btn btn-sm btn-danger" [disabled]="item.generating"
-                (click)='finishedOrder($event, item.id, confirmModal)'>撤销结算</button>&nbsp;<button [hqSpinner]="item.generating"
-                type="button" class="btn btn-sm btn-info" [disabled]="item.generating" (click)='DetailsDialog($event, item.id,lgModal,item)'>详情</button></td>
+            <td *ngIf="!item.updateOnUtc" style="text-align:right"><button type="button" class="btn btn-sm btn-primary" [disabled]="item.generating" (click)='orderDetailsDialog($event, item.id,lgModal,item)'>结算</button>&nbsp;
+              <button [hqSpinner]="item.generating" type="button" class="btn btn-sm btn-info" [disabled]="item.generating" (click)='DetailsDialog($event, item.id,lgModal,item)'>详情</button>
+            </td>
+            <td *ngIf="item.updateOnUtc" style="text-align:right"><button type="button" class="btn btn-sm btn-danger" [disabled]="item.generating" (click)='finishedOrder($event, item.id, confirmModal)'>撤销结算</button>&nbsp;
+              <button [hqSpinner]="item.generating" type="button" class="btn btn-sm btn-info" [disabled]="item.generating" (click)='DetailsDialog($event, item.id,lgModal,item)'>详情</button>
+            </td>
             <td>{{item.statusName}}</td>
             <td>{{item.plateNo}}</td>
             <td>{{item?.settlementCode}}</td>
@@ -137,7 +138,7 @@
             <span class="ml-2 mr-2">{{sumFee|centToYuan}}元</span>
           </div>
           <div class="card-header">
-            <span class="ml-2 mr-2">实收金额(元)：
+            <span class="ml-2 mr-2">应收金额(元)：
                 <input type="number"   [(ngModel)]="billPrice"></span>
             <span class="ml-2 mr-2">出厂里程(KM)：
                 <input type="number"  [(ngModel)]="leaveMileage"></span>
