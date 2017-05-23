@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CustomerService, CustomerNameSearchRequest, CustomerPhoneSearchRequest } from '../../customer.service';
+import { CustomerService} from '../../customer.service';
 import { OrderService } from '../../../reception/order.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
-import { TypeaheadRequestParams, HqAlerter } from 'app/shared/directives';
+import { HqAlerter } from 'app/shared/directives';
 import * as moment from 'moment';
-import { ModalDirective } from 'ngx-bootstrap';
 import { CustomValidators } from 'ng2-validation';
+import { HQ_VALIDATORS } from 'app/shared/shared.module';
 
 @Component({
   selector: 'hq-edit-carowner',
@@ -43,13 +43,6 @@ export class EditCarownerComponent implements OnInit {
 
   // 保存车主加载动画
   generating = false;
-
-  regex = {
-    phone: /^1[3|4|5|7|8]\d{9}$/,
-    idCard: /\d{15}(\d\d[0-9xX])?/,
-    tel: /\d{3}-\d{8}|\d{4}-\d{7}/,
-    fax: /^(\d{3,4}-)?\d{7,8}$/
-  };
 
   constructor(
     protected service: CustomerService,
@@ -198,12 +191,12 @@ export class EditCarownerComponent implements OnInit {
     this.carOwnerForm = this.fb.group({
       id: '', // 车主主键 用于更新
       name: ['', [Validators.required]], // 车主
-      phone: ['', Validators.compose([Validators.pattern(this.regex.phone)])], // 车主手机号
+      phone: ['', [HQ_VALIDATORS.mobile]], // 车主手机号
       sex: '', // 车主性别
       birthday: [null, [CustomValidators.date]], // 车主生日
-      identityCard: ['', Validators.compose([Validators.pattern(this.regex.idCard)])], // 身份证号
-      tel: ['', Validators.compose([Validators.pattern(this.regex.tel)])], // 电话
-      fax: ['', Validators.compose([Validators.pattern(this.regex.fax)])], // 传真
+      identityCard: ['', [HQ_VALIDATORS.idCard]], // 身份证号
+      tel: ['', [HQ_VALIDATORS.tel]], // 电话
+      fax: ['', [HQ_VALIDATORS.tel]], // 传真
       email: ['', [CustomValidators.email]], // 电子邮箱
       province: '', // 省份id,name
       city: '', // 城市id,name

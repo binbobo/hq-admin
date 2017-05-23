@@ -16,6 +16,10 @@ import { PhoneDirective } from './directives/validators/phone.directive';
 import { TelValidator } from './directives/validators/tel.directive';
 import { MobileValidator } from './directives/validators/mobile.directive';
 import { PlateNoValidator } from './directives/validators/plateNo.directive';
+import { VINValidator } from './directives/validators/vin.directive';
+import { EngineNoValidator } from './directives/validators/engineNo.directive';
+import { MileageValidator } from './directives/validators/mileage.directive';
+import { IDCardValidator } from './directives/validators/idCard.directive';
 
 
 const HQ_COMPONENTS = [
@@ -48,6 +52,10 @@ const HQ_DIRECTIVES = [
     directives.MobileValidator,
     directives.TelValidator,
     directives.PlateNoValidator,
+    directives.VINValidator,
+    directives.EngineNoValidator,
+    directives.MileageValidator,
+    directives.IDCardValidator,
 ]
 
 const HQ_PIPES = [
@@ -69,7 +77,11 @@ const HQ_SERVICES = [
 export const HQ_VALIDATORS = {
     mobile: directives.MobileValidator.validator,
     tel: directives.TelValidator.validator,
-    plateNo: directives.PlateNoValidator.validator
+    plateNo: directives.PlateNoValidator.validator, 
+    vin: directives.VINValidator.validator, 
+    engineNo: directives.EngineNoValidator.validator, 
+    mileage: directives.MileageValidator.validator, 
+    idCard: directives.IDCardValidator.validator, 
 }
 
 @NgModule({

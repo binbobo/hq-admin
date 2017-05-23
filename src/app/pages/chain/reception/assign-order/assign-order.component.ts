@@ -263,15 +263,17 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
     }
 
     confirmOrderFinish(item) {
-        item.finishGenerating = true;
+        if (confirm('是否确认完工？')) {
+            item.finishGenerating = true;
 
-        this.service.update({ id: item.id }).then(() => {
-            item.finishGenerating = false;
-            this.load();
-        }).catch(err => {
-            this.alerter.error('执行完工操作失败: ' + err, true, 2000);
-            item.finishGenerating = false;
-        });
+            this.service.update({ id: item.id }).then(() => {
+                item.finishGenerating = false;
+                this.load();
+            }).catch(err => {
+                this.alerter.error('执行完工操作失败: ' + err, true, 2000);
+                item.finishGenerating = false;
+            });
+        }
     }
 
     /**

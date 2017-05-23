@@ -56,48 +56,6 @@ export class OrderService implements BasicService<Order> {
     }
 
     /**
-  * 根据车牌号模糊查询客户车辆信息
-  * 
-  * @param {FuzzySearchRequest} params 
-  * @returns {Promise<PagedResult<any>>} 
-  * 
-  * @memberof OrderService
-  */
-    getCustomerVehicleByPlateNo(params: FuzzySearchRequest): Promise<PagedResult<any>> {
-        const search = params.serialize();
-        const url = Urls.chain.concat('/CustomerVehicles/Search');
-        console.log('根据车牌号模糊查询客户车辆信息 响应数据', url, search);
-        return this.httpService
-            .get<PagedResult<any>>(url, search)
-            .then(response => {
-                console.log('根据车牌号模糊查询客户车辆信息 响应数据', response);
-                // 加工数据
-                response.data = response.data.map(item => {
-                    const o = item;
-                    o.customerName = item.customerInfo.name;
-                    o.phone = item.customerInfo.phone;
-                    return o;
-                });
-                return response;
-            });
-    }
-
-    /**
-     * 根据品牌模糊查询车辆信息
-     * 
-     * @param {FuzzySearchRequest} params 
-     * @returns {Promise<PagedResult<any>>} 
-     * 
-     * @memberof OrderService
-     */
-    getVehicleByBrand(params: VehicleBrandSearchRequest): Promise<PagedResult<any>> {
-        const search = params.serialize();
-        const url = Urls.chain.concat('/Brands/search');
-        console.log('根据品牌模糊查询车辆信息:', url + '?' + search);
-        return this.httpService
-            .get<PagedResult<any>>(url, search);
-    }
-    /**
   * 根据车系模糊查询车辆信息
   * 
   * @param {FuzzySearchRequest} params 
@@ -155,49 +113,11 @@ export class OrderService implements BasicService<Order> {
         return this.httpService
             .get<PagedResult<any>>(url, search);
     }
-    /**
-     * 根据车主姓名模糊查询客户车辆信息
-     * @param params 
-     */
-    getCustomerVehicleByCustomerName(params: FuzzySearchRequest): Promise<PagedResult<any>> {
-        const search = params.serialize();
-        const url = Urls.chain.concat('/Customers/GetByName');
-        return this.httpService
-            .get<PagedResult<any>>(url, search)
-            .then(response => {
-                // 加工数据
-                console.log('根据车主名称查询客户车辆信息：', response.data);
-                // 每个车主下面可能有多个车辆信息
-                const customerVehicles: CustomerVehicle[] = [];
-                response.data.forEach((customer) => {
-                    if (!customer.customerVehicles) { return; };
-                    customer.customerVehicles.forEach(vehicle => {
-                        const customerVehicle = new CustomerVehicle(
-                            vehicle.id, // 客户车辆id
-                            vehicle.vehicleId,  // 车辆id
-                            vehicle.customerId, // 客户id
-                            vehicle.plateNo,
-                            customer.name,
-                            customer.phone,
-                            vehicle.series,
-                            vehicle.vehicleName,
-                            vehicle.brand,
-                            vehicle.mileage,
-                            vehicle.purchaseDate,
-                            vehicle.vin,  // 底盘号
-                        );
-                        customerVehicles.push(customerVehicle);
-                    });
-                });
-                response.data = customerVehicles;
-                return response;
-            });
-    }
 
     /**
   *  根据客户车辆id查询上一次工单信息
   * @param {string} id 
-  * @returns {Observable<CustomerVehicle[]>}
+  * @returns Promise<any>
   * @memberOf OrderService
   */
     getLastOrderInfo(id: string): Promise<any> {
@@ -212,7 +132,7 @@ export class OrderService implements BasicService<Order> {
     /**
  *  获取可以选择的门店，用于中查询范围下拉框
  * @param {string} id 
- * @returns {Observable<CustomerVehicle[]>}
+ * @returns Observable<TreeviewItem[]>
  * @memberOf OrderService
  */
     getSelectableStores(): Observable<TreeviewItem[]> {
@@ -352,13 +272,6 @@ export class FuzzySearchRequest extends PagedParams {
     }
 }
 
-export class VehicleBrandSearchRequest extends PagedParams {
-    constructor(
-        public brandName: string, // 品牌名称
-    ) {
-        super();
-    }
-}
 export class VehicleSeriesSearchRequest extends PagedParams {
     constructor(
         public seriesName?: string, // 车系名称
@@ -415,23 +328,23 @@ export class Order extends BasicModel {
 }
 
 // 客户车辆关系model类
-export class CustomerVehicle {
-    constructor(
-        public id: string = '', // 客户车辆id
-        public vehicleId: string = '', // 车辆id
-        public customerId: string = '', // 客户id
-        public plateNo: string = '', // 车牌号
-        public customerName: string = '', // 车主
-        public phone: string = '', // 车主电话
-        public series: string = '', // 车系
-        public vehicleName: string = '', // 车型
-        public brand: string = '', // 品牌
-        public mileage: string = '', // 行驶里程
-        public purchaseDate: Date = null, // 购车时间
-        public vin: string = '', // vin, 车辆唯一编码
-    ) {
-    }
-}
+// export class CustomerVehicle {
+//     constructor(
+//         public id: string = '', // 客户车辆id
+//         public vehicleId: string = '', // 车辆id
+//         public customerId: string = '', // 客户id
+//         public plateNo: string = '', // 车牌号
+//         public customerName: string = '', // 车主
+//         public phone: string = '', // 车主电话
+//         public series: string = '', // 车系
+//         public vehicleName: string = '', // 车型
+//         public brand: string = '', // 品牌
+//         public mileage: string = '', // 行驶里程
+//         public purchaseDate: Date = null, // 购车时间
+//         public vin: string = '', // vin, 车辆唯一编码
+//     ) {
+//     }
+// }
 
 // 车辆model类
 export class Vehicle {
