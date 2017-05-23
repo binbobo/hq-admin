@@ -74,14 +74,14 @@ export class BillOrderComponent extends DataList<any>{
     attachServiceOutputs: any = [];
     suggestServiceOutputs: any = [];
     orderDetailsDialog(evt, id, dialog, item) {
+        item.generat = true;
         console.log(item)
         this.isShowCostDetail = false;
         this.isShowCost = true;
         this.isShowPrint = false;
         this.leaveMileage = "";
         evt.preventDefault();
-        // 显示窗口
-        dialog.show();
+
         // 根据id获取工单详细信息
         this.service.get(id).then(data => {
             console.log('根据工单id获取工单详情数据：', data);
@@ -92,7 +92,10 @@ export class BillOrderComponent extends DataList<any>{
             this.productOutputs = data.serviceOutputs;
             this.attachServiceOutputs = data.attachServiceOutputs;
             this.suggestServiceOutputs = data.suggestServiceOutputs;
-            this.billId = this.selectedOrder["id"]
+            this.billId = this.selectedOrder["id"];
+            item.generat = false;
+            // 显示窗口
+            dialog.show();
 
         });
         this.service.getCost(id).then(data => {
@@ -191,11 +194,7 @@ export class BillOrderComponent extends DataList<any>{
     DetailsDialog(evt, id, dialog, item) {
         item.generating = true;
         console.log(item);
-        if (item.updateOnUtc) {
-            this.amountStatus = "实收金额"
-        } else {
-            this.amountStatus = "应收金额"
-        }
+
         this.isShowCost = false;
         this.isShowCostDetail = true;
         this.workHourFee = 0;
@@ -207,7 +206,6 @@ export class BillOrderComponent extends DataList<any>{
         // 根据id获取工单详细信息
         this.service.get(id).then(data => {
             console.log('根据工单id获取工单详情数据：', data);
-
             // 记录当前操作的工单记录
             this.selectedOrder = data;
             this.billId = this.selectedOrder["id"]
@@ -258,7 +256,7 @@ export class BillOrderComponent extends DataList<any>{
                     })
                     .catch(err => {
                         this.alerter.error('获取工单信息失败: ' + err, true, 2000);
-                        item.generating = false;
+                        item.generating = true;
                     });
 
 
@@ -338,14 +336,10 @@ export class BillOrderComponent extends DataList<any>{
                             this.alerter.error('获取工单信息失败: ' + err, true, 2000);
                         });
 
-
-                } else {
-                    // 清空数据
-
                 }
-                this.alerter.info("生成结算单成功", true, 3000).onClose(() => dialog.hide());
+                this.alerter.info("生成结算单成功", true, 2000).onClose(() => { dialog.hide(); this.onLoadList(); });
                 this.isShowCost = false;
-                this.onLoadList();
+
             }).catch(err => this.alerter.error(err, true, 3000));
         }
 

@@ -21,7 +21,8 @@
       </div>
       <div class="form-group mb-2 mx-sm-3">
         <label>*内部领用单号：</label>
-        <input type="text" forceRefresh [(ngModel)]="billCode" name="billCode" [hqTableTypeahead]="codeSource" [columns]="itemColumns" (onSelect)="onItemSelect($event)" class="form-control" placeholder="请输入领用单号">
+        <input type="text" forceRefresh [(ngModel)]="billCode" name="billCode" [hqTableTypeahead]="codeSource" [columns]="itemColumns"
+          (onSelect)="onItemSelect($event)" class="form-control" placeholder="请输入领用单号">
         <!--<input type="hidden" hqError="配件名称">-->
         <!--<button (click)="createModel.show()" class="btn btn-primary mx-sm-1" translate>新增</button>-->
       </div>
@@ -52,7 +53,7 @@
           <tr *ngFor="let item of list">
             <td><button [disabled]="item.count<=item.returnCount" class="btn btn-primary" (click)="OnCreatBound(item,item.id)">退料</button></td>
             <td>{{item.productCode }}</td>
-            <td>{{item.productTypes }}</td>
+            <td>{{item.productTypes[0]}}</td>
             <td>{{item.productName}}</td>
             <td>{{item.brandName }}</td>
             <td>{{item.specification}}</td>
@@ -67,8 +68,8 @@
           </tr>
         </tbody>
       </table>
-      <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
     </div>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
     <div class="tab-title">内部退料信息</div>
     <div class="overflow-auto">
       <table class="table table-bordered table-striped">
@@ -110,9 +111,9 @@
     </div>
   </div>
   <div class="card-footer text-muted">
-    <button [hqSpinner]="loading" [disabled]="!returnData.length" class="btn btn-primary" (click)="createReturnList()">生成内部退料单</button>
+    <button  [hqSpinner]="createLoading" [disabled]="!(returnData.length>0)" class="btn btn-primary" (click)="createReturnList()">生成内部退料单</button>
     <!--<button class="btn btn-warning" (click)="cancel($event)">取消</button>-->
-    <button [hqSpinner]="loading" [disabled]="!list" class="btn btn-info" (click)="suspend()">挂单</button>
+    <button [hqSpinner]="suspendLoading" [disabled]="!(returnData.length>0)" class="btn btn-info" (click)="suspend()">挂单</button>
   </div>
 </div>
 

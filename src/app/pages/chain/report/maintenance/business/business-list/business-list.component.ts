@@ -28,8 +28,8 @@ export class BusinessListComponent extends DataList<any> {
   // 用于ngx-treeview组件
   public items: TreeviewItem[];
   public config: TreeviewConfig = {
-    isShowAllCheckBox: true,
-    isShowFilter: true,
+    isShowAllCheckBox: false,
+    isShowFilter: false,
     isShowCollapseExpand: true,
     maxHeight: 500
   };
@@ -49,7 +49,7 @@ export class BusinessListComponent extends DataList<any> {
         this.items = data;
     });
     this.createForm();
-
+// this.onLoadList();
   }
 
   createForm() {

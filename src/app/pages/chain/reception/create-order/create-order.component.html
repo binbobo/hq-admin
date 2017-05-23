@@ -1,8 +1,8 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
   <div class="card-header">
-    <span> 创建工单</span>
-    <ng-template hqSuspendBill="MW" (onRemove)="onSuspendedBillRemove($event)" (onSelect)="onSuspendedBillSelect($event)" [columns]="typeaheadColumns"></ng-template>
+    <span>创建工单</span>
+    <ng-template hqSuspendBill="RB" (onRemove)="onSuspendedBillRemove($event)" (onSelect)="onSuspendedBillSelect($event)" [columns]="typeaheadColumns"></ng-template>
   </div>
   <!--填写工单信息表单-->
   <div class="card-block">
@@ -14,7 +14,7 @@
         <label for="plateNo" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车牌号</label>
         <div class="col-2">
           <input (blur)="onPlateNoBlur()" hqPlateNoTypeahead="keyword" (onSelect)="plateNoOnSelect($event)" class="form-control" formControlName="plateNo"
-            id="plateNo" label="车牌号" type="text" />
+            id="plateNo" label="车牌号" type="text" placeholder="请输入车牌号" />
           <!--客户车辆id-->
           <input type="hidden" formControlName="customerVehicleId" />
           <!--客户id-->
@@ -22,35 +22,35 @@
         </div>
         <label for="customerName" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车主</label>
         <div *ngIf="isFuzzySearchEnable" class="col-2">
-          <input #customerName (blur)="onCustomerNameBlur(customerName.value)" hqCustomerVehicleTypeahead="keyword" label="车主" (onSelect)="onCustomerNameSelect($event)" type="text" class="form-control" formControlName="customerName"
-            id="customerName" placeholder="输入车主名称">
+          <input #customerName (blur)="onCustomerNameBlur(customerName.value)" hqCustomerVehicleTypeahead="keyword" label="车主" (onSelect)="onCustomerNameSelect($event)"
+            type="text" class="form-control" formControlName="customerName" id="customerName" placeholder="请输入车主名称">
         </div>
         <div *ngIf="!isFuzzySearchEnable" class="col-2">
           <input #customerName (blur)="onCustomerNameBlur(customerName.value)" type="text" class="form-control" formControlName="customerName"
-            id="customerName" placeholder="输入车主名称">
+            id="customerName" placeholder="请输入车主名称">
         </div>
         <label for="phone" class="col-1 col-form-label">车主电话</label>
         <div class="col-2">
           <input #phone (blur)="onPhoneBlur(phone.value)" type="text" label="手机号" class="form-control" formControlName="phone" id="phone"
-            placeholder="车主电话">
+            placeholder="请输入车主电话">
         </div>
       </div>
       <div class="form-group row">
         <label for="vin" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>VIN</label>
         <div class="col-2">
-          <input label="车辆识别码" type="text" class="form-control" formControlName="vin" id="vin" placeholder="VIN">
+          <input label="车辆识别码" type="text" class="form-control" formControlName="vin" id="vin" placeholder="请输入车辆标识码">
         </div>
         <label for="brand" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>品牌</label>
         <div class="col-2">
-          <input label="品牌" forceRefresh="true" hqBrandTypeahead="brandName" (onSelect)="onBrandSelect($event)"
-            type="text" class="form-control" formControlName="brand" id="brand" placeholder="请输入品牌名称">
+          <input label="品牌" forceRefresh="true" hqBrandTypeahead="brandName" (onSelect)="onBrandSelect($event)" type="text" class="form-control"
+            formControlName="brand" id="brand" placeholder="请选择品牌">
           <!--品牌id-->
           <input type="hidden" formControlName="brandId" />
         </div>
         <label for="series" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车系</label>
         <div class="col-2">
           <input forceRefresh="true" [hqTableTypeahead]="seriesTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onSeriesSelect($event)"
-            type="text" class="form-control" formControlName="series" id="series" placeholder="输入车系名称">
+            type="text" class="form-control" formControlName="series" id="series" placeholder="请选择车系">
           <!--车系id-->
           <input type="hidden" formControlName="seriesId" />
         </div>
@@ -58,7 +58,7 @@
         <div class="col-2">
           <input (blur)="onVehicleBlur()" forceRefresh="true" [hqTableTypeahead]="modelTypeaheadSource" [columns]="nameTypeaheadColumns"
             (onSelect)="onModelSelect($event)" type="text" class="form-control" formControlName="vehicleName" id="vehicleName"
-            placeholder="输入车型名称">
+            placeholder="请选择车型">
           <!--车辆id-->
           <input type="hidden" formControlName="vehicleId" />
         </div>
@@ -69,6 +69,7 @@
         <div class="col-2">
           <select label="维修类型" id="type" formControlName="type" class="form-control">
             <option style="display:none">
+              <!--<option value="" selected disabled>请选择维修类型</option>-->
             <option *ngFor="let type of maintenanceTypeData" value="{{type.id}}">{{type.value}}</option>
           </select>
         </div>
@@ -79,32 +80,32 @@
         </div>
         <label for="contactUser" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>送修人</label>
         <div class="col-2">
-          <input type="text" label="送修人" class="form-control" formControlName="contactUser" id="contactUser" placeholder="送修人">
+          <input type="text" label="送修人" class="form-control" formControlName="contactUser" id="contactUser" placeholder="请输入送修人姓名">
         </div>
         <label for="contactInfo" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>送修人电话</label>
         <div class="col-2">
-          <input type="text" label="送修人电话" class="form-control" formControlName="contactInfo" id="contactInfo" placeholder="送修人电话">
+          <input type="text" label="送修人电话" class="form-control" formControlName="contactInfo" id="contactInfo" placeholder="请输入送修人电话">
         </div>
       </div>
       <div class="form-group row">
         <label for="mileage" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>行驶里程</label>
         <div class="col-2">
           <div class="input-group">
-            <input label="行驶里程" type="text" class="form-control" formControlName="mileage" id="mileage">
+            <input label="行驶里程" placeholder="请输入行驶里程" type="text" class="form-control" formControlName="mileage" id="mileage">
             <span class="input-group-addon">KM</span>
           </div>
         </div>
         <label for="introducer" class="col-1 col-form-label">介绍人</label>
         <div class="col-2">
-          <input type="text" class="form-control" formControlName="introducer" id="introducer" placeholder="介绍人">
+          <input type="text" class="form-control" formControlName="introducer" id="introducer" placeholder="请输入介绍人姓名">
         </div>
         <label for="introPhone" class="col-1 col-form-label">介绍人电话</label>
         <div class="col-2">
-          <input type="text" class="form-control" formControlName="introPhone" id="introPhone" placeholder="介绍人电话">
+          <input type="text" class="form-control" formControlName="introPhone" id="introPhone" placeholder="请输入介绍人电话">
         </div>
         <label for="validate" class="col-1 col-form-label">验车日期</label>
         <div class="col-2">
-          <input readonly class="form-control" type="text" formControlName="validate" ngui-datetime-picker date-format="YYYY-MM-DD"
+          <input readonly placeholder="请选择验车日期" class="form-control" type="text" formControlName="validate" ngui-datetime-picker date-format="YYYY-MM-DD"
             date-only="true" />
         </div>
       </div>
@@ -112,16 +113,17 @@
       <div class="form-group row">
         <label for="location" class="col-1">维修工位</label>
         <div class="col-2">
-          <input type="text" class="form-control" formControlName="location" id="location">
+          <input type="text" placeholder="请输入维修工位" class="form-control" formControlName="location" id="location">
         </div>
         <label for="nextDate" class="col-1 col-form-label">建议下次保养日期</label>
         <div class="col-2">
-          <input readonly class="form-control" type="text" formControlName="nextDate" ngui-datetime-picker date-only="true" />
+          <input readonly placeholder="请选择下次保养日期" class="form-control" type="text" formControlName="nextDate" ngui-datetime-picker
+            date-only="true" />
         </div>
         <label for="nextMileage" class="col-1 col-form-label">建议下次保养里程</label>
         <div class="col-2">
           <div class="input-group">
-            <input label="建议下次保养里程" type="text" class="form-control" formControlName="nextMileage" id="nextMileage">
+            <input label="建议下次保养里程" type="text" placeholder="请输入下次保养里程" class="form-control" formControlName="nextMileage" id="nextMileage">
             <span class="input-group-addon">KM</span>
           </div>
         </div>

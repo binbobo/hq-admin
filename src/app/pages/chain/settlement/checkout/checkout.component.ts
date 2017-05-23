@@ -44,7 +44,6 @@ export class CheckoutComponent extends DataList<any> {
     this.createForm();
     this.service.getPayType().then(data => {
       this.payData = data;
-      console.log(data)
     })
   }
 
@@ -86,10 +85,11 @@ export class CheckoutComponent extends DataList<any> {
           this.selectedOrder.updataTime = item.updateOnUtc;//出厂时间
         }
         item.generating = false;
+
         // 显示窗口
-        dialog.show();
+        setTimeout(() => dialog.show(), 200);
       })
-      .catch(err => console.log(err));
+      .catch(err => { console.log(err); item.generating = true; });
 
     // 根据工单id获取工单材料费和工时费
     this.service.getCost(id).then(data => {
@@ -116,32 +116,56 @@ export class CheckoutComponent extends DataList<any> {
   // 点击收银显示弹框
   OnCheckout(evt, amount, id, dialog) {
     evt.preventDefault();
+    console.log(this.payData)
     // 显示窗口
     this.payData.map(item => item.amount = "");
+    console.log(this.payData)
     dialog.show();
     this.billId = id;
     this.costMoney = amount;
   }
   //确定收银接口
+  private payPost = [];
+
   OnPostPay(dialog) {
     let cost: any = 0;
-    this.payCheckSingle = this.payData.filter(item => item.amount || item.amount == 0).map(item => {
-      let paycheck: any = {};
-      paycheck.paymentMethod = item.id;
-      cost += item.amount * 100;
-      paycheck.amount = Number(item.amount * 100);
-      return paycheck;
-    })
+    if (this.costMoney > 0) {
+      this.payCheckSingle = this.payData.filter(item => item.amount || item.amount === '').map(item => {
+        let paycheck: any = {};
+        paycheck.paymentMethod = item.id;
+        cost += item.amount * 100;
+        paycheck.amount = Number(item.amount * 100);
+        return paycheck;
+      })
+      this.payPost = this.payCheckSingle.filter(item => item.amount != 0);
+
+    } else {
+      this.payPost = this.payData.filter(item => item.amount === 0).map(item => {
+        let paycheck: any = {};
+        paycheck.paymentMethod = item.id;
+        paycheck.amount = Number(item.amount * 100);
+        return paycheck;
+      });
+
+      this.payCheckSingle = this.payData.filter(item => item.amount || item.amount === '').map(item => {
+        cost += item.amount * 100;
+      })
+    }
+
+    console.log(this.payPost);
     if (cost != this.costMoney) {
       this.alerter.error('输入金额与应收金额不符，请重新填写！', true, 3000);
     } else {
-      console.log(this.payCheckSingle);
-      this.service.postPay(this.payCheckSingle, this.billId).then(() => {
+      this.service.postPay(this.payPost, this.billId).then(() => {
         this.alerter.info('收银成功!', true, 2000).onClose(() => { dialog.hide(); this.onLoadList(); });
         this.payCheckSingle = [];
-
+        this.payPost=[];
       }).catch(err => this.alerter.error(err, true, 2000));
     }
+
+
+
+
   }
   createForm() {
     // 初始化数组类型参数
@@ -149,7 +173,7 @@ export class CheckoutComponent extends DataList<any> {
     this.CheckoutForm = this.fb.group({
       carnumber: '', // 车牌号
       billcode: '',//工单号
-      SettlementCode:'',
+      SettlementCode: '',
       starttime: '',
       endtime: '',
     });

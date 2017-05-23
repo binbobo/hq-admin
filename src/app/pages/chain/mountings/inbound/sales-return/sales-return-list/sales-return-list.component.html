@@ -2,13 +2,14 @@
 <div class="card">
   <div class="card-header">
     <span>销售退库</span>
-    <ng-template hqSuspendBill="VR" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
+    <ng-template hqSuspendBill="MR" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
   <div class="card-block">
     <form class="form-inline mb-2">
       <div class="form-group mx-sm-3 mb-2">
         <label>*客户名称：</label>
-        <input type="text" [(ngModel)]="customerName" class="form-control" forceRefresh (onSelect)="onItemNameSelect($event)"  [hqTableTypeahead]="nameSource" [columns]="itemNameColumns" name="custName" placeholder="客户名称">
+        <input type="text" [(ngModel)]="customerName" class="form-control" forceRefresh (onSelect)="onItemNameSelect($event)" [hqTableTypeahead]="nameSource"
+          [columns]="itemNameColumns" name="custName" placeholder="客户名称">
       </div>
       <div class="form-group mx-sm-3 mb-2">
         <label>手机号：</label>
@@ -16,7 +17,8 @@
       </div>
       <div class="form-group mx-sm-3 mb-2">
         <label>*销售出库单：</label>
-        <input type="text" forceRefresh [(ngModel)]="billCode" name="billCode" (onSelect)="onItemCodeSelect($event)" [hqTableTypeahead]="codeSource" [columns]="itemCodeColumns" class="form-control" placeholder="请输入出库单号">
+        <input type="text" forceRefresh [(ngModel)]="billCode" name="billCode" (onSelect)="onItemCodeSelect($event)" [hqTableTypeahead]="codeSource"
+          [columns]="itemCodeColumns" class="form-control" placeholder="请输入出库单号">
       </div>
       <!--<div class="form-group mb-2">
         <button (click)="createModel.show()" class="btn btn-primary mx-sm-1">新增</button>
@@ -48,7 +50,7 @@
           <tr *ngFor="let item of list">
             <td><button [disabled]="item.count<=item.returnCount" class="btn btn-primary" (click)="OnCreatBound(item,item.id)">退库</button></td>
             <td class="text-center">{{item.productCode }}</td>
-            <td class="text-center">{{item.categoryName}}</td>
+            <td class="text-center">{{item.categoryName[0]}}</td>
             <td>{{item.productName}}</td>
             <td>{{item.brandName }}</td>
             <td>{{item.specification}}</td>
@@ -63,8 +65,8 @@
           </tr>
         </tbody>
       </table>
-      <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
     </div>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
     <div class="tab-title">销售退库信息</div>
     <div class="overflow-auto">
       <table class="table table-bordered table-striped">
@@ -106,9 +108,9 @@
     </div>
   </div>
   <div class="card-footer text-muted">
-    <button [disabled]="!salesReturnData.length" class="btn btn-primary" (click)="createReturnList()">生成销售退库单</button>
+    <button [hqSpinner]="createLoading" [disabled]="!(salesReturnData.length>0)" class="btn btn-primary" (click)="createReturnList()">生成销售退库单</button>
     <!--<button class="btn btn-warning" (click)="cancel($event)">取消</button>-->
-    <button [disabled]="!list" class="btn btn-info" (click)="suspend()">挂单</button>
+    <button [hqSpinner]="suspendLoading" [disabled]="!(salesReturnData.length>0)" class="btn btn-info" (click)="suspend()">挂单</button>
   </div>
 </div>
 

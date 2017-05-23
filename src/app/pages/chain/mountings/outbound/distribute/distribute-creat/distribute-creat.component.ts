@@ -76,7 +76,7 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
       productCode: [this.model.productCode, [Validators.required]],
       productName: [this.model.productName, [Validators.required]],
       productId: [this.model.productId],
-      productSpecification: [this.model.productSpecification, [Validators.required]],
+      productSpecification: [this.model.productSpecification],
       specifications: [this.model.specifications],
       storeId: [this.model.storeId],
       locationId: [this.model.locationId],

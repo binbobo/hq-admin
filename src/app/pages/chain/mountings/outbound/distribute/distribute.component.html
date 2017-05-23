@@ -2,7 +2,7 @@
 <div class="distribute card">
   <div class="card-header">
     <span>维修发料</span>
-    <ng-template hqSuspendBill="MM" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
+    <ng-template hqSuspendBill="RM" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
   <div class="card-block">
     <div>
@@ -120,7 +120,7 @@
           </thead>
           <tbody *ngFor="let item of serialData">
             <tr *ngFor="let ele of item.list">
-              <td>{{item.serialNum}}</td>
+              <td rowspan="2">{{item.serialNum}}</td>
               <td>{{ele.serviceName}}</td>
               <td>{{ele.brandName}}</td>
               <td>{{ele.productCode}}</td>
@@ -183,7 +183,7 @@
     </tabset>
   </div>
   <div class="card-footer text-muted">
-    <button class="btn btn-primary" [disabled]="!(newMainData.length>0)" (click)="OnCreatBill()">生成维修发料单</button>
+    <button class="btn btn-primary" [disabled]="!(newMainData.length>0)" [hqSpinner]="generat" (click)="OnCreatBill()">生成维修发料单</button>
     <!--<button class="btn btn-secondary" (click)="finishedOrder($event,  confirmModal)">取消</button>-->
     <button class="btn btn-info" [disabled]="!(newMainData.length>0)" (click)="suspend($event)">挂单</button>
     <button class="btn btn-secondary " options="printOptions" (onConfirm)="onConfirmNumber($event)" [hqMutilSelect]="numberPrintList"

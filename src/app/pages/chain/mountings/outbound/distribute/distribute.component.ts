@@ -160,7 +160,9 @@ export class DistributeComponent implements OnInit {
   }
   // 生成发料单
   billData: any;
+  generat = false;
   OnCreatBill() {
+    this.generat = true;
     this.billData = {
       billCode: this.billCode,
       billId: this.listId,
@@ -176,7 +178,7 @@ export class DistributeComponent implements OnInit {
       console.log(result)
       el.disabled = false;
       this.suspendBill.refresh();
-
+      this.generat = false;
       if (confirm('生成发料单成功！ 是否打印？')) {
         this.service.getPrintList(this.listId, this.billCode, result.data[0].serialNum).toPromise()
           .then(data => {
@@ -188,6 +190,7 @@ export class DistributeComponent implements OnInit {
           .catch(err => console.log(err));
       } else {
         // 清空数据
+
       }
 
       this.isablePrint = true;
@@ -216,7 +219,7 @@ export class DistributeComponent implements OnInit {
       }, [])
 
 
-    }).catch(err => this.alerter.error(err, true, 2000));
+    }).catch(err => {this.alerter.error(err, true, 2000);this.generat = false;});
   }
 
   // 是否取消发料
@@ -241,7 +244,7 @@ export class DistributeComponent implements OnInit {
         if (item.maintenanceItemId === evt.maintenanceItemId && item.productId === evt.productId) {
           item.count = Number(evt.count);
           item.amount = Number(evt.amount);
-          item.price= Number(evt.price);
+          item.price = Number(evt.price);
         }
       })
     } else {

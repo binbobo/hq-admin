@@ -48,6 +48,7 @@ export class SalesReturnCreateComponent implements OnInit {
       this.productId = this.selectSalesData.productId;
       this.stockCounts = this.selectSalesData.stockCount;
       this.selectSalesData.amount = (this.selectSalesData.price * 1).toFixed(2);
+      this.selectSalesData.categoryName = this.selectSalesData.categoryName[0];
       this.form.patchValue(this.selectSalesData);
     }
   }

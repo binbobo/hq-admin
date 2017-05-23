@@ -6,7 +6,9 @@
     </div>
     <div class="col-4">
       <label>车型：</label>
-      <span>{{data?.vehicleName}}</span>
+      <span *ngIf="data?.brand">{{data?.brand}}</span>
+      <span *ngIf="data?.series">,{{data?.series}}</span>
+      <span *ngIf="data?.vehicleName">,{{data?.vehicleName}}</span>
     </div>
     <div class="col-4">
       <label>VIN：</label>
@@ -33,15 +35,23 @@
       <span>{{data?.customerName}}</span>
     </div>
     <div class="col-4">
-      <label>购车时间：</label>
+      <label>车主电话：</label>
+      <span>{{data?.phone}}</span>
+    </div>
+    <div class="col-4">
+      <label>购车日期：</label>
       <span>{{data?.purchaseDate|sDate}}</span>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-4">
+      <label>验车日期：</label>
+      <span>{{data?.validate|sDate}}</span>
     </div>
     <div class="col-4">
       <label>预计交车时间：</label>
       <span>{{data?.expectLeave|sDatetime}}</span>
     </div>
-  </div>
-  <div class="form-group row">
     <div class="col-4">
       <label>维修技师：</label>
       <span>{{data?.employeeNames}}</span>
@@ -51,6 +61,8 @@
       <!--<span *ngIf="teamType === 1">{{data?.employeeNames.join(',')}}</span>
         <span *ngIf="teamType === 2">{{data?.turnEmployeeNames.join(',')}}</span>-->
     </div>
+  </div>
+  <div class="form-group row">
     <div class="col-4">
       <label>服务顾问：</label>
       <span>{{data?.createdUserName}}</span>
@@ -59,37 +71,39 @@
       <label>介绍人：</label>
       <span>{{data?.introducer}}</span>
     </div>
-  </div>
-  <div class="form-group row">
     <div class="col-4">
       <label>介绍人电话：</label>
       <span>{{data?.introPhone}}</span>
     </div>
+  </div>
+  <div class="form-group row">
     <div class="col-4">
       <label>维修类型：</label>
       <span>{{data?.typeName}}</span>
     </div>
-    <div class="col-4" *ngIf="data.settlementParty">
+    <div class="col-4">
+      <label>超时</label>
+      <span>{{data?.overTime|durationHumanize}}</span>
+    </div>
+    <div class="col-4" *ngIf="data?.settlementParty">
       <label>结算方:</label>
       <span>{{data?.settlementParty}}</span>
     </div>
   </div>
   <div class="form-group row">
-    <div class="col-4" *ngIf="data.settlementCode">
+    <div class="col-4" *ngIf="data?.settlementCode">
       <label>结算单号:</label>
       <span>{{data?.settlementCode}}</span>
     </div>
-    <div class="col-4" *ngIf="data.updateUser">
+    <div class="col-4" *ngIf="data?.updateUser">
       <label>结算员:</label>
       <span>{{data?.updateUser}}</span>
     </div>
-    <div class="col-4" *ngIf="data.updateOnUtc">
+    <div class="col-4" *ngIf="data?.updateOnUtc">
       <label>结算时间：</label>
       <span>{{data?.updateOnUtc|sDatetime}}</span>
-
     </div>
   </div>
-
   <hr>
   <div class="form-group row">
     <div class="col-4">
@@ -101,7 +115,7 @@
       <span>{{data?.mileage}}</span>
       <span class="ml-2">KM</span>
     </div>
-    <div class="col-4" *ngIf="data.leaveMileage">
+    <div class="col-4" *ngIf="data?.leaveMileage">
       <label>出厂里程：</label>
       <span>{{data?.leaveMileage}}</span>
       <span class="ml-2" *ngIf="data.leaveMileage">KM</span>
@@ -136,32 +150,34 @@
     </table>
   </tab>
   <tab heading="维修配件" *ngIf="data?.productOutputs?.length>0">
-    <table class="table table-striped table-bordered">
-      <thead>
-        <tr>
-          <th>维修工项</th>
-          <th>配件名称</th>
-          <th>品牌</th>
-          <th>规格型号</th>
-          <th>数量</th>
-          <th>单价(元)</th>
-          <th>金额(元)</th>
-          <th>操作时间</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let record of data?.productOutputs">
-          <td>{{record?.serviceName}}</td>
-          <td>{{record?.productName}}</td>
-          <td>{{record?.brandName}}</td>
-          <td>{{record?.specification}}</td>
-          <td>{{record?.count}}</td>
-          <td>{{record?.price|centToYuan}}</td>
-          <td>{{record?.amount|centToYuan}}</td>
-          <td>{{record?.operateDateTime|sDatetime}}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="overflow-auto">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>维修工项</th>
+            <th>配件名称</th>
+            <th>品牌</th>
+            <th>规格型号</th>
+            <th>数量</th>
+            <th>单价(元)</th>
+            <th>金额(元)</th>
+            <th>操作时间</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let record of data?.productOutputs">
+            <td>{{record?.serviceName}}</td>
+            <td>{{record?.productName}}</td>
+            <td>{{record?.brandName}}</td>
+            <td>{{record?.specification}}</td>
+            <td>{{record?.count}}</td>
+            <td>{{record?.price|centToYuan}}</td>
+            <td>{{record?.amount|centToYuan}}</td>
+            <td>{{record?.operateDateTime|sDatetime}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </tab>
   <tab heading="附加项目" *ngIf="data?.attachServiceOutputs?.length>0">
     <table class="table table-striped table-bordered">

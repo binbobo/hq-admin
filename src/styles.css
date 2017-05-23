@@ -41,9 +41,13 @@ caption {
 
 /*必选项前面的星号样式*/ 
 .asterisk {
-    color: #ef1815;
+    color: #c9302c;
     font-weight: bold;
     font-size: 16px;
+}
+
+.overtime {
+    color: #c9302c;
 }
 
 .form-inline .form-group{

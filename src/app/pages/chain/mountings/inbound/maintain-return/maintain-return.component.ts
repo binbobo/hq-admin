@@ -166,8 +166,11 @@ export class MaintainReturnComponent implements OnInit {
   private newMainData = [];
 
   private billData: any;
+  private generat = false;
   //生成退料单
+  showing = false;
   OnCreatReturnBill() {
+    this.generat = true;
     this.billData = {
       billCode: this.billCode,
       billId: this.listId,
@@ -178,6 +181,30 @@ export class MaintainReturnComponent implements OnInit {
     let postData = JSON.stringify(this.billData)
     console.log(postData);
     this.service.postReturnBill(postData).then((result) => {
+
+      this.service.getMMList(this.billCode).toPromise()
+        .then(data => {
+          this.showing = false;
+          this.serialData = data;
+          this.suspendData.serialData = this.serialData;
+          this.serialData.sort((a, b) => {
+            return a.serialNum - b.serialNum;
+          })
+          this.serialData.forEach(element => {
+            (element.list).forEach(ele => {
+              if ((ele.count - ele.returnCount) > 0) {
+                element.isable = true;
+              } else {
+                element.isable = false;
+              }
+              ele.curId = element.id;
+            })
+
+          });
+          console.log(this.serialData)
+        });
+      this.newMainData = [];
+      this.generat = false;
       console.log(result)
       let num = result.data[0].serialNum;
       this.newMainData = [];
@@ -216,19 +243,20 @@ export class MaintainReturnComponent implements OnInit {
 
       }
 
+      this.showing = true;
 
 
 
-    }).catch(err => this.alerter.error(err, true, 2000));
+    }).catch(err => { this.alerter.error(err, true, 2000); this.showing = false; });
   }
 
 
   inputData: any;
   // 点击退料弹出弹框
-  private item: any;
+  private iitem: any;
   OnCreatBound(ele, id) {
     console.log(ele, id);
-    this.item = ele;
+    this.iitem = ele;
     ele.maintenanceItemId = ele.id; //维修明细id
     ele.curId = id;//记录点击的id
     this.OriginalBillId = id;
