@@ -1,4 +1,10 @@
 <ng-template hq-alerter></ng-template>
+<div class="alert alert-info" role="alert" [hidden]="!owned">
+  该配件信息为平台数据，部分信息不可更改！
+</div>
+<div class="alert alert-warning" role="alert" [hidden]="!exists">
+  该配件已放置本库位，无需重复添加！
+</div>
 <div class="card">
   <!--<div class="card-header">
     <span>新增配件</span>
@@ -10,37 +16,38 @@
     <div class="col-6">
       <div class="form-group">
         <label class="form-control-label">*仓库：</label>
-        <select label="仓库" formControlName="storeId" class="form-control">
+        <select label="仓库" (change)="onStorageChange($event)" formControlName="storeId" class="form-control">
           <option *ngFor="let item of warehouses" value="{{item.value}}">{{item.text}}</option>
         </select>
       </div>
       <div class="form-group">
         <label class="form-control-label">*配件编码：</label>
         <input label="配件编码" (input)="onItemChange($event)" [hqProductTypeahead]="'code'" (onSelect)="onItemSelect($event)" formControlName="code"
-          class="form-control">
+          class="form-control" placeholder="请输入配件编码">
       </div>
       <div class="form-group">
         <label class="form-control-label">*配件分类：</label>
-        <ngx-dropdown-treeview [items]="categories" (selectedChange)="onCategorySelect($event)">
-        </ngx-dropdown-treeview>
+        <select label="配件分类" [attr.disabled]='owned' (change)="onCategorySelect($event)" class="form-control">
+          <option *ngFor="let item of categories" value="{{item.value}}">{{item.text}}</option>
+        </select>
       </div>
       <div class="form-group">
         <label class="form-control-label">*配件名称：</label>
         <input label="配件名称" (input)="onItemChange($event)" [hqProductTypeahead]="'name'" (onSelect)="onItemSelect($event)" formControlName="name"
-          class="form-control">
+          class="form-control" placeholder="请输入配件名称">
       </div>
       <div class="form-group">
         <label class="form-control-label">*品牌：</label>
-        <input label="品牌" [attr.disabled]='owned' (input)="onBrandChange($event)" (typeaheadOnSelect)="onBrandSelect($event)" [typeahead]="brands"
-          typeaheadOptionField="text" formControlName="brandName" class="form-control">
+        <input label="品牌" [attr.disabled]='owned' (input)="onBrandChange($event)" hqBrandTypeahead (onSelect)="onBrandSelect($event)"
+          formControlName="brandName" class="form-control" placeholder="请输入品牌">
       </div>
       <div class="form-group">
         <label class="form-control-label">*规格/型号：</label>
-        <input type="text" label='规格型号' [attr.disabled]='owned' formControlName="productSpecification" class="form-control">
+        <input type="text" [attr.disabled]='owned' formControlName="productSpecification" class="form-control" placeholder="请输入规格型号">
       </div>
       <div class="form-group">
         <label class="form-control-label">*单位：</label>
-        <select label="单位" formControlName="unit" class="form-control">
+        <select label="单位" [attr.disabled]='owned' formControlName="unit" class="form-control">
           <option *ngFor="let item of units" value="{{item.value}}">{{item.text}}</option>
         </select>
       </div>
@@ -48,27 +55,28 @@
     <div class="col-6">
       <div class="form-group">
         <label class="form-control-label">库位：</label>
-        <input type="text" label="库位" formControlName="locationName" class="form-control">
+        <input type="text" [params]="typeaheadParams" (input)="onLocationChange($event)" (onSelect)="onLocationSelect($event)" [hqStorageLocationTypeahead]="'name'"
+          formControlName="locationName" class="form-control" placeholder="请输入库位">
       </div>
       <div class="form-group">
         <label class="form-control-label">最大库存：</label>
-        <input type="number" label='最大库存' formControlName="maxCount" class="form-control">
+        <input type="number" formControlName="maxCount" class="form-control" placeholder="请输入最大库存">
       </div>
       <div class="form-group">
         <label class="form-control-label">最小库存：</label>
-        <input type="number" label='最小库存' formControlName="minCount" class="form-control">
+        <input type="number" formControlName="minCount" class="form-control" placeholder="请输入最小库存">
       </div>
       <div class="form-group">
         <label class="form-control-label">产地：</label>
-        <input type="text" label='产地' [attr.disabled]='owned' formControlName="madeIn" class="form-control">
+        <input type="text" label='产地' [attr.disabled]='owned' formControlName="madeIn" class="form-control" placeholder="请输入产地">
       </div>
       <div class="form-group">
         <label class="form-control-label">包装规格：</label>
-        <input type="text" label='备注' formControlName="packageInfo" class="form-control">
+        <input type="text" label='备注' [attr.disabled]='owned' formControlName="packageInfo" class="form-control" placeholder="请输入包装规格">
       </div>
       <div class="form-group">
         <label class="form-control-label">备注：</label>
-        <input type="text" label='备注' formControlName="description" class="form-control">
+        <input type="text" label='备注' formControlName="description" class="form-control" placeholder="请输入备注">
       </div>
       <div class="form-group">
         <label class="form-control-label">适用车型：</label>

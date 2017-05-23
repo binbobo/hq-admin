@@ -34,7 +34,15 @@ export class ProductTypeaheadDirective extends TableTypeaheadDirective {
       request[this.filed] = params.text;
       request.setPage(params.pageIndex, params.pageSize);
       let url = Urls.chain.concat('/Products/SearchInventory');
-      return this.httpService.getPagedList<any>(url, request);
+      return this.httpService.getPagedList<any>(url, request)
+        .then(result => {
+          result.data = result.data
+            .map(m => {
+              m.categoryName = m.categoryList && m.categoryList.length && m.categoryList[0].text;
+              return m;
+            });
+          return result;
+        })
     };
     super.ngOnInit();
   }

@@ -39,4 +39,18 @@ export class InventoryEditComponent extends FormHandle<Inventory> implements OnI
       this.vehicles = this.model.vehicleList.map(v => ({ id: v.vehicleId, name: v.vehicleName }));
     }
   }
+
+  get typeaheadParams() {
+    return { storeId: this.model.storeId };
+  }
+
+  onLocationChange(event: Event) {
+    if (event.isTrusted) {
+      this.form.patchValue({ locationId: undefined });
+    }
+  }
+
+  onLocationSelect(event) {
+    this.form.patchValue({ locationId: event.id });
+  }
 }

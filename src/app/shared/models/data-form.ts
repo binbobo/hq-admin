@@ -47,7 +47,7 @@ export abstract class FormHandle<T> implements OnInit {
         return !invalid;
     }
 
-    protected patchValue(name: string, value: any) {
+    protected patchValue(name: string, value?: any) {
         this.model[name] = value;
         let obj = {};
         obj[name] = value;

@@ -6,7 +6,7 @@ import { PagedParams, PagedResult } from 'app/shared/models';
   selector: 'hqTableTypeahead',
   templateUrl: './table-typeahead.component.html',
   host: {
-    style: 'position:absolute;z-index:99999999;display:table-column',
+    style: 'position:absolute;z-index:99999999;display:table-column;min-width:200px',
   },
   styleUrls: ['./table-typeahead.component.css'],
   // host: {
