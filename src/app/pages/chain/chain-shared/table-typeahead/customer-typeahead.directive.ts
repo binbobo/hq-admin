@@ -1,4 +1,4 @@
-import { Directive, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
+import { Directive, ViewContainerRef, ComponentFactoryResolver, Input } from '@angular/core';
 import { TableTypeaheadDirective, TableTypeaheadColumn, TypeaheadRequestParams } from 'app/shared/directives';
 import { HttpService, Urls } from 'app/shared/services';
 import { PagedParams } from 'app/shared/models';
@@ -20,7 +20,7 @@ export class CustomerTypeaheadDirective extends TableTypeaheadDirective {
     { name: 'name', title: '客户名称', weight: 1 },
     { name: 'phone', title: '手机号' }
   ] as Array<TableTypeaheadColumn>;
-
+  @Input("hqCustomerTypeahead")
   protected filed: string = 'name';
 
   ngOnInit() {

@@ -43,13 +43,6 @@ export class AddCarownerComponent implements OnInit {
   // 保存车主加载动画
   generating = false;
 
-  regex = {
-    phone: /^1[3|4|5|7|8]\d{9}$/,
-    idCard: /\d{15}(\d\d[0-9xX])?/,
-    tel: /\d{3}-\d{8}|\d{4}-\d{7}/,
-    fax: /^(\d{3,4}-)?\d{7,8}$/
-  };
-
   constructor(
     protected service: CustomerService,
     protected orderService: OrderService,
@@ -183,7 +176,7 @@ export class AddCarownerComponent implements OnInit {
       phone: ['', [HQ_VALIDATORS.mobile]], // 车主手机号
       sex: '', // 车主性别
       birthday: [null, [CustomValidators.date]], // 车主生日
-      identityCard: ['', Validators.compose([Validators.pattern(this.regex.idCard)])], // 身份证号
+      identityCard: ['', [HQ_VALIDATORS.idCard]], // 身份证号
       tel: ['', [HQ_VALIDATORS.tel]], // 电话
       fax: ['', [HQ_VALIDATORS.tel]], // 传真
       email: ['', [CustomValidators.email]], // 电子邮箱
@@ -270,31 +263,6 @@ export class AddCarownerComponent implements OnInit {
 
     // 加载车主数据
     this.loadCustomer(evt);
-  }
-
-  // 定义车主模糊查询要显示的列
-  public get customerTypeaheadColumns() {
-    return [
-      { name: 'name', title: '姓名' },
-      { name: 'phone', title: '手机号' },
-    ];
-  }
-
-  // 根据车主名称模糊查询数据源
-  public get customerNameTypeaheadSource() {
-    return (params: TypeaheadRequestParams) => {
-      const p = new CustomerNameSearchRequest(params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.service.getCustomerByName(p);
-    };
-  }
-  // 根据手机号名称模糊查询数据源
-  public get customerPhoneTypeaheadSource() {
-    return (params: TypeaheadRequestParams) => {
-      const p = new CustomerPhoneSearchRequest(params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.service.getCustomerByPhone(p);
-    };
   }
 
 }

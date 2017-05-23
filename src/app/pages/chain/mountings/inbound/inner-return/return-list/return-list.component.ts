@@ -29,6 +29,9 @@ export class ReturnListComponent extends DataList<any> {
   private innerDepartment: any;//挂单列表
   private originalBillId: any;
   private billData;//生成退料单数据
+  private createLoading = false;//生成退料单按钮加载动画
+  private suspendLoading = false;//挂单按钮加载动画
+  private isOk = true;//按钮禁用控制
   params: BillCodeSearchRequest;
 
 
@@ -104,6 +107,8 @@ export class ReturnListComponent extends DataList<any> {
 
   //生成退料单
   createReturnList() {
+    this.createLoading = true;
+    this.isOk = true;
     let inner = this.employees.find(m => m.takeUser == this.takeUser);
     let department = this.departments.departList.find(m => m.id == this.takeDepartId);
     this.returnUser = inner && inner.takeUserName;
@@ -119,6 +124,7 @@ export class ReturnListComponent extends DataList<any> {
     this.innerReturnService.createReturnList(this.billData)
       .then(data => {
         console.log('即将打印的数据', data);
+        this.createLoading = false;
         return confirm('已生成退料单，是否需要打印？') ? data : null;
       })
       .then(code => code && this.innerReturnService.get(code))
@@ -133,7 +139,7 @@ export class ReturnListComponent extends DataList<any> {
         this.returnData = [];
         this.list = null;
         this.billCode = null;
-        // this.printModel = null;
+        console.log('生成单子后isok的值', this.isOk);
       })
       .catch(err => {
         this.alerter.error(err);
@@ -152,6 +158,8 @@ export class ReturnListComponent extends DataList<any> {
     if (confirm('是否确认挂单？')) {
       // let el = event.target as HTMLButtonElement;
       // el.disabled = true;
+      // this.suspendLoading = true;
+      this.isOk = true;
       let inner = this.employees.find(m => m.takeUser == this.takeUser);
       let department = this.departments.departList.find(m => m.id == this.takeDepartId);
       this.innerReturner = inner && inner.takeUserName;
@@ -172,16 +180,20 @@ export class ReturnListComponent extends DataList<any> {
         // .then(() => el.disabled = false)
         .then(() => this.suspendBill.refresh())
         .then(() => {
+          this.alerter.success('挂单成功！');
+          this.isOk = true;
+          console.log('挂单成功后isok的值', this.isOk);
+        })
+        .then(() => {
           this.returnData = [];
           this.list = null;
           this.billCode = null;
           this.originalBillId = null;
-          // this.takeUser = this.employees[0].value;
+          // this.suspendLoading = false;
         })
-        // .then(() => this.reset())
-        .then(() => this.alerter.success('挂单成功！'))
         .catch(err => {
           // el.disabled = false;
+          this.isOk = false;
           this.alerter.error(err);
         })
     }
@@ -203,6 +215,7 @@ export class ReturnListComponent extends DataList<any> {
       })
     } else {
       this.returnData.push(e);
+      this.isOk = false;
     }
     this.createModel.hide();
   }
@@ -225,6 +238,7 @@ export class ReturnListComponent extends DataList<any> {
     this.takeUser = item.value.takeUserId;
     this.list = item.value.model;
     this.returnData = item.value.returnData;
+    this.isOk = false;
   }
   // reset() {
   //   this.model = new InnerListRequest();
@@ -271,14 +285,6 @@ export class ReturnListComponent extends DataList<any> {
     this.params.takeDepartId = this.takeDepartId;
     this.params.billCode = this.billCode;
     this.onLoadList();
-    // let item = new BillCodeSearchRequest(this.takeUser, this.takeDepartId, this.billCode);
-    // this.innerReturnService.getPagedList(item)
-    //   .then(data => {
-    //     console.log('iiiiii配件信息', data);
-    //     this.model = data.data;
-
-    //   })
-    //   .catch(err => Promise.reject(`获取配件信息失败：${err}`));
   }
 
   //退料显示弹框

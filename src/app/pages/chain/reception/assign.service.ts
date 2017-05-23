@@ -10,8 +10,6 @@ export class AssignService implements BasicService<any> {
 
     constructor(private httpService: HttpService) {
     }
-
-
     /**
      * 获取维修指派类型数据 用于维修指派
      * 

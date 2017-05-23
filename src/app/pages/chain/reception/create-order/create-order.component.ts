@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType, CustomerVehicle, FuzzySearchRequest, VehicleSeriesSearchRequest, VehicleBrandSearchRequest, VehicleSearchRequest } from '../order.service';
+import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType, FuzzySearchRequest, VehicleSeriesSearchRequest, VehicleSearchRequest } from '../order.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TabsetComponent, ModalDirective } from 'ngx-bootstrap';
 import * as moment from 'moment';
@@ -60,13 +60,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     material: 0,
     other: 0,
     discount: 0
-  };
-
-  regex = {
-    plateNo: /^[\u4e00-\u9fa5]{1}[A-Za-z]{1}[A-Za-z_0-9]{5}$/,
-    phone: /^1[3|4|5|7|8]\d{9}$/,
-    mileage: /^[0-9]+([.]{1}[0-9]{1,2})?$/,
-    vin: /^[A-HJ-NPR-Z\d]{8}[\dX][A-HJ-NPR-Z\d]{2}\d{6}$/
   };
 
   // 当前登录用户信息
@@ -486,17 +479,17 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       brand: ['', [Validators.required]], // 品牌
       series: [{ value: '', disabled: true }, [Validators.required]], // 车系
       vehicleName: [{ value: '', disabled: true }, [Validators.required]], // 车型
-      plateNo: ['', Validators.compose([Validators.required, Validators.pattern(this.regex.plateNo)])], // 车牌号
-      vin: ['', Validators.compose([Validators.required, Validators.pattern(this.regex.vin)])], // vin  底盘号
+      plateNo: ['', [Validators.required, HQ_VALIDATORS.plateNo]], // 车牌号
+      vin: ['', [Validators.required, HQ_VALIDATORS.vin]], // vin  底盘号
       validate: [null, [CustomValidators.date]], // 验车日期
       type: ['', [Validators.required]], // 维修类型
       expectLeave: [moment().add(2, 'hours').format('YYYY-MM-DD HH:mm'), [Validators.required, CustomValidators.date]], // 预计交车时间
-      mileage: ['', Validators.compose([Validators.required, Validators.pattern(this.regex.mileage)])], // 行驶里程
+      mileage: ['', [Validators.required, HQ_VALIDATORS.mileage]], // 行驶里程
       lastEnter: [{ value: null, disabled: true }], // 上次进店时间
       location: '', // 维修工位
       nextDate: [null, [CustomValidators.date]], // 建议下次保养日期
       lastMileage: [{ value: '', disabled: true }], // 上次进店里程
-      nextMileage: ['', Validators.compose([Validators.pattern(this.regex.mileage)])], // 建议下次保养里程
+      nextMileage: ['', [HQ_VALIDATORS.mileage]], // 建议下次保养里程
 
       suspendedBillId: '', // 挂单id
       customerVehicleId: '', // 客户车辆id
@@ -638,7 +631,11 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
         console.log('创建工单成功之后， 返回的工单对象：', JSON.stringify(data));
         // 创建订单成功之后  做一些重置操作
         if (confirm('创建工单成功！ 是否打印？')) {
-          this.newWorkOrderData = workSheet;
+          this.newWorkOrderData = {};
+          Object.assign(this.newWorkOrderData, data);
+          Object.assign(this.newWorkOrderData, workSheet);
+          this.newWorkOrderData.serviceOutputs = workSheet.maintenanceItems;
+          this.newWorkOrderData.typeName = this.maintenanceTypeData.find(item => item.id === workSheet.type).value;
           // 延迟打印
           setTimeout(() => {
             this.print();
@@ -699,23 +696,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       return service.call(this.service, p);
     };
   }
-  // // 根据车牌号模糊查询数据源
-  // public get plateNotypeaheadSource() {
-  //   return this.typeaheadSource(this.service.getCustomerVehicleByPlateNo);
-  // }
-  // // 根据车主姓名模糊查询数据源
-  // public get customerNametypeaheadSource() {
-  //   return this.typeaheadSource(this.service.getCustomerVehicleByCustomerName);
-  // }
 
-  // // 根据品牌名称模糊查询数据源
-  // public get brandTypeaheadSource() {
-  //   return (params: TypeaheadRequestParams) => {
-  //     const p = new VehicleBrandSearchRequest(params.text);
-  //     p.setPage(params.pageIndex, params.pageSize);
-  //     return this.service.getVehicleByBrand(p);
-  //   };
-  // }
   // 根据车系名称模糊查询数据源
   public get seriesTypeaheadSource() {
     return (params: TypeaheadRequestParams) => {

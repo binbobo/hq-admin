@@ -2,7 +2,7 @@
 <div class="card">
   <div class="card-header">
     <span>销售退库</span>
-    <ng-template hqSuspendBill="VR" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
+    <ng-template hqSuspendBill="MR" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
   <div class="card-block">
     <form class="form-inline mb-2">
@@ -108,9 +108,9 @@
     </div>
   </div>
   <div class="card-footer text-muted">
-    <button [disabled]="!salesReturnData.length" class="btn btn-primary" (click)="createReturnList()">生成销售退库单</button>
+    <button [hqSpinner]="createLoading" [disabled]="isOk" class="btn btn-primary" (click)="createReturnList()">生成销售退库单</button>
     <!--<button class="btn btn-warning" (click)="cancel($event)">取消</button>-->
-    <button [disabled]="!list" class="btn btn-info" (click)="suspend()">挂单</button>
+    <button [hqSpinner]="suspendLoading" [disabled]="isOk" class="btn btn-info" (click)="suspend()">挂单</button>
   </div>
 </div>
 
