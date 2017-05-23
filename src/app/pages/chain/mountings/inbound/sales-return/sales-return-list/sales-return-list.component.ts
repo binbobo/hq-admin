@@ -65,7 +65,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   // //选择退库单号
   onItemCodeSelect(event) {
     console.log('退库单号详细数据', event);
-    // this.OriginalBillId = event.id;
+    this.originalBillId = event.id;
     this.billCode = event.billCode;
     this.inUnit = event.inUnit;
     this.outUnit = event.outUnit;
@@ -141,7 +141,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   OnCreatBound(data, id) {
     console.log('弹框数据', data);
     this.selectSalesData = [];
-    this.originalBillId = data.id;
+    // this.originalBillId = data.id;
     // this.selectReturnData = data;
     Object.assign(this.selectSalesData, data);
 

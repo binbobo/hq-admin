@@ -44,7 +44,7 @@ export class SalesReturnService implements BasicService<any>{
 
 //   //获取配件信息
   getPagedList(params: SaleDetailsRequest): Promise<PagedResult<any>> {
-    const url = Urls.chain.concat('/SaleDetails/GetPageList?', params.serialize());
+    const url = Urls.chain.concat('/SaleDetails/GetPagedList?', params.serialize());
     console.log("配件信息url",url);
     return this.httpService.get<PagedResult<any>>(url)
       .then(result => {
