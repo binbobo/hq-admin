@@ -27,7 +27,7 @@
       <div class="serach-list">开单时间:{{SearchappendList.createdOnUtc |sDatetime}} </div>
       <div class="serach-list">送修人:{{SearchappendList.contactUser}} </div>
       <div class="serach-list">送修人电话:{{SearchappendList.contactInfo}}</div>
-      <div class="serach-list">服务顾问:{{SearchappendList.createdUserName}}</div>
+      <div class="serach-list">服务顾问:{{SearchappendList.createdUserName}}</div> 
     </div>
     <div class="serach-main">
       <div class="serach-list">品牌:{{SearchappendList.brand}} </div>
@@ -80,8 +80,8 @@
 
               <tr *ngFor="let item of newMaintenanceItemData">
                 <td width="40">
-                  <a href="#" (click)="onMaintenanceItemEdit($event, addModal, item)">编辑</a>
-                  <a href="#" (click)="$event.preventDefault();onDelMaintenanceItem(item?.serviceId)">删除</a>
+                  <button class="btn btn-sm btn-success mr-2" (click)="onMaintenanceItemEdit($event, addModal, item)">编辑</button>
+                  <button class="btn btn-sm btn-danger mr-2" (click)="$event.preventDefault();onDelMaintenanceItem(item?.serviceId)">删除</button>
                 </td>
                 <td>{{item?.serviceName}}</td>
                 <td>{{item?.workHour}}</td>
@@ -93,7 +93,7 @@
             </tbody>
           </table>
           <div>
-            <button class="btn btn-sm btn-secondary mr-2" (click)="addModal.show()" placement="right">新增</button>
+            <button class="btn btn-sm btn-info mr-2" (click)="addModal.show()" placement="right">新增</button>
           </div>
         </tab>
         <!--附加项目-->
@@ -111,14 +111,14 @@
             </tr>
             <tr *ngFor="let item of newAttachData;let i=index">
               <td width="40">
-                <a href="#" (click)="onAttachEdit($event, attachModal, item)">编辑</a>
-                <a href="#" (click)="$event.preventDefault();onDelAttachItem(i)">删除</a>
+                <button class="btn btn-sm btn-success mr-2" (click)="onAttachEdit($event, attachModal, item)">编辑</button>
+                <button class="btn btn-sm btn-danger mr-2" (click)="$event.preventDefault();onDelAttachItem(i)">删除</button>
               </td>
               <td>{{item.description}}</td>
             </tr>
           </table>
           <div>
-            <button class="btn btn-sm btn-secondary mr-2" [disabled]="!!((newAttachData?.length)>=1)" (click)="attachModal.show()" placement="right">新增</button>
+            <button class="btn btn-sm btn-info mr-2" [disabled]="!!((newAttachData?.length)>=1)" (click)="attachModal.show()" placement="right">新增</button>
           </div>
         </tab>
 
@@ -143,8 +143,8 @@
             </tr>
             <tr *ngFor="let item of newSuggestData">
               <td width="40">
-                <a href="#" (click)="onSuggestItemEdit($event, suggestModal, item)">编辑</a>
-                <a href="#" (click)="$event.preventDefault();onDelSuggestItem(item.serviceId)">删除</a>
+                <button class="btn btn-sm btn-success mr-2" (click)="onSuggestItemEdit($event, suggestModal, item)">编辑</button>
+                <button class="btn btn-sm btn-danger mr-2" (click)="$event.preventDefault();onDelSuggestItem(item.serviceId)">删除</button>
               </td>
               <td>{{item.serviceName}}</td>
               <td>{{item.operationTime|sDatetime}}</td>
@@ -154,7 +154,7 @@
 
           </table>
           <div>
-            <button class="btn btn-sm btn-secondary mr-2" (click)="suggestModal.show()" placement="right">新增</button>
+            <button class="btn btn-sm btn-info mr-2" (click)="suggestModal.show()" placement="right">新增</button>
           </div>
         </tab>
 
