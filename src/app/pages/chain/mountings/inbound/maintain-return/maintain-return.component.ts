@@ -262,6 +262,7 @@ export class MaintainReturnComponent implements OnInit {
     this.iitem = ele;
     ele.maintenanceItemId = ele.id; //维修明细id
     ele.curId = id;//记录点击的id
+    ele.IODetailId=ele.id;
     this.OriginalBillId = id;
     this.inputData = ele;
     this.createModal.show();
