@@ -9,7 +9,7 @@ export class MobileValidator implements Validator {
 
   static validator = (c: AbstractControl) => {
     const valid = /^1\d{10}$/.test(c.value);
-    return !valid ? { 'mobile': true } : null;
+    return c.value && !valid ? { 'mobile': true } : null;
   }
 
   validate(c: AbstractControl): ValidationErrors {
