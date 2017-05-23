@@ -65,7 +65,11 @@ export class DistributeComponent implements OnInit {
   initCreatName: any;
   initCreatId: any;
   customerName: any;
+  serviceShow = false;
+  serialShow = false;
   public onPlateNoSelect($event) {
+    this.serviceShow = true;
+    this.serialShow = true;
     this.newMainData = [];
     this.SearchappendList = $event;
     this.listId = $event.id;
@@ -74,6 +78,7 @@ export class DistributeComponent implements OnInit {
     this.suspendData = $event;
     this.service.getOrderItemData(this.listId)
       .then(data => {
+        this.serviceShow = false;
         console.log(data)
         this.orderDetail = data
         this.serviceData = data.serviceOutputs;
@@ -86,11 +91,12 @@ export class DistributeComponent implements OnInit {
         //   hash[next.name] ? '' : hash[next.name] = true && item.push(next);
         //   return item
         // }, [])
-      });
+      }).catch(err => { this.alerter.error(err), this.serviceShow = false });
 
     // 根据工单号获取已发料流水号列表
     this.service.getMMList(this.billCode).toPromise()
       .then(data => {
+        this.serialShow = false;
         this.serialData = data;
         this.serialData.sort((a, b) => {
           return a.serialNum - b.serialNum
@@ -111,18 +117,19 @@ export class DistributeComponent implements OnInit {
           return item
         }, [])
 
-      })
+      }).catch(err => { this.alerter.error(err), this.serialShow = false });
 
     // 根据工单号获取已退料流水号列表
     this.service.getMRList(this.billCode).toPromise()
       .then(data => {
+        this.serialShow = false;
         this.MRData = data;
         this.MRData.sort((a, b) => {
           return a.serialNum - b.serialNum
         });
         this.suspendData.MRData = this.MRData;
 
-      })
+      }).catch(err => { this.alerter.error(err), this.serialShow = false });
 
   }
   numberList: any;
@@ -219,7 +226,7 @@ export class DistributeComponent implements OnInit {
       }, [])
 
 
-    }).catch(err => {this.alerter.error(err, true, 2000);this.generat = false;});
+    }).catch(err => { this.alerter.error(err, true, 2000); this.generat = false; });
   }
 
   // 是否取消发料
