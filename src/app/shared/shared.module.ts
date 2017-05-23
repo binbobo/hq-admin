@@ -5,16 +5,18 @@ import * as services from 'app/shared/services';
 import * as components from "./components";
 import * as pipes from './pipes';
 import * as directives from './directives';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { FormsModule, NgModel } from '@angular/forms';
 import { PaginationModule, PopoverModule, AlertModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
 import { TranslateStore } from "@ngx-translate/core/src/translate.store";
-import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgPipesModule } from 'ngx-pipes';
 import { TreeviewModule } from "ngx-treeview";
 import { PhoneDirective } from './directives/validators/phone.directive';
 import { TelValidator } from './directives/validators/tel.directive';
 import { MobileValidator } from './directives/validators/mobile.directive';
+import { PlateNoValidator } from './directives/validators/plateNo.directive';
+
 
 const HQ_COMPONENTS = [
     components.PaginationComponent,
@@ -45,6 +47,7 @@ const HQ_DIRECTIVES = [
     directives.FormControlNameTrimDirective,
     directives.MobileValidator,
     directives.TelValidator,
+    directives.PlateNoValidator,
 ]
 
 const HQ_PIPES = [
@@ -66,6 +69,7 @@ const HQ_SERVICES = [
 export const HQ_VALIDATORS = {
     mobile: directives.MobileValidator.validator,
     tel: directives.TelValidator.validator,
+    plateNo: directives.PlateNoValidator.validator
 }
 
 @NgModule({

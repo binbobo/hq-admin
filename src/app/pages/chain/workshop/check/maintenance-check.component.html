@@ -60,7 +60,7 @@
             <td>{{item.typeName}}</td>
             <td>{{item.createdOnUtc|sDatetime}}</td>
             <td>{{item.expectLeave|sDatetime}}</td>
-            <td>{{item.overTime|durationHumanize}}</td>
+            <td [class.overtime]="item.overTime">{{item.overTime|durationHumanize}}</td>
             <td>{{item.vehicleName}}</td>
             <td>{{item.vin}}</td>
             <td>{{item.createdUserName}}</td>
@@ -115,36 +115,38 @@
               </table>
               <div>
                 <!--[hqSpinner]="checkPassGenerating"-->
-                <button class="btn btn-secondary" [disabled]="!selectedOrder?.serviceOutputs?.enableCheck" (click)="onOrderCheckPass()">通过</button>
+                <button [hqSpinner]="generating" class="btn btn-secondary" [disabled]="!selectedOrder?.serviceOutputs?.enableCheck" (click)="onOrderCheckPass()">通过</button>
               </div>
             </tab>
             <tab heading="维修配件" *ngIf="selectedOrder?.productOutputs?.length>0">
-              <table class="table table-striped table-bordered">
-                <thead>
-                  <tr>
-                    <th>维修工项</th>
-                    <th>配件名称</th>
-                    <th>品牌</th>
-                    <th>规格型号</th>
-                    <th>数量</th>
-                    <th>单价(元)</th>
-                    <th>金额(元)</th>
-                    <th>操作时间</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let record of selectedOrder?.productOutputs">
-                    <td>{{record?.serviceName}}</td>
-                    <td>{{record?.productName}}</td>
-                    <td>{{record?.brandName}}</td>
-                    <td>{{record?.specification}}</td>
-                    <td>{{record?.count}}</td>
-                    <td>{{record?.price|centToYuan}}</td>
-                    <td>{{record?.amount|centToYuan}}</td>
-                    <td>{{record?.operateDateTime|sDatetime}}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="overflow-auto">
+                <table class="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th>维修工项</th>
+                      <th>配件名称</th>
+                      <th>品牌</th>
+                      <th>规格型号</th>
+                      <th>数量</th>
+                      <th>单价(元)</th>
+                      <th>金额(元)</th>
+                      <th>操作时间</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let record of selectedOrder?.productOutputs">
+                      <td>{{record?.serviceName}}</td>
+                      <td>{{record?.productName}}</td>
+                      <td>{{record?.brandName}}</td>
+                      <td>{{record?.specification}}</td>
+                      <td>{{record?.count}}</td>
+                      <td>{{record?.price|centToYuan}}</td>
+                      <td>{{record?.amount|centToYuan}}</td>
+                      <td>{{record?.operateDateTime|sDatetime}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </tab>
             <tab heading="附加项目" *ngIf="selectedOrder?.attachServiceOutputs?.length>0">
               <table class="table table-striped table-bordered">

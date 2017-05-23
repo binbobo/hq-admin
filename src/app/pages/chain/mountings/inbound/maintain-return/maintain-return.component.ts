@@ -166,8 +166,10 @@ export class MaintainReturnComponent implements OnInit {
   private newMainData = [];
 
   private billData: any;
+  private generat = false;
   //生成退料单
   OnCreatReturnBill() {
+    this.generat = true;
     this.billData = {
       billCode: this.billCode,
       billId: this.listId,
@@ -178,6 +180,7 @@ export class MaintainReturnComponent implements OnInit {
     let postData = JSON.stringify(this.billData)
     console.log(postData);
     this.service.postReturnBill(postData).then((result) => {
+      this.generat = false;
       console.log(result)
       let num = result.data[0].serialNum;
       this.newMainData = [];

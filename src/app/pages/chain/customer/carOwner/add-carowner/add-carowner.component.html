@@ -10,7 +10,7 @@
         <label for="customerName" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车主</label>
         <div class="col-2">
           <!--新增的时候模糊搜索-->
-          <input type="text" [hqTableTypeahead]="customerNameTypeaheadSource" [columns]="customerTypeaheadColumns" (onSelect)="onCustomerNameSelect($event)"
+          <input type="text" [hqCustomerTypeahead]="'name'" (onSelect)="onCustomerNameSelect($event)"
             label="车主" class="form-control form-control" formControlName="name" placeholder="车主">
           <!--客户id 用于更新-->
           <input type="hidden" formControlName="id">
@@ -36,7 +36,7 @@
       <div class="form-group row">
         <label for="phone" class="col-1 col-form-label">手机号</label>
         <div class="col-2">
-          <input label="手机号" [hqTableTypeahead]="customerPhoneTypeaheadSource" [columns]="customerTypeaheadColumns" (onSelect)="onCustomerPhoneSelect($event)"
+          <input label="手机号" [hqCustomerTypeahead]="'phone'" (onSelect)="onCustomerPhoneSelect($event)"
             type="text" class="form-control" formControlName="phone" placeholder="手机号">
         </div>
         <label for="tel" class="col-1 col-form-label">电话</label>
