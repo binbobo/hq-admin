@@ -272,29 +272,4 @@ export class AddCarownerComponent implements OnInit {
     this.loadCustomer(evt);
   }
 
-  // 定义车主模糊查询要显示的列
-  public get customerTypeaheadColumns() {
-    return [
-      { name: 'name', title: '姓名' },
-      { name: 'phone', title: '手机号' },
-    ];
-  }
-
-  // 根据车主名称模糊查询数据源
-  public get customerNameTypeaheadSource() {
-    return (params: TypeaheadRequestParams) => {
-      const p = new CustomerNameSearchRequest(params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.service.getCustomerByName(p);
-    };
-  }
-  // 根据手机号名称模糊查询数据源
-  public get customerPhoneTypeaheadSource() {
-    return (params: TypeaheadRequestParams) => {
-      const p = new CustomerPhoneSearchRequest(params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.service.getCustomerByPhone(p);
-    };
-  }
-
 }

@@ -176,14 +176,7 @@ export class AddVehicleComponent implements OnInit {
       { name: 'name', title: '名称' },
     ];
   }
-  // // 根据品牌名称模糊查询数据源
-  // public get brandTypeaheadSource() {
-  //   return (params: TypeaheadRequestParams) => {
-  //     const p = new VehicleBrandSearchRequest(params.text);
-  //     p.setPage(params.pageIndex, params.pageSize);
-  //     return this.orderService.getVehicleByBrand(p);
-  //   };
-  // }
+
   // 根据车系名称模糊查询数据源
   public get seriesTypeaheadSource() {
     return (params: TypeaheadRequestParams) => {

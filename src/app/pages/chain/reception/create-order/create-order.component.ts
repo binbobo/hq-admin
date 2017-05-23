@@ -486,7 +486,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       brand: ['', [Validators.required]], // 品牌
       series: [{ value: '', disabled: true }, [Validators.required]], // 车系
       vehicleName: [{ value: '', disabled: true }, [Validators.required]], // 车型
-      plateNo: ['', Validators.compose([Validators.required, Validators.pattern(this.regex.plateNo)])], // 车牌号
+      plateNo: ['', [Validators.required, HQ_VALIDATORS.plateNo]], // 车牌号
       vin: ['', Validators.compose([Validators.required, Validators.pattern(this.regex.vin)])], // vin  底盘号
       validate: [null, [CustomValidators.date]], // 验车日期
       type: ['', [Validators.required]], // 维修类型
@@ -638,7 +638,11 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
         console.log('创建工单成功之后， 返回的工单对象：', JSON.stringify(data));
         // 创建订单成功之后  做一些重置操作
         if (confirm('创建工单成功！ 是否打印？')) {
-          this.newWorkOrderData = workSheet;
+          this.newWorkOrderData = {};
+          Object.assign(this.newWorkOrderData, data);
+          Object.assign(this.newWorkOrderData, workSheet);
+          this.newWorkOrderData.serviceOutputs = workSheet.maintenanceItems;
+          this.newWorkOrderData.typeName = this.maintenanceTypeData.find(item => item.id === workSheet.type).value;
           // 延迟打印
           setTimeout(() => {
             this.print();
@@ -699,23 +703,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       return service.call(this.service, p);
     };
   }
-  // // 根据车牌号模糊查询数据源
-  // public get plateNotypeaheadSource() {
-  //   return this.typeaheadSource(this.service.getCustomerVehicleByPlateNo);
-  // }
-  // // 根据车主姓名模糊查询数据源
-  // public get customerNametypeaheadSource() {
-  //   return this.typeaheadSource(this.service.getCustomerVehicleByCustomerName);
-  // }
 
-  // // 根据品牌名称模糊查询数据源
-  // public get brandTypeaheadSource() {
-  //   return (params: TypeaheadRequestParams) => {
-  //     const p = new VehicleBrandSearchRequest(params.text);
-  //     p.setPage(params.pageIndex, params.pageSize);
-  //     return this.service.getVehicleByBrand(p);
-  //   };
-  // }
   // 根据车系名称模糊查询数据源
   public get seriesTypeaheadSource() {
     return (params: TypeaheadRequestParams) => {
