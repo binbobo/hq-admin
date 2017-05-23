@@ -9,7 +9,7 @@ export class MileageValidator implements Validator {
 
   static validator = (c: AbstractControl) => {
     const valid = /^[0-9]+([.]{1}[0-9]{1,2})?$/.test(c.value);
-    return !valid ? { 'mileage': true } : null;
+    return c.value && !valid ? { 'mileage': true } : null;
   }
 
   validate(c: AbstractControl): ValidationErrors {

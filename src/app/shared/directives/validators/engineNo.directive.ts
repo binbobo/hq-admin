@@ -9,7 +9,7 @@ export class EngineNoValidator implements Validator {
 
   static validator = (c: AbstractControl) => {
     const valid = /^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$/.test(c.value);
-    return !valid ? { 'engineNo': true } : null;
+    return c.value && !valid ? { 'engineNo': true } : null;
   }
 
   validate(c: AbstractControl): ValidationErrors {

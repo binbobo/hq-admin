@@ -9,7 +9,7 @@ export class PlateNoValidator implements Validator {
 
   static validator = (c: AbstractControl) => {
     const valid = /^[\u4e00-\u9fa5]{1}[A-Za-z]{1}[A-Za-z_0-9]{5}$/.test(c.value);
-    return !valid ? { 'plateNo': true } : null;
+    return c.value && !valid ? { 'plateNo': true } : null;
   }
 
   validate(c: AbstractControl): ValidationErrors {

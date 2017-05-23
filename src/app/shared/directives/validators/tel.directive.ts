@@ -9,7 +9,7 @@ export class TelValidator {
 
   static validator = (c: AbstractControl) => {
     const valid = /^(\d+-)*\d+$/.test(c.value);
-    return !valid ? { 'tel': true } : null;
+    return c.value && !valid ? { 'tel': true } : null;
   }
 
   validate(c: AbstractControl): ValidationErrors {

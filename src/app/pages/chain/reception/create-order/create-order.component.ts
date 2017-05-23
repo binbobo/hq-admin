@@ -469,7 +469,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   createForm() {
     this.workSheetForm = this.fb.group({
       customerName: ['', [Validators.required]], // 车主
-      phone: ['', [HQ_VALIDATORS.mobile]], // 车主电话
+      phone: ['', []], // 车主电话
       createdOnUtc: [{ value: moment().format('YYYY-MM-DD HH:mm'), disabled: true }], // 进店时间 / 开单时间
       contactUser: ['', [Validators.required]], // 送修人
       contactInfo: ['', [Validators.required, HQ_VALIDATORS.mobile]], // 送修人电话

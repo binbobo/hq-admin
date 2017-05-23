@@ -9,7 +9,7 @@ export class VINValidator implements Validator {
 
   static validator = (c: AbstractControl) => {
     const valid = /^[A-HJ-NPR-Z\d]{8}[\dX][A-HJ-NPR-Z\d]{2}\d{6}$/.test(c.value);
-    return !valid ? { 'vin': true } : null;
+    return c.value && !valid ? { 'vin': true } : null;
   }
 
   validate(c: AbstractControl): ValidationErrors {
