@@ -29,6 +29,9 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   private seller;//销售员ID
   private inUnit;//购买方ID
   private outUnit;//销售方ID
+  private createLoading = false;//生成退库单按钮加载动画
+  private suspendLoading = false;//挂单按钮加载动画
+  private isOk = true;//按钮禁用控制
 
   params: SaleDetailsRequest;
 
@@ -174,6 +177,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
       })
     } else {
       this.salesReturnData.push(e);
+      this.isOk = false;
     }
     this.createModel.hide();
   }
@@ -194,6 +198,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
     this.seller = item.value.seller;
     this.inUnit = item.value.inUnit;
     this.outUnit = item.value.outUnit;
+    this.isOk = false;
   }
 
   // reset() {
@@ -207,11 +212,13 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   createReturnList() {
     // let el = event.target as HTMLButtonElement;
     // el.disabled = true;
+    this.isOk = true;
+    this.createLoading = true;
     this.billData = {
       originalBillId: this.originalBillId,
       suspendedBillId: this.suspendedBillId,
       billCode: this.billCode,
-      customerId:this.customerId,
+      customerId: this.customerId,
       seller: this.seller,
       inUnit: this.inUnit,
       outUnit: this.outUnit,
@@ -224,6 +231,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
       .then(data => {
         // el.disabled = false;
         // this.reset();
+        this.createLoading = false;
         this.suspendBill.refresh();
         return confirm('已生成出库单，是否需要打印？') ? data : null;
       })
@@ -257,6 +265,8 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
       // let createTime = new Date();
       // this.model.createBillDateTime = moment(createTime).format('YYYY-MM-DD hh:mm:ss');
       // console.log(this.model);
+
+      this.isOk = true;
       this.suspendData = {
         model: this.list,
         salesReturnData: this.salesReturnData,
@@ -287,6 +297,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
         .then(() => this.alerter.success('挂单成功！'))
         .catch(err => {
           // el.disabled = false;
+          this.isOk = false;
           this.alerter.error(err);
         })
     }
