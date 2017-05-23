@@ -93,6 +93,7 @@ export class Inventory extends BasicModel {
     public newPrice?: string,
     public packageInfo?: string,
     public madeIn?: string,
+    public productSpecification?: string,
     public properties?: Array<string>,
     public description?: string,
     public inCount?: string,

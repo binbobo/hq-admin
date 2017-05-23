@@ -22,7 +22,6 @@ export class DurationHumanizePipe implements PipeTransform {
         let index = DurationHumanizePipe.shorthandUnits.indexOf(m);
         let unit: any = DurationHumanizePipe.units[index];
         let val = first ? Math.floor(duration.as(unit)) : duration.get(unit);
-        console.log(val, index, unit, duration.as(unit));
         format = format.replace(`{${m}}`, val.toString());
         first = false;
         // if (val > 0) {

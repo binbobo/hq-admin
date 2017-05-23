@@ -23,7 +23,11 @@ export abstract class TrimDirective {
   }
 
   ngOnInit() {
-    this._control.valueChanges.subscribe(() => this.trim());
+    if (this._el.nativeElement instanceof HTMLInputElement) {
+      if (this._el.nativeElement.type === "text") {
+        this._control.valueChanges.subscribe(() => this.trim());
+      }
+    }
   }
 
 }

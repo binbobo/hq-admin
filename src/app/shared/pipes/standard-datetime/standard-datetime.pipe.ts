@@ -7,7 +7,7 @@ import { DateFormatPipe } from './date-format';
 export class StandardDatetimePipe extends DateFormatPipe implements PipeTransform {
 
   constructor() {
-    super('YYYY/MM/DD HH:mm:ss');
+    super('YYYY-MM-DD HH:mm:ss');
   }
 
 }
