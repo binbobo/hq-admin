@@ -9,6 +9,7 @@ import { ProductTypeaheadDirective } from './table-typeahead/product-typeahead.d
 import { ProviderTypeaheadDirective } from './table-typeahead/provider-typeahead.directive';
 import { VehicleTypeaheadDirective } from './table-typeahead/vehicle-typeahead.directive';
 import { PlateNoTypeaheadDirective } from './table-typeahead/plateNo-typeahead.directive';
+import { CustomerVehicleTypeaheadDirective } from './table-typeahead/customerVehicle-typeahead.directive';
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import { PlateNoTypeaheadDirective } from './table-typeahead/plateNo-typeahead.d
     ProductTypeaheadDirective,
     ProviderTypeaheadDirective,
     VehicleTypeaheadDirective,
-    PlateNoTypeaheadDirective
+    PlateNoTypeaheadDirective,
+    CustomerVehicleTypeaheadDirective
   ],
   declarations: [
     SuspendBillDirective,
@@ -30,7 +32,8 @@ import { PlateNoTypeaheadDirective } from './table-typeahead/plateNo-typeahead.d
     ProductTypeaheadDirective,
     ProviderTypeaheadDirective,
     VehicleTypeaheadDirective,
-    PlateNoTypeaheadDirective],
+    PlateNoTypeaheadDirective,
+    CustomerVehicleTypeaheadDirective],
   providers: [SuspendBillsService],
   entryComponents: [SuspendBillComponent]
 })
