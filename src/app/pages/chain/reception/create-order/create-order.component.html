@@ -42,7 +42,7 @@
         </div>
         <label for="brand" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>品牌</label>
         <div class="col-2">
-          <input label="品牌" forceRefresh="true" [hqTableTypeahead]="brandTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onBrandSelect($event)"
+          <input label="品牌" forceRefresh="true" hqBrandTypeahead="brandName" (onSelect)="onBrandSelect($event)"
             type="text" class="form-control" formControlName="brand" id="brand" placeholder="请输入品牌名称">
           <!--品牌id-->
           <input type="hidden" formControlName="brandId" />
