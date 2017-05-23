@@ -43,7 +43,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   // private salesmen: Array<SelectOption>;
   private printModel: any;
   // private model: SalesReturnListRequest = new SalesReturnListRequest();
-  private model;
+  // private model;
 
   constructor(
     injector: Injector,

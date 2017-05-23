@@ -46,7 +46,7 @@ export class ReturnListComponent extends DataList<any> {
   public printer: PrintDirective;
   private employees: any;
   private departments: any;
-  private model;//配件信息
+  // private model;//配件信息
   private printModel: any;
 
   constructor(

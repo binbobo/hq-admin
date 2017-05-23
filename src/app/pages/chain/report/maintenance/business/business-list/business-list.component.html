@@ -194,6 +194,7 @@
               <div class="col-4">
                 <label>进店里程: </label>
                 <span>{{businessData?.mileage}}</span>
+                <span class="ml-2" *ngIf="businessData.mileage">KM</span>
               </div>
             </div>
             <div class="row">
@@ -204,6 +205,7 @@
               <div class="col-4">
                 <label>出厂里程: </label>
                 <span>{{businessData?.leaveMileage}}</span>
+                <span class="ml-2" *ngIf="businessData.leaveMileage">KM</span>
               </div>
             </div>
             <hr>
@@ -278,7 +280,7 @@
                 <label>合计：</label>
               </div>
               <div class="col-4">
-                <label>应收金额：</label>
+                <label>工时合计：</label>
                 <span>{{moneyObj?.amountReceivable2|centToYuan}}</span>
               </div>
               <div class="col-4">
@@ -327,7 +329,7 @@
                 <label>合计：</label>
               </div>
               <div class="col-4">
-                <label>应收金额：</label>
+                <label>配件合计：</label>
                 <span>{{moneyObj?.amountReceivable3|centToYuan}}</span>
               </div>
             </div>
