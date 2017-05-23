@@ -71,7 +71,7 @@ export class AddCarownerComponent implements OnInit {
         return;
       }
     });
-    this.enableSaveCustomer = true;
+    this.enableSaveCustomer = this.carOwnerForm.valid;
   }
 
   // 添加车主
@@ -188,6 +188,7 @@ export class AddCarownerComponent implements OnInit {
 
     // 表单域中的值改变事件监听
     this.carOwnerForm.valueChanges.subscribe(data => {
+      console.log('是否合法：', this.carOwnerForm.valid);
       // 只有表单域合法 保存车主按钮才可用
       this.enableSaveCustomer = this.carOwnerForm.valid;
     });

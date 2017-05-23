@@ -11,7 +11,7 @@
         <div class="col-2">
           <!--新增的时候模糊搜索-->
           <input type="text" [hqCustomerTypeahead]="'name'" (onSelect)="onCustomerNameSelect($event)"
-            label="车主" class="form-control form-control" formControlName="name" placeholder="车主">
+            label="车主" class="form-control" formControlName="name" placeholder="车主">
           <!--客户id 用于更新-->
           <input type="hidden" formControlName="id">
         </div>
