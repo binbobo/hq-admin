@@ -73,7 +73,7 @@ export class MaintainReturnComponent implements OnInit {
         this.orderDetail = data
         this.serviceData = data.serviceOutputs;
         this.productData = data.productOutputs;
-      }).catch(err => { this.alerter.error(err), this.serviceisShow = false });;
+      }).catch(err => { this.alerter.error(err), this.serviceisShow = false });
 
     this.service.getMMList(this.billCode).toPromise()
       .then(data => {
