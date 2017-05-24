@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ProviderService, ProviderListRequest } from '../../../provider/provider.service';
 import { TypeaheadRequestParams, HqAlerter, PrintDirective } from 'app/shared/directives';
-import { SuspendBillDirective } from 'app/pages/chain/chain-shared';
 import { ModalDirective } from 'ngx-bootstrap';
 import { ProcurementService, ProcurementPrintItem, ProcurementItem, ProcurementRequest } from '../procurement.service';
+import { PurchaseInBillDirective } from '../purchase-in-bill.directive';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'hq-procurement-list',
@@ -12,20 +12,21 @@ import { ProcurementService, ProcurementPrintItem, ProcurementItem, ProcurementR
 })
 export class ProcurementListComponent implements OnInit {
 
-  @ViewChild(SuspendBillDirective)
-  private suspendBill: SuspendBillDirective;
+  @ViewChild(PurchaseInBillDirective)
+  private suspendBill: PurchaseInBillDirective;
   @ViewChild('createModal')
   private createModal: ModalDirective;
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
   @ViewChild('printer')
   public printer: PrintDirective;
+  @ViewChild('form')
+  public form: NgForm;
   private generating: boolean;
   private printModel: ProcurementPrintItem;
   private model = new ProcurementRequest();
 
   constructor(
-    private providerService: ProviderService,
     private procurementService: ProcurementService,
   ) { }
 
@@ -50,13 +51,8 @@ export class ProcurementListComponent implements OnInit {
 
   reset() {
     this.model = new ProcurementRequest();
-  }
-
-  public get suspendedColumns() {
-    return [
-      { name: 'custName', title: '供应商' },
-      { name: 'createBillTime', title: '挂单时间' },
-    ];
+    this.form.reset();
+    this.suspendBill.refresh();
   }
 
   public onProviderSelect(event) {
@@ -67,7 +63,6 @@ export class ProcurementListComponent implements OnInit {
   suspend(event: Event) {
     this.suspendBill.suspend(this.model)
       .then(() => this.reset())
-      .then(() => this.suspendBill.refresh())
       .then(() => this.alerter.success('挂单成功！'))
       .catch(err => {
         this.alerter.error(err);
@@ -80,7 +75,6 @@ export class ProcurementListComponent implements OnInit {
       .then(data => {
         this.generating = false;
         this.reset();
-        this.suspendBill.refresh();
         return confirm('已生成采购入库单，是否需要打印？') ? data : null;
       })
       .then(code => code && this.procurementService.get(code))

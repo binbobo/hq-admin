@@ -1,4 +1,4 @@
-<div class="hqTableTypeahead" (blur)="result=null" [hidden]="!visible">
+<div [style.min-width.px]="minWidth" class="hqTableTypeahead" (blur)="result=null" [hidden]="!visible">
   <button (click)="hide()" class="close" [hidden]="!multiple">
     <span>&times;</span>
   </button>

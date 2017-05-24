@@ -41,7 +41,7 @@ export class SalesCreateComponent implements OnInit {
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      brand: [this.model.brand, [Validators.required]],
+      brandName: [this.model.brand, [Validators.required]],
       productCode: [this.model.productCode],
       productName: [this.model.productName],
       productId: [this.model.productId, [Validators.required, Validators.maxLength(36)]],
@@ -83,7 +83,7 @@ export class SalesCreateComponent implements OnInit {
       productName: event.name,
       productSpecification: event.specification,
       productId: event.productId,
-      brand: event.brand,
+      brandName: event.brand,
       brandId: event.brandId,
       storeId: event.storeId,
       houseName: event.houseName,

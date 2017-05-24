@@ -1,7 +1,7 @@
 import { Directive, Input, ElementRef, ViewContainerRef, ComponentFactoryResolver, OnInit, Output, EventEmitter } from '@angular/core';
 import { SuspendBillComponent } from './suspend-bill.component';
 import { SuspendedBillItem } from './suspend-bill.service';
-import { SuspendBillsService } from './suspend-bill.service';
+import { SuspendBillService } from './suspend-bill.service';
 
 @Directive({
   selector: '[hqSuspendBill]',
@@ -10,20 +10,20 @@ import { SuspendBillsService } from './suspend-bill.service';
 export class SuspendBillDirective implements OnInit {
 
   @Input("hqSuspendBill")
-  private type: string;
+  protected type: string;
   @Input()
-  private columns: Array<SuspendBillColumn>;
+  protected columns: Array<SuspendBillColumn>;
   @Output()
-  private onSelect = new EventEmitter<SuspendedBillItem>();
+  protected onSelect = new EventEmitter<SuspendedBillItem>();
   @Output()
-  private onRemove: EventEmitter<SuspendedBillItem> = new EventEmitter<SuspendedBillItem>();
+  protected onRemove: EventEmitter<SuspendedBillItem> = new EventEmitter<SuspendedBillItem>();
   public suspending: boolean;
-  private selectedItem: SuspendedBillItem;
+  protected selectedItem: SuspendedBillItem;
   private component: SuspendBillComponent;
   constructor(
-    private service: SuspendBillsService,
-    private viewContainerRef: ViewContainerRef,
-    private componentFactoryResolver: ComponentFactoryResolver
+    protected service: SuspendBillService,
+    protected viewContainerRef: ViewContainerRef,
+    protected componentFactoryResolver: ComponentFactoryResolver
   ) { }
 
   ngOnInit(): void {

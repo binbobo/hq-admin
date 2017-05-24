@@ -29,6 +29,7 @@ import { ProcurementPrintComponent } from './procurement/procurement-print/procu
 import { ProcurementService } from './procurement/procurement.service';
 import { ProviderService } from '../provider/provider.service';
 import { MaintainPrintComponent } from './maintain-return/maintain-print/maintain-print.component';
+import { PurchaseInBillDirective } from './procurement/purchase-in-bill.directive';
 
 
 @NgModule({
@@ -49,7 +50,7 @@ import { MaintainPrintComponent } from './maintain-return/maintain-print/maintai
     CustomFormsModule,
     BsDropdownModule.forRoot(),
   ],
-  declarations: [routedComponents, ReturnListComponent, ReturnCreateComponent, ReturnPrintComponent, SalesReturnListComponent, SalesReturnCreateComponent, SalesReturnPrintComponent, ProcurementListComponent, ProcurementCreateComponent, ProcurementPrintComponent, MaintainCreatComponent, MaintainPrintComponent],
+  declarations: [routedComponents, ReturnListComponent, ReturnCreateComponent, ReturnPrintComponent, SalesReturnListComponent, SalesReturnCreateComponent, SalesReturnPrintComponent, ProcurementListComponent, ProcurementCreateComponent, ProcurementPrintComponent, MaintainCreatComponent, MaintainPrintComponent, PurchaseInBillDirective],
   providers: [MaintainReturnService, ProcurementService, ProviderService, InnerReturnService, SalesReturnService],
 
   entryComponents: [routedComponents[0]],

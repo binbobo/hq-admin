@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, HostBinding, Output } from '@angular/core';
-import { SuspendBillsService, SuspendedBillItem } from './suspend-bill.service';
+import { SuspendBillService, SuspendedBillItem } from './suspend-bill.service';
 import { PagedResult } from 'app/shared/models';
 import { SuspendBillColumn } from './suspend-bill.directive';
 
@@ -7,7 +7,7 @@ import { SuspendBillColumn } from './suspend-bill.directive';
   selector: 'hq-suspend-bill',
   templateUrl: './suspend-bill.component.html',
   styleUrls: ['./suspend-bill.component.css'],
-  providers: [SuspendBillsService],
+  providers: [SuspendBillService],
   host: {
     style: 'position:absolute;right:10px;top:7px;',
   },
@@ -25,7 +25,7 @@ export class SuspendBillComponent implements OnInit {
   public result: PagedResult<SuspendedBillItem>;
 
   constructor(
-    private service: SuspendBillsService
+    private service: SuspendBillService
   ) { }
 
   ngOnInit() {

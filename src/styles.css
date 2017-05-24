@@ -57,3 +57,7 @@ caption {
 input[readonly][ngui-datetime-picker]{
   background-color:transparent !important;
 }
+
+hqtabletypeahead ul{
+    margin-bottom: 0;
+}

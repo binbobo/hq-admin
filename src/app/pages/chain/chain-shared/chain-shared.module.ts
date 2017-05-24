@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { SuspendBillsService } from './suspend-bill/suspend-bill.service';
+import { SuspendBillService } from './suspend-bill/suspend-bill.service';
 import { SuspendBillComponent } from "./suspend-bill/suspend-bill.component";
 import { SuspendBillDirective } from './suspend-bill/suspend-bill.directive';
 import { BsDropdownModule } from 'ngx-bootstrap';
@@ -41,7 +41,7 @@ import { StorageLocationTypeaheadDirective } from './table-typeahead/storage-loc
     BrandTypeaheadDirective,
     StorageLocationTypeaheadDirective,
   ],
-  providers: [SuspendBillsService],
+  providers: [SuspendBillService],
   entryComponents: [SuspendBillComponent]
 })
 export class ChainSharedModule { }
