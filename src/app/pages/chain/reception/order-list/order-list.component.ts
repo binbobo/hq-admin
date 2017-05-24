@@ -128,21 +128,19 @@ export class OrderListComponent extends DataList<Order> {
       this.selectedOrder.id = id;
 
       // 统计各项费用
-
+      this.selectedOrder.fee = {};
       // 工时费： 维修项目金额总和
-      this.selectedOrder.workHourFee = data.serviceOutputs.reduce((accumulator, currentValue) => {
+      this.selectedOrder.fee.workHour = data.serviceOutputs.reduce((accumulator, currentValue) => {
         return accumulator + currentValue.price * currentValue.workHour;
       }, 0);
       // 材料费： 维修配件金额总和
-      this.selectedOrder.materialFee = data.productOutputs.reduce((accumulator, currentValue) => {
+      this.selectedOrder.fee.material = data.productOutputs.reduce((accumulator, currentValue) => {
         return accumulator + currentValue.price * currentValue.count;
       }, 0);
       // 其它费： 0
-      this.selectedOrder.otherFee = 0;
-      // 总计费：
-      this.selectedOrder.sumFee = this.selectedOrder.workHourFee + this.selectedOrder.materialFee + this.selectedOrder.otherFee;
+      this.selectedOrder.fee.other = 0;
       // 折扣费：目前只有维修项目有折扣
-      this.selectedOrder.discountFee = this.selectedOrder.workHourFee - data.serviceOutputs.reduce((accumulator, currentValue) => {
+      this.selectedOrder.fee.discount = this.selectedOrder.fee.workHour - data.serviceOutputs.reduce((accumulator, currentValue) => {
         return accumulator + currentValue.amount;
       }, 0);
 
