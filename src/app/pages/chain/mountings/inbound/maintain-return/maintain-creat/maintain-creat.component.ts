@@ -58,7 +58,8 @@ export class MaintainCreatComponent implements OnInit, OnChanges {
       takeUser: [this.model.takeUser],
       storeName: [this.model.storeName],
       operatorId: [this.model.operatorId],
-      createUser: [this.model.createUser]
+      createUser: [this.model.createUser],
+      description: [this.model.description]
     })
   }
 

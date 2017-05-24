@@ -130,7 +130,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let record of data?.workHours">
-          <td><span [class.triangle]="record.type === 3"></span>{{record?.serviceName}}</td>
+          <td>{{record?.serviceName}}<span [class.append-stamp]="record.type === 3">增项</span></td>
           <td>{{record?.workHour}}</td>
           <td>{{record?.price|centToYuan}}</td>
           <td>{{record?.amount|centToYuan}}</td>

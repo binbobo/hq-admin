@@ -193,5 +193,6 @@ export class MaintainReturnListItem {
         public initamount: any = 0,
         public operatorId: string = "",
         public createUser: string = "",
+        public description?:string
     ) { }
 }

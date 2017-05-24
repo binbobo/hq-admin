@@ -131,7 +131,7 @@
                       </td>
                       <td>{{record?.serviceName}}
                         <!-- 类型3表示增项 -->
-                        <span [class.triangle]="record.type === 3"></span>
+                        <span [class.append-stamp]="record.type === 3">增项</span>
                       </td>
                       <td>{{record?.workHour }}</td>
                       <!--<td>{{record?.operateDateTime|sDatetime}}</td>-->
