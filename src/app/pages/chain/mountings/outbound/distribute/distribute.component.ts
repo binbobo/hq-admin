@@ -67,6 +67,7 @@ export class DistributeComponent implements OnInit {
   customerName: any;
   serviceShow = false;
   serialShow = false;
+  plateNo:string="";
   public onPlateNoSelect($event) {
     this.serialShow = true;
     this.initDetailOrder();
@@ -75,14 +76,14 @@ export class DistributeComponent implements OnInit {
     this.listId = $event.id;
     this.billCode = $event.billCode;
     this.customerName = $event.customerName;
-    this.suspendData = $event;
     this.service.getOrderItemData(this.listId)
       .then(data => {
         this.serviceShow = false;
         console.log(data)
-        this.orderDetail = data
+        this.orderDetail = data;
+        this.plateNo=data.plateNo;
+        this.customerName=data.customerName;
         this.serviceData = data.serviceOutputs;
-        this.suspendData.serviceData = this.serviceData;
         this.productData = data.productOutputs;
       }).catch(err => { this.alerter.error(err), this.serviceShow = false });
 
@@ -94,7 +95,6 @@ export class DistributeComponent implements OnInit {
         this.serialData.sort((a, b) => {
           return a.serialNum - b.serialNum
         });
-        this.suspendData.serialData = this.serialData;
         this.numberList = data.map(item => {
           return {
             value: item.serialNum,
@@ -120,7 +120,6 @@ export class DistributeComponent implements OnInit {
         this.MRData.sort((a, b) => {
           return a.serialNum - b.serialNum
         });
-        this.suspendData.MRData = this.MRData;
 
       }).catch(err => { this.alerter.error(err), this.serialShow = false });
 
@@ -175,6 +174,7 @@ export class DistributeComponent implements OnInit {
     let postData = JSON.stringify(this.billData)
     console.log(postData);
     this.service.postBill(postData).then((result) => {
+
       console.log(result)
       el.disabled = false;
       this.suspendBill.refresh();
@@ -188,9 +188,6 @@ export class DistributeComponent implements OnInit {
             setTimeout(() => { this.printList = null }, 400)
           })
           .catch(err => console.log(err));
-      } else {
-        // 清空数据
-
       }
 
       this.isablePrint = true;
@@ -235,7 +232,7 @@ export class DistributeComponent implements OnInit {
   onCreate(evt) {
     console.log(evt);
     evt.price = evt.price * 100;
-    evt.amount=evt.amount*100;
+    evt.amount = evt.amount * 100;
     this.hasList = this.newMainData.filter(item => item.maintenanceItemId === evt.maintenanceItemId && item.productId === evt.productId);
     if (this.hasList.length > 0) {
       this.newMainData.forEach((item, index) => {
@@ -248,13 +245,11 @@ export class DistributeComponent implements OnInit {
     } else {
       this.newMainData.push(evt);
     }
-    this.suspendData.newMainData = this.newMainData;
     this.createModal.hide();
   }
 
   onDelCreat(i) {
     this.newMainData.splice(i, 1);
-    this.suspendData.newMainData = this.newMainData;
   }
   SerialNumsList: any;
 
@@ -289,23 +284,14 @@ export class DistributeComponent implements OnInit {
     ]
   }
   // 挂单数据
-  private suspendData = {
-    billCode: this.billCode,
-    billId: this.listId,
-    newMainData: this.newMainData,
-    serviceData: this.serviceData,
-    serialData: this.serialData,
-    customerName: this.customerName,
-    MRData: this.MRData,
-    suspendedBillId: ""
-  }
+  private suspendData: any;
   private sunspendRequest: any;
   onSuspendSelect(item) {
     console.log(item)
     this.sunspendRequest = JSON.parse(item.data);
     this.billCode = this.sunspendRequest["billCode"]
     this.listId = this.sunspendRequest["id"];
-    this.orderDetail = this.sunspendRequest;
+    this.orderDetail = this.sunspendRequest["orderDetail"];
     this.newMainData = this.sunspendRequest["newMainData"];
     this.serviceData = this.sunspendRequest["serviceData"];
     this.serialData = this.sunspendRequest["serialData"];
@@ -321,7 +307,22 @@ export class DistributeComponent implements OnInit {
 
   }
 
-  suspend(event: Event) {
+  suspend(form) {
+    
+    this.suspendData = {
+      newMainData: this.newMainData,
+      serviceData: this.serviceData,
+      serialData: this.serialData,
+      billCode: this.billCode,
+      billId: this.listId,
+      plateNo:this.plateNo,
+      customerName:this.customerName,     
+      MRData: this.MRData,
+      suspendedBillId: this.suspendedBillId,
+      list: this.newMainData,
+      orderDetail: this.orderDetail
+    }
+
     if (this.sunspendRequest) {
       Object.assign(this.suspendData, this.sunspendRequest);
     }
@@ -331,14 +332,13 @@ export class DistributeComponent implements OnInit {
       return false;
     }
 
-    let el = event.target as HTMLButtonElement;
-    el.disabled = true;
+    // let el = event.target as HTMLButtonElement;
+    // el.disabled = true;
     this.suspendBill.suspend(this.suspendData)
-      .then(() => el.disabled = false)
       .then(() => this.suspendBill.refresh())
-      .then(() => { this.alerter.success('挂单成功！'); this.initDetailOrder() })
+      .then(() => { this.alerter.success('挂单成功！'); form.reset();this.initDetailOrder() })
       .catch(err => {
-        el.disabled = false;
+        // el.disabled = false;
         this.alerter.error(err);
       })
   }

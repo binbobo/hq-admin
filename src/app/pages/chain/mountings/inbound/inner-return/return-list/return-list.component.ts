@@ -183,6 +183,7 @@ export class ReturnListComponent extends DataList<any> {
           this.alerter.success('挂单成功！');
           // this.isOk = true;
           this.suspendLoading = false;
+          this.createLoading = false;
           // console.log('挂单成功后isok的值', this.isOk);
         })
         .then(() => {

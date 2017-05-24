@@ -68,7 +68,6 @@ export class MaintainReturnComponent implements OnInit {
     this.SearchappendList = $event;
     this.listId = $event.id;
     this.billCode = $event.billCode;
-    this.suspendData = $event;
     this.service.getOrderItemData(this.listId)
       .then(data => {
         this.serviceisShow = false;
@@ -81,7 +80,6 @@ export class MaintainReturnComponent implements OnInit {
       .then(data => {
         this.serialDataShow = false;
         this.serialData = data;
-        this.suspendData.serialData = data;
         this.serialData.sort((a, b) => {
           return a.serialNum - b.serialNum;
         })
@@ -102,7 +100,6 @@ export class MaintainReturnComponent implements OnInit {
     this.service.getMRList(this.billCode).toPromise()
       .then(data => {
         this.mrData = data;
-        this.suspendData.mrData = this.mrData;
         this.mrData.sort((a, b) => {
           return a.serialNum - b.serialNum;
         });
@@ -174,6 +171,7 @@ export class MaintainReturnComponent implements OnInit {
   private generat = false;
   //生成退料单
   OnCreatReturnBill() {
+    
     this.generat = true;
     this.billData = {
       billCode: this.billCode,
@@ -187,11 +185,11 @@ export class MaintainReturnComponent implements OnInit {
     this.service.postReturnBill(postData).then((result) => {
       this.generat = false;
       this.serialDataShow = true;
+      this.suspendBill.refresh();
       this.service.getMMList(this.billCode).toPromise()
         .then(data => {
           this.serialDataShow = false;
           this.serialData = data;
-          this.suspendData.serialData = this.serialData;
           this.serialData.sort((a, b) => {
             return a.serialNum - b.serialNum;
           })
@@ -311,10 +309,11 @@ export class MaintainReturnComponent implements OnInit {
     this.newMainData = [];
     this.serviceData = [];
     this.serialData = [];
+    this.mrData = [];
     this.suspendedBillId = "";
     this.suspendData = ""
   }
-  suspend(event: Event) {
+  suspend() {
     this.suspendData = {
       newMainData: this.newMainData,
       serviceData: this.serviceData,
