@@ -8,10 +8,11 @@ import { Validator, NG_VALIDATORS, AbstractControl, ValidationErrors } from "@an
 export class PlateNoValidator implements Validator {
 
   static validator = (c: AbstractControl) => {
-    const valid = /^[\u4e00-\u9fa5]{1}[A-Za-z]{1}[A-Za-z_0-9]{5}$/.test(c.value);
-    return c.value && !valid ? { 'plateNo': true } : null;
+    const valid = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1}$/.test(c.value);
+    // 高于7位不再验证
+    return c.value && (c.value.trim().length < 8) && !valid ? { 'plateNo': true } : null;
   }
-
+ 
   validate(c: AbstractControl): ValidationErrors {
     return PlateNoValidator.validator;
   }

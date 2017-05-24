@@ -30,6 +30,10 @@
         <input type="number" [value]="model.price" (input)="onPriceChange($event)" formControlName="price" class="form-control">
         <!--<input label="单价" #priceControl="hq-error" type="hidden" formControlName="price" class="form-control">-->
       </div>
+      <div class="form-group">
+        <label class="form-control-label">备注</label>
+        <input readonly formControlName="description" class="form-control">
+      </div>
     </div>
     <div class="col-6">
       <div class="form-group">

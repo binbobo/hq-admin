@@ -68,7 +68,7 @@ export class EditCarownerComponent implements OnInit {
 
   // 删除一条车辆记录 处理程序
   onDelVehicleConfirmHandler(plateNo) {
-    //
+    if (!confirm('确定要删除当前选择的车辆吗?')) { return; }
     this.newVehiclesData.filter((item, index) => {
       if (item.plateNo === plateNo) {
         this.newVehiclesData.splice(index, 1);

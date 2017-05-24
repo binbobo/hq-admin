@@ -198,11 +198,7 @@ export class OrderListComponent extends DataList<Order> {
 
 
   // 重置为初始查询条件
-  reset(form?: NgForm) {
-    if (form) {
-      form.reset();
-    }
-
+  reset() {
     this.params.states = [];
     this.params.orgIds = [];
   }

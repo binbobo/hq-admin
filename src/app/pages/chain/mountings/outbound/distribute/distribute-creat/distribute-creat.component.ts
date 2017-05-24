@@ -85,6 +85,7 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
       count: [this.model.count, [Validators.required, CustomValidators.digits]],
       initcount: [this.model.initcount, [Validators.required, CustomValidators.gt(0), CustomValidators.digits]],
       price: [this.model.price, [Validators.required]],
+      costPrice:[this.model.costPrice],
       amount: [this.model.amount],
       locationName: [this.model.locationName],
       houseName: [this.model.houseName],
@@ -93,20 +94,26 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
       createUser: [this.model.createUser, [Validators.required]],
       createUserName: [this.model.createUserName],
       serviceName: this.model.serviceName,
-      maintenanceItemId: this.model.maintenanceItemId
+      maintenanceItemId: this.model.maintenanceItemId,
+      description:[this.model.description]
     })
   }
 
   public onSubmit(event: Event) {
     this.model.count = this.model.initcount;
-    this.model.amount = this.model.amount * 100;
+    // this.model.amount = this.model.amount * 100;
     // this.model.price = this.model.price * 100;
     this.model.vihicleName = this.model.vehicleName;
     this.model.storeName = this.model.houseName;
     this.model.specifications = this.model.specifications;
     this.model.storeHouse = this.model.storeHouse;
     Object.assign(this.form.value, this.model);
+    if (this.model.count > this.fcount) {
+      this.alerter.error("发料数量不能高于当前库存数量，请重新填写。")
+    }
+    if(this.model.price>this.model.costPrice){
 
+    }
     let invalid = this.controls
       .map(c => c.validate())
       .some(m => !m);
@@ -169,7 +176,8 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
       stockCount: event.count,
       price: event.price,
       count: event.count,
-      costPrice: event.costPrice
+      costPrice: event.costPrice,
+      description:event.description
     }
     this.fcount = item.count;
     this.price = 0;

@@ -61,3 +61,40 @@ input[readonly][ngui-datetime-picker]{
 hqtabletypeahead ul{
     margin-bottom: 0;
 }
+
+.append-stamp{
+    position: absolute;
+    display: inline-block;
+    max-width: 200px;
+    padding:1px 6px;
+    color: #1c84c6;
+    border:1px solid #1c84c6;
+    margin-left: 20px;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 2px;
+    /*border-radius: .25rem;*/
+    font-size: 12px;
+}
+.append-stamp::before {  
+      content: '';
+    position: absolute;
+    top: 5px;
+    left: -7px;
+    width: 0;
+    height: 0;
+    border-bottom: 5px solid transparent;
+    border-right: 6px solid #1c84c6;
+    border-top: 5px solid transparent; 
+}
+.append-stamp::after{
+     content: '';
+    position: absolute;
+    top: 5px;
+    left: -5px;
+    width: 0;
+    height: 0;
+    border-bottom: 5px solid transparent;
+    border-right: 6px solid #fff;
+    border-top: 5px solid transparent;
+}

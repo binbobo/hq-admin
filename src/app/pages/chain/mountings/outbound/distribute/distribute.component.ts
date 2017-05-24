@@ -68,10 +68,9 @@ export class DistributeComponent implements OnInit {
   serviceShow = false;
   serialShow = false;
   public onPlateNoSelect($event) {
+    this.serialShow = true;
     this.initDetailOrder();
     this.serviceShow = true;
-    this.serialShow = true;
-    this.newMainData = [];
     this.SearchappendList = $event;
     this.listId = $event.id;
     this.billCode = $event.billCode;
@@ -85,13 +84,6 @@ export class DistributeComponent implements OnInit {
         this.serviceData = data.serviceOutputs;
         this.suspendData.serviceData = this.serviceData;
         this.productData = data.productOutputs;
-        // this.employeesData = data.maintenanceEmployees;
-        // 去重
-        // var hash = {};
-        // this.InputData.employeesData = this.employeesData.reduce(function (item, next) {
-        //   hash[next.name] ? '' : hash[next.name] = true && item.push(next);
-        //   return item
-        // }, [])
       }).catch(err => { this.alerter.error(err), this.serviceShow = false });
 
     // 根据工单号获取已发料流水号列表
@@ -243,6 +235,7 @@ export class DistributeComponent implements OnInit {
   onCreate(evt) {
     console.log(evt);
     evt.price = evt.price * 100;
+    evt.amount=evt.amount*100;
     this.hasList = this.newMainData.filter(item => item.maintenanceItemId === evt.maintenanceItemId && item.productId === evt.productId);
     if (this.hasList.length > 0) {
       this.newMainData.forEach((item, index) => {
@@ -349,6 +342,7 @@ export class DistributeComponent implements OnInit {
         this.alerter.error(err);
       })
   }
+  private initValue: string = "";
   initDetailOrder() {
     this.sunspendRequest = [];
     this.billCode = "";
@@ -360,7 +354,8 @@ export class DistributeComponent implements OnInit {
     this.employeesData = [];
     this.MRData = [];
     this.suspendedBillId = "";
-    this.suspendData=null;
+    this.suspendData = null;
+    this.initValue = "";
   }
   createModalHide() {
     this.createModal.hide();

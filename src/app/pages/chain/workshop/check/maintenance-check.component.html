@@ -61,7 +61,11 @@
             <td>{{item.createdOnUtc|sDatetime}}</td>
             <td>{{item.expectLeave|sDatetime}}</td>
             <td [class.overtime]="item.overTime">{{item.overTime|durationHumanize}}</td>
-            <td>{{item.vehicleName}}</td>
+            <td>
+              <span *ngIf="item?.brand">{{item.brand}}</span>
+              <span *ngIf="item?.series">,{{item.series}}</span>
+              <span *ngIf="item?.vehicleName">,{{item.vehicleName}}</span>
+            </td>
             <td>{{item.vin}}</td>
             <td>{{item.createdUserName}}</td>
           </tr>
@@ -86,35 +90,36 @@
           <!--导出详情begin-->
           <tabset>
             <tab heading="维修项目" *ngIf="selectedOrder?.serviceOutputs?.length>0">
-              <table class="table table-striped table-bordered">
-                <thead>
-                  <tr>
-                    <th><input value="all" #checkAll (change)="toggleCheckboxAll(checkAll)" [checked]="selectedOrder?.serviceOutputs?.checkedAll"
-                        type="checkbox" /></th>
-                    <th>项目名称</th>
-                    <th>维修工时(小时)</th>
-                    <th>操作时间</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let record of selectedOrder?.serviceOutputs" [class.checked]="record.checked" (click)="$event.stopPropagation();toggleCheckbox(record)">
-                    <td>
-                      <!--已经通过之后, 不可以再次操作-->
-                      <input [disabled]="record.teamType === 6" value="{{record.id}}" (click)="$event.stopPropagation();toggleCheckbox(record)"
-                        [checked]="record.checked" type="checkbox" />
-                    </td>
-                    <td>
-                      {{record?.serviceName}}
-                      <!--已通过的打个标记-->
-                      <span [class.triangle]="record.teamType === 6"></span>
-                    </td>
-                    <td>{{record?.workHour}}</td>
-                    <td>{{record?.operateDateTime|sDatetime}}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="overflow-auto">
+                <table class="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th><input value="all" #checkAll (change)="toggleCheckboxAll(checkAll)" [checked]="selectedOrder?.serviceOutputs?.checkedAll"
+                          type="checkbox" /></th>
+                      <th>项目名称</th>
+                      <th>维修工时(小时)</th>
+                      <!--<th>验收时间</th>-->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let record of selectedOrder?.serviceOutputs" [class.checked]="record.checked" (click)="$event.stopPropagation();toggleCheckbox(record)">
+                      <td>
+                        <!--已经通过之后, 不可以再次操作-->
+                        <input [disabled]="record.teamType === 6" value="{{record.id}}" (click)="$event.stopPropagation();toggleCheckbox(record)"
+                          [checked]="record.checked" type="checkbox" />
+                      </td>
+                      <td>
+                        {{record?.serviceName}}
+                        <!--已通过的打个标记-->
+                        <span [class.triangle]="record.teamType === 6"></span>
+                      </td>
+                      <td>{{record?.workHour}}</td>
+                      <!--<td>{{record?.operateDateTime|sDatetime}}</td>-->
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
               <div>
-                <!--[hqSpinner]="checkPassGenerating"-->
                 <button [hqSpinner]="generating" class="btn btn-secondary" [disabled]="!selectedOrder?.serviceOutputs?.enableCheck" (click)="onOrderCheckPass()">通过</button>
               </div>
             </tab>

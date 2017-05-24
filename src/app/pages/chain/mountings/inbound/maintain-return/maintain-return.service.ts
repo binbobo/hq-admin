@@ -185,7 +185,7 @@ export class MaintainReturnListItem {
         public vihicleName: string = "",
         public serviceName: string = "",
         public maintenanceItemId?: string,
-        public IODetailId?:string,
+        public IODetailId?: string,
         public number?: any,
         public takeUser?: any,
         public storeName: string = "",
@@ -193,5 +193,6 @@ export class MaintainReturnListItem {
         public initamount: any = 0,
         public operatorId: string = "",
         public createUser: string = "",
+        public description?:string
     ) { }
 }
