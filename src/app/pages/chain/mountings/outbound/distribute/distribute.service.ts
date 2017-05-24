@@ -229,6 +229,7 @@ export class DistributeListItem {
     constructor(
         public count: number = 0,
         public price: number = 0,
+        public costPrice?:any,
         public amount: number = 0,
         public stockCount: number = 0,
         public productName?: string,

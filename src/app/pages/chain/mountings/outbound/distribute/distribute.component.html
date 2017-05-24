@@ -7,8 +7,8 @@
   <div class="card-block">
     <div>
       <form class="form-in serach-input">
-        <input [hqTableTypeahead]="PlatNoSource" [columns]="typeaheadColumns" (onSelect)="onPlateNoSelect($event)" class="form-control input-left"
-          placeholder="请输入车牌号/工单号">
+        <input [hqTableTypeahead]="PlatNoSource" [(ngModel)]="initValue" name="initValue" [columns]="typeaheadColumns" (onSelect)="onPlateNoSelect($event)"
+          class="form-control input-left" placeholder="请输入车牌号/工单号">
         <span class='button-right'>
         </span>
       </form>
@@ -40,7 +40,7 @@
             <tr *ngFor='let item of serviceData;let index=index'>
               <td><button class="btn btn-primary" (dataName)="item.serviceName" [disabled]="!(item.maintenanceEmployees.length>0)"
                   (click)="OnCreatBound(item)">发料</button></td>
-              <td><span [class.triangle]="item.type === 3"></span>{{item.serviceName}}</td>
+              <td>{{item.serviceName}}<span [class.append-stamp]="item.type === 3">增项</span></td>
               <td>
                 <span *ngIf="item.employeeNames">{{item?.employeeNames.join(',')}}</span>
                 <span *ngIf="item.turnEmployeeNames">{{item?.turnEmployeeNames.join(',')}}</span></td>
@@ -69,7 +69,7 @@
               <th>*数量（个）</th>
               <th>单价（元/个）</th>
               <th>金额（元）</th>
-              <!--<th>备注</th>-->
+              <th>备注</th>
               <th>*领料人</th>
 
             </tr>
@@ -88,7 +88,7 @@
               <td>{{ele.count}}</td>
               <td>{{ele.price|centToYuan}}</td>
               <td>{{ele.amount|centToYuan}}</td>
-              <!--<td>{{ele.description}}</td>-->
+              <td>{{ele.description}}</td>
               <td>{{ele.createUserName}}</td>
 
             </tr>
@@ -114,7 +114,7 @@
                 <th>数量（个）</th>
                 <th>单价（元/个）</th>
                 <th>金额（元）</th>
-                <!--<th>备注</th>-->
+                <th>备注</th>
                 <th>领料人</th>
               </tr>
             </thead>
@@ -132,7 +132,7 @@
                 <td>{{ele.count}}</td>
                 <td>{{ele.price|centToYuan}}</td>
                 <td>{{ele.amount|centToYuan}}</td>
-                <!--<td>{{ele.description}}</td>-->
+                <td>{{ele.description}}</td>
                 <td>{{ele.takeUser}}</td>
               </tr>
             </tbody>
@@ -154,7 +154,7 @@
                 <th>数量（个）</th>
                 <th>单价（元/个）</th>
                 <th>金额（元）</th>
-                <!--<th>备注</th>-->
+                <th>备注</th>
                 <th>退料人</th>
               </tr>
             </thead>
@@ -174,7 +174,7 @@
                 <td>{{ele.amount|centToYuan}}</td>
                 <td>{{ele.returnUser}}</td>
                 <td>{{ele.returnUser}}</td>
-                <!--<td>{{ele.description}}</td>-->
+                <td>{{ele.description}}</td>
                 <td>{{ele.returnUser}}</td>
               </tr>
             </tbody>

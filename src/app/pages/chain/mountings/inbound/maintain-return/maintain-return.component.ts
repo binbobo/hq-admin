@@ -263,6 +263,7 @@ export class MaintainReturnComponent implements OnInit {
   }
   hasList: any;
   onCreate(e) {
+    console.log(e)
     // this.item.returnCount += Number(e.count);
     this.hasList = this.newMainData.filter(item => item.curId === e.curId && item.maintenanceItemId === e.maintenanceItemId);
     if (this.hasList.length > 0) {

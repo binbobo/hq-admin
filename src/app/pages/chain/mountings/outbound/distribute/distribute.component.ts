@@ -235,6 +235,7 @@ export class DistributeComponent implements OnInit {
   onCreate(evt) {
     console.log(evt);
     evt.price = evt.price * 100;
+    evt.amount=evt.amount*100;
     this.hasList = this.newMainData.filter(item => item.maintenanceItemId === evt.maintenanceItemId && item.productId === evt.productId);
     if (this.hasList.length > 0) {
       this.newMainData.forEach((item, index) => {
@@ -341,6 +342,7 @@ export class DistributeComponent implements OnInit {
         this.alerter.error(err);
       })
   }
+  private initValue: string = "";
   initDetailOrder() {
     this.sunspendRequest = [];
     this.billCode = "";
@@ -353,6 +355,7 @@ export class DistributeComponent implements OnInit {
     this.MRData = [];
     this.suspendedBillId = "";
     this.suspendData = null;
+    this.initValue = "";
   }
   createModalHide() {
     this.createModal.hide();
