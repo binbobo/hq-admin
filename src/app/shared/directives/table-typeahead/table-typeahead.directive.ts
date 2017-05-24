@@ -42,19 +42,19 @@ export class TableTypeaheadDirective implements OnInit {
   ) {
     this.el = this.viewContainerRef.element.nativeElement;
   }
-  // @HostListener('blur', ['$event'])
-  // onBlur(event) {
-  //   if (!this.multiple) {
-  //     setTimeout(() => {
-  //       if (this.paging) {
-  //         this.el.focus();
-  //         this.paging = false;
-  //       } else {
-  //         this.hide();
-  //       }
-  //     }, 200);
-  //   }
-  // }
+  @HostListener('blur', ['$event'])
+  onBlur(event) {
+    if (!this.multiple) {
+      setTimeout(() => {
+        if (this.paging) {
+          this.el.focus();
+          this.paging = false;
+        } else {
+          this.hide();
+        }
+      }, 200);
+    }
+  }
   @HostListener('focus', ['$event'])
   onFocus(event) {
     if (!this.paging && event.sourceCapabilities) {
