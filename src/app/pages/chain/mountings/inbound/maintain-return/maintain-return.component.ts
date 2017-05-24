@@ -62,7 +62,9 @@ export class MaintainReturnComponent implements OnInit {
   // 选择之后根据id查找工单详情并替换数据
   serviceisShow = false;
   public onPlateNoSelect($event) {
+    this.initDetailData();
     this.serviceisShow = true;
+    this.serialDataShow = true;
     this.SearchappendList = $event;
     this.listId = $event.id;
     this.billCode = $event.billCode;
@@ -70,15 +72,16 @@ export class MaintainReturnComponent implements OnInit {
     this.service.getOrderItemData(this.listId)
       .then(data => {
         this.serviceisShow = false;
-        this.orderDetail = data
+        this.orderDetail = data;
         this.serviceData = data.serviceOutputs;
         this.productData = data.productOutputs;
       }).catch(err => { this.alerter.error(err), this.serviceisShow = false });
 
     this.service.getMMList(this.billCode).toPromise()
       .then(data => {
+        this.serialDataShow = false;
         this.serialData = data;
-        this.suspendData.serialData = this.serialData;
+        this.suspendData.serialData = data;
         this.serialData.sort((a, b) => {
           return a.serialNum - b.serialNum;
         })
@@ -94,8 +97,7 @@ export class MaintainReturnComponent implements OnInit {
 
         });
         console.log(this.serialData)
-      });
-    this.newMainData = [];
+      }).catch(err => { this.alerter.error(err); this.serialDataShow = false; });
 
     this.service.getMRList(this.billCode).toPromise()
       .then(data => {
@@ -121,7 +123,7 @@ export class MaintainReturnComponent implements OnInit {
         this.numberPrintList.sort((a, b) => {
           return a.value - b.value
         });
-      });
+      }).catch(err => { this.alerter.error(err) });;
 
   }
   print() {
@@ -171,7 +173,6 @@ export class MaintainReturnComponent implements OnInit {
   private billData: any;
   private generat = false;
   //生成退料单
-  showing = false;
   OnCreatReturnBill() {
     this.generat = true;
     this.billData = {
@@ -184,10 +185,11 @@ export class MaintainReturnComponent implements OnInit {
     let postData = JSON.stringify(this.billData)
     console.log(postData);
     this.service.postReturnBill(postData).then((result) => {
-
+      this.generat = false;
+      this.serialDataShow = true;
       this.service.getMMList(this.billCode).toPromise()
         .then(data => {
-          this.showing = false;
+          this.serialDataShow = false;
           this.serialData = data;
           this.suspendData.serialData = this.serialData;
           this.serialData.sort((a, b) => {
@@ -205,7 +207,7 @@ export class MaintainReturnComponent implements OnInit {
 
           });
           console.log(this.serialData)
-        });
+        }).catch(err => { this.alerter.error(err); this.serialDataShow = false; });
       this.newMainData = [];
       this.generat = false;
       console.log(result)
@@ -242,27 +244,19 @@ export class MaintainReturnComponent implements OnInit {
             setTimeout(() => { this.printList = null }, 400)
           })
           .catch(err => console.log(err));
-      } else {
-
       }
-
-      this.showing = true;
-
-
-
-    }).catch(err => {  this.showing = false;   this.showing = false});
+    }).catch(err => { this.alerter.error(err); this.generat = false });
   }
 
 
   inputData: any;
   // 点击退料弹出弹框
-  private iitem: any;
-  OnCreatBound(ele, id) {
+  OnCreatBound(ele, item, id) {
     console.log(ele, id);
-    this.iitem = ele;
-    ele.maintenanceItemId = ele.id; //维修明细id
+    ele.serialNum = item.serialNum;
+    ele.maintenanceItemId = ele.maintenanceItemId; //维修明细id
     ele.curId = id;//记录点击的id
-    ele.IODetailId=ele.id;
+    ele.originalId = ele.id;//原始单id
     this.OriginalBillId = id;
     this.inputData = ele;
     this.createModal.show();
@@ -282,9 +276,6 @@ export class MaintainReturnComponent implements OnInit {
       this.newMainData.push(e);
     }
 
-    // if ((this.item.count - this.item.returnCount) === 0) {
-    //   this.item.isable = false;
-    // }
     this.createModal.hide();
   }
   onDelCreat(e, i) {
@@ -311,7 +302,17 @@ export class MaintainReturnComponent implements OnInit {
     this.serialData = this.sunspendRequest["serialData"];
     this.suspendedBillId = item.id;
   }
-
+  initDetailData() {
+    this.sunspendRequest = null;
+    this.billCode = "";
+    this.listId = "";
+    this.orderDetail = null;
+    this.newMainData = [];
+    this.serviceData = [];
+    this.serialData = [];
+    this.suspendedBillId = "";
+    this.suspendData = ""
+  }
   suspend(event: Event) {
     this.suspendData = {
       newMainData: this.newMainData,
@@ -334,14 +335,11 @@ export class MaintainReturnComponent implements OnInit {
       return false;
     }
 
-    // let el = event.target as HTMLButtonElement;
-    // el.disabled = true;
+
     this.suspendBill.suspend(this.suspendData)
-      // .then(() => el.disabled = false)
       .then(() => this.suspendBill.refresh())
-      .then(() => this.alerter.success('挂单成功！'))
+      .then(() => { this.alerter.success('挂单成功！'); this.initDetailData() })
       .catch(err => {
-        // el.disabled = false;
         this.alerter.error(err);
       })
   }

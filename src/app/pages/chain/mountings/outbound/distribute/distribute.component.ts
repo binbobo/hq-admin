@@ -68,10 +68,9 @@ export class DistributeComponent implements OnInit {
   serviceShow = false;
   serialShow = false;
   public onPlateNoSelect($event) {
+    this.serialShow = true;
     this.initDetailOrder();
     this.serviceShow = true;
-    this.serialShow = true;
-    this.newMainData = [];
     this.SearchappendList = $event;
     this.listId = $event.id;
     this.billCode = $event.billCode;
@@ -85,13 +84,6 @@ export class DistributeComponent implements OnInit {
         this.serviceData = data.serviceOutputs;
         this.suspendData.serviceData = this.serviceData;
         this.productData = data.productOutputs;
-        // this.employeesData = data.maintenanceEmployees;
-        // 去重
-        // var hash = {};
-        // this.InputData.employeesData = this.employeesData.reduce(function (item, next) {
-        //   hash[next.name] ? '' : hash[next.name] = true && item.push(next);
-        //   return item
-        // }, [])
       }).catch(err => { this.alerter.error(err), this.serviceShow = false });
 
     // 根据工单号获取已发料流水号列表
@@ -360,7 +352,7 @@ export class DistributeComponent implements OnInit {
     this.employeesData = [];
     this.MRData = [];
     this.suspendedBillId = "";
-    this.suspendData=null;
+    this.suspendData = null;
   }
   createModalHide() {
     this.createModal.hide();
