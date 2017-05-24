@@ -63,7 +63,6 @@ export class JournalAcountType {
 }
 
 export class JournalAccountListRequest extends PagedParams {
-  public readonly listBillTypes: Array<string> = ['MM,MR', 'IM,IR', 'VM,VR', 'PM,PR'];
   constructor(
     public billTypeKey?: string,
     public productId?: string,
@@ -71,7 +70,6 @@ export class JournalAccountListRequest extends PagedParams {
     public createEndTime?: string,
   ) {
     super();
-    this.billTypeKey = this.billTypeKey || this.listBillTypes[0];
   }
 }
 

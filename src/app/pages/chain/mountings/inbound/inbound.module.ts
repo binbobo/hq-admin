@@ -49,9 +49,7 @@ import { MaintainPrintComponent } from './maintain-return/maintain-print/maintai
     CustomFormsModule,
     BsDropdownModule.forRoot(),
   ],
-
-
-  declarations: [routedComponents, ReturnListComponent, ReturnCreateComponent, ReturnPrintComponent, routedComponents, SalesReturnListComponent, SalesReturnCreateComponent, SalesReturnPrintComponent,   ProcurementListComponent, ProcurementCreateComponent, ProcurementPrintComponent,  MaintainCreatComponent, MaintainPrintComponent],
+  declarations: [routedComponents, ReturnListComponent, ReturnCreateComponent, ReturnPrintComponent, SalesReturnListComponent, SalesReturnCreateComponent, SalesReturnPrintComponent, ProcurementListComponent, ProcurementCreateComponent, ProcurementPrintComponent, MaintainCreatComponent, MaintainPrintComponent],
   providers: [MaintainReturnService, ProcurementService, ProviderService, InnerReturnService, SalesReturnService],
 
   entryComponents: [routedComponents[0]],

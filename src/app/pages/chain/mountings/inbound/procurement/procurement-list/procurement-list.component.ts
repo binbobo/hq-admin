@@ -65,10 +65,6 @@ export class ProcurementListComponent implements OnInit {
   }
 
   suspend(event: Event) {
-    if (!this.model.outunit) {
-      alert('请选择供应商名称');
-      return false;
-    }
     this.suspendBill.suspend(this.model)
       .then(() => this.reset())
       .then(() => this.suspendBill.refresh())
@@ -79,10 +75,6 @@ export class ProcurementListComponent implements OnInit {
   }
 
   generate(event: Event) {
-    if (!this.model.outunit) {
-      alert('请选择供应商名称');
-      return false;
-    }
     this.generating = true;
     this.procurementService.generate(this.model)
       .then(data => {
