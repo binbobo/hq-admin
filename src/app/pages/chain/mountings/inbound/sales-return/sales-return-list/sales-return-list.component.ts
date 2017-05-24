@@ -70,21 +70,21 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
     console.log('退库单号详细数据', event);
     this.originalBillId = event.id;
     this.billCode = event.billCode;
-    this.inUnit = event.inUnit;
-    this.outUnit = event.outUnit;
-    this.seller = event.seller;
+    // this.inUnit = event.inUnit;
+    // this.outUnit = event.outUnit;
+    // this.seller = event.seller;
 
-    if (!this.customerId) {
+    if (!this.customerName) {
       this.customerId = event.customerId;
       this.customerName = event.customerName;
       this.customerPhone = event.customerPhone;
-      this.billId = event.id;
+      // this.billId = event.id;
     }
     this.salesReturnData = [];
     this.params.customerId = this.customerId;
     this.params.customerName = this.customerName;
     this.params.billCode = this.billCode;
-    this.params.billId = this.billId;
+    // this.params.billId = this.billId;
     this.onLoadList();
     // .then(()=>this.model = this.list)
     // let item = new SaleDetailsRequest(this.customerId, this.customerName, this.billCode, this.billId);
@@ -105,7 +105,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
     this.customerId = event.customerId;
     this.customerName = event.customerName;
     this.customerPhone = event.customerPhone;
-    this.billId = event.id;
+    // this.billId = event.id;
     this.billCode = null;
     this.list = null;
     this.salesReturnData = [];
@@ -130,7 +130,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   // //退库单号模糊查询
   public get codeSource() {
     return (params: TypeaheadRequestParams) => {
-      let p = new BillCodeRequest(this.customerId, params.text);
+      let p = new BillCodeRequest(this.customerId,this.customerName,params.text);
       p.setPage(params.pageIndex, params.pageSize);
       return this.salesReturnservice.getBillCodePagedList(p);
     };
@@ -196,9 +196,9 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
     this.customerPhone = item.value.customerPhone;
     this.list = item.value.model;
     this.salesReturnData = item.value.salesReturnData;
-    this.seller = item.value.seller;
-    this.inUnit = item.value.inUnit;
-    this.outUnit = item.value.outUnit;
+    // this.seller = item.value.seller;
+    // this.inUnit = item.value.inUnit;
+    // this.outUnit = item.value.outUnit;
     // this.isOk = false;
   }
 
@@ -220,9 +220,9 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
       suspendedBillId: this.suspendedBillId,
       billCode: this.billCode,
       customerId: this.customerId,
-      seller: this.seller,
-      inUnit: this.inUnit,
-      outUnit: this.outUnit,
+      // seller: this.seller,
+      // inUnit: this.inUnit,
+      // outUnit: this.outUnit,
       // returnUser: this.takeUser,
       // returnDepart: this.takeDepartId,
       list: this.salesReturnData,
@@ -277,9 +277,9 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
         customerId: this.customerId,
         suspendedBillId: this.suspendedBillId,
         originalBillId: this.originalBillId,
-        seller: this.seller,
-        inUnit: this.inUnit,
-        outUnit: this.outUnit,
+        // seller: this.seller,
+        // inUnit: this.inUnit,
+        // outUnit: this.outUnit,
       }
       console.log(this.suspendData);
       this.suspendBill.suspend(this.suspendData)
@@ -298,6 +298,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
         .then(() => {
           this.alerter.success('挂单成功！');
           this.suspendLoading = false;
+          this.createLoading = false;
         })
         .catch(err => {
           // el.disabled = false;

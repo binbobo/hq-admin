@@ -16,7 +16,7 @@ export class BusinessListComponent extends DataList<any> {
 
   private businessForm: FormGroup;
   params: BusinessListRequest;
-  public isShow = false;//查询范围是否显示
+  // public isShow = false;//查询范围是否显示
   public isSearch = false;//温馨提示是否显示
   private converter: CentToYuanPipe = new CentToYuanPipe();
   private pipe: DurationHumanizePipe = new DurationHumanizePipe();
