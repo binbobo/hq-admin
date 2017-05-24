@@ -61,7 +61,11 @@
             <td>{{item.createdOnUtc|sDatetime}}</td>
             <td>{{item.expectLeave|sDatetime}}</td>
             <td [class.overtime]="item.overTime">{{item.overTime|durationHumanize}}</td>
-            <td>{{item.vehicleName}}</td>
+            <td>
+              <span *ngIf="item?.brand">{{item.brand}}</span>
+              <span *ngIf="item?.series">,{{item.series}}</span>
+              <span *ngIf="item?.vehicleName">,{{item.vehicleName}}</span>
+            </td>
             <td>{{item.vin}}</td>
             <td>{{item.createdUserName}}</td>
           </tr>

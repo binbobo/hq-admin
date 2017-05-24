@@ -12,7 +12,7 @@
     <tr *ngFor="let record of suggestServiceOutputs;let index=index;">
       <td class="text-center">{{index+1}}</td>
       <td>{{record?.content}}</td>
-      <td>{{record?.operateDateTime|sDatetime}}</td>
+      <td class="text-center">{{record?.operateDateTime|sDatetime}}</td>
       <td>{{record?.description}}</td>
     </tr>
   </tbody>
