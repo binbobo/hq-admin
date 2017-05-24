@@ -6,12 +6,17 @@ import { PagedParams, PagedResult } from 'app/shared/models';
   selector: 'hqTableTypeahead',
   templateUrl: './table-typeahead.component.html',
   styleUrls: ['./table-typeahead.component.css'],
+  host: {
+    style: 'position:relative'
+  }
 })
 export class TableTypeaheadComponent implements OnInit {
 
   public index = 1;
   @Input()
   public size: number = 10;
+  @Input()
+  public height = 40;
   @Input()
   public minWidth = 100;
   @Input()

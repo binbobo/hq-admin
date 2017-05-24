@@ -57,6 +57,7 @@ export class InnerReturnService implements BasicService<any>{
   get(code: string): Promise<InnerPrintItem> {
     if (!code) return Promise.resolve({});
     let url = Urls.chain.concat('/UseReturnDetails/Print?BillCode=', code);
+    console.log('退料单打印URL',url);
     return this.httpService.get<ApiResult<any>>(url)
       .then(result => {
         // console.log(result.data);

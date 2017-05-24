@@ -56,6 +56,7 @@ export class ReceiveListComponent implements OnInit {
 
   generate(event: Event) {
     this.generating = true;
+    console.log('内部领用数据',this.model);
     this.receiveService.generate(this.model)
       .then(data => {
         this.generating = false;

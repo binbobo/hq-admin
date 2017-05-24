@@ -66,6 +66,7 @@ export class SalesListComponent implements OnInit {
 
   generate(event: Event) {
     this.generating = true;
+     console.log('配件销售数据',this.model);
     this.salesService.generate(this.model)
       .then(data => {
         this.generating = false;
