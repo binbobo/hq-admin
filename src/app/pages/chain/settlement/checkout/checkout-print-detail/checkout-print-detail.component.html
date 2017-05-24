@@ -6,7 +6,7 @@
     </div>
     <div class="col-4">
       <label>车型：</label>
-      <span>{{data?.vehicleName}}</span>
+      <span>{{data?.model}}</span>
     </div>
     <div class="col-4">
       <label>VIN：</label>
@@ -33,18 +33,18 @@
       <span>{{data?.customerName}}</span>
     </div>
     <div class="col-4">
-      <label>购车时间：</label>
-      <span>{{data?.purchaseDate|sDate}}</span>
+      <label>车主电话：</label>
+      <span>{{data?.customerPhone}}</span>
     </div>
     <div class="col-4">
       <label>预计交车时间：</label>
-      <span>{{data?.expectLeave|sDatetime}}</span>
+      <span>{{data?.deliveryTime}}</span>
     </div>
   </div>
   <div class="form-group row">
     <div class="col-4">
       <label>维修技师：</label>
-      <span>{{data?.employeeNames}}</span>
+      <span>{{data?.technicianItems}}</span>
       <!--如果转派  追加显示转派人-->
       <!--<span *ngIf="data?.teamType === 2">,{{data?.turnEmployeeNames}}</span>-->
       <!-- teamType (string, optional): 工单指派类型 0.没指派 1.指派 2.转派 -->
@@ -57,13 +57,13 @@
     </div>
     <div class="col-4">
       <label>介绍人：</label>
-      <span>{{data?.introducer}}</span>
+      <span>{{data?.introduceName}}</span>
     </div>
   </div>
   <div class="form-group row">
     <div class="col-4">
       <label>介绍人电话：</label>
-      <span>{{data?.introPhone}}</span>
+      <span>{{data?.introducePhone}}</span>
     </div>
     <div class="col-4">
       <label>维修类型：</label>
@@ -108,7 +108,7 @@
     </div>
   </div>
   <div class="form-group row">
-    <div class="col-4" >
+    <div class="col-4">
       <label>出厂时间：</label>
       <span>{{data?.updataTime|sDatetime}}</span>
     </div>
@@ -116,7 +116,7 @@
 </form>
 <hr>
 <tabset>
-  <tab heading="维修项目" *ngIf="data?.serviceOutputs?.length>0">
+  <tab heading="维修项目" *ngIf="data?.workHours?.length>0">
     <table class="table table-striped table-bordered">
       <thead>
         <tr>
@@ -129,7 +129,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let record of data?.serviceOutputs">
+        <tr *ngFor="let record of data?.workHours">
           <td><span [class.triangle]="record.type === 3"></span>{{record?.serviceName}}</td>
           <td>{{record?.workHour}}</td>
           <td>{{record?.price|centToYuan}}</td>
@@ -140,7 +140,7 @@
       </tbody>
     </table>
   </tab>
-  <tab heading="维修配件" *ngIf="data?.productOutputs?.length>0">
+  <tab heading="维修配件" *ngIf="data?.matereialDetails?.length>0">
     <table class="table table-striped table-bordered">
       <thead>
         <tr>
@@ -152,10 +152,10 @@
           <th>单价(元)</th>
           <th>金额(元)</th>
           <th>操作时间</th>
-        </tr> 
+        </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let record of data?.productOutputs">
+        <tr *ngFor="let record of data?.matereialDetails">
           <td>{{record?.serviceName}}</td>
           <td>{{record?.productName}}</td>
           <td>{{record?.brandName}}</td>
@@ -168,7 +168,7 @@
       </tbody>
     </table>
   </tab>
-  <tab heading="附加项目" *ngIf="data?.attachServiceOutputs?.length>0">
+  <tab heading="附加项目" *ngIf="data?.appendItems?.length>0">
     <table class="table table-striped table-bordered">
       <thead>
         <tr>
@@ -176,13 +176,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let record of data?.attachServiceOutputs">
-          <td>{{record?.description}}</td>
+        <tr *ngFor="let record of data?.appendItems">
+          <td>{{record?.name}}</td>
         </tr>
       </tbody>
     </table>
   </tab>
-  <tab heading="建议维修项目" *ngIf="data?.suggestServiceOutputs?.length>0">
+  <tab heading="建议维修项目" *ngIf="data?.adviceItems?.length>0">
     <table class="table table-striped table-bordered">
       <thead>
         <tr>
@@ -192,7 +192,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let record of data?.suggestServiceOutputs">
+        <tr *ngFor="let record of data?.adviceItems">
           <td>{{record?.content}}</td>
           <td>{{record?.operateDateTime|sDatetime}}</td>
           <td>{{record?.description}}</td>
