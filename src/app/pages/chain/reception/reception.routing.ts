@@ -9,6 +9,13 @@ import { PrintOrderComponent } from 'app/pages/chain/reception/bill-order/print-
 import { WorkorderDetailComponent } from './shared/workorder-detail/workorder-detail.component';
 import { AddMaintenanceItemComponent } from './shared/add-maintenance-item/add-maintenance-item.component';
 import { WorkorderDetailPrintComponent } from './shared/workorder-detail-print/workorder-detail-print.component';
+import { AddAttachItemComponent } from './shared/add-attach-item/add-attach-item.component';
+import { AddSuggestItemComponent } from './shared/add-suggest-item/add-suggest-item.component';
+import { MaintenanceItemListComponent } from './shared/maintenance-item-list/maintenance-item-list.component';
+import { MaintenanceFixingsListComponent } from './shared/maintenance-item-list/maintenance-fixings-list.component';
+import { AttachmentItemListComponent } from './shared/maintenance-item-list/attachment-item-list.component';
+import { SuggestedItemListComponent } from './shared/maintenance-item-list/suggested-item-list.component';
+import { FeeStatisticsComponent } from './shared/fee-statistics/fee-statistics.component';
 
 const routes: Routes = [
     // 工单列表路由
@@ -31,5 +38,5 @@ const routes: Routes = [
 })
 export class ReceptionRoutingModule { }
 
-export const routedComponents = [WorkorderDetailPrintComponent, WorkorderDetailComponent, AddMaintenanceItemComponent,OrderListComponent, AssignOrderComponent, CreateOrderComponent, BillOrderComponent, AppendOrderComponent, PrintOrderComponent];
+export const routedComponents = [FeeStatisticsComponent, AttachmentItemListComponent, SuggestedItemListComponent, MaintenanceFixingsListComponent, AddAttachItemComponent, AddSuggestItemComponent, MaintenanceItemListComponent, WorkorderDetailPrintComponent, WorkorderDetailComponent, AddMaintenanceItemComponent, OrderListComponent, AssignOrderComponent, CreateOrderComponent, BillOrderComponent, AppendOrderComponent, PrintOrderComponent];
 

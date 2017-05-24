@@ -327,25 +327,6 @@ export class Order extends BasicModel {
     }
 }
 
-// 客户车辆关系model类
-// export class CustomerVehicle {
-//     constructor(
-//         public id: string = '', // 客户车辆id
-//         public vehicleId: string = '', // 车辆id
-//         public customerId: string = '', // 客户id
-//         public plateNo: string = '', // 车牌号
-//         public customerName: string = '', // 车主
-//         public phone: string = '', // 车主电话
-//         public series: string = '', // 车系
-//         public vehicleName: string = '', // 车型
-//         public brand: string = '', // 品牌
-//         public mileage: string = '', // 行驶里程
-//         public purchaseDate: Date = null, // 购车时间
-//         public vin: string = '', // vin, 车辆唯一编码
-//     ) {
-//     }
-// }
-
 // 车辆model类
 export class Vehicle {
     constructor(

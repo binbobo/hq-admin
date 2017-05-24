@@ -4,7 +4,7 @@
   <div class="col-3">领用单号：{{model?.billCode}}</div>
   <div class="col-3">领用人：{{model?.takeUser}}</div>
   <div class="col-3">部门：{{model?.department}}</div>
-  <div class="col-3">开单时间：{{model?.createBillDateTime}}</div>
+  <div class="col-3">开单时间：{{model?.createBillDateTime|sDatetime}}</div>
 </div>
 <hr>
 <div class="print-page">
@@ -34,7 +34,7 @@
   </table>
   <div class="row">
     <div class="col-3">金额：{{model?.totalAmount|centToYuan}}</div>
-    <div class="col-3">打印时间：{{model?.printDateTime}}</div>
+    <div class="col-3">打印时间：{{model?.printDateTime|sDatetime}}</div>
     <div class="col-3">操作人：</div>
     <div class="col-3">领用人：</div>
   </div>

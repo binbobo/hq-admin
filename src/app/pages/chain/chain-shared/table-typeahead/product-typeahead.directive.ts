@@ -38,7 +38,9 @@ export class ProductTypeaheadDirective extends TableTypeaheadDirective {
         .then(result => {
           result.data = result.data
             .map(m => {
-              m.categoryName = m.categoryList && m.categoryList.length && m.categoryList[0].text;
+              let category = m.categoryList && m.categoryList.length && m.categoryList[0];
+              m.categoryName = category && category.text;
+              m.categoryId = category && category.value;
               return m;
             });
           return result;

@@ -68,6 +68,7 @@ export class DistributeComponent implements OnInit {
   serviceShow = false;
   serialShow = false;
   public onPlateNoSelect($event) {
+    this.initDetailOrder();
     this.serviceShow = true;
     this.serialShow = true;
     this.newMainData = [];
@@ -224,8 +225,6 @@ export class DistributeComponent implements OnInit {
         hashNumber[next.text] ? '' : hashNumber[next.text] = true && item.push(next);
         return item
       }, [])
-
-
     }).catch(err => { this.alerter.error(err, true, 2000); this.generat = false; });
   }
 
@@ -236,16 +235,15 @@ export class DistributeComponent implements OnInit {
     confirmModal.show();
   }
   // 取消发料
-  onConfirmFinished(confirmModal) {
-    confirmModal.hide();
-    history.go(-1);
-  }
+  // onConfirmFinished(confirmModal) {
+  //   confirmModal.hide();
+  //   history.go(-1);
+  // }
   hasList: any;
   onCreate(evt) {
     console.log(evt);
-    evt.amount = evt.amount;
+    evt.price = evt.price * 100;
     this.hasList = this.newMainData.filter(item => item.maintenanceItemId === evt.maintenanceItemId && item.productId === evt.productId);
-
     if (this.hasList.length > 0) {
       this.newMainData.forEach((item, index) => {
         if (item.maintenanceItemId === evt.maintenanceItemId && item.productId === evt.productId) {
@@ -257,9 +255,6 @@ export class DistributeComponent implements OnInit {
     } else {
       this.newMainData.push(evt);
     }
-
-
-
     this.suspendData.newMainData = this.newMainData;
     this.createModal.hide();
   }
@@ -290,7 +285,7 @@ export class DistributeComponent implements OnInit {
         setTimeout(() => { this.print(); }, 200);
         setTimeout(() => { this.printList = null }, 400)
       })
-      .catch(err => console.log(err));
+      .catch(err => { this.alerter.error(err, true, 2000) });
   }
 
   get columns() {
@@ -309,6 +304,7 @@ export class DistributeComponent implements OnInit {
     serialData: this.serialData,
     customerName: this.customerName,
     MRData: this.MRData,
+    suspendedBillId: ""
   }
   private sunspendRequest: any;
   onSuspendSelect(item) {
@@ -320,15 +316,16 @@ export class DistributeComponent implements OnInit {
     this.newMainData = this.sunspendRequest["newMainData"];
     this.serviceData = this.sunspendRequest["serviceData"];
     this.serialData = this.sunspendRequest["serialData"];
-    this.employeesData = this.sunspendRequest["maintenanceEmployees"];
+    this.employeesData = this.sunspendRequest["maintenanceEmployees"] || [];
     this.MRData = this.sunspendRequest["MRData"];
+    this.suspendedBillId = item.id;
     // 去重
     var hash = {};
     this.InputData.employeesData = this.employeesData.reduce(function (item, next) {
       hash[next.name] ? '' : hash[next.name] = true && item.push(next);
       return item
     }, [])
-    this.suspendedBillId = item.id;
+
   }
 
   suspend(event: Event) {
@@ -346,13 +343,25 @@ export class DistributeComponent implements OnInit {
     this.suspendBill.suspend(this.suspendData)
       .then(() => el.disabled = false)
       .then(() => this.suspendBill.refresh())
-      .then(() => this.alerter.success('挂单成功！'))
+      .then(() => { this.alerter.success('挂单成功！'); this.initDetailOrder() })
       .catch(err => {
         el.disabled = false;
         this.alerter.error(err);
       })
   }
-
+  initDetailOrder() {
+    this.sunspendRequest = [];
+    this.billCode = "";
+    this.listId = "";
+    this.orderDetail = null;
+    this.newMainData = [];
+    this.serviceData = [];
+    this.serialData = [];
+    this.employeesData = [];
+    this.MRData = [];
+    this.suspendedBillId = "";
+    this.suspendData=null;
+  }
   createModalHide() {
     this.createModal.hide();
   }

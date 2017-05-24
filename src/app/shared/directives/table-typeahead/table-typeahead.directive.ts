@@ -1,4 +1,4 @@
-import { Directive, ViewContainerRef, ComponentFactoryResolver, Input, EventEmitter, Output, OnInit, HostListener, ElementRef, Component, ComponentRef } from '@angular/core';
+import { Directive, ViewContainerRef, ComponentFactoryResolver, Input, EventEmitter, Output, OnInit, HostListener, ElementRef, Component, ComponentRef, Injector, TemplateRef } from '@angular/core';
 import { TableTypeaheadComponent } from './table-typeahead.component';
 import { PagedResult, PagedParams } from 'app/shared/models';
 import { Observable } from 'rxjs/Observable';
@@ -67,9 +67,7 @@ export class TableTypeaheadDirective implements OnInit {
   }
   show() {
     let rect = this.el.getBoundingClientRect();
-    let ne = this.componentRef.location.nativeElement;
-    ne.style.top = rect.height + "px";
-    ne.style.left = "-2px";
+    this.componentRef.instance.minWidth = rect.width;
     this.componentRef.instance.show();
   }
   hide() {
@@ -126,16 +124,11 @@ export class TableTypeaheadDirective implements OnInit {
         .map(m => m.name);
     }
     let wrapper = document.createElement("div");
+    this.el.insertAdjacentElement('beforebegin', wrapper);
     wrapper.className = 'input-group';
-    this.el.parentElement.insertBefore(wrapper, this.el.nextSibling);
     wrapper.appendChild(this.el);
     let span = document.createElement('span');
     span.className = "input-group-addon";
-    span.style.borderTopRightRadius = "0.25rem";
-    span.style.borderBottomRightRadius = "0.25rem";
-    span.style.borderRightWidth = "1px";
-    span.style.borderRightStyle = "solid";
-    span.style.borderRightColor = "rgba(0, 0, 0, 0.14902)";
     this.statusElement = document.createElement('i');
     this.statusElement.className = "cursor-pointer fa fa-search";
     span.appendChild(this.statusElement);
@@ -143,8 +136,7 @@ export class TableTypeaheadDirective implements OnInit {
     let componentFactory = this.componentFactoryResolver.resolveComponentFactory(TableTypeaheadComponent);
     this.componentRef = this.viewContainerRef.createComponent(componentFactory);
     let ne = this.componentRef.location.nativeElement;
-    ne.style.transition = 'height 0.3s ease-in';
-    wrapper.appendChild(ne);
+    wrapper.insertAdjacentElement('afterend', ne);
     if (this.showTitle) {
       if (!this.columns || this.columns.length < 2) {
         this.showTitle = false;
@@ -172,7 +164,10 @@ export class TableTypeaheadDirective implements OnInit {
           let event = new Event('input');
           this.el.dispatchEvent(event);
           this.el.focus();
-          setTimeout(() => this.disabled = false, this.delay + 100);
+          setTimeout(() => {
+            this.paging = false;
+            this.disabled = false;
+          }, this.delay + 100);
         }
       }
       this.onSelect.emit(item);
@@ -185,11 +180,12 @@ export class TableTypeaheadDirective implements OnInit {
         this.search();
       });
     this.statusElement.addEventListener('click', (event: MouseEvent) => {
+      event.stopPropagation();
+      if (this.el.disabled || this.el.readOnly) return false;
       let el = event.target as HTMLElement;
       if (!el.classList.contains('fa-spinner')) {
         this.search();
       }
-      event.stopPropagation();
     });
   }
 }

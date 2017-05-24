@@ -19,9 +19,7 @@ export class BrandTypeaheadDirective extends TableTypeaheadDirective {
     }
 
     protected columns = [
-        { name: 'brandName', title: '品牌' },
-        { name: 'seriesName', title: '车系' },
-        { name: 'vehicle', title: '车辆信息' },
+        { name: 'name', title: '品牌' },
     ] as Array<TableTypeaheadColumn>;
 
     @Input()
@@ -33,13 +31,7 @@ export class BrandTypeaheadDirective extends TableTypeaheadDirective {
             request[this.filed] = params.text;
             request.setPage(params.pageIndex, params.pageSize);
             let url = Urls.chain.concat('/Brands/search');
-            return this.httpService.getPagedList<any>(url, request)
-                .then(result => {
-                    result.data.forEach(element => {
-                        element.vehicle = element.vehicleYear + " " + element.name;
-                    });
-                    return result;
-                });
+            return this.httpService.getPagedList<any>(url, request);
         };
         super.ngOnInit();
     }

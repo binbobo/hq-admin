@@ -2,16 +2,16 @@
     background-color: #fff;
     font-size: 14px;
     border-radius: 4px;
-    padding: 2px;
-}
-table{
-    margin: 2px;
+    position: absolute;
+    z-index: 4;
 }
 
 td,th{
     padding: 5px 10px!important;
 }
-
+.table{
+    margin-bottom: 0;
+}
 tbody tr{
     cursor: pointer;
 }

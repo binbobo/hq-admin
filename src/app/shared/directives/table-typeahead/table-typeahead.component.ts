@@ -5,21 +5,15 @@ import { PagedParams, PagedResult } from 'app/shared/models';
 @Component({
   selector: 'hqTableTypeahead',
   templateUrl: './table-typeahead.component.html',
-  host: {
-    style: 'position:absolute;z-index:99999999;display:table-column;min-width:200px',
-  },
   styleUrls: ['./table-typeahead.component.css'],
-  // host: {
-  //   '[class]': '"popover in popover-bottom bottom show"',
-  //   role: 'tooltip',
-  //   style: 'display:block;z-index:1'
-  // },
 })
 export class TableTypeaheadComponent implements OnInit {
 
   public index = 1;
   @Input()
   public size: number = 10;
+  @Input()
+  public minWidth = 100;
   @Input()
   public showTitle = true;
   @Input()

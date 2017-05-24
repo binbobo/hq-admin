@@ -59,9 +59,7 @@ export class AccountListComponent extends DataList<JournalAccount> implements On
   }
 
   get current() {
-    let type = this.tags.find(m => m.checked);
-    let typeName = type ? type.type : undefined;
-    return this.params.listBillTypes.indexOf(typeName);
+    return this.tags.findIndex(m => m.checked);
   }
 
 }

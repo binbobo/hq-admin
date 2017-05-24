@@ -150,8 +150,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of list">
-            <td>
+          <tr *ngFor="let item of list" class="text-center">
+            <td width="40">
               <!--<a href="#" (click)="nullifyHandler($event, item.id)">作废</a> |-->
               <button [hqSpinner]="item.generating" type="button" class="btn btn-sm btn-info" [disabled]="item.generating" (click)="orderDetailsHandler(item, lgModal)">详情</button>
             </td>
@@ -193,16 +193,7 @@
           <div class="modal-body">
             <hq-workorder-detail [data]="selectedOrder"></hq-workorder-detail>
             <!--只有前4个选项卡显示-->
-            <div *ngIf="true" class="card">
-              <div class="card-header" style="color:gray;padding: 3px 5px;">
-                工时费
-                <span class="ml-2 mr-2">{{selectedOrder?.workHourFee|centToYuan}}</span> | 材料费
-                <span class="ml-2 mr-2">{{selectedOrder?.materialFee|centToYuan}}</span> | 其它
-                <span class="ml-2 mr-2">{{selectedOrder?.otherFee|centToYuan}}</span> | 应收金额
-                <span class="ml-2 mr-2">{{selectedOrder?.sumFee|centToYuan}}</span>| 折扣金额
-                <span class="ml-2 mr-2">{{selectedOrder?.discountFee|centToYuan}}</span>|
-              </div>
-            </div>
+            <hq-fee-statistics [fee]="selectedOrder.fee"></hq-fee-statistics>
           </div>
         </div>
       </div>

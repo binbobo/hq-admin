@@ -102,7 +102,7 @@ export class ProcurementCreateComponent implements OnInit {
       yuan: event.price / 100,
       taxRate: event.taxRate,
       exTaxPrice: event.exTaxPrice,
-      productCategory: event.category,
+      productCategory: event.categoryName,
     }
     this.form.patchValue(item);
     this.isHQProduct = true;
@@ -120,24 +120,11 @@ export class ProcurementCreateComponent implements OnInit {
     this.calculate();
   }
 
-  // public get codeSource() {
-  //   return (params: TypeaheadRequestParams) => {
-  //     if (this.isHQProduct) {
-  //       let model = Object.assign({}, this.model, { productCode: params.text });
-  //       this.form.reset(model);
-  //       this.isHQProduct = false;
-  //     }
-  //     let p = new GetProductsRequest(params.text);
-  //     p.setPage(params.pageIndex, params.pageSize);
-  //     return this.procurementService.getProducts(p);
-  //   };
-  // }
-
   private calculate() {
     let count = this.form.controls['count'].value || 0;
     let price = this.form.controls['price'].value || 0;
     let tax = this.model.taxRate || 0;
-    let exTaxPrice = price / (tax * 0.01 + 1);
+    let exTaxPrice = Math.floor(price / (tax * 0.01 + 1));
     let amount = count * price;
     let exTaxAmount = count * exTaxPrice;
     this.form.patchValue({

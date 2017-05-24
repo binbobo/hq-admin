@@ -3,6 +3,7 @@ import { FormHandle } from 'app/shared/models';
 import { Inventory, InventoryService } from '../inventory.service';
 import { Observable } from 'rxjs/Observable';
 import { FormGroup, Validators } from '@angular/forms';
+import { CustomValidators } from 'ng2-validation';
 
 @Component({
   selector: 'hq-inventory-edit',
@@ -27,8 +28,8 @@ export class InventoryEditComponent extends FormHandle<Inventory> implements OnI
     return this.formBuilder.group({
       id: [this.model.id],
       locationName: [this.model.locationName, [Validators.maxLength(50)]],
-      maxCount: [this.model.maxCount],
-      minCount: [this.model.minCount],
+      maxCount: [this.model.maxCount, [CustomValidators.min(0)]],
+      minCount: [this.model.minCount, [CustomValidators.min(0)]],
       description: [this.model.description, [Validators.maxLength(200)]],
     });
   }

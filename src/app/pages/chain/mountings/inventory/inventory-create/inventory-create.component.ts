@@ -7,6 +7,7 @@ import { MountingsService, GetMountingsListRequest } from '../../../mountings/mo
 import { TypeaheadMatch } from "ngx-bootstrap";
 import { TypeaheadRequestParams } from 'app/shared/directives';
 import { TreeviewItem, TreeItem } from 'ngx-treeview';
+import { CustomValidators } from 'ng2-validation';
 
 @Component({
   selector: 'hq-inventory-create',
@@ -22,12 +23,13 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
   private selectedProduct: any;
 
   private get exists() {
-    if (!this.selectedProduct) return false;
-    if (!this.form) return false;
-    let locations: Array<{ id: string }> = this.selectedProduct.locations;
-    let locationId = this.form.get('locationId').value;
-    let item = locations.find(m => m.id === locationId);
-    return item;
+    return false;
+    // if (!this.selectedProduct) return false;
+    // if (!this.form) return false;
+    // let locations: Array<{ id: string }> = this.selectedProduct.locations;
+    // let locationId = this.form.get('locationId').value;
+    // let item = locations.find(m => m.id === locationId);
+    // return item;
   }
 
   constructor(
@@ -53,8 +55,8 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
       code: [this.model.code, [Validators.required, Validators.maxLength(36)]],
       name: [this.model.name, [Validators.required, Validators.maxLength(60)]],
       productSpecification: [this.model.productSpecification, [Validators.required, Validators.maxLength(20)]],
-      maxCount: [this.model.maxCount],
-      minCount: [this.model.minCount],
+      maxCount: [this.model.maxCount, [CustomValidators.min(0)]],
+      minCount: [this.model.minCount, [CustomValidators.min(0)]],
       brandId: [this.model.brandId, [Validators.required]],
       packageInfo: [this.model.packageInfo, [Validators.maxLength(20)]],
       madeIn: [this.model.madeIn, [Validators.maxLength(100)]],
@@ -113,7 +115,7 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
   public vehicles: Array<any> = [];
 
   onVehicleSelect(event) {
-    let index = this.vehicles.findIndex(m => m.id === event.id);
+    let index = this.vehicles.findIndex(m => m.vehicleId === event.vehicleId);
     if (event.checked && !~index) {
       this.vehicles.push(event);
     } else if (!event.checked && ~index) {
@@ -122,7 +124,7 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
   }
 
   public get vehicleCheckStrategy() {
-    return (item) => this.vehicles.some(m => m.id === item.id);
+    return (item) => this.vehicles.some(m => m.vehicleId === item.vehicleId);
   }
 
   onItemChange(event) {
@@ -136,10 +138,11 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
       name: event.name,
       packageInfo: event.packageInfo,
       madeIn: event.madeIn,
-      brandName: event.brandName,
+      brandName: event.brand,
       brandId: event.brandId,
       productSpecification: event.specification,
-      unit: event.unitId
+      unit: event.unitItem && event.unitItem.value,
+      categoryId: Array.isArray(event.categoryList) && event.categoryList.length && [event.categoryList[0].value]
     };
     this.form.patchValue(item);
     this.disableItem(true);
@@ -163,12 +166,13 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
   }
 
   onReset() {
+    this.owned = false;
     this.vehicles = [];
     super.onReset();
   }
 
   onCreate() {
-    let vehicles = this.vehicles.map(m => m.id);
+    let vehicles = this.vehicles.map(m => m.vehicleId);
     this.form.patchValue({ vehicleId: vehicles });
     return super.onCreate();
   }
