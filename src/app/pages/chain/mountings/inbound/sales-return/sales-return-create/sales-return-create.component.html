@@ -41,7 +41,7 @@
         <input readonly formControlName="locationName" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">数量</label>
+        <label class="form-control-label">数量（可退数量<span>{{canReturnCount}}</span>）</label>
         <input (input)="calculate()" type="number" formControlName="counts" class="form-control">
       </div>
       <div class="form-group">

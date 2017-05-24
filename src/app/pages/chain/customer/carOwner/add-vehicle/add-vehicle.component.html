@@ -3,28 +3,28 @@
     <div class="col-6">
       <div class="form-group">
         <label for="plateNo" class="col-form-label"><span class="asterisk mr-1">*</span>车牌号</label>
-        <input type="text" label="车牌号" class="form-control" formControlName="plateNo" placeholder="车牌号">
+        <input maxlength="12" type="text" label="车牌号" class="form-control" formControlName="plateNo" placeholder="车牌号">
       </div>
       <div class="form-group">
         <label for="series" class="col-form-label"><span class="asterisk mr-1">*</span>车系</label>
-        <input label="车系" forceRefresh="true" [hqTableTypeahead]="seriesTypeaheadSource" [columns]="vehicleTypeaheadColumns" (onSelect)="onSeriesSelect($event)"
+        <input label="车系" forceRefresh="true" hqSeriesTypeahead [brandId]="vehicleForm.value.brandId" (onSelect)="onSeriesSelect($event)"
           formControlName="series" type="text" class="form-control">
         <input type="hidden" formControlName="seriesId" class="form-control">
       </div>
       <div class="form-group">
         <label for="vin" class="col-form-label"><span class="asterisk mr-1">*</span>vin</label>
-        <input label="车辆标识码" type="text" class="form-control" formControlName="vin" id="vin" placeholder="vin">
+        <input maxlength="17" label="车辆标识码" type="text" class="form-control" formControlName="vin" id="vin" placeholder="vin">
       </div>
       <div class="form-group">
         <label for="engineNo" class="col-form-label">发动机号</label>
-        <input type="text" class="form-control" formControlName="engineNo" placeholder="发动机号">
+        <input maxlength="16" type="text" class="form-control" formControlName="engineNo" placeholder="发动机号">
       </div>
-      <div class="form-group">
+      <div class="form-group pos">
         <label for="purchaseDate" class="col-form-label">购车日期</label>
         <input readonly type="text" label="购车日期" class="form-control" formControlName="purchaseDate" id="purchaseDate" ngui-datetime-picker
            date-only="true" placeholder="购车日期">
       </div>
-      <div class="form-group">
+      <div class="form-group pos">
         <label for="insuranceDue" class="col-form-label">保险到期日期</label>
         <input readonly type="text" label="保险到期日期" class="form-control" formControlName="insuranceDue" placeholder="保险到期日期" ngui-datetime-picker
            date-only="true" id="insuranceDue">
@@ -33,97 +33,32 @@
     <div class="col-6">
       <div class="form-group">
         <label for="brand" class="col-form-label"><span class="asterisk mr-1">*</span>品牌</label>
-        <input label="品牌" forceRefresh="true" hqBrandTypeahead="brandName" (onSelect)="onBrandSelect($event)"
+        <input label="品牌" forceRefresh="true" hqBrandTypeahead (onSelect)="onBrandSelect($event)"
           formControlName="brand" type="text" class="form-control">
         <input type="hidden" formControlName="brandId" class="form-control">
       </div>
       <div class="form-group">
         <label for="vehicleName" class="col-form-label"><span class="asterisk mr-1">*</span>车型</label>
-        <input label="车型" forceRefresh="true" [hqTableTypeahead]="modelTypeaheadSource" [columns]="vehicleTypeaheadColumns" (onSelect)="onModelSelect($event)"
+        <input label="车型" forceRefresh="true" hqModelTypeahead [brandId]="vehicleForm.value.brandId" [seriesId]="vehicleForm.value.seriesId" (onSelect)="onModelSelect($event)"
           formControlName="vehicleName" type="text" class="form-control">
         <input type="hidden" formControlName="vehicleId" class="form-control">
       </div>
       <div class="form-group">
         <label for="vehicleColor" class="col-form-label">车身颜色</label>
-        <input type="text" class="form-control" formControlName="vehicleColor" placeholder="车身颜色" id="vehicleColor">
+        <input maxlength="10" type="text" class="form-control" formControlName="vehicleColor" placeholder="车身颜色" id="vehicleColor">
       </div>
-      <div class="form-group">
+      <div class="form-group pos">
         <label for="validate" class="col-form-label">验车日期</label>
         <input type="text" readonly label="验车日期" class="form-control" formControlName="validate" placeholder="验车日期" ngui-datetime-picker 
           date-only="true" id="validate">
       </div>
       <div class="form-group">
         <label for="insuranceCompany" class="col-form-label">保险公司</label>
-        <input type="text" class="form-control" formControlName="insuranceCompany" placeholder="保险公司" id="insuranceCompany">
+        <input maxlength="25" type="text" class="form-control" formControlName="insuranceCompany" placeholder="保险公司" id="insuranceCompany">
       </div>
     </div>
   </form>
 </div>
-<!--<form [formGroup]="vehicleForm" autocomplete="off">
-  <div class="form-group row">
-    <div class="col-4">
-      <label for="plateNo" class="col-form-label"><span class="asterisk mr-1">*</span>车牌号</label>
-      <input type="text" label="车牌号" class="form-control" formControlName="plateNo" placeholder="车牌号">
-    </div>
-    <div class="col-4">
-      <label for="brand" class="col-form-label"><span class="asterisk mr-1">*</span>品牌</label>
-      <input label="品牌" forceRefresh="true" [hqTableTypeahead]="brandTypeaheadSource" [columns]="vehicleTypeaheadColumns" (onSelect)="onBrandSelect($event)"
-        formControlName="brand" type="text" class="form-control">
-      <input type="hidden" formControlName="brandId" class="form-control">
-    </div>
-    <div class="col-4">
-      <label for="series" class="col-form-label"><span class="asterisk mr-1">*</span>车系</label>
-      <input label="车系" forceRefresh="true" [hqTableTypeahead]="seriesTypeaheadSource" [columns]="vehicleTypeaheadColumns" (onSelect)="onSeriesSelect($event)"
-        formControlName="series" type="text" class="form-control">
-      <input type="hidden" formControlName="seriesId" class="form-control">
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-4">
-      <label for="vehicleName" class="col-form-label"><span class="asterisk mr-1">*</span>车型</label>
-      <input label="车型" forceRefresh="true" [hqTableTypeahead]="modelTypeaheadSource" [columns]="vehicleTypeaheadColumns" (onSelect)="onModelSelect($event)"
-        formControlName="vehicleName" type="text" class="form-control">
-      <input type="hidden" formControlName="vehicleId" class="form-control">
-    </div>
-    <div class="col-4">
-      <label for="vin" class="col-form-label"><span class="asterisk mr-1">*</span>vin</label>
-      <input label="车辆标识码" type="text" class="form-control" formControlName="vin" id="vin"
-        placeholder="vin">
-    </div>
-    <div class="col-4">
-      <label for="engineNo" class="col-form-label">发动机号</label>
-      <input  type="text" class="form-control" formControlName="engineNo"
-        placeholder="发动机号">
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-4">
-      <label for="vehicleColor" class="col-form-label">车身颜色</label>
-      <input type="text" class="form-control" formControlName="vehicleColor" placeholder="车身颜色" id="vehicleColor">
-    </div>
-    <div class="col-4">
-      <label for="purchaseDate" class="col-form-label">购车日期</label>
-      <input type="text" label="购车日期" class="form-control" formControlName="purchaseDate" id="purchaseDate" ngui-datetime-picker
-         date-only="true" placeholder="购车日期">
-    </div>
-    <div class="col-4">
-      <label for="validate" class="col-form-label">验车日期</label>
-      <input type="text" label="验车日期" class="form-control" formControlName="validate" placeholder="验车日期" ngui-datetime-picker 
-        date-only="true" id="validate">
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-4">
-      <label for="insuranceDue" class="col-form-label">保险到期日期</label>
-      <input type="text" label="保险到期日期" class="form-control" formControlName="insuranceDue" placeholder="保险到期日期" ngui-datetime-picker
-         date-only="true" id="insuranceDue">
-    </div>
-    <div class="col-4">
-      <label for="insuranceCompany" class="col-form-label">保险公司</label>
-      <input type="text" class="form-control" formControlName="insuranceCompany" placeholder="保险公司" id="insuranceCompany">
-    </div>
-  </div>
-</form>-->
 <br>
 <div>
   <button type="submit" class="btn btn-primary" [disabled]="!enableSaveVehicle" (click)="onAddVehicleConfirmHandler()">保存</button>

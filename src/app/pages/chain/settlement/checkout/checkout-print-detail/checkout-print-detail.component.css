@@ -1,9 +1,4 @@
-/*增项标志*/
-.triangle{
-border-top: 10px solid gray;
-border-left: 10px solid transparent;
-float: right;
-}
+
 table th,table td{
     text-align: center;
     

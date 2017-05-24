@@ -18,33 +18,33 @@
       <div class="form-group row">
         <label for="plateNo" class="col-1 col-form-label col-form-label">车牌号</label>
         <div class="col-2">
-          <input type="text" [(ngModel)]="params.plateNo" name="plateNo" class="form-control" placeholder="车牌号">
+          <input maxlength="12" type="text" [(ngModel)]="params.plateNo" name="plateNo" class="form-control" placeholder="车牌号">
         </div>
         <label for="customerName" class="col-1 col-form-label">车主</label>
         <div class="col-2">
-          <input type="text" [(ngModel)]="params.customerName" name="customerName" class="form-control">
+          <input maxlength="15" type="text" placeholder="车主" [(ngModel)]="params.customerName" name="customerName" class="form-control">
         </div>
         <label for="phone" class="col-1 col-form-label">车主电话</label>
         <div class="col-2">
-          <input type="text" [(ngModel)]="params.phone" name="phone" class="form-control" placeholder="车主电话">
+          <input maxlength="11" type="text" [(ngModel)]="params.phone" name="phone" class="form-control" placeholder="车主电话">
         </div>
         <label for="contactUser" class="col-1 col-form-label">送修人</label>
         <div class="col-2">
-          <input type="text" [(ngModel)]="params.contactUser" name="contactUser" class="form-control" placeholder="送修人">
+          <input maxlength="15" type="text" [(ngModel)]="params.contactUser" name="contactUser" class="form-control" placeholder="送修人">
         </div>
       </div>
       <div class="form-group row">
         <label for="contactInfo" class="col-1 col-form-label">送修人电话</label>
         <div class="col-2">
-          <input type="text" [(ngModel)]="params.contactInfo" name="contactInfo" class="form-control" placeholder="送修人电话">
+          <input maxlength="11" type="text" [(ngModel)]="params.contactInfo" name="contactInfo" class="form-control" placeholder="送修人电话">
         </div>
         <label for="billCode" class="col-1 col-form-label">工单号</label>
         <div class="col-2">
-          <input type="text" [(ngModel)]="params.billCode" name="billCode" class="form-control" placeholder="工单号">
+          <input maxlength="25" type="text" [(ngModel)]="params.billCode" name="billCode" class="form-control" placeholder="工单号">
         </div>
         <div class="col-offset-6" *ngIf="isCollapsed">
           <button type="submit" [disabled]="false" class="btn btn-primary mr-2">查询</button>
-          <button type="reset" (click)="reset(form)" class="btn btn-secondary mr-2">清空</button>
+          <button type="reset" class="btn btn-secondary mr-2">清空</button>
           <button type="button" (click)="export()" class="btn btn-secondary mr-2">导出</button>
         </div>
       </div>
@@ -63,19 +63,19 @@
             <div class="form-group row">
               <label for="brand" class="col-1 col-form-label">品牌</label>
               <div class="col-2">
-                <input type="text" [(ngModel)]="params.brand" name="brand" class="form-control" placeholder="品牌">
+                <input maxlength="10" type="text" [(ngModel)]="params.brand" name="brand" class="form-control" placeholder="品牌">
               </div>
               <label for="series" class="col-1 col-form-label">车系</label>
               <div class="col-2">
-                <input type="text" [(ngModel)]="params.series" name="series" class="form-control" placeholder="车系">
+                <input maxlength="10" type="text" [(ngModel)]="params.series" name="series" class="form-control" placeholder="车系">
               </div>
               <label for="vehicleName" class="col-1 col-form-label">车型</label>
               <div class="col-2">
-                <input type="text" [(ngModel)]="params.vehicleName" name="vehicleName" class="form-control" placeholder="车型">
+                <input maxlength="20" type="text" [(ngModel)]="params.vehicleName" name="vehicleName" class="form-control" placeholder="车型">
               </div>
               <label for="createdUserName" class="col-1 col-form-label col-form-label">服务顾问</label>
               <div class="col-2">
-                <input type="text" [(ngModel)]="params.createdUserName" name="createdUserName" class="form-control" placeholder="服务顾问">
+                <input maxlength="15" type="text" [(ngModel)]="params.createdUserName" name="createdUserName" class="form-control" placeholder="服务顾问">
               </div>
             </div>
             <div class="form-group row">
@@ -119,7 +119,7 @@
               </div>-->
               <div class="col-6" *ngIf="!isCollapsed">
                 <button type="submit" [disabled]="false" class="btn btn-primary mr-2">查询</button>
-                <button type="reset" (click)="reset(form)" class="btn btn-secondary mr-2">清空</button>
+                <button type="reset"  class="btn btn-secondary mr-2">清空</button>
                 <button type="button" (click)="export()" class="btn btn-secondary mr-2">导出</button>
               </div>
             </div>
@@ -162,7 +162,11 @@
             <td>{{item.createdOnUtc|sDatetime}}</td>
             <td>{{item.expectLeave|sDatetime}}</td>
             <td [class.overtime]="item.overTime">{{item.overTime|durationHumanize}}</td>
-            <td>{{item.vehicleName}}</td>
+            <td>
+              <span *ngIf="item?.brand">{{item.brand}}</span>
+              <span *ngIf="item?.series">,{{item.series}}</span>
+              <span *ngIf="item?.vehicleName">,{{item.vehicleName}}</span>
+            </td>
             <td>{{item.vin}}</td>
             <td>{{item.contactUser}}</td>
             <td>{{item.contactInfo}}</td>

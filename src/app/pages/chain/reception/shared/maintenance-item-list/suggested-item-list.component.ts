@@ -10,6 +10,8 @@ export class SuggestedItemListComponent implements OnInit {
   suggestServiceOutputs: any;
   @Input()
   showCaption = false;
+  @Input()
+  showNo = false;
   constructor() { }
 
   ngOnInit() {

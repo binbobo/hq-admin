@@ -39,9 +39,3 @@ caption {
 max-width: 1000px;
 }
 }
-/*增项标志*/
-.triangle{
-border-top: 10px solid gray;
-border-left: 10px solid transparent;
-float: right;
-}

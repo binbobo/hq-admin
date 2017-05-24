@@ -10,6 +10,8 @@ export class AttachmentItemListComponent implements OnInit {
   attachServiceOutputs: any;
   @Input()
   showCaption = false;
+  @Input()
+  showNo = false;
 
   constructor() { }
 

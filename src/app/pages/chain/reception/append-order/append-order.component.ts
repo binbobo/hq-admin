@@ -89,7 +89,7 @@ export class AppendOrderComponent {
   public onTypeaheadSelect($event) {
     this.isShowAppend = true;
     this.isableSuspend = true;
-   
+
     this.listId = $event.id;
     this.workHourFee = 0;
     this.sumFee = 0;
@@ -97,9 +97,8 @@ export class AppendOrderComponent {
     this.suspendData = $event;
     this.service1.get(this.listId)
       .then(data => {
-
         console.log(data)
-         this.SearchappendList = data;
+        this.SearchappendList = data;
         this.maintenanceId = data.id;
         //维修项目
         this.maintenanceProjectData = data.serviceOutputs;
@@ -157,7 +156,7 @@ export class AppendOrderComponent {
 
   submitAddOrder() {
     console.log(this.newMaintenanceItemData);
-
+    this.isableAppend=false;
 
     this.newSuggestData.forEach(item => {
       item.content = item.serviceName;
@@ -175,6 +174,7 @@ export class AppendOrderComponent {
     console.log(dada);
 
     this.service1.put(postData, this.listId).then((result) => {
+      this.isableAppend=false;
       let returnData = result.data;
       this.maintenanceProjectData = returnData.serviceOutputs;
       this.suspendData.maintenanceProjectData = this.maintenanceProjectData;
@@ -197,7 +197,7 @@ export class AppendOrderComponent {
       this.newSuggestData = [],
         this.newAttachData = [],
         this.newMaintenanceItemData = []
-    }).catch(err => this.alerter.error(err, true, 2000));
+    }).catch(err =>{this.alerter.error(err, true, 2000);this.isableAppend=true;});
   }
 
   // 编辑维修项目

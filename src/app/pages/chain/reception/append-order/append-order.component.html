@@ -28,7 +28,7 @@
       <div class="serach-list">开单时间:{{SearchappendList.createdOnUtc |sDatetime}} </div>
       <div class="serach-list">送修人:{{SearchappendList.contactUser}} </div>
       <div class="serach-list">送修人电话:{{SearchappendList.contactInfo}}</div>
-      <div class="serach-list">服务顾问:{{SearchappendList.createdUserName}}</div> 
+      <div class="serach-list">服务顾问:{{SearchappendList.createdUserName}}</div>
     </div>
     <div class="serach-main">
       <div class="serach-list">品牌:{{SearchappendList.brand}} </div>
@@ -71,7 +71,7 @@
             <tbody>
               <tr *ngFor="let item of maintenanceProjectData">
                 <td>&nbsp;</td>
-                <td><span [class.triangle]="item.type === 3"></span>{{item.serviceName}}</td>
+                <td>{{item.serviceName}}<span *ngIf="item.type === 3" class="append-stamp">增项</span></td>
                 <td>{{item.workHour}}</td>
                 <td>{{item.price|centToYuan}}</td>
                 <td>{{item.discount}}</td>
@@ -176,7 +176,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let item of lastDataProjectList ">
-                <td><span [class.triangle]="item.type === 3"></span>{{item.serviceName}}</td>
+                <td>{{item.serviceName}}<span [class.append-stamp]="item.type === 3">增项</span></td>
                 <td>{{item.workHour}}</td>
                 <td>{{item.price|centToYuan}}</td>
                 <td>{{item.amount|centToYuan}}</td>

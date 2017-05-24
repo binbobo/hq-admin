@@ -81,7 +81,7 @@
               <button [hqSpinner]="item.generating" [disabled]="item.generating" type="button" class="btn btn-info btn-sm" (click)="businessDetailsHandler(item, item.id, bdModal)">详情</button>
               <!--<a href="javascript:void(0)" (click)="businessDetailsHandler($event, item.id, bdModal)">详情</a>-->
             </td>
-            <td *ngIf="items">{{item.plateNo}}</td>
+            <td *ngIf="items">{{item.orgName}}</td>
             <td>{{item.plateNo}}</td>
             <td>{{item.billCode}}</td>
             <td>{{item.typeName}}</td>

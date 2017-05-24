@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CustomerService} from '../../customer.service';
 import { OrderService } from '../../../reception/order.service';
 import { Location } from '@angular/common';
-import { TypeaheadRequestParams, HqAlerter } from 'app/shared/directives';
+import { HqAlerter } from 'app/shared/directives';
 import * as moment from 'moment';
 import { CustomValidators } from 'ng2-validation';
 import { HQ_VALIDATORS } from 'app/shared/shared.module';
@@ -65,6 +65,7 @@ export class AddCarownerComponent implements OnInit {
 
   // 删除一条车辆记录 处理程序
   onDelVehicleConfirmHandler(plateNo) {
+    if (!confirm('确定要删除当前选择的车辆吗?')) { return; }
     this.newVehiclesData.filter((item, index) => {
       if (item.plateNo === plateNo) {
         this.newVehiclesData.splice(index, 1);

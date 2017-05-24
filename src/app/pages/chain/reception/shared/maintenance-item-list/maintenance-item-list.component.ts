@@ -11,6 +11,8 @@ export class MaintenanceItemListComponent implements OnInit {
   serviceOutputs: any;
   @Input()
   showCaption = false;
+  @Input()
+  showNo = false;
   constructor() { }
 
   ngOnInit() {

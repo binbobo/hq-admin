@@ -32,11 +32,23 @@ export class SalesReturnService implements BasicService<any>{
   }
 //   //退库单号模糊查询
   getBillCodePagedList(params: BillCodeRequest): Promise<PagedResult<any>> {
-    const url = Urls.chain.concat('/Sales/GetPagedList?', params.serialize());
+    const url = Urls.chain.concat('/Sales/SearchBillCode?', params.serialize());
     console.log("退库单url",url);
     return this.httpService.get<PagedResult<any>>(url)
       .then(result => {
         console.log('退库单号数据', result);
+        // let p = {
+        //   totalCount:0,
+        //   total:0,
+        //   data:[]
+        // }
+        // result.data[0].billCodeList.map(m=>{
+        //    p.data.push({text:m.text,value:m.value});
+        // })
+        // p.totalCount = result.data[0].billCodeList.length;
+        // p.total = result.data[0].billCodeList.length;
+        // console.log('pppp',p);
+        // return p;
         return result;
       })
       .catch(err => Promise.reject(`获取退库单号信息失败：${err}`));
@@ -105,7 +117,8 @@ export class CustomerRequest extends PagedParams {
 export class BillCodeRequest extends PagedParams {
   constructor(
     public customerId?: string, // 客户ID
-    // public customerName?: string, // 客户I
+    public customerName?: string, // 客户I
+    // public phone?: string, // 客户I
     public billCode?: string, // 单号
   ) {
     super();

@@ -10,6 +10,8 @@ export class MaintenanceFixingsListComponent implements OnInit {
   productOutputs: any;
   @Input()
   showCaption = false;
+  @Input()
+  showNo = false;
   constructor() { }
 
   ngOnInit() {

@@ -66,7 +66,11 @@
             <td>{{item.createdOnUtc|sDatetime}}</td>
             <td>{{item.expectLeave|sDatetime}}</td>
             <td [class.overtime]="item.overTime">{{item.overTime|durationHumanize}}</td>
-            <td>{{item.vehicleName}}</td>
+            <td>
+              <span *ngIf="item?.brand">{{item.brand}}</span>
+              <span *ngIf="item?.series">,{{item.series}}</span>
+              <span *ngIf="item?.vehicleName">,{{item.vehicleName}}</span>
+            </td>
             <td>{{item.vin}}</td>
             <td>{{item.contactUser}}</td>
             <td>{{item.contactInfo}}</td>
@@ -77,19 +81,7 @@
     </div>
     <br>
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
-    <!--费用统计区域-->
-    <div *ngIf="false" class="card">
-      <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
-        折前费用: 工时费
-        <span class="ml-2 mr-2">{{workHourFee}}</span> | 材料费
-        <span class="ml-2 mr-2">{{materialFee}}</span> | 其它
-        <span class="ml-2 mr-2">{{otherFee}}</span> | 合计
-        <span class="ml-2 mr-2">{{sumFee}}</span>|
-      </div>
-    </div>
-
   </div>
-
 
   <!--详情 begin-->
   <div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
@@ -106,83 +98,61 @@
           <!--导出详情begin-->
           <tabset>
             <tab heading="维修项目" *ngIf="selectedOrder?.serviceOutputs?.length>0">
-              <table class="table table-striped table-bordered">
-                <thead>
-                  <tr>
-                    <th><input value="all" #checkAll (change)="assignToggleCheckboxAll(checkAll)" [checked]="selectedOrder?.serviceOutputs?.checkedAll"
-                        type="checkbox" /></th>
-                    <th>指派维修技师</th>
-                    <th>转派</th>
-                    <th>项目名称</th>
-                    <th>维修工时(小时)</th>
-                    <th>操作时间</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let record of selectedOrder?.serviceOutputs" [class.checked]="record.checked" (click)="$event.stopPropagation();assignToggleCheckbox(record)">
-                    <td>
-                      <!--teamType (integer, optional): 工项状态 1.待派工 2.待开工 3.已开工 4.已转派 5.已完工 = ['1', '2', '3', '4', '5'],-->
-                      <!--只能转派一次 转派之后  不再可以指派和转派-->
-                      <input [disabled]="record.teamType === 4 || record.teamType === 5" value="{{record.id}}" (click)="$event.stopPropagation();assignToggleCheckbox(record)"
-                        [checked]="record.checked" type="checkbox" />
-                    </td>
-                    <td>
-                      <span *ngIf="record.teamType !== 1">
+              <div class="overflow-auto">
+                <table class="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th width="30"><input value="all" #checkAll (change)="assignToggleCheckboxAll(checkAll)" [checked]="selectedOrder?.serviceOutputs?.checkedAll"
+                          type="checkbox" /></th>
+                      <th>指派维修技师</th>
+                      <th>转派</th>
+                      <th>项目名称</th>
+                      <th>维修工时(小时)</th>
+                      <!--<th>派工时间</th>-->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let record of selectedOrder?.serviceOutputs" [class.checked]="record.checked" (click)="$event.stopPropagation();assignToggleCheckbox(record)">
+                      <td>
+                        <!--teamType (integer, optional): 工项状态 1.待派工 2.待开工 3.已开工 4.已转派 5.已完工 = ['1', '2', '3', '4', '5'],-->
+                        <!--只能转派一次 转派之后  不再可以指派和转派-->
+                        <input [disabled]="record.teamType === 4 || record.teamType === 5" value="{{record.id}}" (click)="$event.stopPropagation();assignToggleCheckbox(record)"
+                          [checked]="record.checked" type="checkbox" />
+                      </td>
+                      <td>
+                        <span *ngIf="record.teamType !== 1">
                         {{record?.employeeNames.join(',')}}
                       </span>
-                    </td>
-                    <td>
-                      <span *ngIf="record.teamType === 4 || record.teamType === 5">
+                      </td>
+                      <td>
+                        <span *ngIf="record.teamType === 4 || record.teamType === 5">
                         {{record?.turnEmployeeNames.join(',')}}
                       </span>
-                    </td>
-                    <td>{{record?.serviceName}}
-                      <!-- 类型3表示增项 -->
-                      <span [class.triangle]="record.type === 3"></span>
-                    </td>
-                    <td>{{record?.workHour }}</td>
-                    <td>{{record?.operateDateTime|sDatetime}}</td>
-                  </tr>
-                </tbody>
-              </table>
+                      </td>
+                      <td>{{record?.serviceName}}
+                        <!-- 类型3表示增项 -->
+                        <span *ngIf="record.type === 3" class="append-stamp">增项</span>
+                      </td>
+                      <td>{{record?.workHour }}</td>
+                      <!--<td>{{record?.operateDateTime|sDatetime}}</td>-->
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
               <div>
                 <button [hqSpinner]="generating.assign" class="btn btn-secondary mr-2" (onConfirm)="onConfirmTechnicians($event, 1)" [hqMutilSelect]="maintenanceTechnicians"
-                  mTitle="选择维修技师" [disabled]="!selectedOrder?.serviceOutputs?.enableAssignment" (click)="onMultiSelectorClick($event)" placement="right">指派</button>
+                  mTitle="选择维修技师" [disabled]="!selectedOrder?.serviceOutputs?.enableAssignment" (click)="onMultiSelectorClick($event)"
+                  placement="right">指派</button>
                 <button [hqSpinner]="generating.reassign" class="btn btn-secondary" (onConfirm)="onConfirmTechnicians($event, 2)" [hqMutilSelect]="maintenanceTechnicians"
-                  mTitle="选择维修技师" [disabled]="!selectedOrder?.serviceOutputs?.enableAssignment" (click)="onMultiSelectorClick($event)" placement="right">转派</button>
+                  mTitle="选择维修技师" [disabled]="!selectedOrder?.serviceOutputs?.enableAssignment" (click)="onMultiSelectorClick($event)"
+                  placement="right">转派</button>
               </div>
             </tab>
             <tab heading="附加项目" *ngIf="selectedOrder?.attachServiceOutputs?.length>0">
-              <table class="table table-striped table-bordered">
-                <thead>
-                  <tr>
-                    <th>备注</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let record of selectedOrder?.attachServiceOutputs">
-                    <td>{{record?.description}}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <hq-attachment-item-list [attachServiceOutputs]="selectedOrder.attachServiceOutputs"></hq-attachment-item-list>
             </tab>
             <tab heading="建议维修项目" *ngIf="selectedOrder?.suggestServiceOutputs?.length>0">
-              <table class="table table-striped table-bordered">
-                <thead>
-                  <tr>
-                    <th>建议维修项目</th>
-                    <th>操作时间</th>
-                    <th>备注</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let record of selectedOrder?.suggestServiceOutputs">
-                    <td>{{record?.content}}</td>
-                    <td>{{record?.operateDateTime|sDatetime}}</td>
-                    <td>{{record?.description}}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <hq-suggested-item-list [suggestServiceOutputs]="selectedOrder?.suggestServiceOutputs"></hq-suggested-item-list>
             </tab>
             <hr>
           </tabset>
