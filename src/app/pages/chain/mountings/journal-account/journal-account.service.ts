@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpService, Urls } from 'app/shared/services';
-import { PagedParams, PagedResult, PagedService } from 'app/shared/models';
+import { PagedParams, PagedResult, PagedService, ApiResult } from 'app/shared/models';
 
 
 @Injectable()
@@ -8,17 +8,18 @@ export class JournalAccountService implements PagedService<JournalAccount> {
 
   constructor(private httpService: HttpService) { }
 
+  public getProduct(id: string) {
+    let url = Urls.chain.concat('/StoreInOutDetails/Product/', id);
+    return this.httpService.get<ApiResult<any>>(url)
+      .then(result => result.data)
+      .catch(err => Promise.reject(`获取配件信息失败：${err}`));
+  }
+
   public getPagedList(params: JournalAccountListRequest): Promise<JournalAccountListResponse> {
     if (!params.productId) return Promise.resolve(new PagedResult());
     let url = Urls.chain.concat('/storeInOutDetails/ProductSerialPageList');
     let search = params.serialize();
     return this.httpService.get<JournalAccountListResponse>(url, search)
-      .then(result => {
-        if (result.tabList) {
-          result.tabList.forEach(m => m.checked = m.type === params.billTypeKey);
-        }
-        return result;
-      })
       .catch(err => Promise.reject(`账单加载失败：${err}`));
   }
 

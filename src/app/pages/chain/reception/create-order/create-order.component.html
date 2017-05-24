@@ -200,7 +200,7 @@
     <br>
     <div>
       <button [hqSpinner]="generating" type="button" class="btn btn-primary" [disabled]="!enableCreateWorkSheet" (click)="createWorkSheet()">生成工单</button>
-      <button [hqSpinner]="suspendBill.suspending" type="button" class="btn btn-secondary" [disabled]="!enableSuspendWorkSheet"
+      <button [hqSpinner]="suspendBill.suspending" type="button" class="btn btn-success" [disabled]="!enableSuspendWorkSheet"
         (click)="suspendOrder()">挂单</button>
     </div>
   </div>

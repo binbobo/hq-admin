@@ -5,7 +5,7 @@ import { SelectOption, PagedResult } from 'app/shared/models';
 import { ModalDirective } from 'ngx-bootstrap';
 import { Router } from '@angular/router';
 import { NgForm } from "@angular/forms";
-import { SuspendBillDirective } from "app/pages/chain/chain-shared";
+import { SalesOutBillDirective } from '../sales-out-bill.directive';
 
 @Component({
   selector: 'hq-sales-list',
@@ -13,8 +13,8 @@ import { SuspendBillDirective } from "app/pages/chain/chain-shared";
   styleUrls: ['./sales-list.component.css']
 })
 export class SalesListComponent implements OnInit {
-  @ViewChild(SuspendBillDirective)
-  private suspendBill: SuspendBillDirective;
+  @ViewChild(SalesOutBillDirective)
+  private suspendBill: SalesOutBillDirective;
   @ViewChild('createModal')
   private createModal: ModalDirective;
   @ViewChild(HqAlerter)
@@ -40,13 +40,24 @@ export class SalesListComponent implements OnInit {
   }
 
   onCreate(event: SalesListItem) {
-    this.model.list.push(event);
+    let exists = this.model.list.find(m => m.productId == event.productId && m.locationId === event.locationId);
+    if (exists) {
+      let total = exists.count + event.count;
+      if (total > event.stockCount) {
+        alert('所选配件已超过当前库位最大库存量，请减少销售数量或者选择其它库位中的配件！')
+        return false;
+      }
+      exists.count += event.count;
+      exists.price = event.price;
+      exists.amount = exists.price * exists.count;
+    } else {
+      this.model.list.push(event);
+    }
     this.createModal.hide();
   }
 
   onSuspendSelect(item: { id: string, value: any }) {
-    console.log(item)
-    this.reset();
+    this.model = new SalesListRequest();
     Object.assign(this.model, item.value);
     this.model.suspendedBillId = item.id;
   }
@@ -59,19 +70,19 @@ export class SalesListComponent implements OnInit {
 
   reset() {
     this.model = new SalesListRequest();
+    this.suspendBill.refresh();
+    this.form.reset();
     if (Array.isArray(this.salesmen) && this.salesmen.length) {
-      this.model.seller = this.salesmen[0].value;
+      setTimeout(() => this.model.seller = this.salesmen[0].value, 100);
     }
   }
 
   generate(event: Event) {
     this.generating = true;
-     console.log('配件销售数据',this.model);
     this.salesService.generate(this.model)
       .then(data => {
         this.generating = false;
         this.reset();
-        this.suspendBill.refresh();
         return confirm('已生成出库单，是否需要打印？') ? data : null;
       })
       .then(code => code && this.salesService.get(code))
@@ -93,20 +104,11 @@ export class SalesListComponent implements OnInit {
     this.suspendBill.suspend(this.model)
       .then(() => el.disabled = false)
       .then(() => this.reset())
-      .then(() => this.suspendBill.refresh())
       .then(() => this.alerter.success('挂单成功！'))
       .catch(err => {
         el.disabled = false;
         this.alerter.error(err);
       })
-  }
-
-  get columns() {
-    return [
-      { name: 'custName', title: '客户名称' },
-      { name: 'custPhone', title: '手机号码' },
-      { name: 'operator', title: '操作人' },
-    ]
   }
 
   private onProductRemove(item) {

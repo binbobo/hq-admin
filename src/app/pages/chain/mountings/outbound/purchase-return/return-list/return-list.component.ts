@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { ProviderService, ProviderListRequest } from '../../../provider/provider.service';
 import { TypeaheadRequestParams, HqAlerter, PrintDirective } from 'app/shared/directives';
-import { SuspendBillDirective } from 'app/pages/chain/chain-shared';
 import { ModalDirective } from 'ngx-bootstrap';
 import { PurchaseReturnPrintItem, PurchaseReturnItem, PurchaseReturnService, GetBillCodeRequest, GetProductsRequest, PurchaseReturnRequest } from '../purchase-return.service';
 import { SelectOption, DataList } from 'app/shared/models';
+import { PurchaseOutBillDirective } from '../purchase-out-bill.directive';
 
 @Component({
   selector: 'hq-return-list',
@@ -13,8 +13,8 @@ import { SelectOption, DataList } from 'app/shared/models';
 })
 export class ReturnListComponent extends DataList<any> implements OnInit {
 
-  @ViewChild(SuspendBillDirective)
-  private suspendBill: SuspendBillDirective;
+  @ViewChild(PurchaseOutBillDirective)
+  private suspendBill: PurchaseOutBillDirective;
   @ViewChild('createModal')
   private createModal: ModalDirective;
   @ViewChild(HqAlerter)
@@ -33,11 +33,11 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
     private returnService: PurchaseReturnService,
   ) {
     super(injector, returnService);
-    this.size = 5;
     this.reset();
   }
 
   ngOnInit() {
+    this.params.pageSize = 5;
     this.lazyLoad = true;
     super.ngOnInit();
   }
@@ -53,6 +53,7 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
   }
 
   onCreate(item: PurchaseReturnItem) {
+    console.log(item);
     if (this.product.count == 0) {
       this.alerter.warn('配件库存不足，无法完成退库操作！');
       return;
@@ -63,6 +64,8 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
         exists.count = this.product.count;
       } else {
         exists.count = exists.count + item.count;
+        exists.amount = exists.count * exists.count;
+        exists.exTaxAmount = exists.count * exists.exTaxPrice;
       }
     } else {
       item.count = item.count > this.product.count ? this.product.count : item.count;
@@ -76,13 +79,6 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
     this.list = [];
     this.params = new GetProductsRequest();
     this.model = new PurchaseReturnRequest();
-  }
-
-  private get suspendedColumns() {
-    return [
-      { name: 'provider', title: '供应商' },
-      { name: 'createBillTime', title: '挂单时间' },
-    ];
   }
 
   private onBillCodeChange(event: Event) {

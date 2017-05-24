@@ -60,7 +60,8 @@ export class ProcurementItem {
     public taxRate: number = 17,
     public exTaxPrice: number = 0,
     public exTaxAmount: number = 0,
-    public brand?: string,
+    public unit?: string,
+    public brandName?: string,
     public productId?: string,
     public productName?: string,
     public productCode?: string,
@@ -68,12 +69,8 @@ export class ProcurementItem {
     public productSpecification?: string,
     public storeId?: string,
     public locationId?: string,
-    public packingCode?: string,
-    public description?: string,
-
     public locationName?: string,
     public houseName?: string,
-    public vehicleName?: string,
   ) { }
 }
 

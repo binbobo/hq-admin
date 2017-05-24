@@ -22,8 +22,12 @@ export class AccountListComponent extends DataList<JournalAccount> implements On
   }
 
   private onSelectItem(item) {
+    if (typeof item === 'string') {
+      this.alerter.error(item);
+      return false;
+    }
     this.item = item;
-    this.params.productId = item.productId;
+    this.params.productId = item.id;
     this.loadList();
   }
 

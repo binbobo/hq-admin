@@ -2,7 +2,7 @@
 <div class="card">
   <div class="card-header">
     <span>采购退库</span>
-    <ng-template hqSuspendBill="PR" (onRemove)="onSuspendRemove($event)" (onSelect)="onSuspendSelect($event)" [columns]="suspendedColumns"></ng-template>
+    <ng-template hqPurchaseOutBill (onRemove)="onSuspendRemove($event)" (onSelect)="onSuspendSelect($event)"></ng-template>
   </div>
   <div class="card-block">
     <form class="form-inline mb-2">
@@ -13,7 +13,7 @@
       </div>
       <div class="form-group">
         <label>*入库单号：</label>
-        <select class="form-control" name="suppliers" (change)="onBillCodeChange($event)">
+        <select [disabled]="!billCodes?.length" class="form-control" name="suppliers" (change)="onBillCodeChange($event)">
           <option>请选择入库单号</option>
           <option [value]="item.value" [attr.selected]="item.checked" *ngFor="let item of billCodes">{{item.text}}</option>
         </select>
@@ -31,7 +31,7 @@
             <th>规格型号</th>
             <th>配件类别</th>
             <th>库位</th>
-            <th>数量（个）</th>
+            <th>数量</th>
             <th>已退数量</th>
             <th>含税单价（元）</th>
             <th>含税总金额（元）</th>
@@ -74,7 +74,7 @@
             <th>规格型号</th>
             <th>配件类别</th>
             <th>库位</th>
-            <th>数量（个）</th>
+            <th>数量</th>
             <th>含税单价（元）</th>
             <th>含税总金额（元）</th>
             <th>税率（%）</th>
@@ -107,7 +107,7 @@
   </div>
   <div class="card-footer text-muted">
     <button [disabled]="!model?.valid" class="btn btn-primary" (click)="generate($event)">生成采购退库单</button>
-    <button [disabled]="!model?.valid" class="btn btn-info" (click)="suspend($event)">挂单</button>
+    <button [disabled]="!model?.valid" class="btn btn-success" (click)="suspend($event)">挂单</button>
   </div>
 </div>
 

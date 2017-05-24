@@ -2,7 +2,7 @@
 <div class="card">
   <div class="card-header">
     <span>配件销售</span>
-    <ng-template hqSuspendBill="VW" (onRemove)="onSuspendRemove($event)" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
+    <ng-template hqSalesOutBill (onRemove)="onSuspendRemove($event)" (onSelect)="onSuspendSelect($event)"></ng-template>
   </div>
   <div class="card-block">
     <form #form="ngForm" class="form-inline mb-2">
@@ -45,7 +45,7 @@
         <tbody>
           <tr *ngFor="let item of model?.list">
             <td class="text-center"><button (click)="onProductRemove(item)" class="btn btn-sm btn-warning">删除</button></td>
-            <td>{{item.brand }}</td>
+            <td>{{item.brandName }}</td>
             <td class="text-center">{{item.productCode }}</td>
             <td>{{item.productName}}</td>
             <td>{{item.productSpecification}}</td>
@@ -62,7 +62,7 @@
   </div>
   <div class="card-footer text-muted">
     <button [hqSpinner]="suspendBill.generating" [disabled]="form.invalid||!model?.list?.length" class="btn btn-primary" (click)="generate($event)">生成销售出库单</button>
-    <button [hqSpinner]="suspendBill.suspending" [disabled]="form.invalid||!model?.list?.length" class="btn btn-info" (click)="suspend($event)">挂单</button>
+    <button [hqSpinner]="suspendBill.suspending" [disabled]="form.invalid||!model?.list?.length" class="btn btn-success" (click)="suspend($event)">挂单</button>
   </div>
 </div>
 
@@ -73,7 +73,7 @@
         <h5 class="modal-title pull-left">新增</h5>
         <button class="close pull-right" (click)="createModal.hide()">&times;</button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" *ngIf="createModal.isShown">
         <hq-sales-create (formSubmit)="onCreate($event)"></hq-sales-create>
       </div>
     </div>
