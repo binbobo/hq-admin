@@ -70,8 +70,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   isVehicleSelected = false;
 
   isFuzzySearchEnable = true;
-
-
   // 覆盖父类的初始化方法
   ngOnInit() { }
 
@@ -357,6 +355,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   // 从表格中删除一条添加的维修项目事件处理程序
   onDelMaintenanceItem(serviceId) {
+    if (!confirm('确定要删除当前选择的维修项目吗?')) { return; }
     this.newMaintenanceItemData.filter((item, index) => {
       if (item.serviceId === serviceId) {
         this.newMaintenanceItemData.splice(index, 1);

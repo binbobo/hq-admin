@@ -8,15 +8,15 @@
       <div class="form-group row">
         <label for="name" class="col-1 col-form-label">车主</label>
         <div class="col-2">
-          <input type="text" [(ngModel)]="params.name" class="form-control" name="name" id="name" placeholder="车主">
+          <input maxlength="15" type="text" [(ngModel)]="params.name" class="form-control" name="name" id="name" placeholder="车主">
         </div>
         <label for="plateNo" class="col-1 col-form-label">车牌号</label>
         <div class="col-2">
-          <input type="text" [(ngModel)]="params.plateNo" class="form-control" name="plateNo" id="plateNo" placeholder="车牌号">
+          <input maxlength="12" type="text" [(ngModel)]="params.plateNo" class="form-control" name="plateNo" id="plateNo" placeholder="车牌号">
         </div>
         <label for="phone" class="col-1 col-form-label">车主电话</label>
         <div class="col-2">
-          <input type="tel" [(ngModel)]="params.phone" class="form-control" name="plateNo" id="phone" placeholder="车主电话">
+          <input maxlength="11" type="text" [(ngModel)]="params.phone" class="form-control" name="plateNo" id="phone" placeholder="车主电话">
         </div>
       </div>
       <div class="form-group row">
@@ -32,6 +32,7 @@
         </div>
         <div class="col-offset-6 col-3">
           <button type="submit" class="btn btn-primary">查询</button>
+          <button type="reset" class="btn btn-secondary">清空</button>
         </div>
       </div>
     </form>
