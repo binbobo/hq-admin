@@ -66,16 +66,18 @@ export class CheckoutComponent extends DataList<any> {
     evt.preventDefault();
 
     // 根据id获取工单详细信息
-    this.service.get(id).then(data => {
-      // 记录当前操作的工单记录
-      this.selectedOrder = data;
-      this.billId = this.selectedOrder["id"];
-    });
+    // this.service.get(id).then(data => {
+    //   // 记录当前操作的工单记录
+    //   this.selectedOrder = data;
+    //   this.billId = this.selectedOrder["id"];
+    // });
 
     this.service.getPrintDetail(id)
       .then(data => {
         console.log('结算单', data)
-        Object.assign(this.selectedOrder, data);
+        this.selectedOrder = data;
+        this.billId = this.selectedOrder["id"];
+        // Object.assign(this.selectedOrder, data);
         // this.selectedOrder.updateUser = data.updateUser;//结算人
         // this.selectedOrder.updateOnUtc = data.updateOnUtc;//结算时间
         // this.selectedOrder.settlementParty = data.settlementParty;//结算方
@@ -159,7 +161,7 @@ export class CheckoutComponent extends DataList<any> {
       this.service.postPay(this.payPost, this.billId).then(() => {
         this.alerter.info('收银成功!', true, 2000).onClose(() => { dialog.hide(); this.onLoadList(); });
         this.payCheckSingle = [];
-        this.payPost=[];
+        this.payPost = [];
       }).catch(err => this.alerter.error(err, true, 2000));
     }
 
