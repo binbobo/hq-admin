@@ -207,13 +207,30 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   // 根据车牌号， 车主， vin 自动带出客户车辆信息
   loadLastOrderInfo(lastOrder) {
-    // 加载上次工单信息
-    this.workSheetForm.patchValue({
-      contactUser: lastOrder.contactUser,
-      contactInfo: lastOrder.contactInfo,
-      lastEnter: moment(lastOrder.lastEnter).format('YYYY-MM-DD HH:mm'),
-      lastMileage: lastOrder.lastMileage,
-    });
+    // 区分预检单还是 上次维修记录
+    if (lastOrder.preCheckId) {
+      // 预检单 带出所有能带出的信息
+      this.workSheetForm.patchValue({
+        contactUser: lastOrder.contactUser,
+        contactInfo: lastOrder.contactInfo,
+        type: lastOrder.type,
+        mileage: lastOrder.mileage,
+        introducer: lastOrder.introducer,
+        introPhone: lastOrder.introPhone,
+        validate: lastOrder.validate ? moment(lastOrder.validate).format('YYYY-MM-DD') : '',
+        location: lastOrder.location,
+        nextDate: lastOrder.nextDate ? moment(lastOrder.nextDate).format('YYYY-MM-DD') : '',
+        nextMileage: lastOrder.nextMileage,
+      });
+    } else {
+      // 上次维修记录 带出部分信息
+      this.workSheetForm.patchValue({
+        contactUser: lastOrder.contactUser,
+        contactInfo: lastOrder.contactInfo,
+        lastEnter: moment(lastOrder.lastEnter).format('YYYY-MM-DD HH:mm'),
+        lastMileage: lastOrder.lastMileage,
+      });
+    }
   }
 
   // 根据车牌号， 车主， vin 自动带出客户车辆信息
@@ -666,29 +683,29 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       { name: 'name', title: '名称' },
     ];
   }
-  // 设置数据源
-  private typeaheadSource(service) {
-    return (params: TypeaheadRequestParams) => {
-      const p = new FuzzySearchRequest(params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return service.call(this.service, p);
-    };
-  }
+  // // 设置数据源
+  // private typeaheadSource(service) {
+  //   return (params: TypeaheadRequestParams) => {
+  //     const p = new FuzzySearchRequest(params.text);
+  //     p.setPage(params.pageIndex, params.pageSize);
+  //     return service.call(this.service, p);
+  //   };
+  // }
 
-  // 根据车系名称模糊查询数据源
-  public get seriesTypeaheadSource() {
-    return (params: TypeaheadRequestParams) => {
-      const p = new VehicleSeriesSearchRequest(params.text, this.workSheetForm.controls.brandId.value);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.service.getVehicleBySeries(p);
-    };
-  }
-  // 根据车型名称模糊查询数据源
-  public get modelTypeaheadSource() {
-    return (params: TypeaheadRequestParams) => {
-      const p = new VehicleSearchRequest(params.text, this.workSheetForm.controls.brandId.value, this.workSheetForm.controls.seriesId.value);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.service.getVehicleByModel(p);
-    };
-  }
+  // // 根据车系名称模糊查询数据源
+  // public get seriesTypeaheadSource() {
+  //   return (params: TypeaheadRequestParams) => {
+  //     const p = new VehicleSeriesSearchRequest(params.text, this.workSheetForm.controls.brandId.value);
+  //     p.setPage(params.pageIndex, params.pageSize);
+  //     return this.service.getVehicleBySeries(p);
+  //   };
+  // }
+  // // 根据车型名称模糊查询数据源
+  // public get modelTypeaheadSource() {
+  //   return (params: TypeaheadRequestParams) => {
+  //     const p = new VehicleSearchRequest(params.text, this.workSheetForm.controls.brandId.value, this.workSheetForm.controls.seriesId.value);
+  //     p.setPage(params.pageIndex, params.pageSize);
+  //     return this.service.getVehicleByModel(p);
+  //   };
+  // }
 }
