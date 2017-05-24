@@ -42,19 +42,19 @@ export class TableTypeaheadDirective implements OnInit {
   ) {
     this.el = this.viewContainerRef.element.nativeElement;
   }
-  @HostListener('blur', ['$event'])
-  onBlur(event) {
-    if (!this.multiple) {
-      setTimeout(() => {
-        if (this.paging) {
-          this.el.focus();
-          this.paging = false;
-        } else {
-          this.hide();
-        }
-      }, 200);
-    }
-  }
+  // @HostListener('blur', ['$event'])
+  // onBlur(event) {
+  //   if (!this.multiple) {
+  //     setTimeout(() => {
+  //       if (this.paging) {
+  //         this.el.focus();
+  //         this.paging = false;
+  //       } else {
+  //         this.hide();
+  //       }
+  //     }, 200);
+  //   }
+  // }
   @HostListener('focus', ['$event'])
   onFocus(event) {
     if (!this.paging && event.sourceCapabilities) {
@@ -68,6 +68,7 @@ export class TableTypeaheadDirective implements OnInit {
   show() {
     let rect = this.el.getBoundingClientRect();
     this.componentRef.instance.minWidth = rect.width;
+    this.componentRef.instance.height = rect.height;
     this.componentRef.instance.show();
   }
   hide() {
@@ -123,6 +124,8 @@ export class TableTypeaheadDirective implements OnInit {
         })
         .map(m => m.name);
     }
+    this.el.style.borderBottomLeftRadius = "0.25rem";
+    this.el.style.borderTopLeftRadius = "0.25rem";
     let wrapper = document.createElement("div");
     this.el.insertAdjacentElement('beforebegin', wrapper);
     wrapper.className = 'input-group';
@@ -136,7 +139,7 @@ export class TableTypeaheadDirective implements OnInit {
     let componentFactory = this.componentFactoryResolver.resolveComponentFactory(TableTypeaheadComponent);
     this.componentRef = this.viewContainerRef.createComponent(componentFactory);
     let ne = this.componentRef.location.nativeElement;
-    wrapper.insertAdjacentElement('afterend', ne);
+    wrapper.insertAdjacentElement('afterbegin', ne);
     if (this.showTitle) {
       if (!this.columns || this.columns.length < 2) {
         this.showTitle = false;
