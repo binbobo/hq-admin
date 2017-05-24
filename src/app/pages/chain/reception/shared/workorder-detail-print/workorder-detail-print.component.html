@@ -5,10 +5,10 @@
 <hr>
 <hq-workorder-basic-info [data]="data"></hq-workorder-basic-info>
 <hr>
-<hq-maintenance-item-list [showCaption]="true" *ngIf="data?.serviceOutputs?.length>0" [serviceOutputs]="data?.serviceOutputs"></hq-maintenance-item-list>
+<hq-maintenance-item-list [showCaption]="true" [showNo]="true" *ngIf="data?.serviceOutputs?.length>0" [serviceOutputs]="data?.serviceOutputs"></hq-maintenance-item-list>
 <br>
-<hq-maintenance-fixings-list *ngIf="data?.productOutputs?.length>0" [showCaption]="true" [productOutputs]="data?.productOutputs"></hq-maintenance-fixings-list>
+<hq-maintenance-fixings-list *ngIf="data?.productOutputs?.length>0" [showNo]="true"  [showCaption]="true" [productOutputs]="data?.productOutputs"></hq-maintenance-fixings-list>
 <br>
-<hq-attachment-item-list *ngIf="data?.attachServiceOutputs?.length>0" [showCaption]="true" [attachServiceOutputs]="data?.attachServiceOutputs"></hq-attachment-item-list>
+<hq-attachment-item-list *ngIf="data?.attachServiceOutputs?.length>0" [showNo]="true" [showCaption]="true" [attachServiceOutputs]="data?.attachServiceOutputs"></hq-attachment-item-list>
 <br>
-<hq-suggested-item-list *ngIf="data?.suggestServiceOutputs?.length>0" [showCaption]="true" [suggestServiceOutputs]="data?.suggestServiceOutputs"></hq-suggested-item-list>
+<hq-suggested-item-list *ngIf="data?.suggestServiceOutputs?.length>0" [showNo]="true" [showCaption]="true" [suggestServiceOutputs]="data?.suggestServiceOutputs"></hq-suggested-item-list>
