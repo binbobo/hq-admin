@@ -1,7 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { TypeaheadRequestParams } from 'app/shared/directives';
-import { VehicleSeriesSearchRequest, VehicleSearchRequest, OrderService, Vehicle } from '../../../reception/order.service';
+import {  Vehicle } from '../../../reception/order.service';
 import { CustomValidators } from 'ng2-validation';
 import { HQ_VALIDATORS } from '../../../../../shared/shared.module';
 
@@ -25,7 +24,6 @@ export class AddVehicleComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    protected orderService: OrderService,
   ) { }
 
   ngOnInit() {

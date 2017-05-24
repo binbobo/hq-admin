@@ -1,13 +1,12 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType, FuzzySearchRequest, VehicleSeriesSearchRequest, VehicleSearchRequest } from '../order.service';
+import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType} from '../order.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TabsetComponent, ModalDirective } from 'ngx-bootstrap';
 import * as moment from 'moment';
-import { TypeaheadRequestParams, PrintDirective } from 'app/shared/directives';
+import { PrintDirective } from 'app/shared/directives';
 import { DataList, StorageKeys } from 'app/shared/models';
 import { SuspendBillDirective } from 'app/pages/chain/chain-shared';
 import { CustomValidators } from 'ng2-validation';
-import { ActivatedRoute, Router } from '@angular/router';
 import { HQ_VALIDATORS } from '../../../../shared/shared.module';
 
 
@@ -683,29 +682,4 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       { name: 'name', title: '名称' },
     ];
   }
-  // // 设置数据源
-  // private typeaheadSource(service) {
-  //   return (params: TypeaheadRequestParams) => {
-  //     const p = new FuzzySearchRequest(params.text);
-  //     p.setPage(params.pageIndex, params.pageSize);
-  //     return service.call(this.service, p);
-  //   };
-  // }
-
-  // // 根据车系名称模糊查询数据源
-  // public get seriesTypeaheadSource() {
-  //   return (params: TypeaheadRequestParams) => {
-  //     const p = new VehicleSeriesSearchRequest(params.text, this.workSheetForm.controls.brandId.value);
-  //     p.setPage(params.pageIndex, params.pageSize);
-  //     return this.service.getVehicleBySeries(p);
-  //   };
-  // }
-  // // 根据车型名称模糊查询数据源
-  // public get modelTypeaheadSource() {
-  //   return (params: TypeaheadRequestParams) => {
-  //     const p = new VehicleSearchRequest(params.text, this.workSheetForm.controls.brandId.value, this.workSheetForm.controls.seriesId.value);
-  //     p.setPage(params.pageIndex, params.pageSize);
-  //     return this.service.getVehicleByModel(p);
-  //   };
-  // }
 }
