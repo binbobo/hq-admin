@@ -100,7 +100,7 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
   public onSubmit(event: Event) {
     this.model.count = this.model.initcount;
     this.model.amount = this.model.amount * 100;
-    this.model.price = this.model.price * 100;
+    // this.model.price = this.model.price * 100;
     this.model.vihicleName = this.model.vehicleName;
     this.model.storeName = this.model.houseName;
     this.model.specifications = this.model.specifications;
@@ -153,6 +153,7 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
   }
   private fcount;
   public onItemSelect(event) {
+    console.log(event)
     let item = {
       productCode: event.code,
       productName: event.name,
@@ -166,8 +167,9 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
       locationId: event.locationId,
       locationName: event.locationName,
       stockCount: event.count,
-      price: event.costPrice,
+      price: event.price,
       count: event.count,
+      costPrice: event.costPrice
     }
     this.fcount = item.count;
     this.price = 0;
@@ -176,7 +178,7 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
     Object.assign(this.model, item);
     console.log(this.model)
     this.form.patchValue(item);
-    this.form.controls['price'].setValidators(CustomValidators.gte(item.price / 100));
+    this.form.controls['price'].setValidators([CustomValidators.gte(item.costPrice / 100), CustomValidators.gte(0)]);
     this.form.controls['initcount'].setValidators([CustomValidators.lte(this.fcount), CustomValidators.gt(0)]);
     this.model.price = this.model.price / 100;
     this.model.amount = (this.model.initcount) * (this.model.price);

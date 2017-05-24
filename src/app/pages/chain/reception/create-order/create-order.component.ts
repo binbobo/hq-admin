@@ -194,7 +194,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
     // 根据客户车辆id查询上次工单信息
     this.service.getLastOrderInfo(evt.id).then(lastOrder => {
-      // console.log('根据客户车辆id自动带出的上次工单信息：', JSON.stringify(lastOrder));
+      console.log('根据客户车辆id自动带出的上次工单信息：', JSON.stringify(lastOrder));
       if (lastOrder) {
         // 加载上次维修记录
         this.loadLastOrderInfo(lastOrder);
@@ -469,7 +469,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   createForm() {
     this.workSheetForm = this.fb.group({
       customerName: ['', [Validators.required]], // 车主
-      phone: ['', []], // 车主电话
+      phone: ['', [HQ_VALIDATORS.mobile]], // 车主电话
       createdOnUtc: [{ value: moment().format('YYYY-MM-DD HH:mm'), disabled: true }], // 进店时间 / 开单时间
       contactUser: ['', [Validators.required]], // 送修人
       contactInfo: ['', [Validators.required, HQ_VALIDATORS.mobile]], // 送修人电话
