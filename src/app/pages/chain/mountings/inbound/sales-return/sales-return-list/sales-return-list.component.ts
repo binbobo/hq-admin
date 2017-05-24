@@ -77,6 +77,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
     if (!this.customerId) {
       this.customerId = event.customerId;
       this.customerName = event.customerName;
+      this.customerPhone = event.customerPhone;
       this.billId = event.id;
     }
     this.salesReturnData = [];

@@ -66,6 +66,7 @@ export class SalesReturnService implements BasicService<any>{
   get(code: string): Promise<SalesReturnPrintItem> {
     if (!code) return Promise.resolve({});
     let url = Urls.chain.concat('/SaleReturnDetails/Print?BillCode=', code);
+    console.log('退库单打印URL',url);
     return this.httpService.get<ApiResult<SalesReturnPrintItem>>(url)
       .then(result => result.data)
       .catch(err => Promise.reject(`获取销售退库单信息失败：${err}`));
@@ -104,7 +105,8 @@ export class CustomerRequest extends PagedParams {
 export class BillCodeRequest extends PagedParams {
   constructor(
     public customerId?: string, // 客户ID
-    public customerName?: string, // 客户I
+    // public customerName?: string, // 客户I
+    public billCode?: string, // 单号
   ) {
     super();
   }

@@ -46,7 +46,9 @@ export class ReturnCreateComponent implements OnInit {
       this.productId = this.selectReturnData.productId;
       this.existCounts = this.selectReturnData.existCount;
       this.selectReturnData.amount = (this.selectReturnData.price * 1).toFixed(2);
-      this.selectReturnData.productTypes = this.selectReturnData.productTypes[0];
+      // this.selectReturnData.productTypes = this.selectReturnData.productTypes[0];
+      this.selectReturnData.productCategory = this.selectReturnData.productTypes[0];
+      this.selectReturnData.productSpecification = this.selectReturnData.specification;
       this.form.patchValue(this.selectReturnData);
     }
 
@@ -54,18 +56,18 @@ export class ReturnCreateComponent implements OnInit {
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      brandName: ['', [Validators.required]],
+      brandName: [''],
       productCode: [''],
-      productTypes: [''],
+      productCategory: [''],
       productName: [''],
-      specification: ['', [Validators.required]],
-      count: ['', [Validators.required, CustomValidators.digits]],
+      productSpecification: [''],
+      count: [''],
       price: [''],
       counts: [''],
       amount: [''],
       unit: [''],
-      locationName: ['', [Validators.required]],
-      storeName: ['', [Validators.required]],
+      locationName: [''],
+      storeName: [''],
     })
   }
 

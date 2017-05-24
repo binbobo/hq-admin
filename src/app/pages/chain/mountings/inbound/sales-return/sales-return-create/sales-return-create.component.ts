@@ -48,7 +48,8 @@ export class SalesReturnCreateComponent implements OnInit {
       this.productId = this.selectSalesData.productId;
       this.stockCounts = this.selectSalesData.stockCount;
       this.selectSalesData.amount = (this.selectSalesData.price * 1).toFixed(2);
-      this.selectSalesData.categoryName = this.selectSalesData.categoryName[0];
+      this.selectSalesData.productCategory = this.selectSalesData.categoryName[0];
+      this.selectSalesData.productSpecification = this.selectSalesData.specification;
       this.form.patchValue(this.selectSalesData);
     }
   }
@@ -58,17 +59,15 @@ export class SalesReturnCreateComponent implements OnInit {
       brandName: [''],
       productCode: [''],
       productName: [''],
-      categoryName: [''],
-      // productId: ['', [Validators.required, Validators.maxLength(36)]],
-      specification: [''],
-      // storeId: [''],
+      productCategory: [''],
+      productSpecification: [''],
       locationId: [''],
-      count: ['', [Validators.required, CustomValidators.digits]],
+      count: [''],
       price: [''],
       amount: [''],
       unit: [''],
-      locationName: ['', [Validators.required]],
-      storeName: ['', [Validators.required]],
+      locationName: [''],
+      storeName: [''],
       counts: [''],
     })
   }
