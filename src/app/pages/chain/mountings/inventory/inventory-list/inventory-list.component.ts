@@ -40,7 +40,7 @@ export class InventoryListComponent extends DataList<Inventory> implements OnIni
     if (!items) return;
     let btn = event.target as HTMLButtonElement;
     btn.disabled = true;
-    let ids = items.map(m => m.id).filter(m => m && m.trim());
+    let ids = items.map(m => m['productId']).filter(m => m && m.trim());
     if (!ids || !ids.length) return;
     this.inventoryService.enable(ids)
       .then(() => btn.disabled = false)
