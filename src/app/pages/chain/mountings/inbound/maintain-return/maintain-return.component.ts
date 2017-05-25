@@ -171,7 +171,7 @@ export class MaintainReturnComponent implements OnInit {
   private generat = false;
   //生成退料单
   OnCreatReturnBill() {
-    
+
     this.generat = true;
     this.billData = {
       billCode: this.billCode,
@@ -250,7 +250,7 @@ export class MaintainReturnComponent implements OnInit {
   inputData: any;
   // 点击退料弹出弹框
   OnCreatBound(ele, item, id) {
-    console.log(ele, id);
+    console.log(ele, item, id);
     ele.serialNum = item.serialNum;
     ele.maintenanceItemId = ele.maintenanceItemId; //维修明细id
     ele.curId = id;//记录点击的id
@@ -311,7 +311,8 @@ export class MaintainReturnComponent implements OnInit {
     this.serialData = [];
     this.mrData = [];
     this.suspendedBillId = "";
-    this.suspendData = ""
+    this.suspendData = "";
+    this.initValue=""
   }
   suspend() {
     this.suspendData = {
@@ -336,7 +337,7 @@ export class MaintainReturnComponent implements OnInit {
     }
 
 
-    this.suspendBill.suspend(this.suspendData)      
+    this.suspendBill.suspend(this.suspendData)
       .then(() => { this.alerter.success('挂单成功！'); this.initDetailData() })
       .then(() => this.suspendBill.refresh())
       .catch(err => {

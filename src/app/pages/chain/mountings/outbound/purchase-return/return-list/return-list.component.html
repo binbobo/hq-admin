@@ -19,7 +19,7 @@
         </select>
       </div>
     </form>
-    <div class="overflow-auto">
+    <div class="table-container">
       <table class="table table-bordered table-striped">
         <thead>
           <tr *ngIf="!loading">
@@ -62,7 +62,7 @@
       </table>
     </div>
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" [itemsPerPage]="size" (pageChanged)="onPageChanged($event)"></hq-pagination>
-    <div class="overflow-auto">
+    <div class="table-container">
       <table class="table table-bordered table-striped">
         <thead>
           <tr>

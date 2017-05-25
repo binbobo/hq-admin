@@ -29,7 +29,7 @@
     </form>
 
     <div class="tab-title">内部领用信息</div>
-    <div class="overflow-auto">
+    <div class="table-container">
       <table class="table table-bordered table-striped">
         <thead>
           <tr>
@@ -71,7 +71,7 @@
     </div>
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
     <div class="tab-title">内部退料信息</div>
-    <div class="overflow-auto">
+    <div class="table-container">
       <table class="table table-bordered table-striped">
         <thead>
           <tr>

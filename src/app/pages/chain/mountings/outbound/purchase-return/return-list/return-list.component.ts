@@ -53,22 +53,10 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
   }
 
   onCreate(item: PurchaseReturnItem) {
-    console.log(item);
-    if (this.product.count == 0) {
-      this.alerter.warn('配件库存不足，无法完成退库操作！');
-      return;
-    }
     let exists = this.model.list.find(m => m.productId === item.productId);
     if (exists) {
-      if (exists.count + item.count >= this.product.count) {
-        exists.count = this.product.count;
-      } else {
-        exists.count = exists.count + item.count;
-        exists.amount = exists.count * exists.count;
-        exists.exTaxAmount = exists.count * exists.exTaxPrice;
-      }
+      Object.assign(exists, item);
     } else {
-      item.count = item.count > this.product.count ? this.product.count : item.count;
       this.model.list.push(item);
     }
     this.createModal.hide();
@@ -157,6 +145,7 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
   }
 
   onProductSelect(item) {
+    console.log(item);
     this.product = item;
     this.createModal.show();
   }

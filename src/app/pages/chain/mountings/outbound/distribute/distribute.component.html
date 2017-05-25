@@ -2,12 +2,12 @@
 <div class="distribute card">
   <div class="card-header">
     <span>维修发料</span>
-    <ng-template hqSuspendBill="RM" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
+    <ng-template hqSuspendBill="RM"  (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
   <div class="card-block">
     <div>
-      <form class="form-in serach-input" #form="ngForm">
-        <input [hqTableTypeahead]="PlatNoSource" [columns]="typeaheadColumns" (onSelect)="onPlateNoSelect($event)" class="form-control input-left"
+      <form class="form-in serach-input">
+        <input [hqTableTypeahead]="PlatNoSource" [(ngModel)]="initValue" name="initValue" [columns]="typeaheadColumns" (onSelect)="onPlateNoSelect($event)" class="form-control input-left"
           placeholder="请输入车牌号/工单号">
         <span class='button-right'>
         </span>
@@ -27,7 +27,7 @@
       <div class="tab-title">
         维修项目
       </div>
-      <div class="overflow-auto">
+      <div class="table-container">
         <table class="table  table-striped table-bordered">
           <thead>
             <tr>
@@ -53,7 +53,7 @@
       <div class="tab-title">
         新增维修发料
       </div>
-      <div class="overflow-auto">
+      <div class="table-container">
         <table class="table  table-striped table-borderd">
           <thead>
             <tr>
@@ -117,8 +117,8 @@
                 <th>适用车型</th>
                 <th>仓库</th>
                 <th>库位</th>
-                <th>数量（个）</th>
-                <th>单价（元/个）</th>
+                <th>数量</th>
+                <th>单价（元）</th>
                 <th>金额（元）</th>
                 <th>备注</th>
                 <th>领料人</th>
@@ -179,7 +179,7 @@
                 <td>{{ele.productName }}</td>
                 <td>{{ele.brandName}}</td>
                 <td>{{ele.productSpecification}}</td>
-                <td>{{ele.ProductUnit}}</td>
+                <td>{{ele.productUnit}}</td>
                 <td>{{ele.vihicleName}}</td>
                 <td>{{ele.storeName}}</td>
                 <td>{{ele.locationName}}</td>
@@ -198,7 +198,7 @@
   <div class="card-footer text-muted">
     <button class="btn btn-primary" [disabled]="!(newMainData.length>0)" [hqSpinner]="generat" (click)="OnCreatBill()">生成维修发料单</button>
     <!--<button class="btn btn-secondary" (click)="finishedOrder($event,  confirmModal)">取消</button>-->
-    <button class="btn btn-info" [disabled]="!(newMainData.length>0)" (click)="form.reset();suspend()">挂单</button>
+    <button class="btn btn-info" [disabled]="!(newMainData.length>0)" (click)="suspend()">挂单</button>
     <button class="btn btn-secondary " options="printOptions" (onConfirm)="onConfirmNumber($event)" [hqMutilSelect]="numberPrintList"
       title="选择流水号" href="#" [disabled]="!(serialData.length>0)" placement="right">打印</button>
   </div>

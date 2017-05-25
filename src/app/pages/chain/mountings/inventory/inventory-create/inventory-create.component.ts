@@ -128,8 +128,8 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
     return (item) => this.vehicles.some(m => m.vehicleId === item.vehicleId);
   }
 
-  onItemChange(event) {
-    this.disableItem(false);
+  onItemChange(event, key: string) {
+    this.disableItem(false, key);
   }
 
   public onItemSelect(event) {
@@ -139,7 +139,7 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
       name: event.name,
       packageInfo: event.packageInfo,
       madeIn: event.madeIn,
-      brandName: event.brand,
+      brandName: event.brandName,
       brandId: event.brandId,
       productSpecification: event.specification,
       unit: event.unitId,
@@ -158,16 +158,19 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
     }
   }
 
-  private disableItem(disabled: boolean) {
+  private disableItem(disabled: boolean, ...sources: Array<string>) {
     let keys = ['packageInfo', 'madeIn', 'brandName'];
+    keys.push.apply(keys, sources.filter(m => m));
     if (disabled) {
       this.owned = true;
     } else {
-      this.vehicles = null;
-      this.owned = null;
-      keys.forEach(key => {
-        this.form.controls[key].setValue('');
-      });
+      if (this.owned) {
+        this.vehicles = null;
+        this.owned = null;
+        keys.forEach(key => {
+          this.form.controls[key].setValue('');
+        });
+      }
     }
   }
 
@@ -178,7 +181,7 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
   }
 
   onCreate() {
-    let vehicles = this.vehicles.map(m => m.vehicleId);
+    let vehicles = this.vehicles && this.vehicles.map(m => m.vehicleId);
     this.form.patchValue({ vehicleId: vehicles });
     return super.onCreate();
   }

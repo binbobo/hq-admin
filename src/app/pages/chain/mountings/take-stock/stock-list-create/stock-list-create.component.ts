@@ -52,7 +52,13 @@ export class StockListCreateComponent extends DataList<CreateStock> implements O
 
   loadLocations(id: string) {
     this.moutingsService.getLocationByHouseId(id)
-      .then(data => data && data.length ? data : Promise.reject('没有可用的库位信息！'))
+      .then(data => {
+        if (!data || !data.length) {
+          Promise.reject('没有可用的库位信息！');
+        } else {
+          return data;
+        }
+      })
       .then(data => this.locations = data)
       .catch(err => this.alerter.error(err));
   }

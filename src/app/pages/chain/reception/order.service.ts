@@ -56,21 +56,6 @@ export class OrderService implements BasicService<Order> {
     }
 
     /**
-  * 根据车系模糊查询车辆信息
-  * 
-  * @param {FuzzySearchRequest} params 
-  * @returns {Promise<PagedResult<any>>} 
-  * 
-  * @memberof OrderService
-  */
-    getVehicleBySeries(params: VehicleSeriesSearchRequest): Promise<PagedResult<any>> {
-        const search = params.serialize();
-        const url = Urls.chain.concat('/VehicleSeries/search');
-        console.log('根据车系模糊查询车辆信息:', url + search);
-        return this.httpService
-            .get<PagedResult<any>>(url, search);
-    }
-    /**
   * 根据维修项目名称模糊查询维修项目信息
   * 
   * @param {FuzzySearchRequest} params 
@@ -87,10 +72,10 @@ export class OrderService implements BasicService<Order> {
     }
 
     /**
-* 添加维修项目
-* 
-* @memberof OrderService
-*/
+    * 添加维修项目
+    * 
+    * @memberof OrderService
+    */
     createMaintenanceItem(body: any): Promise<any> {
         const url = Urls.chain.concat('/Services');
         return this.httpService
@@ -98,22 +83,6 @@ export class OrderService implements BasicService<Order> {
             .then(m => m.data)
             .catch(err => Promise.reject(`添加维修工项失败：${err}`));
     }
-    /**
-  * 根据车型模糊查询车辆信息
-  * 
-  * @param {FuzzySearchRequest} params 
-  * @returns {Promise<PagedResult<any>>} 
-  * 
-  * @memberof OrderService
-  */
-    getVehicleByModel(params: VehicleSearchRequest): Promise<PagedResult<any>> {
-        const search = params.serialize();
-        const url = Urls.chain.concat('/Vehicles/search');
-        console.log('根据车型模糊查询车辆信息:', url + search);
-        return this.httpService
-            .get<PagedResult<any>>(url, search);
-    }
-
     /**
   *  根据客户车辆id查询上一次工单信息
   * @param {string} id 
