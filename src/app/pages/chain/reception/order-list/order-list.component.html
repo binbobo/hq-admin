@@ -111,11 +111,11 @@
                   <option *ngFor="let type of maintenanceTypeData" value="{{type.id}}">{{type.value}}</option>
                 </select>
             </div>
-            <label for="searchRange" class="col-1 col-form-label col-form-label">查询范围</label>
+            <!--<label for="searchRange" class="col-1 col-form-label col-form-label">查询范围</label>
               <div class="col-2">
                 <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)"> >
                 </ngx-dropdown-treeview>
-              </div>
+              </div>-->
             <div class="col-6" *ngIf="!isCollapsed">
               <button type="submit" [disabled]="false" class="btn btn-primary mr-2">查询</button>
               <button type="reset" class="btn btn-warning mr-2">清空</button>
