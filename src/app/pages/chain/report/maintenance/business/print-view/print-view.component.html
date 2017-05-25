@@ -89,7 +89,7 @@
   </div>
   <div class="card-block">
     <table class="table table-striped table-bordered">
-      <caption>表一：收费结算单</caption>
+      <caption>收费结算单</caption>
       <thead>
         <tr>
           <th width="50">序号</th>
@@ -108,19 +108,16 @@
       </tbody>
     </table>
     <div class="row">
-      <div class="col-3">
-        <label>合计：</label>
-      </div>
-      <div class="col-3">
-        <label>应收金额：</label>
+      <div class="col-4">
+        <label>金额合计：</label>
         <span>{{businessData?.moneyObj.amountReceivable1|centToYuan}}</span>
       </div>
-      <div class="col-3">
-        <label>折扣金额：</label>
+      <div class="col-4">
+        <label>优惠：</label>
         <span>{{businessData?.moneyObj.discountMoney1|centToYuan}}</span>
       </div>
-      <div class="col-3">
-        <label>实收金额：</label>
+      <div class="col-4">
+        <label>应收金额：</label>
         <span>{{businessData?.actualAmount|centToYuan}}</span>
       </div>
     </div>
@@ -128,7 +125,7 @@
   <br>
   <div class="card-block">
     <table class="table table-striped table-bordered">
-      <caption>表二：工时明细</caption>
+      <caption>附录二：工时明细</caption>
       <thead>
         <tr>
           <th width="50">序号</th>
@@ -136,7 +133,7 @@
           <th>结算工时</th>
           <th>单价（元/工时）</th>
           <th>折扣率(%)</th>
-          <th>金额</th>
+          <th>金额（元）</th>
           <th>备注</th>
         </tr>
       </thead>
@@ -154,30 +151,31 @@
     </table>
     <div class="row">
       <div class="col-4">
-        <label>合计：</label>
-      </div>
-      <div class="col-4">
-        <label>工时合计：</label>
+        <label>金额合计：</label>
         <span>{{businessData?.moneyObj.amountReceivable2|centToYuan}}</span>
       </div>
       <div class="col-4">
-        <label>折扣金额：</label>
+        <label>优惠：</label>
         <span>{{businessData?.moneyObj.discountMoney2|centToYuan}}</span>
+      </div>
+      <div class="col-4">
+        <label>应收金额：</label>
+        <span>{{businessData?.moneyObj.countMoney2|centToYuan}}</span>
       </div>
     </div>
   </div>
   <br>
   <div class="card-block">
     <table class="table table-striped table-bordered">
-      <caption>表三：配件明细</caption>
+      <caption>附录三：配件明细</caption>
       <thead>
         <tr>
           <th width="50">序号</th>
           <th>配件名称</th>
-          <th>单位</th>
+          <!--<th>单位</th>-->
+          <th>单价（元）</th>
           <th>数量</th>
-          <th>单价（元/个）</th>
-          <th>金额</th>
+          <th>金额（元）</th>
           <th>备注</th>
         </tr>
       </thead>
@@ -185,9 +183,9 @@
         <tr *ngFor="let item of businessData?.matereialDetails;let index=index">
           <td>{{index+1}}</td>
           <td>{{item.productName}}</td>
-          <td>{{item.unit}}</td>
-          <td>{{item.count}}</td>
+          <!--<td>{{item.unit}}</td>-->
           <td>{{item.price|centToYuan}}</td>
+          <td>{{item.count}}</td>
           <td>{{item.amount|centToYuan}}</td>
           <td>{{item.description}}</td>
         </tr>
@@ -195,10 +193,13 @@
     </table>
     <div class="row">
       <div class="col-4">
-        <label>合计：</label>
+        <!--<label>合计：</label>-->
       </div>
       <div class="col-4">
-        <label>配件合计：</label>
+        <!--<label>合计：</label>-->
+      </div>
+      <div class="col-4">
+        <label>应收金额：</label>
         <span>{{businessData?.moneyObj.amountReceivable3|centToYuan}}</span>
       </div>
     </div>
@@ -206,7 +207,7 @@
   <br>
   <div *ngIf="businessData?.appendItems.length" class="card-block">
     <table class="table table-striped table-bordered">
-      <caption>表四：附加项目</caption>
+      <caption>附录四：附加项目</caption>
       <thead>
         <tr>
           <th width="50">序号</th>
@@ -224,7 +225,7 @@
   <br>
   <div *ngIf="businessData?.adviceItems.length" class="card-block">
     <table class="table table-striped table-bordered">
-      <caption>表五：建议维修项</caption>
+      <caption>附录五：建议维修项</caption>
       <thead>
         <tr>
           <th width="50">序号</th>
@@ -243,7 +244,7 @@
   </div>
   <div class="print-bot">
     <div class="pull-left"> 打印时间：{{businessData?.printOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</div>
-    <div class="pull-right">操作人：<span class='nbspx'>{{businessData?.currentUserName}}</span> 客户签名： <span class='nbspx'></span>日期：<span class="nbspx-sm"></span> 年 <span class="nbspx-sm"></span>月
+    <div class="pull-right">操作人：<span class='nbspx'>{{businessData?.currentUserName}}</span> 客户签名： <span class='nbspx'></span>日期：<span class="nbspx-sm"></span>      年 <span class="nbspx-sm"></span>月
       <span class="nbspx-sm"></span>日</div>
   </div>
 </div>
