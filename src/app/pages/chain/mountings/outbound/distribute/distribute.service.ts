@@ -217,8 +217,8 @@ export class DetailData {
     constructor(
         public id: any,
         public billCode: any,
-        public customerName:any,
-        public plateNo:any,
+        public customerName: any,
+        public plateNo: any,
         public serviceOutputs: any = [],//维修项目
         public attachServiceOutputs: Array<any> = [],//附加项目
         public suggestServiceOutputs: any = [],//建议维修项
@@ -232,7 +232,7 @@ export class DistributeListItem {
     constructor(
         public count: number = 0,
         public price: number = 0,
-        public costPrice?:any,
+        public initprice?: any,
         public amount: number = 0,
         public stockCount: number = 0,
         public productName?: string,
@@ -256,5 +256,7 @@ export class DistributeListItem {
         public storeName?: string,
         public specifications?: string,
         public storeHouse?: string,
+        public productCategory?: string,
+        public ProductUnit?:string,
     ) { }
 }
