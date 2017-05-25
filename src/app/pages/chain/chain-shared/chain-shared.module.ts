@@ -14,6 +14,7 @@ import { BrandTypeaheadDirective } from './table-typeahead/brand-typeahead.direc
 import { StorageLocationTypeaheadDirective } from './table-typeahead/storage-location-typeahead.directive';
 import { SeriesTypeaheadDirective } from './table-typeahead/series-typeahead.directive';
 import { ModelTypeaheadDirective } from './table-typeahead/model-typeahead.directive';
+import { MaintenanceItemTypeaheadDirective } from './table-typeahead/maintenance-item.typeahead.directive';
 
 @NgModule({
   imports: [
@@ -31,6 +32,7 @@ import { ModelTypeaheadDirective } from './table-typeahead/model-typeahead.direc
     BrandTypeaheadDirective,
     SeriesTypeaheadDirective,
     ModelTypeaheadDirective,
+    MaintenanceItemTypeaheadDirective,
     StorageLocationTypeaheadDirective,
   ],
   declarations: [
@@ -45,6 +47,7 @@ import { ModelTypeaheadDirective } from './table-typeahead/model-typeahead.direc
     BrandTypeaheadDirective,
     SeriesTypeaheadDirective,
     ModelTypeaheadDirective,
+    MaintenanceItemTypeaheadDirective,
     StorageLocationTypeaheadDirective,
   ],
   providers: [SuspendBillService],

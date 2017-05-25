@@ -59,18 +59,20 @@
             <tr>
               <th>操作</th>
               <th>维修项目</th>
+              <th>配件编码</th>
+              <th>配件分类</th>
+              <th>配件名称</th>
               <th>品牌</th>
-              <th>*配件编码</th>
-              <th>*配件名称</th>
               <th>规格型号</th>
+              <th>单位</th>
               <th>适用车型</th>
               <th>仓库</th>
               <th>库位</th>
-              <th>*数量（个）</th>
-              <th>单价（元/个）</th>
+              <th>数量</th>
+              <th>单价（元）</th>
               <th>金额（元）</th>
               <th>备注</th>
-              <th>*领料人</th>
+              <th>领料人</th>
 
             </tr>
           </thead>
@@ -78,10 +80,12 @@
             <tr *ngFor="let ele of newMainData;let i=index">
               <td><button class="btn btn-danger" (click)="onDelCreat(i)">删除</button></td>
               <td>{{ele.serviceName}}</td>
-              <td>{{ele.brandName}}</td>
               <td>{{ele.productCode}}</td>
+              <td>{{ele.productCategory}}</td>
               <td>{{ele.productName }}</td>
+              <td>{{ele.brandName}}</td>
               <td>{{ele.productSpecification}}</td>
+              <td>{{ele.productUnit}}</td>
               <td>{{ele.vihicleName}}</td>
               <td>{{ele.storeName}}</td>
               <td>{{ele.locationName}}</td>
@@ -104,10 +108,12 @@
               <tr>
                 <th>流水号</th>
                 <th>维修项目</th>
-                <th>品牌</th>
                 <th>配件编码</th>
+                <th>配件分类</th>
                 <th>配件名称</th>
+                <th>品牌</th>
                 <th>规格型号</th>
+                <th>单位</th>
                 <th>适用车型</th>
                 <th>仓库</th>
                 <th>库位</th>
@@ -122,10 +128,12 @@
               <tr *ngFor="let ele of item.list">
                 <td>{{item.serialNum}}</td>
                 <td>{{ele.serviceName}}</td>
-                <td>{{ele.brandName}}</td>
                 <td>{{ele.productCode}}</td>
+                <td>{{ele.productCategory}}</td>
                 <td>{{ele.productName }}</td>
+                <td>{{ele.brandName}}</td>
                 <td>{{ele.productSpecification?ele.productSpecification:ele.specifications}}</td>
+                <td>{{ele.productUnit}}</td>
                 <td>{{ele.vihicleName?ele.vihicleName:ele.vehicleModel}}</td>
                 <td>{{ele.storeName?ele.storeName:ele.storeHouse}}</td>
                 <td>{{ele.locationName}}</td>
@@ -144,15 +152,18 @@
               <tr>
                 <th>流水号</th>
                 <th>维修项目</th>
-                <th>品牌</th>
+
                 <th>配件编码</th>
+                <th>配件分类</th>
                 <th>配件名称</th>
+                <th>品牌</th>
                 <th>规格型号</th>
+                <th>单位</th>
                 <th>适用车型</th>
                 <th>仓库</th>
                 <th>库位</th>
-                <th>数量（个）</th>
-                <th>单价（元/个）</th>
+                <th>数量</th>
+                <th>单价（元）</th>
                 <th>金额（元）</th>
                 <th>备注</th>
                 <th>退料人</th>
@@ -162,18 +173,19 @@
               <tr *ngFor="let ele of item.list">
                 <td>{{item.serialNum}}</td>
                 <td>{{ele.serviceName}}</td>
-                <td>{{ele.brandName}}</td>
+
                 <td>{{ele.productCode}}</td>
+                <td>{{ele.productCategory}}</td>
                 <td>{{ele.productName }}</td>
+                <td>{{ele.brandName}}</td>
                 <td>{{ele.productSpecification}}</td>
+                <td>{{ele.ProductUnit}}</td>
                 <td>{{ele.vihicleName}}</td>
                 <td>{{ele.storeName}}</td>
                 <td>{{ele.locationName}}</td>
                 <td>{{ele.count}}</td>
                 <td>{{ele.price|centToYuan}}</td>
                 <td>{{ele.amount|centToYuan}}</td>
-                <td>{{ele.returnUser}}</td>
-                <td>{{ele.returnUser}}</td>
                 <td>{{ele.description}}</td>
                 <td>{{ele.returnUser}}</td>
               </tr>
@@ -186,7 +198,7 @@
   <div class="card-footer text-muted">
     <button class="btn btn-primary" [disabled]="!(newMainData.length>0)" [hqSpinner]="generat" (click)="OnCreatBill()">生成维修发料单</button>
     <!--<button class="btn btn-secondary" (click)="finishedOrder($event,  confirmModal)">取消</button>-->
-    <button class="btn btn-info" [disabled]="!(newMainData.length>0)" (click)="suspend(form)">挂单</button>
+    <button class="btn btn-info" [disabled]="!(newMainData.length>0)" (click)="form.reset();suspend()">挂单</button>
     <button class="btn btn-secondary " options="printOptions" (onConfirm)="onConfirmNumber($event)" [hqMutilSelect]="numberPrintList"
       title="选择流水号" href="#" [disabled]="!(serialData.length>0)" placement="right">打印</button>
   </div>

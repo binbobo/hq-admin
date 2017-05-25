@@ -336,9 +336,9 @@ export class MaintainReturnComponent implements OnInit {
     }
 
 
-    this.suspendBill.suspend(this.suspendData)
-      .then(() => this.suspendBill.refresh())
+    this.suspendBill.suspend(this.suspendData)      
       .then(() => { this.alerter.success('挂单成功！'); this.initDetailData() })
+      .then(() => this.suspendBill.refresh())
       .catch(err => {
         this.alerter.error(err);
       })
