@@ -158,14 +158,6 @@ export class OrderService implements BasicService<Order> {
             return null;
         };
         return orgsArr.map((value, index, array) => {
-            // if(value.children && value.children.length > 0){
-            //     const obj={text: value.name, value: value.id,children:[]};
-            //     obj.children.push
-            // }
-
-
-
-
             const obj = { text: value.name, value: value.id };
             // 如果有子组织, 递归遍历
             if (value.children && value.children.length > 0) {
