@@ -7,6 +7,7 @@ import { CentToYuanPipe, DurationHumanizePipe } from "app/shared/pipes";
 import { TreeviewItem, TreeviewConfig } from "ngx-treeview/lib";
 import { OrderService } from "app/pages/chain/reception/order.service";
 import { ModalDirective } from "ngx-bootstrap";
+import * as moment from 'moment';
 
 @Component({
   selector: 'hq-business-list',
@@ -52,20 +53,19 @@ export class BusinessListComponent extends DataList<any> {
       if (data[0].children && data[0].children.length > 0)
         this.items = data;
     });
-    this.createForm();
+    // this.createForm();
     // this.onLoadList();
   }
 
-  createForm() {
-    this.businessForm = this.formBuilder.group({
-      plateNo: '', //车牌号
-      enterStartTimeDate: '', // 进店开始时间
-      enterEndTimeDate: '', // 进店结束时间
-      leaveStartTimeDate: '', // 出厂开始时间
-      leaveEndTimeDate: '', // 出厂结束时间
-      // orgIds: '', //查询范围
-    })
-  }
+  // createForm() {
+  //   this.businessForm = this.formBuilder.group({
+  //     plateNo: '', //车牌号
+  //     enterStartTimeDate: '', // 进店开始时间
+  //     enterEndTimeDate: '', // 进店结束时间
+  //     leaveStartTimeDate: '', // 出厂开始时间
+  //     leaveEndTimeDate: '', // 出厂结束时间
+  //   })
+  // }
 
   //车牌号模糊查询数据源
   private typeaheadSource(service) {
@@ -173,6 +173,26 @@ export class BusinessListComponent extends DataList<any> {
   print() {
     this.printer.print();
     this.bdModal.hide();
+  }
+//进店时间控制
+ public get maxEnterStartDate() {
+    return this.params.enterEndTimeDate || moment().format('YYYY-MM-DD');
+  }
+  public get minEnterEndDate() {
+    return this.params.enterStartTimeDate || '';
+  }
+  public get maxEnterEndDate() {
+    return moment().format('YYYY-MM-DD');
+  }
+//出厂时间控制
+public get maxLeaveStartDate() {
+    return this.params.leaveEndTimeDate || moment().format('YYYY-MM-DD');
+  }
+  public get minLeaveEndDate() {
+    return this.params.leaveStartTimeDate || '';
+  }
+  public get maxLeaveEndDate() {
+    return moment().format('YYYY-MM-DD');
   }
 
 }
