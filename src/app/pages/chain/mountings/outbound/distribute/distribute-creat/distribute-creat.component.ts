@@ -175,9 +175,9 @@ export class DistributeCreatComponent implements OnInit {
   private calculate() {
     let count = this.form.controls['count'].value;
     let price = this.form.controls['price'].value;
-    count = Math.floor(count || 0);
+    count = Math.floor(count || 1);
     price = Math.floor(price || 0);
-    let amount = (count || 0) * (price || 0);
+    let amount = (count || 1) * (price || 0);
     this.form.patchValue({ amount: amount, count: count, price: price });
   }
 }
