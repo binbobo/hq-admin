@@ -22,13 +22,10 @@ export class PlateNoTypeaheadDirective extends TableTypeaheadDirective {
         { name: 'phone', title: '车主电话' },
     ] as Array<TableTypeaheadColumn>;
 
-    @Input()
-    protected filed: string = 'keyword';
-
     ngOnInit() {
         this.source = (params: TypeaheadRequestParams) => {
             let request = new PlateNoSearchRequest();
-            request[this.filed] = params.text;
+            request['keyword'] = params.text;
             request.setPage(params.pageIndex, params.pageSize);
             let url = Urls.chain.concat('/CustomerVehicles/Search');
             return this.httpService.getPagedList<any>(url, request).then(response => {

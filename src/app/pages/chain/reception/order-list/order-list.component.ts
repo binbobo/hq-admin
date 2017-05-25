@@ -127,8 +127,13 @@ export class OrderListComponent extends DataList<Order> {
       this.selectedOrder = data;
       this.selectedOrder.id = id;
 
+
       // 统计各项费用
       this.selectedOrder.fee = {};
+      // 工时合计  临时放在fee下面 以后都通过接口获取
+      this.selectedOrder.fee.workHours = data.serviceOutputs.reduce((accumulator, currentValue) => {
+        return accumulator + currentValue.workHour;
+      }, 0);
       // 工时费： 维修项目金额总和
       this.selectedOrder.fee.workHour = data.serviceOutputs.reduce((accumulator, currentValue) => {
         return accumulator + currentValue.price * currentValue.workHour;
@@ -137,9 +142,7 @@ export class OrderListComponent extends DataList<Order> {
       this.selectedOrder.fee.material = data.productOutputs.reduce((accumulator, currentValue) => {
         return accumulator + currentValue.price * currentValue.count;
       }, 0);
-      // 其它费： 0
-      this.selectedOrder.fee.other = 0;
-      // 折扣费：目前只有维修项目有折扣
+      // 优惠：目前只有维修项目有折扣
       this.selectedOrder.fee.discount = this.selectedOrder.fee.workHour - data.serviceOutputs.reduce((accumulator, currentValue) => {
         return accumulator + currentValue.amount;
       }, 0);

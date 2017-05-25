@@ -4,7 +4,7 @@
     <div class="col-6">
       <div class="form-group">
         <label for="serviceName" class="col-form-label"><span class="asterisk mr-1">*</span>维修项目名称</label>
-        <input [hqTableTypeahead]="serviceNameTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="serviceTypeaheadOnSelect($event)"
+        <input hqMaintenanceItemTypeahead [serviceIds]="serviceIds" (onSelect)="serviceTypeaheadOnSelect($event)"
           type="text" label="维修项目名称" class="form-control" formControlName="serviceName" placeholder="请输入维修项目名称">
         <input type="hidden" formControlName="serviceId">
         <input type="hidden" formControlName="type">

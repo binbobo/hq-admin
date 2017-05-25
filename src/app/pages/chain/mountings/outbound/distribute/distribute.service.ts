@@ -40,6 +40,7 @@ export class DistributeService implements BasicService<any>{
     getOrderPageData(params: DistributeRequest): Promise<PagedResult<SearchReturnData>> {
         let search = params.serialize();
         const url = Urls.chain.concat('/Maintenances/Material');
+        console.log(url, search);
         return this.httpService
             .get<PagedResult<SearchReturnData>>(url, search)
     }
