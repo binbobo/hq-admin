@@ -28,8 +28,8 @@ export class BusinessListComponent extends DataList<any> {
   // 用于ngx-treeview组件
   public items: TreeviewItem[];
   public config: TreeviewConfig = {
-    isShowAllCheckBox: false,
-    isShowFilter: false,
+    isShowAllCheckBox: true,
+    isShowFilter: true,
     isShowCollapseExpand: true,
     maxHeight: 500
   };
@@ -95,6 +95,9 @@ export class BusinessListComponent extends DataList<any> {
   //门店下拉框选择
   onSearchRangeChange(evt) {
     // 更新查询范围参数
+    // let correctChecked = [];
+    // this.items.map
+    console.log('选择的下拉框',this.items);
     this.params.orgIds = evt;
 
     console.log('当前选择的查询范围列表：', this.params.orgIds);

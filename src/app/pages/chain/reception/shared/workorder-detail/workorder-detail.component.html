@@ -5,7 +5,7 @@
     <hq-maintenance-item-list [serviceOutputs]="data?.serviceOutputs"></hq-maintenance-item-list>
   </tab>
   <tab heading="维修配件" *ngIf="data?.productOutputs?.length>0">
-    <div class="overflow-auto">
+    <div class="table-container">
       <hq-maintenance-fixings-list [productOutputs]="data?.productOutputs"></hq-maintenance-fixings-list>
     </div>
   </tab>

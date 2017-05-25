@@ -48,7 +48,7 @@
     <hr>
     <h5 *ngIf="isSearch">温馨提示：系统找到该车辆在本店维修过<span class="color">{{total}}</span>次</h5>
     <hr>
-    <div class="overflow-auto">
+    <div class="table-container">
       <table class="table table-striped table-bordered">
         <thead>
           <tr>
@@ -59,14 +59,13 @@
             <th>维修类型</th>
             <!--<th>车主</th>-->
             <th>进厂时间</th>
-            <th>预计交车时间</th>
+            <th>出厂时间</th>
             <th>超时</th>
             <th>车型</th>
             <th>VIN</th>
             <th>送修人</th>
             <th>送修人电话</th>
             <th>维修技师</th>
-            <th>出厂时间</th>
             <th>服务顾问</th>
             <!--<th>品牌</th>
           <th>行驶里程</th>
@@ -86,7 +85,7 @@
             <td>{{item.billCode}}</td>
             <td>{{item.typeName}}</td>
             <td>{{item.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-            <td>{{item.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+            <td>{{item.leaveTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
             <!--<td>{{item.customerName}}</td>-->
             <td class="red-color">{{item.overTime|durationHumanize}}</td>
             <td>{{item.vehicleName}}</td>
@@ -99,7 +98,6 @@
             <!--<td>{{item.introducer}}</td>
           <td>{{item.introPhone}}</td>-->
             <td>{{item.employeeNames}}</td>
-            <td>{{item.leaveTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
             <td>{{item.createdUserName}}</td>
           </tr>
         </tbody>
