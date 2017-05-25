@@ -157,6 +157,7 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
   }
 
   onProductSelect(item) {
+    console.log(item);
     this.product = item;
     this.createModal.show();
   }

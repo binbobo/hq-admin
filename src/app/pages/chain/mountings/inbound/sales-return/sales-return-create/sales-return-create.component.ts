@@ -88,6 +88,7 @@ export class SalesReturnCreateComponent implements OnInit {
     this.form.value['locationId'] = this.locationId;
     this.form.value['productId'] = this.productId;
     this.form.value['stockCounts'] = this.stockCounts + count;
+    this.form.value['productUnit'] = this.form.value.unit;
     this.form.value.count = count;
     console.log('表单数据', this.form.value);
     this.formSubmit.emit(this.form.value);

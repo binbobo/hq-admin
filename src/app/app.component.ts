@@ -17,10 +17,11 @@ export class AppComponent implements OnInit {
     private translate: TranslateService,
     private dispatcher: EventDispatcher,
   ) {
-    translate.setDefaultLang(window.navigator.language);
+
   }
 
   ngOnInit() {
+    this.translate.setDefaultLang(window.navigator.language);
     let langJSON = localStorage.getItem(StorageKeys.AcceptLanguage);
     if (langJSON) {
       try {

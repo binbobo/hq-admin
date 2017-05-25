@@ -25,7 +25,6 @@ export class ProviderCreateComponent extends FormHandle<Provider> implements OnI
 
   protected buidForm(): FormGroup {
     return this.formBuilder.group({
-      code: [this.model.code, [Validators.maxLength(50)]],
       name: [this.model.name, [Validators.required, Validators.maxLength(100),]],
       shortName: [this.model.shortName, [Validators.maxLength(30),]],
       contactUser: [this.model.contactUser, [Validators.required, Validators.maxLength(20),]],

@@ -3,13 +3,13 @@
     <div class="col-6">
       <div class="form-group">
         <label class="form-control-label">*配件编码</label>
-        <input hqProductTypeahead (onSelect)="onItemSelect($event)" (input)="onResetForm($event)" formControlName="productCode" class="form-control"
-          placeholder="请输入配件编码">
+        <input hqProductTypeahead (onSelect)="onItemSelect($event)" (input)="onResetForm($event,'productCode')" formControlName="productCode"
+          class="form-control" placeholder="请输入配件编码">
         <input type="hidden" label="配件编码" formControlName="productId">
       </div>
       <div class="form-group">
         <label class="form-control-label">*配件名称</label>
-        <input label="配件名称" hqProductTypeahead (onSelect)="onItemSelect($event)" (input)="onResetForm($event)" formControlName="productName"
+        <input label="配件名称" hqProductTypeahead (onSelect)="onItemSelect($event)" (input)="onResetForm($event,'productName')" formControlName="productName"
           class="form-control" placeholder="请输入配件名称">
         <input type="hidden" label="配件名称" formControlName="productId">
       </div>

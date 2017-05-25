@@ -70,11 +70,10 @@ export class ProcurementCreateComponent implements OnInit {
     return { storeId: this.form.get('storeId').value };
   }
 
-  private onResetForm(event: Event) {
+  private onResetForm(event: Event, key: string) {
     if (!event.isTrusted) return false;
     let obj = { ...this.model, yuan: 0 };
-    delete obj.productCode;
-    delete obj.productName;
+    key in obj && delete obj[key];
     this.form.patchValue(obj);
   }
 
@@ -115,18 +114,27 @@ export class ProcurementCreateComponent implements OnInit {
   }
 
   private onItemSelect(event) {
-    let item = {
+    let item: any = {
       unit: event.unitName,
       productCode: event.code,
       productName: event.name,
       productSpecification: event.specification,
-      productId: event.productId,
+      productId: event.id,
       brandName: event.brandName,
       stockCount: event.count,
       price: event.price,
       yuan: event.price / 100,
       taxRate: event.taxRate,
       productCategory: event.categoryName,
+    }
+    if (Array.isArray(event.storages)) {
+      let storage = event.storages.find(m => m.locations && m.locations.length && this.warehouses.some(w => w.value === m.id));
+      if (storage) {
+        let location = storage.locations[0];
+        item.storeId = storage.id;
+        item.locationId = location.id;
+        item.locationName = location.name;
+      }
     }
     this.form.patchValue(item);
     this.calculate();
