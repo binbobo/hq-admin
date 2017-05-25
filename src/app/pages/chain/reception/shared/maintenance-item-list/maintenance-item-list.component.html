@@ -15,7 +15,9 @@
     <tbody>
       <tr *ngFor="let item of serviceOutputs;let index=index;">
         <td *ngIf="showNo" class="text-center">{{index+1}}</td>
-        <td [class.append-stamp]="item.type === 3">{{item.serviceName}}</td>
+        <td>{{item.serviceName}}
+          <span *ngIf="item.type === 3" class="append-stamp">增项</span>
+        </td>
         <td>{{item.workHour}}</td>
         <td class="text-right">{{item.price|centToYuan}}</td>
         <td class="text-right">{{item.discount}}</td>

@@ -27,7 +27,7 @@
       </div>
       <div class="form-group">
         <label class="form-control-label">*配件分类：</label>
-        <select label="配件分类" [attr.disabled]='owned' (change)="onCategorySelect($event)" class="form-control">
+        <select label="配件分类" [attr.disabled]='owned' (change)="onCategoryChange($event)" formControlName="categoryId" class="form-control">
           <option *ngFor="let item of categories" value="{{item.value}}">{{item.text}}</option>
         </select>
       </div>
@@ -83,11 +83,13 @@
         <div>
           <div *ngFor="let item of vehicles" class="btn btn-secondary btn-sm mr-1 mb-1">
             <span>{{item.brandName}} {{item.seriesName}} {{item.name}}</span>
-            <i class="cursor-pointer fa fa-times" (click)="onVehicleRemove(item)"></i>
+            <i [hidden]="owned" class="cursor-pointer fa fa-times" (click)="onVehicleRemove(item)"></i>
           </div>
         </div>
-        <input type="text" hqVehicleTypeahead (checkStrategy)="vehicleCheckStrategy" (onSelect)="onVehicleSelect($event)" class="form-control"
-          placeholder="请输入车型">
+        <div [hidden]="owned">
+          <input type="text" hqVehicleTypeahead (checkStrategy)="vehicleCheckStrategy" (onSelect)="onVehicleSelect($event)" class="form-control"
+            placeholder="请输入车型">
+        </div>
       </div>
     </div>
     <div class="col-12">

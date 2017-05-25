@@ -125,17 +125,15 @@
           <th>工时单价(元)</th>
           <th>金额(元)</th>
           <th>折扣率(%)</th>
-          <th>操作时间</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let record of data?.workHours">
-          <td>{{record?.serviceName}}<span [class.append-stamp]="record.type === 3">增项</span></td>
+          <td>{{record?.serviceName}}<span *ngIf="record.type === 3" class="append-stamp">增项</span></td>
           <td>{{record?.workHour}}</td>
           <td>{{record?.price|centToYuan}}</td>
           <td>{{record?.amount|centToYuan}}</td>
           <td>{{record?.discount}}</td>
-          <td>{{record?.operateDateTime|sDatetime}}</td>
         </tr>
       </tbody>
     </table>
@@ -151,7 +149,6 @@
           <th>数量</th>
           <th>单价(元)</th>
           <th>金额(元)</th>
-          <th>操作时间</th>
         </tr>
       </thead>
       <tbody>
@@ -163,7 +160,6 @@
           <td>{{record?.count}}</td>
           <td>{{record?.price|centToYuan}}</td>
           <td>{{record?.amount|centToYuan}}</td>
-          <td>{{record?.operateDateTime|sDatetime}}</td>
         </tr>
       </tbody>
     </table>
@@ -187,14 +183,12 @@
       <thead>
         <tr>
           <th>建议维修项目</th>
-          <th>操作时间</th>
           <th>备注</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let record of data?.adviceItems">
           <td>{{record?.content}}</td>
-          <td>{{record?.operateDateTime|sDatetime}}</td>
           <td>{{record?.description}}</td>
         </tr>
       </tbody>

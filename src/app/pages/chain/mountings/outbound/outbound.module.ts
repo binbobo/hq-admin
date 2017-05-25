@@ -22,6 +22,9 @@ import { ReturnPrintComponent } from './purchase-return/return-print/return-prin
 import { PurchaseReturnService } from './purchase-return/purchase-return.service';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { DistributePrintComponent } from './distribute/distribute-print/distribute-print.component';
+import { SalesOutBillDirective } from './sales/sales-out-bill.directive';
+import { ReceiveOutBillDirective } from './receive/receive-out-bill.directive';
+import { PurchaseOutBillDirective } from './purchase-return/purchase-out-bill.directive';
 
 const routes: Routes = [
   { path: 'maintain-distribute', component: DistributeComponent },
@@ -43,7 +46,7 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
   providers: [SalesService, ReceiveService, ProviderService, PurchaseReturnService],
-  declarations: [DistributeComponent, SalesListComponent, SalesCreateComponent, ReceiveListComponent, ReceiveCreateComponent, ReceivePrintComponent, SalesPrintComponent, ReturnListComponent, ReturnCreateComponent, ReturnPrintComponent, DistributeCreatComponent, DistributePrintComponent]
+  declarations: [DistributeComponent, SalesListComponent, SalesCreateComponent, ReceiveListComponent, ReceiveCreateComponent, ReceivePrintComponent, SalesPrintComponent, ReturnListComponent, ReturnCreateComponent, ReturnPrintComponent, DistributeCreatComponent, DistributePrintComponent, SalesOutBillDirective, ReceiveOutBillDirective, PurchaseOutBillDirective]
 
 
 })

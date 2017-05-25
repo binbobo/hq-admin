@@ -24,7 +24,6 @@ export class ProcurementCreateComponent implements OnInit {
   @ViewChildren(FormGroupControlErrorDirective)
   private controls: QueryList<FormGroupControlErrorDirective>;
   private warehouses: Array<SelectOption>;
-  private isHQProduct = false;
 
   constructor(
     private el: ElementRef,
@@ -47,7 +46,7 @@ export class ProcurementCreateComponent implements OnInit {
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      brand: [this.model.brand],
+      brandName: [this.model.brandName],
       productCode: [this.model.productCode],
       productName: [this.model.productName],
       productCategory: [this.model.productCategory],
@@ -56,14 +55,27 @@ export class ProcurementCreateComponent implements OnInit {
       storeId: [this.model.storeId, [Validators.required, Validators.maxLength(36)]],
       locationId: [this.model.locationId],
       count: [this.model.count, [Validators.required, CustomValidators.min(1), CustomValidators.digits]],
-      price: [this.model.price, [Validators.required, CustomValidators.min(0)]],
-      yuan: [this.model.price / 100, [Validators.required, CustomValidators.min(0)]],
+      price: [this.model.price],
+      yuan: [this.model.price / 100, [Validators.required, CustomValidators.gt(0)]],
       amount: [this.model.amount],
       exTaxPrice: [this.model.exTaxPrice],
       exTaxAmount: [this.model.exTaxAmount],
       locationName: [this.model.locationName, [Validators.required]],
       storeName: [this.model.houseName, [Validators.required]],
+      unit: [this.model.unit],
     })
+  }
+
+  get typeaheadParams() {
+    return { storeId: this.form.get('storeId').value };
+  }
+
+  private onResetForm(event: Event) {
+    if (!event.isTrusted) return false;
+    let obj = { ...this.model, yuan: 0 };
+    delete obj.productCode;
+    delete obj.productName;
+    this.form.patchValue(obj);
   }
 
   public onSubmit(event: Event) {
@@ -74,9 +86,26 @@ export class ProcurementCreateComponent implements OnInit {
       event.preventDefault();
       return false;
     } else {
-      this.formSubmit.emit(this.form.value);
-      this.form.reset(this.model);
+      let formData = this.form.value;
+      let storageId = this.form.get('storeId').value;
+      let storage = formData.storeId && this.warehouses.find(m => m.value === formData.storeId);
+      let value = { ...formData, storeName: storage && storage.text };
+      this.formSubmit.emit(value);
     }
+  }
+
+  onLocationChange(event: Event) {
+    if (event.isTrusted) {
+      this.form.patchValue({ locationId: undefined });
+    }
+  }
+
+  onLocationSelect(event) {
+    this.form.patchValue({ locationId: event.id });
+  }
+
+  onStorageChange(event) {
+    this.form.patchValue({ locationName: undefined, locationId: undefined });
   }
 
   public onReset() {
@@ -87,25 +116,19 @@ export class ProcurementCreateComponent implements OnInit {
 
   private onItemSelect(event) {
     let item = {
+      unit: event.unitName,
       productCode: event.code,
       productName: event.name,
       productSpecification: event.specification,
       productId: event.productId,
-      brand: event.brand,
-      brandId: event.brandId,
-      storeId: event.storeId,
-      storeName: event.houseName,
-      locationId: event.locationId,
-      locationName: event.locationName,
+      brandName: event.brandName,
       stockCount: event.count,
       price: event.price,
       yuan: event.price / 100,
       taxRate: event.taxRate,
-      exTaxPrice: event.exTaxPrice,
       productCategory: event.categoryName,
     }
     this.form.patchValue(item);
-    this.isHQProduct = true;
     this.calculate();
   }
 

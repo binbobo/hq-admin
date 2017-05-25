@@ -80,7 +80,7 @@
                 <option disabled *ngFor="let item of item?.vehicleInfoList">{{item.vehicleName}}</option>
               </select>
             </td>
-            <td>{{item?.unitItem?.text}}</td>
+            <td>{{item.unit}}</td>
             <td class="text-right">{{item.costPrice|centToYuan}}</td>
             <td class="text-right">{{item.costAmount|centToYuan}}</td>
             <td class="text-right">{{item.suggPrice|centToYuan}}</td>
@@ -89,7 +89,7 @@
             <td class="text-center">{{item.minCount}}</td>
             <td>{{ item.packageInfo}}</td>
             <td>{{item.madeIn}}</td>
-            <td>{{item.category}}</td>
+            <td>{{item.categoryList|pluck:'text'|slice:0:1}}</td>
             <td>{{ item.description}}</td>
           </tr>
         </tbody>

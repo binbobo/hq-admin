@@ -71,7 +71,7 @@
             <tbody>
               <tr *ngFor="let item of maintenanceProjectData">
                 <td>&nbsp;</td>
-                <td>{{item.serviceName}}<span [class.append-stamp]="item.type === 3">增项</span></td> 
+                <td>{{item.serviceName}}<span *ngIf="item.type === 3" class="append-stamp">增项</span></td>
                 <td>{{item.workHour}}</td>
                 <td>{{item.price|centToYuan}}</td>
                 <td>{{item.discount}}</td>
@@ -262,8 +262,8 @@
 
   </div>
   <div class="card-footer text-muted">
-    <button type="button" class="btn  btn-primary" [disabled]="!isableAppend" (click)="submitAddOrder()">提交增项</button>
-    <button type="button" class="btn  btn-success" [disabled]="!isableSuspend" (click)="suspend()">挂单</button>
+    <button type="button" class="btn btn-primary" [disabled]="!isableAppend" (click)="submitAddOrder()">提交增项</button>
+    <button type="button" class="btn btn-success" [disabled]="!isableSuspend" (click)="suspend()">挂单</button>
   </div>
 
 </div>

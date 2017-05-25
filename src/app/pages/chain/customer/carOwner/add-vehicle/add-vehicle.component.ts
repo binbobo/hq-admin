@@ -1,7 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { TypeaheadRequestParams } from 'app/shared/directives';
-import { VehicleSeriesSearchRequest, VehicleSearchRequest, OrderService, Vehicle } from '../../../reception/order.service';
+import {  Vehicle } from '../../../reception/order.service';
 import { CustomValidators } from 'ng2-validation';
 import { HQ_VALIDATORS } from '../../../../../shared/shared.module';
 
@@ -25,7 +24,6 @@ export class AddVehicleComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    protected orderService: OrderService,
   ) { }
 
   ngOnInit() {
@@ -156,29 +154,4 @@ export class AddVehicleComponent implements OnInit {
     this.vehicleForm.controls.vehicleId.reset();
     this.vehicleForm.controls.vehicleName.disable();
   }
-
-  // 定义车辆模糊查询要显示的列
-  public get vehicleTypeaheadColumns() {
-    return [
-      { name: 'name', title: '名称' },
-    ];
-  }
-
-  // 根据车系名称模糊查询数据源
-  public get seriesTypeaheadSource() {
-    return (params: TypeaheadRequestParams) => {
-      const p = new VehicleSeriesSearchRequest(params.text, this.vehicleForm.value.brandId);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.orderService.getVehicleBySeries(p);
-    };
-  }
-  // 根据车型名称模糊查询数据源
-  public get modelTypeaheadSource() {
-    return (params: TypeaheadRequestParams) => {
-      const p = new VehicleSearchRequest(params.text, this.vehicleForm.value.brandId, this.vehicleForm.value.seriesId);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.orderService.getVehicleByModel(p);
-    };
-  }
-
 }

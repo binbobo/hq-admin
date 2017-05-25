@@ -1,13 +1,12 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType, FuzzySearchRequest, VehicleSeriesSearchRequest, VehicleSearchRequest } from '../order.service';
+import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType } from '../order.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TabsetComponent, ModalDirective } from 'ngx-bootstrap';
 import * as moment from 'moment';
-import { TypeaheadRequestParams, PrintDirective } from 'app/shared/directives';
+import { PrintDirective } from 'app/shared/directives';
 import { DataList, StorageKeys } from 'app/shared/models';
 import { SuspendBillDirective } from 'app/pages/chain/chain-shared';
 import { CustomValidators } from 'ng2-validation';
-import { ActivatedRoute, Router } from '@angular/router';
 import { HQ_VALIDATORS } from '../../../../shared/shared.module';
 
 
@@ -54,9 +53,9 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   // 费用计算相关
   fee = {
+    workHours: 0,
     workHour: 0,
     material: 0,
-    other: 0,
     discount: 0
   };
 
@@ -207,13 +206,31 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   // 根据车牌号， 车主， vin 自动带出客户车辆信息
   loadLastOrderInfo(lastOrder) {
-    // 加载上次工单信息
-    this.workSheetForm.patchValue({
-      contactUser: lastOrder.contactUser,
-      contactInfo: lastOrder.contactInfo,
-      lastEnter: moment(lastOrder.lastEnter).format('YYYY-MM-DD HH:mm'),
-      lastMileage: lastOrder.lastMileage,
-    });
+    // 区分预检单还是 上次维修记录
+    if (lastOrder.preCheckId) {
+      // 预检单 带出所有能带出的信息
+      this.workSheetForm.patchValue({
+        contactUser: lastOrder.contactUser,
+        contactInfo: lastOrder.contactInfo,
+        type: lastOrder.type,
+        mileage: lastOrder.mileage,
+        introducer: lastOrder.introducer,
+        introPhone: lastOrder.introPhone,
+        validate: lastOrder.validate ? moment(lastOrder.validate).format('YYYY-MM-DD') : '',
+        location: lastOrder.location,
+        nextDate: lastOrder.nextDate ? moment(lastOrder.nextDate).format('YYYY-MM-DD') : '',
+        nextMileage: lastOrder.nextMileage,
+        expectLeave: lastOrder.expectLeave ? moment(lastOrder.expectLeave).format('YYYY-MM-DD HH:mm') : ''
+      });
+    } else {
+      // 上次维修记录 带出部分信息
+      this.workSheetForm.patchValue({
+        contactUser: lastOrder.contactUser,
+        contactInfo: lastOrder.contactInfo,
+        lastEnter: moment(lastOrder.lastEnter).format('YYYY-MM-DD HH:mm'),
+        lastMileage: lastOrder.lastMileage,
+      });
+    }
   }
 
   // 根据车牌号， 车主， vin 自动带出客户车辆信息
@@ -568,7 +585,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 重置费用
     this.fee.workHour = 0;
     this.fee.material = 0;
-    this.fee.other = 0;
+    this.fee.discount = 0;
+    this.fee.workHours = 0;
 
     // 清空上次维修工单数据
     this.lastOrderData = null;
@@ -609,9 +627,14 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
         console.log('创建工单成功之后， 返回的工单对象：', JSON.stringify(data));
         // 创建订单成功之后  做一些重置操作
         if (confirm('创建工单成功！ 是否打印？')) {
+          // 组织打印需要的数据
           this.newWorkOrderData = {};
           Object.assign(this.newWorkOrderData, data);
           Object.assign(this.newWorkOrderData, workSheet);
+          this.fee.workHours = this.newMaintenanceItemData.reduce((accumulator, currentValue) => {
+            return currentValue.workHour;
+          }, 0);
+          this.newWorkOrderData.fee = this.fee;
           this.newWorkOrderData.serviceOutputs = workSheet.maintenanceItems;
           this.newWorkOrderData.typeName = this.maintenanceTypeData.find(item => item.id === workSheet.type).value;
           // 延迟打印
@@ -665,30 +688,5 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     return [
       { name: 'name', title: '名称' },
     ];
-  }
-  // 设置数据源
-  private typeaheadSource(service) {
-    return (params: TypeaheadRequestParams) => {
-      const p = new FuzzySearchRequest(params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return service.call(this.service, p);
-    };
-  }
-
-  // 根据车系名称模糊查询数据源
-  public get seriesTypeaheadSource() {
-    return (params: TypeaheadRequestParams) => {
-      const p = new VehicleSeriesSearchRequest(params.text, this.workSheetForm.controls.brandId.value);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.service.getVehicleBySeries(p);
-    };
-  }
-  // 根据车型名称模糊查询数据源
-  public get modelTypeaheadSource() {
-    return (params: TypeaheadRequestParams) => {
-      const p = new VehicleSearchRequest(params.text, this.workSheetForm.controls.brandId.value, this.workSheetForm.controls.seriesId.value);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.service.getVehicleByModel(p);
-    };
   }
 }

@@ -16,30 +16,29 @@
   <table class="table table-bordered table-striped">
     <thead>
       <tr>
-        <th>品牌</th>
         <th>配件编码</th>
+        <th>配件类型</th>
         <th>配件名称</th>
+        <th>品牌</th>
         <th>规格型号</th>
-        <th>单价</th>
-        <th>金额</th>
-        <th>车型</th>
-        <th>库存</th>
+        <th>单位</th>
+        <th>库存量</th>
         <th>最新入库日期</th>
         <th>最新出库日期</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngIf="item">
-        <td>{{item.brand }}</td>
         <td>{{item.code }}</td>
         <td>{{item.name}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.brand }}</td>
         <td>{{item.specification }}</td>
-        <td class="text-right">{{item.price|centToYuan}}</td>
-        <td class="text-right">{{item.amount|centToYuan}}</td>
-        <td>{{item.vehicleName }}</td>
+        <td class="text-center">{{item.unitName}}</td>
         <td class="text-center">{{item.count}}</td>
-        <td class="text-center">{{item.lastInStoreDate}}</td>
-        <td class="text-center">{{item.lastOutStoreDate}}</td>
+        <td class="text-center">{{item.count}}</td>
+        <td class="text-center">{{item.inTime|sDatetime}}</td>
+        <td class="text-center">{{item.outTime|sDatetime}}</td>
       </tr>
     </tbody>
   </table>

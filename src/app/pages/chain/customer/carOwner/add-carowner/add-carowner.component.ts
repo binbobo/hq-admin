@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CustomerService} from '../../customer.service';
 import { OrderService } from '../../../reception/order.service';
 import { Location } from '@angular/common';
-import { TypeaheadRequestParams, HqAlerter } from 'app/shared/directives';
+import { HqAlerter } from 'app/shared/directives';
 import * as moment from 'moment';
 import { CustomValidators } from 'ng2-validation';
 import { HQ_VALIDATORS } from 'app/shared/shared.module';

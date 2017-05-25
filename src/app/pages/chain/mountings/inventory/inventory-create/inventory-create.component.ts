@@ -115,6 +115,7 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
   public vehicles: Array<any> = [];
 
   onVehicleSelect(event) {
+    this.vehicles = this.vehicles || [];
     let index = this.vehicles.findIndex(m => m.vehicleId === event.vehicleId);
     if (event.checked && !~index) {
       this.vehicles.push(event);
@@ -141,11 +142,20 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
       brandName: event.brand,
       brandId: event.brandId,
       productSpecification: event.specification,
-      unit: event.unitItem && event.unitItem.value,
-      categoryId: Array.isArray(event.categoryList) && event.categoryList.length && [event.categoryList[0].value]
+      unit: event.unitId,
+      categoryId: event.categoryId,
     };
     this.form.patchValue(item);
+    this.vehicles = event.vehicleInfoList;
     this.disableItem(true);
+  }
+
+  private onCategoryChange(event: Event) {
+    let el = event.target as HTMLSelectElement;
+    if (el.selectedOptions.length) {
+      let text = el.selectedOptions[0].innerHTML;
+      this.form.controls['name'].setValue(text);
+    }
   }
 
   private disableItem(disabled: boolean) {
@@ -153,21 +163,17 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
     if (disabled) {
       this.owned = true;
     } else {
-      this.owned = undefined;
+      this.vehicles = null;
+      this.owned = null;
       keys.forEach(key => {
         this.form.controls[key].setValue('');
       });
     }
   }
 
-  onCategorySelect(event: Event) {
-    let el = event.target as HTMLSelectElement;
-    this.form.patchValue({ categoryId: [el.value] });
-  }
-
   onReset() {
     this.owned = false;
-    this.vehicles = [];
+    this.vehicles = null;
     super.onReset();
   }
 

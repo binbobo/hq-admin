@@ -116,17 +116,17 @@ export class FormControlErrorDirective<T extends FormControlErrorComponent> impl
     } else if (key === 'pattern') {
       return `无效的${this.label}`;
     } else if (key === 'digits') {
-      return `${this.label}必须是有效的自然数`;
+      return `${this.label}必须是有效的正整数`;
     } else if (key === "gte") {
-      return `${this.label}不能低于最小限制范围`;
+      return `${this.label}超出最小限制`;
     } else if (key === "lte") {
-      return `${this.label}不能高于最高限制范围`;
+      return `${this.label}超出最大限制`;
     } else if (key === "range") {
       return `${this.label}不能超出限定范围限制范围`;
     } else if (key === "max") {
-      return `${this.label}超出最大值${errors.requiredValue}限制`;
+      return `${this.label}不能大于${errors.requiredValue}`;
     } else if (key === "min") {
-      return `${this.label}超出最小值${errors.requiredValue}限制`;
+      return `${this.label}不能小于${errors.requiredValue}`;
     } else if (key === "mobile") {
       return `无效的手机号码`;
     } else {

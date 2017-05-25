@@ -61,14 +61,17 @@ export class SalesListItem {
     public amount: number = 0,
     public stockCount: number = 0,
     public productName?: string,
+    public unit?: string,
     public brand?: string,
     public productId?: string,
     public productCode?: string,
     public productSpecification?: string,
-    public storeId?: string,
-    public locationId?: string,
     public description?: string,
     public locationName?: string,
+    public locationId?: string,
+    public storeId?: string,
+    public productCategory?: string,
+    public categoryId?: string,
     public houseName?: string
   ) { }
 }

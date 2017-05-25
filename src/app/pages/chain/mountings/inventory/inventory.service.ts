@@ -71,15 +71,15 @@ export class InventoryListRequest extends PagedParams {
 
 export class Inventory extends BasicModel {
   constructor(
-    public categoryId: Array<string> = [],
     public vehicleId: Array<string> = [],
     public vehicleList: Array<any> = [],
     public categoryList: Array<any> = [],
     public vehicleInfoList: Array<any> = [],
+    public categoryId?: string,
     public number?: number,
     public storeId?: string,
     public locationName?: string,
-    public locationId?:string,
+    public locationId?: string,
     public storageLocationName?: string,
     public category?: string,
     public brand?: string,

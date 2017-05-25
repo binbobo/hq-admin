@@ -3,14 +3,19 @@
     <div class="col-6">
       <div class="form-group">
         <label class="form-control-label">*配件编码</label>
-        <input hqProductTypeahead (onSelect)="onItemSelect($event)" formControlName="productCode" class="form-control" placeholder="请输入配件编码">
+        <input hqProductTypeahead (onSelect)="onItemSelect($event)" (input)="onResetForm($event)" formControlName="productCode" class="form-control"
+          placeholder="请输入配件编码">
         <input type="hidden" label="配件编码" formControlName="productId">
       </div>
       <div class="form-group">
         <label class="form-control-label">*配件名称</label>
-        <input label="配件名称" hqProductTypeahead (onSelect)="onItemSelect($event)" formControlName="productName" class="form-control"
-          placeholder="请输入配件名称">
+        <input label="配件名称" hqProductTypeahead (onSelect)="onItemSelect($event)" (input)="onResetForm($event)" formControlName="productName"
+          class="form-control" placeholder="请输入配件名称">
         <input type="hidden" label="配件名称" formControlName="productId">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*配件分类</label>
+        <input readonly formControlName="productCategory" class="form-control">
       </div>
       <div class="form-group">
         <label class="form-control-label">*品牌</label>
@@ -21,22 +26,30 @@
         <input readonly label="规格型号" formControlName="productSpecification" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*单价（元/个）</label>
-        <input type="number" label="单价" formControlName="yuan" class="form-control" (input)="onPriceChange($event)" />
+        <label class="form-control-label">单位</label>
+        <input readonly formControlName="unit" class="form-control">
       </div>
     </div>
     <div class="col-6">
       <div class="form-group">
         <label class="form-control-label">*仓库</label>
-        <input readonly label="仓库" formControlName="houseName" class="form-control">
+        <select class="form-control" (change)="onStorageChange($event.target.value)" formControlName="storeId">
+          <option *ngFor="let item of storages" [value]="item.id">{{item.name}}</option>
+        </select>
       </div>
       <div class="form-group">
         <label class="form-control-label">*库位</label>
-        <input readonly label="库位" formControlName="locationName" class="form-control">
+        <select class="form-control" formControlName="locationId">
+          <option *ngFor="let item of locations" [value]="item.id">{{item.name}}</option>
+        </select>
       </div>
       <div class="form-group">
         <label class="form-control-label">*库存</label>
         <input readonly label="库存" formControlName="stockCount" [errors]="{min:'库存不足'}" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*单价（元/个）</label>
+        <input label="单价" type="number" formControlName="yuan" class="form-control" (input)="onPriceChange($event)" />
       </div>
       <div class="form-group">
         <label class="form-control-label">*数量（个）</label>

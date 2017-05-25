@@ -1,13 +1,12 @@
-import { Directive, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
+import { Directive, ViewContainerRef, ComponentFactoryResolver, Input } from '@angular/core';
 import { TableTypeaheadDirective, TableTypeaheadColumn, TypeaheadRequestParams } from 'app/shared/directives';
 import { HttpService, Urls } from 'app/shared/services';
 import { PagedParams } from 'app/shared/models';
-import { element } from 'protractor';
 
 @Directive({
-    selector: '[hqBrandTypeahead]'
+    selector: '[hqSeriesTypeahead]'
 })
-export class BrandTypeaheadDirective extends TableTypeaheadDirective {
+export class SeriesTypeaheadDirective extends TableTypeaheadDirective {
 
     constructor(
         protected viewContainerRef: ViewContainerRef,
@@ -15,20 +14,23 @@ export class BrandTypeaheadDirective extends TableTypeaheadDirective {
         protected httpService: HttpService,
     ) {
         super(viewContainerRef, componentFactoryResolver);
-        // 不显示标题
         this.showTitle = false;
     }
 
     protected columns = [
-        { name: 'name', title: '品牌' },
+        { name: 'name', title: '车系' },
     ] as Array<TableTypeaheadColumn>;
+
+    @Input()
+    brandId: string;
 
     ngOnInit() {
         this.source = (params: TypeaheadRequestParams) => {
-            let request = new BrandSearchRequest();
-            request['brandName'] = params.text;
+            let request = new SeriesSearchRequest();
+            request['seriesName'] = params.text;
+            request['brandId'] = this.brandId;
             request.setPage(params.pageIndex, params.pageSize);
-            let url = Urls.chain.concat('/Brands/search');
+            let url = Urls.chain.concat('/VehicleSeries/search');
             return this.httpService.getPagedList<any>(url, request);
         };
         super.ngOnInit();
@@ -36,9 +38,10 @@ export class BrandTypeaheadDirective extends TableTypeaheadDirective {
 
 }
 
-class BrandSearchRequest extends PagedParams {
+class SeriesSearchRequest extends PagedParams {
     constructor(
-        public brandName?: string, // 品牌名称
+        public brandId?: string, // 品牌ID
+        public seriesName?: string, // 车系名称
     ) {
         super();
     }

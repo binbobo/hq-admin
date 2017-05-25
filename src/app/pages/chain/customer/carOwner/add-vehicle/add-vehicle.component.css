@@ -1,3 +1,6 @@
-input[ngui-datetime-picker]{
-  position: relative !important;
+ngui-datetime-picker{
+  margin-top: 37px;
+}
+.pos {
+  position: relative;
 }

@@ -3,38 +3,43 @@
   <form *ngIf="form" class="card-block row" [formGroup]="form" (ngSubmit)="onSubmit($event)">
     <div class="col-6">
       <div class="form-group">
-        <label class="form-control-label">*仓库</label>
-        <select [attr.disabled]="editable" label="仓库" formControlName="storeId" class="form-control">
+        <label class="form-control-label">*仓库：</label>
+        <select label="仓库" (change)="onStorageChange($event)" formControlName="storeId" class="form-control">
           <option *ngFor="let item of warehouses" value="{{item.value}}">{{item.text}}</option>
         </select>
       </div>
       <div class="form-group">
-        <label class="form-control-label">*配件编码</label>
-        <input [hqProductTypeahead]="'code'" (onSelect)="onItemSelect($event)" formControlName="productCode" class="form-control" placeholder="请输入配件编码">
-        <input type="hidden" label="配件编码" formControlName="productId">
+        <label class="form-control-label">*配件编码：</label>
+        <input label="配件编码" (input)="onResetForm($event)" [hqProductTypeahead]="'code'" (onSelect)="onItemSelect($event)" formControlName="productCode"
+          class="form-control" placeholder="请输入配件编码">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*配件名称</label>
-        <input [hqProductTypeahead]="'name'" (onSelect)="onItemSelect($event)" formControlName="productName" class="form-control" placeholder="请输入配件名称">
-        <input type="hidden" label="配件名称" formControlName="productId">
+        <label class="form-control-label">*配件名称：</label>
+        <input label="配件名称" (input)="onResetForm($event)" [hqProductTypeahead]="'name'" (onSelect)="onItemSelect($event)" formControlName="productName"
+          class="form-control" placeholder="请输入配件名称">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*品牌</label>
-        <input [attr.readonly]="editable" label="品牌" formControlName="brand" class="form-control" placeholder="请输入品牌名称">
+        <label class="form-control-label">*配件分类：</label>
+        <input label="配件分类：" readonly formControlName="productCategory" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*规格型号</label>
-        <input [attr.readonly]="editable" label="规格型号" formControlName="productSpecification" class="form-control" placeholder="请输入规格型号">
+        <label class="form-control-label">*品牌：</label>
+        <input label="品牌" readonly formControlName="brandName" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*类别</label>
-        <input [attr.readonly]="editable" label="配件类别" formControlName="productCategory" class="form-control" placeholder="请输入配件类别">
+        <label class="form-control-label">*规格型号：</label>
+        <input type="text" readonly formControlName="productSpecification" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">*单位：</label>
+        <input type="text" readonly formControlName="unit" class="form-control">
       </div>
     </div>
     <div class="col-6">
       <div class="form-group">
-        <label class="form-control-label">库位</label>
-        <input [attr.readonly]="editable" label="库位" formControlName="locationName" #aa="hq-error" class="form-control" placeholder="请输入库位名称">
+        <label class="form-control-label">库位：</label>
+        <input type="text" [params]="typeaheadParams" (input)="onLocationChange($event)" (onSelect)="onLocationSelect($event)" [hqStorageLocationTypeahead]="'name'"
+          formControlName="locationName" class="form-control" placeholder="请输入库位">
       </div>
       <div class="form-group">
         <label class="form-control-label">*数量（个）</label>

@@ -43,22 +43,21 @@
         </div>
         <label for="brand" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>品牌</label>
         <div class="col-2">
-          <input label="品牌" forceRefresh="true" hqBrandTypeahead="brandName" (onSelect)="onBrandSelect($event)" type="text" class="form-control"
+          <input label="品牌" forceRefresh="true" hqBrandTypeahead (onSelect)="onBrandSelect($event)" type="text" class="form-control"
             formControlName="brand" id="brand" placeholder="请选择品牌">
           <!--品牌id-->
           <input type="hidden" formControlName="brandId" />
         </div>
         <label for="series" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车系</label>
         <div class="col-2">
-          <input forceRefresh="true" [hqTableTypeahead]="seriesTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="onSeriesSelect($event)"
+          <input forceRefresh="true" hqSeriesTypeahead [brandId]="workSheetForm.value.brandId" (onSelect)="onSeriesSelect($event)"
             type="text" class="form-control" formControlName="series" id="series" placeholder="请选择车系">
           <!--车系id-->
           <input type="hidden" formControlName="seriesId" />
         </div>
         <label for="vehicleName" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车型</label>
         <div class="col-2">
-          <input (blur)="onVehicleBlur()" forceRefresh="true" [hqTableTypeahead]="modelTypeaheadSource" [columns]="nameTypeaheadColumns"
-            (onSelect)="onModelSelect($event)" type="text" class="form-control" formControlName="vehicleName" id="vehicleName"
+          <input (blur)="onVehicleBlur()" forceRefresh="true" hqModelTypeahead [brandId]="workSheetForm.value.brandId" [seriesId]="workSheetForm.value.seriesId" (onSelect)="onModelSelect($event)" type="text" class="form-control" formControlName="vehicleName" id="vehicleName"
             placeholder="请选择车型">
           <!--车辆id-->
           <input type="hidden" formControlName="vehicleId" />
@@ -197,7 +196,7 @@
     <br>
     <div>
       <button [hqSpinner]="generating" type="button" class="btn btn-primary" [disabled]="!enableCreateWorkSheet" (click)="createWorkSheet()">生成工单</button>
-      <button [hqSpinner]="suspendBill.suspending" type="button" class="btn btn-secondary" (click)="suspendOrder()">挂单</button>
+      <button [hqSpinner]="suspendBill.suspending" type="button" class="btn btn-success" (click)="suspendOrder()">挂单</button>
     </div>
   </div>
   <div bsModal #addModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
