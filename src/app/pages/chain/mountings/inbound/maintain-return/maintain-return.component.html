@@ -7,7 +7,7 @@
   <div class='card-block'>
     <div>
       <form class="form-in serach-input">
-        <input [hqTableTypeahead]="PlatNoSource" [columns]="typeaheadColumns" name="initValue" (onSelect)="onPlateNoSelect($event)"
+        <input [hqTableTypeahead]="PlatNoSource" [(ngModel)]="initValue" [columns]="typeaheadColumns" name="initValue" (onSelect)="onPlateNoSelect($event)"
           class="form-control input-left" placeholder="请输入车牌号/工单号">
         <span class='button-right'>
         </span>
