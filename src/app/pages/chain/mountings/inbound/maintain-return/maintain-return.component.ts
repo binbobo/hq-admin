@@ -312,7 +312,7 @@ export class MaintainReturnComponent implements OnInit {
     this.mrData = [];
     this.suspendedBillId = "";
     this.suspendData = "";
-    this.initValue=""
+    
   }
   suspend() {
     this.suspendData = {
@@ -338,7 +338,7 @@ export class MaintainReturnComponent implements OnInit {
 
 
     this.suspendBill.suspend(this.suspendData)
-      .then(() => { this.alerter.success('挂单成功！'); this.initDetailData() })
+      .then(() => { this.alerter.success('挂单成功！'); this.initDetailData() ;this.initValue=""})
       .then(() => this.suspendBill.refresh())
       .catch(err => {
         this.alerter.error(err);

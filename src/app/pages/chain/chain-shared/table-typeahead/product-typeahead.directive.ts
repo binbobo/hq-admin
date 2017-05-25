@@ -16,6 +16,9 @@ export class ProductTypeaheadDirective extends TableTypeaheadDirective {
     super(viewContainerRef, componentFactoryResolver);
   }
 
+  @Input("hqProductTypeahead")
+  protected filed: string;
+
   protected columns = [
     { name: 'brandName', title: '品牌' },
     { name: 'code', title: '配件编码' },
@@ -23,9 +26,6 @@ export class ProductTypeaheadDirective extends TableTypeaheadDirective {
     { name: 'name', title: '配件名称' },
     { name: 'specification', title: '规格型号' },
   ] as Array<TableTypeaheadColumn>;
-
-  @Input("hqProductTypeahead")
-  protected filed: string;
 
   ngOnInit() {
     this.filed = this.filed || 'name';
@@ -40,6 +40,8 @@ export class ProductTypeaheadDirective extends TableTypeaheadDirective {
           return result;
         })
     };
+    this.filed === 'code' && (this.columns[1].weight = 1);
+    this.filed === 'name' && (this.columns[3].weight = 1);
     super.ngOnInit();
   }
 

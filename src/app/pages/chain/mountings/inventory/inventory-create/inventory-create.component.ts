@@ -175,9 +175,9 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
   }
 
   onReset() {
-    this.owned = false;
-    this.vehicles = null;
     super.onReset();
+    this.owned = undefined;
+    this.vehicles = undefined;
   }
 
   onCreate() {
