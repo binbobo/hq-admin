@@ -91,6 +91,7 @@ export class DistributeComponent implements OnInit {
     this.service.getMMList(this.billCode).toPromise()
       .then(data => {
         this.serialShow = false;
+        console.log(data)
         this.serialData = data;
         this.serialData.sort((a, b) => {
           return a.serialNum - b.serialNum

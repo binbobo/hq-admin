@@ -250,7 +250,7 @@ export class MaintainReturnComponent implements OnInit {
   inputData: any;
   // 点击退料弹出弹框
   OnCreatBound(ele, item, id) {
-    console.log(ele, id);
+    console.log(ele,item, id);
     ele.serialNum = item.serialNum;
     ele.maintenanceItemId = ele.maintenanceItemId; //维修明细id
     ele.curId = id;//记录点击的id

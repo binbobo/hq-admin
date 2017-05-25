@@ -162,9 +162,14 @@ export class DistributeCreatComponent implements OnInit {
       item.locationId = null;
       item.stockCount = 0;
     }
-    let priceControl = this.form.controls['yuan'];
-    let validators = Validators.compose([priceControl.validator, CustomValidators.min(item.price / 100)])
-    priceControl.setValidators(validators);
+    this.form.controls['yuan'].setValidators([CustomValidators.min(item.price / 100), CustomValidators.gte(0)]);
+    this.form.controls['count'].setValidators([CustomValidators.max(item.stockCount), CustomValidators.gt(0)]);
+
+
+    // let countControl = this.form.controls['count'];
+    // let countvalidators = Validators.compose([countControl.validator, CustomValidators.max(item.stockCount)]);
+    // countControl.setValidators(countvalidators);
+
     setTimeout(() => {
       this.form.patchValue(item);
       this.calculate();
