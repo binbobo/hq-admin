@@ -22,8 +22,11 @@
           <tr>
             <th>维修项目</th>
             <th>配件编码</th>
+            <th>配件类型</th>
             <th>配件名称</th>
+            <th>品牌</th>
             <th>规格型号</th>
+            <th>单位</th>
             <th>仓库</th>
             <th>库位</th>
             <th>数量</th>
@@ -37,8 +40,11 @@
           <tr *ngFor="let ele of item.list">
             <td>{{ele.serviceItem}}</td>
             <td>{{ele.productCode}}</td>
+            <td>{{ele.productCategory}}</td>
             <td>{{ele.productName}}</td>
+            <td>{{ele.brand}}</td>
             <td>{{ele.productSpecification}}</td>
+            <td>{{ele.unit}}</td>
             <td>{{ele.storeName}}</td>
             <td>{{ele.locationName}}</td>
             <td>{{ele.count}}</td>

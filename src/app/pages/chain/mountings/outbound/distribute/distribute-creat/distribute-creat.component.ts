@@ -69,18 +69,18 @@ export class DistributeCreatComponent implements OnInit {
       stockCount: count,
     });
     let countControl = this.form.controls['count'];
-    let validators = Validators.compose([countControl.validator, CustomValidators.max(count)])
+    let validators = Validators.compose([Validators.required, CustomValidators.min(1), CustomValidators.max(count)])
     countControl.setValidators(validators);
   }
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      brandName: [this.model.brand, [Validators.required]],
+      brandName: [this.model.brand],
       productCode: [this.model.productCode],
       productName: [this.model.productName],
       productCategory: [this.model.productCategory],
       productId: [this.model.productId, [Validators.required, Validators.maxLength(36)]],
-      productSpecification: [this.model.productSpecification, [Validators.required]],
+      productSpecification: [this.model.productSpecification],
       storeId: [this.model.storeId],
       locationId: [this.model.locationId],
       productUnit: [this.model.productUnit],
@@ -163,8 +163,12 @@ export class DistributeCreatComponent implements OnInit {
       item.stockCount = 0;
     }
     let priceControl = this.form.controls['yuan'];
-    let validators = Validators.compose([priceControl.validator, CustomValidators.min(item.price / 100)])
+    let validators = Validators.compose([Validators.required, CustomValidators.gt(0), CustomValidators.min(item.price / 100)])
     priceControl.setValidators(validators);
+    setTimeout(() => {
+      this.form.patchValue(item);
+      this.calculate();
+    }, 1);
     setTimeout(() => {
       this.form.patchValue(item);
       this.calculate();

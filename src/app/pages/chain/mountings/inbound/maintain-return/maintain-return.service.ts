@@ -175,7 +175,7 @@ export class MaintainReturnListItem {
         public amount: number = 0,
         public stockCount: number = 0,
         public productName: string = "",
-        public brand: string = "",
+        public brandName: string = "",
         public productId?: string,
         public productCode?: string,
         public productSpecification: string = "",
@@ -193,6 +193,8 @@ export class MaintainReturnListItem {
         public initamount: any = 0,
         public operatorId: string = "",
         public createUser: string = "",
-        public description?:string
+        public description?:string,
+        public productUnit?:string,
+        public productCategory?:string,
     ) { }
 }

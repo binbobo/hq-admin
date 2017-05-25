@@ -91,6 +91,7 @@ export class DistributeComponent implements OnInit {
     this.service.getMMList(this.billCode).toPromise()
       .then(data => {
         this.serialShow = false;
+        console.log(data)
         this.serialData = data;
         this.serialData.sort((a, b) => {
           return a.serialNum - b.serialNum
@@ -308,8 +309,8 @@ export class DistributeComponent implements OnInit {
 
   }
 
-  suspend(form) {
-  form.reset();
+  suspend() {
+  
     this.suspendData = {
       newMainData: this.newMainData,
       serviceData: this.serviceData,
@@ -336,7 +337,7 @@ export class DistributeComponent implements OnInit {
     // let el = event.target as HTMLButtonElement;
     // el.disabled = true;
     this.suspendBill.suspend(this.suspendData)
-      .then(() => { this.alerter.success('挂单成功！'); form.reset(); this.initDetailOrder() })
+      .then(() => { this.alerter.success('挂单成功！');  this.initDetailOrder() })
       .then(() => this.suspendBill.refresh())
       .catch(err => {
         // el.disabled = false;

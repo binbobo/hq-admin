@@ -21,7 +21,7 @@ export class SalesReturnService implements BasicService<any>{
 
 //   //客户信息模糊查询
   getCustomerPagedList(params: CustomerRequest): Promise<PagedResult<any>> {
-    const url = Urls.chain.concat('/Sales/GetPagedList?', params.serialize());
+    const url = Urls.chain.concat('/Sales/GetCustomer?', params.serialize());
     console.log("客户信息url",url);
     return this.httpService.get<PagedResult<any>>(url)
       .then(result => {
