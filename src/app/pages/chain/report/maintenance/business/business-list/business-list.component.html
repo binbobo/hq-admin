@@ -2,34 +2,34 @@
 <div class="card business">
   <div class="card-header">维修历史</div>
   <div class="card-block">
-    <form [formGroup]="businessForm" (ngSubmit)="onSearch()">
+    <form (ngSubmit)="onSearch()">
       <div class="form-group row">
         <label for="plateNo" class="col-form-label margin-l">车牌号：</label>
         <div class="col-2">
-          <input [(ngModel)]="params.plateNo" formControlName="plateNo" [hqTableTypeahead]="plateNotypeaheadSource" [columns]="typeaheadColumns"
-            (onSelect)="plateNoOnSelect($event)" class="form-control" id="plateNo" type="text" placeholder="请输入车牌号" />
+          <input [(ngModel)]="params.plateNo" [hqTableTypeahead]="plateNotypeaheadSource" [columns]="typeaheadColumns"
+            (onSelect)="plateNoOnSelect($event)" class="form-control" name="plateNo" id="plateNo" type="text" placeholder="请输入车牌号" />
         </div>
         <label for="enterTime" class="col-form-label margin-l">进店时间：</label>
         <div class="col-3">
-          <input [close-on-select]="false" [(ngModel)]="params.enterStartTimeDate" formControlName="enterStartTimeDate" class="form-control datetime-picker"
-            id="enterStartTimeDate" type="text" ngui-datetime-picker/>
+          <input [max-date]="maxEnterStartDate" [(ngModel)]="params.enterStartTimeDate" class="form-control"
+            id="enterStartTimeDate" name="enterStartTimeDate" type="text" ngui-datetime-picker/>
         </div>
         <label class="col-form-label">至：</label>
         <div class="col-3">
-          <input [close-on-select]="false" [(ngModel)]="params.enterEndTimeDate" formControlName="enterEndTimeDate" class="form-control datetime-picker"
-            id="enterEndTimeDate" type="text" ngui-datetime-picker/>
+          <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" [(ngModel)]="params.enterEndTimeDate" class="form-control"
+            id="enterEndTimeDate" name="enterEndTimeDate" type="text" ngui-datetime-picker/>
         </div>
       </div>
       <div class="form-group row">
         <label for="leaveTime" class="col-form-label margin-l">出厂时间：</label>
         <div class="col-3">
-          <input [close-on-select]="false" [(ngModel)]="params.leaveStartTimeDate" formControlName="leaveStartTimeDate" class="form-control datetime-picker"
-            id="leaveStartTimeDate" type="text" ngui-datetime-picker/>
+          <input [max-date]="maxLeaveStartDate" [(ngModel)]="params.leaveStartTimeDate" class="form-control"
+            id="leaveStartTimeDate" name="leaveStartTimeDate" type="text" ngui-datetime-picker/>
         </div>
         <label class="col-form-label">至：</label>
         <div class="col-3">
-          <input [close-on-select]="false" [(ngModel)]="params.leaveEndTimeDate" formControlName="leaveEndTimeDate" class="form-control datetime-picker"
-            id="leaveEndTimeDate" type="text" ngui-datetime-picker/>
+          <input [min-date]="minLeaveEndDate" [max-date]="maxLeaveEndDate" [(ngModel)]="params.leaveEndTimeDate" class="form-control"
+            id="leaveEndTimeDate" name="leaveEndTimeDate" type="text" ngui-datetime-picker/>
         </div>
         <label *ngIf="items" for="searchRange" class="col-form-label">查询范围</label>
         <div *ngIf="items" class="col-2">
