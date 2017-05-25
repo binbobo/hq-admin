@@ -164,11 +164,13 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
     if (disabled) {
       this.owned = true;
     } else {
-      this.vehicles = null;
-      this.owned = null;
-      keys.forEach(key => {
-        this.form.controls[key].setValue('');
-      });
+      if (this.owned) {
+        this.vehicles = null;
+        this.owned = null;
+        keys.forEach(key => {
+          this.form.controls[key].setValue('');
+        });
+      }
     }
   }
 
