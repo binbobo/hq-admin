@@ -91,10 +91,10 @@
           <tr *ngFor="let item of salesReturnData;let i = index">
             <td><button class="btn btn-danger" (click)="onDelCreat(e,i)">删除</button></td>
             <td class="text-center">{{item.productCode }}</td>
-            <td class="text-center">{{item.categoryName }}</td>
+            <td class="text-center">{{item.productCategory}}</td>
             <td>{{item.productName}}</td>
             <td>{{item.brandName }}</td>
-            <td>{{item.specification}}</td>
+            <td>{{item.productSpecification}}</td>
             <td>{{item.unit}}</td>
             <td>{{item.storeName }}</td>
             <td>{{item.locationName }}</td>
