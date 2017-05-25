@@ -310,7 +310,7 @@ export class DistributeComponent implements OnInit {
   }
 
   suspend() {
-  
+
     this.suspendData = {
       newMainData: this.newMainData,
       serviceData: this.serviceData,
@@ -337,7 +337,7 @@ export class DistributeComponent implements OnInit {
     // let el = event.target as HTMLButtonElement;
     // el.disabled = true;
     this.suspendBill.suspend(this.suspendData)
-      .then(() => { this.alerter.success('挂单成功！');  this.initDetailOrder() })
+      .then(() => { this.alerter.success('挂单成功！'); this.initDetailOrder(); this.initValue = ""; })
       .then(() => this.suspendBill.refresh())
       .catch(err => {
         // el.disabled = false;
@@ -357,7 +357,7 @@ export class DistributeComponent implements OnInit {
     this.MRData = [];
     this.suspendedBillId = "";
     this.suspendData = null;
-    this.initValue = "";
+
   }
   createModalHide() {
     this.createModal.hide();

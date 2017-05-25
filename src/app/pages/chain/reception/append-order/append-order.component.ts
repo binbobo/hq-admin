@@ -156,7 +156,7 @@ export class AppendOrderComponent {
 
   submitAddOrder() {
     console.log(this.newMaintenanceItemData);
-    this.isableAppend=false;
+    this.isableAppend = false;
 
     this.newSuggestData.forEach(item => {
       item.content = item.serviceName;
@@ -174,7 +174,7 @@ export class AppendOrderComponent {
     console.log(dada);
 
     this.service1.put(postData, this.listId).then((result) => {
-      this.isableAppend=false;
+      this.isableAppend = false;
       let returnData = result.data;
       this.maintenanceProjectData = returnData.serviceOutputs;
       this.suspendData.maintenanceProjectData = this.maintenanceProjectData;
@@ -197,7 +197,7 @@ export class AppendOrderComponent {
       this.newSuggestData = [],
         this.newAttachData = [],
         this.newMaintenanceItemData = []
-    }).catch(err =>{this.alerter.error(err, true, 2000);this.isableAppend=true;});
+    }).catch(err => { this.alerter.error(err, true, 2000); this.isableAppend = true; });
   }
 
   // 编辑维修项目
@@ -475,7 +475,7 @@ export class AppendOrderComponent {
     newAttachData: [],
     newMaintenanceItemData: []
   }
-
+  initValue: any;
   suspend(event: Event) {
 
     if (this.sunspendRequest) {
@@ -491,9 +491,9 @@ export class AppendOrderComponent {
     // el.disabled = true;
     this.suspendBill.suspend(this.suspendData)
       // .then(() => el.disabled = false)
+
+      .then(() => { this.alerter.success('挂单成功！'); this.initOrderData(); this.initValue = "" })
       .then(() => this.suspendBill.refresh())
-      .then(() => this.alerter.success('挂单成功！'))
-      .then(() => this.initOrderData())
       .catch(err => {
         // el.disabled = false;
         this.alerter.error(err);
