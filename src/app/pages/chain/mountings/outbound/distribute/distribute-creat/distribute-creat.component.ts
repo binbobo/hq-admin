@@ -76,10 +76,10 @@ export class DistributeCreatComponent implements OnInit {
   private buildForm() {
     this.form = this.formBuilder.group({
       brandName: [this.model.brand],
-      productCode: [this.model.productCode],
-      productName: [this.model.productName],
+      productCode: [this.model.productCode, [Validators.required]],
+      productName: [this.model.productName, [Validators.required]],
       productCategory: [this.model.productCategory],
-      productId: [this.model.productId, [Validators.required, Validators.maxLength(36)]],
+      productId: [this.model.productId, [Validators.required]],
       productSpecification: [this.model.productSpecification],
       storeId: [this.model.storeId],
       locationId: [this.model.locationId],
@@ -125,15 +125,15 @@ export class DistributeCreatComponent implements OnInit {
     return false;
   }
 
-  private onResetForm(event: Event) {
+  private onResetForm(event: Event, key: string) {
     if (!event.isTrusted) return false;
     this.storages = null;
     this.locations = null;
     let obj = { ...this.model };
-    delete obj.storeId;
-    delete obj.locationId;
+    key in obj && delete obj[key];
     this.form.patchValue(obj);
   }
+
 
   public onItemSelect(event) {
     console.log(event)
@@ -169,10 +169,7 @@ export class DistributeCreatComponent implements OnInit {
       this.form.patchValue(item);
       this.calculate();
     }, 1);
-    setTimeout(() => {
-      this.form.patchValue(item);
-      this.calculate();
-    }, 1);
+
   }
 
   private calculate() {
