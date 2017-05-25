@@ -6,8 +6,19 @@
 <hq-workorder-basic-info [data]="data"></hq-workorder-basic-info>
 <hr>
 <hq-maintenance-item-list [showCaption]="true" [showNo]="true" *ngIf="data?.serviceOutputs?.length>0" [serviceOutputs]="data?.serviceOutputs"></hq-maintenance-item-list>
+<div *ngIf="data?.serviceOutputs?.length>0">
+  工时合计：
+  <span class="ml-2 mr-2"><strong>{{data?.fee.workHours}}</strong></span> 工时费：
+  <span class="ml-2 mr-2"><strong>{{data?.fee.workHour|centToYuan}}</strong></span>  优惠
+  <span class="ml-2 mr-2"><strong>{{data?.fee.discount|centToYuan}}</strong></span>  应收金额
+  <span class="ml-2 mr-2"><strong>{{data?.fee.workHour-data?.fee.discount|centToYuan}}</strong></span> 
+</div>
 <br>
-<hq-maintenance-fixings-list *ngIf="data?.productOutputs?.length>0" [showNo]="true"  [showCaption]="true" [productOutputs]="data?.productOutputs"></hq-maintenance-fixings-list>
+<hq-maintenance-fixings-list *ngIf="data?.productOutputs?.length>0" [showNo]="true" [showCaption]="true" [productOutputs]="data?.productOutputs"></hq-maintenance-fixings-list>
+<div *ngIf="data?.productOutputs?.length>0">
+  合计：
+  <span class="ml-2 mr-2"><strong>{{data?.fee.material|centToYuan}}</strong></span>
+</div>
 <br>
 <hq-attachment-item-list *ngIf="data?.attachServiceOutputs?.length>0" [showNo]="true" [showCaption]="true" [attachServiceOutputs]="data?.attachServiceOutputs"></hq-attachment-item-list>
 <br>

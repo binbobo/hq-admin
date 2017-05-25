@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { TypeaheadRequestParams, HqAlerter } from 'app/shared/directives';
+import { HqAlerter } from 'app/shared/directives';
 import { OrderService } from '../../../reception/order.service';
 import { FuzzySearchRequest } from '../../../report/maintenance/business/business.service';
 import * as moment from 'moment';
@@ -22,6 +22,7 @@ export class AddMaintenanceItemComponent implements OnInit {
   item: any = null; // 当前编辑的维修项目
   @Input()
   services: any = []; // 当前已经选择的维修项目列表
+  serviceIds: any = []; // 维修项目id列表
 
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
@@ -35,6 +36,7 @@ export class AddMaintenanceItemComponent implements OnInit {
     this.createForm();
 
     console.log('当前已经选择的维修项目列表为：', this.services);
+    this.serviceIds = this.services.map(item => item.id);
     // 编辑
     if (this.item) {
       this.maintenanceItemForm.patchValue(this.item);
@@ -120,29 +122,6 @@ export class AddMaintenanceItemComponent implements OnInit {
     const workHourPrice = this.maintenanceItemForm.controls.price.value;
     const discount = this.maintenanceItemForm.controls.discount.value / 100;
     this.maintenanceItemForm.controls.amount.setValue((workHour * workHourPrice * discount).toFixed(2));
-  }
-  // 定义维修项目模糊查询要显示的列
-  public get nameTypeaheadColumns() {
-    return [
-      { name: 'name', title: '名称' },
-    ];
-  }
-
-  // 根据维修项目名称模糊查询数据源
-  public get serviceNameTypeaheadSource() {
-    return (params: TypeaheadRequestParams) => {
-      const p = new FuzzySearchRequest(params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.service.getMaintenanceItemsByName(p).then(pagedData => {
-        for (let i = 0; i < this.services.length; i++) {
-          const index = pagedData.data.findIndex(item => item.id === this.services[i].id);
-          if (index > -1) {
-            pagedData.data.splice(index, 1);
-          }
-        }
-        return pagedData;
-      });
-    };
   }
 }
 

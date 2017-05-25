@@ -307,8 +307,7 @@ export class DistributeComponent implements OnInit {
 
   }
 
-  suspend(form) {
-    
+  suspend() {
     this.suspendData = {
       newMainData: this.newMainData,
       serviceData: this.serviceData,
@@ -336,7 +335,7 @@ export class DistributeComponent implements OnInit {
     // el.disabled = true;
     this.suspendBill.suspend(this.suspendData)
       .then(() => this.suspendBill.refresh())
-      .then(() => { this.alerter.success('挂单成功！'); form.reset();this.initDetailOrder() })
+      .then(() => { this.alerter.success('挂单成功！'); this.initDetailOrder() })
       .catch(err => {
         // el.disabled = false;
         this.alerter.error(err);
