@@ -12,7 +12,7 @@
       </div>
       <div class="form-group">
         <label class="form-control-label">*配件分类：</label>
-        <input type="text" class="form-control" disabled value="{{model?.categoryList|pluck:'categoryName'}}">
+        <input type="text" class="form-control" disabled value="{{model?.categoryList|pluck:'text'}}">
       </div>
       <div class="form-group">
         <label class="form-control-label">*配件名称：</label>
@@ -20,22 +20,23 @@
       </div>
       <div class="form-group">
         <label class="form-control-label">*品牌：</label>
-        <input disabled value="{{model?.brandName}}" class="form-control">
+        <input disabled value="{{model?.brand}}" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*规格/型号：</label>
-        <input disabled type="text" class="form-control" disabled value="{{model?.productSpecification}}">
+        <label class="form-control-label">*规格型号：</label>
+        <input disabled type="text" class="form-control" disabled value="{{model?.specification}}">
       </div>
       <div class="form-group">
         <label class="form-control-label">*单位：</label>
-        <input disabled value="{{model?.unitName}}" class="form-control">
+        <input disabled value="{{model?.unit}}" class="form-control">
       </div>
     </div>
     <div class="col-6">
       <div class="form-group">
         <label class="form-control-label">库位：</label>
-        <input type="text" [params]="typeaheadParams" (input)="onLocationChange($event)" (onSelect)="onLocationSelect($event)" [hqStorageLocationTypeahead]="'name'"
-          formControlName="locationName" class="form-control" placeholder="请输入库位">
+        <input type="text" [attr.disabled]="model?.count||undefined" [params]="typeaheadParams" (input)="onLocationChange($event)"
+          (onSelect)="onLocationSelect($event)" [hqStorageLocationTypeahead]="'name'" formControlName="locationName" class="form-control"
+          placeholder="请输入库位">
       </div>
       <div class="form-group">
         <label class="form-control-label">最大库存：</label>
@@ -60,7 +61,7 @@
       <div class="form-group">
         <label class="form-control-label">适用车型：</label>
         <div>
-          <div *ngFor="let item of vehicles" class="btn btn-secondary btn-sm mr-1 mb-1">
+          <div *ngFor="let item of model.vehicleInfoList" class="btn btn-secondary btn-sm mr-1 mb-1">
             <span>{{item.brandName}} {{item.seriesName}} {{item.name}}</span>
           </div>
         </div>

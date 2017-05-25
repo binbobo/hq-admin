@@ -63,16 +63,18 @@ export class InventoryListComponent extends DataList<Inventory> implements OnIni
   }
 
   onEdit(event: Event, item: Inventory) {
-    let btn = event.target as HTMLButtonElement;
-    btn.disabled = true;
-    this.inventoryService.get(item.id)
-      .then(data => this.model = data)
-      .then(data => this.editModal.show())
-      .then(data => btn.disabled = false)
-      .catch(err => {
-        btn.disabled = false;
-        this.alerter.error(err);
-      });
+    // let btn = event.target as HTMLButtonElement;
+    // btn.disabled = true;
+    this.model = item;
+    this.editModal.show();
+    // this.inventoryService.get(item.id)
+    //   .then(data => this.model = data)
+    //   .then(data => this.editModal.show())
+    //   .then(data => btn.disabled = false)
+    //   .catch(err => {
+    //     btn.disabled = false;
+    //     this.alerter.error(err);
+    //   });
   }
 
   onInventoryCreate(event) {
