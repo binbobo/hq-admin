@@ -47,12 +47,7 @@ export class ProcurementListComponent implements OnInit {
   onCreate(event: ProcurementItem) {
     let exists = this.model.list.find(m => m.productId == event.productId && m.locationId === event.locationId);
     if (exists) {
-      let total = exists.count + event.count;
-      exists.count += event.count;
-      exists.price = event.price;
-      exists.amount = exists.price * exists.count;
-      exists.exTaxPrice = exists.exTaxPrice;
-      exists.exTaxAmount = exists.exTaxPrice * exists.count;
+      Object.assign(exists, event);
     } else {
       this.model.list.push(event);
     }
