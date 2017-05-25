@@ -233,6 +233,7 @@ export class DistributeComponent implements OnInit {
     console.log(evt);
     evt.price = evt.price;
     evt.amount = evt.amount;
+
     this.hasList = this.newMainData.filter(item => item.maintenanceItemId === evt.maintenanceItemId && item.productId === evt.productId);
     if (this.hasList.length > 0) {
       this.newMainData.forEach((item, index) => {
@@ -308,7 +309,7 @@ export class DistributeComponent implements OnInit {
   }
 
   suspend(form) {
-
+  form.reset();
     this.suspendData = {
       newMainData: this.newMainData,
       serviceData: this.serviceData,
@@ -335,8 +336,8 @@ export class DistributeComponent implements OnInit {
     // let el = event.target as HTMLButtonElement;
     // el.disabled = true;
     this.suspendBill.suspend(this.suspendData)
-      .then(() => this.suspendBill.refresh())
       .then(() => { this.alerter.success('挂单成功！'); form.reset(); this.initDetailOrder() })
+      .then(() => this.suspendBill.refresh())
       .catch(err => {
         // el.disabled = false;
         this.alerter.error(err);

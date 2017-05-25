@@ -83,7 +83,7 @@ export class DistributeCreatComponent implements OnInit {
       productSpecification: [this.model.productSpecification, [Validators.required]],
       storeId: [this.model.storeId],
       locationId: [this.model.locationId],
-      ProductUnit: [this.model.ProductUnit],
+      productUnit: [this.model.productUnit],
       count: [this.model.count, [Validators.required, CustomValidators.min(1)]],
       price: [this.model.price],
       amount: [this.model.amount],
@@ -101,7 +101,7 @@ export class DistributeCreatComponent implements OnInit {
 
   public onSubmit(event: Event) {
     console.log(this.form.value, event, this.model)
-this.form.value["createUserName"]=this.model["createUserName"];
+    this.form.value["createUserName"] = this.model["createUserName"];
     let invalid = this.controls
       .map(c => c.validate())
       .some(m => !m);
@@ -138,7 +138,7 @@ this.form.value["createUserName"]=this.model["createUserName"];
   public onItemSelect(event) {
     console.log(event)
     let item: any = {
-      ProductUnit: event.unitName,
+      productUnit: event.unitName,
       productId: event.id,
       productCode: event.code,
       productName: event.name,

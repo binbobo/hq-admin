@@ -256,6 +256,6 @@ export class DistributeListItem {
         public specifications?: string,
         public storeHouse?: string,
         public productCategory?: string,
-        public ProductUnit?:string,
+        public productUnit?:string,
     ) { }
 }

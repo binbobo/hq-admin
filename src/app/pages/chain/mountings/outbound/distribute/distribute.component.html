@@ -80,13 +80,12 @@
             <tr *ngFor="let ele of newMainData;let i=index">
               <td><button class="btn btn-danger" (click)="onDelCreat(i)">删除</button></td>
               <td>{{ele.serviceName}}</td>
-
               <td>{{ele.productCode}}</td>
               <td>{{ele.productCategory}}</td>
               <td>{{ele.productName }}</td>
               <td>{{ele.brandName}}</td>
               <td>{{ele.productSpecification}}</td>
-              <td>{{ele.ProductUnit}}</td>
+              <td>{{ele.productUnit}}</td>
               <td>{{ele.vihicleName}}</td>
               <td>{{ele.storeName}}</td>
               <td>{{ele.locationName}}</td>
@@ -134,7 +133,7 @@
                 <td>{{ele.productName }}</td>
                 <td>{{ele.brandName}}</td>
                 <td>{{ele.productSpecification?ele.productSpecification:ele.specifications}}</td>
-                <td>{{ele.ProductUnit}}</td>
+                <td>{{ele.productUnit}}</td>
                 <td>{{ele.vihicleName?ele.vihicleName:ele.vehicleModel}}</td>
                 <td>{{ele.storeName?ele.storeName:ele.storeHouse}}</td>
                 <td>{{ele.locationName}}</td>
