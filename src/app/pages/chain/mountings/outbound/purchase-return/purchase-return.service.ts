@@ -14,7 +14,7 @@ export class PurchaseReturnService implements PagedService<any> {
   }
 
   getBillCodeListByProvider(request: GetBillCodeRequest) {
-    let url = Urls.chain.concat('/Purchases/GetPageList');
+    let url = Urls.chain.concat('/Purchases/GetPagedList');
     return this.httpService.getPagedList<any>(url, request)
       .catch(err => Promise.reject(`获取入库单号失败：${err}`));
   }
