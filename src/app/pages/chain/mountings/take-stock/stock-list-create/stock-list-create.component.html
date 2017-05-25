@@ -13,8 +13,8 @@
       </div>
       <div class="form-group mb-2">
         <label class="mr-sm-1">选择库位：</label>
-        <input class="form-control mx-sm-3" placement="bottom" (onConfirm)="onSelectLocation($event)" [hqMutilSelect]="locations" placeholder="点击选择库位"
-        />
+        <input class="form-control mx-sm-3" placement="bottom" (onConfirm)="onSelectLocation($event)" [hqMutilSelect]="locations"
+          placeholder="点击选择库位" />
       </div>
       <div class="form-group mb-2">
         <button type="submit" class="btn btn-primary mx-sm-3">查询</button>
@@ -41,11 +41,11 @@
           <td>{{item.productCode }}</td>
           <td>{{item.productName }}</td>
           <td>{{ item.productSpecification }}</td>
-          <td>{{item.count }}</td>
+          <td class="text-center">{{item.count }}</td>
           <td>{{item.houseName}}</td>
           <td>{{ item.locationName}}</td>
-          <td>{{item.price }}</td>
-          <td>{{item.stock}}</td>
+          <td class="text-right">{{item.price|centToYuan }}</td>
+          <td class="text-center">{{item.stock}}</td>
           <td></td>
         </tr>
       </tbody>
@@ -53,7 +53,7 @@
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
   <div class="card-footer text-muted">
-    <button class="btn btn-primary" [disabled]="!params?.locationId?.length||!list?.length" (click)="generate()">生成盘点清单</button>
+    <button class="btn btn-primary" [disabled]="!params?.locationId?.length||!list?.length" (click)="generate($event)">生成盘点清单</button>
     <button class="btn btn-secondary" (click)="cancel()">取消</button>
   </div>
 </div>

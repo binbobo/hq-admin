@@ -19,6 +19,7 @@ export class MountingsListComponent {
 
   private onItemSelect(item: any) {
     this.accountService.getProduct(item.id)
+      .then(data => Object.assign(item, data))
       .then(data => this.item = data)
       .then(data => this.selectItem.emit(item))
       .catch(err => this.selectItem.emit(err));

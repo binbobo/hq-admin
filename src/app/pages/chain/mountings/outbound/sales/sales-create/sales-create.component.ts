@@ -97,13 +97,12 @@ export class SalesCreateComponent implements OnInit {
     return false;
   }
 
-  private onResetForm(event: Event) {
+  private onResetForm(event: Event, key: string) {
     if (!event.isTrusted) return false;
     this.storages = null;
     this.locations = null;
     let obj = { ...this.model };
-    delete obj.storeId;
-    delete obj.locationId;
+    key in obj && delete obj[key];
     this.form.patchValue(obj);
   }
 
