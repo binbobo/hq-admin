@@ -393,7 +393,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 获取当前录入的工单数据
     const workSheet = this.getEdittingOrder();
     if (!workSheet.plateNo) {
-      this.alerter.error('请先输入车牌号!', true, 3000);
+      this.alerter.error('请先输入车牌号, 再执行挂单操作！', true, 3000);
       return;
     }
 

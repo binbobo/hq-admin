@@ -44,88 +44,86 @@
         </div>
         <div class="col-offset-6" *ngIf="isCollapsed">
           <button type="submit" [disabled]="false" class="btn btn-primary mr-2">查询</button>
-          <button type="reset" class="btn btn-secondary mr-2">清空</button>
+          <button type="reset" class="btn btn-warning mr-2">清空</button>
           <button type="button" (click)="export()" class="btn btn-secondary mr-2">导出</button>
         </div>
       </div>
       <hr>
       <!--高级筛选面板-->
-      <fieldset>
-        <legend class="col-form-legend p-0 text-center">
-          <a (click)="isCollapsed = !isCollapsed" class="cursor-pointer">
+      <div class="text-center">
+        <a (click)="isCollapsed = !isCollapsed" class="cursor-pointer">
             高级筛选
             <i class="fa fa-angle-double-up" [hidden]="isCollapsed"></i>
             <i class="fa fa-angle-double-down" [hidden]="!isCollapsed"></i>
           </a>
-        </legend>
-        <div [collapse]="isCollapsed" class="mt-3">
-          <div class="well well-lg">
-            <div class="form-group row">
-              <label for="brand" class="col-1 col-form-label">品牌</label>
-              <div class="col-2">
-                <input maxlength="10" type="text" [(ngModel)]="params.brand" name="brand" class="form-control" placeholder="品牌">
-              </div>
-              <label for="series" class="col-1 col-form-label">车系</label>
-              <div class="col-2">
-                <input maxlength="10" type="text" [(ngModel)]="params.series" name="series" class="form-control" placeholder="车系">
-              </div>
-              <label for="vehicleName" class="col-1 col-form-label">车型</label>
-              <div class="col-2">
-                <input maxlength="20" type="text" [(ngModel)]="params.vehicleName" name="vehicleName" class="form-control" placeholder="车型">
-              </div>
-              <label for="createdUserName" class="col-1 col-form-label col-form-label">服务顾问</label>
-              <div class="col-2">
-                <input maxlength="15" type="text" [(ngModel)]="params.createdUserName" name="createdUserName" class="form-control" placeholder="服务顾问">
-              </div>
+      </div>
+      <div [collapse]="isCollapsed" class="mt-3">
+        <div class="well well-lg">
+          <div class="form-group row">
+            <label for="brand" class="col-1 col-form-label">品牌</label>
+            <div class="col-2">
+              <input maxlength="10" type="text" [(ngModel)]="params.brand" name="brand" class="form-control" placeholder="品牌">
             </div>
-            <div class="form-group row">
-              <label for="leaveFactoryTime" class="col-1 col-form-label">出厂时间</label>
-              <div class="col-2">
-                <!--[max-hour]="maxLeaveStartHours" -->
-                <input readonly [max-date]="maxLeaveStartDate" [(ngModel)]="params.leaveStartTimeDate" name="leaveStartTimeDate" class="form-control"
-                  type="text" ngui-datetime-picker [close-on-select]="false" />
-              </div>
-              <label class="col-1 col-form-label">至</label>
-              <div class="col-2">
-                <!--[min-hour]="minLeaveEndHours" 
+            <label for="series" class="col-1 col-form-label">车系</label>
+            <div class="col-2">
+              <input maxlength="10" type="text" [(ngModel)]="params.series" name="series" class="form-control" placeholder="车系">
+            </div>
+            <label for="vehicleName" class="col-1 col-form-label">车型</label>
+            <div class="col-2">
+              <input maxlength="20" type="text" [(ngModel)]="params.vehicleName" name="vehicleName" class="form-control" placeholder="车型">
+            </div>
+            <label for="createdUserName" class="col-1 col-form-label col-form-label">服务顾问</label>
+            <div class="col-2">
+              <input maxlength="15" type="text" [(ngModel)]="params.createdUserName" name="createdUserName" class="form-control" placeholder="服务顾问">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="leaveFactoryTime" class="col-1 col-form-label">出厂时间</label>
+            <div class="col-2">
+              <!--[max-hour]="maxLeaveStartHours" -->
+              <input readonly [max-date]="maxLeaveStartDate" [(ngModel)]="params.leaveStartTimeDate" name="leaveStartTimeDate" class="form-control"
+                type="text" ngui-datetime-picker [close-on-select]="false" />
+            </div>
+            <label class="col-1 col-form-label">至</label>
+            <div class="col-2">
+              <!--[min-hour]="minLeaveEndHours" 
                  [max-hour]="maxLeaveEndHours" -->
-                <input readonly [min-date]="minLeaveEndDate" [max-date]="maxLeaveEndDate" [(ngModel)]="params.leaveEndTimeDate" name="leaveEndTimeDate"
-                  class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
-              </div>
-              <label class="col-1 col-form-label">进店时间</label>
-              <div class="col-2">
-                <input readonly [max-date]="maxEnterStartDate" [(ngModel)]="params.enterStartTimeDate" name="enterStartTimeDate" class="form-control"
-                  type="text" ngui-datetime-picker [close-on-select]="false" />
-              </div>
-              <label class="col-1 col-form-label col-form-label">至</label>
-              <div class="col-2">
-                <input readonly [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" [(ngModel)]="params.enterEndTimeDate" name="enterEndTimeDate"
-                  class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
-              </div>
+              <input readonly [min-date]="minLeaveEndDate" [max-date]="maxLeaveEndDate" [(ngModel)]="params.leaveEndTimeDate" name="leaveEndTimeDate"
+                class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
             </div>
+            <label class="col-1 col-form-label">进店时间</label>
+            <div class="col-2">
+              <input readonly [max-date]="maxEnterStartDate" [(ngModel)]="params.enterStartTimeDate" name="enterStartTimeDate" class="form-control"
+                type="text" ngui-datetime-picker [close-on-select]="false" />
+            </div>
+            <label class="col-1 col-form-label col-form-label">至</label>
+            <div class="col-2">
+              <input readonly [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" [(ngModel)]="params.enterEndTimeDate" name="enterEndTimeDate"
+                class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
+            </div>
+          </div>
 
-            <div class="form-group row">
-              <label for="type" class="col-1 col-form-label col-form-label">维修类型</label>
-              <div class="col-2">
-                <select id="type" [(ngModel)]="params.type" name="type" class="form-control">
+          <div class="form-group row">
+            <label for="type" class="col-1 col-form-label col-form-label">维修类型</label>
+            <div class="col-2">
+              <select id="type" [(ngModel)]="params.type" name="type" class="form-control">
                   <option style="display:none">
                   <option *ngFor="let type of maintenanceTypeData" value="{{type.id}}">{{type.value}}</option>
                 </select>
-              </div>
-              <!--<label for="searchRange" class="col-1 col-form-label col-form-label">查询范围</label>
+            </div>
+            <!--<label for="searchRange" class="col-1 col-form-label col-form-label">查询范围</label>
               <div class="col-2">
                 <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)"> >
                 </ngx-dropdown-treeview>
               </div>-->
-              <div class="col-6" *ngIf="!isCollapsed">
-                <button type="submit" [disabled]="false" class="btn btn-primary mr-2">查询</button>
-                <button type="reset"  class="btn btn-secondary mr-2">清空</button>
-                <button type="button" (click)="export()" class="btn btn-secondary mr-2">导出</button>
-              </div>
+            <div class="col-6" *ngIf="!isCollapsed">
+              <button type="submit" [disabled]="false" class="btn btn-primary mr-2">查询</button>
+              <button type="reset" class="btn btn-warning mr-2">清空</button>
+              <button type="button" (click)="export()" class="btn btn-secondary mr-2">导出</button>
             </div>
           </div>
         </div>
-      </fieldset>
+      </div>
     </form>
     <hr>
     <div class="overflow-auto">
@@ -189,7 +187,7 @@
       <div *ngIf="lgModal.isShown" class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="btn btn-secondary pull-left" aria-label="Close" (click)="print()">打印</button>
+            <button type="button" class="btn btn-primary pull-left" aria-label="Close" (click)="print()">打印</button>
             <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
