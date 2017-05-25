@@ -177,7 +177,6 @@ export class DistributeComponent implements OnInit {
     this.service.postBill(postData).then((result) => {
 
       console.log(result)
-      el.disabled = false;
       this.suspendBill.refresh();
       this.generat = false;
       if (confirm('生成发料单成功！ 是否打印？')) {
