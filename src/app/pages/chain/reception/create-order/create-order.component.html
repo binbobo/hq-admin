@@ -263,7 +263,7 @@
     <br>
     <div class="text-center">
       <button [hqSpinner]="generating" type="button" class="btn btn-success btn-color" [disabled]="!enableCreateWorkSheet" (click)="createWorkSheet()">生成工单</button>
-      <button [hqSpinner]="suspendBill.suspending" type="button" class="btn btn-primary" (click)="suspendOrder()">挂单</button>
+      <button [hqSpinner]="suspendBill.suspending" type="button" class="btn btn-primary btn-suspend" (click)="suspendOrder()">挂单</button>
     </div>
   </div>
   <div bsModal #addModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
