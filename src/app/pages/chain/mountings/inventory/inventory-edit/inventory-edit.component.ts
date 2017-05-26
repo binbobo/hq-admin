@@ -27,6 +27,8 @@ export class InventoryEditComponent extends FormHandle<Inventory> implements OnI
   protected buidForm(): FormGroup {
     return this.formBuilder.group({
       id: [this.model.id],
+      storeId: [this.model.storeId],
+      locationId: [this.model.locationId],
       locationName: [this.model.locationName, [Validators.maxLength(50)]],
       maxCount: [this.model.maxCount, [CustomValidators.min(0)]],
       minCount: [this.model.minCount, [CustomValidators.min(0)]],
@@ -52,6 +54,6 @@ export class InventoryEditComponent extends FormHandle<Inventory> implements OnI
   }
 
   onLocationSelect(event) {
-    this.form.patchValue({ locationId: event.id });
+    this.form.patchValue({ locationId: event.id, locationName: event.name });
   }
 }

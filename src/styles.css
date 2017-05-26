@@ -2,6 +2,9 @@
 /*html{
     font-size: 14px;
 }*/
+.print-visible{
+    display: none;
+}
 
 .bg-inverse{
     background-color: #2d384b!important;
@@ -12,6 +15,15 @@
 
 .cursor-pointer{
     cursor: pointer;
+}
+
+.table-caption{
+    border: 1px solid rgb(236, 238, 239);
+    border-bottom: none;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    display: inline-block;
+    padding: 5px 20px;
 }
 
 .table-container{

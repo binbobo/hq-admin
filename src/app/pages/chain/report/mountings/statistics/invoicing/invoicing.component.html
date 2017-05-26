@@ -1,0 +1,208 @@
+<ng-template hq-alerter></ng-template>
+<div class="card">
+  <div class="card-header">配件进销存汇总查询</div>
+  <div class="card-block">
+    <form class="" [formGroup]="procurementForm" (ngSubmit)="onSearch()">
+      <div class="container-fluid">
+        <div class="form-group row">
+          <label for="joinOrderNumber" class="col-form-label">入库单号:</label>
+          <div class="col-2">
+            <select class="form-control">
+              <option value="1">香蕉</option>
+              <option value="1">苹果</option>
+              <option value="1">香蕉</option>
+              <option value="1">苹果</option>
+              <option value="1">香蕉</option>
+              <option value="1">苹果</option>
+            </select>
+          </div>
+
+          <label for="" class="col-form-label">查询日期：</label>
+          <div class="col-2">
+            <input type="text" formControlName="searchStart" class="form-control" placeholder="开始日期" [close-on-select]="false" ngui-datetime-picker>
+          </div>
+
+          <label for="" class="col-form-label ">至</label>
+          <div class="col-2 col-offset-1">
+            <input type="text" class="form-control" formControlName="searchEnd" placeholder="结束日期" [close-on-select]="false" ngui-datetime-picker>
+          </div>
+
+          <label for="findStore" class="col-form-label">门店查询：</label>
+          <div *ngIf="true" class="col-2">
+            <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)">
+            </ngx-dropdown-treeview>
+          </div>
+          <button type="submit" class="btn btn-primary">查询</button>
+        </div>
+      </div>
+    </form>
+    <hr>
+    <p>温馨提示：系统为您找到 <span style="font-size:16px;color:red;font-weight:bold;">{{total}}</span> 条记录</p>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped text-center">
+        <tr>
+          <th width="100">操作</th>
+          <th>仓库</th>
+          <th>期初金额</th>
+          <th>期末金额</th>
+          <th>入库金额</th>
+          <th>出库成本金额</th>
+          <th>出库销售金额</th>
+          <th>采购入库成本金额</th>
+          <th>维修领料成本金额</th>
+          <th>维修领料销售金额</th>
+          <th>配件销售成本金额</th>
+          <th>配件销售销售金额</th>
+          <th>内部领用成本金额</th>
+          <th>内部领用销售金额</th>
+          <th>其他入库成本金额</th>
+          <th>其他入库销售金额</th>
+          <th>其他出库成本金额</th>
+          <th>其他出库销售金额</th>
+        </tr>
+        <tr *ngFor="let item of list">
+          <td width="100"><button [hqSpinner]="item.hqSpinner" class="btn btn-info btn-sm" (click)="alert(item,item.id,bdModal)">详情</button></td>
+          <td>{{item.outUnitName}}</td>
+          <td>{{item.billCode}}</td>
+          <td>{{item.createBillTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+          <td>{{item.operator}}</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped text-center">
+        <tr>
+          <th>合计</th>
+          <th>期初金额</th>
+          <th>期末金额</th>
+          <th>入库金额</th>
+          <th>出库成本金额</th>
+          <th>出库销售金额</th>
+          <th>采购入库成本金额</th>
+          <th>维修领料成本金额</th>
+          <th>维修领料销售金额</th>
+          <th>配件销售成本金额</th>
+          <th>配件销售销售金额</th>
+          <th>内部领用成本金额</th>
+          <th>内部领用销售金额</th>
+          <th>其他入库成本金额</th>
+          <th>其他入库销售金额</th>
+          <th>其他出库成本金额</th>
+          <th>其他出库销售金额</th>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+    <hr>
+    <button type="button" (click)="onExport()" class="btn btn-secondary">导出</button>
+  </div>
+</div>
+<!--详情-->
+<div class="modal fade" bsModal #bdModal="bs-modal" role="dialog">
+  <div class="modal-dialog modal-lg modal-content card" style="min-width:1200px;width:60%;">
+    <div class="modal-header">
+      <div class="modal-title">配件进销存明细</div>
+      <button class="close pull-right" (click)="bdModal.hide()">&times;</button>
+    </div>
+    <div class="modal-body" hqPrint #printer="hq-print">
+      <!--<form [formGroup]="" (ngSubmit)="">
+        <div class="card-block">
+          <div class="row">
+            <label for="" class="col-form-label margin-l">配件编码：</label>
+            <div class="col-2">
+              <input type="text" class="form-control" formControlName="">
+            </div>
+            <label for="" class="col-form-label margin-l">配件名称：</label>
+            <div class="col-2">
+              <input type="text" class="form-control" formControlName="">
+            </div>
+            <label for="" class="col-form-label">查询日期：</label>
+            <div class="col-2">
+              <input type="text" formControlName="" class="form-control" placeholder="开始日期" [close-on-select]="false" ngui-datetime-picker>
+            </div>
+
+            <label for="" class="col-form-label ">至</label>
+            <div class="col-2 col-offset-1">
+              <input type="text" class="form-control" formControlName="" placeholder="结束日期" [close-on-select]="false" ngui-datetime-picker>
+            </div>
+            <button type="submit" class="btn btn-primary">查询</button>
+          </div>
+        </div>
+      </form>-->
+      <div class="card-block">
+        <div class="row">
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+              <tr class="active">
+                <th>仓库</th>
+                <th>库位</th>
+                <th>配件编码</th>
+                <th>配件分类</th>
+                <th>配件名称</th>
+                <th>品牌</th>
+                <th>规格型号</th>
+                <th>单位</th>
+                <th>数量</th>
+                <th>含税单价（元）</th>
+                <th>含税金额（元）</th>
+                <th>不含税单价（元）</th>
+                <th>不含税金额（元）</th>
+              </tr>
+              <tr class="text-center" *ngFor="let item of detailItems">
+                <td>{{item.storeName}}</td>
+                <td>{{item.locationName}}</td>
+                <td>{{item.productCode}}</td>
+                <td>{{item.categoryList[0] }}</td>
+                <td>{{item.productName}}</td>
+                <td>{{item.brand}}</td>
+                <td>{{item.specification}}</td>
+                <td>{{item.unit}}</td>
+                <td>{{item.count }}</td>
+                <td>{{item.price}}</td>
+                <td>{{item.amount}}</td>
+                <td>{{item.exTaxPrice }}</td>
+                <td>{{item.exTaxAmount }}</td>
+              </tr>
+            </table>
+          </div>
+          <p *ngIf="!!!detailItemsLength">暂无数据</p>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" (click)="print()" class="btn btn-secondary">打印</button>
+    </div>
+  </div>
+</div>
+<hq-procurement-print [hidden]="true"></hq-procurement-print>

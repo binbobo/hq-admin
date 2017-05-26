@@ -14,7 +14,7 @@ export class PlateNoValidator implements Validator {
   }
  
   validate(c: AbstractControl): ValidationErrors {
-    return PlateNoValidator.validator;
+    return PlateNoValidator.validator(c);
   }
 
   registerOnValidatorChange(fn: () => void): void {

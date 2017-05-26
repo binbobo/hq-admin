@@ -13,7 +13,7 @@ export class MileageValidator implements Validator {
   }
 
   validate(c: AbstractControl): ValidationErrors {
-    return MileageValidator.validator;
+    return MileageValidator.validator(c);
   }
 
   registerOnValidatorChange(fn: () => void): void {

@@ -24,6 +24,7 @@ export class CustomerTypeaheadDirective extends TableTypeaheadDirective {
   protected filed: string = 'name';
 
   ngOnInit() {
+    this.filed = this.filed || 'name';
     this.source = (params: TypeaheadRequestParams) => {
       let request = new CustomerSearchRequest();
       request[this.filed] = params.text;

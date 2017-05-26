@@ -20,6 +20,7 @@ nav{
 #menu-container{
     background-color: #2d384b!important;
     overflow: auto;
+    padding-top: 10px;
 }
 
 .navbar-right{

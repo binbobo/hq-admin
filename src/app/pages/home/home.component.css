@@ -1,0 +1,6 @@
+.table-center{
+    text-align: center;
+}
+.table-bordered td,.table-bordered th{
+    border-color:#fff;
+}

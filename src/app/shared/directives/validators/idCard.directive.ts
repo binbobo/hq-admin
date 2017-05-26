@@ -13,7 +13,7 @@ export class IDCardValidator implements Validator {
   }
 
   validate(c: AbstractControl): ValidationErrors {
-    return IDCardValidator.validator;
+    return IDCardValidator.validator(c);
   }
 
   registerOnValidatorChange(fn: () => void): void {

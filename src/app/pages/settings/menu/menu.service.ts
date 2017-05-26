@@ -89,8 +89,8 @@ export class Menu extends BasicModel {
     constructor(
         public autoRun: boolean = false,
         public scopes: Array<string> = [],
-        public parentId: string = '',
-        public clientId: string = '',
+        public parentId?: string,
+        public clientId?: string,
         public title?: string,
         public path?: string,
         public icon?: string,

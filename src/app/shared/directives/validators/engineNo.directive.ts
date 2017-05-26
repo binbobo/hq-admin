@@ -13,7 +13,7 @@ export class EngineNoValidator implements Validator {
   }
 
   validate(c: AbstractControl): ValidationErrors {
-    return EngineNoValidator.validator;
+    return EngineNoValidator.validator(c);
   }
 
   registerOnValidatorChange(fn: () => void): void {

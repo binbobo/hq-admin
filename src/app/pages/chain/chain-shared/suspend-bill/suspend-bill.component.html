@@ -1,8 +1,10 @@
 <div class="btn-group" dropdown>
-  <button dropdownToggle class="btn btn-sm btn-secondary dropdown-toggle">
-    <span>挂单信息 <span class="badge badge-default">{{result?.totalCount||0}}</span></span> 
-    <span class="caret"></span>
-  </button>
+
+  <div dropdownToggle class="dropdown-toggle">
+    <i class="fa fa-list" aria-hidden="true"></i>
+    <span class="suspend-span">挂单信息 <span>({{result?.totalCount||0}})</span></span>
+    <i class="fa fa-angle-up" aria-hidden="true"></i>
+  </div>
   <div [hidden]="!result?.data?.length" *dropdownMenu class="p-0 dropdown-menu dropdown-menu-right" role="menu">
     <table class="m-0 table table-sm table-hover">
       <tr>
@@ -13,7 +15,7 @@
         <td *ngFor="let col of columns">
           {{item[col.name]||item?.value[col.name]}}
         </td>
-        <td><i (click)="remove($event,item)" class="cursor-pointer fa fa-times"></i></td>
+        <td class="fa-times-bg" (click)="remove($event,item)"><i  class="cursor-pointer fa fa-times-circle"></i>作废</td>
       </tr>
     </table>
   </div>

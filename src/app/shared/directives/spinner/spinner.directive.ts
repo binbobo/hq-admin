@@ -10,11 +10,8 @@ export class SpinnerDirective implements OnChanges, OnInit {
   public loading: boolean;
   @Input()
   public size: number;
-  @Input()
-  public color: string = "#2d384b";
   private el: HTMLElement;
   private spinner: HTMLElement;
-  private timer: any;
 
   constructor(
     private viewContainerRef: ViewContainerRef,
@@ -24,37 +21,29 @@ export class SpinnerDirective implements OnChanges, OnInit {
   }
 
   private init() {
-    for (var index = 0; index < this.el.childElementCount; index++) {
-      let element = this.el.children.item(index);
-      element.classList.add('d-none');
-    }
     if (this.el instanceof HTMLButtonElement) {
       this.el.disabled = true;
     }
-    if (this.size) {
-      this.spinner.style.fontSize = `${this.size}px`;
-    }
-    this.spinner.style.color = this.color;
     this.spinner.classList.remove('d-none');
-    let rotate = 0;
-    this.timer = setInterval(() => {
-      rotate = (rotate + 6) % 360;
-      this.spinner.style.transform = `rotate(${rotate}deg)`;
-    }, 33);
+  }
+
+  private get sizeClass() {
+    if (!this.size) {
+      return 'fa-none-size';
+    } else if (this.size === 1) {
+      return 'fa-lg';
+    } else if (this.size > 0 && this.size < 5) {
+      return `fa-${this.size}x`;
+    } else {
+      return 'fa-5x';
+    }
   }
 
   private clear() {
-    for (var index = 0; index < this.el.childElementCount; index++) {
-      let element = this.el.children.item(index);
-      element.classList.remove('d-none');
-    }
     if (this.el instanceof HTMLButtonElement) {
       this.el.disabled = false;
     }
-    clearInterval(this.timer);
-    this.spinner.style.transform = 'none';
     this.spinner.classList.add('d-none');
-    this.timer = null;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -69,13 +58,10 @@ export class SpinnerDirective implements OnChanges, OnInit {
 
   ngOnInit(): void {
     this.spinner = document.createElement('i');
-    this.spinner.className = 'fa fa-spinner ml-1';
-    if (!this.loading) {
-      this.spinner.classList.add('d-none');
-    } else {
-      this.init();
-    }
-    this.el.appendChild(this.spinner);
+    this.spinner.className = 'fa fa-spinner fa-fw fa-spin';
+    this.spinner.classList.add(this.sizeClass);
+    this.el.insertAdjacentElement('afterbegin', this.spinner);
+    this.loading || this.clear();
   }
 
 }

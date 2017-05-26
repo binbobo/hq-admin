@@ -13,7 +13,7 @@ export class TelValidator {
   }
 
   validate(c: AbstractControl): ValidationErrors {
-    return TelValidator.validator;
+    return TelValidator.validator(c);
   }
 
   registerOnValidatorChange(fn: () => void): void {
