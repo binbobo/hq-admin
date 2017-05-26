@@ -156,3 +156,7 @@ tabset ul li.active a{
 tabset ul li a, tabset ul li a:hover {
   color: #a7b1c2;
 }
+table .tr-left-bold{
+    text-align: left;
+    font-weight: bold;
+}

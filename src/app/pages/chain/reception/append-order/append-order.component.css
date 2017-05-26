@@ -3,35 +3,35 @@ table th,table td{
      white-space:nowrap; 
      overflow:hidden;
      text-align: center;
+     color: #727171;
 }
 .append-order .container .row{
-    height: 50px;
+    height: 3rem;
   
 }
 .append-order .container .row div{
-         text-overflow:ellipsis; 
+       text-overflow:ellipsis; 
      white-space:nowrap; 
      overflow:hidden;
 }
-.container {
-    text-align: left;
-}
 .mg{
-    margin-bottom:30px;
+    margin-bottom:2rem;
 }
 .serach-input{
-    width: 300px;
+    width: 60%;
+    margin-bottom: 1rem;
 }
-.serach-main{
-    width: 100%;
-    clear: both;
-    margin:22px auto;
-    margin-left:5px;
+.table-order-info td{
+    text-align: left;
+    padding-left: 1.1rem !important;
+    width: 25%;
 }
-.serach-main .serach-list{
-    display:inline-block;
-    width:19%;
-    vertical-align: top;
+.hqTableTypeahead table td{
+text-align: center !important;
 }
-
+table .tr-left-bold{
+    text-align: left;
+    font-weight: bold;
+    padding-left: 1.1rem !important;
+}
 

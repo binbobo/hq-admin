@@ -45,6 +45,7 @@ border:0!important;
         padding: 0 8px;
     border-radius: 4px;
 }
+
 .fa-angle-up::before{
     font-size:1.3rem;
     margin-left: 2px;
@@ -77,7 +78,7 @@ border:0!important;
     right: 47px;
     width: 0;
     height: 0;
-    border-bottom: 7px solid #fff;
+    border-bottom: 7px solid #f3f3f4;
     border-left: 7px solid transparent;
     border-right: 7px solid transparent;
     border-top: 7px solid transparent;
