@@ -44,7 +44,6 @@
             <th>配件编码</th>
             <th>配件分类</th>
             <th>配件名称</th>
-            <th>库存量</th>
             <th>品牌</th>
             <th>规格型号</th>
             <th>库存量</th>
@@ -71,7 +70,6 @@
             <td>{{ item.code}}</td>
             <td>{{item.categoryList|pluck:'text'|slice:0:1}}</td>
             <td>{{item.name}}</td>
-            <td>{{item.count}}</td>
             <td>{{item.brand}}</td>
             <td>{{item.specification}}</td>
             <td class="text-center">{{item.count}}</td>
