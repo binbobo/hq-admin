@@ -149,6 +149,7 @@ export class DistributeCreatComponent implements OnInit {
       description: event.description,
       storeId: null,
       price: event.price,
+      newprice: event.newprice,
       yuan: (event.price || 0) / 100
     }
     this.storages = event.storages;
@@ -163,7 +164,7 @@ export class DistributeCreatComponent implements OnInit {
       item.stockCount = 0;
     }
     let priceControl = this.form.controls['yuan'];
-    let validators = Validators.compose([Validators.required, CustomValidators.gt(0), CustomValidators.min(item.price / 100)])
+    let validators = Validators.compose([Validators.required, CustomValidators.gt(0), CustomValidators.min(item.newprice / 100)])
     priceControl.setValidators(validators);
     setTimeout(() => {
       this.form.patchValue(item);

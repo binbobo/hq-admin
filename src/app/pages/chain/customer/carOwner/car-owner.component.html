@@ -32,7 +32,7 @@
         </div>
         <div class="col-offset-6 col-3">
           <button type="submit" class="btn btn-primary">查询</button>
-          <button type="reset" class="btn btn-secondary">清空</button>
+          <button type="reset" class="btn btn-warning">清空</button>
         </div>
       </div>
     </form>
@@ -55,6 +55,8 @@
             <button [routerLink]="['edit', item.id]" type="button" class="btn btn-sm btn-success">编辑</button>
             <button [hqSpinner]="item.detailGenerating" type="button" class="btn btn-sm btn-info" [disabled]="item.detailGenerating"
               (click)="customerDetail(item, detailLgModal)">详情</button>
+            <button [hqSpinner]="item.deleteGenerating" type="button" class="btn btn-sm btn-danger" [disabled]="item.deleteGenerating"
+              (click)="customerDel(item)">删除</button>
           </td>
           <td>{{item.createdOnUtc|sDate}}</td>
           <td>{{item.name}}</td>

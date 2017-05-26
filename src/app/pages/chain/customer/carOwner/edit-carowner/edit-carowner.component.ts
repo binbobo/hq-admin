@@ -191,7 +191,7 @@ export class EditCarownerComponent implements OnInit {
     this.carOwnerForm = this.fb.group({
       id: '', // 车主主键 用于更新
       name: ['', [Validators.required]], // 车主
-      phone: ['', [HQ_VALIDATORS.mobile]], // 车主手机号
+      phone: ['', [Validators.required, HQ_VALIDATORS.mobile]], // 车主手机号
       sex: '', // 车主性别
       birthday: [null, [CustomValidators.date]], // 车主生日
       identityCard: ['', [HQ_VALIDATORS.idCard]], // 身份证号

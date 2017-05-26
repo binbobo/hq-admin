@@ -26,7 +26,7 @@ export class InventoryEditComponent extends FormHandle<Inventory> implements OnI
   }
   protected buidForm(): FormGroup {
     return this.formBuilder.group({
-      id: [this.model['productId']],
+      id: [this.model.id],
       storeId: [this.model.storeId],
       locationId: [this.model.locationId],
       locationName: [this.model.locationName, [Validators.maxLength(50)]],

@@ -11,6 +11,7 @@
     <thead>
       <tr>
         <th>仓库</th>
+        <th>库位</th>
         <th>配件编码</th>
         <th>配件分类</th>
         <th>配件名称</th>
@@ -27,6 +28,7 @@
     <tbody>
       <tr *ngFor="let item of model?.list;let i=index">
         <td>{{item.storeName }}</td>
+        <td>{{item.locationName }}</td>
         <td>{{item.productCode }}</td>
         <td>{{item.productCategory }}</td>
         <td>{{item.productName}}</td>

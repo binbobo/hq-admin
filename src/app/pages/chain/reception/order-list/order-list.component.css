@@ -1,5 +1,47 @@
-@media (min-width: 992px) {
-    .modal-lg {
-        max-width: 1000px;
-    }
+.check-label {
+    background: white !important;
+    border: 1px solid #f3f3f4;
+}
+.advanceFilter {
+    height:40px;
+    line-height:40px;
+}
+
+hr {
+    border-top:2px dotted #ccc;
+    margin-bottom: 5px;
+}
+.hq-col{
+  flex: 2;
+  position: relative;
+}
+.hq-input{
+  display: flex;
+  width: 20%;
+  float: left;
+  padding: 0.3125rem 0.625rem;
+  margin-bottom: -1.25rem;
+}
+.form-label{
+  min-width: 6.25rem;
+  padding: 0 0.625rem;
+  line-height: 2.5rem;
+  height: 2.5rem;
+  background:#f3f3f4;
+  color: #727171;
+  font-size: 0.875rem;
+}
+.form-control {
+  height: 2.5rem;
+  border-bottom-left-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+}
+input[disabled] {
+  background: #f7f8f8;
+}
+.card-block {
+  padding-top: 0.625rem;
+}
+.btn-color {
+  background:#27b394 !important;
 }

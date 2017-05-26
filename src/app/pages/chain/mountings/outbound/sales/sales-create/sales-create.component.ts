@@ -55,6 +55,12 @@ export class SalesCreateComponent implements OnInit {
     countControl.setValidators(validators);
   }
 
+  onLocationChange(locationId: string) {
+    let location = this.locations && this.locations.find(m => m.id === locationId);
+    let stock = location && location.count || 0;
+    this.form.controls['stockCount'].setValue(stock);
+  }
+
   private buildForm() {
     this.form = this.formBuilder.group({
       brandName: [this.model.brand, [Validators.required]],
