@@ -52,9 +52,9 @@
               <td class="text-center">{{item.billCode}}</td>
               <td class="text-center">{{item.createTime|sDatetime}}</td>
               <td>{{item.billType}}</td>
-              <td class="text-center">{{item.outCount}}</td>
-              <td class="text-right">{{item.price|centToYuan}}</td>
-              <td class="text-center">{{item.amount}}</td>
+              <td class="text-center">{{item.inCount}}</td>
+              <td class="text-right">{{item.costPrice|centToYuan}}</td>
+              <td class="text-center">{{item.costAmount}}</td>
               <td class="text-right">{{item.salePrice|centToYuan}}</td>
               <td class="text-center">{{item.saleAmount}}</td>
               <td class="text-center">{{item.count}}</td>
@@ -83,14 +83,13 @@
           <tbody>
             <tr *ngFor="let item of list">
               <td class="text-center">{{item.billCode}}</td>
-              <td class="text-center">{{item.createTime}}</td>
+              <td class="text-center">{{item.createTime|sDatetime}}</td>
               <td>{{item.billType}}</td>
-              <td class="text-center">{{item.outCount}}</td>
+              <td class="text-center">{{item.inCount}}</td>
+              <td class="text-right">{{item.exTaxPrice|centToYuan}}</td>
+              <td class="text-center">{{item.exTaxAmount}}</td>
               <td class="text-right">{{item.price|centToYuan}}</td>
               <td class="text-center">{{item.amount}}</td>
-              <td class="text-right">{{item.salePrice|centToYuan}}</td>
-              <td class="text-center">{{item.saleAmount}}</td>
-              <td class="text-center">{{item.count}}</td>
               <td class="text-center">{{item.count}}</td>
               <td>{{item.supplier}}</td>
               <td>{{item.operator}}</td>
@@ -116,17 +115,15 @@
           <tbody>
             <tr *ngFor="let item of list">
               <td class="text-center">{{item.billCode}}</td>
-              <td class="text-center">{{item.createTime}}</td>
+              <td class="text-center">{{item.createTime|sDatetime}}</td>
               <td>{{item.billType}}</td>
-              <td class="text-center">{{item.outCount}}</td>
-              <td class="text-right">{{item.price|centToYuan}}</td>
-              <td class="text-center">{{item.amount}}</td>
+              <td class="text-center">{{item.inCount}}</td>
+              <td class="text-right">{{item.costPrice|centToYuan}}</td>
+              <td class="text-center">{{item.costAmount}}</td>
               <td class="text-right">{{item.salePrice|centToYuan}}</td>
               <td class="text-center">{{item.saleAmount}}</td>
-              <td class="text-center">{{item.count}}</td>
-              <td class="text-center">{{item.plateNo}}</td>
-              <td>{{item.supplier}}</td>
-              <td>{{item.customer}}</td>
+              <td>{{item.takeUser}}</td>
+              <td>{{item.takeDepart}}</td>
               <td>{{item.operator}}</td>
             </tr>
           </tbody>
@@ -153,9 +150,9 @@
               <td class="text-center">{{item.billCode}}</td>
               <td class="text-center">{{item.createTime|sDatetime}}</td>
               <td>{{item.billType}}</td>
-              <td class="text-center">{{item.outCount}}</td>
-              <td class="text-right">{{item.price|centToYuan}}</td>
-              <td class="text-center">{{item.amount}}</td>
+              <td class="text-center">{{item.inCount}}</td>
+              <td class="text-right">{{item.costPrice|centToYuan}}</td>
+              <td class="text-center">{{item.costAmount}}</td>
               <td class="text-right">{{item.salePrice|centToYuan}}</td>
               <td class="text-center">{{item.saleAmount}}</td>
               <td class="text-center">{{item.count}}</td>
