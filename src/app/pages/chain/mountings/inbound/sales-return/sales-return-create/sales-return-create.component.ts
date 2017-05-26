@@ -1,7 +1,6 @@
 import { Component, OnInit, Output, ViewChildren, EventEmitter, QueryList, Input, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { CentToYuanPipe } from "app/shared/pipes";
-// import { SalesReturnListItem } from "../sales-return.service";
 import { TypeaheadRequestParams, FormGroupControlErrorDirective, HqAlerter } from "app/shared/directives";
 import { MountingsService, GetMountingsListRequest } from "app/pages/chain/mountings/mountings.service";
 import { CustomValidators } from "ng2-validation/dist";
@@ -14,7 +13,6 @@ import { SalesReturnListItem } from "../sales-return.service";
 })
 export class SalesReturnCreateComponent implements OnInit {
 
-  // private salesReturnData = [];
   @Input()
   selectSalesData: any;
 
@@ -41,8 +39,6 @@ export class SalesReturnCreateComponent implements OnInit {
 
   ngOnInit() {
     this.buildForm();
-    console.log('弹框页面显示数据', this.selectSalesData);
-    
     if (this.selectSalesData) {
       this.originalId = this.selectSalesData.id;
       this.locationId = this.selectSalesData.locationId;
@@ -90,18 +86,7 @@ export class SalesReturnCreateComponent implements OnInit {
     this.form.value['stockCounts'] = this.stockCounts + count;
     this.form.value['productUnit'] = this.form.value.unit;
     this.form.value.count = count;
-    console.log('表单数据', this.form.value);
     this.formSubmit.emit(this.form.value);
-    // let invalid = this.controls
-    //   .map(c => c.validate())
-    //   .some(m => !m);
-    // if (invalid) {
-    //   event.preventDefault();
-    //   return false;
-    // } else {
-    //   // this.formSubmit.emit(this.form.value);
-    //   // this.form.reset(this.model);
-    // }
   }
 
   // public onReset() {
@@ -110,60 +95,6 @@ export class SalesReturnCreateComponent implements OnInit {
   //   return false;
   // }
 
-  // onPriceChange(event) {
-  //   let val = event.target.value || 0;
-  //   let price = Math.floor(val * 100);
-  //   this.form.patchValue({ price: price });
-  //   this.calculate();
-  // }
-
-  // public itemColumns(isName: boolean) {
-  //   return [
-  //     { name: 'name', title: '名称', weight: isName ? 1 : 0 },
-  //     { name: 'code', title: '编码', weight: isName ? 0 : 1 },
-  //     { name: 'brand', title: '品牌' },
-  //     { name: 'houseName', title: '仓库' },
-  //     { name: 'locationName', title: '库位' },
-  //   ];
-  // }
-
-  // public onItemSelect(event) {
-  //   let item = {
-  //     productCode: event.code,
-  //     productName: event.name,
-  //     productSpecification: event.specification,
-  //     productId: event.productId,
-  //     brand: event.brand,
-  //     brandId: event.brandId,
-  //     storeId: event.storeId,
-  //     houseName: event.houseName,
-  //     locationId: event.locationId,
-  //     locationName: event.locationName,
-  //     price: event.price,
-  //     yuan: (event.price || 0) / 100,
-  //   }
-  //   this.form.controls['yuan'].setValidators(CustomValidators.gte(item.price / 100))
-  //   setTimeout(() => {
-  //     this.form.patchValue(item);
-  //     this.calculate();
-  //   }, 1);
-  // }
-
-  // public get codeSource() {
-  //   return (params: TypeaheadRequestParams) => {
-  //     let p = new GetMountingsListRequest(params.text);
-  //     p.setPage(params.pageIndex, params.pageSize);
-  //     return this.moutingsService.getListByCodeOrName(p);
-  //   };
-  // }
-
-  // public get nameSource() {
-  //   return (params: TypeaheadRequestParams) => {
-  //     let p = new GetMountingsListRequest(undefined, params.text);
-  //     p.setPage(params.pageIndex, params.pageSize);
-  //     return this.moutingsService.getListByCodeOrName(p);
-  //   };
-  // }
 
   private calculate() {
     let count = this.form.controls['counts'].value;
