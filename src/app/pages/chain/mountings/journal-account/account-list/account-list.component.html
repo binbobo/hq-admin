@@ -5,7 +5,6 @@
   </div>
   <div class="card-block">
     <hq-mountings-list (selectItem)="onSelectItem($event)"></hq-mountings-list>
-    <hr>
     <div [hidden]="!item">
       <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
         <div class="form-group mb-2">
@@ -22,14 +21,15 @@
           <button type="submit" class="btn btn-primary mx-sm-1">查询明细</button>
         </div>
       </form>
-      <div>
+      <hr>
+      <div *ngIf="tags">
         <button *ngFor="let item of tags" (click)="onSelectTag(item)" class="btn mr-1" [class.btn-primary]="item.checked">
           <span>{{item.name}}</span>
           <span class="badge badge-default">{{item.count}}</span>
         </button>
+        <hr>
       </div>
-      <hr>
-      <div class="overflow-auto">
+      <div class="table-container">
         <table *ngIf="!loading&&current<=0" class="table table-bordered table-striped">
           <thead>
             <tr>
@@ -50,11 +50,11 @@
           <tbody>
             <tr *ngFor="let item of list">
               <td class="text-center">{{item.billCode}}</td>
-              <td class="text-center">{{item.createTime}}</td>
+              <td class="text-center">{{item.createTime|sDatetime}}</td>
               <td>{{item.billType}}</td>
-              <td class="text-center">{{item.outCount}}</td>
-              <td class="text-right">{{item.price|centToYuan}}</td>
-              <td class="text-center">{{item.amount}}</td>
+              <td class="text-center">{{item.inCount}}</td>
+              <td class="text-right">{{item.costPrice|centToYuan}}</td>
+              <td class="text-center">{{item.costAmount}}</td>
               <td class="text-right">{{item.salePrice|centToYuan}}</td>
               <td class="text-center">{{item.saleAmount}}</td>
               <td class="text-center">{{item.count}}</td>
@@ -83,14 +83,13 @@
           <tbody>
             <tr *ngFor="let item of list">
               <td class="text-center">{{item.billCode}}</td>
-              <td class="text-center">{{item.createTime}}</td>
+              <td class="text-center">{{item.createTime|sDatetime}}</td>
               <td>{{item.billType}}</td>
-              <td class="text-center">{{item.outCount}}</td>
+              <td class="text-center">{{item.inCount}}</td>
+              <td class="text-right">{{item.exTaxPrice|centToYuan}}</td>
+              <td class="text-center">{{item.exTaxAmount}}</td>
               <td class="text-right">{{item.price|centToYuan}}</td>
               <td class="text-center">{{item.amount}}</td>
-              <td class="text-right">{{item.salePrice|centToYuan}}</td>
-              <td class="text-center">{{item.saleAmount}}</td>
-              <td class="text-center">{{item.count}}</td>
               <td class="text-center">{{item.count}}</td>
               <td>{{item.supplier}}</td>
               <td>{{item.operator}}</td>
@@ -116,17 +115,15 @@
           <tbody>
             <tr *ngFor="let item of list">
               <td class="text-center">{{item.billCode}}</td>
-              <td class="text-center">{{item.createTime}}</td>
+              <td class="text-center">{{item.createTime|sDatetime}}</td>
               <td>{{item.billType}}</td>
-              <td class="text-center">{{item.outCount}}</td>
-              <td class="text-right">{{item.price|centToYuan}}</td>
-              <td class="text-center">{{item.amount}}</td>
+              <td class="text-center">{{item.inCount}}</td>
+              <td class="text-right">{{item.costPrice|centToYuan}}</td>
+              <td class="text-center">{{item.costAmount}}</td>
               <td class="text-right">{{item.salePrice|centToYuan}}</td>
               <td class="text-center">{{item.saleAmount}}</td>
-              <td class="text-center">{{item.count}}</td>
-              <td class="text-center">{{item.plateNo}}</td>
-              <td>{{item.supplier}}</td>
-              <td>{{item.customer}}</td>
+              <td>{{item.takeUser}}</td>
+              <td>{{item.takeDepart}}</td>
               <td>{{item.operator}}</td>
             </tr>
           </tbody>
@@ -151,11 +148,11 @@
           <tbody>
             <tr *ngFor="let item of list">
               <td class="text-center">{{item.billCode}}</td>
-              <td class="text-center">{{item.createTime}}</td>
+              <td class="text-center">{{item.createTime|sDatetime}}</td>
               <td>{{item.billType}}</td>
-              <td class="text-center">{{item.outCount}}</td>
-              <td class="text-right">{{item.price|centToYuan}}</td>
-              <td class="text-center">{{item.amount}}</td>
+              <td class="text-center">{{item.inCount}}</td>
+              <td class="text-right">{{item.costPrice|centToYuan}}</td>
+              <td class="text-center">{{item.costAmount}}</td>
               <td class="text-right">{{item.salePrice|centToYuan}}</td>
               <td class="text-center">{{item.saleAmount}}</td>
               <td class="text-center">{{item.count}}</td>

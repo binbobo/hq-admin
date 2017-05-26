@@ -68,39 +68,6 @@ export class AppendOrderService implements BasicService<any> {
       .put<ApiResult<any>>(url, body)
       .catch(err => Promise.reject(`${err}`));
   }
-
-  // 新增维修项目及附加项目
-  // public post(body: any): Promise<any> {
-  //   const url = Urls.chain.concat('/MaintenanceItems/list');
-  //   return this.httpService
-  //     .post<ApiResult<any>>(url, body)
-  //     .catch(err => Promise.reject(`${err}`));
-  // }
-
-  // 新增建议维修项目
-  // public suggestpost(body: any): Promise<any> {
-  //   const url = Urls.chain.concat('/MaintenanceRecommends/list');
-  //   return this.httpService
-  //     .post<ApiResult<any>>(url, body)
-  //     .catch(err => Promise.reject(`${err}`));
-  // }
-  /**
- * 获取维修类型数据
- * @memberOf OrderService
- */
-  getMaintenanceItemsByName(name: string): Observable<any> {
-    const url = Urls.chain.concat('/Services/GetByName');
-    return this.httpService
-      .request(url, {
-        params: {
-          name: name
-        }
-      })
-      .map(response => {
-        // console.log(response.json().data);
-        return response.json().data;
-      });
-  }
 }
 
 export class AppendOrderSearch extends PagedParams {

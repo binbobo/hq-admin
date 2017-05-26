@@ -27,7 +27,7 @@
         <button type="submit" class="btn btn-primary mx-sm-3">查询</button>
       </div>
     </form>
-    <div class="overflow-auto">
+    <div class="table-container">
       <table class="table table-bordered table-striped">
         <thead>
           <tr>
@@ -44,7 +44,7 @@
               <button [routerLink]="['detail',item.billCode]" class="btn btn-sm btn-info">详情</button>
             </td>
             <td class="text-center">{{item.billCode}}</td>
-            <td class="text-center">{{ item.createdOnUtc}}</td>
+            <td class="text-center">{{ item.createdOnUtc|sDatetime}}</td>
             <td>{{item.houseName }}</td>
             <td>{{item.operator}}</td>
           </tr>

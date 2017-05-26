@@ -51,7 +51,7 @@ export class SalesCreateComponent implements OnInit {
       stockCount: count,
     });
     let countControl = this.form.controls['count'];
-    let validators = Validators.compose([countControl.validator, CustomValidators.max(count)])
+    let validators = Validators.compose([Validators.required, CustomValidators.min(1), CustomValidators.max(count)])
     countControl.setValidators(validators);
   }
 
@@ -97,13 +97,12 @@ export class SalesCreateComponent implements OnInit {
     return false;
   }
 
-  private onResetForm(event: Event) {
+  private onResetForm(event: Event, key: string) {
     if (!event.isTrusted) return false;
     this.storages = null;
     this.locations = null;
     let obj = { ...this.model };
-    delete obj.storeId;
-    delete obj.locationId;
+    key in obj && delete obj[key];
     this.form.patchValue(obj);
   }
 
@@ -132,7 +131,7 @@ export class SalesCreateComponent implements OnInit {
       item.stockCount = 0;
     }
     let priceControl = this.form.controls['yuan'];
-    let validators = Validators.compose([priceControl.validator, CustomValidators.min(item.price / 100)])
+    let validators = Validators.compose([Validators.required, CustomValidators.gt(0), CustomValidators.min(item.price / 100)])
     priceControl.setValidators(validators);
     setTimeout(() => {
       this.form.patchValue(item);

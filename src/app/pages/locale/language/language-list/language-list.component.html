@@ -36,7 +36,7 @@
           <td class="text-center">{{ item.culture}}</td>
           <td class="text-center">{{ item.displayOrder }}</td>
           <td class="text-center"><i class="fa fa-{{ item.enabled?'check':'times' }}"></i></td>
-          <td class="text-center">{{ item.createdOnUtc|date:'y-MM-dd HH:mm:ss' }}</td>
+          <td class="text-center">{{ item.createdOnUtc|sDatetime }}</td>
           <td class="text-center">
             <a [routerLink]="['edit',item.id]" class="btn btn-sm btn-success" title="编辑"><i class="fa fa-pencil-square-o"></i></a>
             <a (click)="onRemove(item)" class="btn btn-sm btn-danger" title="删除"><i class="fa fa-trash-o"></i></a>

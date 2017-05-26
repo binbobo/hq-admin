@@ -26,7 +26,6 @@ export class ProviderEditComponent extends FormHandle<Provider> implements OnIni
   protected buidForm(): FormGroup {
     return this.formBuilder.group({
       id: [this.model.id],
-      code: [this.model.code, [Validators.maxLength(50)]],
       name: [this.model.name, [Validators.required, Validators.maxLength(100),]],
       shortName: [this.model.shortName, [Validators.maxLength(30),]],
       contactUser: [this.model.contactUser, [Validators.required, Validators.maxLength(20),]],

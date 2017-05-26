@@ -14,10 +14,7 @@ import { CentToYuanPipe } from "app/shared/pipes";
   templateUrl: './distribute-creat.component.html',
   styleUrls: ['./distribute-creat.component.css']
 })
-export class DistributeCreatComponent implements OnInit, OnChanges {
-  selectCount: any;
-  @ViewChild(HqAlerter)
-  protected alerter: HqAlerter;
+export class DistributeCreatComponent implements OnInit {
   private form: FormGroup;
   private converter: CentToYuanPipe = new CentToYuanPipe();
   @Output()
@@ -25,19 +22,15 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
   private model: DistributeListItem = new DistributeListItem();
   @ViewChildren(FormGroupControlErrorDirective)
   private controls: QueryList<FormGroupControlErrorDirective>;
-  @ViewChild('printer')
-  public printer: PrintDirective;
-  @ViewChild('priceControl')
-  private priceControl: FormGroupControlErrorDirective
-  private price: number = 0;
+  private storages: Array<any>;
+  private locations: Array<any>;
 
   constructor(
     private formBuilder: FormBuilder,
-    private DistributeService: DistributeService,
-  ) {
-
-  }
-
+    private moutingsService: MountingsService,
+  ) { }
+  @Input()
+  InputData;
   ngOnInit() {
     this.buildForm();
     this.form.patchValue(this.InputData);
@@ -45,18 +38,7 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
     this.model.createUser = this.InputData.employeesData[0].id;
     this.model.createUserName = this.InputData.employeesData[0].name;
     this.form.controls.createUser.setValue(this.InputData.employeesData[0].id)
-    console.log(this.model)
   }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.form && changes['InputData']) {
-      this.form.patchValue(this.InputData);
-      Object.assign(this.model, this.InputData);
-    }
-  }
-
-  @Input() InputData;
-  valueObj: any;
 
 
   onSellerSelect(evt) {
@@ -70,50 +52,56 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
     this.form.value["createUserName"] = this.model.createUserName;
   }
 
+  onPriceChange(event) {
+    let val = event.target.value || 0;
+    let price = (val * 100).toFixed();
+    this.form.patchValue({ price: price });
+    this.calculate();
+  }
+
+  onStorageChange(storageId: string) {
+    let storage = this.storages.find(m => m.id === storageId);
+    this.locations = storage && storage.locations;
+    let location = this.locations && this.locations.length && this.locations[0];
+    let count = location && location.count;
+    this.form.patchValue({
+      locationId: location && location.id,
+      stockCount: count,
+    });
+    let countControl = this.form.controls['count'];
+    let validators = Validators.compose([Validators.required, CustomValidators.min(1), CustomValidators.max(count)])
+    countControl.setValidators(validators);
+  }
+
   private buildForm() {
     this.form = this.formBuilder.group({
-      brand: [this.model.brand],
+      brandName: [this.model.brand],
       productCode: [this.model.productCode, [Validators.required]],
       productName: [this.model.productName, [Validators.required]],
-      productId: [this.model.productId],
+      productCategory: [this.model.productCategory],
+      productId: [this.model.productId, [Validators.required]],
       productSpecification: [this.model.productSpecification],
-      specifications: [this.model.specifications],
       storeId: [this.model.storeId],
       locationId: [this.model.locationId],
-      vehicleName: [this.model.vehicleName],
-      vihicleName: [this.model.vihicleName],
-      count: [this.model.count, [Validators.required, CustomValidators.digits]],
-      initcount: [this.model.initcount, [Validators.required, CustomValidators.gt(0), CustomValidators.digits]],
-      price: [this.model.price, [Validators.required]],
-      costPrice:[this.model.costPrice],
+      productUnit: [this.model.productUnit],
+      count: [this.model.count, [Validators.required, CustomValidators.min(1)]],
+      price: [this.model.price],
       amount: [this.model.amount],
-      locationName: [this.model.locationName],
-      houseName: [this.model.houseName],
-      storeName: [this.model.storeName],
-      storeHouse: [this.model.storeHouse],
+      stockCount: [this.model.stockCount, [CustomValidators.min(1)]],
+      yuan: [this.model.price / 100, [Validators.required, CustomValidators.gt(0)]],
       createUser: [this.model.createUser, [Validators.required]],
       createUserName: [this.model.createUserName],
-      serviceName: this.model.serviceName,
-      maintenanceItemId: this.model.maintenanceItemId,
-      description:[this.model.description]
+      serviceName: [this.model.serviceName],
+      maintenanceItemId: [this.model.maintenanceItemId],
+      vihicleName: [this.model.vihicleName],
+      description: [this.model.description]
     })
+
   }
 
   public onSubmit(event: Event) {
-    this.model.count = this.model.initcount;
-    // this.model.amount = this.model.amount * 100;
-    // this.model.price = this.model.price * 100;
-    this.model.vihicleName = this.model.vehicleName;
-    this.model.storeName = this.model.houseName;
-    this.model.specifications = this.model.specifications;
-    this.model.storeHouse = this.model.storeHouse;
-    Object.assign(this.form.value, this.model);
-    if (this.model.count > this.fcount) {
-      this.alerter.error("发料数量不能高于当前库存数量，请重新填写。")
-    }
-    if(this.model.price>this.model.costPrice){
-
-    }
+    console.log(this.form.value, event, this.model)
+    this.form.value["createUserName"] = this.model["createUserName"];
     let invalid = this.controls
       .map(c => c.validate())
       .some(m => !m);
@@ -121,94 +109,75 @@ export class DistributeCreatComponent implements OnInit, OnChanges {
       event.preventDefault();
       return false;
     } else {
-      this.formSubmit.emit(this.form.value);
-      this.form.reset(this.model);
+      let formData = this.form.value;
+      let location = formData.locationId && this.locations.find(m => m.id === formData.locationId);
+      let storageId = this.form.get('storeId').value;
+      let storage = formData.storeId && this.storages.find(m => m.id === formData.storeId);
+      let value = { ...formData, locationName: location && location.name, storeName: storage && storage.name };
+      Object.assign(this.form.value, this.model);
+      this.formSubmit.emit(value);
     }
-    this.form.reset();
-
   }
 
   public onReset() {
-    this.form.reset();
-    // setTimeout(() => this.buildForm(), 1);
+    this.form = null;
+    setTimeout(() => this.buildForm(), 1);
     return false;
   }
 
-  public itemColumns(isName: boolean) {
-    return [
-      { name: 'name', title: '名称', weight: isName ? 1 : 0 },
-      { name: 'code', title: '编码', weight: isName ? 0 : 1 },
-      { name: 'brand', title: '品牌' },
-      { name: 'houseName', title: '仓库' },
-      { name: 'locationName', title: '库位' },
-    ];
+  private onResetForm(event: Event, key: string) {
+    if (!event.isTrusted) return false;
+    this.storages = null;
+    this.locations = null;
+    let obj = { ...this.model };
+    key in obj && delete obj[key];
+    this.form.patchValue(obj);
   }
 
-  public onPriceChange(evt) {
-    // evt.preventDefault();
-    let price = evt.target.value || 0;
-    this.model.price = price;
-    this.model.amount = (this.model.price) * (this.model.initcount);
-    this.form.patchValue(this.model);
-    // this.priceControl.validate();
-  }
-  public onChangeCount(evt) {
-    evt.preventDefault();
-    this.model.initcount = evt.target.value;
-    this.model.amount = (this.model.initcount) * (this.model.price);
-    this.form.patchValue(this.model);
-  }
-  private fcount;
+
   public onItemSelect(event) {
     console.log(event)
-    let item = {
+    let item: any = {
+      productUnit: event.unitName,
+      productId: event.id,
       productCode: event.code,
       productName: event.name,
       productSpecification: event.specification,
-      productId: event.productId,
-      brand: event.brand,
-      brandId: event.brandId,
-      storeId: event.storeId,
-      vehicleName: event.vehicleName,
-      houseName: event.houseName,
-      locationId: event.locationId,
-      locationName: event.locationName,
-      stockCount: event.count,
+      brandName: event.brandName,
+      productCategory: event.categoryName,
+      vihicleName: event.vehicleName,
+      description: event.description,
+      storeId: null,
       price: event.price,
-      count: event.count,
-      costPrice: event.costPrice,
-      description:event.description
+      yuan: (event.price || 0) / 100
     }
-    this.fcount = item.count;
-    this.price = 0;
-    setTimeout(() => this.price = item.price, 1);
-    setTimeout(() => this.fcount = item.count, 1);
-    Object.assign(this.model, item);
-    console.log(this.model)
-    this.form.patchValue(item);
-    this.form.controls['price'].setValidators([CustomValidators.gte(item.costPrice / 100), CustomValidators.gte(0)]);
-    this.form.controls['initcount'].setValidators([CustomValidators.lte(this.fcount), CustomValidators.gt(0)]);
-    this.model.price = this.model.price / 100;
-    this.model.amount = (this.model.initcount) * (this.model.price);
-    Object.assign(this.form.value, this.model);
-    this.form.patchValue(this.model);
+    this.storages = event.storages;
+    this.locations = null;
+    if (Array.isArray(event.storages) && event.storages.length) {
+      let storage = this.storages.find(m => m.locations && m.locations.length);
+      storage = storage || this.storages[0];
+      item.storeId = storage.id;
+      this.onStorageChange(storage.id);
+    } else {
+      item.locationId = null;
+      item.stockCount = 0;
+    }
+    let priceControl = this.form.controls['yuan'];
+    let validators = Validators.compose([Validators.required, CustomValidators.gt(0), CustomValidators.min(item.price / 100)])
+    priceControl.setValidators(validators);
+    setTimeout(() => {
+      this.form.patchValue(item);
+      this.calculate();
+    }, 1);
+
   }
 
-  // public get codeSource() {
-  //   return (params: TypeaheadRequestParams) => {
-  //     let p = new GetMountingsListRequest(params.text);
-  //     p.setPage(params.pageIndex, params.pageSize);
-  //     return this.DistributeService.getProductList(p);
-  //   };
-  // }
-
-  // public get nameSource() {
-  //   return (params: TypeaheadRequestParams) => {
-  //     let p = new GetMountingsListRequest(undefined, params.text);
-  //     p.setPage(params.pageIndex, params.pageSize);
-  //     return this.DistributeService.getProductList(p);
-  //   };
-  // }
-
-
+  private calculate() {
+    let count = this.form.controls['count'].value;
+    let price = this.form.controls['price'].value;
+    count = Math.floor(count || 1);
+    price = Math.floor(price || 0);
+    let amount = (count || 1) * (price || 0);
+    this.form.patchValue({ amount: amount, count: count, price: price });
+  }
 }

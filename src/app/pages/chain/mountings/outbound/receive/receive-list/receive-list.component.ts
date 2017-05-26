@@ -38,16 +38,13 @@ export class ReceiveListComponent implements OnInit {
   }
 
   onCreate(event: ReceiveListItem) {
+    if (event.count > event.stockCount) {
+      alert('所选配件已超过当前库位最大库存量，请减少领用数量或者选择其它库位中的配件！')
+      return false;
+    }
     let exists = this.model.list.find(m => m.productId == event.productId && m.locationId === event.locationId);
     if (exists) {
-      let total = exists.count + event.count;
-      if (total > event.stockCount) {
-        alert('所选配件已超过当前库位最大库存量，请减少领用数量或者选择其它库位中的配件！')
-        return false;
-      }
-      exists.count += event.count;
-      exists.price = event.price;
-      exists.amount = exists.price * exists.count;
+      Object.assign(exists, event);
     } else {
       this.model.list.push(event);
     }

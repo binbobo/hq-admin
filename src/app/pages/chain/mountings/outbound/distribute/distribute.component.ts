@@ -67,7 +67,7 @@ export class DistributeComponent implements OnInit {
   customerName: any;
   serviceShow = false;
   serialShow = false;
-  plateNo:string="";
+  plateNo: string = "";
   public onPlateNoSelect($event) {
     this.serialShow = true;
     this.initDetailOrder();
@@ -81,8 +81,8 @@ export class DistributeComponent implements OnInit {
         this.serviceShow = false;
         console.log(data)
         this.orderDetail = data;
-        this.plateNo=data.plateNo;
-        this.customerName=data.customerName;
+        this.plateNo = data.plateNo;
+        this.customerName = data.customerName;
         this.serviceData = data.serviceOutputs;
         this.productData = data.productOutputs;
       }).catch(err => { this.alerter.error(err), this.serviceShow = false });
@@ -91,6 +91,7 @@ export class DistributeComponent implements OnInit {
     this.service.getMMList(this.billCode).toPromise()
       .then(data => {
         this.serialShow = false;
+        console.log(data)
         this.serialData = data;
         this.serialData.sort((a, b) => {
           return a.serialNum - b.serialNum
@@ -176,7 +177,6 @@ export class DistributeComponent implements OnInit {
     this.service.postBill(postData).then((result) => {
 
       console.log(result)
-      el.disabled = false;
       this.suspendBill.refresh();
       this.generat = false;
       if (confirm('生成发料单成功！ 是否打印？')) {
@@ -231,8 +231,9 @@ export class DistributeComponent implements OnInit {
   hasList: any;
   onCreate(evt) {
     console.log(evt);
-    evt.price = evt.price * 100;
-    evt.amount = evt.amount * 100;
+    evt.price = evt.price;
+    evt.amount = evt.amount;
+
     this.hasList = this.newMainData.filter(item => item.maintenanceItemId === evt.maintenanceItemId && item.productId === evt.productId);
     if (this.hasList.length > 0) {
       this.newMainData.forEach((item, index) => {
@@ -307,16 +308,16 @@ export class DistributeComponent implements OnInit {
 
   }
 
-  suspend(form) {
-    
+  suspend() {
+
     this.suspendData = {
       newMainData: this.newMainData,
       serviceData: this.serviceData,
       serialData: this.serialData,
       billCode: this.billCode,
       billId: this.listId,
-      plateNo:this.plateNo,
-      customerName:this.customerName,     
+      plateNo: this.plateNo,
+      customerName: this.customerName,
       MRData: this.MRData,
       suspendedBillId: this.suspendedBillId,
       list: this.newMainData,
@@ -335,8 +336,8 @@ export class DistributeComponent implements OnInit {
     // let el = event.target as HTMLButtonElement;
     // el.disabled = true;
     this.suspendBill.suspend(this.suspendData)
+      .then(() => { this.alerter.success('挂单成功！'); this.initDetailOrder(); this.initValue = ""; })
       .then(() => this.suspendBill.refresh())
-      .then(() => { this.alerter.success('挂单成功！'); form.reset();this.initDetailOrder() })
       .catch(err => {
         // el.disabled = false;
         this.alerter.error(err);
@@ -355,7 +356,7 @@ export class DistributeComponent implements OnInit {
     this.MRData = [];
     this.suspendedBillId = "";
     this.suspendData = null;
-    this.initValue = "";
+
   }
   createModalHide() {
     this.createModal.hide();

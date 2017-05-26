@@ -7,8 +7,8 @@
   </div>
   <div class="card-block">
     <div>
-      <form [formGroup]="myForm" class='form-in serach-input'>
-        <input [hqTableTypeahead]="typeaheadSource" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)" class="form-control"
+      <form  class='form-in serach-input'>
+        <input [hqTableTypeahead]="typeaheadSource" [(ngModel)]="initValue" name="initValue" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)" class="form-control"
           placeholder="请输入工单号/车牌号" />
       </form>
     </div>
@@ -251,10 +251,9 @@
       <div class="card" style="margin-top:40px;">
         <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
           工时费：<span class="ml-2 mr-2">{{workHourFee|centToYuan}}元</span> | 材料费：
-          <span class="ml-2 mr-2">{{materialFee|centToYuan}}元</span> | 其它：
-          <span class="ml-2 mr-2">{{otherFee|centToYuan}}元</span> | 应收金额：
-          <span class="ml-2 mr-2">{{(workHourFee+materialFee+otherFee)|centToYuan}}元</span>| 折扣金额：
-          <span class="ml-2 mr-2">{{(workHourFee-sumFee)|centToYuan}}元</span>
+          <span class="ml-2 mr-2">{{materialFee|centToYuan}}元</span> | 优惠：
+          <span class="ml-2 mr-2">{{(workHourFee-sumFee)|centToYuan}}元</span> | 应收金额：
+          <span class="ml-2 mr-2">{{(workHourFee+materialFee)|centToYuan}}元</span>
         </div>
       </div>
 

@@ -56,21 +56,6 @@ export class OrderService implements BasicService<Order> {
     }
 
     /**
-  * 根据车系模糊查询车辆信息
-  * 
-  * @param {FuzzySearchRequest} params 
-  * @returns {Promise<PagedResult<any>>} 
-  * 
-  * @memberof OrderService
-  */
-    getVehicleBySeries(params: VehicleSeriesSearchRequest): Promise<PagedResult<any>> {
-        const search = params.serialize();
-        const url = Urls.chain.concat('/VehicleSeries/search');
-        console.log('根据车系模糊查询车辆信息:', url + search);
-        return this.httpService
-            .get<PagedResult<any>>(url, search);
-    }
-    /**
   * 根据维修项目名称模糊查询维修项目信息
   * 
   * @param {FuzzySearchRequest} params 
@@ -87,10 +72,10 @@ export class OrderService implements BasicService<Order> {
     }
 
     /**
-* 添加维修项目
-* 
-* @memberof OrderService
-*/
+    * 添加维修项目
+    * 
+    * @memberof OrderService
+    */
     createMaintenanceItem(body: any): Promise<any> {
         const url = Urls.chain.concat('/Services');
         return this.httpService
@@ -98,22 +83,6 @@ export class OrderService implements BasicService<Order> {
             .then(m => m.data)
             .catch(err => Promise.reject(`添加维修工项失败：${err}`));
     }
-    /**
-  * 根据车型模糊查询车辆信息
-  * 
-  * @param {FuzzySearchRequest} params 
-  * @returns {Promise<PagedResult<any>>} 
-  * 
-  * @memberof OrderService
-  */
-    getVehicleByModel(params: VehicleSearchRequest): Promise<PagedResult<any>> {
-        const search = params.serialize();
-        const url = Urls.chain.concat('/Vehicles/search');
-        console.log('根据车型模糊查询车辆信息:', url + search);
-        return this.httpService
-            .get<PagedResult<any>>(url, search);
-    }
-
     /**
   *  根据客户车辆id查询上一次工单信息
   * @param {string} id 
@@ -140,12 +109,14 @@ export class OrderService implements BasicService<Order> {
         return this.httpService
             .request(url)
             .map(response => {
+                console.log('获取可以选择的门店：', response);
                 console.log('获取可以选择的门店，用于查询范围下拉框：', response.json().data);
-
                 let orgs = null;
                 if (this.orgsRecursion([response.json().data])) {
                     orgs = <any>this.orgsRecursion([response.json().data])[0];
+                    console.log('test:', orgs)
                 }
+                console.log('orgs:',orgs);
                 // 每个车主下面可能有多个车辆信息
                 return [new TreeviewItem(orgs)];
             });
@@ -157,11 +128,21 @@ export class OrderService implements BasicService<Order> {
             return null;
         };
         return orgsArr.map((value, index, array) => {
-            const obj = { text: value.name, value: value.id };
+            // 导航节点
+            const obj = { text: value.name, value: null };
             // 如果有子组织, 递归遍历
             if (value.children && value.children.length > 0) {
+                 // 如果有孩子  将父节点组织到孩子节点中  放到前头
+                value.children = [{
+                    name: value.name + '总店',
+                    id: value.id
+                }].concat(value.children);
                 obj['children'] = this.orgsRecursion(value.children);
+            } else {
+                // 如果没有孩子  直接返回
+                obj.value = value.id;
             }
+            console.log('obj:',obj);
             return obj;
         });
     }

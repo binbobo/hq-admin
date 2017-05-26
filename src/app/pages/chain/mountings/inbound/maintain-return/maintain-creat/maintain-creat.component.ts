@@ -39,7 +39,7 @@ export class MaintainCreatComponent implements OnInit, OnChanges {
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      brand: [this.model.brand],
+      brandName: [this.model.brandName],
       productCode: [this.model.productCode],
       productName: [this.model.productName],
       productId: [this.model.productId],
@@ -59,7 +59,10 @@ export class MaintainCreatComponent implements OnInit, OnChanges {
       storeName: [this.model.storeName],
       operatorId: [this.model.operatorId],
       createUser: [this.model.createUser],
-      description: [this.model.description]
+      description: [this.model.description],
+      productCategory:[this.model.productCategory],
+      productUnit:[this.model.productUnit]
+
     })
   }
 

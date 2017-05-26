@@ -11,11 +11,33 @@
 }
 
 .cursor-pointer{
-    cursor:pointer;
+    cursor: pointer;
 }
 
-.overflow-auto{
+.table-container{
     overflow: auto;
+    border: 1px solid rgb(236, 238, 239);
+}
+
+.table-container table{
+    margin: 0;
+    border: 0!important;
+}
+
+.table-container tr:first-child td,.table-container tr:first-child th{
+    border-top-width: 0;
+}
+
+.table-container tr:last-child td,.table-container tr:last-child th{
+    border-bottom-width: 0;
+}
+
+.table-container th:first-child,td:first-child{
+    border-left-width: 0;
+}
+
+.table-container th:last-child,td:last-child{
+    border-right-width: 0;
 }
 
 input.ng-touched.ng-invalid,select.ng-touched.ng-invalid{

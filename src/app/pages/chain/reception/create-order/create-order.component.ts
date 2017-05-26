@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType} from '../order.service';
+import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType } from '../order.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TabsetComponent, ModalDirective } from 'ngx-bootstrap';
 import * as moment from 'moment';
@@ -53,9 +53,9 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   // 费用计算相关
   fee = {
+    workHours: 0,
     workHour: 0,
     material: 0,
-    other: 0,
     discount: 0
   };
 
@@ -220,6 +220,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
         location: lastOrder.location,
         nextDate: lastOrder.nextDate ? moment(lastOrder.nextDate).format('YYYY-MM-DD') : '',
         nextMileage: lastOrder.nextMileage,
+        expectLeave: lastOrder.expectLeave ? moment(lastOrder.expectLeave).format('YYYY-MM-DD HH:mm') : ''
       });
     } else {
       // 上次维修记录 带出部分信息
@@ -392,7 +393,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 获取当前录入的工单数据
     const workSheet = this.getEdittingOrder();
     if (!workSheet.plateNo) {
-      this.alerter.error('请先输入车牌号!', true, 3000);
+      this.alerter.error('请先输入车牌号, 再执行挂单操作！', true, 3000);
       return;
     }
 
@@ -584,7 +585,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 重置费用
     this.fee.workHour = 0;
     this.fee.material = 0;
-    this.fee.other = 0;
+    this.fee.discount = 0;
+    this.fee.workHours = 0;
 
     // 清空上次维修工单数据
     this.lastOrderData = null;
@@ -625,9 +627,14 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
         console.log('创建工单成功之后， 返回的工单对象：', JSON.stringify(data));
         // 创建订单成功之后  做一些重置操作
         if (confirm('创建工单成功！ 是否打印？')) {
+          // 组织打印需要的数据
           this.newWorkOrderData = {};
           Object.assign(this.newWorkOrderData, data);
           Object.assign(this.newWorkOrderData, workSheet);
+          this.fee.workHours = this.newMaintenanceItemData.reduce((accumulator, currentValue) => {
+            return currentValue.workHour;
+          }, 0);
+          this.newWorkOrderData.fee = this.fee;
           this.newWorkOrderData.serviceOutputs = workSheet.maintenanceItems;
           this.newWorkOrderData.typeName = this.maintenanceTypeData.find(item => item.id === workSheet.type).value;
           // 延迟打印

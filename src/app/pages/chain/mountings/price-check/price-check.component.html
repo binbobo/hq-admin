@@ -6,15 +6,10 @@
   <div class="card-block">
     <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
       <div class="form-group mb-2">
-        <label>仓库：</label>
-        <select class="form-control mx-sm-3" name="storeHouseId" [(ngModel)]="params.storeHouseId">
-          <option value="">全部仓库</option>
-          <option *ngFor="let item of warehouses" value="{{item.value}}">{{item.text}}</option>
+        <label class="mr-sm-1">配件分类：</label>
+        <select class="form-control mx-sm-3" name="category">
+          <option selected>请选择配件分类</option>
         </select>
-      </div>
-      <div class="form-group mb-2">
-        <label class="mr-sm-1">库位：</label>
-        <input type="text" class="form-control mx-sm-3" name="storageLocationName" [(ngModel)]="params.storageLocationName" placeholder="库位">
       </div>
       <div class="form-group mb-2">
         <label class="mr-sm-1">配件编码：</label>
@@ -25,37 +20,39 @@
         <input type="text" class="form-control mx-sm-3" name="name" [(ngModel)]="params.name" placeholder="配件名称">
       </div>
       <div class="form-group mb-2">
-        <label class="mr-sm-1">配件车型：</label>
+        <label class="mr-sm-1">适用车型：</label>
         <input type="text" class="form-control mx-sm-3" name="vehicleName" [(ngModel)]="params.vehicleName" placeholder="配件车型">
       </div>
       <div class="form-group mb-2">
         <button type="submit" class="btn btn-primary mx-sm-3">查询</button>
       </div>
     </form>
-    <div class="overflow-auto">
+    <div class="table-container">
       <table class="table table-bordered table-striped">
         <thead>
           <tr>
-            <th>仓库</th>
-            <th>品牌</th>
             <th>配件编码</th>
+            <th>配件分类</th>
             <th>配件名称</th>
+            <th>品牌</th>
+            <th>规格型号</th>
+            <th>单位</th>
+            <th>销售价（元）</th>
             <th>库存量</th>
-            <th>车型</th>
-            <th>销售价</th>
-            <th>类别</th>
+            <th>适用车型</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let item of list">
-            <td>{{item.houseName}}</td>
-            <td>{{item.brand}}</td>
             <td>{{item.code}}</td>
+            <td>{{item.category}}</td>
             <td>{{item.name}}</td>
-            <td class="text-center">{{item.count}}</td>
-            <td>{{item.vehicleName}}</td>
+            <td>{{item.brand}}</td>
+            <td>{{item.specification}}</td>
+            <td class="text-center">{{item.unit}}</td>
             <td class="text-right">{{item.price|centToYuan}}</td>
-            <td>{{ item.category|split|sample }}</td>
+            <td class="text-center">{{item.count}}</td>
+            <td>{{item.vehicleInfoList?.slice(0,1)|pluck:'vehicleName'}}</td>
           </tr>
         </tbody>
       </table>
