@@ -10,9 +10,14 @@ h1::first-letter,h2::first-letter,h3::first-letter,h4::first-letter,h5::first-le
     page-break-after:always;
 }
 
-.no-print{
+.print-hidden{
     display: none;
 }
+
+.print-visible{
+    display: none;
+}
+
 
 .hq-visible{
     visibility: visible!important;

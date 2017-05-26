@@ -1,0 +1,39 @@
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:#fff;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:#fff;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:#fff;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:#fff;
+}
+.card{
+    padding: 20px 40px;
+    background:rgba(255, 255, 255, 0.8)!important;
+}
+.card-block,.card-header{
+    background: none;
+}
+.btn-login{
+    background-color: #ed1b23;
+    color: #fff;
+}
+.input-group-addon,input.form-control{
+    color:#fff;
+    background-color: #666;
+}
+
+input.form-control{
+    border: 1px solid #666;
+}
+
+.input-group-addon.ng-untouched.ng-pristine{
+    border-right: 1px solid #666;
+}
+
+.form-control{
+    height: 40px;
+}
