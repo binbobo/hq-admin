@@ -13,14 +13,12 @@ import { FormGroup, FormBuilder } from "@angular/forms/";
 })
 export class ReturnListComponent extends DataList<any> {
 
-  // private takeUserId: any;//领用人
   private takeUser: any;//领用人ID
   private returnUser: any;//退料人
   private returnDepart: any;//退料人
   private takeDepartId: any;//查部门ID
   private selectReturnData: any;//选择的退料数据
   private returnData = [];//修改后的退料数据
-  // private billCodeList: any;//
   private billCode: any;//退料单号
   private suspendData: any;//挂单数据
   private suspendSelectData: any;//选择挂单数据
@@ -31,14 +29,10 @@ export class ReturnListComponent extends DataList<any> {
   private billData;//生成退料单数据
   private createLoading = false;//生成退料单按钮加载动画
   private suspendLoading = false;//挂单按钮加载动画
-  // private isOk = true;//按钮禁用控制
   params: BillCodeSearchRequest;
-
-
   private form: FormGroup;
   @ViewChildren(FormGroupControlErrorDirective)
   private controls: QueryList<FormGroupControlErrorDirective>;
-
   @ViewChild(SuspendBillDirective)
   private suspendBill: SuspendBillDirective;
   @ViewChild('createModel')
@@ -49,7 +43,6 @@ export class ReturnListComponent extends DataList<any> {
   public printer: PrintDirective;
   private employees: any;
   private departments: any;
-  // private model;//配件信息
   private printModel: any;
 
   constructor(
@@ -62,24 +55,18 @@ export class ReturnListComponent extends DataList<any> {
     this.size = 5;
   }
 
-
   ngOnInit() {
     this.innerReturnService.getInnerOptions()
       .then(data => {
-        // console.log('领用人数据', data);
         this.takeUser = data[0].takeUser;
-        // console.log('初始化ID', this.takeUser);
         this.employees = data;
         this.departments = this.employees.find(m => m.takeUser == this.takeUser);
         this.takeDepartId = this.departments.departList[0].id;
-        // console.log('部门数据', this.departments, this.takeDepartId);
       })
       .catch(err => this.alerter.error(err));
     this.lazyLoad = true;
     super.ngOnInit();
   }
-
-
 
   //选择领用人带出所在部门
   onInnerSelect(event: Event) {
@@ -88,10 +75,9 @@ export class ReturnListComponent extends DataList<any> {
     this.takeUser = null;
     this.departments = null;
     this.takeUser = el.value;
-    // console.log('选择领用人ID', this.takeUser);
     this.departments = this.employees.find(m => m.takeUser == this.takeUser);
+    console.log('部门数据',this.departments);
     this.takeDepartId = this.departments.departList[0].id;
-    // console.log('选择部门', this.departments, this.takeDepartId);
     this.billCode = null;
     this.list = null;
     this.originalBillId = null;
@@ -101,14 +87,12 @@ export class ReturnListComponent extends DataList<any> {
   //选择部门
   onDepartSelect(event: Event) {
     let el = event.target as HTMLSelectElement;
-    console.log('选择部门ID', el.value);
     this.takeDepartId = el.value;
   }
 
   //生成退料单
   createReturnList() {
     this.createLoading = true;
-    // this.isOk = true;
     let inner = this.employees.find(m => m.takeUser == this.takeUser);
     let department = this.departments.departList.find(m => m.id == this.takeDepartId);
     this.returnUser = inner && inner.takeUserName;
@@ -120,10 +104,8 @@ export class ReturnListComponent extends DataList<any> {
       returnDepart: this.takeDepartId,
       list: this.returnData,
     }
-    console.log('生成的退料单数据', JSON.stringify(this.billData));
     this.innerReturnService.createReturnList(this.billData)
       .then(data => {
-        console.log('即将打印的数据', data);
         this.createLoading = false;
         return confirm('已生成退料单，是否需要打印？') ? data : null;
       })
@@ -131,7 +113,6 @@ export class ReturnListComponent extends DataList<any> {
       .then(data => {
         if (data) {
           this.printModel = data;
-          console.log('传递到打印页面的数据', this.printModel);
           setTimeout(() => this.printer.print(), 300);
         }
       })
@@ -139,7 +120,6 @@ export class ReturnListComponent extends DataList<any> {
         this.returnData = [];
         this.list = null;
         this.billCode = null;
-        // console.log('生成单子后isok的值', this.isOk);
       })
       .catch(err => {
         this.alerter.error(err);
@@ -153,13 +133,11 @@ export class ReturnListComponent extends DataList<any> {
   //     history.go(-1);
   //   }
   // }
+
   //挂单
   suspend() {
     if (confirm('是否确认挂单？')) {
-      // let el = event.target as HTMLButtonElement;
-      // el.disabled = true;
       this.suspendLoading = true;
-      // this.isOk = true;
       let inner = this.employees.find(m => m.takeUser == this.takeUser);
       let department = this.departments.departList.find(m => m.id == this.takeDepartId);
       this.innerReturner = inner && inner.takeUserName;
@@ -175,16 +153,12 @@ export class ReturnListComponent extends DataList<any> {
         innerDepartment: this.innerDepartment,
         originalBillId: this.originalBillId,
       }
-      console.log(this.suspendData);
       this.suspendBill.suspend(this.suspendData)
-        // .then(() => el.disabled = false)
         .then(() => this.suspendBill.refresh())
         .then(() => {
           this.alerter.success('挂单成功！');
-          // this.isOk = true;
           this.suspendLoading = false;
           this.createLoading = false;
-          // console.log('挂单成功后isok的值', this.isOk);
         })
         .then(() => {
           this.returnData = [];
@@ -193,8 +167,6 @@ export class ReturnListComponent extends DataList<any> {
           this.originalBillId = null;
         })
         .catch(err => {
-          // el.disabled = false;
-          // this.isOk = false;
           this.suspendLoading = false;
           this.alerter.error(err);
         })
@@ -203,7 +175,6 @@ export class ReturnListComponent extends DataList<any> {
   historyData: any;
   //退料提交
   onCreate(e) {
-    console.log('返回数据', e);
     e.price = parseInt(e.price) * 100;
     e.amount = parseInt(e.amount) * 100;
     this.historyData = this.returnData.filter(item => item.originalId == e.originalId)
@@ -217,7 +188,6 @@ export class ReturnListComponent extends DataList<any> {
       })
     } else {
       this.returnData.push(e);
-      // this.isOk = false;
     }
     this.createModel.hide();
   }
@@ -230,17 +200,12 @@ export class ReturnListComponent extends DataList<any> {
 
   //选择挂单信息
   onSuspendSelect(item) {
-    console.log('选择的挂单数据', item);
-    // this.reset();
-    // Object.assign(this.model, item.value);
     this.suspendedBillId = item.id;
     this.originalBillId = item.value.originalBillId;
-    console.log(item.value.originalBillId);
     this.billCode = item.value.billCode;
     this.takeUser = item.value.takeUserId;
     this.list = item.value.model;
     this.returnData = item.value.returnData;
-    // this.isOk = false;
   }
   // reset() {
   //   this.model = new InnerListRequest();
@@ -252,6 +217,7 @@ export class ReturnListComponent extends DataList<any> {
   //     this.model.returnDepart = this.departments[0].value;
   //   }
   // }
+
   //挂单列表
   get innerColumns() {
     return [
@@ -271,17 +237,14 @@ export class ReturnListComponent extends DataList<any> {
     return (params: TypeaheadRequestParams) => {
       let p = new BillCodeSearchRequest(this.takeUser, this.takeDepartId, params.text);
       p.setPage(params.pageIndex, params.pageSize);
-      // console.log('ppppppppp',p);
       return this.innerReturnService.getCodePagedList(p)
     };
   }
-
 
   //选择单号带出配件信息
   onItemSelect(event) {
     this.billCode = event.text;
     this.originalBillId = event.value;
-    console.log('iiiiiiii', event);
     this.returnData = [];
     this.params.takeUserId = this.takeUser;
     this.params.takeDepartId = this.takeDepartId;
@@ -291,16 +254,11 @@ export class ReturnListComponent extends DataList<any> {
 
   //退料显示弹框
   OnCreatBound(data, id) {
-    console.log('弹框数据', data);
     this.selectReturnData = [];
-    //  this.originalBillId = data.id;
-    console.log('原始领用', this.originalBillId);
-    // this.selectReturnData = data;
     Object.assign(this.selectReturnData, data);
     this.selectReturnData.price = (parseFloat(this.selectReturnData.price) / 100).toFixed(2);
     this.selectReturnData.amount = (parseFloat(this.selectReturnData.amount) / 100).toFixed(2);
     this.selectReturnData.counts = 1;
-    // console.log('修改后弹框数据',this.selectReturnData);
     this.createModel.show();
   }
 

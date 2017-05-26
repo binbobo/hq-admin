@@ -109,15 +109,10 @@ export class OrderService implements BasicService<Order> {
         return this.httpService
             .request(url)
             .map(response => {
-                console.log('获取可以选择的门店：', response);
-                console.log('获取可以选择的门店，用于查询范围下拉框：', response.json().data);
                 let orgs = null;
                 if (this.orgsRecursion([response.json().data])) {
                     orgs = <any>this.orgsRecursion([response.json().data])[0];
-                    console.log('test:', orgs)
                 }
-                console.log('orgs:',orgs);
-                // 每个车主下面可能有多个车辆信息
                 return [new TreeviewItem(orgs)];
             });
     }
@@ -142,7 +137,6 @@ export class OrderService implements BasicService<Order> {
                 // 如果没有孩子  直接返回
                 obj.value = value.id;
             }
-            console.log('obj:',obj);
             return obj;
         });
     }

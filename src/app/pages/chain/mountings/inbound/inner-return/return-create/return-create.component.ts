@@ -40,7 +40,6 @@ export class ReturnCreateComponent implements OnInit {
 
   ngOnInit() {
     this.buildForm();
-    console.log('传过来的数据', this.selectReturnData);
     if (this.selectReturnData) {
       this.originalId = this.selectReturnData.id;
       this.locationId = this.selectReturnData.locationId;
@@ -48,7 +47,6 @@ export class ReturnCreateComponent implements OnInit {
       this.canReturnCount = this.selectReturnData.count - this.selectReturnData.returnCount;
       this.existCounts = this.selectReturnData.existCount;
       this.selectReturnData.amount = (this.selectReturnData.price * 1).toFixed(2);
-      // this.selectReturnData.productTypes = this.selectReturnData.productTypes[0];
       this.selectReturnData.productCategory = this.selectReturnData.productTypes[0];
       this.selectReturnData.productSpecification = this.selectReturnData.specification;
       this.form.patchValue(this.selectReturnData);
@@ -83,23 +81,13 @@ export class ReturnCreateComponent implements OnInit {
       this.alerter.error("数量必须大于0，请重新填写", true, 2000);
       return false;
     }
-    // let invalid = this.controls
-    //   .map(c => c.validate())
-    //   .some(m => !m);
-    // if (invalid) {
-    //   event.preventDefault();
-    //   return false;
-    // } else {
     this.form.value['originalId'] = this.originalId;
     this.form.value['locationId'] = this.locationId;
     this.form.value['productId'] = this.productId;
     this.form.value['existCounts'] = this.existCounts + count;
     this.form.value['productUnit'] = this.form.value.unit;
     this.form.value.count = count;
-    console.log('表单数据', this.form.value);
     this.formSubmit.emit(this.form.value);
-    // this.form.reset(this.model);
-    // }
   }
 
   // public onReset() {
@@ -107,62 +95,7 @@ export class ReturnCreateComponent implements OnInit {
   //   setTimeout(() => this.buildForm(), 1);
   //   return false;
   // }
-  //定义模糊查询要显示的列
-  // public itemColumns(isName: boolean) {
-  //   return [
-  //     { name: 'name', title: '名称', weight: isName ? 1 : 0 },
-  //     { name: 'code', title: '编码', weight: isName ? 0 : 1 },
-  //     { name: 'brand', title: '品牌' },
-  //     { name: 'houseName', title: '仓库' },
-  //     { name: 'locationName', title: '库位' },
-  //   ];
-  // }
-  //编码数据
-  // public get codeSource() {
-  //   return (params: TypeaheadRequestParams) => {
-  //     let p = new GetMountingsListRequest(params.text);
-  //     p.setPage(params.pageIndex, params.pageSize);
-  //     return this.moutingsService.getListByCodeOrName(p);
-  //   };
-  // }
-  //名称数据
-  // public get nameSource() {
-  //   return (params: TypeaheadRequestParams) => {
-  //     let p = new GetMountingsListRequest(undefined, params.text);
-  //     p.setPage(params.pageIndex, params.pageSize);
-  //     return this.moutingsService.getListByCodeOrName(p);
-  //   };
-  // }
-  //单价变动限制
-  // onPriceChange(event) {
-  //   let val = event.target.value || 0;
-  //   let price = Math.floor(val * 100);
-  //   this.form.patchValue({ price: price });
-  //   this.calculate();
-  // }
 
-  // public onItemSelect(event) {
-  //   let item = {
-  //     productCode: event.code,
-  //     productName: event.name,
-  //     productSpecification: event.specification,
-  //     productId: event.productId,
-  //     brand: event.brand,
-  //     brandId: event.brandId,
-  //     storeId: event.storeId,
-  //     houseName: event.houseName,
-  //     locationId: event.locationId,
-  //     locationName: event.locationName,
-  //     productCategory: event.Category,
-  //     price: event.price,
-  //     yuan: (event.price || 0) / 100,
-  //   }
-  //   this.form.controls['yuan'].setValidators(CustomValidators.gte(item.price / 100))
-  //   setTimeout(() => {
-  //     this.form.patchValue(item);
-  //     this.calculate();
-  //   }, 1);
-  // }
 
   //数量改变控制
   private calculate() {
