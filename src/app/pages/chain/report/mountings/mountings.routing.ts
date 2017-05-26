@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
-    // { path: 'business', component: BusinessListComponent },
+    { path: 'statistics', loadChildren: 'app/pages/chain/report/mountings/statistics/statistics.module#StatisticsModule' },
 ];
 
 @NgModule({
