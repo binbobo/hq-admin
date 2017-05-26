@@ -93,7 +93,6 @@ export class ProcurementComponent extends DataList<any> {
     this.procurementForm = this.formBuilder.group({
       searchStart: '', //开始时间
       searchEnd: '', // 结束时间
-      billCode: '',//单号
       name: '', //供应商
     })
   }

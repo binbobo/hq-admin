@@ -27,6 +27,7 @@ import { ProcurementService } from "app/pages/chain/report/mountings/statistics/
 import { DistributeService } from "app/pages/chain/report/mountings/statistics/distribute/distribute.service";
 import { PartssalesService } from "app/pages/chain/report/mountings/statistics/partssales/partssales.service";
 import { ReceiveService } from "app/pages/chain/report/mountings/statistics/inner-receive/receive.service";
+import { InvoicingService } from "app/pages/chain/report/mountings/statistics/invoicing/invoicing.service";
 
 @NgModule({
   imports: [
@@ -59,6 +60,6 @@ import { ReceiveService } from "app/pages/chain/report/mountings/statistics/inne
       InvoicingPrintComponent,
       PartssalesPrintComponent
   ],
-  providers:[ProcurementService,OrderService,DistributeService,PartssalesService,ReceiveService]
+  providers:[ProcurementService,OrderService,DistributeService,PartssalesService,ReceiveService,InvoicingService]
 })
 export class StatisticsModule { }

@@ -40,7 +40,7 @@ export class InnerReceiveComponent extends DataList<any> {
     this.params = new ReceiveRequest();
     // 获取可以选择的店名, 用于查询范围筛选
     this.orderService.getSelectableStores().subscribe(data => {
-      console.log('采购统计门店数据', data);
+      console.log('内部领用门店数据', data);
       if (data[0].children && data[0].children.length > 0)
         this.items = data;
     });

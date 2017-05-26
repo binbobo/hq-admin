@@ -27,26 +27,30 @@
     </div>
     <hr>
     <h6>温馨提示：系统为您找到<span style="color:red;font-weight:bold;">{{total}}</span>条记录</h6>
-    <table class="table table-bordered table-striped text-center">
-      <tr>
-        <th>操作</th>
-        <th>车牌号</th>
-        <th>发料单号</th>
-        <th>开单时间</th>
-        <th>领料人</th>
-        <th>操作人</th>
-      </tr>
-      <tr *ngFor="let item of list">
-        <td>
-          <button type="button" [hqSpinner]="false" class="btn btn-info btn-sm" (click)="alert(item,item.id,bdModal)">详情</button>
-        </td>
-        <td>{{item.plateNo }}</td>
-        <td>{{item.billCode }}</td>
-        <td>{{item.createBillTime |date:"yyyy/MM/dd HH:mm:ss"}}</td>
-        <td>{{item.takeUser }}</td>
-        <td>{{item.operator }}</td>
-      </tr>
-    </table>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped text-center">
+        <tr>
+          <th>操作</th>
+          <th>车牌号</th>
+          <th>发料单号</th>
+          <th>金额</th>
+          <th>开单时间</th>
+          <th>领料人</th>
+          <th>操作人</th>
+        </tr>
+        <tr *ngFor="let item of list">
+          <td>
+            <button type="button" [hqSpinner]="false" class="btn btn-info btn-sm" (click)="alert(item,item.id,bdModal)">详情</button>
+          </td>
+          <td>{{item.plateNo }}</td>
+          <td>{{item.billCode }}</td>
+          <td></td>
+          <td>{{item.createBillTime |date:"yyyy/MM/dd HH:mm:ss"}}</td>
+          <td>{{item.takeUser }}</td>
+          <td>{{item.operator }}</td>
+        </tr>
+      </table>
+    </div>
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
     <button type="button" (click)="onExport()" class="btn btn-secondary">导出</button>
   </div>
@@ -55,10 +59,10 @@
 <div class="modal fade" bsModal #bdModal="bs-modal" role="dialog">
   <div class="modal-dialog modal-lg modal-content card" style="min-width:1200px;width:60%;">
     <div class="modal-header">
-      <div class="modal-title">采购入库详情</div>
+      <div class="modal-title">维修发料详情</div>
       <button class="close pull-right" (click)="bdModal.hide()">&times;</button>
     </div>
-    <div class="modal-body" hqPrint #printer="hq-print">
+    <div class="modal-body">
       <div class="card-block">
         <div class="row">
           <div class="col-3">
@@ -80,41 +84,43 @@
         </div>
       </div>
       <div class="card-block">
-        <div class="row" style="overflow-x:auto;">
-          <table class="table table-bordered table-striped">
-            <tr class="active">
-              <th>维修项目</th>
-              <th>配件编号</th>
-              <th>配件类型</th>
-              <th>配件名称</th>
-              <th>品牌</th>
-              <th>规格型号</th>
-              <th>单位</th>
-              <th>仓库</th>
-              <th>库位</th>
-              <th>单价</th>
-              <th>数量</th>
-              <th>金额</th>
-              <th>备注</th>
-              <th>领料人</th>
-            </tr>
-            <tr class="text-center" *ngFor="let item of detailItems">
-              <td>{{item.maintName }}</td>
-              <td>{{item.productCode }}</td>
-              <td>{{item.productSpecification }}</td>
-              <td>{{item.productName }}</td>
-              <td>{{item.brandName }}</td>
-              <td>{{item.productSpecification }}</td>
-              <td>{{item.specification}}</td>
-              <td>个（mock）</td>
-              <td>{{item.locationName }}</td>
-              <td>{{item.price }}</td>
-              <td>{{item.count }}</td>
-              <td>{{item.amount }}</td>
-              <td>{{item.description }}</td>
-              <td>{{item.takeUser }}</td>
-            </tr>
-          </table>
+        <div class="row">
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+              <tr class="active">
+                <th>维修项目</th>
+                <th>配件编号</th>
+                <th>配件类型</th>
+                <th>配件名称</th>
+                <th>品牌</th>
+                <th>规格型号</th>
+                <th>单位</th>
+                <th>仓库</th>
+                <th>库位</th>
+                <th>单价</th>
+                <th>数量</th>
+                <th>金额</th>
+                <th>备注</th>
+                <th>领料人</th>
+              </tr>
+              <tr class="text-center" *ngFor="let item of detailItems">
+                <td>{{item.maintName }}</td>
+                <td>{{item.productCode }}</td>
+                <td>{{item.productSpecification }}</td>
+                <td>{{item.productName }}</td>
+                <td>{{item.brandName }}</td>
+                <td>{{item.productSpecification }}</td>
+                <td>{{item.specification}}</td>
+                <td>个（mock）</td>
+                <td>{{item.locationName }}</td>
+                <td>{{item.price }}</td>
+                <td>{{item.count }}</td>
+                <td>{{item.amount }}</td>
+                <td>{{item.description }}</td>
+                <td>{{item.takeUser }}</td>
+              </tr>
+            </table>
+          </div>
           <p *ngIf="!!!detailItemsLength">暂无数据</p>
         </div>
       </div>
@@ -124,3 +130,4 @@
     </div>
   </div>
 </div>
+<hq-distribute-print  hqPrint #printer="hq-print" [hidden]="true"></hq-distribute-print>

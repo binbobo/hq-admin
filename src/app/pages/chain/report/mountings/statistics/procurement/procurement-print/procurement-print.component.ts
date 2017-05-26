@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'hq-procurement-print',
@@ -9,6 +9,10 @@ export class ProcurementPrintComponent implements OnInit {
 
   constructor() { }
 
+  @Input() detail
+  @Input() detailItems 
+  @Input() detailItemsLength
+  
   ngOnInit() {
   }
 

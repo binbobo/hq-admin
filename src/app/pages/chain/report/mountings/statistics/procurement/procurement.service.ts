@@ -53,7 +53,6 @@ export class ProcurementRequest extends PagedParams {
   constructor(
     public searchStart?: string,
     public searchEnd?: string,
-    public billCode?: string,//单号
     public name?: string, //供应商
     public orgIds?: Array<any>, //门店查询
   ) {

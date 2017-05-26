@@ -1,5 +1,5 @@
 <div class="card">
-  <div class="card-header">维修发料统计</div>
+  <div class="card-header">配件销售统计</div>
   <div class="card-block">
     <div class="container-fluid">
       <form [formGroup]="partssalesForm" (ngSubmit)="onSearch()">
@@ -32,33 +32,102 @@
       </form>
     </div>
     <hr>
-    <h6>温馨提示：系统为您找到<span style="color:red;font-weight:bold;">{{count}}</span>条记录</h6>
-    <table class="table table-bordered table-striped text-center">
-      <tr>
-        <th>操作</th>
-        <th>出库单号</th>
-        <th>客户名称</th>
-        <th>客户手机</th>
-        <th>销售员</th>
-        <th>开单时间</th>
-        <th>操作人</th>
-      </tr>
-      <tr *ngFor="let item of list">
-        <td>
-          <button type="button" [hqSpinner]="false" class="btn btn-info btn-sm" (click)="alert(bdModal)">详情</button>
-        </td>
-        <td>{{item.billCode }}</td>
-        <td>123123123231</td>
-        <td>2017-04-29 17:11:11</td>
-        <td>次子</td>
-        <td>次子</td>
-        <td>次子</td>
-      </tr>
-    </table>
+    <h6>温馨提示：系统为您找到<span style="color:red;font-weight:bold;">{{total}}</span>条记录</h6>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped text-center">
+        <tr>
+          <th>操作</th>
+          <th>出库单号</th>
+          <th>客户名称</th>
+          <th>客户手机</th>
+          <th>销售员</th>
+          <th>金额（元）</th>
+          <th>开单时间</th>
+          <th>操作人</th>
+        </tr>
+        <tr *ngFor="let item of list">
+          <td>
+            <button type="button" [hqSpinner]="false" class="btn btn-info btn-sm" (click)="alert(bdModal)">详情</button>
+          </td>
+          <td>{{item.billCode }}</td>
+          <td>记者</td>
+          <td>13989696798</td>
+          <td>次子</td>
+          <td></td>
+          <td>2017-04-29 17:11:11</td>
+          <td>次子</td>
+        </tr>
+      </table>
+    </div>
     <button type="button" (click)="onExport()" class="btn btn-secondary">导出</button>
   </div>
 </div>
 <!--详情-->
 <div class="modal fade" bsModal #bdModal="bs-modal" role="dialog">
-  <div class="modal-dialog modal-lg modal-content card">哈哈哈哈</div>
+  <div class="modal-dialog modal-lg modal-content card" style="min-width:1200px;width:60%;">
+    <div class="modal-header">
+      <div class="modal-title">配件销售详情</div>
+      <button class="close pull-right" (click)="bdModal.hide()">&times;</button>
+    </div>
+    <div class="modal-body" hqPrint #printer="hq-print">
+      <div class="card-block">
+        <div class="row">
+          <div class="col-3">
+            <label for="">出库单号：</label>
+            <span>{{detail?.name}}</span>
+          </div>
+          <div class="col-3">
+            <label for="">客户名称：</label>
+            <span>{{detail?.billCode}}</span>
+          </div>
+          <div class="col-3">
+            <label for="">开单时间：</label>
+            <span>{{detail?.createUtc|date:'yyyy/MM/dd HH:mm:ss'}}</span>
+          </div>
+          <div class="col-3">
+            <label for="">操作人：</label>
+            <span>{{detail?.createName}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-block">
+        <div class="row" style="overflow-x:auto;">
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+              <tr class="active">
+                <th>配件编码</th>
+                <th>配件分类</th>
+                <th>配件名称</th>
+                <th>品牌</th>
+                <th>规格型号</th>
+                <th>单位</th>
+                <th>仓库</th>
+                <th>库位</th>
+                <th>单价（元）</th>
+                <th>数量（个）</th>
+                <th>金额（元）</th>
+              </tr>
+              <tr class="text-center" *ngFor="let item of detailItems">
+                <td>{{item.storeName}}</td>
+                <td>{{item.locationName}}</td>
+                <td>{{item.productCode}}</td>
+                <td>{{item.categoryList[0] }}</td>
+                <td>{{item.productName}}</td>
+                <td>{{item.brand}}</td>
+                <td>{{item.specification}}</td>
+                <td>{{item.unit}}</td>
+                <td>{{item.count }}</td>
+                <td>{{item.price}}</td>
+                <td>{{item.amount}}</td>
+              </tr>
+            </table>
+          </div>
+          <p *ngIf="!!!detailItemsLength">暂无数据</p>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" (click)="print()" class="btn btn-secondary">打印</button>
+    </div>
+  </div>
 </div>
