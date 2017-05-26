@@ -35,7 +35,7 @@ export class OrderService implements BasicService<Order> {
         return this.httpService
             .request(url)
             .map(response => {
-                console.log('查询工单状态数据：', response.json().data);
+                // console.log('查询工单状态数据：', response.json().data);
                 return response.json().data as any[];
             });
     }
@@ -249,24 +249,6 @@ export class FuzzySearchRequest extends PagedParams {
         public keyword: string, // 模糊搜索关键字
     ) {
         // super('FuzzySearchRequestParams');
-        super();
-    }
-}
-
-export class VehicleSeriesSearchRequest extends PagedParams {
-    constructor(
-        public seriesName?: string, // 车系名称
-        public brandId?: string, // 品牌id
-    ) {
-        super();
-    }
-}
-export class VehicleSearchRequest extends PagedParams {
-    constructor(
-        public vehicleName?: string, // 车型名称
-        public brandId?: string, // 品牌id
-        public seriesId?: string, // 车系id
-    ) {
         super();
     }
 }

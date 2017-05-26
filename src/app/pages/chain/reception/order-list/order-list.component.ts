@@ -41,6 +41,8 @@ export class OrderListComponent extends DataList<Order> {
   // 当前登录用户信息
   public user = null;
 
+  generating = false;
+
   @ViewChild('printer')
   public printer: PrintDirective;
 
@@ -58,7 +60,7 @@ export class OrderListComponent extends DataList<Order> {
     this.service.getOrderStatus()
       .subscribe(data => {
         this.orderStatusData = data;
-        console.log('工单状态数据：', JSON.stringify(data));
+        // console.log('工单状态数据：', JSON.stringify(data));
       });
     // 获取可以选择的店名, 用于查询范围筛选
     // this.service.getSelectableStores().subscribe(data => this.items = data);
@@ -127,6 +129,8 @@ export class OrderListComponent extends DataList<Order> {
       this.selectedOrder = data;
       this.selectedOrder.id = id;
 
+      // 组织车型显示文本
+      // this.selectedOrder.vehicleText = ''.concat(this.selectedOrder.brand, this.selectedOrder.series, this.selectedOrder.vehicleName);
 
       // 统计各项费用
       this.selectedOrder.fee = {};
@@ -160,8 +164,13 @@ export class OrderListComponent extends DataList<Order> {
 
   // 导出当前查询条件下的车主信息
   export() {
+    this.generating = true;
     this.service.export(this.params).then(() => {
       console.log('导出工单列表数据成功！');
+      this.generating = false;
+    }).catch(err => {
+      this.generating = false;
+      this.alerter.error('导出工单列表失败：' + err, true, 3000);
     });
   }
 

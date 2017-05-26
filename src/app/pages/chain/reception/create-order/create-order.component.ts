@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit, ViewChild } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType } from '../order.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TabsetComponent, ModalDirective } from 'ngx-bootstrap';
@@ -14,18 +14,16 @@ import { HQ_VALIDATORS } from '../../../../shared/shared.module';
   selector: 'app-create-order',
   templateUrl: './create-order.component.html',
   styleUrls: ['./create-order.component.css'],
+  // encapsulation: ViewEncapsulation.None
 })
 export class CreateOrderComponent extends DataList<Order> implements OnInit {
-  // 标志是否是根据车牌号或者车主或者挂单列表中选择的历史数据
-  // 车辆模糊查询  用于自动带出车型，车系，品牌信息
+  // 标志是否是根据车牌号或者车主或者挂单列表中选择的历史维修数据或者预检单
   isSelected = false;
-
   // 生产工单按钮是否可用
   public enableCreateWorkSheet = false;
 
   @ViewChild(SuspendBillDirective)
   private suspendBill: SuspendBillDirective;
-
   @ViewChild('printer')
   public printer: PrintDirective;
 
@@ -34,17 +32,16 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   // 当前选择的维修项目记录  用于编辑
   selectedItem: any;
-  // 当前已经选择的维修项目列表
+  // 当前已经选择的维修项目列表 用于过滤
   selectedServices: Array<any> = [];
 
   // 维修类型数据
-  public maintenanceTypeData: MaintenanceType[];
+  maintenanceTypeData: MaintenanceType[];
   // 创建工单表单FormGroup
   workSheetForm: FormGroup;
 
   // 保存所有添加的维修项目记录
   newMaintenanceItemData = [];
-
   // 新创建的维修工单数据  用于打印
   newWorkOrderData: any;
 
@@ -59,13 +56,11 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     discount: 0
   };
 
-  // 当前登录用户信息
-  public user = null;
-
+  // 品牌车系车型是否选择标志
   isBrandSelected = false;
   isSeriesSelected = false;
   isVehicleSelected = false;
-
+  // 车牌号 车主姓名模糊查询框是否可用标志
   isFuzzySearchEnable = true;
   // 覆盖父类的初始化方法
   ngOnInit() { }
@@ -83,10 +78,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.service.getMaintenanceTypes()
       .subscribe(data => this.maintenanceTypeData = data);
 
-    // 获取当前登录用户信息
-    this.user = JSON.parse(sessionStorage.getItem(StorageKeys.Identity));
-    // console.log('当前登陆用户: ', this.user);
-
     // 构建表单
     this.createForm();
   }
@@ -100,7 +91,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.workSheetForm.controls.vehicleId.reset();
     this.workSheetForm.controls.vehicleName.disable();
   }
-
   seriesChange() {
     this.workSheetForm.controls.vehicleName.reset();
     this.workSheetForm.controls.vehicleId.reset();
@@ -137,7 +127,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       this.workSheetForm.controls.vehicleName.setValue('');
     }
   }
-
   onPlateNoBlur(val) {
     if (!this.isSelected && this.workSheetForm.controls.plateNo.valid) {
       this.isFuzzySearchEnable = false;
@@ -170,8 +159,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   // 根据客户车辆Id查询上次工单信息
   getLastOrderByCustomerVechileId(evt) {
-    // 先清空上次工单数据  再查询新数据
-    // this.lastOrderData = null;
+    // 初始化数据
     this.initOrderData();
 
     // 记录客户车辆id
@@ -210,6 +198,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     if (lastOrder.preCheckId) {
       // 预检单 带出所有能带出的信息
       this.workSheetForm.patchValue({
+        // 传过去预检单id  用于删除当前预检单
+        preCheckId: lastOrder.preCheckId,
         contactUser: lastOrder.contactUser,
         contactInfo: lastOrder.contactInfo,
         type: lastOrder.type,
@@ -220,7 +210,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
         location: lastOrder.location,
         nextDate: lastOrder.nextDate ? moment(lastOrder.nextDate).format('YYYY-MM-DD') : '',
         nextMileage: lastOrder.nextMileage,
-        expectLeave: lastOrder.expectLeave ? moment(lastOrder.expectLeave).format('YYYY-MM-DD HH:mm') : ''
       });
     } else {
       // 上次维修记录 带出部分信息
@@ -235,7 +224,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   // 根据车牌号， 车主， vin 自动带出客户车辆信息
   loadCustomerVehicleInfo(customerVehicle) {
-    console.log('当前选择的客户车辆信息', customerVehicle);
+    // console.log('当前选择的客户车辆信息', JSON.stringify(customerVehicle));
     // 加载客户车辆信息
     this.workSheetForm.patchValue({
       plateNo: customerVehicle.plateNo,
@@ -336,10 +325,10 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       // 使用新的元素替换以前的元素
       this.newMaintenanceItemData.splice(index, 1, data);
       // 更新价格
-      const workHourFeediff: number = data.price * data.workHour - (this.selectedItem.price * 100) * this.selectedItem.workHour;
+      const workHourFeediff = data.price * data.workHour - (this.selectedItem.price * 100) * this.selectedItem.workHour;
       this.fee.workHour += workHourFeediff * 1;
       // 看看折扣了多少钱
-      const discountFeediff: number = (data.price * data.workHour - data.amount) - ((this.selectedItem.price * 100) * this.selectedItem.workHour - this.selectedItem.amount * 100);
+      const discountFeediff = (data.price * data.workHour - data.amount) - ((this.selectedItem.price * 100) * this.selectedItem.workHour - this.selectedItem.amount * 100);
       this.fee.discount += discountFeediff * 1;
 
       // 清空当前编辑的维修项目记录
@@ -471,7 +460,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   createForm() {
     this.workSheetForm = this.fb.group({
       customerName: ['', [Validators.required]], // 车主
-      phone: ['', [HQ_VALIDATORS.mobile]], // 车主电话
+      phone: ['', [Validators.required, HQ_VALIDATORS.mobile]], // 车主电话
       contactUser: ['', [Validators.required]], // 送修人
       contactInfo: ['', [Validators.required, HQ_VALIDATORS.mobile]], // 送修人电话
       introducer: '', // 介绍人
@@ -491,12 +480,14 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       lastMileage: [{ value: '', disabled: true }], // 上次进店里程
       nextMileage: ['', [HQ_VALIDATORS.mileage]], // 建议下次保养里程
 
-      suspendedBillId: '', // 挂单id
-      customerVehicleId: '', // 客户车辆id
-      customerId: '', // 客户id
-      brandId: '', // 客户id
-      seriesId: '', // 车系id
-      vehicleId: '', // 车辆id
+      // 隐藏域
+      suspendedBillId: null, // 挂单id
+      customerVehicleId: null, // 客户车辆id
+      customerId: null, // 客户id
+      brandId: null, // 客户id
+      seriesId: null, // 车系id
+      vehicleId: null, // 车辆id
+      preCheckId: null, // 预检单id
     });
     // patchValue方法会触发FromGroup的valueChanges事件
 
@@ -576,17 +567,15 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   initOrderData() {
     // 表单重置
     this.workSheetForm.reset({
-      expectLeave: moment().add(2, 'hours').format('YYYY-MM-DD HH:mm')
-    }, { emitEvent: false }); // 不触发valueChanges事件
+      // 默认为当前时间后延2小时
+      expectLeave: moment().add(2, 'hours').format('YYYY-MM-DD HH:mm'),
+    }, {emitEvent: false});
 
-    // 清空客户车辆信息数据   上次选择的品牌id和车系id,车型id
+    // 清空维修项目数据
     this.newMaintenanceItemData = [];
 
     // 重置费用
-    this.fee.workHour = 0;
-    this.fee.material = 0;
-    this.fee.discount = 0;
-    this.fee.workHours = 0;
+    this.fee.workHour = this.fee.material = this.fee.discount = this.fee.workHours = 0;
 
     // 清空上次维修工单数据
     this.lastOrderData = null;
@@ -596,14 +585,13 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.enableCustomerVehicleField();
     // 重置新添加的工单记录
     this.newWorkOrderData = null;
-
+    // 品牌车系车型是否选择
     this.isBrandSelected = this.isSeriesSelected = this.isVehicleSelected = false;
   }
 
   print() {
     this.printer.print();
   }
-
 
   // 创建工单按钮点击事件处理程序
   createWorkSheet() {
@@ -674,19 +662,12 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     return moment().hours();
   }
 
-
-  // 定义要显示的列
+  // 定义要显示的列 用于挂单
   public get typeaheadColumns() {
     return [
       { name: 'plateNo', title: '车牌号' },
       { name: 'customerName', title: '车主' },
       { name: 'phone', title: '车主电话' },
-    ];
-  }
-  // 定义维修项目模糊查询要显示的列
-  public get nameTypeaheadColumns() {
-    return [
-      { name: 'name', title: '名称' },
     ];
   }
 }
