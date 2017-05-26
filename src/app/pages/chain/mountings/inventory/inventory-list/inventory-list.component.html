@@ -29,10 +29,6 @@
         <input type="text" class="form-control" name="vehicleName" [(ngModel)]="params.vehicleName" placeholder="配件车型">
       </div>
       <div class="form-group">
-        <label>类别：</label>
-        <input type="text" class="form-control" name="categoryName" [(ngModel)]="params.categoryName" placeholder="类别">
-      </div>
-      <div class="form-group">
         <button type="submit" class="btn btn-primary">查询</button>
       </div>
     </form>
@@ -45,9 +41,12 @@
             <th>状态</th>
             <th>仓库</th>
             <th>库位</th>
-            <th>品牌</th>
             <th>配件编码</th>
+            <th>配件分类</th>
             <th>配件名称</th>
+            <th>库存量</th>
+            <th>品牌</th>
+            <th>规格型号</th>
             <th>库存量</th>
             <th>适用车型</th>
             <th>单位</th>
@@ -59,7 +58,6 @@
             <th>最小库存</th>
             <th>包装规格</th>
             <th>产地</th>
-            <th>类别</th>
             <th>备注</th>
           </tr>
         </thead>
@@ -70,9 +68,11 @@
             <td class="text-center">{{item.enable?'可用':'停用'}}</td>
             <td>{{ item.houseName}}</td>
             <td>{{ item.locationName}}</td>
-            <td>{{item.brand}}</td>
             <td>{{ item.code}}</td>
+            <td>{{item.categoryList|pluck:'text'|slice:0:1}}</td>
             <td>{{item.name}}</td>
+            <td>{{item.brand}}</td>
+            <td>{{item.specification}}</td>
             <td class="text-center">{{item.count}}</td>
             <td class="py-2">
               <select class="form-control form-control-sm" [hidden]="!item?.vehicleInfoList?.length">
@@ -89,7 +89,6 @@
             <td class="text-center">{{item.minCount}}</td>
             <td>{{ item.packageInfo}}</td>
             <td>{{item.madeIn}}</td>
-            <td>{{item.categoryList|pluck:'text'|slice:0:1}}</td>
             <td>{{ item.description}}</td>
           </tr>
         </tbody>
