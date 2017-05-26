@@ -11,20 +11,24 @@
       <input type="hidden" formControlName="suspendedBillId" />
       <!--工单基本筛选条件面板-->
       <div class="form-group row">
-        <label for="plateNo" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车牌号</label>
-        <div class="col-2">
-          <input (blur)="onPlateNoBlur()" hqPlateNoTypeahead="keyword" (onSelect)="plateNoOnSelect($event)" class="form-control" formControlName="plateNo"
-            id="plateNo" label="车牌号" maxlength="12" type="text" placeholder="请输入车牌号" />
-          <!--客户车辆id-->
-          <input type="hidden" formControlName="customerVehicleId" />
-          <!--客户id-->
-          <input type="hidden" formControlName="customerId" />
+        <div class="hq-input">
+          <label for="plateNo" class="form-label"><span class="asterisk mr-1">*</span>车牌号</label>
+          <div class="hq-col">
+            <input (blur)="onPlateNoBlur()" hqPlateNoTypeahead="keyword" (onSelect)="plateNoOnSelect($event)" class="form-control" formControlName="plateNo"
+              id="plateNo" label="车牌号" maxlength="12" type="text" placeholder="请输入车牌号" />
+            <!--客户车辆id-->
+            <input type="hidden" formControlName="customerVehicleId" />
+            <!--客户id-->
+            <input type="hidden" formControlName="customerId" />
+          </div>
         </div>
-        <label for="customerName" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车主</label>
-        <div *ngIf="isFuzzySearchEnable" class="col-2">
-          <input maxlength="15" #customerName (blur)="onCustomerNameBlur(customerName.value)" hqCustomerVehicleTypeahead="keyword"
-            label="车主" (onSelect)="onCustomerNameSelect($event)" type="text" class="form-control" formControlName="customerName"
-            id="customerName" placeholder="请输入车主名称">
+        <div class="hq-input">
+          <label for="customerName" class="form-label"><span class="asterisk mr-1">*</span>车主</label>
+          <div *ngIf="isFuzzySearchEnable" class="hq-col">
+            <input maxlength="15" #customerName (blur)="onCustomerNameBlur(customerName.value)" hqCustomerVehicleTypeahead="keyword"
+              label="车主" (onSelect)="onCustomerNameSelect($event)" type="text" class="form-control" formControlName="customerName"
+              id="customerName" placeholder="请输入车主名称">
+          </div>
         </div>
         <div *ngIf="!isFuzzySearchEnable" class="col-2">
           <input maxlength="15" #customerName (blur)="onCustomerNameBlur(customerName.value)" type="text" class="form-control" formControlName="customerName"
@@ -36,9 +40,9 @@
             id="phone" placeholder="请输入车主电话">
         </div>
       </div>
-      <div class="form-group row">
-        <label for="vin" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>VIN</label>
-        <div class="col-2">
+      <div class="hq-input">
+        <label for="vin" class="form-label"><span class="asterisk mr-1">*</span>VIN123333</label>
+        <div class="hq-col">
           <input maxlength="17" label="车辆识别码" type="text" class="form-control" formControlName="vin" id="vin" placeholder="请输入车辆标识码">
         </div>
         <label for="brand" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>品牌</label>
@@ -57,7 +61,8 @@
         </div>
         <label for="vehicleName" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车型</label>
         <div class="col-2">
-          <input (blur)="onVehicleBlur()" forceRefresh="true" hqModelTypeahead [brandId]="workSheetForm.value.brandId" [seriesId]="workSheetForm.value.seriesId" (onSelect)="onModelSelect($event)" type="text" class="form-control" formControlName="vehicleName" id="vehicleName"
+          <input (blur)="onVehicleBlur()" forceRefresh="true" hqModelTypeahead [brandId]="workSheetForm.value.brandId" [seriesId]="workSheetForm.value.seriesId"
+            (onSelect)="onModelSelect($event)" type="text" class="form-control" formControlName="vehicleName" id="vehicleName"
             placeholder="请选择车型">
           <!--车辆id-->
           <input type="hidden" formControlName="vehicleId" />
