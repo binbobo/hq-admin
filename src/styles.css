@@ -173,15 +173,19 @@ tabset ul li a, tabset ul li a:hover {
 .btn-suspend{
     background-color: #fa9837 !important;
     border:0;
-    cursor: pointer;
-    transition: .8s;
+}
+.btn-export{
+    background-color: #1c84c6 !important;
+    color: #fff;
+    border:0;
 }
 .btn-suspend:hover{
     background-color:#d8812b !important;
-    
+    cursor: pointer;
+    transition: .8s;
 }
 .fa-times-circle {
   font-size: 1rem;
   vertical-align: middle;
   font-weight: normal;
-} 
+}
