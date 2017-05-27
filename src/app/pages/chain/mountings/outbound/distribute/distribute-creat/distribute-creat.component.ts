@@ -170,9 +170,7 @@ export class DistributeCreatComponent implements OnInit {
       this.form.patchValue(item);
       this.calculate();
     }, 1);
-
   }
-
   private calculate() {
     let count = this.form.controls['count'].value;
     let price = this.form.controls['price'].value;
