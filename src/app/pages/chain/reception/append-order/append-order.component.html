@@ -112,7 +112,7 @@
               <tbody>
                 <tr *ngFor="let item of maintenanceProjectData">
                   <td>&nbsp;</td>
-                  <td>{{item.serviceName}}<span *ngIf="item.type === 3" class="append-stamp">增项</span></td>
+                  <td>{{item.serviceName}}<span *ngIf="item.type === 3" class="append-stamp">增项</span><span [class.accept-stamp]="item.teamType === 6"></span></td>
                   <td>{{item.workHour}}</td>
                   <td>{{item.price|centToYuan}}</td>
                   <td>{{item.discount}}</td>
@@ -135,9 +135,15 @@
               </tbody>
             </table>
           </div>
-          <div>
-            <button class="btn btn-sm btn-info mr-2" (click)="addModal.show()" placement="right">新增</button>
+
+          <div class="text-center">
+            <button class="btn btn-secondary" (click)="addModal.show();">
+          <span><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i></span>
+            新增维修项目
+            </button>
           </div>
+
+
         </tab>
         <!--附加项目-->
 
@@ -163,9 +169,15 @@
               </tr>
             </table>
           </div>
-          <div>
-            <button class="btn btn-sm btn-info mr-2" [disabled]="!!((newAttachData?.length)>=1)" (click)="attachModal.show()" placement="right">新增</button>
+
+          <div class="text-center">
+            <button class="btn btn-secondary" [disabled]="!!((newAttachData?.length)>=1)" (click)="attachModal.show();">
+          <span><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i></span>
+            新增附加项目
+            </button>
           </div>
+
+
         </tab>
 
         <!--建议维修项-->
@@ -201,9 +213,16 @@
 
             </table>
           </div>
-          <div>
-            <button class="btn btn-sm btn-info mr-2" (click)="suggestModal.show()" placement="right">新增</button>
+
+          <div class="text-center">
+            <button class="btn btn-secondary" (click)="suggestModal.show();">
+          <span><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i></span>
+            新增建议维修项目
+            </button>
           </div>
+
+
+
         </tab>
 
         <!--上次维修记录-->
@@ -224,7 +243,7 @@
               </thead>
               <tbody>
                 <tr *ngFor="let item of lastDataProjectList ">
-                  <td>{{item.serviceName}}<span [class.append-stamp]="item.type === 3">增项</span></td>
+                  <td>{{item.serviceName}}<span [class.append-stamp]="item.type === 3">增项</span><span [class.accept-stamp]="item.teamType === 6"></span></td>
                   <td>{{item.workHour}}</td>
                   <td>{{item.price|centToYuan}}</td>
                   <td>{{item.amount|centToYuan}}</td>
@@ -303,13 +322,13 @@
           </div>
         </tab>
       </tabset>
-
-      <div class="card" style="margin-top:40px;">
-        <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
-          工时费：<span class="ml-2 mr-2">{{workHourFee|centToYuan}}元</span> | 材料费：
-          <span class="ml-2 mr-2">{{materialFee|centToYuan}}元</span> | 优惠：
-          <span class="ml-2 mr-2">{{(workHourFee-sumFee)|centToYuan}}元</span> | 应收金额：
-          <span class="ml-2 mr-2">{{(workHourFee+materialFee)|centToYuan}}元</span>
+  
+      <div class="card hq-fee">
+        <div>
+          <span class="fee-name">工时费：<span class="fee-value">{{workHourFee|centToYuan}}</span></span>
+          <span class="fee-name"> 材料费：<span class="fee-value">{{materialFee|centToYuan}}</span></span>
+          <span class="fee-name"> 优惠：<span class="fee-value">{{(workHourFee-sumFee)|centToYuan}}</span></span>
+          <span class="fee-name pull-right">应收金额：<span class="fee-value">{{(workHourFee+materialFee)|centToYuan}}</span></span>
         </div>
       </div>
 
