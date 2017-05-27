@@ -4,9 +4,9 @@ import { HttpService, Urls } from 'app/shared/services';
 import { PagedParams, SelectOption } from 'app/shared/models';
 
 @Directive({
-  selector: '[hqProductTypeahead]'
+  selector: '[hqInventoryProductTypeahead]'
 })
-export class ProductTypeaheadDirective extends TableTypeaheadDirective {
+export class InventoryProductTypeaheadDirective extends TableTypeaheadDirective {
 
   constructor(
     protected viewContainerRef: ViewContainerRef,
@@ -16,7 +16,7 @@ export class ProductTypeaheadDirective extends TableTypeaheadDirective {
     super(viewContainerRef, componentFactoryResolver);
   }
 
-  @Input("hqProductTypeahead")
+  @Input("hqInventoryProductTypeahead")
   protected filed: string;
 
   protected columns = [
@@ -25,16 +25,15 @@ export class ProductTypeaheadDirective extends TableTypeaheadDirective {
     { name: 'categoryName', title: '配件分类' },
     { name: 'name', title: '配件名称' },
     { name: 'specification', title: '规格型号' },
-    { name: 'count', title: '库存量' },
   ] as Array<TableTypeaheadColumn>;
 
   ngOnInit() {
     this.filed = this.filed || 'name';
     this.source = (params: TypeaheadRequestParams) => {
-      let request = new ProductSearchRequest();
+      let request = new PagedParams();
       request[this.filed] = params.text;
       request.setPage(params.pageIndex, params.pageSize);
-      let url = Urls.chain.concat('/Products/SearchSingleInventory');
+      let url = Urls.chain.concat('/Products/SearchProducts');
       return this.httpService.getPagedList<any>(url, request)
         .then(result => {
           result.data = result.data.map(m => this.map(m));
@@ -72,12 +71,5 @@ export class ProductTypeaheadDirective extends TableTypeaheadDirective {
   }
 }
 
-class ProductSearchRequest extends PagedParams {
-  constructor(
-    public name?: string,
-    public code?: string,
-  ) {
-    super();
-  }
-}
+
 

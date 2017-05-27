@@ -1,6 +1,6 @@
 <ng-template hq-alerter></ng-template>
 <div class="alert alert-info" role="alert" [hidden]="!owned">
-  该配件信息为平台数据，部分信息不可更改！
+  配件信息已存在，部分信息不可更改。
 </div>
 <div class="alert alert-warning" role="alert" [hidden]="!exists">
   该配件已放置本库位，无需重复添加！
@@ -22,7 +22,7 @@
       </div>
       <div class="form-group">
         <label class="form-control-label">*配件编码：</label>
-        <input label="配件编码" (input)="onItemChange($event,'name')" [hqProductTypeahead]="'code'" (onSelect)="onItemSelect($event)"
+        <input label="配件编码" (input)="onItemChange($event,'name')" [hqInventoryProductTypeahead]="'code'" (onSelect)="onItemSelect($event)"
           formControlName="code" class="form-control" placeholder="请输入配件编码">
       </div>
       <div class="form-group">
@@ -33,7 +33,7 @@
       </div>
       <div class="form-group">
         <label class="form-control-label">*配件名称：</label>
-        <input label="配件名称" (input)="onItemChange($event,'code')" [hqProductTypeahead]="'name'" (onSelect)="onItemSelect($event)"
+        <input label="配件名称" (input)="onItemChange($event,'code')" [hqInventoryProductTypeahead]="'name'" (onSelect)="onItemSelect($event)"
           formControlName="name" class="form-control" placeholder="请输入配件名称">
       </div>
       <div class="form-group">
@@ -87,7 +87,7 @@
       </div>
     </div>
     <div id="vehicle-container" [hidden]="!vehicles||!vehicles.length" class="col-12 mb-2">
-      <div *ngFor="let item of vehicles" class="btn btn-secondary btn-sm mr-1 mb-1">
+      <div *ngFor="let item of vehicles" class="pull-right btn btn-secondary btn-sm mr-1 mb-1">
         <span>{{item.brandName}} {{item.seriesName}} {{item.name}}</span>
         <i [hidden]="owned" class="cursor-pointer fa fa-times" (click)="onVehicleRemove(item)"></i>
       </div>
