@@ -27,7 +27,7 @@
 
     <div class="tab-title">销售出库信息</div>
     <div class="table-container">
-      <table class="table table-bordered table-striped">
+      <table class="table table-bordered">
         <thead>
           <tr>
             <th>操作</th>
@@ -69,7 +69,7 @@
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
     <div class="tab-title">销售退库信息</div>
     <div class="table-container">
-      <table class="table table-bordered table-striped">
+      <table class="table table-bordered">
         <thead>
           <tr>
             <th>操作</th>
@@ -110,7 +110,7 @@
   <div class="card-footer text-muted">
     <button [hqSpinner]="createLoading" [disabled]="!(salesReturnData.length>0)" class="btn btn-primary" (click)="createReturnList()">生成销售退库单</button>
     <!--<button class="btn btn-warning" (click)="cancel($event)">取消</button>-->
-    <button [hqSpinner]="suspendLoading" [disabled]="!(salesReturnData.length>0)" class="btn btn-success" (click)="suspend()">挂单</button>
+    <button [hqSpinner]="suspendLoading" [disabled]="!(salesReturnData.length>0)" class="btn btn-success btn-suspend" (click)="suspend()">挂单</button>
   </div>
 </div>
 

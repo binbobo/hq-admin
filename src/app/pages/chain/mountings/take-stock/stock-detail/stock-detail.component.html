@@ -6,45 +6,46 @@
   <div hqPrint #printer="hq-print" class="card-block">
     <div id="printpage">
       <div class="mb-2">
-        <span class="mr-2">盘点单号：{{item?.billCode}}</span>
-        <span>生成时间：{{item?.createdOn}}</span>
+        <span class="mr-3">盘点单号：{{item?.billCode}}</span>
+        <span class="mr-3">生成时间：{{item?.createdOn|sDatetime}}</span>
+        <span class="mr-3 pr-5 print-visible">盘点人：</span>
+        <span class="pr-5 print-visible">盘点时间：</span>
       </div>
-      <table class="table table-bordered table-sm table-striped">
+      <table class="table table-bordered table-sm">
         <thead>
           <tr>
-            <th>品牌</th>
-            <th>配件编码</th>
-            <th>配件名称</th>
-            <th>规格型号</th>
-            <th>数量</th>
             <th>仓库</th>
             <th>库位</th>
-            <th class="no-print">成本</th>
-            <th>账面库存</th>
-            <th>清点数</th>
-            <th>操作人</th>
+            <th>配件编码</th>
+            <th>配件分类</th>
+            <th>配件名称</th>
+            <th>品牌</th>
+            <th>规格型号</th>
+            <th>单位</th>
+            <th class="print-hidden">成本</th>
+            <th>库存量</th>
+            <th class="print-visible">清点数</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let item of item?.list">
-            <td>{{ item.productBrand }}</td>
-            <td>{{item.productCode }}</td>
-            <td>{{item.productName }}</td>
-            <td>{{ item.productSpecification }}</td>
-            <td>{{item.count }}</td>
-            <td>{{item.houseName}}</td>
+            <td>{{ item.houseName}}</td>
             <td>{{ item.locationName}}</td>
-            <td class="no-print">{{item.price }}</td>
-            <td>{{item.stock}}</td>
+            <td>{{ item.productCode }}</td>
             <td></td>
-            <td>{{item.operator}}</td>
+            <td>{{ item.productName }}</td>
+            <td>{{ item.productBrand }}</td>
+            <td>{{ item.productSpecification }}</td>
+            <td></td>
+            <td class="text-right print-hidden">{{ item.price|centToYuan }}</td>
+            <td class="text-center">{{ item.stock }}</td>
+            <td class="print-visible"></td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
   <div class="card-footer text-muted">
-    <button class="btn btn-secondary" (click)="location.back()">退出页面</button>
     <button class="btn btn-primary" (click)="print()">打印</button>
     <button class="btn btn-info" (click)="export($event)">导出</button>
   </div>

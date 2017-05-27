@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CustomerService} from '../../customer.service';
+import { CustomerService } from '../../customer.service';
 import { OrderService } from '../../../reception/order.service';
 import { Location } from '@angular/common';
 import { HqAlerter } from 'app/shared/directives';
@@ -43,6 +43,9 @@ export class AddCarownerComponent implements OnInit {
   // 保存车主加载动画
   generating = false;
 
+  // 当前选择的车辆记录  用于编辑
+  selectedVehicle: any;
+
   constructor(
     protected service: CustomerService,
     protected orderService: OrderService,
@@ -56,11 +59,23 @@ export class AddCarownerComponent implements OnInit {
     this.location.back();
   }
   // 添加一条车辆记录处理程序
-  onAddVehicleConfirmHandler(evt) {
-    console.log('新增车辆信息', evt);
-    setTimeout(() => {
-      this.newVehiclesData.push(evt);
-    }, 500);
+  onVehicleConfirmHandler(evt, vehicleModal) {
+    const data = evt.data;
+    if (evt.isEdit && this.selectedVehicle) {
+      // 编辑
+      const index = this.newVehiclesData.findIndex((item) => {
+        return item.vehicleId === this.selectedVehicle.vehicleId;
+      });
+      // 使用新的元素替换以前的元素
+      this.newVehiclesData.splice(index, 1, data);
+    } else {
+      // 新增
+      this.newVehiclesData.push(data);
+    }
+    vehicleModal.hide();
+    // setTimeout(() => {
+    //   this.newVehiclesData.push(evt);
+    // }, 500);
   }
 
   // 删除一条车辆记录 处理程序
@@ -174,7 +189,7 @@ export class AddCarownerComponent implements OnInit {
     this.carOwnerForm = this.fb.group({
       id: '', // 车主主键 用于更新
       name: ['', [Validators.required]], // 车主
-      phone: ['', [HQ_VALIDATORS.mobile]], // 车主手机号
+      phone: ['', [Validators.required, HQ_VALIDATORS.mobile]], // 车主手机号
       sex: '', // 车主性别
       birthday: [null, [CustomValidators.date]], // 车主生日
       identityCard: ['', [HQ_VALIDATORS.idCard]], // 身份证号
@@ -260,10 +275,14 @@ export class AddCarownerComponent implements OnInit {
  * @memberof CarOwnerComponent
  */
   onCustomerPhoneSelect(evt) {
-    console.log('通过车主手机号模糊查询车主下拉选择：', evt);
-
-    // 加载车主数据
-    this.loadCustomer(evt);
+    // console.log('通过车主手机号模糊查询车主下拉选择：', evt);
+    this.service.get(evt.id).then(customer => {
+      console.log('通过车主手机号模糊查询车主车主信息：', customer);
+      // 加载车主数据
+      this.loadCustomer(customer);
+    }).catch(err => {
+      this.alerter.error('获取车主信息失败：' + err, true, 3000);
+    });
   }
 
 }

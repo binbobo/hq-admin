@@ -25,35 +25,39 @@
         <button [disabled]="form.invalid" (click)="createModal.show()" class="btn btn-primary">新增</button>
       </div>
     </form>
+    <hr>
+    <div class="table-caption">销售出库</div>
     <div class="table-container">
-      <table class="table table-bordered table-striped">
+      <table class="table table-bordered">
         <thead>
           <tr>
-            <th>编辑</th>
-            <th>品牌</th>
+            <th>操作</th>
             <th>配件编码</th>
+            <th>配件分类</th>
             <th>配件名称</th>
+            <th>品牌</th>
             <th>规格型号</th>
             <th>仓库</th>
             <th>库位</th>
-            <th>库存</th>
-            <th>数量（个）</th>
-            <th>单价（元/个）</th>
+            <th>库存量</th>
+            <th>单价（元）</th>
+            <th>数量</th>
             <th>金额（元）</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let item of model?.list">
             <td class="text-center"><button (click)="onProductRemove(item)" class="btn btn-sm btn-warning">删除</button></td>
-            <td>{{item.brandName }}</td>
             <td class="text-center">{{item.productCode }}</td>
+            <td>{{item.productCategory}}</td>
             <td>{{item.productName}}</td>
+            <td>{{item.brandName }}</td>
             <td>{{item.productSpecification}}</td>
             <td>{{item.houseName }}</td>
             <td>{{item.locationName }}</td>
             <td class="text-center">{{item.stockCount}}</td>
-            <td class="text-center">{{item.count}}</td>
             <td class="text-right">{{item.price|centToYuan }}</td>
+            <td class="text-center">{{item.count}}</td>
             <td class="text-right">{{item.amount|centToYuan }}</td>
           </tr>
         </tbody>
@@ -62,7 +66,7 @@
   </div>
   <div class="card-footer text-muted">
     <button [hqSpinner]="suspendBill.generating" [disabled]="form.invalid||!model?.list?.length" class="btn btn-primary" (click)="generate($event)">生成销售出库单</button>
-    <button [hqSpinner]="suspendBill.suspending" [disabled]="form.invalid||!model?.list?.length" class="btn btn-success" (click)="suspend($event)">挂单</button>
+    <button [hqSpinner]="suspendBill.suspending" [disabled]="form.invalid||!model?.list?.length" class="btn btn-success btn-suspend" (click)="suspend($event)">挂单</button>
   </div>
 </div>
 

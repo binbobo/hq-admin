@@ -15,10 +15,15 @@ import { StorageLocationTypeaheadDirective } from './table-typeahead/storage-loc
 import { SeriesTypeaheadDirective } from './table-typeahead/series-typeahead.directive';
 import { ModelTypeaheadDirective } from './table-typeahead/model-typeahead.directive';
 import { MaintenanceItemTypeaheadDirective } from './table-typeahead/maintenance-item.typeahead.directive';
+import { ProductCategoryTypeaheadDirective } from './table-typeahead/product-category-typeahead.directive';
+import { ProductBrandTypeaheadDirective } from './table-typeahead/product-brand-typeahead.directive';
+import { VehicleShowDirective, VehicleShowComponent } from './vehicle-show';
+import { PopoverModule } from 'ngx-bootstrap/popover';
 
 @NgModule({
   imports: [
     SharedModule,
+    PopoverModule.forRoot(),
     BsDropdownModule.forRoot(),
   ],
   exports: [
@@ -34,6 +39,9 @@ import { MaintenanceItemTypeaheadDirective } from './table-typeahead/maintenance
     ModelTypeaheadDirective,
     MaintenanceItemTypeaheadDirective,
     StorageLocationTypeaheadDirective,
+    ProductCategoryTypeaheadDirective,
+    ProductBrandTypeaheadDirective,
+    VehicleShowDirective,
   ],
   declarations: [
     SuspendBillDirective,
@@ -49,8 +57,12 @@ import { MaintenanceItemTypeaheadDirective } from './table-typeahead/maintenance
     ModelTypeaheadDirective,
     MaintenanceItemTypeaheadDirective,
     StorageLocationTypeaheadDirective,
+    ProductCategoryTypeaheadDirective,
+    ProductBrandTypeaheadDirective,
+    VehicleShowDirective,
+    VehicleShowComponent,
   ],
   providers: [SuspendBillService],
-  entryComponents: [SuspendBillComponent]
+  entryComponents: [SuspendBillComponent, VehicleShowComponent]
 })
 export class ChainSharedModule { }

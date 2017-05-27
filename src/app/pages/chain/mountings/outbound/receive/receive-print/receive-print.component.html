@@ -1,14 +1,14 @@
 <h3>{{model?.title}}</h3>
 <hr class="blod">
-<div class="row">
-  <div class="col-4">领用单号：{{model?.billCode}}</div>
-  <div class="col-2">领用人：{{model?.takeUser}}</div>
-  <div class="col-2">部门：{{model?.department}}</div>
-  <div class="col-4">开单时间：{{model?.createBillDateTime|sDatetime}}</div>
+<div class="clearfix">
+  <div class="pull-left mr-3">领用单号：{{model?.billCode}}</div>
+  <div class="pull-left mr-3">领用人：{{model?.takeUser}}</div>
+  <div class="pull-left mr-3">部门：{{model?.department}}</div>
+  <div class="pull-left mr-3">开单时间：{{model?.createBillDateTime|sDatetime}}</div>
 </div>
 <hr>
 <div class="print-page">
-  <table class="table table-bordered table-sm table-striped">
+  <table class="table table-bordered table-sm">
     <thead>
       <tr>
         <th>配件编码</th>
@@ -42,10 +42,10 @@
       </tr>
     </tbody>
   </table>
-  <div class="row">
-    <div class="col-4">金额：{{model?.totalAmount|centToYuan}}</div>
-    <div class="col-4">打印时间：{{model?.printDateTime|sDatetime}}</div>
-    <div class="col-2">操作人：</div>
-    <div class="col-2">领用人：</div>
+  <div class="clearfix">
+    <div class="pull-left mr-3">金额：{{model?.totalAmount|centToYuan}}</div>
+    <div class="pull-left mr-3">打印时间：{{model?.printDateTime|sDatetime}}</div>
+    <div class="pull-left mr-3 pr-5">操作人：</div>
+    <div class="pull-left mr-3 pr-5">领用人：</div>
   </div>
 </div>

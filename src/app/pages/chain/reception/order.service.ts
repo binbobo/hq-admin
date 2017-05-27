@@ -35,7 +35,7 @@ export class OrderService implements BasicService<Order> {
         return this.httpService
             .request(url)
             .map(response => {
-                console.log('查询工单状态数据：', response.json().data);
+                // console.log('查询工单状态数据：', response.json().data);
                 return response.json().data as any[];
             });
     }
@@ -109,15 +109,10 @@ export class OrderService implements BasicService<Order> {
         return this.httpService
             .request(url)
             .map(response => {
-                console.log('获取可以选择的门店：', response);
-                console.log('获取可以选择的门店，用于查询范围下拉框：', response.json().data);
                 let orgs = null;
                 if (this.orgsRecursion([response.json().data])) {
                     orgs = <any>this.orgsRecursion([response.json().data])[0];
-                    console.log('test:', orgs)
                 }
-                console.log('orgs:',orgs);
-                // 每个车主下面可能有多个车辆信息
                 return [new TreeviewItem(orgs)];
             });
     }
@@ -142,7 +137,6 @@ export class OrderService implements BasicService<Order> {
                 // 如果没有孩子  直接返回
                 obj.value = value.id;
             }
-            console.log('obj:',obj);
             return obj;
         });
     }
@@ -249,24 +243,6 @@ export class FuzzySearchRequest extends PagedParams {
         public keyword: string, // 模糊搜索关键字
     ) {
         // super('FuzzySearchRequestParams');
-        super();
-    }
-}
-
-export class VehicleSeriesSearchRequest extends PagedParams {
-    constructor(
-        public seriesName?: string, // 车系名称
-        public brandId?: string, // 品牌id
-    ) {
-        super();
-    }
-}
-export class VehicleSearchRequest extends PagedParams {
-    constructor(
-        public vehicleName?: string, // 车型名称
-        public brandId?: string, // 品牌id
-        public seriesId?: string, // 车系id
-    ) {
         super();
     }
 }

@@ -52,6 +52,7 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
       unit: [this.model.unit, [Validators.required, Validators.maxLength(36)]],
       brandName: [this.model.brandName, [Validators.required, Validators.maxLength(50)]],
       categoryId: [this.model.categoryId, [Validators.required]],
+      categoryName: [this.model.category],
       code: [this.model.code, [Validators.required, Validators.maxLength(36)]],
       name: [this.model.name, [Validators.required, Validators.maxLength(60)]],
       productSpecification: [this.model.productSpecification, [Validators.required, Validators.maxLength(20)]],
@@ -124,8 +125,15 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
     }
   }
 
+  onVehicleRemove(event) {
+    let index = this.vehicles.indexOf(event);
+    if (~index) {
+      this.vehicles.splice(index, 1);
+    }
+  }
+
   public get vehicleCheckStrategy() {
-    return (item) => this.vehicles.some(m => m.vehicleId === item.vehicleId);
+    return (item) => this.vehicles && this.vehicles.some(m => m.vehicleId === item.vehicleId);
   }
 
   onItemChange(event, key: string) {
@@ -144,6 +152,7 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
       productSpecification: event.specification,
       unit: event.unitId,
       categoryId: event.categoryId,
+      categoryName: event.categoryName,
     };
     this.form.patchValue(item);
     this.vehicles = event.vehicleInfoList;
@@ -151,11 +160,16 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
   }
 
   private onCategoryChange(event: Event) {
-    let el = event.target as HTMLSelectElement;
-    if (el.selectedOptions.length) {
-      let text = el.selectedOptions[0].innerHTML;
-      this.form.controls['name'].setValue(text);
+    if (event.isTrusted) {
+      this.form.patchValue({ categoryId: undefined });
     }
+  }
+
+  private onCategorySelect(event) {
+    this.form.patchValue({
+      categoryId: event.value,
+      name: event.text,
+    });
   }
 
   private disableItem(disabled: boolean, ...sources: Array<string>) {
@@ -181,6 +195,11 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
   }
 
   onCreate() {
+    let formData = this.form.value;
+    if (formData.minCount && formData.maxCount && formData.minCount >= formData.maxCount) {
+      this.alerter.error('最大库存必须大于最小库存');
+      return false;
+    }
     let vehicles = this.vehicles && this.vehicles.map(m => m.vehicleId);
     this.form.patchValue({ vehicleId: vehicles });
     return super.onCreate();

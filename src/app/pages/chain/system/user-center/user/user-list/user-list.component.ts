@@ -27,7 +27,7 @@ export class UserListComponent extends DataList<User> implements OnInit {
   }
 
   onResetPassword(event: Event, user: User) {
-    if (!confirm('密码即将重置，是否确认操作?')) {
+    if (!confirm('密码即将重置为手机号后6位，是否确认操作?')) {
       return false;
     }
     let btn = event.target as HTMLButtonElement;

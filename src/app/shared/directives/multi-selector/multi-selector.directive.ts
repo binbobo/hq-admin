@@ -1,4 +1,4 @@
-import { Directive, ElementRef, ViewContainerRef, Renderer, EventEmitter, Input, Output } from '@angular/core';
+import { Directive, ElementRef, ViewContainerRef, Renderer, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { ComponentLoaderFactory, ComponentLoader, PopoverConfig } from 'ngx-bootstrap';
 import { MultiSelectorComponent } from './multi-selector.component';
 import { SelectOption } from 'app/shared/models';
@@ -7,7 +7,13 @@ import { SelectOption } from 'app/shared/models';
   selector: '[hqMutilSelect]',
   exportAs: 'hq-mutil-select'
 })
-export class MultiSelectorDirective {
+export class MultiSelectorDirective implements OnChanges {
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if ('options' in changes) {
+      this.selectItems(changes['options'].currentValue);
+    }
+  }
 
   private _selector: ComponentLoader<MultiSelectorComponent>;
 
@@ -74,20 +80,26 @@ export class MultiSelectorDirective {
     this.onSubmit.subscribe(value => {
       let event = new MultiSelectConfirmEvent(_elementRef, value, this.options);
       this.onConfirm.emit(event);
-      if (_elementRef.nativeElement instanceof HTMLInputElement) {
-        let input = _elementRef.nativeElement as HTMLInputElement;
-        input.readOnly = true;
-        let text = `选择了${value.length}项数据`;
-        input.value = text;
-      }
+      this.selectItems(value);
     })
+  }
+
+  private selectItems(items: Array<any>) {
+    items = Array.isArray(items) ? items : [];
+    let length = items.filter(m => typeof m === 'string' || m.checked).length;
+    if (this._elementRef.nativeElement instanceof HTMLInputElement) {
+      let input = this._elementRef.nativeElement as HTMLInputElement;
+      input.readOnly = true;
+      let text = '点击选择';
+      length && (text = `选择了${length}项数据`);
+      input.value = text;
+    }
   }
 
   public show(): void {
     if (this._selector.isShown) {
       return;
     }
-
     this._selector
       .attach(MultiSelectorComponent)
       .to(this.container)

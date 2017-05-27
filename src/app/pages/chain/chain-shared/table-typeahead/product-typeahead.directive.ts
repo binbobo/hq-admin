@@ -25,6 +25,7 @@ export class ProductTypeaheadDirective extends TableTypeaheadDirective {
     { name: 'categoryName', title: '配件分类' },
     { name: 'name', title: '配件名称' },
     { name: 'specification', title: '规格型号' },
+    { name: 'count', title: '库存量' },
   ] as Array<TableTypeaheadColumn>;
 
   ngOnInit() {
@@ -51,8 +52,10 @@ export class ProductTypeaheadDirective extends TableTypeaheadDirective {
     item.categoryName = category && category.text;
     item.categoryId = category && category.value;
     item.storages = [];
+    item.count = 0;
     if (Array.isArray(item.inventoryItems)) {
       item.inventoryItems.forEach(m => {
+        item.count += m.count;
         let current = item.storages.find(s => s.id === m.id);
         if (!current) {
           current = { id: m.id, name: m.name, locations: [] };

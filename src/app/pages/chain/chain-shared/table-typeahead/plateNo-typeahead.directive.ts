@@ -29,7 +29,8 @@ export class PlateNoTypeaheadDirective extends TableTypeaheadDirective {
             request.setPage(params.pageIndex, params.pageSize);
             let url = Urls.chain.concat('/CustomerVehicles/Search');
             return this.httpService.getPagedList<any>(url, request).then(response => {
-                console.log('根据车牌号模糊查询客户车辆信息 响应数据', response);
+                // console.log('根据车牌号模糊查询客户车辆信息 响应数据', response);
+                console.log('请求url', url, request);
                 // 加工数据
                 response.data = response.data.map(item => {
                     const o = item;

@@ -13,7 +13,7 @@ export class MobileValidator implements Validator {
   }
 
   validate(c: AbstractControl): ValidationErrors {
-    return MobileValidator.validator;
+    return MobileValidator.validator(c);
   }
 
   registerOnValidatorChange(fn: () => void): void {

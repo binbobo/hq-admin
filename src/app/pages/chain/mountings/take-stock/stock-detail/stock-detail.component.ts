@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Location } from '@angular/common';
 import { TakeStockService } from '../take-stock.service';
 import { element } from 'protractor';
 import { PrintDirective, HqAlerter } from 'app/shared/directives';
@@ -21,7 +20,6 @@ export class StockDetailComponent implements OnInit {
   private code: string;
 
   constructor(
-    private location: Location,
     private route: ActivatedRoute,
     private service: TakeStockService
   ) { }

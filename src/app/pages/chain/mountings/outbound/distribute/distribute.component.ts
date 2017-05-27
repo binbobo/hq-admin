@@ -333,13 +333,11 @@ export class DistributeComponent implements OnInit {
       return false;
     }
 
-    // let el = event.target as HTMLButtonElement;
-    // el.disabled = true;
+   
     this.suspendBill.suspend(this.suspendData)
       .then(() => { this.alerter.success('挂单成功！'); this.initDetailOrder(); this.initValue = ""; })
       .then(() => this.suspendBill.refresh())
       .catch(err => {
-        // el.disabled = false;
         this.alerter.error(err);
       })
   }

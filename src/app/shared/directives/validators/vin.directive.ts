@@ -13,7 +13,7 @@ export class VINValidator implements Validator {
   }
 
   validate(c: AbstractControl): ValidationErrors {
-    return VINValidator.validator;
+    return VINValidator.validator(c);
   }
 
   registerOnValidatorChange(fn: () => void): void {

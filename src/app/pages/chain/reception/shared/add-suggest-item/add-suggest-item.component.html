@@ -3,15 +3,15 @@
   <div class="form-group row">
     <div class="col-6">
       <label for="serviceName" class="col-form-label"><span class="asterisk mr-1">*</span>建议维修项目</label>
-      <input hqMaintenanceItemTypeahead [serviceIds]="serviceIds" (onSelect)="serviceTypeaheadOnSelect($event)"
-        type="text" label="维修项目名称" class="form-control" formControlName="serviceName" placeholder="建议维修项目名称">
+      <input hqMaintenanceItemTypeahead [serviceIds]="serviceIds" (onSelect)="serviceTypeaheadOnSelect($event)" type="text" label="维修项目名称"
+        class="form-control" formControlName="serviceName" placeholder="建议维修项目名称">
       <input type="hidden" formControlName="serviceId">
 
     </div>
-    <div class="col-6">
+    <!--<div class="col-6">
       <label for="operationTime" class="col-form-label">操作时间</label>
       <input formControlName="operationTime" type="text" class="form-control">
-    </div>
+    </div>-->
   </div>
   <div class="form-group row">
     <div class="col-12">

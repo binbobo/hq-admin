@@ -25,6 +25,25 @@ export class CarOwnerComponent extends DataList<any>  {
     this.params = new CustomerListRequest();
   }
 
+  customerDel(item) {
+    if (!confirm('确定要删除当前选择的车主记录吗?')) {
+      return;
+    }
+
+    item.deleteGenerating = true;
+    // 根据id删除客户详细信息记录
+    this.service.delete(item.id).then(data => {
+
+      this.alerter.success('删除客户记录成功!', true, 2000);
+      item.deleteGenerating = false;
+      // 刷新车主列表
+      this.onLoadList();
+    }).catch(err => {
+      this.alerter.error('删除客户记录失败: ' + err, true, 2000);
+      item.deleteGenerating = false;
+    });
+  }
+
   /**
    * 查看客户详情按钮 处理程序
    * @param {any} item 车主记录id

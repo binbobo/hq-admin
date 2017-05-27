@@ -55,6 +55,12 @@ export class SalesCreateComponent implements OnInit {
     countControl.setValidators(validators);
   }
 
+  onLocationChange(locationId: string) {
+    let location = this.locations && this.locations.find(m => m.id === locationId);
+    let stock = location && location.count || 0;
+    this.form.controls['stockCount'].setValue(stock);
+  }
+
   private buildForm() {
     this.form = this.formBuilder.group({
       brandName: [this.model.brand, [Validators.required]],
@@ -131,12 +137,19 @@ export class SalesCreateComponent implements OnInit {
       item.stockCount = 0;
     }
     let priceControl = this.form.controls['yuan'];
-    let validators = Validators.compose([Validators.required, CustomValidators.gt(0), CustomValidators.min(item.price / 100)])
+    this.price = item.price / 100;
+    let validators = Validators.compose([Validators.required, CustomValidators.gt(0), CustomValidators.min(this.price)]);
     priceControl.setValidators(validators);
     setTimeout(() => {
       this.form.patchValue(item);
       this.calculate();
     }, 1);
+  }
+
+  private price = 0;
+
+  get priceError() {
+    return { min: `最低价格不能低于${this.price}` };
   }
 
   private calculate() {

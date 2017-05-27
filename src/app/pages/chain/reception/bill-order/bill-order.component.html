@@ -2,7 +2,7 @@
   <div class="card-header">
     <span>结算单</span>
   </div>
-  
+  <ng-template hq-alerter></ng-template>
   <div class='card-block'>
     <form (ngSubmit)="onSearch()">
       <div class="form-group">
@@ -13,6 +13,11 @@
         </div>
       </div>
       <div class="form-group row">
+        <label for="SettlementCode">结算单号：</label>
+        <div class="col-sm-2">
+          <input class="form-control" [(ngModel)]="params.SettlementCode" id="SettlementCode" name="SettlementCode" type="text" placeholder="结算单号"
+          />
+        </div>
         <label for="serviceId">工单号：</label>
         <div class="col-sm-2">
           <input type="text" [(ngModel)]="params.billcode" class="form-control" id="billcode" name="billcode" placeholder="工单号">
@@ -21,29 +26,26 @@
         <div class="col-sm-2">
           <input type="text" [(ngModel)]="params.carnumber" class="form-control" id="carnumber" name="carnumber" placeholder="车牌号">
         </div>
+      </div>
+      <div class="form-group row">
+
         <label for="createdTime">进店时间：</label>
         <div class="col-sm-2">
           <input class="form-control datetime-picker" [(ngModel)]="params.starttime" id="starttime" name="starttime" type="text" ngui-datetime-picker
-            date-format="YYYY-MM-DD" date-only="true" />
+          />
         </div>
         至：
         <div class="col-sm-2">
           <input class="form-control  datetime-picker" id="endtime" [(ngModel)]="params.endtime" name="endtime" type="text" ngui-datetime-picker
-            date-format="YYYY-MM-DD" date-only="true" />
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="SettlementCode">结算单号：</label> 
-        <div class="col-sm-2">
-          <input class="form-control" [(ngModel)]="params.SettlementCode" id="SettlementCode" name="SettlementCode" type="text" placeholder="结算单号"
           />
-        </div> 
+        </div>
         <div class="col-sm-2"><button class="btn btn-primary">查询</button></div>
       </div>
+
     </form>
     <div class="table-container">
-      <table class='table table-striped table-bordered'>
-        <thead class="">
+      <table class='table table-bordered'>
+        <thead>
           <tr>
             <th>操作</th>
             <th>状态</th>
@@ -52,7 +54,7 @@
             <th>工单号</th>
             <th>应收金额</th>
             <th>维修类型</th>
-            <th>开单时间</th>
+            <!--<th>开单时间</th>-->
             <th>预计交车时间</th>
             <th>车型</th>
             <th>送修人</th>
@@ -75,12 +77,12 @@
             <td>{{item.billCode}}</td>
             <td>{{item.amount|centToYuan}}</td>
             <td>{{item.typeName}}</td>
-            <td>{{item.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-            <td>{{item.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+            <!--<td>{{item.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>-->
+            <td>{{item.expectLeave|sDatetime}}</td>
             <td>{{item.model}}</td>
             <td>{{item.customerName}}</td>
             <td>{{item.createdUserName}}</td>
-            <td>{{item.updateOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+            <td>{{item.updateOnUtc|sDatetime}}</td>
 
           </tr>
         </tbody>
@@ -126,11 +128,29 @@
         <!--导出详情begin-->
 
         <!--工单详情 start-->
-        <ng-template hq-alerter></ng-template>
+
         <hq-workorder-detail [data]="selectedOrder"></hq-workorder-detail>
 
         <!--结算费用-->
         <div class="card" [hidden]="!isShowCost" *ngIf="lgModal.isShown">
+          <form [formGroup]="billSheetForm">
+
+            <div class="form-group row" style="margin-left: 16px;margin-top: 21px;">
+              <label for="billPrice" class=" col-form-label">应收金额(元)：</label>
+              <div class="col-2">
+                <input type="number" class="form-control" [errors]="{lte:'输入金额不能大于应收金额'}" [value]="billPricex|centToYuan" label="金额" formControlName="billPrice">
+              </div>
+              <label for="leaveMileage" class="col-form-label">出厂里程(KM)：</label>
+              <div class="col-2">
+                <input type="number" class="form-control" label="出厂里程" [errors]="{gte:'出厂里程不能大于进厂里程'}" formControlName="leaveMileage">
+
+              </div>
+              <div class="col-2">
+                <button type="button" [hqSpinner]="generat" class="btn btn-primary mr-2" aria-label="Close" (click)="BillClick($event,lgModal)">确定</button>
+              </div>
+            </div>
+          </form>
+
           <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;padding-left: 28px;">
             工时费：
             <span class="ml-2 mr-2">{{workHourFee|centToYuan}}元</span> | 材料费：
@@ -138,27 +158,21 @@
             <span class="ml-2 mr-2">元</span> | 应收金额:
             <span class="ml-2 mr-2">{{sumFee|centToYuan}}元</span>
           </div>
-          <div class="card-header">
-            <span class="ml-2 mr-2">应收金额(元)：
-                <input type="number"   [(ngModel)]="billPrice"></span>
-            <span class="ml-2 mr-2">出厂里程(KM)：
-                <input type="number"  [(ngModel)]="leaveMileage"></span>
-            <button type="button" [hqSpinner]="generat" class="btn btn-primary" aria-label="Close" (click)="BillClick($event,lgModal)">确定</button>
-          </div>
+
         </div>
-        <!--详情费用-->
-        <div class="card" [hidden]="!isShowCostDetail" *ngIf="lgModal.isShown">
-          <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
-            工时费
-            <span class="ml-2 mr-2">{{workHourFee|centToYuan}}元</span> | 材料费
-            <span class="ml-2 mr-2">{{materialFee|centToYuan}}元</span> | 优惠：
-            <span class="ml-2 mr-2">元</span> | 应收金额：
-            <span class="ml-2 mr-2">{{sumFee|centToYuan}}元</span>
-          </div>
-        </div>
-        <!--建议维修项 end-->
-        <!--导出详情end-->
       </div>
+      <!--详情费用-->
+      <div class="card" [hidden]="!isShowCostDetail" *ngIf="lgModal.isShown">
+        <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
+          工时费
+          <span class="ml-2 mr-2">{{workHourFee|centToYuan}}元</span> | 材料费
+          <span class="ml-2 mr-2">{{materialFee|centToYuan}}元</span> | 优惠：
+          <span class="ml-2 mr-2">元</span> | 应收金额：
+          <span class="ml-2 mr-2">{{sumFee|centToYuan}}元</span>
+        </div>
+      </div>
+      <!--建议维修项 end-->
+      <!--导出详情end-->
     </div>
   </div>
 </div>

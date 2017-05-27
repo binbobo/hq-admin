@@ -20,6 +20,8 @@ export class PrintDirective {
     copy.style.display = 'contents';
     let componentFactory = this.componentFactoryResolver.resolveComponentFactory(PrintComponent);
     let componentRef = this.viewContainerRef.createComponent(componentFactory);
+    let hiddenItems = copy.querySelectorAll('.print-visible');
+    Array.from(hiddenItems).forEach(dom => dom.classList.remove('print-visible'));
     componentRef.instance.html = copy.outerHTML;
     this.hideOthers();
     document.body.insertAdjacentElement('afterbegin', componentRef.location.nativeElement);
