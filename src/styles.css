@@ -159,6 +159,12 @@ tabset ul li a, tabset ul li a:hover {
 .btn-primary{
     background-color: #27b394 !important;
     border: 0;
+    cursor: pointer;
+    transition: .8s;
+}
+.btn-primary:hover{
+    background-color: #22cda7 !important;
+    border: 0;
 }
 .btn-error,.btn-danger{
     background-color:#eb5267 !important;
@@ -167,4 +173,10 @@ tabset ul li a, tabset ul li a:hover {
 .btn-suspend{
     background-color: #fa9837 !important;
     border:0;
+    cursor: pointer;
+    transition: .8s;
+}
+.btn-suspend:hover{
+    background-color:#d8812b !important;
+    
 }
