@@ -32,7 +32,7 @@ export class DistributeService implements BasicService<any>{
   //导出
   public export(params: DistributeRequest): Promise<void> {
     const url = Urls.chain.concat('/StoreInOutDetails/MMStoreStatic');
-    console.log('导出',url)
+    console.log('导出', url)
     return this.httpService
       .download(url, params.serialize(), '维修发料统计')
       .catch(err => Promise.reject(`维修发料统计导出失败：${err}`));
@@ -40,10 +40,12 @@ export class DistributeService implements BasicService<any>{
 
   //详情
   public get(id: string): Promise<any> {
-    const url = Urls.chain.concat('/StoreInOutDetails/MMDetailStatic/',id);
+    const url = Urls.chain.concat('/StoreInOutDetails/MMDetailStatic?BillId=', id);
     return this.httpService
       .get<ApiResult<any>>(url)
-      .then(result => result.data)
+      .then(result => result.data).then(data=>{
+        console.log('详情',data)
+      })
       .then(data => data || Promise.reject('获取详情失败'))
       .catch(err => Promise.reject(`获取详情数据失败：${err}`))
   }
@@ -52,7 +54,7 @@ export class DistributeService implements BasicService<any>{
 
 export class DistributeRequest extends PagedParams {
   constructor(
-    public plateNo?:string,
+    public plateNo?: string,
     public searchStart?: string,
     public searchEnd?: string,
     public orgIds?: Array<any>, //门店查询

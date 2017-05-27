@@ -19,7 +19,7 @@ export class PartssalesService implements BasicService<any>{
 
   //页面加载时分页获取信息
   public getPagedList(params: PartssalesRequest): Promise<PagedResult<any>> {
-    const url = Urls.chain.concat('/Purchases/Statistic?', params.serialize());
+    const url = Urls.chain.concat('/Sales/Statistic?', params.serialize());
     console.log("url", url);
     return this.httpService.get<PagedResult<any>>(url)
       .then(result => {
@@ -39,7 +39,7 @@ export class PartssalesService implements BasicService<any>{
 
   //详情
   public get(id: string): Promise<any> {
-    const url = Urls.chain.concat('/PurchaseDetails/Details/',id);
+    const url = Urls.chain.concat('/SaleDetails/Statistic',id);
     return this.httpService
       .get<ApiResult<any>>(url)
       .then(result => result.data)

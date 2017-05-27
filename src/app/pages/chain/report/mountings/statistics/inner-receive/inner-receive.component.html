@@ -7,25 +7,15 @@
         <div class="form-group row">
           <label for="joinOrderNumber" class="col-form-label">领用人：</label>
           <div class="col-2">
-            <select class="form-control">
-              <option value="1">香蕉</option>
-              <option value="1">苹果</option>
-              <option value="1">香蕉</option>
-              <option value="1">苹果</option>
-              <option value="1">香蕉</option>
-              <option value="1">苹果</option>
+            <select class="form-control" #LeadParty (change)="onReceiverSelect($event)">
+              <option *ngFor="let item of employees" [value]="item.value">{{item.text}}</option>
             </select>
           </div>
 
           <label for="supplier" class="col-form-label">部门：</label>
           <div class="col-2">
-            <select class="form-control">
-              <option value="1">香蕉派</option>
-              <option value="1">苹果派</option>
-              <option value="1">香蕉</option>
-              <option value="1">苹果</option>
-              <option value="1">香蕉</option>
-              <option value="1">苹果</option>
+            <select class="form-control" formControlName="a">        
+          <option *ngFor="let item of departments" [value]="item.value">{{item.text}}</option>
             </select>
           </div>
 

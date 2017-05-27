@@ -34,7 +34,7 @@
         </div>
         <div class="hq-input" *ngIf="!isFuzzySearchEnable">
           <label for="customerName" class="form-label"><span class="asterisk mr-1">*</span>车主</label>
-          <div class="col-2">
+          <div class="hq-col">
             <!--placeholder="请输入车主名称"-->
             <input maxlength="15" #customerName (blur)="onCustomerNameBlur(customerName.value)" type="text" class="form-control" formControlName="customerName"
               id="customerName">

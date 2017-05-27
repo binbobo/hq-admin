@@ -50,7 +50,7 @@
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
   <div class="card-footer text-muted">
-    <button class="btn btn-primary" [disabled]="!params?.locationId?.length||!list?.length" (click)="generate($event)">生成盘点清单</button>
+    <button class="btn btn-primary" [disabled]="!params?.storeId" (click)="generate($event)">生成盘点清单</button>
     <button class="btn btn-secondary" (click)="cancel()">取消</button>
   </div>
 </div>

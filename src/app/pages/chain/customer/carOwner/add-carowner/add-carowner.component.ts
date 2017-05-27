@@ -43,6 +43,9 @@ export class AddCarownerComponent implements OnInit {
   // 保存车主加载动画
   generating = false;
 
+  // 当前选择的车辆记录  用于编辑
+  selectedVehicle: any;
+
   constructor(
     protected service: CustomerService,
     protected orderService: OrderService,
@@ -56,11 +59,23 @@ export class AddCarownerComponent implements OnInit {
     this.location.back();
   }
   // 添加一条车辆记录处理程序
-  onAddVehicleConfirmHandler(evt) {
-    console.log('新增车辆信息', evt);
-    setTimeout(() => {
-      this.newVehiclesData.push(evt);
-    }, 500);
+  onVehicleConfirmHandler(evt, vehicleModal) {
+    const data = evt.data;
+    if (evt.isEdit && this.selectedVehicle) {
+      // 编辑
+      const index = this.newVehiclesData.findIndex((item) => {
+        return item.vehicleId === this.selectedVehicle.vehicleId;
+      });
+      // 使用新的元素替换以前的元素
+      this.newVehiclesData.splice(index, 1, data);
+    } else {
+      // 新增
+      this.newVehiclesData.push(data);
+    }
+    vehicleModal.hide();
+    // setTimeout(() => {
+    //   this.newVehiclesData.push(evt);
+    // }, 500);
   }
 
   // 删除一条车辆记录 处理程序

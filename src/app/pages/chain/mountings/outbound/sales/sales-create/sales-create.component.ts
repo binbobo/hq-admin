@@ -57,6 +57,7 @@ export class SalesCreateComponent implements OnInit {
 
   onLocationChange(locationId: string) {
     let location = this.locations && this.locations.find(m => m.id === locationId);
+    console.log(location);
     let stock = location && location.count || 0;
     this.form.controls['stockCount'].setValue(stock);
   }
