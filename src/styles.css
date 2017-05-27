@@ -43,36 +43,29 @@
 .table-container tr:last-child td,.table-container tr:last-child th{
     border-bottom-width: 0;
 }
-
 .table-container th:first-child,td:first-child{
     border-left-width: 0;
 }
-
 .table-container th:last-child,td:last-child{
     border-right-width: 0;
 }
-
 input.ng-touched.ng-invalid,select.ng-touched.ng-invalid{
     border:1px solid #a94442;
 }
-
 .input-group .ngui-datetime-picker-wrapper .form-control{
     width:inherit;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }
-
 .input-group .input-group .form-control{
     border-top-left-radius: 0!important;
     border-bottom-left-radius: 0!important;
 }
-
 .input-group .ngui-datetime-picker-wrapper:not(:last-child) .form-control{
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     border-right-width: 0;
 }
-
 table td,th{
     padding: 0.5rem!important;
     white-space: nowrap;
@@ -82,7 +75,6 @@ table td,th{
 table td {
     font-size: 0.875rem;
 }
-
 table th{
     text-align: center;
     background: #f3f3f4;
@@ -91,11 +83,9 @@ table th{
     color: #727171;
     border-color: #dcdddd;
 }
-
 caption {
     caption-side: top;
 }
-
 /*必选项前面的星号样式*/ 
 .asterisk {
     line-height: 2.5rem;
@@ -104,19 +94,15 @@ caption {
     font-weight: bold;
     font-size: 1rem;
 }
-
 .overtime {
     color: #c9302c;
 }
-
 .form-inline .form-group{
     margin: 6px;
 }
-
 input[readonly][ngui-datetime-picker]{
   background-color:transparent !important;
 }
-
 hqtabletypeahead ul{
     margin-bottom: 0;
 }
@@ -136,7 +122,7 @@ hqtabletypeahead ul{
     font-size:.875rem;
 }
 .append-stamp::before {  
-      content: '';
+    content: '';
     position: absolute;
     top: 5px;
     left: -7px;
@@ -147,7 +133,7 @@ hqtabletypeahead ul{
     border-top: 5px solid transparent; 
 }
 .append-stamp::after{
-     content: '';
+    content: '';
     position: absolute;
     top: 5px;
     left: -5px;
@@ -173,23 +159,23 @@ hqtabletypeahead ul{
 .accept-stamp::before{
     content:"√已通过";
 }
-
 .card-header {
     color: #727171;
     font-size: 1rem;
 }
-
 tabset ul li.active a{
   color: #464a4c;
 }
 tabset ul li a, tabset ul li a:hover {
   color: #a7b1c2;
 }
+.btn{
+    cursor: pointer;
+}
 /*查询按钮*/
 .btn-primary{
     background-color: #27b394 !important;
     border: 0;
-    cursor: pointer;
     transition: .8s;
 }
 .btn-primary:hover{
@@ -200,6 +186,10 @@ tabset ul li a, tabset ul li a:hover {
 .btn-error,.btn-danger{
     background-color:#eb5267 !important;
     border:0;
+    transition: .8s;
+}
+.btn-error,.btn-danger:hover{
+    background-color:rgba(255, 0, 24, 0.91) !important;
 }
 /*挂单按钮*/
 .btn-suspend{
@@ -209,13 +199,17 @@ tabset ul li a, tabset ul li a:hover {
 .btn-suspend:hover{
     background-color:#d8812b !important;    
 }
-/*导出按钮*/
+/*打印、导出按钮*/
 .btn-export{
     background-color: #1c84c6 !important;
     color: #fff;
     border:0;
+    transition: .8s;
 }
-
+.btn-export:hover{
+    background-color: #2e9be0 !important;
+    border:0;
+}
 .tab-content>.active {
     margin-top: .6rem;
     }

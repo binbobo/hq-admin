@@ -14,6 +14,6 @@
     [(ngModel)]="currentPage" (numPages)="onNumPages($event)" (pageChanged)="onPageChanged($event)">
   </pagination>
   <label class="mx-sm-2">跳转到</label>
-  <input type="number" min="1" [attr.max]="totalPages" (keyup.enter)="onIndexChange($event)" class="form-control goto">
+  <input type="number" min="1" [attr.max]="totalPages" (keyup.enter)="onIndexChange($event)" class="goto">
   <label class="mx-sm-2">页</label>
 </div>

@@ -118,7 +118,7 @@
   <div *ngIf="lgModal.isShown" class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header pos-top">
-        <button type="button" class="btn btn-primary pull-left" aria-label="Close" [hidden]="!isShowPrint" (click)='print(lgModal)'>打印</button>
+        <button type="button" class="btn btn-export pull-left" aria-label="Close" [hidden]="!isShowPrint" (click)='print(lgModal)'>打印</button>
         <button type="button" class="close pull-right" (click)="hideModal(lgModal)" aria-label="Close">
           <span aria-hidden="true" class="pull-right close-right">&times;</span>
         </button>
