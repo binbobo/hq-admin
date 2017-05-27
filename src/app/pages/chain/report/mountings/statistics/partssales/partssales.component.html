@@ -59,6 +59,7 @@
         </tr>
       </table>
     </div>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
     <button type="button" (click)="onExport()" class="btn btn-secondary">导出</button>
   </div>
 </div>
