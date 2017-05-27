@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChildren, QueryList, Injector, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DataList, StorageKeys } from "app/shared/models";
-import { BusinessService, BusinessListRequest, FuzzySearchRequest, DetailsSearchRequest } from "../business.service";
+import { BusinessService, BusinessListRequest, DetailsSearchRequest } from "../business.service";
 import { TypeaheadRequestParams, PrintDirective } from "app/shared/directives";
 import { CentToYuanPipe, DurationHumanizePipe } from "app/shared/pipes";
 import { TreeviewItem, TreeviewConfig } from "ngx-treeview/lib";
@@ -45,7 +45,7 @@ export class BusinessListComponent extends DataList<any> {
   public nameConfig: TreeviewConfig = {
     isShowAllCheckBox: true,
     isShowFilter: true,
-    isShowCollapseExpand: true,
+    isShowCollapseExpand: false,
     maxHeight: 500
   };
 
@@ -70,34 +70,6 @@ export class BusinessListComponent extends DataList<any> {
     });
   }
 
-
-  //车牌号模糊查询数据源
-  private typeaheadSource(service) {
-    return (params: TypeaheadRequestParams) => {
-      const p = new FuzzySearchRequest(params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return service.call(this.service, p);
-    };
-  }
-
-  //选择车牌号
-  plateNoOnSelect(event) {
-    setTimeout(() => {
-      this.params.plateNo = event.plateNo;
-    }, 1);
-  }
-  //定义模糊查询要显示的列
-  public get typeaheadColumns() {
-    return [
-      { name: 'plateNo', title: '车牌号' },
-      { name: 'customerName', title: '车主' },
-      { name: 'phone', title: '车主电话' },
-    ];
-  }
-  //根据车牌号模糊查询
-  public get plateNotypeaheadSource() {
-    return this.typeaheadSource(this.service.getCustomerVehicleByPlateNo);
-  }
   //门店下拉框选择
   onSearchRangeChange(evt) {
     // 更新查询范围参数

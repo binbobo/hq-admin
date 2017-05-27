@@ -168,3 +168,8 @@ tabset ul li a, tabset ul li a:hover {
     background-color: #fa9837 !important;
     border:0;
 }
+.btn-export{
+    background-color: #1c84c6 !important;
+    color: #fff;
+    border:0;
+}
