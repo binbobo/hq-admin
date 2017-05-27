@@ -87,6 +87,7 @@ export class BillOrderComponent extends DataList<any>{
     productOutputs: any = [];
     attachServiceOutputs: any = [];
     suggestServiceOutputs: any = [];
+    WorkReceivableCost: any;
     orderDetailsDialog(evt, id, dialog, item) {
 
         item.generat = true;
@@ -110,10 +111,13 @@ export class BillOrderComponent extends DataList<any>{
         }).then(() => {
             this.service.getCost(id).then(data => {
                 console.log("根据工单id获取工单材料费和工时费", data);
-                // 工时费： 维修项目金额总和
+                // 打折之前的工时费
+                this.workReceivableCost = data.workReceivableCost;
+                // 工时费： 维修项目打折之后
                 this.workHourFee = data.workHourCost;
                 // 材料费： 维修配件金额总和
                 this.materialFee = data.materialCost;
+                this.discountAmount = data.deduceAmount || 0 + (data.WorkReceivableCost - data.workHourCost);
                 // 其它费： 0
                 this.otherFee = 0;
                 // 总计费： 
@@ -284,12 +288,12 @@ export class BillOrderComponent extends DataList<any>{
 
             }
             console.log("根据工单id获取工单材料费和工时费", data);
-            // 工时费： 维修项目金额总和
+            this.workReceivableCost = data.workReceivableCost;
+            // 工时费： 维修项目打折之后
             this.workHourFee = data.workHourCost;
             // 材料费： 维修配件金额总和
             this.materialFee = data.materialCost;
-            // 其它费： 0
-            this.otherFee = 0;
+            this.discountAmount = data.deduceAmount || 0 + (data.WorkReceivableCost - data.workHourCost);
             // 总计费： 
             this.sumFee = data.amount;
             // this.billPrice = this.sumFee;
