@@ -105,8 +105,8 @@
               <tr *ngFor="let vehicle of newVehiclesData">
                 <td>
                   <!--更新车主信息的时候才显示编辑操作 编辑的时候 有车辆id  添加的时候木有-->
-                  <!--<button type="button" class="btn btn-sm btn-success" (click)="onEditVehicle(vehicle.id);">编辑</button>-->
-                  <button type="button" class="btn btn-sm btn-danger" (click)="onDelVehicleConfirmHandler(vehicle.plateNo)">删除</button>
+                  <button type="button" class="btn btn-sm btn-success" (click)="selectedVehicle=vehicle;vehicleModal.show();">编辑</button>
+                  <!--<button type="button" class="btn btn-sm btn-danger" (click)="onDelVehicleConfirmHandler(vehicle.plateNo)">删除</button>-->
                 </td>
                 <td>{{vehicle.plateNo}}</td>
                 <td>{{vehicle.brand}}</td>
@@ -147,7 +147,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <hq-add-vehicle (onAddVehicleCancel)="vehicleModal.hide()" (onAddVehicleConfirm)="vehicleModal.hide();onAddVehicleConfirmHandler($event)"></hq-add-vehicle>
+        <hq-add-vehicle [vehicle]="selectedVehicle" (onVehicleCancel)="vehicleModal.hide()" (onVehicleConfirm)="onVehicleConfirmHandler($event, vehicleModal)"></hq-add-vehicle>
       </div>
     </div>
   </div>
