@@ -151,7 +151,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <hq-add-vehicle (onAddVehicleCancel)="vehicleModal.hide()" (onAddVehicleConfirm)="vehicleModal.hide();onAddVehicleConfirmHandler($event)"></hq-add-vehicle>
+        <hq-add-vehicle [vehicle]="selectedVehicle" (onVehicleCancel)="vehicleModal.hide()" (onVehicleConfirm)="onVehicleConfirmHandler($event, vehicleModal)"></hq-add-vehicle>
       </div>
     </div>
   </div>
