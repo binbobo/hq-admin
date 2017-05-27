@@ -1,16 +1,41 @@
 .check-label {
-    background: white !important;
-    border: 1px solid #f3f3f4;
+    display: flex;
+    width: 80%;
+    height:40px;
+    float: left;
+    padding: 0.3125rem 0.625rem;
+}
+.check-label-col {
+    flex: 2;
+    height: 2.5rem;
+    border: 1px solid rgba(0,0,0,.15);
+}
+.form-check-inline {
+  height: 40px;
+  line-height: 40px;
+  margin-left: 10px;
+}
+.form-check-label{
+  margin-bottom: .5rem;
 }
 .advanceFilter {
     height:40px;
     line-height:40px;
 }
-
-hr {
-    border-top:2px dotted #ccc;
-    margin-bottom: 5px;
+.advanceFilter a{
+  color: #1CB4C6;
 }
+.modal-footer {
+  border-top: none;
+  padding: 0;
+  padding-bottom: 15px;
+}
+
+
+
+
+
+
 .hq-col{
   flex: 2;
   position: relative;

@@ -15,7 +15,7 @@
           <label for="plateNo" class="form-label"><span class="asterisk mr-1">*</span>车牌号</label>
           <div class="hq-col">
             <!--placeholder="请输入车牌号"-->
-            <input (blur)="onPlateNoBlur()" hqPlateNoTypeahead="keyword" (onSelect)="plateNoOnSelect($event)" class="form-control" formControlName="plateNo"
+            <input (blur)="onPlateNoBlur()" hqPlateNoTypeahead (onSelect)="plateNoOnSelect($event)" class="form-control" formControlName="plateNo"
               id="plateNo" label="车牌号" maxlength="12" type="text" />
             <!--客户车辆id-->
             <input type="hidden" formControlName="customerVehicleId" />
@@ -28,8 +28,7 @@
           <label for="customerName" class="form-label"><span class="asterisk mr-1">*</span>车主</label>
           <div class="hq-col">
             <!--placeholder="请输入车主名称"-->
-            <input maxlength="15" #customerName (blur)="onCustomerNameBlur(customerName.value)" hqCustomerVehicleTypeahead="keyword"
-              label="车主" (onSelect)="onCustomerNameSelect($event)" type="text" class="form-control" formControlName="customerName"
+            <input maxlength="15" #customerName (blur)="onCustomerNameBlur(customerName.value)" hqCustomerVehicleTypeahead label="车主" (onSelect)="onCustomerNameSelect($event)" type="text" class="form-control" formControlName="customerName"
               id="customerName">
           </div>
         </div>

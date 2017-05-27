@@ -1,18 +1,30 @@
 <hq-workorder-basic-info [data]="data"></hq-workorder-basic-info>
 <hr>
 <tabset>
-  <tab heading="维修项目" *ngIf="data?.serviceOutputs?.length>0">
+  <tab *ngIf="data?.serviceOutputs?.length>0">
+    <template tabHeading>
+      <i class="fa fa-female mr-2" aria-hidden="true"></i>维修项目
+    </template>
     <hq-maintenance-item-list [serviceOutputs]="data?.serviceOutputs"></hq-maintenance-item-list>
   </tab>
-  <tab heading="维修配件" *ngIf="data?.productOutputs?.length>0">
+  <tab *ngIf="data?.productOutputs?.length>0">
+    <template tabHeading>
+      <i class="fa fa-female mr-2" aria-hidden="true"></i>维修配件
+    </template>
     <div class="table-container">
       <hq-maintenance-fixings-list [productOutputs]="data?.productOutputs"></hq-maintenance-fixings-list>
     </div>
   </tab>
-  <tab heading="附加项目" *ngIf="data?.attachServiceOutputs?.length>0">
+  <tab *ngIf="data?.attachServiceOutputs?.length>0">
+    <template tabHeading>
+      <i class="fa fa-female mr-2" aria-hidden="true"></i>附加项目
+    </template>
     <hq-attachment-item-list [attachServiceOutputs]="data?.attachServiceOutputs"></hq-attachment-item-list>
   </tab>
-  <tab heading="建议维修项目" *ngIf="data?.suggestServiceOutputs?.length>0">
+  <tab *ngIf="data?.suggestServiceOutputs?.length>0">
+     <template tabHeading>
+      <i class="fa fa-female mr-2" aria-hidden="true"></i>建议维修项目
+    </template>
     <hq-suggested-item-list [suggestServiceOutputs]="data?.suggestServiceOutputs"></hq-suggested-item-list>
   </tab>
 </tabset>
