@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild, Injector } from '@angular/core';
+import { Component, OnInit, ViewChild, Injector, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PrintDirective } from "app/shared/directives";
 import { ReceiveService, ReceiveRequest } from "./receive.service"
-import { DataList } from "app/shared/models";
+import { DataList, SelectOption } from "app/shared/models";
 import { TreeviewItem, TreeviewConfig } from "ngx-treeview/lib";
 import { OrderService } from "app/pages/chain/reception/order.service";
 
@@ -18,7 +18,8 @@ export class InnerReceiveComponent extends DataList<any> {
   detailItems;
   detailItemsLength: number;
   isLoading: boolean = false;
-
+  private employees: Array<SelectOption>;
+  private departments: Array<SelectOption>;
 
   // 用于ngx-treeview组件
   public items: TreeviewItem[];
@@ -44,6 +45,31 @@ export class InnerReceiveComponent extends DataList<any> {
       if (data[0].children && data[0].children.length > 0)
         this.items = data;
     });
+    this.service.getReceiverOptions()
+      .then(data => {
+        this.employees = data;
+        this.loadDepartments(data[0].value);
+      })
+      // .then(data => data.length && this.loadDepartments(data[0].value))
+      // .then(data => this.reset())
+      .catch(err => this.alerter.error(err));
+  }
+  onReceiverSelect(event: Event) {
+    let el = event.target as HTMLSelectElement;
+    this.loadDepartments(el.value);
+  }
+  private loadDepartments(id: string) {
+    this.departments = [];
+    this.service.getDepartmentsByReceiver(id)
+      .then(options => this.departments = options)
+      .then(() => {
+        if (Array.isArray(this.departments) && this.departments.length) {
+          this.receiveForm.patchValue({
+            a: this.departments[0].value,
+          })
+        }
+      })
+      .catch(err => this.alerter.error(err));
   }
 
 
@@ -95,6 +121,7 @@ export class InnerReceiveComponent extends DataList<any> {
       searchEnd: '', // 结束时间
       billCode: '',//单号
       name: '', //供应商
+      a: '',//部门
     })
   }
 
@@ -104,9 +131,9 @@ export class InnerReceiveComponent extends DataList<any> {
   }
 
   joinOrderNumberOnSelect(ev) {
-      this.receiveForm.patchValue({
-        billCode: ev.billCode,
-      });
+    this.receiveForm.patchValue({
+      billCode: ev.billCode,
+    });
   }
 
 
