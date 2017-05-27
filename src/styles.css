@@ -61,9 +61,10 @@ select.form-control{
 }
 
 table td,th{
-    padding: 0.5rem!important;
+    padding: 0 0.5rem!important;
     white-space: nowrap;
-    /*line-height: 2.5rem;*/
+    line-height: 2.5rem;
+    height: 2.5rem;
 }
 table td {
     font-size: 0.875rem;
@@ -233,4 +234,8 @@ tabset ul li a, tabset ul li a:hover {
   font-size: 1rem;
   vertical-align: middle;
   font-weight: normal;
+}
+.btn.disabled, .btn:disabled{
+    background-color: #dcdddd !important;
+    opacity: 1;
 }
