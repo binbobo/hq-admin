@@ -32,7 +32,6 @@
         </div>
         <div class="col-sm-1"><button class="btn btn-primary">查询</button></div>
       </div>
-
     </form>
     <hr>
     <div class="table-container">
@@ -76,13 +75,11 @@
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
 </div>
-
 <!--详情 begin-->
 <div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
   <div *ngIf="lgModal.isShown" class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header pos-top">
-
         <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
           <span aria-hidden="true" class="close-right">&times;</span>
         </button>
@@ -90,14 +87,12 @@
       <div class="modal-body">
         <!--工单详情 start-->
         <hq-checkout-print-detail [data]="selectedOrder"></hq-checkout-print-detail>
-        <div class="card">
-          <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
-            工时费
-            <span class="ml-2 mr-2">{{workHourFee}}元</span> | 材料费
-            <span class="ml-2 mr-2">{{materialFee}}元</span> | 其它
-            <span class="ml-2 mr-2">{{otherFee}}元</span> | 合计
-            <span class="ml-2 mr-2">{{sumFee}}元</span>|
-            <span class="ml-2 mr-2">应收金额：{{billPrice}}元</span>
+        <div class="card hq-fee">
+          <div>
+            <span class="fee-name">工时费：<span class="fee-value">{{workHourFee}}</span></span>
+            <span class="fee-name"> 材料费：<span class="fee-value">{{materialFee}}</span></span>
+            <span class="fee-name"> 优惠：<span class="fee-value"></span></span>
+            <span class="fee-name pull-right">应收金额：<span class="fee-value">{{billPrice}}</span></span>
           </div>
         </div>
       </div>
@@ -105,7 +100,6 @@
   </div>
 </div>
 <!--详情 end-->
-
 <!--收银弹框 begin-->
 <div bsModal #CheckoutModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg">

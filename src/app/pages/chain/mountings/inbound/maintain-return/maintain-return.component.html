@@ -24,7 +24,7 @@
       <div class="serach-list">开单时间：&nbsp;&nbsp;{{orderDetail?.createdOnUtc |sDatetime}}</div>
     </div>
     <!--维修项目-->
-    <div [hqSpinner]="serviceisShow">
+    <div [hqSpinner]="serviceisShow" class="top-px">
       <div class="tab-title" *ngIf="serviceData.length>0">维修项目</div>
       <div class="table-container">
         <table class="table   table-bordered" *ngIf="serviceData.length>0">
@@ -36,14 +36,15 @@
           </thead>
           <tbody>
             <tr *ngFor='let item of serviceData;let index=index'>
-              <td>{{item.serviceName}}</td>
+              <td>{{item.serviceName}}<span *ngIf="item.type === 3" class="append-stamp">增项</span>
+            <span [class.accept-stamp]="item.teamType === 6"></span></td>
               <td>{{item.employeeNames.join(",")}}</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
-    <div [hqSpinner]="serialDataShow" *ngIf="serialData.length>0">
+    <div [hqSpinner]="serialDataShow"  class="top-px" *ngIf="serialData.length>0">
       <div class="tab-title">维修发料信息</div>
       <div class="table-container">
         <table class="table  table-bordered">
@@ -95,7 +96,7 @@
       </div>
     </div>
     <!--维修退料-->
-    <div *ngIf="newMainData.length>0">
+    <div *ngIf="newMainData.length>0"  class="top-px">
       <div class="tab-title">新增维修退料</div>
       <div class="table-container">
         <table class="table table-bordered">
@@ -139,13 +140,12 @@
               <td>{{ele.amount|centToYuan}}</td>
               <td>{{ele.description}}</td>
               <td>{{ele.returnUser}}</td>
-
             </tr>
           </tbody>
         </table>
       </div>
     </div>
-    <div *ngIf="mrData.length>0">
+    <div *ngIf="mrData.length>0" class="top-px">
       <div class="tab-title">维修退料记录</div>
       <div class="table-container">
         <table class="table table-bordered">
@@ -173,7 +173,6 @@
             <tr *ngFor="let ele of item.list">
               <td>{{item.serialNum}}</td>
               <td>{{ele.serviceName}}</td>
-
               <td>{{ele.productCode}}</td>
               <td>{{ele.productCategory}}</td>
               <td>{{ele.productName }}</td>
@@ -202,7 +201,6 @@
     <button class="btn btn-secondary " [disabled]="!(mrData.length>0)" options="printOptions" (onConfirm)="onConfirmNumber($event)"
       [hqMutilSelect]="numberPrintList" title="选择流水号" href="#" placement="right">打印</button>
   </div>
-
   <!--提示是否确认退出-->
   <!--<div bsModal #confirmModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm">
@@ -219,13 +217,11 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="onConfirmFinished(confirmModal);">确定</button>
           <button type="button" class="btn btn-secondary" data-dismiss="confirmModal" (click)="confirmModal.hide();">取消</button>
-
         </div>
       </div>
     </div>
   </div>-->
 </div>
-
 <div class="modal fade" bsModal #createModal="bs-modal" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -239,5 +235,4 @@
     </div>
   </div>
 </div>
-
 <hq-maintain-print *ngIf="printList" [hidden]="true" [data]="printList" hqPrint #printer="hq-print"></hq-maintain-print>
