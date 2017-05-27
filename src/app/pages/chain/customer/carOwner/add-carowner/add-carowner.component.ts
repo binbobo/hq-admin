@@ -206,6 +206,9 @@ export class AddCarownerComponent implements OnInit {
     this.loadCustomer(evt);
   }
 
+  // 当前选择的车辆记录  用于编辑
+  selectedVehicle: any;
+
   // 从模糊 查询列表中 选择一条车主记录后 加载客户信息 
   loadCustomer(customer) {
     // 组织省份数据

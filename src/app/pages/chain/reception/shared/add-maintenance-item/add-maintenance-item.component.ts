@@ -22,6 +22,7 @@ export class AddMaintenanceItemComponent implements OnInit {
   item: any = null; // 当前编辑的维修项目
   @Input()
   services: any = []; // 当前已经选择的维修项目列表
+  
   serviceIds: any = []; // 维修项目id列表
 
   @ViewChild(HqAlerter)
