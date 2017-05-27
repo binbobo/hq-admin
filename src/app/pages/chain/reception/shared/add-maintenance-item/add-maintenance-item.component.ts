@@ -2,7 +2,6 @@ import { Component, OnInit, Output, EventEmitter, ViewChild, Input } from '@angu
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HqAlerter } from 'app/shared/directives';
 import { OrderService } from '../../../reception/order.service';
-import { FuzzySearchRequest } from '../../../report/maintenance/business/business.service';
 import * as moment from 'moment';
 import { CustomValidators } from 'ng2-validation';
 
