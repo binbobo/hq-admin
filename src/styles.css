@@ -172,16 +172,14 @@ tabset ul li a, tabset ul li a:hover {
 /*大按钮*/
 .btn{
     cursor: pointer;
-    width: 5.5rem;
-    height: 2.5rem;
+    padding:12px 30px;
 }
 .btn:active{
     border: 0
 }
 /*小按钮*/
 .btn-sm{
-    width: 4.4rem;
-    height: 1.7rem;
+    padding:6px 22px;
 }
 
 /*查询按钮*/
