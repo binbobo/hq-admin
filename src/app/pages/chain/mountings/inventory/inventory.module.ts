@@ -11,6 +11,7 @@ import { ModalModule, TypeaheadModule } from 'ngx-bootstrap';
 import { TreeviewModule } from 'ngx-treeview';
 import { NgPipesModule } from 'ngx-pipes';
 import { ChainSharedModule } from '../../chain-shared/chain-shared.module';
+import { InventoryProductTypeaheadDirective } from './inventory-product-typeahead.directive';
 
 const routes: Routes = [
   { path: '', component: InventoryListComponent },
@@ -31,6 +32,6 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   providers: [InventoryService],
-  declarations: [InventoryListComponent, InventoryCreateComponent, InventoryEditComponent]
+  declarations: [InventoryListComponent, InventoryCreateComponent, InventoryEditComponent, InventoryProductTypeaheadDirective]
 })
 export class InventoryModule { }

@@ -30,7 +30,7 @@
         <hr>
       </div>
       <div class="table-container">
-        <table *ngIf="!loading&&current<=0" class="table table-bordered table-striped">
+        <table *ngIf="!loading&&current<=0" class="table table-bordered">
           <thead>
             <tr>
               <th>单号</th>
@@ -64,7 +64,41 @@
             </tr>
           </tbody>
         </table>
-        <table *ngIf="!loading&&current==1" class="table table-bordered table-striped">
+        <table *ngIf="!loading&&current==1" class="table table-bordered">
+          <thead>
+            <tr>
+              <th>单号</th>
+              <th>发生时间</th>
+              <th>进出类型</th>
+              <th>入库量</th>
+              <th>成本单价</th>
+              <th>成本总金额</th>
+              <th>销售单价</th>
+              <th>销售总金额</th>
+              <th>库存量</th>
+              <th>客户名称</th>
+              <th>手机号</th>
+              <th>操作人</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of list">
+              <td class="text-center">{{item.billCode}}</td>
+              <td class="text-center">{{item.createTime|sDatetime}}</td>
+              <td>{{item.billType}}</td>
+              <td class="text-center">{{item.inCount}}</td>
+              <td class="text-right">{{item.costPrice|centToYuan}}</td>
+              <td class="text-center">{{item.costAmount}}</td>
+              <td class="text-right">{{item.salePrice|centToYuan}}</td>
+              <td class="text-center">{{item.saleAmount}}</td>
+              <td class="text-center">{{item.count}}</td>
+              <td class="text-center">{{item.customer}}</td>
+              <td>{{item.customerPhone}}</td>
+              <td>{{item.operator}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <table *ngIf="!loading&&current==2" class="table table-bordered">
           <thead>
             <tr>
               <th>单号</th>
@@ -96,7 +130,7 @@
             </tr>
           </tbody>
         </table>
-        <table *ngIf="!loading&&current==2" class="table table-bordered table-striped">
+        <table *ngIf="!loading&&current==3" class="table table-bordered">
           <thead>
             <tr>
               <th>单号</th>
@@ -124,40 +158,6 @@
               <td class="text-center">{{item.saleAmount}}</td>
               <td>{{item.takeUser}}</td>
               <td>{{item.takeDepart}}</td>
-              <td>{{item.operator}}</td>
-            </tr>
-          </tbody>
-        </table>
-        <table *ngIf="!loading&&current==3" class="table table-bordered table-striped">
-          <thead>
-            <tr>
-              <th>单号</th>
-              <th>发生时间</th>
-              <th>进出类型</th>
-              <th>入库量</th>
-              <th>成本单价</th>
-              <th>成本总金额</th>
-              <th>销售单价</th>
-              <th>销售总金额</th>
-              <th>库存量</th>
-              <th>客户名称</th>
-              <th>手机号</th>
-              <th>操作人</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of list">
-              <td class="text-center">{{item.billCode}}</td>
-              <td class="text-center">{{item.createTime|sDatetime}}</td>
-              <td>{{item.billType}}</td>
-              <td class="text-center">{{item.inCount}}</td>
-              <td class="text-right">{{item.costPrice|centToYuan}}</td>
-              <td class="text-center">{{item.costAmount}}</td>
-              <td class="text-right">{{item.salePrice|centToYuan}}</td>
-              <td class="text-center">{{item.saleAmount}}</td>
-              <td class="text-center">{{item.count}}</td>
-              <td class="text-center">{{item.customer}}</td>
-              <td>{{item.customerPhone}}</td>
               <td>{{item.operator}}</td>
             </tr>
           </tbody>

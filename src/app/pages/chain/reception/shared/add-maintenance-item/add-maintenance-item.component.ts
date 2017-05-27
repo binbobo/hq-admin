@@ -2,7 +2,6 @@ import { Component, OnInit, Output, EventEmitter, ViewChild, Input } from '@angu
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HqAlerter } from 'app/shared/directives';
 import { OrderService } from '../../../reception/order.service';
-import { FuzzySearchRequest } from '../../../report/maintenance/business/business.service';
 import * as moment from 'moment';
 import { CustomValidators } from 'ng2-validation';
 
@@ -22,6 +21,7 @@ export class AddMaintenanceItemComponent implements OnInit {
   item: any = null; // 当前编辑的维修项目
   @Input()
   services: any = []; // 当前已经选择的维修项目列表
+  
   serviceIds: any = []; // 维修项目id列表
 
   @ViewChild(HqAlerter)

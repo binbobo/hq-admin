@@ -47,7 +47,7 @@
     <div [hqSpinner]="serialDataShow"  class="top-px" *ngIf="serialData.length>0">
       <div class="tab-title">维修发料信息</div>
       <div class="table-container">
-        <table class="table   table-bordered">
+        <table class="table  table-bordered">
           <thead>
             <tr>
               <th>操作</th>
@@ -76,13 +76,11 @@
               <td>{{item.serialNum}}</td>
               <td>{{ele.serviceName}}</td>
               <td>{{ele.productCode}}</td>
-
               <td>{{ele.productCategory}}</td>
               <td>{{ele.productName }}</td>
               <td>{{ele.brandName}}</td>
               <td>{{ele.productSpecification}}</td>
               <td>{{ele.productUnit}}</td>
-
               <td>{{ele.vihicleName}}</td>
               <td>{{ele.storeName}}</td>
               <td>{{ele.locationName}}</td>
@@ -147,10 +145,10 @@
         </table>
       </div>
     </div>
-    <div *ngIf="mrData.length>0"  class="top-px">
+    <div *ngIf="mrData.length>0" class="top-px">
       <div class="tab-title">维修退料记录</div>
       <div class="table-container">
-        <table class="table  table-bordered">
+        <table class="table table-bordered">
           <thead>
             <tr>
               <th>流水号</th>
@@ -175,7 +173,6 @@
             <tr *ngFor="let ele of item.list">
               <td>{{item.serialNum}}</td>
               <td>{{ele.serviceName}}</td>
-
               <td>{{ele.productCode}}</td>
               <td>{{ele.productCategory}}</td>
               <td>{{ele.productName }}</td>
@@ -204,7 +201,6 @@
     <button class="btn btn-secondary " [disabled]="!(mrData.length>0)" options="printOptions" (onConfirm)="onConfirmNumber($event)"
       [hqMutilSelect]="numberPrintList" title="选择流水号" href="#" placement="right">打印</button>
   </div>
-
   <!--提示是否确认退出-->
   <!--<div bsModal #confirmModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm">
@@ -221,13 +217,11 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="onConfirmFinished(confirmModal);">确定</button>
           <button type="button" class="btn btn-secondary" data-dismiss="confirmModal" (click)="confirmModal.hide();">取消</button>
-
         </div>
       </div>
     </div>
   </div>-->
 </div>
-
 <div class="modal fade" bsModal #createModal="bs-modal" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -241,5 +235,4 @@
     </div>
   </div>
 </div>
-
 <hq-maintain-print *ngIf="printList" [hidden]="true" [data]="printList" hqPrint #printer="hq-print"></hq-maintain-print>

@@ -1,4 +1,4 @@
-<div class=""  style="margin-bottom:20px;">
+<div class="row">
   <img class="pull-left col-3" src="http://sinoauto.com/Themes/SinoAutoAdaption/Content/logonew.png" alt="华汽">
   <h5 class="text-center col-6 pull-left">采购入库统计</h5>
   <img height="30" class="col-3 pull-right" alt="条形码">
@@ -21,6 +21,7 @@
         <label for="">开单时间：</label>
         <span>{{detail?.createUtc|date:'yyyy/MM/dd HH:mm:ss'}}</span>
       </div>
+
       <div class="col-3">
         <label for="">操作人：</label>
         <span>{{detail?.createName}}</span>
@@ -28,7 +29,7 @@
     </div>
     <hr>
     <div class="">
-      <table class="table table-bordered table-striped">
+      <table class="table table-bordered">
         <tr class="active">
           <th>仓库</th>
           <th>库位</th>
@@ -39,10 +40,10 @@
           <th>规格型号</th>
           <th>单位</th>
           <th>数量</th>
-          <th>含税单价（元）</th>
-          <th>含税金额（元）</th>
-          <th>不含税单价（元）</th>
-          <th>不含税金额（元）</th>
+          <th>含税单价<br>（元）</th>
+          <th>含税金额<br>（元）</th>
+          <th>不含税单价<br>（元）</th>
+          <th>不含税金额<br>（元）</th>
         </tr>
         <tr class="text-center" *ngFor="let item of detailItems">
           <td>{{item.storeName}}</td>
@@ -64,7 +65,7 @@
     <p *ngIf="!!!detailItemsLength">暂无数据</p>
   </div>
 </div>
-
+<br>
 <div class="row text-center">
   <p class="col-2">第 1 页，共 5 页</p>
   <p class="col-8">打印时间：2017-04-15 13:13:13</p>

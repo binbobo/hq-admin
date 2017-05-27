@@ -6,7 +6,7 @@
         <div class="form-group row">
           <label for="" class="col-form-label margin-l">车牌号:</label>
           <div class="col-2">
-            <input type="text" class="form-control" formControlName="plateNo">
+            <input type="text" hqPlateNoTypeahead class="form-control" formControlName="plateNo">
           </div>
           <label for="" class="col-form-label margin-l ">查询时间：</label>
           <div class="col-2">
@@ -28,7 +28,7 @@
     <hr>
     <h6>温馨提示：系统为您找到<span style="color:red;font-weight:bold;">{{total}}</span>条记录</h6>
     <div class="table-responsive">
-      <table class="table table-bordered table-striped text-center">
+      <table class="table table-bordered text-center">
         <tr>
           <th>操作</th>
           <th>车牌号</th>
@@ -44,7 +44,7 @@
           </td>
           <td>{{item.plateNo }}</td>
           <td>{{item.billCode }}</td>
-          <td></td>
+          <td>{{item.amount}}</td>
           <td>{{item.createBillTime |date:"yyyy/MM/dd HH:mm:ss"}}</td>
           <td>{{item.takeUser }}</td>
           <td>{{item.operator }}</td>
@@ -86,7 +86,7 @@
       <div class="card-block">
         <div class="row">
           <div class="table-responsive">
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered">
               <tr class="active">
                 <th>维修项目</th>
                 <th>配件编号</th>

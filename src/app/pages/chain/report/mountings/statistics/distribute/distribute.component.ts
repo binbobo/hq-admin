@@ -4,7 +4,7 @@ import { TreeviewItem, TreeviewConfig } from "ngx-treeview/lib";
 import { DataList } from "app/shared/models";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { OrderService } from "app/pages/chain/reception/order.service";
-import { PrintDirective } from "app/shared/directives";
+import { PrintDirective, TypeaheadRequestParams } from "app/shared/directives";
 
 @Component({
   selector: 'hq-distribute',
@@ -20,7 +20,7 @@ export class DistributeComponent extends DataList<any> {
   isLoading: boolean = false;
 
   constructor(
-    protected service: DistributeService,  
+    protected service: DistributeService,
     protected orderService: OrderService,
     injector: Injector,
     private formBuilder: FormBuilder,
@@ -48,7 +48,7 @@ export class DistributeComponent extends DataList<any> {
 
   //详情模态框
   alert(ev, id, bdModule) {
-    console.log('详情数据',ev,id,bdModule);
+    console.log('详情数据', ev, id, bdModule);
     ev.hqSpinner = true;
     this.service.get(id).then((data) => {
       this.isLoading = true;

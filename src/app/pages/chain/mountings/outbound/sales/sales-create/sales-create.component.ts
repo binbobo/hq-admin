@@ -57,6 +57,7 @@ export class SalesCreateComponent implements OnInit {
 
   onLocationChange(locationId: string) {
     let location = this.locations && this.locations.find(m => m.id === locationId);
+    console.log(location);
     let stock = location && location.count || 0;
     this.form.controls['stockCount'].setValue(stock);
   }
@@ -137,12 +138,19 @@ export class SalesCreateComponent implements OnInit {
       item.stockCount = 0;
     }
     let priceControl = this.form.controls['yuan'];
-    let validators = Validators.compose([Validators.required, CustomValidators.gt(0), CustomValidators.min(item.price / 100)])
+    this.price = item.price / 100;
+    let validators = Validators.compose([Validators.required, CustomValidators.gt(0), CustomValidators.min(this.price)]);
     priceControl.setValidators(validators);
     setTimeout(() => {
       this.form.patchValue(item);
       this.calculate();
     }, 1);
+  }
+
+  private price = 0;
+
+  get priceError() {
+    return { min: `最低价格不能低于${this.price}` };
   }
 
   private calculate() {

@@ -1,6 +1,6 @@
-import { Component, OnInit, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewEncapsulation, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import {  Vehicle } from '../../../reception/order.service';
+import { Vehicle } from '../../../reception/order.service';
 import { CustomValidators } from 'ng2-validation';
 import { HQ_VALIDATORS } from '../../../../../shared/shared.module';
 
@@ -15,8 +15,10 @@ export class AddVehicleComponent implements OnInit {
   // 保存车辆按钮是否可用
   enableSaveVehicle = false;
 
-  @Output() onAddVehicleCancel = new EventEmitter<any>();
-  @Output() onAddVehicleConfirm = new EventEmitter<any>();
+  @Output() onVehicleCancel = new EventEmitter<any>();
+  @Output() onVehicleConfirm = new EventEmitter<any>();
+  @Input()
+  vehicle: any = null; // 当前编辑的维修项目
 
   isBrandSelected = false;
   isSeriesSelected = false;
@@ -28,12 +30,17 @@ export class AddVehicleComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
+
+    // 编辑
+    if (this.vehicle) {
+      this.vehicleForm.patchValue(this.vehicle);
+    }
   }
 
-  onAddVehicleCancelHandler() {
-    this.onAddVehicleCancel.emit();
+  onVehicleCancelHandler() {
+    this.onVehicleCancel.emit();
   }
-  onAddVehicleConfirmHandler() {
+  onVehicleConfirmHandler() {
     // 验证数据合法性
     if (!this.vehicleForm.value.vehicleId) {
       alert('请选择车型');
@@ -45,7 +52,11 @@ export class AddVehicleComponent implements OnInit {
     if (!this.vehicleForm.value.validate) { delete this.vehicleForm.value.validate; };
     if (!this.vehicleForm.value.insuranceDue) { delete this.vehicleForm.value.insuranceDue; };
     this.vehicleForm.value.plateNo = this.vehicleForm.value.plateNo.toUpperCase();
-    this.onAddVehicleConfirm.emit(this.vehicleForm.value);
+
+    this.onVehicleConfirm.emit({
+        data: this.vehicleForm.getRawValue(),
+        isEdit: this.vehicle ? true : false
+      });
     this.vehicleForm.reset();
   }
 

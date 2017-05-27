@@ -14,7 +14,7 @@
           </div>
           <label for="" class="col-form-label margin-l">客户名称:</label>
           <div class="col-2">
-            <input type="text" class="form-control" formControlName="name">
+            <input type="text" hqCustomerTypeahead class="form-control" formControlName="name">
           </div>
           <label for="" class="col-form-label margin-l">客户手机:</label>
           <div class="col-2">
@@ -34,7 +34,7 @@
     <hr>
     <h6>温馨提示：系统为您找到<span style="color:red;font-weight:bold;">{{total}}</span>条记录</h6>
     <div class="table-responsive">
-      <table class="table table-bordered table-striped text-center">
+      <table class="table table-bordered text-center">
         <tr>
           <th>操作</th>
           <th>出库单号</th>
@@ -49,13 +49,13 @@
           <td>
             <button type="button" [hqSpinner]="false" class="btn btn-info btn-sm" (click)="alert(bdModal)">详情</button>
           </td>
-          <td>{{item.billCode }}</td>
-          <td>记者</td>
-          <td>13989696798</td>
-          <td>次子</td>
-          <td></td>
-          <td>2017-04-29 17:11:11</td>
-          <td>次子</td>
+          <td>{{item.billCode}}</td>
+          <td>{{item.customerName }}</td>
+          <td>{{item.customerPhone }}</td>
+          <td>{{item.seller }}</td>
+          <td>{{item.amount}}</td>
+          <td>{{item.createTime |date:"yyyy/MM/dd HH:mm:ss"}}</td>
+          <td>{{item.operator}}</td>
         </tr>
       </table>
     </div>
@@ -93,7 +93,7 @@
       <div class="card-block">
         <div class="row" style="overflow-x:auto;">
           <div class="table-responsive">
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered">
               <tr class="active">
                 <th>配件编码</th>
                 <th>配件分类</th>

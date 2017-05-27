@@ -17,10 +17,13 @@ import { ModelTypeaheadDirective } from './table-typeahead/model-typeahead.direc
 import { MaintenanceItemTypeaheadDirective } from './table-typeahead/maintenance-item.typeahead.directive';
 import { ProductCategoryTypeaheadDirective } from './table-typeahead/product-category-typeahead.directive';
 import { ProductBrandTypeaheadDirective } from './table-typeahead/product-brand-typeahead.directive';
+import { VehicleShowDirective, VehicleShowComponent } from './vehicle-show';
+import { PopoverModule } from 'ngx-bootstrap/popover';
 
 @NgModule({
   imports: [
     SharedModule,
+    PopoverModule.forRoot(),
     BsDropdownModule.forRoot(),
   ],
   exports: [
@@ -38,6 +41,7 @@ import { ProductBrandTypeaheadDirective } from './table-typeahead/product-brand-
     StorageLocationTypeaheadDirective,
     ProductCategoryTypeaheadDirective,
     ProductBrandTypeaheadDirective,
+    VehicleShowDirective,
   ],
   declarations: [
     SuspendBillDirective,
@@ -55,8 +59,10 @@ import { ProductBrandTypeaheadDirective } from './table-typeahead/product-brand-
     StorageLocationTypeaheadDirective,
     ProductCategoryTypeaheadDirective,
     ProductBrandTypeaheadDirective,
+    VehicleShowDirective,
+    VehicleShowComponent,
   ],
   providers: [SuspendBillService],
-  entryComponents: [SuspendBillComponent]
+  entryComponents: [SuspendBillComponent, VehicleShowComponent]
 })
 export class ChainSharedModule { }

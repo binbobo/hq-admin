@@ -17,7 +17,8 @@
 
           <label for="supplier" class="col-form-label">供应商:</label>
           <div class="col-2">
-            <input formControlName="name" type="text" id="supplier" class="form-control" placeholder="供应商名字">
+            <input hqProviderTypeahead formControlName="name" class="form-control"
+            placeholder="请输入供应商名称" required />
           </div>
 
           <label for="findStore" class="col-form-label">门店查询：</label>
@@ -32,7 +33,7 @@
     <hr>
     <p>温馨提示：系统为您找到 <span style="font-size:16px;color:red;font-weight:bold;">{{total}}</span> 条记录</p>
     <div class="table-responsive">
-      <table class="table table-bordered table-striped text-center">
+      <table class="table table-bordered text-center">
         <tr>
           <th width="100">操作</th>
           <th>供应商名称</th>
@@ -90,7 +91,7 @@
       </div>
       <div class="card-block">
         <div class="table-responsive">
-          <table class="table table-bordered table-striped">
+          <table class="table table-bordered">
             <tr class="active">
               <th>仓库</th>
               <th>库位</th>

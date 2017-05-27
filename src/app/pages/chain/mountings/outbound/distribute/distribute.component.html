@@ -73,7 +73,6 @@
               <th>金额（元）</th>
               <th>备注</th>
               <th>领料人</th>
-
             </tr>
           </thead>
           <tbody>
@@ -94,7 +93,6 @@
               <td>{{ele.amount|centToYuan}}</td>
               <td>{{ele.description}}</td>
               <td>{{ele.createUserName}}</td>
-
             </tr>
           </tbody>
         </table>
@@ -104,7 +102,7 @@
       <tabset #staticTabs *ngIf="serialData?.length>0">
         <tab heading="维修发料记录">
           <div class="table-container">
-            <table class="table    table-bordered">
+            <table class="table table-bordered">
               <thead>
                 <tr>
                   <th>流水号</th>

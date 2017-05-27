@@ -43,23 +43,6 @@ export class BusinessService implements BasicService<any> {
       .download(url, params.serialize(), '维修历史')
       .catch(err => Promise.reject(`维修历史导出失败：${err}`));
   }
-  //根据车牌号模糊查询结果
-  getCustomerVehicleByPlateNo(params: FuzzySearchRequest): Promise<PagedResult<any>> {
-    const search = params.serialize();
-    const url = Urls.chain.concat('/CustomerVehicles/Search');
-    return this.httpService
-      .get<PagedResult<any>>(url, search)
-      .then(response => {
-        // 加工数据
-        response.data = response.data.map(item => {
-          const o = item;
-          o.customerName = item.customerInfo.name;
-          o.phone = item.customerInfo.phone;
-          return o;
-        });
-        return response;
-      });
-  }
 
   //根据工单id获取维修历史详情
   public getDetails(id, orgItem): Promise<any> {
@@ -108,14 +91,6 @@ export class BusinessListRequest extends PagedParams {
     public leaveStartTimeDate?: string, // 出厂开始时间
     public leaveEndTimeDate?: string, // 出厂结束时间
     public orgIds?: Array<string> // 查询范围
-  ) {
-    super();
-  }
-}
-
-export class FuzzySearchRequest extends PagedParams {
-  constructor(
-    public keyword: string, // 模糊搜索关键字
   ) {
     super();
   }
