@@ -5,7 +5,7 @@
     <form class="" [formGroup]="receiveForm" (ngSubmit)="onSearch()">
       <div class="container-fluid">
         <div class="form-group row">
-          <label for="joinOrderNumber" class="col-form-label">领用人：</label>
+          <label for="joinOrderNumber" class="col-form-label"> 领 用 人 ：</label>
           <div class="col-2">
             <select class="form-control" #LeadParty (change)="onReceiverSelect($event)">
               <option *ngFor="let item of employees" [value]="item.value">{{item.text}}</option>
