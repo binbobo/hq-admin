@@ -39,7 +39,7 @@ export class PriceCheckListRequest extends PagedParams {
     public vehicleName?: string,
     public categoryName?: string,
   ) {
-    super('PriceCheckListRequest')
+    super()
   }
 }
 

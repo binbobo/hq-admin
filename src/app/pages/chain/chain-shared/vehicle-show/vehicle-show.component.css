@@ -1,0 +1,9 @@
+hq-vehicle-show .popover{
+    max-width: none!important;
+}
+hq-vehicle-show .popover-content{
+    padding: 0;
+}
+hq-vehicle-show table td{
+    padding: 4px 5px!important;
+}

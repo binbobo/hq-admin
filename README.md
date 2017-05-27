@@ -1,6 +1,6 @@
 # 代码编写准则
 ## （Tables）表格:
-- 统一使用table table-striped table-borderd类；
+- 统一使用table table-borderd类；
 - 所有表头居中；
 - 序号、操作、时间、车牌号、手机号等一些等宽字段（长度固定）居中显示（text-center）；
 - 金额、计时居右显示（text-right）；

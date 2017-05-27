@@ -1,0 +1,13 @@
+<div *ngIf="vehicles&&vehicles.length">
+  <span>{{vehicles[0].name}}</span>
+  <button class="btn btn-secondary btn-sm" placement="bottom" [popover]="popTemplate" *ngIf="vehicles.length>1"><i class="fa fa-ellipsis-h"></i></button>
+</div>
+<template #popTemplate>
+  <table class="table table-sm">
+    <tr *ngFor="let item of vehicles">
+      <td>{{item.brandName}}</td>
+      <td>{{item.seriesName}}</td>
+      <td>{{item.name}}</td>
+    </tr>
+  </table>
+</template>

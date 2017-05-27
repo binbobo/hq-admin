@@ -39,5 +39,5 @@ const routes: Routes = [
 })
 export class ReceptionRoutingModule { }
 
-export const routedComponents = [WorkorderBasicInfoComponent, FeeStatisticsComponent, AttachmentItemListComponent, SuggestedItemListComponent, MaintenanceFixingsListComponent, AddAttachItemComponent, AddSuggestItemComponent, MaintenanceItemListComponent, WorkorderDetailPrintComponent, WorkorderDetailComponent, AddMaintenanceItemComponent, OrderListComponent, AssignOrderComponent, CreateOrderComponent, BillOrderComponent, AppendOrderComponent, PrintOrderComponent];
+export const routedComponents = [MaintenanceItemListComponent, MaintenanceFixingsListComponent,AttachmentItemListComponent,SuggestedItemListComponent, WorkorderBasicInfoComponent, FeeStatisticsComponent, AddAttachItemComponent, AddSuggestItemComponent, WorkorderDetailPrintComponent, WorkorderDetailComponent, AddMaintenanceItemComponent, OrderListComponent, AssignOrderComponent, CreateOrderComponent, BillOrderComponent, AppendOrderComponent, PrintOrderComponent];
 

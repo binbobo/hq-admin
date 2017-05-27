@@ -65,7 +65,7 @@ export class InventoryListComponent extends DataList<Inventory> implements OnIni
   onEdit(event: Event, item: Inventory) {
     // let btn = event.target as HTMLButtonElement;
     // btn.disabled = true;
-    this.model = item;
+    this.model = { ...item };
     this.editModal.show();
     // this.inventoryService.get(item.id)
     //   .then(data => this.model = data)

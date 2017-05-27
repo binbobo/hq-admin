@@ -196,7 +196,7 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
 
   onCreate() {
     let formData = this.form.value;
-    if (formData.minCount >= formData.maxCount) {
+    if (formData.minCount && formData.maxCount && formData.minCount >= formData.maxCount) {
       this.alerter.error('最大库存必须大于最小库存');
       return false;
     }
