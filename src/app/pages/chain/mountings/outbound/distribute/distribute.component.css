@@ -48,3 +48,7 @@ table th,table td{
     width:23%;
     vertical-align: top;
 }
+.serach-input{
+    width: 60%;
+    margin-bottom: 1rem;
+}
