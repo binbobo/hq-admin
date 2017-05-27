@@ -106,9 +106,9 @@ input[readonly][ngui-datetime-picker]{
 hqtabletypeahead ul{
     margin-bottom: 0;
 }
-
+/*增项标志*/
 .append-stamp{
-    position: absolute;
+    position: relative;
     display: inline-block;
     max-width: 200px;
     padding:1px 6px;
@@ -119,7 +119,7 @@ hqtabletypeahead ul{
     background-color: #fff;
     border-radius: 2px;
     /*border-radius: .25rem;*/
-    font-size: 12px;
+    font-size:.875rem;
 }
 .append-stamp::before {  
       content: '';
@@ -143,6 +143,23 @@ hqtabletypeahead ul{
     border-right: 6px solid #fff;
     border-top: 5px solid transparent;
 }
+/*已通过标志*/
+.accept-stamp{ 
+    display:inline-block;
+    position: relative;
+    font-size:.875rem;
+    color: #1c84c6;
+    border:1px solid #1c84c6;
+    border-radius: 2px;
+    padding:1px 6px;
+    margin-left: 20px;
+    text-align: center;
+    background-color: #fff;
+}
+.accept-stamp::before{
+    content:"√已通过";
+}
+
 .card-header {
     color: #727171;
     font-size: 1rem;
@@ -156,6 +173,7 @@ tabset ul li.active a{
 tabset ul li a, tabset ul li a:hover {
   color: #a7b1c2;
 }
+/*查询按钮*/
 .btn-primary{
     background-color: #27b394 !important;
     border: 0;
@@ -166,10 +184,12 @@ tabset ul li a, tabset ul li a:hover {
     background-color: #22cda7 !important;
     border: 0;
 }
+/*删除按钮*/
 .btn-error,.btn-danger{
     background-color:#eb5267 !important;
     border:0;
 }
+/*挂单按钮*/
 .btn-suspend{
     background-color: #fa9837 !important;
     border:0;
@@ -180,3 +200,28 @@ tabset ul li a, tabset ul li a:hover {
     background-color:#d8812b !important;
     
 }
+.tab-content>.active {
+    margin-top: .6rem;
+    }
+    /*费用样式*/
+    .hq-fee{
+    background-color: #fcf8e3 !important;
+    border: 1px solid #dcdddd;
+    color: #8a6d3b;
+    width: 100%;
+    font-size: 1rem;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 27px;
+    margin: 15px auto;
+    }
+    .hq-fee .fee-name{
+        color:#8a6d3b;
+        font-size:1rem;
+        margin-right: 1.5rem;
+    }
+    .hq-fee .fee-value{
+        color:#eb5267;
+        font-size:1.1rem;
+        margin-left:2px;
+    }

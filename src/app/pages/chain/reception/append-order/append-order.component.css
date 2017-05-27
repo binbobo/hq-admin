@@ -44,3 +44,23 @@ input[disabled] {
 .btn-color {
   background:#27b394 !important;
 }
+.btn-secondary {
+  border: none;
+  color: #727171;
+  font-weight: bold;
+  font-size: 0.875rem;
+  margin: 10px auto;
+}
+.fa-plus-circle {
+  font-size: 1.25rem;
+  vertical-align: middle;
+}
+.fa-plus-circle:before {
+  color: #27b394;
+  font-size: 1.6rem;
+}
+.fa-times-circle {
+  font-size: 1rem;
+  vertical-align: middle;
+  font-weight: normal;
+} 

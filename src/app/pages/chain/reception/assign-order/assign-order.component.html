@@ -131,7 +131,7 @@
                       </td>
                       <td>{{record?.serviceName}}
                         <!-- 类型3表示增项 -->
-                        <span *ngIf="record.type === 3" class="append-stamp">增项</span>
+                        <span *ngIf="record.type === 3" class="append-stamp">增项</span><span [class.accept-stamp]="record.teamType === 6"></span>
                       </td>
                       <td>{{record?.workHour }}</td>
                       <!--<td>{{record?.operateDateTime|sDatetime}}</td>-->

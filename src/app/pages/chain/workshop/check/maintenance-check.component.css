@@ -1,9 +1,3 @@
 .checked {
     background: #f7ecd7;
 }
-/*增项标志*/
-.triangle{
-    border-top: 15px solid green;
-    border-left: 15px solid transparent;
-    float: right;
-}

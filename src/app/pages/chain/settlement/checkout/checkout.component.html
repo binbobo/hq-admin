@@ -36,7 +36,7 @@
     </form>
     <hr>
     <div class="table-container">
-      <table class='table table-striped table-bordered'>
+      <table class='table  table-bordered'>
         <thead>
           <tr>
             <th>操作</th>
@@ -90,16 +90,18 @@
       <div class="modal-body">
         <!--工单详情 start-->
         <hq-checkout-print-detail [data]="selectedOrder"></hq-checkout-print-detail>
-        <div class="card">
-          <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
-            工时费
-            <span class="ml-2 mr-2">{{workHourFee}}元</span> | 材料费
-            <span class="ml-2 mr-2">{{materialFee}}元</span> | 其它
-            <span class="ml-2 mr-2">{{otherFee}}元</span> | 合计
-            <span class="ml-2 mr-2">{{sumFee}}元</span>|
-            <span class="ml-2 mr-2">应收金额：{{billPrice}}元</span>
+
+
+        <div class="card hq-fee">
+          <div>
+            <span class="fee-name">工时费：<span class="fee-value">{{workHourFee}}</span></span>
+            <span class="fee-name"> 材料费：<span class="fee-value">{{materialFee}}</span></span>
+            <span class="fee-name"> 优惠：<span class="fee-value"></span></span>
+            <span class="fee-name pull-right">应收金额：<span class="fee-value">{{billPrice}}</span></span>
           </div>
         </div>
+
+
       </div>
     </div>
   </div>
