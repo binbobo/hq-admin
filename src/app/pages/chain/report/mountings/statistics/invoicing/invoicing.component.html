@@ -46,26 +46,27 @@
           <th>期初金额</th>
           <th>期末金额</th>
           <th>入库金额</th>
-          <th>出库成本金额</th>
-          <th>出库销售金额</th>
-          <th>采购入库成本金额</th>
-          <th>维修领料成本金额</th>
-          <th>维修领料销售金额</th>
-          <th>配件销售成本金额</th>
-          <th>配件销售销售金额</th>
-          <th>内部领用成本金额</th>
-          <th>内部领用销售金额</th>
-          <th>其他入库成本金额</th>
-          <th>其他入库销售金额</th>
-          <th>其他出库成本金额</th>
-          <th>其他出库销售金额</th>
+          <th>出库成本<br>金额</th>
+          <th>出库销售<br>金额</th>
+          <th>采购入库<br>成本金额</th>
+          <th>维修领料<br>成本金额</th>
+          <th>维修领料<br>销售金额</th>
+          <th>配件销售<br>成本金额</th>
+          <th>配件销售<br>销售金额</th>
+          <th>内部领用<br>成本金额</th>
+          <th>内部领用<br>销售金额</th>
+          <th>其他入库<br>成本金额</th>
+          <th>其他入库<br>销售金额</th>
+          <th>其他出库<br>成本金额</th>
+          <th>其他出库<br>销售金额</th>
         </tr>
         <tr *ngFor="let item of list">
-          <td width="100"><button [hqSpinner]="item.hqSpinner" class="btn btn-info btn-sm" (click)="alert(item,item.id,bdModal)">详情</button></td>
-          <td>{{item.outUnitName}}</td>
-          <td>{{item.billCode}}</td>
-          <td>{{item.createBillTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-          <td>{{item.operator}}</td>
+          <td width="100"><button [hqSpinner]="item.hqSpinner" class="btn btn-info btn-sm" (click)="alert(item,item.id,bdModal)">查看明细</button></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
           <td></td>
           <td></td>
           <td></td>
@@ -104,23 +105,23 @@
           <th>其他出库销售金额</th>
         </tr>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
         </tr>
       </table>
     </div>

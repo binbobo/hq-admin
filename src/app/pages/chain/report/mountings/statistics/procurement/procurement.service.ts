@@ -49,6 +49,8 @@ export class ProcurementService implements BasicService<any>{
   constructor(private httpService: HttpService) { }
 }
 
+
+
 export class ProcurementRequest extends PagedParams {
   constructor(
     public searchStart?: string,

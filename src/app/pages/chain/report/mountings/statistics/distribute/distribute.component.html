@@ -6,7 +6,7 @@
         <div class="form-group row">
           <label for="" class="col-form-label margin-l">车牌号:</label>
           <div class="col-2">
-            <input type="text" class="form-control" formControlName="plateNo">
+            <input type="text" hqPlateNoTypeahead class="form-control" formControlName="plateNo">
           </div>
           <label for="" class="col-form-label margin-l ">查询时间：</label>
           <div class="col-2">
@@ -44,7 +44,7 @@
           </td>
           <td>{{item.plateNo }}</td>
           <td>{{item.billCode }}</td>
-          <td></td>
+          <td>{{item.amount}}</td>
           <td>{{item.createBillTime |date:"yyyy/MM/dd HH:mm:ss"}}</td>
           <td>{{item.takeUser }}</td>
           <td>{{item.operator }}</td>

@@ -83,7 +83,6 @@ export class ProcurementComponent extends DataList<any> {
   onSearch() {
     //将表单值赋给params
     Object.assign(this.params, this.procurementForm.value);
-
     console.log('params', this.params);
     this.onLoadList();
   }
@@ -101,12 +100,5 @@ export class ProcurementComponent extends DataList<any> {
     // 更新查询范围参数
     this.params.orgIds = ev;
   }
-
-  joinOrderNumberOnSelect(ev) {
-      this.procurementForm.patchValue({
-        billCode: ev.billCode,
-      });
-  }
-
 
 }
