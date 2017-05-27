@@ -122,8 +122,8 @@ export class ProcurementCreateComponent implements OnInit {
       productId: event.id,
       brandName: event.brandName,
       stockCount: event.count,
-      price: event.price,
-      yuan: event.price / 100,
+      price: event.newPrice,
+      yuan: event.newPrice / 100,
       taxRate: event.taxRate,
       productCategory: event.categoryName,
     }

@@ -6,17 +6,17 @@
   </div>
   <div class="card-block">
     <form #form="ngForm" class="form-inline mb-2">
-      <div class="form-group">
-        <label>*客户名称：</label>
+      <div class="input-group m-1">
+        <span class="input-group-addon">客户名称</span>
         <input class="form-control" hqCustomerTypeahead (onSelect)="onCustomerSelect($event)" name="custName" required [(ngModel)]="model.custName"
           placeholder="请输入客户名称">
       </div>
-      <div class="form-group">
-        <label class="mr-sm-1">手机号：</label>
+      <div class="input-group m-1">
+        <span class="input-group-addon">手机号</span>
         <input class="form-control" hqMobile required name="custPhone" [(ngModel)]="model.custPhone" placeholder="请输入手机号">
       </div>
-      <div class="form-group">
-        <label class="mr-sm-1">销售员：</label>
+      <div class="input-group m-1">
+        <span class="input-group-addon">销售员</span>
         <select class="form-control" required name="seller" [(ngModel)]="model.seller">
           <option *ngFor="let item of salesmen" [value]="item.value">{{item.text}}</option>
         </select>
@@ -66,7 +66,8 @@
   </div>
   <div class="card-footer text-muted">
     <button [hqSpinner]="suspendBill.generating" [disabled]="form.invalid||!model?.list?.length" class="btn btn-primary" (click)="generate($event)">生成销售出库单</button>
-    <button [hqSpinner]="suspendBill.suspending" [disabled]="form.invalid||!model?.list?.length" class="btn btn-success btn-suspend" (click)="suspend($event)">挂单</button>
+    <button [hqSpinner]="suspendBill.suspending" [disabled]="form.invalid||!model?.list?.length" class="btn btn-success btn-suspend"
+      (click)="suspend($event)">挂单</button>
   </div>
 </div>
 

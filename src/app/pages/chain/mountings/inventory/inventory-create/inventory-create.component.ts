@@ -190,12 +190,6 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
     }
   }
 
-  onReset() {
-    super.onReset();
-    this.owned = undefined;
-    this.vehicles = undefined;
-  }
-
   onCreate() {
     let formData = this.form.value;
     if (formData.minCount && formData.maxCount && formData.minCount >= formData.maxCount) {

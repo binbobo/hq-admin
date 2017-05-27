@@ -17,16 +17,15 @@ export class ProviderTypeaheadDirective extends TableTypeaheadDirective {
   }
 
   protected columns = [
-    { name: 'code', title: '代码' },
     { name: 'name', title: '名称', weight: 1 },
     { name: 'contactUser', title: '联系人' },
   ] as Array<TableTypeaheadColumn>;
-
+  
   protected filed: string = 'name';
 
   ngOnInit() {
     this.source = (params: TypeaheadRequestParams) => {
-      let request = new ProviderSearchRequest();
+      let request = new PagedParams();
       request[this.filed] = params.text;
       request.setPage(params.pageIndex, params.pageSize);
       let url = Urls.chain.concat('/suppliers/getPageList');
@@ -35,12 +34,4 @@ export class ProviderTypeaheadDirective extends TableTypeaheadDirective {
     super.ngOnInit();
   }
 
-}
-
-class ProviderSearchRequest extends PagedParams {
-  constructor(
-    public name?: string,
-  ) {
-    super();
-  }
 }
