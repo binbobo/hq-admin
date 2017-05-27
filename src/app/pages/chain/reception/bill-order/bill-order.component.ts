@@ -1,10 +1,11 @@
-import { Component, OnInit, Injector, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, OnInit, Injector, ViewChild, ViewChildren, QueryList } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataList, StorageKeys } from "app/shared/models";
 import { BillOrderService, OrderListSearch } from "./bill-order.service";
 import { Router } from "@angular/router";
 import { HqAlerter } from "app/shared/directives";
-import { PrintDirective } from 'app/shared/directives';
+import { PrintDirective, FormGroupControlErrorDirective } from 'app/shared/directives';
+import { CustomValidators } from "ng2-validation/dist";
 
 @Component({
     selector: 'app-bill-order',
@@ -13,11 +14,11 @@ import { PrintDirective } from 'app/shared/directives';
 })
 
 export class BillOrderComponent extends DataList<any>{
-
+    [name: string]: any;
+    private form: FormGroup;
     moneyObj: any;
-
     mileage: any;
-
+    billPricex: any;
     costCountMoney: number;
     workCostMoney: number;
     AmaterialMoney: number;
@@ -34,12 +35,15 @@ export class BillOrderComponent extends DataList<any>{
     protected alerter: HqAlerter;
     @ViewChild('printer')
     public printer: PrintDirective;
+    @ViewChildren(FormGroupControlErrorDirective)
+    private controls: QueryList<FormGroupControlErrorDirective>;
     params: OrderListSearch;
     materialFee = 0;
     workHourFee = 0;
     isShowCost = false;
     isShowCostDetail = false;
     isShowPrint = false;
+
     public user = null;
     constructor(
         private router: Router,
@@ -56,6 +60,16 @@ export class BillOrderComponent extends DataList<any>{
         this.user = JSON.parse(sessionStorage.getItem(StorageKeys.Identity));
         // 构建表单
         this.createForm();
+        this.billForm();
+
+    }
+    billSheetForm: FormGroup;
+    billForm() {
+        console.log(this.billPricex, this.mileage)
+        this.billSheetForm = this.fb.group({
+            billPrice: ['', [Validators.required, CustomValidators.lte(this.billPricex / 100)]], //金额
+            leaveMileage: ['', [Validators.required, CustomValidators.gte(this.mileage)]], // 出厂里程
+        })
     }
     // 点击查询
     onSearch() {
@@ -74,6 +88,7 @@ export class BillOrderComponent extends DataList<any>{
     attachServiceOutputs: any = [];
     suggestServiceOutputs: any = [];
     orderDetailsDialog(evt, id, dialog, item) {
+
         item.generat = true;
         console.log(item)
         this.isShowCostDetail = false;
@@ -85,7 +100,6 @@ export class BillOrderComponent extends DataList<any>{
         // 根据id获取工单详细信息
         this.service.get(id).then(data => {
             console.log('根据工单id获取工单详情数据：', data);
-            this.leaveMileage = data.mileage;
             this.mileage = data.mileage;
             // 记录当前操作的工单记录
             this.selectedOrder = data;
@@ -93,24 +107,30 @@ export class BillOrderComponent extends DataList<any>{
             this.attachServiceOutputs = data.attachServiceOutputs;
             this.suggestServiceOutputs = data.suggestServiceOutputs;
             this.billId = this.selectedOrder["id"];
+        }).then(() => {
+            this.service.getCost(id).then(data => {
+                console.log("根据工单id获取工单材料费和工时费", data);
+                // 工时费： 维修项目金额总和
+                this.workHourFee = data.workHourCost;
+                // 材料费： 维修配件金额总和
+                this.materialFee = data.materialCost;
+                // 其它费： 0
+                this.otherFee = 0;
+                // 总计费： 
+                this.sumFee = data.amount;
+                this.billPricex = (+this.sumFee);
+                item.generat = false;
+                this.billForm();
+                this.billSheetForm.controls.leaveMileage.setValue(this.mileage);
+                this.billSheetForm.controls.billPrice.setValue((+this.sumFee / 100))
+                // 显示窗口
+                dialog.show();
+            });
+        }).catch(err => {
+            this.alerter.error(err, true, 3000);
             item.generat = false;
-            // 显示窗口
-            dialog.show();
-
         });
-        this.service.getCost(id).then(data => {
-            console.log("根据工单id获取工单材料费和工时费", data);
-            // 工时费： 维修项目金额总和
-            this.workHourFee = data.workHourCost;
-            // 材料费： 维修配件金额总和
-            this.materialFee = data.materialCost;
-            // 其它费： 0
-            this.otherFee = 0;
-            // 总计费： 
-            this.sumFee = data.amount;
-            this.billPrice = (Number(this.sumFee) / 100).toFixed(2);
-            // this.billPrice = this.sumFee;           
-        })
+
 
     }
     // 点击撤销结算事件
@@ -126,9 +146,9 @@ export class BillOrderComponent extends DataList<any>{
         confirmModal.hide();
         console.log(confirmModal.id)
         this.service.put(confirmModal.id).then(() => {
-            // this.alerter.info('撤销结算成功!', true, 3000);
+            this.alerter.info('撤销结算成功!', true, 3000);
             this.onLoadList()
-        }).catch(err => console.log("撤销结算失败" + err));
+        }).catch(err => this.alerter.error(err, true, 3000));
 
     }
     ngAfterViewChecked() {
@@ -171,7 +191,7 @@ export class BillOrderComponent extends DataList<any>{
             }
         }
     }
-    private billPrice: any;
+
 
     amountStatus: string;
     private printData = {
@@ -190,11 +210,11 @@ export class BillOrderComponent extends DataList<any>{
             workItemMoney: 0
         }
     }
+
     // 点击详情事件
     DetailsDialog(evt, id, dialog, item) {
         item.generating = true;
         console.log(item);
-
         this.isShowCost = false;
         this.isShowCostDetail = true;
         this.workHourFee = 0;
@@ -202,6 +222,8 @@ export class BillOrderComponent extends DataList<any>{
         this.otherFee = 0;
         this.sumFee = 0;
         evt.preventDefault();
+
+
 
         // 根据id获取工单详细信息
         this.service.get(id).then(data => {
@@ -280,31 +302,29 @@ export class BillOrderComponent extends DataList<any>{
 
     }
     private billData = {};
-    generat=false;
+    generat = false;
     private leaveMileage: any;
+
     // 点击确定生成结算
     BillClick(evt, dialog) {
         evt.preventDefault();
-        
         // this.billData["id"] = this.billId;
-        this.billData["price"] = this.billPrice * 100;
-        this.billData["leaveMileage"] = this.leaveMileage + "";
+        this.billData["price"] = parseInt((this.billSheetForm.controls.billPrice.value * 100).toFixed(2));
+        this.billData["leaveMileage"] = this.billSheetForm.controls.leaveMileage.value + "";
         console.log(this.billData)
-        if (this.leaveMileage.length === 0) {
-            this.alerter.error("出厂里程不能为空", true, 3000);
-            return false;
-        } else if (this.leaveMileage < this.mileage) {
-            this.alerter.error("出厂里程不能小于进店里程", true, 3000);
+        let invalid = this.controls
+            .map(c => c.validate())
+            .some(m => !m);
+        if (invalid) {
+            event.preventDefault();
             return false;
         } else {
-            
             if (confirm('是否生成维修结算单？')) {
-                 this.generat=true;
+                this.generat = true;
                 this.service.post(this.billData, this.billId).then((result) => {
-                    this.generat=false;
+                    this.generat = false;
                     if (confirm('已生成维修结算单，是否需要打印？')) {
                         // 根据id获取工单详细信息
-
                         this.service.getPrintDetail(this.billId)
                             .then(data => {
                                 console.log('结算单', data)
@@ -337,14 +357,15 @@ export class BillOrderComponent extends DataList<any>{
                             })
                             .catch(err => {
                                 this.alerter.error(err, true, 2000);
-                                 this.generat=false;
+                                this.generat = false;
                             });
 
                     }
-                    this.alerter.info("生成结算单成功", true, 2000).onClose(() => { dialog.hide(); this.onLoadList(); });
+                    dialog.hide();
+                    this.alerter.info("生成结算单成功", true, 2000);
+                    this.onLoadList();
                     this.isShowCost = false;
-
-                }).catch(err => this.alerter.error(err, true, 3000));
+                }).catch(err => { dialog.hide(), this.alerter.error(err, true, 3000) });
             }
 
         }

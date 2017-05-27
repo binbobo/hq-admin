@@ -65,7 +65,7 @@
   </div>
   <div class="card-footer text-muted">
     <button [hqSpinner]="generating" [disabled]="form.invalid||!model.valid" class="btn btn-primary" (click)="generate($event)">生成内部领用单</button>
-    <button [hqSpinner]="suspendBill.suspending" [disabled]="form.invalid||!model.valid" class="btn btn-success" (click)="suspend($event)">挂单</button>
+    <button [hqSpinner]="suspendBill.suspending" [disabled]="form.invalid||!model.valid" class="btn btn-success btn-suspend" (click)="suspend($event)">挂单</button>
   </div>
 </div>
 

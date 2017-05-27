@@ -1,53 +1,63 @@
 <ng-template hq-alerter></ng-template>
-<div class="card">
-  <form [formGroup]="maintenanceItemForm" class="card-block row" autocomplete="off">
-    <div class="col-6">
-      <div class="form-group">
-        <label for="serviceName" class="col-form-label"><span class="asterisk mr-1">*</span>维修项目名称</label>
-        <input hqMaintenanceItemTypeahead [serviceIds]="serviceIds" (onSelect)="serviceTypeaheadOnSelect($event)"
-          type="text" label="维修项目名称" class="form-control" formControlName="serviceName" placeholder="请输入维修项目名称">
+<form [formGroup]="maintenanceItemForm" autocomplete="off">
+  <div class="form-group row">
+    <div class="hq-input">
+      <label for="serviceName" class="form-label"><span class="asterisk mr-1">*</span>项目名称</label>
+      <div class="hq-col">
+        <!--placeholder="请输入维修项目名称"-->
+        <input hqMaintenanceItemTypeahead [serviceIds]="serviceIds" (onSelect)="serviceTypeaheadOnSelect($event)" type="text" label="维修项目名称"
+          class="form-control" formControlName="serviceName" >
         <input type="hidden" formControlName="serviceId">
         <input type="hidden" formControlName="type">
       </div>
-      <div class="form-group">
-        <label for="price" class="col-form-label"><span class="asterisk mr-1">*</span>工时单价</label>
+    </div>
+    <div class="hq-input">
+      <label for="workHour" class="form-label"><span class="asterisk mr-1">*</span>维修工时</label>
+      <div class="hq-col">
         <div class="input-group">
-          <input maxlength="7" label="工时单价" formControlName="price" type="text" class="form-control" placeholder="请输入数字, 保留一位小数">
+          <!-- placeholder="请输入数字, 保留一位小数"-->
+          <input maxlength="5" label="维修工时" formControlName="workHour" type="text" class="form-control">
+          <span class="input-group-addon">小时</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="hq-input">
+      <label for="price" class="form-label"><span class="asterisk mr-1">*</span>工时单价</label>
+      <div class="hq-col">
+        <div class="input-group">
+          <!-- placeholder="请输入数字, 保留一位小数"-->
+          <input maxlength="7" label="工时单价" formControlName="price" type="text" class="form-control">
           <span class="input-group-addon">元</span>
         </div>
       </div>
-      <div class="form-group">
-        <label for="discount" class="col-form-label"><span class="asterisk mr-1">*</span>折扣率</label>
+    </div>
+    <div class="hq-input">
+      <label for="discount" class="form-label"><span class="asterisk mr-1">*</span>折扣率</label>
+      <div class="hq-col">
         <div class="input-group">
-          <input maxlength="3" label="折扣率" formControlName="discount" type="text" class="form-control" placeholder="0~100之间的整数">
+          <!-- placeholder="0~100之间的整数"-->
+          <input maxlength="3" label="折扣率" formControlName="discount" type="text" class="form-control">
           <span class="input-group-addon">%</span>
         </div>
       </div>
     </div>
-    <div class="col-6">
-      <div class="form-group">
-        <label for="workHour" class="col-form-label"><span class="asterisk mr-1">*</span>维修工时</label>
-        <div class="input-group">
-          <input maxlength="5" label="维修工时" formControlName="workHour" type="text" class="form-control" placeholder="请输入数字, 保留一位小数">
-          <span class="input-group-addon">小时</span>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="amount" class="col-form-label">金额</label>
+  </div>
+  <div class="form-group row">
+    <div class="hq-input">
+      <label for="amount" class="form-label">金额</label>
+      <div class="hq-col">
         <div class="input-group">
           <input label="金额" formControlName="amount" type="text" class="form-control">
           <span class="input-group-addon">元</span>
         </div>
       </div>
-      <div class="form-group">
-        <label for="operationTime" class="col-form-label">操作时间</label>
-        <input formControlName="operationTime" type="text" class="form-control">
-      </div>
     </div>
-  </form>
-</div>
+  </div>
+</form>
 <br>
-<div>
-  <button type="submit" class="btn btn-primary" [disabled]="!maintenanceItemForm.valid" (click)="onConfirmHandler()">保存</button>
+<div class="text-center">
+  <button type="submit" class="btn btn-success btn-color" [disabled]="!maintenanceItemForm.valid" (click)="onConfirmHandler()">保存</button>
   <button type="button" class="btn btn-secondary" (click)="onCancelHandler()">取消</button>
 </div>

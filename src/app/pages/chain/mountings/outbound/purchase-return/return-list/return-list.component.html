@@ -113,7 +113,7 @@
   </div>
   <div class="card-footer text-muted">
     <button [disabled]="!model?.valid" class="btn btn-primary" (click)="generate($event)">生成采购退库单</button>
-    <button [disabled]="!model?.valid" class="btn btn-success" (click)="suspend($event)">挂单</button>
+    <button [disabled]="!model?.valid" class="btn btn-success btn-suspend" (click)="suspend($event)">挂单</button>
   </div>
 </div>
 

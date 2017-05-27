@@ -63,10 +63,19 @@ select.form-control{
 table td,th{
     padding: 0.5rem!important;
     white-space: nowrap;
+    /*line-height: 2.5rem;*/
+}
+table td {
+    font-size: 0.875rem;
 }
 
 table th{
     text-align: center;
+    background: #f3f3f4;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #727171;
+    border-color: #dcdddd;
 }
 
 caption {
@@ -75,9 +84,11 @@ caption {
 
 /*必选项前面的星号样式*/ 
 .asterisk {
+    line-height: 2.5rem;
+    vertical-align: middle;
     color: #c9302c;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 1rem;
 }
 
 .overtime {
@@ -131,4 +142,41 @@ hqtabletypeahead ul{
     border-bottom: 5px solid transparent;
     border-right: 6px solid #fff;
     border-top: 5px solid transparent;
+}
+.card-header {
+    color: #727171;
+    font-size: 1rem;
+}
+.input-group-addon {
+  background: #fff;
+}
+tabset ul li.active a{
+  color: #464a4c;
+}
+tabset ul li a, tabset ul li a:hover {
+  color: #a7b1c2;
+}
+.btn-primary{
+    background-color: #27b394 !important;
+    border: 0;
+    cursor: pointer;
+    transition: .8s;
+}
+.btn-primary:hover{
+    background-color: #22cda7 !important;
+    border: 0;
+}
+.btn-error,.btn-danger{
+    background-color:#eb5267 !important;
+    border:0;
+}
+.btn-suspend{
+    background-color: #fa9837 !important;
+    border:0;
+    cursor: pointer;
+    transition: .8s;
+}
+.btn-suspend:hover{
+    background-color:#d8812b !important;
+    
 }

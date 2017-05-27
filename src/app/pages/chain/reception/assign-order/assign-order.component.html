@@ -139,6 +139,7 @@
                   </tbody>
                 </table>
               </div>
+              <br>
               <div>
                 <button [hqSpinner]="generating.assign" class="btn btn-secondary mr-2" (onConfirm)="onConfirmTechnicians($event, 1)" [hqMutilSelect]="maintenanceTechnicians"
                   mTitle="选择维修技师" [disabled]="!selectedOrder?.serviceOutputs?.enableAssignment" (click)="onMultiSelectorClick($event)"

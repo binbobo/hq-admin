@@ -22,10 +22,8 @@ export class SalesReturnService implements BasicService<any>{
 //   //客户信息模糊查询
   getCustomerPagedList(params: CustomerRequest): Promise<PagedResult<any>> {
     const url = Urls.chain.concat('/Sales/GetCustomer?', params.serialize());
-    console.log("客户信息url",url);
     return this.httpService.get<PagedResult<any>>(url)
       .then(result => {
-        console.log('客户信息数据', result);
         return result;
       })
       .catch(err => Promise.reject(`获取客户信息失败：${err}`));
@@ -33,22 +31,8 @@ export class SalesReturnService implements BasicService<any>{
 //   //退库单号模糊查询
   getBillCodePagedList(params: BillCodeRequest): Promise<PagedResult<any>> {
     const url = Urls.chain.concat('/Sales/SearchBillCode?', params.serialize());
-    console.log("退库单url",url);
     return this.httpService.get<PagedResult<any>>(url)
       .then(result => {
-        console.log('退库单号数据', result);
-        // let p = {
-        //   totalCount:0,
-        //   total:0,
-        //   data:[]
-        // }
-        // result.data[0].billCodeList.map(m=>{
-        //    p.data.push({text:m.text,value:m.value});
-        // })
-        // p.totalCount = result.data[0].billCodeList.length;
-        // p.total = result.data[0].billCodeList.length;
-        // console.log('pppp',p);
-        // return p;
         return result;
       })
       .catch(err => Promise.reject(`获取退库单号信息失败：${err}`));
@@ -57,10 +41,8 @@ export class SalesReturnService implements BasicService<any>{
 //   //获取配件信息
   getPagedList(params: SaleDetailsRequest): Promise<PagedResult<any>> {
     const url = Urls.chain.concat('/SaleDetails/GetPagedList?', params.serialize());
-    console.log("配件信息url",url);
     return this.httpService.get<PagedResult<any>>(url)
       .then(result => {
-        console.log('配件信息数据', result);
         return result;
       })
       .catch(err => Promise.reject(`获取配件信息数据失败：${err}`));
@@ -78,32 +60,13 @@ export class SalesReturnService implements BasicService<any>{
   get(code: string): Promise<SalesReturnPrintItem> {
     if (!code) return Promise.resolve({});
     let url = Urls.chain.concat('/SaleReturnDetails/Print?BillCode=', code);
-    console.log('退库单打印URL',url);
     return this.httpService.get<ApiResult<SalesReturnPrintItem>>(url)
       .then(result => result.data)
       .catch(err => Promise.reject(`获取销售退库单信息失败：${err}`));
   }
 
-//   // getSalesmanOptions(): Promise<Array<SelectOption>> {
-//   //   let url = Urls.chain.concat('/Employees/GetByKey?key=Seller');
-//   //   return this.httpService.get<ListResult<any>>(url)
-//   //     .then(result => result.data)
-//   //     .then(data => Array.isArray(data) ? data : [])
-//   //     .then(data => data.map(m => new SelectOption(m.name, m.id)))
-//   //     .catch(err => Promise.reject(`获取销售员选项失败：${err}`));
-//   // }
 
 }
-
-// export class FuzzySearchRequest extends PagedParams {
-//     constructor(
-//         public keyword: string, // 模糊搜索关键字
-//     ) {
-//         // super('FuzzySearchRequestParams');
-//         super();
-//     }
-// }
-
 
 
 export class CustomerRequest extends PagedParams {

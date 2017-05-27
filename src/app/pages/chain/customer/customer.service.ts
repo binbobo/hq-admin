@@ -127,7 +127,7 @@ export class CustomerService implements BasicService<any> {
         const url = Urls.chain.concat('/Customers/', id);
         return this.httpService
             .delete(url)
-            .catch(err => Promise.reject(`删除工单失败：${err}`));
+            .catch(err => Promise.reject(`删除客户记录失败：${err}`));
     }
 }
 

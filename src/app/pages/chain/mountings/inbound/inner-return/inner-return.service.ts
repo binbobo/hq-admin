@@ -22,22 +22,8 @@ export class InnerReturnService implements BasicService<any>{
   //获取内部领用单号信息
   getCodePagedList(params: BillCodeSearchRequest): Promise<PagedResult<any>> {
     const url = Urls.chain.concat('/Uses/SearchBillCode?', params.serialize());
-    console.log("领用单url", url);
     return this.httpService.get<PagedResult<any>>(url)
       .then(result => {
-        console.log('领用单号数据',result);
-        // let p = {
-        //   totalCount:0,
-        //   total:0,
-        //   data:[]
-        // }
-        // result.data.map(m=>{
-        //    p.data.push({billCode:m});
-        // })
-        // p.totalCount = result.data.length;
-        // p.total = result.data.length;
-        // console.log('pppp',p);
-        // return p;
         return result;
       })
       .catch(err => Promise.reject(`获取内部领用数据失败：${err}`));
@@ -45,10 +31,8 @@ export class InnerReturnService implements BasicService<any>{
   //获取配件信息
   getPagedList(params: BillCodeSearchRequest): Promise<PagedResult<any>> {
     const url = Urls.chain.concat('/UseDetails/Search?', params.serialize());
-    console.log("配件信息url", url);
     return this.httpService.get<PagedResult<any>>(url)
       .then(result => {
-        console.log('配件信息数据', result);
         return result;
       })
       .catch(err => Promise.reject(`获取配件信息数据失败：${err}`));
@@ -57,10 +41,8 @@ export class InnerReturnService implements BasicService<any>{
   get(code: string): Promise<InnerPrintItem> {
     if (!code) return Promise.resolve({});
     let url = Urls.chain.concat('/UseReturnDetails/Print?BillCode=', code);
-    console.log('退料单打印URL',url);
     return this.httpService.get<ApiResult<any>>(url)
       .then(result => {
-        // console.log(result.data);
         return result.data;
       })
       .catch(err => Promise.reject(`获取内部退料单信息失败：${err}`));
@@ -77,22 +59,10 @@ export class InnerReturnService implements BasicService<any>{
     let url = Urls.chain.concat('/Uses/GetPagedList');
     return this.httpService.get<ApiResult<any>>(url)
       .then(result => {
-        console.log('人人人人', result);
         return result.data
       })
-      // .then(data => Array.isArray(data) ? data : [])
-      // .then(data => data.map(m => new SelectOption(m.name, m.id)))
       .catch(err => Promise.reject(`获取退料人选项失败：${err}`));
   }
-  //获取部门
-  // getDepartmentsByInner(id: string): Promise<Array<SelectOption>> {
-  //   let url = Urls.chain.concat('/Departments/GetDataByEmployee/', id);
-  //   return this.httpService.get<ListResult<any>>(url)
-  //     .then(result => result.data)
-  //     .then(data => Array.isArray(data) ? data : [])
-  //     .then(data => data.map(m => new SelectOption(m.name, m.id)))
-  //     .catch(err => Promise.reject(`获取部门选项失败：${err}`))
-  // }
 
 }
 

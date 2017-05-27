@@ -1,9 +1,6 @@
-<div class="card">
-  <div class="card-header" style="color:gray;padding: 3px 5px;">
-    工时费
-    <span class="ml-2 mr-2"><strong>{{fee.workHour|centToYuan}}</strong></span> | 材料费
-    <span class="ml-2 mr-2"><strong>{{fee.material|centToYuan}}</strong></span> | 优惠
-    <span class="ml-2 mr-2"><strong>{{fee.discount|centToYuan}}</strong></span> | 应收金额
-    <span class="ml-2 mr-2"><strong>{{fee.workHour+fee.material-fee.discount|centToYuan}}</strong></span> |
-  </div>
+<div class="fee-statistics">
+  <span class="ml-2 mr-2">工时费:<strong>{{fee.workHour|centToYuan}}</strong></span>
+  <span class="ml-2 mr-2">材料费:<strong>{{fee.material|centToYuan}}</strong></span>
+  <span class="ml-2 mr-2">优惠:<strong>{{fee.discount|centToYuan}}</strong></span>
+  <span class="ml-2 pull-right mr-2">应收金额:<strong>{{fee.workHour+fee.material-fee.discount|centToYuan}}</strong></span>
 </div>
