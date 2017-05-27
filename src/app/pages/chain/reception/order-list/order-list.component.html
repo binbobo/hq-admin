@@ -73,7 +73,7 @@
             <input maxlength="25" type="text" [(ngModel)]="params.billCode" name="billCode" class="form-control">
           </div>
         </div>
-        <div class="hq-input" *ngIf="isCollapsed">
+        <div class="hq-input" style="width:50%" *ngIf="isCollapsed">
           <div class="hq-col">
             <button type="submit" [disabled]="false" class="btn btn-primary mr-2">查询</button>
             <button type="reset" class="btn btn-warning mr-2">清空</button>
@@ -157,7 +157,7 @@
                 <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)"> >
                 </ngx-dropdown-treeview>
               </div>-->
-            <div class="hq-input" *ngIf="!isCollapsed">
+            <div class="hq-input" style="width:50%" *ngIf="!isCollapsed">
               <div class="hq-col">
                 <button type="submit" [disabled]="false" class="btn btn-primary mr-2">查询</button>
                 <button type="reset" class="btn btn-warning mr-2">清空</button>

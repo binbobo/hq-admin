@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CustomerService} from '../../customer.service';
+import { CustomerService } from '../../customer.service';
 import { OrderService } from '../../../reception/order.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
@@ -44,6 +44,9 @@ export class EditCarownerComponent implements OnInit {
   // 保存车主加载动画
   generating = false;
 
+  // 当前选择的车辆记录  用于编辑
+  selectedVehicle: any;
+
   constructor(
     protected service: CustomerService,
     protected orderService: OrderService,
@@ -58,12 +61,25 @@ export class EditCarownerComponent implements OnInit {
   goBack() {
     this.location.back();
   }
+
   // 添加一条车辆记录处理程序
-  onAddVehicleConfirmHandler(evt) {
-    console.log('编辑车辆信息', evt);
-    setTimeout(() => {
-      this.newVehiclesData.push(evt);
-    }, 500);
+  onVehicleConfirmHandler(evt, vehicleModal) {
+    const data = evt.data;
+    if (evt.isEdit && this.selectedVehicle) {
+      // 编辑
+      const index = this.newVehiclesData.findIndex((item) => {
+        return item.vehicleId === this.selectedVehicle.vehicleId;
+      });
+      // 使用新的元素替换以前的元素
+      this.newVehiclesData.splice(index, 1, data);
+
+      // 清空当前编辑的車车辆
+      this.selectedVehicle = null;
+    } else {
+      // 新增
+      this.newVehiclesData.push(data);
+    }
+    vehicleModal.hide();
   }
 
   // 删除一条车辆记录 处理程序
@@ -75,8 +91,7 @@ export class EditCarownerComponent implements OnInit {
         return;
       }
     });
-
-    this.enableSaveCustomer = true;
+    this.enableSaveCustomer = this.carOwnerForm.valid && this.newVehiclesData.length > 0;
   }
 
   // 添加车主
@@ -207,7 +222,7 @@ export class EditCarownerComponent implements OnInit {
     // 表单域中的值改变事件监听
     this.carOwnerForm.valueChanges.subscribe(data => {
       // 只有表单域合法 保存车主按钮才可用
-      this.enableSaveCustomer = this.carOwnerForm.valid;
+      this.enableSaveCustomer = this.carOwnerForm.valid && this.newVehiclesData.length > 0;;
     });
   }
 

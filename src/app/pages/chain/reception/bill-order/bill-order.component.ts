@@ -214,7 +214,7 @@ export class BillOrderComponent extends DataList<any>{
             workItemMoney: 0
         }
     }
-
+    deduceAmount:any;
     // 点击详情事件
     DetailsDialog(evt, id, dialog, item) {
         item.generating = true;
@@ -226,16 +226,12 @@ export class BillOrderComponent extends DataList<any>{
         this.otherFee = 0;
         this.sumFee = 0;
         evt.preventDefault();
-
-
-
         // 根据id获取工单详细信息
         this.service.get(id).then(data => {
             console.log('根据工单id获取工单详情数据：', data);
             // 记录当前操作的工单记录
             this.selectedOrder = data;
             this.billId = this.selectedOrder["id"]
-
         });
         this.service.getCost(id).then(data => {
             if (!data.isSettlement) {
@@ -259,7 +255,7 @@ export class BillOrderComponent extends DataList<any>{
                         // 工时明细
                         this.printData.workHourData.forEach(item => {
                             //金额
-                            this.printData.moneyObj.workItemMoney = item.amount * item.discount
+                            this.printData.moneyObj.workItemMoney = item.amount;
                             // 工时明细的应收金额和折扣金额
                             this.printData.moneyObj.workCostMoney += item.discountCost;
                             this.printData.moneyObj.discountMoney += item.amount * (1 - item.discount / 100);
@@ -274,6 +270,8 @@ export class BillOrderComponent extends DataList<any>{
                             this.printData.moneyObj.costMoney += item.receivableCost;
                             this.printData.moneyObj.costCountMoney += (item.receivableCost - item.discountCost);
                         });
+                        this.deduceAmount = data.deduceAmount || 0;
+                        this.printData.moneyObj.costCountMoney += this.deduceAmount;
                         console.log(this.printData)
                         this.isShowPrint = true;
                         item.generating = false;
@@ -282,10 +280,8 @@ export class BillOrderComponent extends DataList<any>{
                     })
                     .catch(err => {
                         this.alerter.error('获取工单信息失败: ' + err, true, 2000);
-                        item.generating = true;
+                        item.generating = false;
                     });
-
-
             }
             console.log("根据工单id获取工单材料费和工时费", data);
             this.workReceivableCost = data.workReceivableCost;
@@ -341,7 +337,7 @@ export class BillOrderComponent extends DataList<any>{
                                 // 工时明细
                                 this.printData.workHourData.forEach(item => {
                                     //金额
-                                    this.printData.moneyObj.workItemMoney = item.amount * item.discount
+                                    this.printData.moneyObj.workItemMoney = item.amount;
                                     // 工时明细的应收金额和折扣金额
                                     this.printData.moneyObj.workCostMoney += item.discountCost;
                                     this.printData.moneyObj.discountMoney += item.amount * (1 - item.discount / 100);
