@@ -62,7 +62,7 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
       packageInfo: [this.model.packageInfo, [Validators.maxLength(20)]],
       madeIn: [this.model.madeIn, [Validators.maxLength(100)]],
       description: [this.model.description, [Validators.maxLength(200)]],
-      productId: ['']
+      id: ['']
     });
   }
 
@@ -154,7 +154,7 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
       unit: event.unitId,
       categoryId: event.categoryId,
       categoryName: event.categoryName,
-      productId: event.id,
+      id: event.id,
     };
     this.form.patchValue(item);
     this.vehicles = event.vehicleInfoList;
@@ -175,7 +175,7 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
   }
 
   private disableItem(disabled: boolean, ...sources: Array<string>) {
-    let keys = ['packageInfo', 'madeIn', 'brandName', 'productId'];
+    let keys = ['packageInfo', 'madeIn', 'brandName', 'id'];
     keys.push.apply(keys, sources.filter(m => m));
     if (disabled) {
       this.owned = true;
