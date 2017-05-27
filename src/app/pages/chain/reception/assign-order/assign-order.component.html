@@ -5,23 +5,22 @@
   </div>
   <div class='card-block'>
     <form (ngSubmit)="onSearch()">
-      <div class="input-group col-8 offset-2">
-        <input style="border-radius: 5px;" [(ngModel)]="params.keyword" name="keyword" placeholder="请输入车牌号/工单号" class="form-control mr-3">
+      <div class="input-group serach-input">
+        <input [(ngModel)]="params.keyword" name="keyword" placeholder="请输入车牌号/工单号" class="form-control mr-3">
         <span class="input-group-btn">
           <button class="btn btn-primary" type="submit">查询</button>
         </span>
       </div>
-      <hr>
-      <div class="form-group">
+      <div class="form-group" *ngIf="maintenanceAssignTypes">
+        <label class="form-label mr-2">工单状态：</label>
         <div class="form-check form-check-inline" *ngFor="let type of maintenanceAssignTypes">
-          <label class="form-check-label mr-2">
-            <input class="form-check-input" (change)='onStatusChange(type)' [checked]="type.checked"  type="checkbox" value="{{type.id}}"> {{type.value}}
+          <label class="form-check-label">
+            <input class="form-check-input mr-2" (change)='onStatusChange(type)' [checked]="type.checked"  type="checkbox" value="{{type.id}}"> {{type.value}}
             <span *ngIf="statistics">({{statistics[type.id]}})</span>
           </label>
         </div>
       </div>
     </form>
-    <hr>
     <div class="table-container">
       <table class="table table-bordered">
         <thead>
@@ -91,7 +90,7 @@
         <div class="modal-header">
           <h6 class="modal-title pull-left">维修派工详情</h6>
           <button type="button" class="close pull-right" (click)="lgModal.hide();isDetailModalShown=false;" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+          <span aria-hidden="true"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
         </button>
         </div>
         <div class="modal-body">
@@ -155,7 +154,6 @@
             <tab heading="建议维修项目" *ngIf="selectedOrder?.suggestServiceOutputs?.length>0">
               <hq-suggested-item-list [suggestServiceOutputs]="selectedOrder?.suggestServiceOutputs"></hq-suggested-item-list>
             </tab>
-            <hr>
           </tabset>
         </div>
       </div>

@@ -5,23 +5,22 @@
   </div>
   <div class='card-block'>
     <form (ngSubmit)="onSearch()">
-      <div class="input-group col-8 offset-2">
-        <input style="border-radius: 5px;" [(ngModel)]="params.keyword" name="keyword" placeholder="请输入车牌号/工单号" class="form-control mr-3">
+      <div class="input-group serach-input">
+        <input [(ngModel)]="params.keyword" name="keyword" placeholder="请输入车牌号/工单号" class="form-control mr-3">
         <span class="input-group-btn">
           <button class="btn btn-primary" type="submit">查询</button>
         </span>
       </div>
-      <hr>
-      <div class="form-group">
+      <div class="form-group" *ngIf="maintenanceCheckTypes">
+        <label class="form-label mr-2">工单状态：</label>
         <div class="form-check form-check-inline" *ngFor="let type of maintenanceCheckTypes">
-          <label class="form-check-label mr-2">
-            <input class="form-check-input" (change)='onStatusChange(type)' [checked]="type.checked"  type="checkbox" value="{{type.id}}"> {{type.value}}
+          <label class="form-check-label">
+            <input class="form-check-input mr-2" (change)='onStatusChange(type)' [checked]="type.checked"  type="checkbox" value="{{type.id}}"> {{type.value}}
             <span *ngIf="statistics">({{statistics[type.id]}})</span>
           </label>
         </div>
       </div>
     </form>
-    <hr>
     <div class="table-container">
       <table class="table table-bordered">
         <thead>
@@ -83,13 +82,16 @@
         <div class="modal-header">
           <h6 class="modal-title pull-left">维修验收详情</h6>
           <button type="button" class="close pull-right" (click)="lgModal.hide();isDetailModalShown=false;" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+          <span aria-hidden="true"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
         </button>
         </div>
         <div class="modal-body">
           <!--导出详情begin-->
           <tabset>
-            <tab heading="维修项目" *ngIf="selectedOrder?.serviceOutputs?.length>0">
+            <tab *ngIf="selectedOrder?.serviceOutputs?.length>0">
+              <template tabHeading>
+                <i class="fa fa-female mr-2" aria-hidden="true"></i>维修项目
+              </template>
               <div class="table-container">
                 <table class="table table-bordered">
                   <thead>
@@ -98,23 +100,19 @@
                           type="checkbox" /></th>
                       <th>项目名称</th>
                       <th>维修工时(小时)</th>
-                      <!--<th>验收时间</th>-->
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let record of selectedOrder?.serviceOutputs" [class.checked]="record.checked" (click)="$event.stopPropagation();toggleCheckbox(record)">
                       <td>
-                        <!--已经通过之后, 不可以再次操作-->
                         <input [disabled]="record.teamType === 6" value="{{record.id}}" (click)="$event.stopPropagation();toggleCheckbox(record)"
                           [checked]="record.checked" type="checkbox" />
                       </td>
                       <td>
                         {{record?.serviceName}}
-                        <!--已通过的打个标记-->
                         <span [class.triangle]="record.teamType === 6"></span>
                       </td>
                       <td>{{record?.workHour}}</td>
-                      <!--<td>{{record?.operateDateTime|sDatetime}}</td>-->
                     </tr>
                   </tbody>
                 </table>
@@ -124,7 +122,10 @@
                 <button [hqSpinner]="generating" class="btn btn-secondary" [disabled]="!selectedOrder?.serviceOutputs?.enableCheck" (click)="onOrderCheckPass()">通过</button>
               </div>
             </tab>
-            <tab heading="维修配件" *ngIf="selectedOrder?.productOutputs?.length>0">
+            <tab *ngIf="selectedOrder?.productOutputs?.length>0">
+              <template tabHeading>
+                <i class="fa fa-female mr-2" aria-hidden="true"></i>维修配件
+              </template>
               <div class="table-container">
                 <table class="table table-bordered">
                   <thead>
@@ -136,57 +137,62 @@
                       <th>数量</th>
                       <th>单价(元)</th>
                       <th>金额(元)</th>
-                      <!--<th>操作时间</th>-->
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let record of selectedOrder?.productOutputs">
+                    <tr *ngFor="let record of selectedOrder?.productOutputs; let index=index;">
                       <td>{{record?.serviceName}}</td>
                       <td>{{record?.productName}}</td>
                       <td>{{record?.brandName}}</td>
                       <td>{{record?.specification}}</td>
                       <td>{{record?.count}}</td>
-                      <td class="text-center">{{record?.price|centToYuan}}</td>
-                      <td class="text-center">{{record?.amount|centToYuan}}</td>
-                      <!--<td>{{record?.operateDateTime|sDatetime}}</td>-->
+                      <td class="text-right">{{record?.price|centToYuan}}</td>
+                      <td class="text-right">{{record?.amount|centToYuan}}</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </tab>
-            <tab heading="附加项目" *ngIf="selectedOrder?.attachServiceOutputs?.length>0">
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>备注</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let record of selectedOrder?.attachServiceOutputs">
-                    <td>{{record?.description}}</td>
-                  </tr>
-                </tbody>
-              </table>
+            <tab *ngIf="selectedOrder?.attachServiceOutputs?.length>0">
+              <template tabHeading>
+                <i class="fa fa-female mr-2" aria-hidden="true"></i>附加项目
+              </template>
+              <div class="table-container">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>备注</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let record of selectedOrder?.attachServiceOutputs;let index=index;">
+                      <td>{{record?.description}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </tab>
-            <tab heading="建议维修项目" *ngIf="selectedOrder?.suggestServiceOutputs?.length>0">
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>建议维修项目</th>
-                    <!--<th>操作时间</th>-->
-                    <th>备注</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let record of selectedOrder?.suggestServiceOutputs">
-                    <td>{{record?.content}}</td>
-                    <!--<td>{{record?.operateDateTime|sDatetime}}</td>-->
-                    <td>{{record?.description}}</td>
-                  </tr>
-                </tbody>
-              </table>
+            <tab *ngIf="selectedOrder?.suggestServiceOutputs?.length>0">
+              <template tabHeading>
+                <i class="fa fa-female mr-2" aria-hidden="true"></i>建议维修项目
+              </template>
+              <div class="table-container">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>建议维修项目</th>
+                      <th>备注</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let record of selectedOrder?.suggestServiceOutputs;let index=index;">
+                      <td>{{record?.content}}</td>
+                      <td>{{record?.description}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </tab>
-            <hr>
           </tabset>
         </div>
       </div>

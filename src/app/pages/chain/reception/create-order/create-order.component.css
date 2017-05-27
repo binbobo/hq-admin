@@ -11,11 +11,7 @@
 .fa-plus-circle:before {
   color: #27b394;
 }
-.fa-times-circle {
-  font-size: 1rem;
-  vertical-align: middle;
-  font-weight: normal;
-} 
+
 
 hr {
     border-top:2px dotted #ccc;

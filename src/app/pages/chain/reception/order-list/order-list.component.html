@@ -6,13 +6,15 @@
   <div class="card-block">
     <form #form="ngForm" (ngSubmit)="onSearch()">
       <!--不同工单状态工单复选框部分-->
-      <div class="form-group row">
-        <label class="form-label">工单状态：</label>
-        <div class="form-label check-label">
-          <div class="form-check form-check-inline" *ngFor="let status of orderStatusData">
-            <label class="form-check-label mr-2">
-            <input (change)='status.checked = !status.checked' [checked]="status.checked" class="form-check-input mr-2"  type="checkbox" value="{{status.id}}"> {{status.value}}
-          </label>
+      <div class="form-group row" *ngIf="orderStatusData">
+        <div class="check-label">
+          <label class="form-label">工单状态：</label>
+          <div class="check-label-col">
+            <div class="form-check form-check-inline" *ngFor="let status of orderStatusData">
+              <label class="form-check-label">
+                <input (change)='status.checked = !status.checked' [checked]="status.checked" class="form-check-input mr-2"  type="checkbox" value="{{status.id}}"> {{status.value}}
+              </label>
+            </div>
           </div>
         </div>
       </div>
@@ -21,25 +23,28 @@
         <div class="hq-input">
           <label for="plateNo" class="form-label">车牌号</label>
           <div class="hq-col">
-            <input maxlength="12" type="text" [(ngModel)]="params.plateNo" name="plateNo" class="form-control" placeholder="车牌号">
+            <!-- placeholder="车牌号"-->
+            <input maxlength="12" type="text" [(ngModel)]="params.plateNo" name="plateNo" class="form-control">
           </div>
         </div>
         <div class="hq-input">
           <label for="customerName" class="form-label">车主</label>
           <div class="hq-col">
-            <input maxlength="15" type="text" placeholder="车主" [(ngModel)]="params.customerName" name="customerName" class="form-control">
+            <input maxlength="15" type="text" [(ngModel)]="params.customerName" name="customerName" class="form-control">
           </div>
         </div>
         <div class="hq-input">
           <label for="phone" class="form-label">车主电话</label>
           <div class="hq-col">
-            <input maxlength="11" type="text" [(ngModel)]="params.phone" name="phone" class="form-control" placeholder="车主电话">
+            <!-- placeholder="车主电话"-->
+            <input maxlength="11" type="text" [(ngModel)]="params.phone" name="phone" class="form-control">
           </div>
         </div>
         <div class="hq-input">
           <label for="contactUser" class="form-label">送修人</label>
           <div class="hq-col">
-            <input maxlength="15" type="text" [(ngModel)]="params.contactUser" name="contactUser" class="form-control" placeholder="送修人">
+            <!-- placeholder="送修人"-->
+            <input maxlength="15" type="text" [(ngModel)]="params.contactUser" name="contactUser" class="form-control">
           </div>
         </div>
         <div class="hq-input">
@@ -57,13 +62,15 @@
         <div class="hq-input">
           <label for="contactInfo" class="form-label">送修人电话</label>
           <div class="hq-col">
-            <input maxlength="11" type="text" [(ngModel)]="params.contactInfo" name="contactInfo" class="form-control" placeholder="送修人电话">
+            <!-- placeholder="送修人电话"-->
+            <input maxlength="11" type="text" [(ngModel)]="params.contactInfo" name="contactInfo" class="form-control">
           </div>
         </div>
         <div class="hq-input">
           <label for="billCode" class="form-label">工单号</label>
           <div class="hq-col">
-            <input maxlength="25" type="text" [(ngModel)]="params.billCode" name="billCode" class="form-control" placeholder="工单号">
+            <!-- placeholder="工单号"-->
+            <input maxlength="25" type="text" [(ngModel)]="params.billCode" name="billCode" class="form-control">
           </div>
         </div>
         <div class="hq-input" *ngIf="isCollapsed">
@@ -77,72 +84,91 @@
       <div [collapse]="isCollapsed" class="mt-3">
         <div class="well well-lg">
           <div class="form-group row">
-            <label for="brand" class="col-1 col-form-label">品牌</label>
-            <div class="col-2">
-              <input maxlength="10" type="text" [(ngModel)]="params.brand" name="brand" class="form-control" placeholder="品牌">
+            <div class="hq-input">
+              <label for="brand" class="form-label">品牌</label>
+              <div class="hq-col">
+                <input maxlength="10" type="text" [(ngModel)]="params.brand" name="brand" class="form-control">
+              </div>
             </div>
-            <label for="series" class="col-1 col-form-label">车系</label>
-            <div class="col-2">
-              <input maxlength="10" type="text" [(ngModel)]="params.series" name="series" class="form-control" placeholder="车系">
+            <div class="hq-input">
+              <label for="series" class="form-label">车系</label>
+              <div class="hq-col">
+                <input maxlength="10" type="text" [(ngModel)]="params.series" name="series" class="form-control">
+              </div>
             </div>
-            <label for="vehicleName" class="col-1 col-form-label">车型</label>
-            <div class="col-2">
-              <input maxlength="20" type="text" [(ngModel)]="params.vehicleName" name="vehicleName" class="form-control" placeholder="车型">
+            <div class="hq-input">
+              <label for="vehicleName" class="form-label">车型</label>
+              <div class="hq-col">
+                <input maxlength="20" type="text" [(ngModel)]="params.vehicleName" name="vehicleName" class="form-control" placeholder="车型">
+              </div>
             </div>
-            <label for="createdUserName" class="col-1 col-form-label col-form-label">服务顾问</label>
-            <div class="col-2">
-              <input maxlength="15" type="text" [(ngModel)]="params.createdUserName" name="createdUserName" class="form-control" placeholder="服务顾问">
+            <div class="hq-input">
+              <label for="createdUserName" class="form-label col-form-label">服务顾问</label>
+              <div class="hq-col">
+                <input maxlength="15" type="text" [(ngModel)]="params.createdUserName" name="createdUserName" class="form-control">
+              </div>
             </div>
           </div>
           <div class="form-group row">
-            <label for="leaveFactoryTime" class="col-1 col-form-label">出厂时间</label>
-            <div class="col-2">
-              <!--[max-hour]="maxLeaveStartHours" -->
-              <input readonly [max-date]="maxLeaveStartDate" [(ngModel)]="params.leaveStartTimeDate" name="leaveStartTimeDate" class="form-control"
-                type="text" ngui-datetime-picker [close-on-select]="false" />
+            <div class="hq-input">
+              <label for="leaveFactoryTime" class="form-label">出厂时间</label>
+              <div class="hq-col">
+                <!--[max-hour]="maxLeaveStartHours" -->
+                <input readonly [max-date]="maxLeaveStartDate" [(ngModel)]="params.leaveStartTimeDate" name="leaveStartTimeDate" class="form-control"
+                  type="text" ngui-datetime-picker [close-on-select]="false" />
+              </div>
             </div>
-            <label class="col-1 col-form-label">至</label>
-            <div class="col-2">
-              <!--[min-hour]="minLeaveEndHours" 
+            <div class="hq-input">
+              <label class="form-label">至</label>
+              <div class="hq-col">
+                <!--[min-hour]="minLeaveEndHours" 
                  [max-hour]="maxLeaveEndHours" -->
-              <input readonly [min-date]="minLeaveEndDate" [max-date]="maxLeaveEndDate" [(ngModel)]="params.leaveEndTimeDate" name="leaveEndTimeDate"
-                class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
+                <input readonly [min-date]="minLeaveEndDate" [max-date]="maxLeaveEndDate" [(ngModel)]="params.leaveEndTimeDate" name="leaveEndTimeDate"
+                  class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
+              </div>
             </div>
-            <label class="col-1 col-form-label">进店时间</label>
-            <div class="col-2">
-              <input readonly [max-date]="maxEnterStartDate" [(ngModel)]="params.enterStartTimeDate" name="enterStartTimeDate" class="form-control"
-                type="text" ngui-datetime-picker [close-on-select]="false" />
+            <div class="hq-input">
+              <label class="form-label">进店时间</label>
+              <div class="hq-col">
+                <input readonly [max-date]="maxEnterStartDate" [(ngModel)]="params.enterStartTimeDate" name="enterStartTimeDate" class="form-control"
+                  type="text" ngui-datetime-picker [close-on-select]="false" />
+              </div>
             </div>
-            <label class="col-1 col-form-label col-form-label">至</label>
-            <div class="col-2">
-              <input readonly [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" [(ngModel)]="params.enterEndTimeDate" name="enterEndTimeDate"
-                class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
+            <div class="hq-input">
+              <label class="form-label col-form-label">至</label>
+              <div class="hq-col">
+                <input readonly [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" [(ngModel)]="params.enterEndTimeDate" name="enterEndTimeDate"
+                  class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
+              </div>
             </div>
           </div>
-
           <div class="form-group row">
-            <label for="type" class="col-1 col-form-label col-form-label">维修类型</label>
-            <div class="col-2">
-              <select id="type" [(ngModel)]="params.type" name="type" class="form-control">
+            <div class="hq-input">
+              <label for="type" class="form-label col-form-label">维修类型</label>
+              <div class="hq-col">
+                <select id="type" [(ngModel)]="params.type" name="type" class="form-control">
                   <option style="display:none">
                   <option *ngFor="let type of maintenanceTypeData" value="{{type.id}}">{{type.value}}</option>
                 </select>
+              </div>
             </div>
             <!--<label for="searchRange" class="col-1 col-form-label col-form-label">查询范围</label>
               <div class="col-2">
                 <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)"> >
                 </ngx-dropdown-treeview>
               </div>-->
-            <div class="col-6" *ngIf="!isCollapsed">
-              <button type="submit" [disabled]="false" class="btn btn-primary mr-2">查询</button>
-              <button type="reset" class="btn btn-warning mr-2">清空</button>
-              <button [hqSpinner]="generating" type="button" (click)="export()" class="btn btn-secondary mr-2">导出</button>
+            <div class="hq-input" *ngIf="!isCollapsed">
+              <div class="hq-col">
+                <button type="submit" [disabled]="false" class="btn btn-primary mr-2">查询</button>
+                <button type="reset" class="btn btn-warning mr-2">清空</button>
+                <button [hqSpinner]="generating" type="button" (click)="export()" class="btn btn-secondary mr-2">导出</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </form>
-    <hr>
+    <br>
     <div class="table-container">
       <table class="table table-bordered">
         <thead>
@@ -204,15 +230,20 @@
       <div *ngIf="lgModal.isShown" class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="btn btn-primary pull-left" aria-label="Close" (click)="print()">打印</button>
+            <h6 class="modal-title pull-left">维修工单详情</h6>
             <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+              <span aria-hidden="true"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+            </button>
           </div>
           <div class="modal-body">
             <hq-workorder-detail [data]="selectedOrder"></hq-workorder-detail>
             <!--只有前4个选项卡显示-->
             <hq-fee-statistics [fee]="selectedOrder.fee"></hq-fee-statistics>
+          </div>
+          <div class="modal-footer">
+            <div class="text-center" style="width:100%;">
+              <button type="button" class="btn btn-primary" (click)="print()">打印</button>
+            </div>
           </div>
         </div>
       </div>

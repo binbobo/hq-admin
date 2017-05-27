@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewEncapsulation, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {  Vehicle } from '../../../reception/order.service';
 import { CustomValidators } from 'ng2-validation';
@@ -17,6 +17,8 @@ export class AddVehicleComponent implements OnInit {
 
   @Output() onAddVehicleCancel = new EventEmitter<any>();
   @Output() onAddVehicleConfirm = new EventEmitter<any>();
+    @Input()
+  vehicle: any = null; // 当前编辑的维修项目
 
   isBrandSelected = false;
   isSeriesSelected = false;

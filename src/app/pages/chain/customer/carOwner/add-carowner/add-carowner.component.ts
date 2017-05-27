@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CustomerService} from '../../customer.service';
+import { CustomerService } from '../../customer.service';
 import { OrderService } from '../../../reception/order.service';
 import { Location } from '@angular/common';
 import { HqAlerter } from 'app/shared/directives';
@@ -206,6 +206,9 @@ export class AddCarownerComponent implements OnInit {
     this.loadCustomer(evt);
   }
 
+  // 当前选择的车辆记录  用于编辑
+  selectedVehicle: any;
+
   // 从模糊 查询列表中 选择一条车主记录后 加载客户信息 
   loadCustomer(customer) {
     // 组织省份数据
@@ -260,10 +263,14 @@ export class AddCarownerComponent implements OnInit {
  * @memberof CarOwnerComponent
  */
   onCustomerPhoneSelect(evt) {
-    console.log('通过车主手机号模糊查询车主下拉选择：', evt);
-
-    // 加载车主数据
-    this.loadCustomer(evt);
+    // console.log('通过车主手机号模糊查询车主下拉选择：', evt);
+    this.service.get(evt.id).then(customer => {
+      console.log('通过车主手机号模糊查询车主车主信息：', customer);
+      // 加载车主数据
+      this.loadCustomer(customer);
+    }).catch(err => {
+      this.alerter.error('获取车主信息失败：' + err, true, 3000);
+    });
   }
 
 }
