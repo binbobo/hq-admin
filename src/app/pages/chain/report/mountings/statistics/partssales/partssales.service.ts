@@ -31,7 +31,7 @@ export class PartssalesService implements BasicService<any>{
 
   //导出
   public export(params: PartssalesRequest): Promise<void> {
-    const url = Urls.chain.concat('/Purchases/StatisticExportToExcel');
+    const url = Urls.chain.concat('/Sales/StatExportToExcel');
     return this.httpService
       .download(url, params.serialize(), '配件销售统计')
       .catch(err => Promise.reject(`配件销售统计导出失败：${err}`));
