@@ -33,7 +33,7 @@
       </div>
     </form>
     <div class="table-container">
-      <table class="table table-bordered table-striped">
+      <table class="table table-bordered">
         <thead>
           <tr>
             <th><input (change)="onCheckChange($event)" type="checkbox"></th>
@@ -73,12 +73,7 @@
             <td>{{item.brand}}</td>
             <td>{{item.specification}}</td>
             <td class="text-center">{{item.count}}</td>
-            <td class="py-2">
-              <select class="form-control form-control-sm" [hidden]="!item?.vehicleInfoList?.length">
-                <option>点击查看</option>
-                <option disabled *ngFor="let item of item?.vehicleInfoList">{{item.vehicleName}}</option>
-              </select>
-            </td>
+            <td [hqVehicleShow]="item?.vehicleInfoList"></td>
             <td class="text-center">{{item.unit}}</td>
             <td class="text-right">{{item.costPrice|centToYuan}}</td>
             <td class="text-right">{{item.costAmount|centToYuan}}</td>

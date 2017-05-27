@@ -18,7 +18,6 @@ export class StockListCreateComponent extends DataList<CreateStock> implements O
   private onCancel = new EventEmitter<void>();
   protected params: CreateStockListRequest;
   private houses: Array<SelectOption>;
-  private locations: Array<SelectOption>;
 
   constructor(
     injector: Injector,
@@ -36,46 +35,16 @@ export class StockListCreateComponent extends DataList<CreateStock> implements O
     this.moutingsService.getWarehouseOptions()
       .then(data => this.houses = data)
       .then(data => {
-        if (!this.params.inventoryId) {
-          this.params.inventoryId = data[0].value;
+        if (!this.params.storeId) {
+          this.params.storeId = data[0].value;
         }
       })
-      .then(data => this.loadLocations(this.params.inventoryId))
-      .catch(err => this.alerter.error(err))
-  }
-
-  onSelectHouse(event: Event) {
-    let el = event.target as HTMLInputElement;
-    let id = el.value;
-    this.loadLocations(id);
-  }
-
-  loadLocations(id: string) {
-    this.moutingsService.getLocationByHouseId(id)
-      .then(data => {
-        if (!data || !data.length) {
-          Promise.reject('没有可用的库位信息！');
-        } else {
-          return data;
-        }
-      })
-      .then(data => this.locations = data)
-      .catch(err => this.alerter.error(err));
-  }
-
-  onSelectLocation(event: MultiSelectConfirmEvent) {
-    this.params.locationId = event.value;
-    this.loadList();
-  }
-
-  cancel() {
-    this.onCancel.emit();
   }
 
   generate(event: Event) {
     let el = event.target as HTMLButtonElement;
     el.disabled = true;
-    let request = new GenerateStockListRequest(this.params.inventoryId, this.params.locationId);
+    let request = new GenerateStockListRequest(this.params.storeId);
     this.takeStockService.create(request)
       .then(() => el.disabled = false)
       .then(() => this.onSubmit.emit())
