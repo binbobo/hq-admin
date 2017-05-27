@@ -155,26 +155,26 @@ export class BillOrderComponent extends DataList<any>{
         }).catch(err => this.alerter.error(err, true, 3000));
 
     }
-    ngAfterViewChecked() {
-        if (this.isShowPrint) {
-            this.printData = {
-                maindata: {},
-                costData: [],
-                workHourData: [],
-                materialData: [],
-                appendItems: [],
-                adviceItems: [],
-                moneyObj: {
-                    workCostMoney: 0,
-                    discountMoney: 0,
-                    materialMoney: 0,
-                    costMoney: 0,
-                    costCountMoney: 0,
-                    workItemMoney: 0
-                }
-            }
-        }
-    }
+    // ngAfterViewChecked() {
+    //     if (this.isShowPrint) {
+    //         this.printData = {
+    //             maindata: {},
+    //             costData: [],
+    //             workHourData: [],
+    //             materialData: [],
+    //             appendItems: [],
+    //             adviceItems: [],
+    //             moneyObj: {
+    //                 workCostMoney: 0,
+    //                 discountMoney: 0,
+    //                 materialMoney: 0,
+    //                 costMoney: 0,
+    //                 costCountMoney: 0,
+    //                 workItemMoney: 0
+    //             }
+    //         }
+    //     }
+    // }
     hideModal(lgModal) {
         lgModal.hide();
         this.isShowPrint = false;
@@ -214,7 +214,7 @@ export class BillOrderComponent extends DataList<any>{
             workItemMoney: 0
         }
     }
-    deduceAmount:any;
+    deduceAmount: any;
     // 点击详情事件
     DetailsDialog(evt, id, dialog, item) {
         item.generating = true;
@@ -232,6 +232,9 @@ export class BillOrderComponent extends DataList<any>{
             // 记录当前操作的工单记录
             this.selectedOrder = data;
             this.billId = this.selectedOrder["id"]
+        }).catch(err => {
+            this.alerter.error(err, true, 2000);
+            item.generating = false;
         });
         this.service.getCost(id).then(data => {
             if (!data.isSettlement) {
@@ -353,19 +356,17 @@ export class BillOrderComponent extends DataList<any>{
                                     this.printData.moneyObj.costCountMoney += (item.receivableCost - item.discountCost);
                                 });
                                 setTimeout(() => this.print(), 200)
-
                             })
                             .catch(err => {
                                 this.alerter.error(err, true, 2000);
                                 this.generat = false;
                             });
-
                     }
                     dialog.hide();
                     this.alerter.info("生成结算单成功", true, 2000);
                     this.onLoadList();
                     this.isShowCost = false;
-                }).catch(err => { dialog.hide(), this.alerter.error(err, true, 3000) });
+                }).catch(err => { dialog.hide(), this.generat = false; this.alerter.error(err, true, 3000) });
             }
 
         }
@@ -374,8 +375,8 @@ export class BillOrderComponent extends DataList<any>{
     // 点击打印事件
     private pathname;
 
-
     print() {
+        console.log(this.printData)
         this.printer.print();
     }
     createForm() {
