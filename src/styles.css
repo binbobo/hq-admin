@@ -125,7 +125,7 @@ hqtabletypeahead ul{
     content: '';
     position: absolute;
     top: 5px;
-    left: -7px;
+    left: -6px;
     width: 0;
     height: 0;
     border-bottom: 5px solid transparent;
@@ -169,9 +169,21 @@ tabset ul li.active a{
 tabset ul li a, tabset ul li a:hover {
   color: #a7b1c2;
 }
+/*大按钮*/
 .btn{
     cursor: pointer;
+    width: 5.5rem;
+    height: 2.5rem;
 }
+.btn:active{
+    border: 0
+}
+/*小按钮*/
+.btn-sm{
+    width: 4.4rem;
+    height: 1.7rem;
+}
+
 /*查询按钮*/
 .btn-primary{
     background-color: #27b394 !important;
@@ -244,4 +256,21 @@ tabset ul li a, tabset ul li a:hover {
     background-color: #dcdddd !important;
     opacity: 1;
     border-color: #dcdddd;
+}
+/*去除input蓝色边框*/
+input:focus{
+    border:1px solid #27b394 !important;
+    outline:none; 
+}
+/*分页样式*/
+.page-link{
+    color:#27b394 !important;
+}
+.page-item.active .page-link{
+    background-color:#27b394 !important;
+    color:#fff !important;
+    border:1px solid #27b394 !important;
+}
+.page-item.disabled .page-link {
+    color:#727171 !important;
 }
