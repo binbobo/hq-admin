@@ -299,15 +299,11 @@ export class BillOrderComponent extends DataList<any>{
             item.generating = false;
             // 显示窗口
             dialog.show();
-
         })
-
-
     }
     private billData = {};
     generat = false;
     private leaveMileage: any;
-
     // 点击确定生成结算
     BillClick(evt, dialog) {
         evt.preventDefault();
@@ -345,6 +341,8 @@ export class BillOrderComponent extends DataList<any>{
                                     this.printData.moneyObj.workCostMoney += item.discountCost;
                                     this.printData.moneyObj.discountMoney += item.amount * (1 - item.discount / 100);
                                 });
+
+
                                 // 材料明细
                                 this.printData.materialData.forEach(item => {
                                     // 材料明细的应收金额
@@ -355,7 +353,10 @@ export class BillOrderComponent extends DataList<any>{
                                     this.printData.moneyObj.costMoney += item.receivableCost;
                                     this.printData.moneyObj.costCountMoney += (item.receivableCost - item.discountCost);
                                 });
-                                setTimeout(() => this.print(), 200)
+                                if (data.deduceAmount) {
+                                    this.printData.moneyObj.costCountMoney += this.deduceAmount;
+                                }
+                                setTimeout(() => this.print(dialog), 200)
                             })
                             .catch(err => {
                                 this.alerter.error(err, true, 2000);
@@ -375,9 +376,26 @@ export class BillOrderComponent extends DataList<any>{
     // 点击打印事件
     private pathname;
 
-    print() {
+    print(dialog) {
         console.log(this.printData)
         this.printer.print();
+        dialog.hide();
+        this.printData = {
+            maindata: {},
+            costData: [],
+            workHourData: [],
+            materialData: [],
+            appendItems: [],
+            adviceItems: [],
+            moneyObj: {
+                workCostMoney: 0,
+                discountMoney: 0,
+                materialMoney: 0,
+                costMoney: 0,
+                costCountMoney: 0,
+                workItemMoney: 0
+            }
+        }
     }
     createForm() {
         // 初始化数组类型参数

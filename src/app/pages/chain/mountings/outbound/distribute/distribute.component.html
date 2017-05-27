@@ -200,7 +200,7 @@
     <button class="btn btn-primary" [disabled]="!(newMainData.length>0)" [hqSpinner]="generat" (click)="OnCreatBill()">生成维修发料单</button>
     <!--<button class="btn btn-secondary" (click)="finishedOrder($event,  confirmModal)">取消</button>-->
     <button class="btn btn-info btn-suspend" [disabled]="!(newMainData.length>0)" (click)="suspend()">挂单</button>
-    <button class="btn btn-secondary " options="printOptions" (onConfirm)="onConfirmNumber($event)" [hqMutilSelect]="numberPrintList"
+    <button class="btn" options="printOptions" (onConfirm)="onConfirmNumber($event)" [hqMutilSelect]="numberPrintList"
       title="选择流水号" href="#" [disabled]="!(serialData.length>0)" placement="right">打印</button>
   </div>
 

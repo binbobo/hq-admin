@@ -89,10 +89,10 @@
         <hq-checkout-print-detail [data]="selectedOrder"></hq-checkout-print-detail>
         <div class="card hq-fee">
           <div>
-            <span class="fee-name">工时费：<span class="fee-value">{{workHourFee}}</span></span>
-            <span class="fee-name"> 材料费：<span class="fee-value">{{materialFee}}</span></span>
-            <span class="fee-name"> 优惠：<span class="fee-value"></span></span>
-            <span class="fee-name pull-right">应收金额：<span class="fee-value">{{billPrice}}</span></span>
+            <span class="fee-name">工时费：<span class="fee-value">{{workHourFee|centToYuan}}</span></span>
+            <span class="fee-name"> 材料费：<span class="fee-value">{{materialFee|centToYuan}}</span></span>
+            <span class="fee-name"> 优惠：<span class="fee-value">{{deduceAmount|centToYuan}}</span></span>
+            <span class="fee-name pull-right">应收金额：<span class="fee-value">{{billPrice|centToYuan}}</span></span>
           </div>
         </div>
       </div>
