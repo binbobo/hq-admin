@@ -54,7 +54,7 @@
           <th>操作人</th>
         </tr>
         <tr *ngFor="let item of list">
-          <td width="100"><button [hqSpinner]="item.hqSpinner" class="btn btn-info btn-sm" (click)="alert(item,item.id,bdModal)">详情</button></td>
+          <td width="100"><button [hqSpinner]="item.hqSpinner" class="btn btn-info btn-sm  " (click)="alert(item,item.id,bdModal)">详情</button></td>
           <td>{{item.outUnitName}}</td>
           <td>{{item.billCode}}</td>
           <td>{{item.createBillTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
@@ -140,7 +140,7 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" (click)="print()" class="btn btn-secondary">打印</button>
+      <button type="button" (click)="print()" class="btn btn-export">打印</button>
     </div>
   </div>
 </div>

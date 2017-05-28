@@ -89,7 +89,7 @@ export class CheckoutComponent extends DataList<any> {
         item.generating = false;
 
         // 显示窗口
-        setTimeout(() => dialog.show(), 200);
+        setTimeout(() => dialog.show(), 200); 
       })
       .catch(err => { console.log(err); item.generating = true; });
 
