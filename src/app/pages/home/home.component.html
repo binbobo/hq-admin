@@ -1,6 +1,8 @@
-<div class="jumbotron">
+<button type="button" (click)="printer.print()" class="btn btn-default">打印测试</button>
+
+<div class="jumbotron no-reformat" hqPrint #printer="hq-print" print-title="华汽汽服燕郊店维修发料单">
     <h1 class="display-3">欢迎登录！</h1>
-    <p class="lead print-page">为了实现更好的体验，推荐使用以下浏览器操作当前系统：</p>
+    <p class="lead page-break-after">为了实现更好的体验，推荐使用以下浏览器操作当前系统：</p>
     <table class="table table-bordered table-center">
         <tbody>
             <tr>
@@ -56,5 +58,5 @@
         </tbody>
     </table>
     <hr class="my-4">
-    <p>更多浏览器支持说明请参考<a href="https://angular.io/docs/ts/latest/guide/browser-support.html">这里</a></p>
+    <p>更多浏览器支持说明请参考<a class="no-reformat" href="https://angular.io/docs/ts/latest/guide/browser-support.html">这里</a></p>
 </div>
