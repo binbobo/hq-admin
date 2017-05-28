@@ -74,6 +74,7 @@ table td,th{
 }
 table td {
     font-size: 0.875rem;
+    vertical-align: middle !important;
 }
 table th{
     text-align: center;
@@ -88,9 +89,11 @@ caption {
 }
 /*必选项前面的星号样式*/ 
 .asterisk {
+    color: #c9302c;
+}
+form .asterisk {
     line-height: 2.5rem;
     vertical-align: middle;
-    color: #c9302c;
     font-weight: bold;
     font-size: 1rem;
 }
@@ -102,6 +105,9 @@ caption {
 }
 input[readonly][ngui-datetime-picker]{
   background-color:transparent !important;
+}
+input[disabled] {
+  background: #f7f8f8;
 }
 hqtabletypeahead ul{
     margin-bottom: 0;

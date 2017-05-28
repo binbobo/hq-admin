@@ -8,10 +8,13 @@ hr {
 }
 .hq-input{
   display: flex;
-  width: 50%;
+  width: 25%;
   float: left;
   padding: 0.3125rem 0.625rem;
   margin-bottom: -1.25rem;
+}
+.hq-input-column {
+  width: 50%;
 }
 .form-label{
   min-width: 6.25rem;
