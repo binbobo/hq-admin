@@ -4,7 +4,6 @@ import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { CentToYuanPipe } from 'app/shared/pipes';
 import { ProcurementService, ProcurementItem, GetProductsRequest } from '../procurement.service';
-import { MountingsService } from '../../../mountings.service';
 import { SelectOption } from 'app/shared/models';
 
 @Component({
@@ -15,7 +14,6 @@ import { SelectOption } from 'app/shared/models';
 export class ProcurementCreateComponent implements OnInit {
 
   private form: FormGroup;
-  private converter: CentToYuanPipe = new CentToYuanPipe();
   @Output()
   private formSubmit = new EventEmitter<ProcurementItem>();
   @ViewChild(HqAlerter)
@@ -23,37 +21,28 @@ export class ProcurementCreateComponent implements OnInit {
   private model: ProcurementItem = new ProcurementItem();
   @ViewChildren(FormGroupControlErrorDirective)
   private controls: QueryList<FormGroupControlErrorDirective>;
-  private warehouses: Array<SelectOption>;
+  private storages: Array<any>;
+  private locations: Array<any>;
 
   constructor(
-    private el: ElementRef,
     private formBuilder: FormBuilder,
     private procurementService: ProcurementService,
-    private moutingsService: MountingsService,
   ) { }
 
   ngOnInit() {
     this.buildForm();
-    this.moutingsService.getWarehouseOptions()
-      .then(options => this.warehouses = options)
-      .then(options => options.length ? options[0].value : '')
-      .then(id => {
-        this.form.controls['storeId'].setValue(id);
-        this.model.storeId = id;
-      })
-      .catch(err => this.alerter.error(err))
   }
 
   private buildForm() {
     this.form = this.formBuilder.group({
       brandName: [this.model.brandName],
-      productCode: [this.model.productCode],
-      productName: [this.model.productName],
+      productCode: [this.model.productCode, [Validators.required]],
+      productName: [this.model.productName, [Validators.required]],
       productCategory: [this.model.productCategory],
       productId: [this.model.productId, [Validators.required, Validators.maxLength(36)]],
       productSpecification: [this.model.productSpecification],
       storeId: [this.model.storeId, [Validators.required, Validators.maxLength(36)]],
-      locationId: [this.model.locationId],
+      locationId: [this.model.locationId, [Validators.required, Validators.maxLength(36)]],
       count: [this.model.count, [Validators.required, CustomValidators.min(1), CustomValidators.digits]],
       price: [this.model.price],
       yuan: [this.model.price / 100, [Validators.required, CustomValidators.gt(0)]],
@@ -61,13 +50,9 @@ export class ProcurementCreateComponent implements OnInit {
       exTaxPrice: [this.model.exTaxPrice],
       exTaxAmount: [this.model.exTaxAmount],
       locationName: [this.model.locationName, [Validators.required]],
-      storeName: [this.model.houseName, [Validators.required]],
+      storeName: [this.model.houseName],
       unit: [this.model.unit],
     })
-  }
-
-  get typeaheadParams() {
-    return { storeId: this.form.get('storeId').value };
   }
 
   private onResetForm(event: Event, key: string) {
@@ -75,6 +60,8 @@ export class ProcurementCreateComponent implements OnInit {
     let obj = { ...this.model, yuan: 0 };
     key in obj && delete obj[key];
     this.form.patchValue(obj);
+    this.storages = null;
+    this.locations = null;
   }
 
   public onSubmit(event: Event) {
@@ -85,32 +72,19 @@ export class ProcurementCreateComponent implements OnInit {
       event.preventDefault();
       return false;
     } else {
-      let formData = this.form.value;
-      let storageId = this.form.get('storeId').value;
-      let storage = formData.storeId && this.warehouses.find(m => m.value === formData.storeId);
-      let value = { ...formData, storeName: storage && storage.text };
-      this.formSubmit.emit(value);
+      this.formSubmit.emit(this.form.value);
     }
   }
 
-  onLocationChange(event: Event) {
-    if (event.isTrusted) {
-      this.form.patchValue({ locationId: undefined });
-    }
-  }
-
-  onLocationSelect(event) {
-    this.form.patchValue({ locationId: event.id });
-  }
-
-  onStorageChange(event) {
-    this.form.patchValue({ locationName: undefined, locationId: undefined });
-  }
-
-  public onReset() {
-    this.form = null;
-    setTimeout(() => this.buildForm(), 1);
-    return false;
+  onStorageChange(storageId: string) {
+    let storage = this.storages.find(m => m.id === storageId);
+    this.locations = storage && storage.locations;
+    let location = this.locations && this.locations.length && this.locations[0];
+    let count = location && location.count;
+    this.form.patchValue({
+      locationId: location && location.id,
+      locationName: location && location.name,
+    });
   }
 
   private onItemSelect(event) {
@@ -121,27 +95,24 @@ export class ProcurementCreateComponent implements OnInit {
       productSpecification: event.specification,
       productId: event.id,
       brandName: event.brandName,
-      stockCount: event.count,
       price: event.newPrice,
       yuan: event.newPrice / 100,
       taxRate: event.taxRate,
       productCategory: event.categoryName,
     }
-    if (Array.isArray(event.storages)) {
-      let storage = event.storages.find(m => m.locations && m.locations.length && this.warehouses.some(w => w.value === m.id));
-      if (storage) {
-        let location = storage.locations[0];
-        item.storeId = storage.id;
-        item.locationId = location.id;
-        item.locationName = location.name;
-      }
+    this.storages = event.storages;
+    this.locations = null;
+    if (Array.isArray(event.storages) && event.storages.length) {
+      let storage = this.storages.find(m => m.locations && m.locations.length);
+      storage = storage || this.storages[0];
+      item.storeId = storage.id;
+      item.storeName = storage.name;
+      this.onStorageChange(storage.id);
+    } else {
+      item.locationId = null;
     }
     this.form.patchValue(item);
     this.calculate();
-  }
-
-  get editable() {
-    return this.form.controls['productId'].value ? true : undefined;
   }
 
   onPriceChange(event) {

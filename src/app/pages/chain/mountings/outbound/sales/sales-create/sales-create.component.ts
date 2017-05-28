@@ -4,7 +4,6 @@ import { SalesListItem } from '../sales.service';
 import { Observable } from "rxjs/Rx";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TypeaheadRequestParams, FormGroupControlErrorDirective } from 'app/shared/directives';
-import { GetMountingsListRequest, MountingsService } from '../../../mountings.service';
 import { CustomValidators } from 'ng2-validation';
 import { CentToYuanPipe } from "app/shared/pipes";
 
@@ -27,7 +26,6 @@ export class SalesCreateComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private moutingsService: MountingsService,
   ) { }
 
   ngOnInit() {
@@ -50,16 +48,17 @@ export class SalesCreateComponent implements OnInit {
       locationId: location && location.id,
       stockCount: count,
     });
-    let countControl = this.form.controls['count'];
-    let validators = Validators.compose([Validators.required, CustomValidators.min(1), CustomValidators.max(count)])
-    countControl.setValidators(validators);
+    this.onLocationChange(location && location.id);
   }
 
   onLocationChange(locationId: string) {
     let location = this.locations && this.locations.find(m => m.id === locationId);
-    console.log(location);
     let stock = location && location.count || 0;
     this.form.controls['stockCount'].setValue(stock);
+    let countControl = this.form.controls['count'];
+    let validators = Validators.compose([Validators.required, CustomValidators.min(1), CustomValidators.max(stock)])
+    countControl.setValidators(validators);
+    countControl.updateValueAndValidity();
   }
 
   private buildForm() {
@@ -67,7 +66,7 @@ export class SalesCreateComponent implements OnInit {
       brandName: [this.model.brand, [Validators.required]],
       productCode: [this.model.productCode],
       productName: [this.model.productName],
-      productCategory: [this.model.productCategory],
+      productCategory: [this.model.productCategory, [Validators.required]],
       productId: [this.model.productId, [Validators.required, Validators.maxLength(36)]],
       productSpecification: [this.model.productSpecification, [Validators.required]],
       storeId: [this.model.storeId],
@@ -98,19 +97,13 @@ export class SalesCreateComponent implements OnInit {
     }
   }
 
-  public onReset() {
-    this.form = null;
-    setTimeout(() => this.buildForm(), 1);
-    return false;
-  }
-
   private onResetForm(event: Event, key: string) {
     if (!event.isTrusted) return false;
     this.storages = null;
     this.locations = null;
     let obj = { ...this.model };
-    key in obj && delete obj[key];
-    this.form.patchValue(obj);
+    obj[key] = this.form.get(key).value;
+    this.form.reset(obj);
   }
 
   public onItemSelect(event) {
@@ -141,10 +134,9 @@ export class SalesCreateComponent implements OnInit {
     this.price = item.price / 100;
     let validators = Validators.compose([Validators.required, CustomValidators.gt(0), CustomValidators.min(this.price)]);
     priceControl.setValidators(validators);
-    setTimeout(() => {
-      this.form.patchValue(item);
-      this.calculate();
-    }, 1);
+    this.form.patchValue(item);
+    this.calculate();
+    this.form.updateValueAndValidity();
   }
 
   private price = 0;

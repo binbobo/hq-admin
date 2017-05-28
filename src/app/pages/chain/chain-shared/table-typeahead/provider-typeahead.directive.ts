@@ -28,7 +28,7 @@ export class ProviderTypeaheadDirective extends TableTypeaheadDirective {
       let request = new PagedParams();
       request[this.filed] = params.text;
       request.setPage(params.pageIndex, params.pageSize);
-      let url = Urls.chain.concat('/suppliers/getPageList');
+      let url = Urls.chain.concat('/Suppliers/GetValidList');
       return this.httpService.getPagedList<any>(url, request);
     };
     super.ngOnInit();
