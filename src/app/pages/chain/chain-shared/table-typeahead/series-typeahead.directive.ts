@@ -31,6 +31,7 @@ export class SeriesTypeaheadDirective extends TableTypeaheadDirective {
             request['brandId'] = this.brandId;
             request.setPage(params.pageIndex, params.pageSize);
             let url = Urls.chain.concat('/VehicleSeries/search');
+            console.log('根据车系名称查询车系信息：', url, request);
             return this.httpService.getPagedList<any>(url, request);
         };
         super.ngOnInit();

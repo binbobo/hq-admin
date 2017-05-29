@@ -233,7 +233,7 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
 
     // 根据id获取工单详细信息
     this.service.get(item.id).then(data => {
-      console.log('根据工单id获取工单详情数据：', data);
+      // console.log('根据工单id获取工单详情数据：', data);
 
       // 记录当前操作的工单记录
       this.selectedOrder = data;

@@ -113,7 +113,7 @@ export class AddCarownerComponent implements OnInit {
 
     // // 调用后台添加车主接口
     this.service.create(carOwnerBody).then(data => {
-      console.log('创建车主成功, 新创建的车主信息为：', JSON.stringify(data));
+      // console.log('创建车主成功, 新创建的车主信息为：', JSON.stringify(data));
 
       // 提示创建车主成功
       this.alerter.success('创建车主成功');
@@ -124,7 +124,7 @@ export class AddCarownerComponent implements OnInit {
       this.generating = false;
     }).catch(err => {
       this.enableSaveCustomer = true;
-      this.alerter.error('创建车主失败：' + err, true, 3000);
+      this.alerter.error(err, true, 3000);
       this.generating = false;
     });
   }

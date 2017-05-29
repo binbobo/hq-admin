@@ -117,7 +117,7 @@ export class EditCarownerComponent implements OnInit {
 
     // 调用后台更新车主接口
     this.service.update(carOwnerBody).then(data => {
-      console.log('更新车主成功, 更新后的车主对象为：', JSON.stringify(data));
+      // console.log('更新车主成功, 更新后的车主对象为：', JSON.stringify(data));
 
       // 提示更新车主成功
       this.alerter.success('更新车主成功');
@@ -129,7 +129,7 @@ export class EditCarownerComponent implements OnInit {
       this.generating = false;
     }).catch(err => {
       this.enableSaveCustomer = true;
-      this.alerter.error('更新车主失败: ' + err, true, 2000);
+      this.alerter.error(err, true, 2000);
       this.generating = false;
     });
   }

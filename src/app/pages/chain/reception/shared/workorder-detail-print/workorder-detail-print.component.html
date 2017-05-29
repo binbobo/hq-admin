@@ -1,11 +1,7 @@
-<div>
-  <img class="pull-left" src="http://sinoauto.com/Themes/SinoAutoAdaption/Content/logonew.png" alt="华汽">
-  <p class="text-center">维修工单</p>
-</div>
-<hr>
+<br>
 <hq-workorder-basic-info [data]="data"></hq-workorder-basic-info>
-<hr>
 <hq-maintenance-item-list [showCaption]="true" [showNo]="true" *ngIf="data?.serviceOutputs?.length>0" [serviceOutputs]="data?.serviceOutputs"></hq-maintenance-item-list>
+<br>
 <div *ngIf="data?.serviceOutputs?.length>0">
   工时合计：
   <span class="ml-2 mr-2"><strong>{{data?.fee.workHours}}</strong></span> 工时费：

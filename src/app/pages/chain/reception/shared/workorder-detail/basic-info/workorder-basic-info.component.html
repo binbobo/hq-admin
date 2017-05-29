@@ -1,4 +1,4 @@
-<form>
+<!--<form>
   <div class="form-group row">
     <div class="col-4">
       <label>车牌号：</label>
@@ -9,7 +9,7 @@
       <span *ngIf="data?.brand">{{data?.brand}}</span>
       <span *ngIf="data?.series">,{{data?.series}}</span>
       <span *ngIf="data?.vehicleName">,{{data?.vehicleName}}</span>
-      <!--<clipped-word length="10" [content]="data?.vehicleText"></clipped-word>-->
+      <clipped-word length="10" [content]="data?.vehicleText"></clipped-word>
     </div>
     <div class="col-4">
       <label>VIN：</label>
@@ -56,11 +56,6 @@
     <div class="col-4">
       <label>维修技师：</label>
       <span>{{data?.employeeNames}}</span>
-      <!--如果转派  追加显示转派人-->
-      <!--<span *ngIf="data?.teamType === 2">,{{data?.turnEmployeeNames}}</span>-->
-      <!-- teamType (string, optional): 工单指派类型 0.没指派 1.指派 2.转派 -->
-      <!--<span *ngIf="teamType === 1">{{data?.employeeNames.join(',')}}</span>
-        <span *ngIf="teamType === 2">{{data?.turnEmployeeNames.join(',')}}</span>-->
     </div>
   </div>
   <div class="form-group row">
@@ -122,60 +117,79 @@
       <span class="ml-2" *ngIf="data.leaveMileage">KM</span>
     </div>
   </div>
-</form>
-
-<!--<table>
-  <tr>
-    <td>车牌号</td>
-    <td>{{data?.plateNo}}</td>
-    <td>车型：</td>
-    <td>
-      <span *ngIf="data?.brand">{{data?.brand}}</span>
-      <span *ngIf="data?.series">,{{data?.series}}</span>
-      <span *ngIf="data?.vehicleName">,{{data?.vehicleName}}</span>
-    </td>
-  </tr>
-  <tr>
-    <td>VIN</td>
-    <td>{{data?.vin}}</td>
-    <td>送修人</td>
-    <td>{{data?.contactUser}}</td>
-  </tr>
-  <tr>
-    <td>送修人手机</td>
-    <td>{{data?.contactInfo}}</td>
-    <td>工单号</td>
-    <td>{{data?.billCode}}</td>
-  </tr>
-  <tr>
-    <td>车主</td>
-    <td>{{data?.customerName}}</td>
-    <td>车主电话</td>
-    <td>{{data?.phone}}</td>
-  </tr>
-  <tr>
-    <td>购车日期</td>
-    <td>{{data?.purchaseDate|sDate}}</td>
-    <td>验车日期</td>
-    <td>{{data?.validate|sDate}}</td>
-  </tr>
-  <tr>
-    <td>预计交车时间</td>
-    <td>{{data?.expectLeave|sDate}}</td>
-    <td>维修技师</td>
-    <td>{{data?.employeeNames}}
-    </td>
-  </tr>
-  <tr>
-    <td>服务顾问</td>
-    <td>{{data?.createdUserName}}</td>
-    <td>介绍人</td>
-    <td>{{data?.introducer}}</td>
-  </tr>
+</form>-->
+<table class="table table-order-info table-bordered">
+  <tbody>
     <tr>
-    <td>介绍人电话</td>
-    <td>{{data?.introPhone}}</td>
-    <td>维修类型</td>
-    <td>{{data?.typeName}}</td>
-  </tr>
-</table>-->
+      <td>车牌号</td>
+      <td>{{data?.plateNo}}</td>
+      <td>车型</td>
+      <td>
+        <span *ngIf="data?.brand">{{data?.brand}}</span>
+        <span *ngIf="data?.series">,{{data?.series}}</span>
+        <span *ngIf="data?.vehicleName">,{{data?.vehicleName}}</span>
+      </td>
+    </tr>
+    <tr>
+      <td>VIN</td>
+      <td>{{data?.vin}}</td>
+      <td>送修人</td>
+      <td>{{data?.contactUser}}</td>
+    </tr>
+    <tr>
+      <td>送修人手机</td>
+      <td>{{data?.contactInfo}}</td>
+      <td>工单号</td>
+      <td>{{data?.billCode}}</td>
+    </tr>
+    <tr>
+      <td>车主</td>
+      <td>{{data?.customerName}}</td>
+      <td>车主电话</td>
+      <td>{{data?.phone}}</td>
+    </tr>
+    <tr>
+      <td>购车日期</td>
+      <td>{{data?.purchaseDate|sDate}}</td>
+      <td>验车日期</td>
+      <td>{{data?.validate|sDate}}</td>
+    </tr>
+    <tr>
+      <td>预计交车时间</td>
+      <td>{{data?.expectLeave|sDate}}</td>
+      <td>维修技师</td>
+      <td>{{data?.employeeNames}}
+      </td>
+    </tr>
+    <tr>
+      <td>服务顾问</td>
+      <td>{{data?.createdUserName}}</td>
+      <td>介绍人</td>
+      <td>{{data?.introducer}}</td>
+    </tr>
+    <tr>
+      <td>介绍人电话</td>
+      <td>{{data?.introPhone}}</td>
+      <td>维修类型</td>
+      <td>{{data?.typeName}}</td>
+    </tr>
+    <tr>
+      <td>超时</td>
+      <td>{{data?.overTime|durationHumanize}}</td>
+      <td>结算方</td>
+      <td>{{data?.updateUser}}</td>
+    </tr>
+    <tr>
+      <td>结算时间</td>
+      <td>{{data?.updateOnUtc|sDatetime}}</td>
+      <td>进厂时间</td>
+      <td>{{data?.createdOnUtc|sDatetime}}</td>
+    </tr>
+    <tr>
+      <td>进厂里程</td>
+      <td>{{data?.mileage}}</td>
+      <td>出厂里程</td>
+      <td>{{data?.leaveMileage}}</td>
+    </tr>
+  </tbody>
+</table>

@@ -48,7 +48,6 @@
             <input type="hidden" formControlName="id">
           </div>
         </div>
-
         <div class="hq-input">
           <label for="tel" class="form-label">电话</label>
           <div class="hq-col">
@@ -118,11 +117,11 @@
             <thead>
               <tr>
                 <th>操作</th>
-                <th><span class="asterisk mr-1">*</span>车牌号</th>
-                <th><span class="asterisk mr-1">*</span>品牌</th>
-                <th><span class="asterisk mr-1">*</span>车系</th>
-                <th><span class="asterisk mr-1">*</span>车型</th>
-                <th><span class="asterisk mr-1">*</span>VIN</th>
+                <th>车牌号</th>
+                <th>品牌</th>
+                <th>车系</th>
+                <th>车型</th>
+                <th>VIN</th>
                 <th>发动机号</th>
                 <th>车身颜色</th>
                 <th>购车日期</th>
@@ -155,7 +154,7 @@
         </div>
         <br>
         <div>
-          <button class="btn btn btn-info mr-2" (click)="vehicleModal.show()">新增车辆</button>
+          <button class="btn btn-info mr-2" (click)="vehicleModal.show()">新增车辆</button>
         </div>
       </tab>
     </tabset>
@@ -173,12 +172,12 @@
     <div class="modal-content">
       <div class="modal-header">
         <h6 class="modal-title pull-left">新增车主信息</h6>
-        <button type="button" class="close pull-right" (click)="vehicleModal.hide()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+        <button type="button" class="close pull-right" (click)="vehicleModal.hide(); selectedVehicle = null;" aria-label="Close">
+          <span aria-hidden="true"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
         </button>
       </div>
       <div class="modal-body">
-        <hq-add-vehicle [vehicle]="selectedVehicle" (onVehicleCancel)="vehicleModal.hide()" (onVehicleConfirm)="onVehicleConfirmHandler($event, vehicleModal)"></hq-add-vehicle>
+        <hq-add-vehicle [vehicle]="selectedVehicle" (onVehicleCancel)="vehicleModal.hide();selectedVehicle = null;" (onVehicleConfirm)="onVehicleConfirmHandler($event, vehicleModal)"></hq-add-vehicle>
       </div>
     </div>
   </div>
