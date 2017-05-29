@@ -226,7 +226,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 加载客户车辆信息
     this.workSheetForm.patchValue({
       plateNo: customerVehicle.plateNo,
-      customerName: customerVehicle.name,
+      customerName: customerVehicle.name || customerVehicle.customerName,
       phone: customerVehicle.phone,
       vin: customerVehicle.vin,
       brand: customerVehicle.brand,
