@@ -49,21 +49,15 @@ h5{
     overflow:hidden;
     text-align: center;
 }
-.mg{
-    margin: 0 auto;
-}
-.modal-header{
-    padding-bottom: 0;
-    border: none;
-}
-.modal-body{
-    padding-top: 0;
-}
-
 .modal-body .card {
     border: none;
     font-size: 14px;
 }
+/*
+.modal-body{
+    padding-top: 0;
+}
+
 .modal-body .card-block {
     border: 1px solid #333333;
     font-weight: 400;
@@ -90,7 +84,4 @@ h5{
     padding: 0.25rem;
     text-align: center;
     white-space: normal; 
-}
-.red-color{
-    color:red;
-}
+}*/
