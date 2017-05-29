@@ -25,21 +25,17 @@
     display: inline-block;
     padding: 5px 20px;
 }
-
 .table-container{
     overflow: auto;
     border: 1px solid rgb(236, 238, 239);
 }
-
 .table-container table{
     margin: 0;
     border: 0!important;
 }
-
 .table-container tr:first-child td,.table-container tr:first-child th{
     border-top-width: 0;
 }
-
 .table-container tr:last-child td,.table-container tr:last-child th{
     border-bottom-width: 0;
 }
@@ -113,14 +109,17 @@ hqtabletypeahead ul{
     margin-bottom: 0;
 }
 /*增项标志*/
+table td{
+    position: relative;
+}
 .append-stamp{
     position: relative;
+    left: 14px;
     display: inline-block;
     max-width: 200px;
     padding:1px 6px;
     color: #1c84c6;
     border:1px solid #1c84c6;
-    margin-left: 20px;
     text-align: center;
     background-color: #fff;
     border-radius: 2px;
@@ -153,12 +152,12 @@ hqtabletypeahead ul{
 .accept-stamp{ 
     display:inline-block;
     position: relative;
+    left: 11px;
     font-size:.875rem;
     color: #1c84c6;
     border:1px solid #1c84c6;
     border-radius: 2px;
     padding:1px 6px;
-    margin-left: 20px;
     text-align: center;
     background-color: #fff;
 }
@@ -186,8 +185,8 @@ tabset ul li a, tabset ul li a:hover {
 /*小按钮*/
 .btn-sm{
     padding:6px 22px;
+    cursor: pointer;
 }
-
 /*查询按钮*/
 .btn-primary{
     background-color: #27b394 !important;

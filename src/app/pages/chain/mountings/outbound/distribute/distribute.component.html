@@ -16,8 +16,6 @@
         </div>
       </form>
     </div>
-
-
     <table class="table table-order-info table-bordered">
       <thead>
         <tr>
@@ -50,17 +48,17 @@
         维修项目
       </div>
       <div class="table-container">
-        <table class="table   table-bordered">
+        <table class="table table-bordered">
           <thead>
             <tr>
-              <th>操作</th>
-              <th>维修项目</th>
-              <th>维修技师</th>
+              <th class="operation">操作</th>
+              <th class="service">维修项目</th>
+              <th class="service">维修技师</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor='let item of serviceData;let index=index'>
-              <td><button class="btn btn-primary" (dataName)="item.serviceName" [disabled]="!(item.maintenanceEmployees.length>0)"
+              <td><button class="btn-sm btn-primary" (dataName)="item.serviceName" [disabled]="!(item.maintenanceEmployees.length>0)"
                   (click)="OnCreatBound(item)">发料</button></td>
               <td>{{item.serviceName}}<span *ngIf="item.type === 3" class="append-stamp">增项</span><span [class.accept-stamp]="item.teamType === 6"></span></td>
               <td>

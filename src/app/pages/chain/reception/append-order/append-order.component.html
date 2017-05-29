@@ -93,8 +93,10 @@
   <div [hidden]="!isShowAppend">
     <tabset #staticTabs>
       <!--维修项目-->
-      <tab heading="维修项目">
-
+      <tab>
+         <template tabHeading>
+         <i class="fa fa-cog m-2" aria-hidden="true"></i>维修项目
+        </template>
         <div class="table-container">
           <table class="table  table-bordered">
             <thead>
@@ -135,19 +137,18 @@
             </tbody>
           </table>
         </div>
-
         <div class="text-center">
           <button class="btn btn-secondary" (click)="addModal.show();">
           <span><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i></span>
             新增维修项目
             </button>
         </div>
-
-
       </tab>
       <!--附加项目-->
-
-      <tab heading="附加项目">
+      <tab>
+        <template tabHeading>
+         <i class="fa fa-cog m-2" aria-hidden="true"></i>附加项目
+        </template>
         <div class="table-container">
           <table class='table   table-bordered'>
             <thead>
@@ -169,19 +170,18 @@
             </tr>
           </table>
         </div>
-
         <div class="text-center">
           <button class="btn btn-secondary" [disabled]="!!((newAttachData?.length)>=1)" (click)="attachModal.show();">
           <span><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i></span>
             新增附加项目
             </button>
         </div>
-
-
       </tab>
-
       <!--建议维修项-->
-      <tab heading="建议维修项">
+      <tab>
+        <template tabHeading>
+         <i class="fa fa-cog m-2" aria-hidden="true"></i>建议维修项目
+        </template>
         <div class="table-container">
           <table class='table  table-bordered'>
             <thead>
@@ -198,7 +198,6 @@
               <td>{{item.content}}</td>
               <!--<td>{{item.operateDateTime|sDatetime}}</td>-->
               <td>{{item.description}}</td>
-
             </tr>
             <tr *ngFor="let item of newSuggestData">
               <td width="40">
@@ -208,25 +207,21 @@
               <td>{{item.serviceName}}</td>
               <td>{{item.operationTime|sDatetime}}</td>
               <td>{{item.description}}</td>
-
             </tr>
-
           </table>
         </div>
-
         <div class="text-center">
           <button class="btn btn-secondary" (click)="suggestModal.show();">
           <span><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i></span>
             新增建议维修项目
             </button>
         </div>
-
-
-
       </tab>
-
       <!--上次维修记录-->
-      <tab heading="上次维修记录" *ngIf="lastManufactureDetailOutput">
+      <tab *ngIf="lastManufactureDetailOutput">
+         <template tabHeading>
+         <i class="fa fa-cog m-2" aria-hidden="true"></i>上次维修记录
+        </template>
         <div class="table-container">
           <table class="table  table-bordered">
             <caption>维修项目</caption>
@@ -379,7 +374,7 @@
 
 <div bsModal #suggestModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <!--每次都创建一个新的 为了清空表单-->
-  <div *ngIf="suggestModal.isShown" class="modal-dialog modal-lg">
+  <div *ngIf="suggestModal.isShown" class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h6 class="modal-title pull-left">新增建议维修项目</h6>
@@ -388,7 +383,6 @@
         </button>
       </div>
       <div class="modal-body">
-
         <hq-add-suggest-item [services]="selectedSuggestServices" [item]="selectedSuggestItem" (onCancel)="suggestModal.hide();selectedSuggestItem=null;"
           (onConfirm)="onConfirmNewSuggestItem($event, suggestModal)"></hq-add-suggest-item>
       </div>

@@ -43,3 +43,14 @@ table th,table td{
     margin-bottom: .8rem;
     margin-left: -3px;
 }
+table .tr-left-bold{
+    text-align: left;
+    font-weight: bold;
+    padding-left: 1.1rem !important;
+}
+.operation{
+    width: 200px;
+}
+.service{
+    width: 40%;
+}

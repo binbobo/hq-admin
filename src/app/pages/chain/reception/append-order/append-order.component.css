@@ -30,7 +30,6 @@ table .tr-left-bold{
     font-weight: bold;
     padding-left: 1.1rem !important;
 }
-
 input[disabled] {
   background: #f7f8f8;
 }
