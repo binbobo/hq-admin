@@ -5,20 +5,20 @@
   </div>
   <div class="card-block">
     <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
-      <div class="form-group mb-2">
-        <label for="inlineFormCustomSelect">供应商名称：</label>
-        <input type="text" class="form-control mx-sm-3" name="name" [(ngModel)]="params.name" placeholder="供应商名称">
+      <div class="input-group m-1">
+        <span class="input-group-addon">供应商名称</span>
+        <input type="text" class="form-control" name="name" [(ngModel)]="params.name" placeholder="供应商名称">
       </div>
-      <div class="form-group mb-2">
-        <label class="mr-sm-1" for="inlineFormCustomSelect">联系人：</label>
-        <input type="text" class="form-control mx-sm-3" name="contactUser" [(ngModel)]="params.contactUser" placeholder="联系人">
+      <div class="input-group m-1">
+        <span class="input-group-addon">联系人</span>
+        <input type="text" class="form-control" name="contactUser" [(ngModel)]="params.contactUser" placeholder="联系人">
       </div>
-      <div class="form-group mb-2">
-        <label class="mr-sm-1" for="inlineFormCustomSelect">联系人电话：</label>
-        <input type="text" class="form-control mx-sm-3" name="tel" [(ngModel)]="params.tel" placeholder="联系人电话">
+      <div class="input-group m-1">
+        <span class="input-group-addon">联系人电话</span>
+        <input type="text" class="form-control" name="tel" [(ngModel)]="params.tel" placeholder="联系人电话">
       </div>
-      <div class="form-group mb-2">
-        <button type="submit" class="btn btn-primary mx-sm-1">查询</button>
+      <div class="input-group m-1">
+        <button type="submit" class="btn btn-primary">查询</button>
       </div>
     </form>
     <div class="table-container">

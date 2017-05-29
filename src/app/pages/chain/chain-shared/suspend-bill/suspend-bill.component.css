@@ -42,23 +42,21 @@ border:0!important;
 .dropdown-toggle{
     cursor: pointer;
     transition: .8s;
-        padding: 0 8px;
+    padding: 0 8px;
     border-radius: 4px;
 }
-
 .fa-angle-up::before{
     font-size:1.3rem;
     margin-left: 2px;
-        position: relative;
+    position: relative;
     top: 1px;
 }
 .dropdown-toggle:hover{
-    /*background-color:#f3f3f4;*/
+    background-color:#f3f3f4;
 }
 .fa-times-bg{
     color:#eb5267;  
 }
-
 .table::before {  
     content: '';
     position: absolute;

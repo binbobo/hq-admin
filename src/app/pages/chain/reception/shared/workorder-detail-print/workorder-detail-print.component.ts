@@ -12,7 +12,7 @@ export class WorkorderDetailPrintComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('要打印的工单详情数据为：', this.data);
+    // console.log('要打印的工单详情数据为：', this.data);
   }
 
 }

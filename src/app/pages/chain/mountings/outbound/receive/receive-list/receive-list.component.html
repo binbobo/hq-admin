@@ -6,14 +6,14 @@
   </div>
   <div class="card-block">
     <form #form="ngForm" class="form-inline mb-2">
-      <div class="form-group">
-        <label>*领用人：</label>
+      <div class="input-group m-1">
+        <span class="input-group-addon">领用人</span>
         <select class="form-control" name="takeUser" [(ngModel)]="model.takeUser" (change)="onReceiverSelect($event)">
           <option *ngFor="let item of employees" [value]="item.value">{{item.text}}</option>
         </select>
       </div>
-      <div class="form-group">
-        <label class="mr-sm-1">部门：</label>
+      <div class="input-group m-1">
+        <span class="input-group-addon">部门</span>
         <select class="form-control" name="takeDepart" [(ngModel)]="model.takeDepart">
           <option *ngFor="let item of departments" [value]="item.value">{{item.text}}</option>
         </select>
@@ -65,7 +65,8 @@
   </div>
   <div class="card-footer text-muted">
     <button [hqSpinner]="generating" [disabled]="form.invalid||!model.valid" class="btn btn-primary" (click)="generate($event)">生成内部领用单</button>
-    <button [hqSpinner]="suspendBill.suspending" [disabled]="form.invalid||!model.valid" class="btn btn-success btn-suspend" (click)="suspend($event)">挂单</button>
+    <button [hqSpinner]="suspendBill.suspending" [disabled]="form.invalid||!model.valid" class="btn btn-success btn-suspend"
+      (click)="suspend($event)">挂单</button>
   </div>
 </div>
 

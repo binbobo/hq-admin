@@ -58,6 +58,7 @@ export class AddCarownerComponent implements OnInit {
   goBack() {
     this.location.back();
   }
+
   // 添加一条车辆记录处理程序
   onVehicleConfirmHandler(evt, vehicleModal) {
     const data = evt.data;
@@ -68,14 +69,14 @@ export class AddCarownerComponent implements OnInit {
       });
       // 使用新的元素替换以前的元素
       this.newVehiclesData.splice(index, 1, data);
+
+      // 清空当前编辑的車车辆
+      this.selectedVehicle = null;
     } else {
       // 新增
       this.newVehiclesData.push(data);
     }
     vehicleModal.hide();
-    // setTimeout(() => {
-    //   this.newVehiclesData.push(evt);
-    // }, 500);
   }
 
   // 删除一条车辆记录 处理程序
@@ -87,7 +88,7 @@ export class AddCarownerComponent implements OnInit {
         return;
       }
     });
-    this.enableSaveCustomer = this.carOwnerForm.valid;
+    this.enableSaveCustomer = this.carOwnerForm.valid && this.newVehiclesData.length > 0;
   }
 
   // 添加车主
@@ -112,7 +113,7 @@ export class AddCarownerComponent implements OnInit {
 
     // // 调用后台添加车主接口
     this.service.create(carOwnerBody).then(data => {
-      console.log('创建车主成功, 新创建的车主信息为：', JSON.stringify(data));
+      // console.log('创建车主成功, 新创建的车主信息为：', JSON.stringify(data));
 
       // 提示创建车主成功
       this.alerter.success('创建车主成功');
@@ -123,7 +124,7 @@ export class AddCarownerComponent implements OnInit {
       this.generating = false;
     }).catch(err => {
       this.enableSaveCustomer = true;
-      this.alerter.error('创建车主失败：' + err, true, 3000);
+      this.alerter.error(err, true, 3000);
       this.generating = false;
     });
   }
@@ -205,7 +206,7 @@ export class AddCarownerComponent implements OnInit {
     // 表单域中的值改变事件监听
     this.carOwnerForm.valueChanges.subscribe(data => {
       // 只有表单域合法 保存车主按钮才可用
-      this.enableSaveCustomer = this.carOwnerForm.valid;
+      this.enableSaveCustomer = this.carOwnerForm.valid && this.newVehiclesData.length > 0;
     });
   }
 

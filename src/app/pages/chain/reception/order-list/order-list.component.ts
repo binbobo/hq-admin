@@ -123,7 +123,7 @@ export class OrderListComponent extends DataList<Order> {
     const id = item.id;
     // 根据id获取工单详细信息
     this.service.get(id).then(data => {
-      console.log('根据工单id获取工单详情数据：', data);
+      // console.log('根据工单id获取工单详情数据：', data);
 
       // 记录当前操作的工单记录
       this.selectedOrder = data;

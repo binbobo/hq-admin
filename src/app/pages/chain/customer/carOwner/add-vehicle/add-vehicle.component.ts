@@ -31,9 +31,12 @@ export class AddVehicleComponent implements OnInit {
   ngOnInit() {
     this.createForm();
 
+    console.log('当前编辑的车辆为：', this.vehicle);
     // 编辑
     if (this.vehicle) {
-      this.vehicleForm.patchValue(this.vehicle);
+      this.vehicleForm.patchValue(this.vehicle, {
+        emitEvent: false
+      });
     }
   }
 

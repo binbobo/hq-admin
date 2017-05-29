@@ -59,7 +59,7 @@ export class CheckoutComponent extends DataList<any> {
     // 执行查询
     this.onLoadList();
   }
-
+  deduceAmount: any;
   // 点击详情事件
   DetailsDialog(evt, item, id, dialog) {
     item.generating = true;
@@ -89,26 +89,28 @@ export class CheckoutComponent extends DataList<any> {
         item.generating = false;
 
         // 显示窗口
-        setTimeout(() => dialog.show(), 200);
+        setTimeout(() => dialog.show(), 200); 
       })
       .catch(err => { console.log(err); item.generating = true; });
 
     // 根据工单id获取工单材料费和工时费
     this.service.getCost(id).then(data => {
       // 工时费： 维修项目金额总和
-      this.workHourFee = data.workHourCost / 100;
-      this.workHourFee.toFixed(2);
+      this.workHourFee = data.workReceivableCost;
       // 材料费： 维修配件金额总和
-      this.materialFee = data.materialCost / 100;
-      this.materialFee.toFixed(2);
+      this.materialFee = data.materialCost;
       // 其它费： 0
       this.otherFee = 0;
       // 总计费： 
-      this.sumFee = (data.workHourCost + data.materialCost + this.otherFee) / 100;
-      this.sumFee.toFixed(2);
+      this.sumFee = data.workHourCost + data.materialCost + this.otherFee;
 
-      this.billPrice = data.amount / 100;
-      this.billPrice.toFixed(2);
+      this.billPrice = data.amount;
+
+      if (data.deduceAmount) {
+        this.deduceAmount = data.deduceAmount+data.workReceivableCost-data.workHourCost;
+      } else {
+        this.deduceAmount=data.workReceivableCost-data.workHourCost 
+      }
 
     })
   }

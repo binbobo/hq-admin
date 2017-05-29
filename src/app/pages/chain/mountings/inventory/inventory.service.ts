@@ -87,7 +87,7 @@ export class Inventory extends BasicModel {
     public brandName?: string,
     public code?: string,
     public name?: string,
-    public count?: string,
+    public count?: number,
     public vehicleName?: string,
     public unit?: string,
     public price?: string,

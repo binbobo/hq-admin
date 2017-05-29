@@ -1,57 +1,51 @@
-<form>
-  <div class="form-group row">
-    <div class="col-4">
-      <label>车主: </label> {{data?.name}}
-    </div>
-    <div class="col-4">
-      <label>性别: </label> {{data?.sex}}
-    </div>
-    <div class="col-4">
-      <label>生日: </label> {{data?.birthday|sDate}}
-    </div>
-  </div>
-  <hr>
-  <div class="form-group row">
-    <div class="col-4">
-      <label>身份证号: </label> {{data?.identityCard}}
-    </div>
-    <div class="col-4">
-      <label>手机号: </label> {{data?.phone}}
-    </div>
-    <div class="col-4">
-      <label>电话: </label> {{data?.tel}}
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-4">
-      <label>传真: </label> {{data?.fax}}
-    </div>
-    <div class="col-4">
-      <label>Email: </label> {{data?.email}}
-    </div>
-  </div>
-  <br>
-  <div class="form-group row">
-    <div class="col-4">
-      <label>省份: </label> {{data?.cityNameList?.split(',')[0]}}
-    </div>
-    <div class="col-4">
-      <label>城市 : </label> {{data?.cityNameList?.split(',')[1]}}
-    </div>
-    <div class="col-4">
-      <label>区县: </label> {{data?.cityNameList?.split(',')[2]}}
-    </div>
-  </div>
-  <br>
-  <div class="form-group row">
-    <div class="col-8">
-      <label>详细地址: </label> {{data?.address}}
-    </div>
-  </div>
-</form>
-<hr>
+<table class="table table-order-info table-bordered">
+  <tbody>
+    <tr>
+      <td>车主</td>
+      <td>{{data?.name}}</td>
+      <td>性别</td>
+      <td>
+        {{data?.sex}}
+      </td>
+    </tr>
+    <tr>
+      <td>生日</td>
+      <td>{{data?.birthday|sDate}}</td>
+      <td>身份证号</td>
+      <td>{{data?.identityCard}}</td>
+    </tr>
+    <tr>
+      <td>手机号</td>
+      <td>{{data?.phone}}</td>
+      <td>电话</td>
+      <td>{{data?.tel}}</td>
+    </tr>
+    <tr>
+      <td>传真</td>
+      <td>{{data?.fax}}</td>
+      <td>Email</td>
+      <td>{{data?.email}}</td>
+    </tr>
+    <tr>
+      <td>省份</td>
+      <td>{{data?.cityNameList?.split(',')[0]}}</td>
+      <td>城市</td>
+      <td>{{data?.cityNameList?.split(',')[1]}}</td>
+    </tr>
+    <tr>
+      <td>区县</td>
+      <td>{{data?.cityNameList?.split(',')[1]}}</td>
+      <td>详细地址</td>
+      <td>{{data?.address}}
+      </td>
+    </tr>
+  </tbody>
+</table>
 <tabset>
-  <tab heading="车辆信息">
+  <tab>
+    <template tabHeading>
+      <i class="fa fa-car mr-2" aria-hidden="true"></i>车辆信息
+    </template>
     <div class="table-container">
       <table class="table table-bordered">
         <thead>

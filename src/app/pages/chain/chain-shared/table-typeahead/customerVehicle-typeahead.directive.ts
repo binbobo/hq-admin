@@ -18,7 +18,7 @@ export class CustomerVehicleTypeaheadDirective extends TableTypeaheadDirective {
 
     protected columns = [
         { name: 'plateNo', title: '车牌号' },
-        { name: 'customerName', title: '车主' },
+        { name: 'name', title: '车主' },
         { name: 'phone', title: '车主电话' },
     ] as Array<TableTypeaheadColumn>;
 
@@ -31,34 +31,7 @@ export class CustomerVehicleTypeaheadDirective extends TableTypeaheadDirective {
             request[this.filed] = params.text;
             request.setPage(params.pageIndex, params.pageSize);
             let url = Urls.chain.concat('/Customers/GetByName');
-            return this.httpService.getPagedList<any>(url, request).then(response => {
-                // 加工数据
-                console.log('根据车主名称查询客户车辆信息：', response.data);
-                // 每个车主下面可能有多个车辆信息
-                const customerVehicles: CustomerVehicle[] = [];
-                response.data.forEach((customer) => {
-                    if (!customer.customerVehicles) { return; };
-                    customer.customerVehicles.forEach(vehicle => {
-                        const customerVehicle = new CustomerVehicle(
-                            vehicle.id, // 客户车辆id
-                            vehicle.vehicleId,  // 车辆id
-                            vehicle.customerId, // 客户id
-                            vehicle.plateNo,
-                            customer.name,
-                            customer.phone,
-                            vehicle.series,
-                            vehicle.vehicleName,
-                            vehicle.brand,
-                            vehicle.mileage,
-                            vehicle.purchaseDate,
-                            vehicle.vin,  // 底盘号
-                        );
-                        customerVehicles.push(customerVehicle);
-                    });
-                });
-                response.data = customerVehicles;
-                return response;
-            });
+            return this.httpService.getPagedList<any>(url, request);
         };
         super.ngOnInit();
     }

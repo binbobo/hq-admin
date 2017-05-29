@@ -47,7 +47,7 @@
         </tr>
         <tr *ngFor="let item of list">
           <td>
-            <button type="button" [hqSpinner]="false" class="btn btn-info btn-sm" (click)="alert(bdModal)">详情</button>
+            <button type="button" [hqSpinner]="false" class="btn btn-info btn-sm  " (click)="alert(bdModal)">详情</button>
           </td>
           <td>{{item.billCode}}</td>
           <td>{{item.customerName }}</td>
@@ -127,7 +127,7 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" (click)="print()" class="btn btn-secondary">打印</button>
+      <button type="button" (click)="print()" class="btn btn-export">打印</button>
     </div>
   </div>
 </div>

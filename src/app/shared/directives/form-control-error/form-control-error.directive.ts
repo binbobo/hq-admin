@@ -94,10 +94,15 @@ export class FormControlErrorDirective<T extends FormControlErrorComponent> impl
         .filter(m => control.errors[m] === true || typeof control.errors[m] === 'object')
         .map(m => this.getError(m.toLowerCase(), control.errors));
       this.show();
+      control.markAsTouched()
     } else {
       this.hide();
     }
     return control.valid;
+  }
+
+  public clear(){
+    this.hide();
   }
 
   private getError(key: string, errors: any): string {

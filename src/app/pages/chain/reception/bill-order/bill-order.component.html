@@ -66,10 +66,10 @@
 
           <tr *ngFor="let item of list">
             <td *ngIf="!item.updateOnUtc" style="text-align:right"><button type="button" class="btn btn-sm btn-primary" [hqSpinner]="item.generat" [disabled]="item.generat" (click)='orderDetailsDialog($event, item.id,lgModal,item)'>结算</button>&nbsp;
-              <button [hqSpinner]="item.generating" type="button" class="btn btn-sm btn-info" [disabled]="item.generating" (click)='DetailsDialog($event, item.id,lgModal,item)'>详情</button>
+              <button [hqSpinner]="item.generating" type="button" class="btn btn-sm btn-info  " [disabled]="item.generating" (click)='DetailsDialog($event, item.id,lgModal,item)'>详情</button>
             </td>
             <td *ngIf="item.updateOnUtc" style="text-align:right"><button type="button" class="btn btn-sm btn-danger" (click)='finishedOrder($event, item.id, confirmModal)'>撤销结算</button>&nbsp;
-              <button [hqSpinner]="item.generating" type="button" class="btn btn-sm btn-info" [disabled]="item.generating" (click)='DetailsDialog($event, item.id,lgModal,item)'>详情</button>
+              <button [hqSpinner]="item.generating" type="button" class="btn btn-sm btn-info  " [disabled]="item.generating" (click)='DetailsDialog($event, item.id,lgModal,item)'>详情</button>
             </td>
             <td>{{item.statusName}}</td>
             <td>{{item.plateNo}}</td>
@@ -108,7 +108,6 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="unBill(confirmModal);">确定</button>
           <button type="button" class="btn btn-secondary" data-dismiss="confirmModal" (click)="confirmModal.hide();">取消</button>
-
         </div>
       </div>
     </div>
@@ -119,22 +118,18 @@
   <div *ngIf="lgModal.isShown" class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header pos-top">
-        <button type="button" class="btn btn-primary pull-left" aria-label="Close" [hidden]="!isShowPrint" (click)='print()'>打印</button>
+        <button type="button" class="btn btn-export pull-left" aria-label="Close" [hidden]="!isShowPrint" (click)='print(lgModal)'>打印</button>
         <button type="button" class="close pull-right" (click)="hideModal(lgModal)" aria-label="Close">
           <span aria-hidden="true" class="pull-right close-right">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <!--导出详情begin-->
-
         <!--工单详情 start-->
-
         <hq-workorder-detail [data]="selectedOrder"></hq-workorder-detail>
-
         <!--结算费用-->
         <div class="card" [hidden]="!isShowCost" *ngIf="lgModal.isShown">
           <form [formGroup]="billSheetForm">
-
             <div class="form-group row" style="margin-left: 16px;margin-top: 21px;">
               <label for="billPrice" class=" col-form-label">应收金额(元)：</label>
               <div class="col-3">

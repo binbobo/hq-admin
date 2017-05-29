@@ -2,7 +2,7 @@
   <button (click)="hide()" class="close" [hidden]="!multiple">
     <span>&times;</span>
   </button>
-  <table class="table table-sm table-bordered table-hover">
+  <table class="table table-sm table-bordered table-hover"> 
     <thead [hidden]="!showTitle">
       <tr>
         <th [hidden]="!multiple"><input [checked]="allChecked" (change)="onSelectAll($event)" type="checkbox" /></th>
