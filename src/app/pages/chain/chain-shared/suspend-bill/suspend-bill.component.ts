@@ -9,7 +9,7 @@ import { SuspendBillColumn } from './suspend-bill.directive';
   styleUrls: ['./suspend-bill.component.css'],
   providers: [SuspendBillService],
   host: {
-    style: 'position:absolute;right:10px;top:7px;',
+    style: 'position:absolute;right:10px;top:9px;',
   },
 })
 export class SuspendBillComponent implements OnInit {

@@ -22,11 +22,11 @@ caption {
 }
 .pos-top{
     position: relative;
-        height: 52px;
+    height: 52px;
 }
 .close-right{
     position: absolute;
-        right: 14px;
+    right: 14px;
     top: 13px;
 }
 @media (min-width: 992px) {
@@ -34,4 +34,13 @@ caption {
 max-width: 1000px;
 }
 }
+.btn-sm {
+    padding: 6px 0 !important;
+    width: 80px !important;
+}
+.form-inline{
+    margin-bottom: .8rem;
+    margin-left: -3px;
+}
+
 

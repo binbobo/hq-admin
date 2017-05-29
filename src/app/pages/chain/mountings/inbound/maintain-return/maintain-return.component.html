@@ -5,14 +5,14 @@
     <ng-template hqSuspendBill="RR" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
   <div class='card-block'>
-    <div>
-      <form class="form-in serach-input">
+      <form class="form-inline">
+         <div class="input-group m-1">
+         <span class="input-group-addon">选择工单</span> 
         <input [hqTableTypeahead]="PlatNoSource" [(ngModel)]="initValue" [columns]="typeaheadColumns" name="initValue" (onSelect)="onPlateNoSelect($event)"
-          class="form-control input-left" placeholder="请输入车牌号/工单号">
-        <span class='button-right'>
-        </span>
+          class="form-control" placeholder="请输入车牌号/工单号">
+        <span class='button-right'></span>
+        </div>        
       </form>
-    </div>
     <div class="serach-main">
       <div class="serach-list">工单号:&nbsp;&nbsp;{{orderDetail?.billCode}}</div>
       <div class="serach-list">车主:&nbsp;&nbsp;{{orderDetail?.customerName}}</div>

@@ -6,339 +6,339 @@
     <ng-template hqSuspendBill="MWIM" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
   <div class="card-block">
-    <div>
-      <form class='form-in serach-input'>
+
+    <form class='form-inline'>
+      <div class="input-group m-1">
+        <span class="input-group-addon">选择工单</span>
         <input [hqTableTypeahead]="typeaheadSource" [(ngModel)]="initValue" name="initValue" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)"
           class="form-control" placeholder="请输入工单号/车牌号" />
-      </form>
-    </div>
-    <table class="table table-order-info table-bordered">
-      <thead>
-        <tr>
-          <th colspan="4" class="tr-left-bold">车辆信息</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>工单号</td>
-          <td>{{SearchappendList.billCode}}</td>
-          <td>车牌号</td>
-          <td>{{SearchappendList.plateNo}}</td>
-        </tr>
-        <tr>
-          <td>车主</td>
-          <td>{{SearchappendList.customerName}} </td>
-          <td>车主电话</td>
-          <td>{{SearchappendList.phone}} </td>
-        </tr>
-        <tr>
-          <td>送修人</td>
-          <td>{{SearchappendList.contactUser}}</td>
-          <td>送修人电话</td>
-          <td>{{SearchappendList.contactInfo}}</td>
-        </tr>
-        <tr>
-          <td>介绍人</td>
-          <td>{{SearchappendList.introducer}} </td>
-          <td>介绍人电话</td>
-          <td>{{SearchappendList.introPhone}}</td>
-        </tr>
-        <tr>
-          <td>品牌</td>
-          <td>{{SearchappendList.brand}}</td>
-          <td>车系</td>
-          <td>{{SearchappendList.series}}</td>
-        </tr>
-        <tr>
-          <td>车型</td>
-          <td>{{SearchappendList.vehicleName}}</td>
-          <td>VIN</td>
-          <td>{{SearchappendList.vin}}</td>
-        </tr>
-        <tr>
-          <td>维修类型</td>
-          <td>{{SearchappendList.typeName}}</td>
-          <td>验车日期</td>
-          <td>{{SearchappendList.validate |sDatetime}}</td>
-        </tr>
-        <tr>
-          <td>预计交车时间</td>
-          <td>{{SearchappendList.expectLeave|sDatetime}}</td>
-          <td>进厂里程(KM)</td>
-          <td>{{SearchappendList.mileage}}</td>
-        </tr>
-        <tr>
-          <td>上次进厂时间</td>
-          <td>{{SearchappendList.lastEnterDate|sDatetime}}</td>
-          <td>上次进厂里程(KM)</td>
-          <td>{{SearchappendList.lastMileage}}</td>
-        </tr>
-        <tr>
-          <td>建议下次保养日期</td>
-          <td>{{SearchappendList.nextDate|sDatetime}}</td>
-          <td>建议下次保养里程(KM)</td>
-          <td>{{SearchappendList.nextMileage}}</td>
-        </tr>
-        <tr>
-          <td>维修工位</td>
-          <td>{{SearchappendList.location}}</td>
-          <td></td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
+      </div>
+    </form>
 
+  <table class="table table-order-info table-bordered">
+    <thead>
+      <tr>
+        <th colspan="4" class="tr-left-bold">车辆信息</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>工单号</td>
+        <td>{{SearchappendList.billCode}}</td>
+        <td>车牌号</td>
+        <td>{{SearchappendList.plateNo}}</td>
+      </tr>
+      <tr>
+        <td>车主</td>
+        <td>{{SearchappendList.customerName}} </td>
+        <td>车主电话</td>
+        <td>{{SearchappendList.phone}} </td>
+      </tr>
+      <tr>
+        <td>送修人</td>
+        <td>{{SearchappendList.contactUser}}</td>
+        <td>送修人电话</td>
+        <td>{{SearchappendList.contactInfo}}</td>
+      </tr>
+      <tr>
+        <td>介绍人</td>
+        <td>{{SearchappendList.introducer}} </td>
+        <td>介绍人电话</td>
+        <td>{{SearchappendList.introPhone}}</td>
+      </tr>
+      <tr>
+        <td>品牌</td>
+        <td>{{SearchappendList.brand}}</td>
+        <td>车系</td>
+        <td>{{SearchappendList.series}}</td>
+      </tr>
+      <tr>
+        <td>车型</td>
+        <td>{{SearchappendList.vehicleName}}</td>
+        <td>VIN</td>
+        <td>{{SearchappendList.vin}}</td>
+      </tr>
+      <tr>
+        <td>维修类型</td>
+        <td>{{SearchappendList.typeName}}</td>
+        <td>验车日期</td>
+        <td>{{SearchappendList.validate |sDatetime}}</td>
+      </tr>
+      <tr>
+        <td>预计交车时间</td>
+        <td>{{SearchappendList.expectLeave|sDatetime}}</td>
+        <td>进厂里程(KM)</td>
+        <td>{{SearchappendList.mileage}}</td>
+      </tr>
+      <tr>
+        <td>上次进厂时间</td>
+        <td>{{SearchappendList.lastEnterDate|sDatetime}}</td>
+        <td>上次进厂里程(KM)</td>
+        <td>{{SearchappendList.lastMileage}}</td>
+      </tr>
+      <tr>
+        <td>建议下次保养日期</td>
+        <td>{{SearchappendList.nextDate|sDatetime}}</td>
+        <td>建议下次保养里程(KM)</td>
+        <td>{{SearchappendList.nextMileage}}</td>
+      </tr>
+      <tr>
+        <td>维修工位</td>
+        <td>{{SearchappendList.location}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <div [hidden]="!isShowAppend">
+    <tabset #staticTabs>
+      <!--维修项目-->
+      <tab heading="维修项目">
 
+        <div class="table-container">
+          <table class="table  table-bordered">
+            <thead>
+              <tr>
+                <th>操作</th>
+                <th>维修项目名称</th>
+                <th>维修工时(小时)</th>
+                <th>工时单价(元)</th>
+                <th>折扣率(%)</th>
+                <th>金额(元)</th>
+                <!--<th>操作时间</th>-->
 
-    <div [hidden]="!isShowAppend">
-      <tabset #staticTabs>
-        <!--维修项目-->
-        <tab heading="维修项目">
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of maintenanceProjectData">
+                <td>&nbsp;</td>
+                <td>{{item.serviceName}}<span *ngIf="item.type === 3" class="append-stamp">增项</span><span [class.accept-stamp]="item.teamType === 6"></span></td>
+                <td>{{item.workHour}}</td>
+                <td>{{item.price|centToYuan}}</td>
+                <td>{{item.discount}}</td>
+                <td>{{item.amount|centToYuan}}</td>
+                <!--<td>{{item.operateDateTime|sDatetime}}</td>-->
+              </tr>
 
-          <div class="table-container">
-            <table class="table  table-bordered">
-              <thead>
-                <tr>
-                  <th>操作</th>
-                  <th>维修项目名称</th>
-                  <th>维修工时(小时)</th>
-                  <th>工时单价(元)</th>
-                  <th>折扣率(%)</th>
-                  <th>金额(元)</th>
-                  <!--<th>操作时间</th>-->
+              <tr *ngFor="let item of newMaintenanceItemData">
+                <td width="40">
+                  <button class="btn btn-sm btn-success mr-2" (click)="onMaintenanceItemEdit($event, addModal, item)">编辑</button>
+                  <button class="btn btn-sm btn-danger mr-2" (click)="$event.preventDefault();onDelMaintenanceItem(item?.serviceId)">删除</button>
+                </td>
+                <td>{{item?.serviceName}}</td>
+                <td>{{item?.workHour}}</td>
+                <td>{{item?.price|centToYuan}}</td>
+                <td>{{item?.discount}}</td>
+                <td>{{item?.amount|centToYuan}}</td>
+                <td>{{item?.operationTime|sDatetime}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of maintenanceProjectData">
-                  <td>&nbsp;</td>
-                  <td>{{item.serviceName}}<span *ngIf="item.type === 3" class="append-stamp">增项</span><span [class.accept-stamp]="item.teamType === 6"></span></td>
-                  <td>{{item.workHour}}</td>
-                  <td>{{item.price|centToYuan}}</td>
-                  <td>{{item.discount}}</td>
-                  <td>{{item.amount|centToYuan}}</td>
-                  <!--<td>{{item.operateDateTime|sDatetime}}</td>-->
-                </tr>
-
-                <tr *ngFor="let item of newMaintenanceItemData">
-                  <td width="40">
-                    <button class="btn btn-sm btn-success mr-2" (click)="onMaintenanceItemEdit($event, addModal, item)">编辑</button>
-                    <button class="btn btn-sm btn-danger mr-2" (click)="$event.preventDefault();onDelMaintenanceItem(item?.serviceId)">删除</button>
-                  </td>
-                  <td>{{item?.serviceName}}</td>
-                  <td>{{item?.workHour}}</td>
-                  <td>{{item?.price|centToYuan}}</td>
-                  <td>{{item?.discount}}</td>
-                  <td>{{item?.amount|centToYuan}}</td>
-                  <td>{{item?.operationTime|sDatetime}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="text-center">
-            <button class="btn btn-secondary" (click)="addModal.show();">
+        <div class="text-center">
+          <button class="btn btn-secondary" (click)="addModal.show();">
           <span><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i></span>
             新增维修项目
             </button>
-          </div>
+        </div>
 
 
-        </tab>
-        <!--附加项目-->
+      </tab>
+      <!--附加项目-->
 
-        <tab heading="附加项目">
-          <div class="table-container">
-            <table class='table   table-bordered'>
-              <thead>
-                <tr>
-                  <th>操作</th>
-                  <th>备注</th>
-                </tr>
-              </thead>
-              <tr *ngFor="let item of attachServiceOutputs">
-                <td></td>
-                <td>{{item.description}}</td>
+      <tab heading="附加项目">
+        <div class="table-container">
+          <table class='table   table-bordered'>
+            <thead>
+              <tr>
+                <th>操作</th>
+                <th>备注</th>
               </tr>
-              <tr *ngFor="let item of newAttachData;let i=index">
-                <td width="40">
-                  <button class="btn btn-sm btn-success mr-2" (click)="onAttachEdit($event, attachModal, item)">编辑</button>
-                  <button class="btn btn-sm btn-danger mr-2" (click)="$event.preventDefault();onDelAttachItem(i)">删除</button>
-                </td>
-                <td>{{item.description}}</td>
-              </tr>
-            </table>
-          </div>
+            </thead>
+            <tr *ngFor="let item of attachServiceOutputs">
+              <td></td>
+              <td>{{item.description}}</td>
+            </tr>
+            <tr *ngFor="let item of newAttachData;let i=index">
+              <td width="40">
+                <button class="btn btn-sm btn-success mr-2" (click)="onAttachEdit($event, attachModal, item)">编辑</button>
+                <button class="btn btn-sm btn-danger mr-2" (click)="$event.preventDefault();onDelAttachItem(i)">删除</button>
+              </td>
+              <td>{{item.description}}</td>
+            </tr>
+          </table>
+        </div>
 
-          <div class="text-center">
-            <button class="btn btn-secondary" [disabled]="!!((newAttachData?.length)>=1)" (click)="attachModal.show();">
+        <div class="text-center">
+          <button class="btn btn-secondary" [disabled]="!!((newAttachData?.length)>=1)" (click)="attachModal.show();">
           <span><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i></span>
             新增附加项目
             </button>
-          </div>
+        </div>
 
 
-        </tab>
+      </tab>
 
-        <!--建议维修项-->
-        <tab heading="建议维修项">
-          <div class="table-container">
-            <table class='table  table-bordered'>
-              <thead>
-                <tr>
-                  <th>操作</th>
-                  <th>建议维修项目</th>
-                  <!--<th>操作时间</th>-->
-                  <th>备注</th>
-
-                </tr>
-              </thead>
-              <tr *ngFor="let item of suggestServiceOutputs">
-                <td></td>
-                <td>{{item.content}}</td>
-                <!--<td>{{item.operateDateTime|sDatetime}}</td>-->
-                <td>{{item.description}}</td>
+      <!--建议维修项-->
+      <tab heading="建议维修项">
+        <div class="table-container">
+          <table class='table  table-bordered'>
+            <thead>
+              <tr>
+                <th>操作</th>
+                <th>建议维修项目</th>
+                <!--<th>操作时间</th>-->
+                <th>备注</th>
 
               </tr>
-              <tr *ngFor="let item of newSuggestData">
-                <td width="40">
-                  <button class="btn btn-sm btn-success mr-2" (click)="onSuggestItemEdit($event, suggestModal, item)">编辑</button>
-                  <button class="btn btn-sm btn-danger mr-2" (click)="$event.preventDefault();onDelSuggestItem(item.serviceId)">删除</button>
-                </td>
-                <td>{{item.serviceName}}</td>
-                <td>{{item.operationTime|sDatetime}}</td>
-                <td>{{item.description}}</td>
+            </thead>
+            <tr *ngFor="let item of suggestServiceOutputs">
+              <td></td>
+              <td>{{item.content}}</td>
+              <!--<td>{{item.operateDateTime|sDatetime}}</td>-->
+              <td>{{item.description}}</td>
 
-              </tr>
+            </tr>
+            <tr *ngFor="let item of newSuggestData">
+              <td width="40">
+                <button class="btn btn-sm btn-success mr-2" (click)="onSuggestItemEdit($event, suggestModal, item)">编辑</button>
+                <button class="btn btn-sm btn-danger mr-2" (click)="$event.preventDefault();onDelSuggestItem(item.serviceId)">删除</button>
+              </td>
+              <td>{{item.serviceName}}</td>
+              <td>{{item.operationTime|sDatetime}}</td>
+              <td>{{item.description}}</td>
 
-            </table>
-          </div>
+            </tr>
 
-          <div class="text-center">
-            <button class="btn btn-secondary" (click)="suggestModal.show();">
+          </table>
+        </div>
+
+        <div class="text-center">
+          <button class="btn btn-secondary" (click)="suggestModal.show();">
           <span><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i></span>
             新增建议维修项目
             </button>
-          </div>
-
-
-
-        </tab>
-
-        <!--上次维修记录-->
-        <tab heading="上次维修记录" *ngIf="lastManufactureDetailOutput">
-          <div class="table-container">
-            <table class="table  table-bordered">
-              <caption>维修项目</caption>
-              <thead>
-                <tr>
-                  <th>项目名称</th>
-                  <th>维修工时(小时)</th>
-                  <th>工时单价(元)</th>
-                  <th>金额(元)</th>
-                  <th>折扣率(100%)</th>
-                  <!--<th>操作时间</th>-->
-
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of lastDataProjectList ">
-                  <td>{{item.serviceName}}<span [class.append-stamp]="item.type === 3">增项</span><span [class.accept-stamp]="item.teamType === 6"></span></td>
-                  <td>{{item.workHour}}</td>
-                  <td>{{item.price|centToYuan}}</td>
-                  <td>{{item.amount|centToYuan}}</td>
-                  <td>{{item.discount}}</td>
-                  <!--<td>{{item.operateDateTime|sDatetime}}</td>-->
-
-                </tr>
-              </tbody>
-            </table>
-
-          </div>
-          <div class="table-container">
-            <table class="table table-bordered">
-              <caption>维修配件</caption>
-              <thead>
-                <tr>
-                  <th>维修工项</th>
-                  <th>配件编码</th>
-                  <th>配件名称</th>
-                  <th>品牌</th>
-                  <th>规格型号</th>
-                  <th>数量(个)</th>
-                  <th>单价(元)</th>
-                  <th>金额(元)</th>
-                  <!--<th>操作时间</th>-->
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of lastRepairList">
-                  <td>{{item.serviceName}}</td>
-                  <td>{{item.productCode}}</td>
-                  <td>{{item.productName}}</td>
-                  <td>{{item.brandName}}</td>
-                  <td>{{item.specification}}</td>
-                  <td>{{item.count}}</td>
-                  <td>{{item.price|centToYuan}}</td>
-                  <td>{{item.amount|centToYuan}}</td>
-                  <!--<td>{{item.operateDateTime|sDatetime}}</td>-->
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="table-container">
-            <table class="table  table-bordered">
-              <caption>附加项目</caption>
-              <thead>
-                <tr>
-                  <th>备注</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of lastAddList">
-                  <td>{{item.description}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="table-container">
-            <table class="table   table-bordered">
-              <caption>建议维修项目</caption>
-              <thead>
-                <tr>
-                  <th>建议维修项目</th>
-                  <!--<th>操作时间</th>-->
-                  <th>备注</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of lastSuggestList">
-                  <td>{{item.content}}</td>
-                  <!--<td>{{item.operateDateTime|sDatetime}}</td>-->
-                  <td>{{item.description}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </tab>
-      </tabset>
-
-      <div class="card hq-fee">
-        <div>
-          <span class="fee-name">工时费：<span class="fee-value">{{workHourFee|centToYuan}}</span></span>
-          <span class="fee-name"> 材料费：<span class="fee-value">{{materialFee|centToYuan}}</span></span>
-          <span class="fee-name"> 优惠：<span class="fee-value">{{(workHourFee-sumFee)|centToYuan}}</span></span>
-          <span class="fee-name pull-right">应收金额：<span class="fee-value">{{(workHourFee+materialFee)|centToYuan}}</span></span>
         </div>
-      </div>
 
+
+
+      </tab>
+
+      <!--上次维修记录-->
+      <tab heading="上次维修记录" *ngIf="lastManufactureDetailOutput">
+        <div class="table-container">
+          <table class="table  table-bordered">
+            <caption>维修项目</caption>
+            <thead>
+              <tr>
+                <th>项目名称</th>
+                <th>维修工时(小时)</th>
+                <th>工时单价(元)</th>
+                <th>金额(元)</th>
+                <th>折扣率(100%)</th>
+                <!--<th>操作时间</th>-->
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of lastDataProjectList ">
+                <td>{{item.serviceName}}<span [class.append-stamp]="item.type === 3">增项</span><span [class.accept-stamp]="item.teamType === 6"></span></td>
+                <td>{{item.workHour}}</td>
+                <td>{{item.price|centToYuan}}</td>
+                <td>{{item.amount|centToYuan}}</td>
+                <td>{{item.discount}}</td>
+                <!--<td>{{item.operateDateTime|sDatetime}}</td>-->
+
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+        <div class="table-container">
+          <table class="table table-bordered">
+            <caption>维修配件</caption>
+            <thead>
+              <tr>
+                <th>维修工项</th>
+                <th>配件编码</th>
+                <th>配件名称</th>
+                <th>品牌</th>
+                <th>规格型号</th>
+                <th>数量(个)</th>
+                <th>单价(元)</th>
+                <th>金额(元)</th>
+                <!--<th>操作时间</th>-->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of lastRepairList">
+                <td>{{item.serviceName}}</td>
+                <td>{{item.productCode}}</td>
+                <td>{{item.productName}}</td>
+                <td>{{item.brandName}}</td>
+                <td>{{item.specification}}</td>
+                <td>{{item.count}}</td>
+                <td>{{item.price|centToYuan}}</td>
+                <td>{{item.amount|centToYuan}}</td>
+                <!--<td>{{item.operateDateTime|sDatetime}}</td>-->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-container">
+          <table class="table  table-bordered">
+            <caption>附加项目</caption>
+            <thead>
+              <tr>
+                <th>备注</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of lastAddList">
+                <td>{{item.description}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-container">
+          <table class="table   table-bordered">
+            <caption>建议维修项目</caption>
+            <thead>
+              <tr>
+                <th>建议维修项目</th>
+                <!--<th>操作时间</th>-->
+                <th>备注</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of lastSuggestList">
+                <td>{{item.content}}</td>
+                <!--<td>{{item.operateDateTime|sDatetime}}</td>-->
+                <td>{{item.description}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </tab>
+    </tabset>
+
+    <div class="card hq-fee">
+      <div>
+        <span class="fee-name">工时费：<span class="fee-value">{{workHourFee|centToYuan}}</span></span>
+        <span class="fee-name"> 材料费：<span class="fee-value">{{materialFee|centToYuan}}</span></span>
+        <span class="fee-name"> 优惠：<span class="fee-value">{{(workHourFee-sumFee)|centToYuan}}</span></span>
+        <span class="fee-name pull-right">应收金额：<span class="fee-value">{{(workHourFee+materialFee)|centToYuan}}</span></span>
+      </div>
     </div>
 
   </div>
-  <div class="card-footer text-muted">
-    <button type="button" class="btn btn-primary" [disabled]="!isableAppend" (click)="submitAddOrder()">提交增项</button>
-    <button type="button" class="btn btn-success btn-suspend" [disabled]="!isableSuspend" (click)="suspend()">挂单</button>
-  </div>
+
+</div>
+<div class="card-footer text-muted">
+  <button type="button" class="btn btn-primary" [disabled]="!isableAppend" (click)="submitAddOrder()">提交增项</button>
+  <button type="button" class="btn btn-success btn-suspend" [disabled]="!isableSuspend" (click)="suspend()">挂单</button>
+</div>
 
 </div>
 

@@ -172,7 +172,7 @@ tabset ul li a, tabset ul li a:hover {
 /*大按钮*/
 .btn{
     cursor: pointer;
-    padding:12px 30px;
+    padding:9px 30px;
 }
 .btn:active{
     border: 0
@@ -222,9 +222,9 @@ tabset ul li a, tabset ul li a:hover {
 }
 .tab-content>.active {
     margin-top: .6rem;
-    }
+}
     /*费用样式*/
-    .hq-fee{
+.hq-fee{
     background-color: #fcf8e3 !important;
     border: 1px solid #dcdddd;
     color: #8a6d3b;
@@ -234,21 +234,21 @@ tabset ul li a, tabset ul li a:hover {
     line-height: 40px;
     padding-left: 27px;
     margin: 15px auto;
-    }
-    .hq-fee .fee-name{
-        color:#8a6d3b;
-        font-size:1rem;
-        margin-right: 1.5rem;
-    }
-    .hq-fee .fee-value{
-        color:#eb5267;
-        font-size:1.1rem;
-        margin-left:2px;
-    }
+}
+.hq-fee .fee-name{
+    color:#8a6d3b;
+    font-size:1rem;
+    margin-right: 1.5rem;
+}
+.hq-fee .fee-value{
+    color:#eb5267;
+    font-size:1.1rem;
+    margin-left:2px;
+}
 .fa-times-circle {
-  font-size: 1rem;
-  vertical-align: middle;
-  font-weight: normal;
+    font-size: 1rem;
+    vertical-align: middle;
+    font-weight: normal;
 }
 .btn.disabled, .btn:disabled{
     background-color: #dcdddd !important;
@@ -271,4 +271,9 @@ input:focus{
 }
 .page-item.disabled .page-link {
     color:#727171 !important;
+}
+select{
+    background: transparent;
+    border:1px solid #27b394;
+    outline: none;
 }

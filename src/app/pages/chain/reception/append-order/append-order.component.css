@@ -17,10 +17,6 @@ table th,table td{
 .mg{
     margin-bottom:2rem;
 }
-.serach-input{
-    width: 60%;
-    margin-bottom: 1rem;
-}
 .table-order-info td{
     text-align: left;
     padding-left: 1.1rem !important;
@@ -64,3 +60,7 @@ input[disabled] {
   vertical-align: middle;
   font-weight: normal;
 } 
+.form-inline{
+  margin-bottom: .8rem;
+  margin-left: -3px;
+}

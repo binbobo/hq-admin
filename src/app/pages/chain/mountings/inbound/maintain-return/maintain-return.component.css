@@ -33,10 +33,6 @@ table th,table td{
     border-bottom: 0;
     clear: both;
 }
-.serach-input{
-    width: 60%;
-    margin-bottom: 1rem;
-}
 .serach-main{
     width: 100%;
     clear: both;
