@@ -254,7 +254,7 @@ export class BillOrderComponent extends DataList<any>{
                             console.log(this.printData.workHourData,this.printData.moneyObj.discountMoney);
                             this.printData.workHourData.forEach(item => {
                                 //金额
-                                this.printData.moneyObj.workItemMoney = item.amount;
+                                this.printData.moneyObj.workItemMoney += item.amount;
                                 // 工时明细的应收金额和折扣金额
                                 this.printData.moneyObj.workCostMoney += item.discountCost;
                                 this.printData.moneyObj.discountMoney += item.amount * (1 - item.discount / 100);
@@ -343,7 +343,7 @@ export class BillOrderComponent extends DataList<any>{
                                 // 工时明细
                                 this.printData.workHourData.forEach(item => {
                                     //金额
-                                    this.printData.moneyObj.workItemMoney = item.amount;
+                                    this.printData.moneyObj.workItemMoney += item.amount;
                                     // 工时明细的应收金额和折扣金额
                                     this.printData.moneyObj.workCostMoney += item.discountCost;
                                     this.printData.moneyObj.discountMoney += item.amount * (1 - item.discount / 100);

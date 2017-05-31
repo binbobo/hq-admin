@@ -1,7 +1,7 @@
 <ng-template hq-alerter></ng-template>
 <div class="card append-order">
   <div class="card-header">
-    <span>增项</span>
+    <span>维修增项</span>
     <!--<span class="tooltipp">zegnxiang</span>-->
     <ng-template hqSuspendBill="MWIM" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
@@ -10,7 +10,7 @@
       <div class="input-group m-1">
         <!--<span class="input-group-addon">选择工单</span>-->
         <input [hqTableTypeahead]="typeaheadSource" [(ngModel)]="initValue" name="initValue" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)"
-          class="form-control" placeholder="请输入工单号/车牌号" />
+          class="form-control" placeholder="请输入车牌号/工单号" />
       </div>
     </form>
   <table class="table table-order-info table-bordered">
