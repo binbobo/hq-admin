@@ -85,6 +85,15 @@ export class DistributeComponent implements OnInit {
         this.customerName = data.customerName;
         this.serviceData = data.serviceOutputs;
         this.productData = data.productOutputs;
+        this.serviceData.forEach(element => {
+          console.log(this.serviceData)
+          if(element.maintenanceEmployees.length>0){
+            element.isable=true;
+          }else{
+            element.isable=false;
+          }
+          console.log(this.serviceData)
+        });
       }).catch(err => { this.alerter.error(err), this.serviceShow = false });
 
     // 根据工单号获取已发料流水号列表

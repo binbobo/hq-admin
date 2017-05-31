@@ -6,7 +6,7 @@
     <ng-template hqSuspendBill="MWIM" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
   <div class="card-block">
-    <form class='form-inline'>
+    <form class='form-inline'  autocomplete="off">
       <div class="input-group m-1">
         <!--<span class="input-group-addon">选择工单</span>-->
         <input [hqTableTypeahead]="typeaheadSource" [(ngModel)]="initValue" name="initValue" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)"
