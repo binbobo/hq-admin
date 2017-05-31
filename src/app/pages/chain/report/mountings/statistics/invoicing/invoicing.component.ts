@@ -52,7 +52,6 @@ export class InvoicingComponent extends DataList<any> {
       .catch(err => this.alerter.warn(err));
   }
 
-
   @ViewChild('printer')
   public printer: PrintDirective;
 
