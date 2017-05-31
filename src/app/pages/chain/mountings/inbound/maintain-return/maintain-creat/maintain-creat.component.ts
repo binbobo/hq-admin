@@ -52,7 +52,7 @@ export class MaintainCreatComponent implements OnInit, OnChanges {
       amount: [this.model.amount, [Validators.required]],
       initamount: [this.model.initamount, [Validators.required]],
       locationName: [this.model.locationName],
-      vihicleName: [this.model.vihicleName],
+      vehicleInfoList: [this.model.vehicleInfoList],
       serviceName: [this.model.serviceName, [Validators.required]],
       maintenanceItemId: [this.model.maintenanceItemId],
       takeUser: [this.model.takeUser],

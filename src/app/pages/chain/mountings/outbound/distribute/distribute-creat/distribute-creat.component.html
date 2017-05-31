@@ -31,7 +31,8 @@
       </div>
       <div class="form-group">
         <label class="form-control-label">适用车型</label>
-        <input readonly formControlName="vihicleName" class="form-control">
+        <div readonly *ngIf="!vehicleInfoList" class="form-control"  [hqVehicleShow]="vehicleInfoList">&nbsp;</div>
+        <div readonly *ngIf="vehicleInfoList" class="form-control" style="height:38px;line-height:23px;" [hqVehicleShow]="vehicleInfoList"></div>
       </div>
       <div class="form-group">
         <label class="form-control-label">备注</label>
