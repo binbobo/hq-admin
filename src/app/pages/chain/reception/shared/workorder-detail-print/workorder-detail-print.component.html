@@ -70,8 +70,15 @@
 <hq-maintenance-item-list [showCaption]="true" [showNo]="true" [showFee]="true" *ngIf="data?.serviceOutputs?.length>0" [serviceOutputs]="data?.serviceOutputs">
 </hq-maintenance-item-list>
 <br>
-<hq-maintenance-fixings-list *ngIf="data?.productOutputs?.length>0" [showFee]="true" [showNo]="true" [showCaption]="true" [productOutputs]="data?.productOutputs"></hq-maintenance-fixings-list>
+<hq-maintenance-fixings-list *ngIf="data?.productOutputs?.length>0" [showFee]="true" [showNo]="true" [showCaption]="true"
+  [productOutputs]="data?.productOutputs"></hq-maintenance-fixings-list>
 <br>
 <hq-attachment-item-list *ngIf="data?.attachServiceOutputs?.length>0" [showNo]="true" [showCaption]="true" [attachServiceOutputs]="data?.attachServiceOutputs"></hq-attachment-item-list>
 <br>
 <hq-suggested-item-list *ngIf="data?.suggestServiceOutputs?.length>0" [showNo]="true" [showCaption]="true" [suggestServiceOutputs]="data?.suggestServiceOutputs"></hq-suggested-item-list>
+<div>
+  <p>
+    <span class="mr-2 pull-left">客户签字：</span>
+    <span class="mr-2 pull-right">日期：</span>
+  </p>
+</div>
