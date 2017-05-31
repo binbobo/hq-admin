@@ -180,11 +180,12 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
       customerId: this.customerId,
       list: this.salesReturnData,
     }
+    console.log('上传数据',JSON.stringify(this.billData));
     this.salesReturnservice.createReturnList(this.billData)
       .then(data => {
         this.createLoading = false;
         this.suspendBill.refresh();
-        return confirm('已生成出库单，是否需要打印？') ? data : null;
+        return confirm('已生成退库单，是否需要打印？') ? data : null;
       })
       .then(code => code && this.salesReturnservice.get(code))
       .then(data => {

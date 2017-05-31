@@ -24,6 +24,7 @@ export class BusinessListComponent extends DataList<any> {
   private bdModal: ModalDirective;
 
   public isSearch = false;//温馨提示是否显示
+  public isShow;//温馨提示是否显示
   private converter: CentToYuanPipe = new CentToYuanPipe();
   private pipe: DurationHumanizePipe = new DurationHumanizePipe();
   @ViewChild('printer')
@@ -76,7 +77,7 @@ export class BusinessListComponent extends DataList<any> {
     if (evt.length) {
       this.params.orgIds = evt;
     }
-    console.log(this.params.orgIds,this.orgItems);
+    console.log(this.params.orgIds, this.orgItems);
   }
 
   //服务顾问下拉框选择
@@ -91,13 +92,18 @@ export class BusinessListComponent extends DataList<any> {
   //条件查询维修历史
   onSearch() {
     this.isSearch = false;
+    this.orgItems = this.params.orgIds;
     if (this.params.plateNo) {
       this.isSearch = true;
     }
-    this.orgItems = this.params.orgIds;
-    console.log(this.params.orgIds,this.orgItems);
-    this.onLoadList();
-
+    console.log(this.params.orgIds, this.orgItems);
+    // this.onLoadList();
+    this.params.setPage(1);
+    this.loadList()
+      .then(data => {
+        console.log('查询数据', data);
+        this.isShow = data
+      });
   }
   //导出维修历史
   onExport() {
@@ -120,7 +126,7 @@ export class BusinessListComponent extends DataList<any> {
       countMoney2: 0,//表二应收金额
     }
     //根据ID获取维修历史详情
-    this.service.getDetails(this.detailsId,this.orgItems).then(data => {
+    this.service.getDetails(this.detailsId, this.orgItems).then(data => {
       this.businessData = data;
       //表二
       this.businessData.workHours.forEach(item => {
