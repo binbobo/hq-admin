@@ -71,7 +71,7 @@ export class CustomerService implements BasicService<any> {
         const url = Urls.chain.concat('/Customers/ExportToExcel');
         console.log('导出客户列表参数以及url：', params.serialize(), url);
         return this.httpService
-            .download(url, params.serialize(), '客户列表')
+            .download(url, params.serialize())
             .catch(err => Promise.reject(`客户列表导出失败：${err}`));
     }
 
