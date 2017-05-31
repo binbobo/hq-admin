@@ -89,5 +89,7 @@ max-width: 1000px;
     margin-bottom: .8rem;
     margin-left: -3px;
 }
-
+.modal-content{
+    width: 800px !important;
+}
 
