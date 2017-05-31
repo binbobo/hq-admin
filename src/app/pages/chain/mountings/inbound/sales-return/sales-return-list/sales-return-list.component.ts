@@ -21,17 +21,12 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   private customerName;
   private customerPhone;
   private billCode;//退库单号
-  private billId;
   private billData;//生成退库单
   private originalBillId;
   private suspendData;//挂单数据
   private suspendedBillId;//挂单ID
-  private seller;//销售员ID
-  private inUnit;//购买方ID
-  private outUnit;//销售方ID
   private createLoading = false;//生成退库单按钮加载动画
   private suspendLoading = false;//挂单按钮加载动画
-  // private isOk = true;//按钮禁用控制
 
   params: SaleDetailsRequest;
 
@@ -43,10 +38,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   protected alerter: HqAlerter;
   @ViewChild('printer')
   public printer: PrintDirective;
-  // private salesmen: Array<SelectOption>;
   private printModel: any;
-  // private model: SalesReturnListRequest = new SalesReturnListRequest();
-  // private model;
 
   constructor(
     injector: Injector,
@@ -63,11 +55,12 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   }
   // //选择退库单号
   onItemCodeSelect(event) {
+    console.log('eve', event);
     this.originalBillId = event.id;
     this.billCode = event.billCode;
-
     if (!this.customerName) {
-      this.customerId = event.customerId;
+      console.log('客户名称为空');
+      this.customerId = event.customerID;
       this.customerName = event.customerName;
       this.customerPhone = event.customerPhone;
     }
@@ -75,6 +68,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
     this.params.customerId = this.customerId;
     this.params.customerName = this.customerName;
     this.params.billCode = this.billCode;
+    console.log('选择单号带出', this.params.customerId, this.params.customerName);
     this.onLoadList();
   }
   // //选择客户名称
@@ -105,8 +99,11 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   }
   // //退库单号模糊查询
   public get codeSource() {
+    if (!this.customerName) {
+      this.customerId = null;
+    }
     return (params: TypeaheadRequestParams) => {
-      let p = new BillCodeRequest(this.customerId,this.customerName,params.text);
+      let p = new BillCodeRequest(this.customerId, this.customerName, params.text);
       p.setPage(params.pageIndex, params.pageSize);
       return this.salesReturnservice.getBillCodePagedList(p);
     };
@@ -180,7 +177,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
       customerId: this.customerId,
       list: this.salesReturnData,
     }
-    console.log('上传数据',JSON.stringify(this.billData));
+    console.log('上传数据', JSON.stringify(this.billData));
     this.salesReturnservice.createReturnList(this.billData)
       .then(data => {
         this.createLoading = false;

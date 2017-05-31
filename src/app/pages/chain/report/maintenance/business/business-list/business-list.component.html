@@ -43,8 +43,8 @@
         </div>
     </form>
     <hr *ngIf="isSearch">
-    <h5 *ngIf="isShow">温馨提示：系统找到该车辆在本店维修过<span class="color">{{total}}</span>次。</h5>
-    <h5 *ngIf="isShow">温馨提示：系统未找到该车辆的历史数据，请重新检索车牌号查询。</h5>
+    <h5 *ngIf="isShow1">温馨提示：系统找到该车辆在本店维修过<span class="color">{{total}}</span>次。</h5>
+    <h5 *ngIf="isShow2">温馨提示：系统未找到该车辆的历史数据，请重新检索车牌号查询。</h5>
     <hr *ngIf="isSearch">
     <div class="table-container">
       <table class="table table-bordered">
@@ -114,8 +114,8 @@
       </div>
       <div class="modal-body">
         <div class="card">
-          <div class="card-block clearborder">
-            <hr>
+          <!--<div class="card-block">-->
+            <!--<hr>
             <div class="row">
               <div class="col-4">
                 <label>车牌号: </label>
@@ -195,8 +195,60 @@
                 <span class="ml-2" *ngIf="businessData.leaveMileage">KM</span>
               </div>
             </div>
-            <hr>
-          </div>
+            <hr>-->
+            <table class="table table-order-info table-bordered">
+              <tbody>
+                <tr>
+                  <td>车牌号</td>
+                  <td>{{businessData?.plateNo}}</td>
+                  <td>车型描述</td>
+                  <td>{{businessData?.model}}</td>
+                </tr>
+                <tr>
+                  <td>维修类型</td>
+                  <td>{{businessData?.typeName}}</td>
+                  <td>VIN</td>
+                  <td>{{businessData?.vin}}</td>
+                </tr>
+                <tr>
+                  <td>送修人</td>
+                  <td>{{businessData?.contactUser}}</td>
+                  <td>送修人手机</td>
+                  <td>{{businessData?.contactInfo}}</td>
+                </tr>
+                <tr>
+                  <td>服务顾问</td>
+                  <td>{{businessData?.createdUserName}}</td>
+                  <td>工单号</td>
+                  <td>{{businessData?.billCode}}</td>
+                </tr>
+                <tr>
+                  <td>结算员</td>
+                  <td>{{businessData?.updateUser}}</td>
+                  <td>结算单号</td>
+                  <td>{{businessData?.settlementCode}}</td>
+                </tr>
+                <tr>
+                  <td>结算方</td>
+                  <td>{{businessData?.settlementParty}}</td>
+                  <td>结算时间</td>
+                  <td>{{businessData?.updateOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                </tr>
+                <tr>
+                  <td>进店里程</td>
+                  <td>{{businessData?.mileage}} km</td>
+                  <td>进店时间</td>
+                  <td>{{businessData?.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                </tr>
+                <tr>
+                  <td>出厂里程</td>
+                  <td>{{businessData?.leaveMileage}} km</td>
+                  <td>出厂时间</td>
+                  <td>{{businessData?.updateOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                </tr>
+              </tbody>
+            </table>
+          <!--</div>-->
           <div class="card-block">
             <table class="table table-bordered">
               <caption>收费结算单</caption>

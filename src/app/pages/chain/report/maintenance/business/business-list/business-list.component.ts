@@ -24,7 +24,8 @@ export class BusinessListComponent extends DataList<any> {
   private bdModal: ModalDirective;
 
   public isSearch = false;//温馨提示是否显示
-  public isShow;//温馨提示是否显示
+  public isShow1 = false;//温馨提示是否显示
+  public isShow2 = false;//温馨提示是否显示
   private converter: CentToYuanPipe = new CentToYuanPipe();
   private pipe: DurationHumanizePipe = new DurationHumanizePipe();
   @ViewChild('printer')
@@ -58,7 +59,7 @@ export class BusinessListComponent extends DataList<any> {
   ) {
     super(injector, service);
     this.params = new BusinessListRequest();
-    // this.onLoadList();
+    this.onLoadList();
     // 获取可以选择的店名, 用于查询范围筛选
     this.orderService.getSelectableStores().subscribe(data => {
       if (data[0].children && data[0].children.length > 0)
@@ -92,17 +93,24 @@ export class BusinessListComponent extends DataList<any> {
   //条件查询维修历史
   onSearch() {
     this.isSearch = false;
+    this.isShow1 = false;
+    this.isShow2 = false;
     this.orgItems = this.params.orgIds;
-    if (this.params.plateNo) {
-      this.isSearch = true;
-    }
     console.log(this.params.orgIds, this.orgItems);
     // this.onLoadList();
     this.params.setPage(1);
     this.loadList()
-      .then(data => {
-        console.log('查询数据', data);
-        this.isShow = data
+      .then(() => {
+        if (this.params.plateNo) {
+          this.isSearch = true;
+          if (this.total > 0) {
+            this.isShow1 = true;
+            this.isShow2 = false;
+          } else {
+            this.isShow1 = false;
+            this.isShow2 = true;
+          }
+        }
       });
   }
   //导出维修历史

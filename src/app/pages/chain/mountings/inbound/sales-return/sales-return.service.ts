@@ -32,6 +32,7 @@ export class SalesReturnService implements BasicService<any>{
 //   //退库单号模糊查询
   getBillCodePagedList(params: BillCodeRequest): Promise<PagedResult<any>> {
     const url = Urls.chain.concat('/Sales/SearchBillCode?', params.serialize());
+    console.log('单号获取',url);
     return this.httpService.get<PagedResult<any>>(url)
       .then(result => {
         return result;
