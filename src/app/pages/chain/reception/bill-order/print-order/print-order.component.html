@@ -1,7 +1,21 @@
 <div class="print card">
   <div class='card-block'>
-    <table class="table">
+    <div>
+      <p>
+        <span class="mr-2 pull-left">门店名称：华汽汽服燕郊店</span>
+        <span class="mr-2 pull-right">门店地址：北京市朝阳区广渠路甲8号中汇银高渠中心</span>
+        <span class="clearfix"></span>
+      </p>
+      <p>
+        <span class="mr-2">电话：0316-1234567</span>
+        <span class="mr-2">24小时救援电话：0316-1234567</span>
+        <span class="clearfix"></span>
+      </p>
+    </div>
+    <div style="height:20px">&nbsp;</div>
+    <table class="table table-bordered">
       <tr>
+        <td rowspan="3" class="text-center">托<br>修<br>方</td>
         <td>车牌号:</td>
         <td>{{data.maindata.plateNo}}</td>
         <td>车型描述:</td>
@@ -16,12 +30,13 @@
       <tr>
         <td>VIN:</td>
         <td>{{data.maindata.vin}} </td>
-        <td>维修类型:</td>
-        <td>{{data.maindata.typeName}}</td>
-      </tr>
-      <tr>
         <td>工单号:</td>
         <td>{{data.maindata.billCode}}</td>
+      </tr>
+      <tr>
+        <td rowspan="5" class="text-center">承<br>修<br>方</td>
+        <td>维修类型:</td>
+        <td>{{data.maindata.typeName}}</td>
         <td>结算员:</td>
         <td>{{data.maindata.updateUser}}</td>
       </tr>
@@ -50,12 +65,8 @@
         <td></td>
       </tr>
     </table>
-    <table class="table">
-      <tr class="table-title">
-        <td colspan="4">
-          表一：收费结算单
-        </td>
-      </tr>
+    <div class="table-title">表一：收费结算单</div>
+    <table class="table table-bordered">
       <tr>
         <td>序号</td>
         <td>名称</td>
@@ -69,17 +80,13 @@
         <td>{{item?.description}}</td>
       </tr>
       <tr>
-        <td colspan="4">金额合计：{{(data.moneyObj)?.costMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;优惠：{{(data.moneyObj)?.costCountMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;应收金额：{{data.maindata.actualAmount|centToYuan}}
+        <td colspan="4">金额合计：{{(data.moneyObj)?.costMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;优惠：{{(data.moneyObj).costCountMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;应收金额：{{data.maindata.actualAmount|centToYuan}}
           &nbsp;&nbsp;&nbsp;&nbsp;
         </td>
       </tr>
     </table>
-    <table class="table">
-      <tr>
-        <td colspan="7" class="table-title">
-          表二：工时明细
-        </td>
-      </tr>
+    <div class="table-title">表二：工时明细</div>
+    <table class="table table-bordered">
       <tr>
         <td>序号</td>
         <td>维修项目</td>
@@ -99,16 +106,12 @@
         <td>{{item?.description}}</td>
       </tr>
       <tr>
-        <td colspan="7">金额合计：{{(data.moneyObj)?.workItemMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;优惠：{{(data.moneyObj)?.discountMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;应收金额：{{(data.moneyObj)?.workCostMoney|centToYuan}}</td>
+        <td colspan="7">金额合计：{{(data.moneyObj)?.workItemMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;优惠：{{(data.moneyObj).discountMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;应收金额：{{(data.moneyObj)?.workCostMoney|centToYuan}}</td>
         <!--<td colspan="7">合计：应收金额：{{(data.moneyObj)?.workCostMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;折扣金额：{{(data.moneyObj)?.discountMoney|centToYuan}}</td>-->
       </tr>
     </table>
-    <table class="table" *ngIf="data.materialData.length>0">
-      <tr>
-        <td colspan="8" class="table-title">
-          <h5>表三：配件明细</h5>
-        </td>
-      </tr>
+    <div class="table-title">表三：配件明细</div>
+    <table class="table table-bordered" *ngIf="data.materialData.length>0">
       <tr class="table-tr">
         <td>序号</td>
         <td>配件名称</td>
@@ -129,13 +132,8 @@
         <td colspan="8">金额合计：{{(data.moneyObj)?.materialMoney|centToYuan}}</td>
       </tr>
     </table>
-
-    <table class="table" *ngIf="data.appendItems.length>0">
-      <tr>
-        <td colspan="2" class="table-title">
-          <h5>表四：附加项目</h5>
-        </td>
-      </tr>
+    <div class="table-title" *ngIf="data.appendItems.length>0">表四：附加项目</div>
+    <table class="table table-bordered" *ngIf="data.appendItems.length>0">
       <tr>
         <td>序号</td>
         <td>备注</td>
@@ -145,12 +143,8 @@
         <td>{{items.name}}</td>
       </tr>
     </table>
-    <table class="table" *ngIf="data.adviceItems.length>0">
-      <tr>
-        <td colspan="3" class="table-title">
-          <h5>表五：建议维修项目</h5>
-        </td>
-      </tr>
+    <div class="table-title" *ngIf="data.adviceItems.length>0">表五：建议维修项目</div>
+    <table class="table table-bordered" *ngIf="data.adviceItems.length>0">
       <tr>
         <td>序号</td>
         <td>建议维修项目</td>
@@ -163,13 +157,18 @@
       </tr>
     </table>
     <hr>
-    <div class="print-bot">
-      <div class="bot-left"> 打印时间：{{data.maindata.printOnUtc|sDatetime}}&nbsp;&nbsp;&nbsp;&nbsp;</div>
-      <div class="bot-right pull-right">  客户签名:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </div>
-      
+     <div>
+      <p>
+        <span class="mr-2 pull-left">打印时间：{{data.maindata.printOnUtc|sDatetime}}</span>
+        <span class="mr-2 pull-right">客户签名:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <span class="clearfix"></span>
+      </p>
+      <p>
+        <span class="mr-2 pull-left">操作人：{{data.maindata.currentUserName}}</span>
+        <span class="mr-2 pull-right">日期：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        月&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 日</span>
+        <span class="clearfix"></span>
+      </p>
     </div>
-    <div class="print-bot">
-      <div class="bot-left">操作人：{{data.maindata.currentUserName}}</div>
-      <div class="bot-right pull-right">日期：年月日</div>
-    </div>
+
   </div>
