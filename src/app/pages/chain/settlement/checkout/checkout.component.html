@@ -81,10 +81,12 @@
 <div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
   <div *ngIf="lgModal.isShown" class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header pos-top">
+      <div class="modal-header">
+        <h6 class="modal-title pull-left">维修收银详情</h6>
         <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
           <span aria-hidden="true" class="close-right">&times;</span>
         </button>
+        
       </div>
       <div class="modal-body">
         <!--工单详情 start-->
@@ -104,7 +106,7 @@
 <!--详情 end-->
 <!--收银弹框 begin-->
 <div bsModal #CheckoutModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content" style="background-color:#fff;">
       <div class="modal-header">
         <h5>收银</h5>

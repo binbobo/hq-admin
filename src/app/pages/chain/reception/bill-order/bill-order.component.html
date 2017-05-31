@@ -117,8 +117,8 @@
 <div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
   <div *ngIf="lgModal.isShown" class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header pos-top">
-        <button type="button" class="btn btn-export pull-left" aria-label="Close" [hidden]="!isShowPrint" (click)='print(lgModal)'>打印</button>
+      <div class="modal-header">
+        <h6 class="modal-title pull-left">维修结算详情</h6>
         <button type="button" class="close pull-right" (click)="hideModal(lgModal)" aria-label="Close">
           <span aria-hidden="true" class="pull-right close-right">&times;</span>
         </button>
@@ -164,7 +164,9 @@
         </div>
       </div>
       <!--建议维修项 end-->
-      <!--导出详情end-->
+      <div class="text-center" style="margin-bottom:10px;">
+      <button type="button" class="btn btn-export" aria-label="Close" [hidden]="!isShowPrint" (click)='print(lgModal)'>打印</button>
+      </div>
     </div>
   </div>
 </div>
