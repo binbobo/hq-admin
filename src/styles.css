@@ -183,7 +183,7 @@ tabset ul li a, tabset ul li a:hover {
     border: 0
 }
 /*小按钮*/
-.btn-sm{
+.table-container .btn-sm{
     padding:6px 22px;
     cursor: pointer;
 }
