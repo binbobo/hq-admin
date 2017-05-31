@@ -38,7 +38,7 @@
         <input readonly formControlName="description" class="form-control">
       </div>
     </div>
-    <div class="col-6">
+    <div class="col-6"> 
       <div class="form-group">
         <label class="form-control-label">*仓库</label>
         <select class="form-control" (change)="onStorageChange($event.target.value)" formControlName="storeId">
@@ -47,7 +47,7 @@
       </div>
       <div class="form-group">
         <label class="form-control-label">*库位</label>
-        <select class="form-control" formControlName="locationId">
+        <select class="form-control" formControlName="locationId" (change)="onLocationChange($event.target.value)">
           <option *ngFor="let item of locations" [value]="item.id">{{item.name}}</option>
         </select>
       </div>

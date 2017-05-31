@@ -155,26 +155,6 @@ export class BillOrderComponent extends DataList<any>{
         }).catch(err => this.alerter.error(err, true, 3000));
 
     }
-    // ngAfterViewChecked() {
-    //     if (this.isShowPrint) {
-    //         this.printData = {
-    //             maindata: {},
-    //             costData: [],
-    //             workHourData: [],
-    //             materialData: [],
-    //             appendItems: [],
-    //             adviceItems: [],
-    //             moneyObj: {
-    //                 workCostMoney: 0,
-    //                 discountMoney: 0,
-    //                 materialMoney: 0,
-    //                 costMoney: 0,
-    //                 costCountMoney: 0,
-    //                 workItemMoney: 0
-    //             }
-    //         }
-    //     }
-    // }
     hideModal(lgModal) {
         lgModal.hide();
         this.isShowPrint = false;
@@ -292,9 +272,8 @@ export class BillOrderComponent extends DataList<any>{
                             });
                             this.printData.moneyObj.costCountMoney = this.printData.moneyObj.discountMoney;
                             if (data.deduceAmount) {
-                                this.printData.moneyObj.costCountMoney += this.deduceAmount;
+                                this.printData.moneyObj.costCountMoney += data.deduceAmount;
                             }
-
                             console.log(this.printData)
                             this.isShowPrint = true;
                             item.generating = false;
@@ -345,11 +324,11 @@ export class BillOrderComponent extends DataList<any>{
             event.preventDefault();
             return false;
         } else {
-            if (confirm('是否生成维修结算单？')) {                
+            if (confirm('是否生成维修结算单？')) {
+                this.initprint();
                 this.generat = true;
                 this.service.post(this.billData, this.billId).then((result) => {
                     this.generat = false;
-                    this.initprint();
                     if (confirm('已生成维修结算单，是否需要打印？')) {
                         // 根据id获取工单详细信息
                         this.service.getPrintDetail(this.billId)
