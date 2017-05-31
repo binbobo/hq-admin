@@ -1,12 +1,10 @@
-<h3>{{model?.title}}</h3>
-<hr class="blod">
-<div class="clearfix">
-  <div class="pull-left mr-3">出库单号：{{model?.billCode}}</div>
-  <div class="pull-left mr-3">客户名称：{{model?.customerName}}</div>
-  <div class="pull-left mr-3">销售员：{{model?.seller}}</div>
-  <div class="pull-left">开单时间：{{model?.createBillDateTime|sDatetime}}</div>
+<div class="my-3">
+  <span class="mr-3">店铺名称：{{item?.orgName}}</span>
+  <span class="mr-3">出库单号：{{model?.billCode}}</span>
+  <span class="mr-3">客户名称：{{model?.customerName}}</span>
+  <span class="mr-3">销售员：{{model?.seller}}</span>
+  <span>开单时间：{{model?.createBillDateTime|sDatetime}}</span>
 </div>
-<hr>
 <div class="page-break-after">
   <table class="table table-bordered table-sm">
     <thead>
@@ -40,9 +38,9 @@
       </tr>
     </tbody>
   </table>
-  <div class="clearfix">
-    <div class="pull-left mr-3">金额：{{model?.totalAmount|centToYuan}}</div>
-    <div class="pull-left mr-3">打印时间：{{model?.printDateTime|sDatetime}}</div>
-    <div class="pull-left mr-3 pr-5">操作人：</div>
+  <div class="">
+    <span class="mr-3">金额：{{model?.totalAmount|centToYuan}}</span>
+    <span class="mr-3">打印时间：{{model?.printDateTime|sDatetime}}</span>
+    <span class="pr-5">操作人：</span>
   </div>
 </div>
