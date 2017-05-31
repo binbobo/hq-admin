@@ -152,6 +152,10 @@ export class OrderListComponent extends DataList<Order> {
       this.selectedOrder.fee.discount = this.selectedOrder.fee.workHour - data.serviceOutputs.reduce((accumulator, currentValue) => {
         return accumulator + currentValue.amount;
       }, 0);
+      this.selectedOrder.serviceOutputs.fee = this.selectedOrder.fee;
+      if (this.selectedOrder.productOutputs && this.selectedOrder.productOutputs.length > 0) {
+        this.selectedOrder.productOutputs.fee = this.selectedOrder.fee.material;
+      }
 
       item.generating = false;
       // 显示窗口

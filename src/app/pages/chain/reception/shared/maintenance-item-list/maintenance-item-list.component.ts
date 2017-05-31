@@ -13,6 +13,8 @@ export class MaintenanceItemListComponent implements OnInit {
   showCaption = false;
   @Input()
   showNo = false;
+  @Input()
+  showFee = false;
   constructor() { }
 
   ngOnInit() {
