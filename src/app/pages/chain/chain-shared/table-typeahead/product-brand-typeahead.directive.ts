@@ -24,7 +24,7 @@ export class ProductBrandTypeaheadDirective extends TableTypeaheadDirective {
   ] as Array<TableTypeaheadColumn>;
 
   ngOnInit() {
-    this.filed = this.filed || 'name';
+    this.filed = this.filed || 'brandName';
     this.showTitle = false;
     this.source = (params: TypeaheadRequestParams) => {
       let request = new PagedParams();

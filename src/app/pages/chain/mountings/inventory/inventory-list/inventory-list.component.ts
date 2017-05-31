@@ -17,8 +17,7 @@ export class InventoryListComponent extends DataList<Inventory> implements OnIni
   private editModal: ModalDirective;
   private warehouses: Array<SelectOption>;
   protected params: InventoryListRequest;
-  private model: Inventory;
-
+  private model: any;
   constructor(
     injector: Injector,
     private inventoryService: InventoryService,
@@ -65,7 +64,8 @@ export class InventoryListComponent extends DataList<Inventory> implements OnIni
   onEdit(event: Event, item: Inventory) {
     // let btn = event.target as HTMLButtonElement;
     // btn.disabled = true;
-    this.model = { ...item };
+    if (!item) return false;
+    this.model = JSON.parse(JSON.stringify(item));
     this.editModal.show();
     // this.inventoryService.get(item.id)
     //   .then(data => this.model = data)

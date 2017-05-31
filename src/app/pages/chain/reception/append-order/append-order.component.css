@@ -17,10 +17,6 @@ table th,table td{
 .mg{
     margin-bottom:2rem;
 }
-.serach-input{
-    width: 60%;
-    margin-bottom: 1rem;
-}
 .table-order-info td{
     text-align: left;
     padding-left: 1.1rem !important;
@@ -34,7 +30,6 @@ table .tr-left-bold{
     font-weight: bold;
     padding-left: 1.1rem !important;
 }
-
 input[disabled] {
   background: #f7f8f8;
 }
@@ -43,4 +38,28 @@ input[disabled] {
 }
 .btn-color {
   background:#27b394 !important;
+}
+.btn-secondary {
+  border: none;
+  color: #727171;
+  font-weight: bold;
+  font-size: 0.875rem;
+  margin: 10px auto;
+}
+.fa-plus-circle {
+  font-size: 1.25rem;
+  vertical-align: middle;
+}
+.fa-plus-circle:before {
+  color: #27b394;
+  font-size: 1.6rem;
+}
+.fa-times-circle {
+  font-size: 1rem;
+  vertical-align: middle;
+  font-weight: normal;
+} 
+.form-inline{
+  margin-bottom: .8rem;
+  margin-left: -3px;
 }

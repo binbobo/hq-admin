@@ -66,7 +66,7 @@ this.form = this.formBuilder.group({
 ```
 <div hqPrint #printer="hq-print">
     <div>打印消息</div>
-    <div class="print-hidden print-page">这条打印消息将会隐藏</div>
+    <div class="print-hidden page-break-after">这条打印消息将会隐藏</div>
     <div>这条打印消息将换页打印</div>
 </div>
 <button type="button" (click)="printer.print()">点击打印</button>
@@ -74,7 +74,7 @@ this.form = this.formBuilder.group({
 
 ### class:
 
-`print-page`：分页打印，用于将多个内容分页打印使用；
+`page-break-after`：分页打印，用于将多个内容分页打印使用；
 
 `print-hidden`：打印时隐藏内容；
 

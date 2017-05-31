@@ -5,43 +5,42 @@
   <ng-template hq-alerter></ng-template>
   <div class='card-block'>
     <form (ngSubmit)="onSearch()">
-      <div class="form-group">
-        <div class="form-check form-check-inline" *ngFor="let status of orderStatusData">
-          <label class="form-check-label">
+      <div class="form-group row" *ngIf="orderStatusData">
+        <div class="check-label">
+          <label class="input-group-addon">工单状态</label>
+          <div class="check-label-col">
+            <div class="form-check form-check-inline" *ngFor="let status of orderStatusData">
+              <label class="form-check-label">
             <input (change)='status.checked = !status.checked' [checked]="status.checked" class="form-check-input"  type="checkbox" value="{{status.id}}"> {{status.value}}
           </label>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="form-group row">
-        <label for="SettlementCode">结算单号：</label>
-        <div class="col-sm-2">
+      <div class="form-inline">
+        <div class="input-group m-1">
+          <span class="input-group-addon">结算单号</span>
           <input class="form-control" [(ngModel)]="params.SettlementCode" id="SettlementCode" name="SettlementCode" type="text" placeholder="结算单号"
           />
         </div>
-        <label for="serviceId">工单号：</label>
-        <div class="col-sm-2">
+        <div class="input-group m-1">
+          <span class="input-group-addon">工单号</span>
           <input type="text" [(ngModel)]="params.billcode" class="form-control" id="billcode" name="billcode" placeholder="工单号">
         </div>
-        <label for="plateNo">车牌号：</label>
-        <div class="col-sm-2">
+        <div class="input-group m-1">
+          <span class="input-group-addon">车牌号</span>
           <input type="text" [(ngModel)]="params.carnumber" class="form-control" id="carnumber" name="carnumber" placeholder="车牌号">
         </div>
-      </div>
-      <div class="form-group row">
 
-        <label for="createdTime">进店时间：</label>
-        <div class="col-sm-2">
-          <input class="form-control datetime-picker" [(ngModel)]="params.starttime" id="starttime" name="starttime" type="text" ngui-datetime-picker
+        <div class="input-group m-1">
+          <span class="input-group-addon">进店时间</span>
+          <input class="form-control" style="border-right:0;" [(ngModel)]="params.starttime" id="starttime" name="starttime" type="text" ngui-datetime-picker
           />
+          <span class="input-group-addon">至</span>
+          <input class="form-control" id="endtime" style="border-right-width:1px;" [(ngModel)]="params.endtime" name="endtime" type="text" ngui-datetime-picker />
+          <div class="col-sm-2"><button class="btn btn-primary">查询</button></div>
         </div>
-        至：
-        <div class="col-sm-2">
-          <input class="form-control  datetime-picker" id="endtime" [(ngModel)]="params.endtime" name="endtime" type="text" ngui-datetime-picker
-          />
-        </div>
-        <div class="col-sm-2"><button class="btn btn-primary">查询</button></div>
       </div>
-
     </form>
     <div class="table-container">
       <table class='table table-bordered'>
@@ -66,10 +65,10 @@
 
           <tr *ngFor="let item of list">
             <td *ngIf="!item.updateOnUtc" style="text-align:right"><button type="button" class="btn btn-sm btn-primary" [hqSpinner]="item.generat" [disabled]="item.generat" (click)='orderDetailsDialog($event, item.id,lgModal,item)'>结算</button>&nbsp;
-              <button [hqSpinner]="item.generating" type="button" class="btn btn-sm btn-info" [disabled]="item.generating" (click)='DetailsDialog($event, item.id,lgModal,item)'>详情</button>
+              <button [hqSpinner]="item.generating" type="button" class="btn btn-sm btn-info  " [disabled]="item.generating" (click)='DetailsDialog($event, item.id,lgModal,item)'>详情</button>
             </td>
             <td *ngIf="item.updateOnUtc" style="text-align:right"><button type="button" class="btn btn-sm btn-danger" (click)='finishedOrder($event, item.id, confirmModal)'>撤销结算</button>&nbsp;
-              <button [hqSpinner]="item.generating" type="button" class="btn btn-sm btn-info" [disabled]="item.generating" (click)='DetailsDialog($event, item.id,lgModal,item)'>详情</button>
+              <button [hqSpinner]="item.generating" type="button" class="btn btn-sm btn-info  " [disabled]="item.generating" (click)='DetailsDialog($event, item.id,lgModal,item)'>详情</button>
             </td>
             <td>{{item.statusName}}</td>
             <td>{{item.plateNo}}</td>
@@ -108,7 +107,6 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="unBill(confirmModal);">确定</button>
           <button type="button" class="btn btn-secondary" data-dismiss="confirmModal" (click)="confirmModal.hide();">取消</button>
-
         </div>
       </div>
     </div>
@@ -119,56 +117,49 @@
   <div *ngIf="lgModal.isShown" class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header pos-top">
-        <button type="button" class="btn btn-secondary pull-left" aria-label="Close" [hidden]="!isShowPrint" (click)='print()'>打印</button>
+        <button type="button" class="btn btn-export pull-left" aria-label="Close" [hidden]="!isShowPrint" (click)='print(lgModal)'>打印</button>
         <button type="button" class="close pull-right" (click)="hideModal(lgModal)" aria-label="Close">
           <span aria-hidden="true" class="pull-right close-right">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <!--导出详情begin-->
-
         <!--工单详情 start-->
-
         <hq-workorder-detail [data]="selectedOrder"></hq-workorder-detail>
-
         <!--结算费用-->
         <div class="card" [hidden]="!isShowCost" *ngIf="lgModal.isShown">
           <form [formGroup]="billSheetForm">
-
             <div class="form-group row" style="margin-left: 16px;margin-top: 21px;">
               <label for="billPrice" class=" col-form-label">应收金额(元)：</label>
-              <div class="col-2">
+              <div class="col-3">
                 <input type="number" class="form-control" [errors]="{lte:'输入金额不能大于应收金额'}" [value]="billPricex|centToYuan" label="金额" formControlName="billPrice">
               </div>
               <label for="leaveMileage" class="col-form-label">出厂里程(KM)：</label>
-              <div class="col-2">
+              <div class="col-3">
                 <input type="number" class="form-control" label="出厂里程" [errors]="{gte:'出厂里程不能大于进厂里程'}" formControlName="leaveMileage">
-
               </div>
               <div class="col-2">
                 <button type="button" [hqSpinner]="generat" class="btn btn-primary mr-2" aria-label="Close" (click)="BillClick($event,lgModal)">确定</button>
               </div>
             </div>
           </form>
-
-          <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;padding-left: 28px;">
-            工时费：
-            <span class="ml-2 mr-2">{{workHourFee|centToYuan}}元</span> | 材料费：
-            <span class="ml-2 mr-2">{{materialFee|centToYuan}}元</span> | 优惠：
-            <span class="ml-2 mr-2">元</span> | 应收金额:
-            <span class="ml-2 mr-2">{{sumFee|centToYuan}}元</span>
+          <div class="card hq-fee">
+            <div>
+              <span class="fee-name">工时费：<span class="fee-value">{{workReceivableCost|centToYuan}}</span></span>
+              <span class="fee-name"> 材料费：<span class="fee-value">{{materialFee|centToYuan}}</span></span>
+              <span class="fee-name"> 优惠：<span class="fee-value">{{discountAmount|centToYuan}}</span></span>
+              <span class="fee-name pull-right">应收金额：<span class="fee-value">{{sumFee|centToYuan}}</span></span>
+            </div>
           </div>
-
         </div>
       </div>
       <!--详情费用-->
-      <div class="card" [hidden]="!isShowCostDetail" *ngIf="lgModal.isShown">
-        <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
-          工时费
-          <span class="ml-2 mr-2">{{workHourFee|centToYuan}}元</span> | 材料费
-          <span class="ml-2 mr-2">{{materialFee|centToYuan}}元</span> | 优惠：
-          <span class="ml-2 mr-2">元</span> | 应收金额：
-          <span class="ml-2 mr-2">{{sumFee|centToYuan}}元</span>
+      <div class="card hq-fee" [hidden]="!isShowCostDetail" *ngIf="lgModal.isShown">
+        <div>
+          <span class="fee-name">工时费：<span class="fee-value">{{workReceivableCost|centToYuan}}</span></span>
+          <span class="fee-name"> 材料费：<span class="fee-value">{{materialFee|centToYuan}}</span></span>
+          <span class="fee-name"> 优惠：<span class="fee-value">{{discountAmount|centToYuan}}</span></span>
+          <span class="fee-name pull-right">应收金额：<span class="fee-value">{{sumFee|centToYuan}}</span></span>
         </div>
       </div>
       <!--建议维修项 end-->
@@ -177,5 +168,4 @@
   </div>
 </div>
 <!--详情 end-->
-
 <hq-print-order *ngIf="printData" [hidden]="true" [data]="printData" hqPrint #printer="hq-print"></hq-print-order>

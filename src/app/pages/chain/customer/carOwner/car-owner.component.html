@@ -6,33 +6,45 @@
   <div class="card-block">
     <form (ngSubmit)="onLoadList()">
       <div class="form-group row">
-        <label for="name" class="col-1 col-form-label">车主</label>
-        <div class="col-2">
-          <input maxlength="15" type="text" [(ngModel)]="params.name" class="form-control" name="name" id="name" placeholder="车主">
+        <div class="hq-input">
+          <label for="name" class="form-label">车主</label>
+          <div class="hq-col">
+            <input maxlength="15" type="text" [(ngModel)]="params.name" class="form-control" name="name" id="name">
+          </div>
         </div>
-        <label for="plateNo" class="col-1 col-form-label">车牌号</label>
-        <div class="col-2">
-          <input maxlength="12" type="text" [(ngModel)]="params.plateNo" class="form-control" name="plateNo" id="plateNo" placeholder="车牌号">
+        <div class="hq-input">
+          <label for="plateNo" class="form-label">车牌号</label>
+          <div class="hq-col">
+            <input maxlength="12" type="text" [(ngModel)]="params.plateNo" class="form-control" name="plateNo" id="plateNo">
+          </div>
         </div>
-        <label for="phone" class="col-1 col-form-label">车主电话</label>
-        <div class="col-2">
-          <input maxlength="11" type="text" [(ngModel)]="params.phone" class="form-control" name="plateNo" id="phone" placeholder="车主电话">
+        <div class="hq-input">
+          <label for="phone" class="form-label">车主电话</label>
+          <div class="hq-col">
+            <input maxlength="11" type="text" [(ngModel)]="params.phone" class="form-control" name="plateNo" id="phone">
+          </div>
         </div>
       </div>
       <div class="form-group row">
-        <label for="createdStartDate" class="col-1 col-form-label">建档日期</label>
-        <div class="col-2">
-          <input readonly [max-date]="maxCreatedStartDate" [(ngModel)]="params.createdStartDate" class="form-control" type="text" name="createdStartDate"
-            ngui-datetime-picker date-only="true" />
+        <div class="hq-input">
+          <label for="createdStartDate" class="form-label">建档日期</label>
+          <div class="hq-col">
+            <input readonly [max-date]="maxCreatedStartDate" [(ngModel)]="params.createdStartDate" class="form-control" type="text" name="createdStartDate"
+              ngui-datetime-picker date-only="true" />
+          </div>
         </div>
-        <label class="col-1 col-form-label">至</label>
-        <div class="col-2">
-          <input readonly [min-date]="minCreatedEndDate" [max-date]="maxCreatedEndDate" [(ngModel)]="params.createdEndDate" class="form-control"
-            type="text" name="createdEndDate" ngui-datetime-picker date-only="true" />
+        <div class="hq-input">
+          <label class="form-label">至</label>
+          <div class="hq-col">
+            <input readonly [min-date]="minCreatedEndDate" [max-date]="maxCreatedEndDate" [(ngModel)]="params.createdEndDate" class="form-control"
+              type="text" name="createdEndDate" ngui-datetime-picker date-only="true" />
+          </div>
         </div>
-        <div class="col-offset-6 col-3">
-          <button type="submit" class="btn btn-primary">查询</button>
-          <button type="reset" class="btn btn-warning">清空</button>
+        <div class="hq-input">
+          <div class="hq-col">
+            <button type="submit" class="btn btn-primary">查询</button>
+            <button type="reset" class="btn btn-warning">清空</button>
+          </div>
         </div>
       </div>
     </form>

@@ -80,7 +80,8 @@
         <td>{{item?.description}}</td>
       </tr>
       <tr>
-        <td colspan="4">合计：应收金额：{{data.maindata.actualAmount|centToYuan}} &nbsp;&nbsp;&nbsp;&nbsp;折扣金额：{{(data.moneyObj)?.costCountMoney|centToYuan}}</td>
+        <td colspan="4">金额合计：{{(data.moneyObj)?.costMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;优惠：{{(data.moneyObj)?.costCountMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;应收金额：{{data.maindata.actualAmount|centToYuan}}
+          &nbsp;&nbsp;&nbsp;&nbsp;</td>
       </tr>
     </table>
 
@@ -110,10 +111,10 @@
         <td>{{item?.description}}</td>
       </tr>
       <tr>
-        <td colspan="7">合计：应收金额：{{(data.moneyObj)?.workCostMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;折扣金额：{{(data.moneyObj)?.discountMoney|centToYuan}}</td>
+        <td colspan="7">金额合计：{{(data.moneyObj)?.workItemMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;优惠：{{(data.moneyObj)?.discountMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;应收金额：{{(data.moneyObj)?.workCostMoney|centToYuan}}</td>
+        <!--<td colspan="7">合计：应收金额：{{(data.moneyObj)?.workCostMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;折扣金额：{{(data.moneyObj)?.discountMoney|centToYuan}}</td>-->
       </tr>
     </table>
-
     <table class="table table-bordered" *ngIf="data.materialData.length>0">
       <tr>
         <td colspan="8">
@@ -137,7 +138,7 @@
         <td>{{item?.description}}</td>
       </tr>
       <tr>
-        <td colspan="8">合计：应收金额：{{(data.moneyObj)?.materialMoney|centToYuan}}</td>
+        <td colspan="8">金额合计：{{(data.moneyObj)?.materialMoney|centToYuan}}</td>
       </tr>
     </table>
 

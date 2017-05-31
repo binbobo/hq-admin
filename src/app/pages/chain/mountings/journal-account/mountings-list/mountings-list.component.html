@@ -1,15 +1,11 @@
 <form class="form-inline mb-2">
-  <div class="form-group mb-2">
-    <label class="mr-sm-1">配件编码：</label>
-    <div class="mx-sm-3">
-      <input [hqProductTypeahead]="'code'" (onSelect)="onItemSelect($event)" class="form-control" placeholder="配件编码">
-    </div>
+  <div class="input-group m-1">
+    <span class="input-group-addon">配件编码</span>
+    <input [hqProductTypeahead]="'code'" (onSelect)="onItemSelect($event)" class="form-control" placeholder="配件编码">
   </div>
-  <div class="form-group mb-2">
-    <label class="mr-sm-1">配件名称：</label>
-    <div class="mx-sm-3">
-      <input [hqProductTypeahead]="'name'" (onSelect)="onItemSelect($event)" class="form-control" placeholder="配件名称">
-    </div>
+  <div class="input-group m-1">
+    <span class="input-group-addon">配件名称</span>
+    <input [hqProductTypeahead]="'name'" (onSelect)="onItemSelect($event)" class="form-control" placeholder="配件名称">
   </div>
 </form>
 <hr>

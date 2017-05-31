@@ -5,14 +5,14 @@
   </div>-->
   <div class="card-block">
     <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
-      <div class="form-group mb-2">
-        <label>选择仓库：</label>
-        <select (change)="onSelectHouse($event)" class="form-control mx-sm-3" name="storeId" [(ngModel)]="params.storeId">
+      <div class="input-group m-1">
+        <span class="input-group-addon">仓库</span>
+        <select (change)="onSelectHouse($event)" class="form-control" name="storeId" [(ngModel)]="params.storeId">
           <option *ngFor="let item of houses" value="{{item.value}}">{{item.text}}</option>
         </select>
       </div>
-      <div class="form-group mb-2">
-        <button type="submit" class="btn btn-primary mx-sm-3">查询</button>
+      <div class="input-group m-1">
+        <button type="submit" class="btn btn-primary">查询</button>
       </div>
     </form>
     <div class="table-container">
@@ -50,7 +50,7 @@
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
   <div class="card-footer text-muted">
-    <button class="btn btn-primary" [disabled]="!params?.locationId?.length||!list?.length" (click)="generate($event)">生成盘点清单</button>
+    <button class="btn btn-primary" [disabled]="!params?.storeId" (click)="generate($event)">生成盘点清单</button>
     <button class="btn btn-secondary" (click)="cancel()">取消</button>
   </div>
 </div>

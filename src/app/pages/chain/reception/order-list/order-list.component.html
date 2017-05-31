@@ -73,7 +73,7 @@
             <input maxlength="25" type="text" [(ngModel)]="params.billCode" name="billCode" class="form-control">
           </div>
         </div>
-        <div class="hq-input" *ngIf="isCollapsed">
+        <div class="hq-input" style="width:50%" *ngIf="isCollapsed">
           <div class="hq-col">
             <button type="submit" [disabled]="false" class="btn btn-primary mr-2">查询</button>
             <button type="reset" class="btn btn-warning mr-2">清空</button>
@@ -157,7 +157,7 @@
                 <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)"> >
                 </ngx-dropdown-treeview>
               </div>-->
-            <div class="hq-input" *ngIf="!isCollapsed">
+            <div class="hq-input" style="width:50%" *ngIf="!isCollapsed">
               <div class="hq-col">
                 <button type="submit" [disabled]="false" class="btn btn-primary mr-2">查询</button>
                 <button type="reset" class="btn btn-warning mr-2">清空</button>
@@ -194,7 +194,7 @@
           <tr *ngFor="let item of list" class="text-center">
             <td width="40">
               <!--<a href="#" (click)="nullifyHandler($event, item.id)">作废</a> |-->
-              <button [hqSpinner]="item.generating" type="button" class="btn btn-sm btn-info" [disabled]="item.generating" (click)="orderDetailsHandler(item, lgModal)">详情</button>
+              <button [hqSpinner]="item.generating" type="button" class="btn btn-sm btn-info  " [disabled]="item.generating" (click)="orderDetailsHandler(item, lgModal)">详情</button>
             </td>
             <td>{{item.statusName}}</td>
             <td>{{item.plateNo}}</td>
@@ -242,10 +242,10 @@
           </div>
           <div class="modal-footer">
             <div class="text-center" style="width:100%;">
-              <button type="button" class="btn btn-primary" (click)="print()">打印</button>
+              <button type="button" class="btn btn-export" (click)="print()">打印</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <hq-workorder-detail-print *ngIf="lgModal.isShown" class="invisible" [data]="selectedOrder" hqPrint #printer="hq-print"></hq-workorder-detail-print>
+    <hq-workorder-detail-print *ngIf="lgModal.isShown" class="invisible" [data]="selectedOrder" hqPrint #printer="hq-print" print-title="华汽汽服燕郊店维修工单"></hq-workorder-detail-print>

@@ -1,13 +1,21 @@
+.hq-pagination{
+    color:#727171;
+}
 .hq-pagination pagination ul{
     margin-bottom: 0;
 }
-
 .hq-pagination .goto{
     width:80px;
 }
-
 .loading{
     margin: 0 auto;
     padding: 100px;
     width: 60px;
 }
+/*.form-inline .form-control,.goto{
+    border:1px solid #27b394 !important;
+}*/
+.goto:focus{
+    border:1px solid #27b394 !important;
+    outline:none; 
+} 

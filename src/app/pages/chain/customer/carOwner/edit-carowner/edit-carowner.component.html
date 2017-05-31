@@ -7,92 +7,119 @@
   <div class="card-block">
     <form [formGroup]="carOwnerForm" autocomplete="off" (ngSubmit)="addCarOwner()">
       <div class="form-group row">
-        <label for="phone" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>手机号</label>
-        <div class="col-2">
-          <input maxlength="11" label="手机号" type="text" class="form-control" formControlName="phone" placeholder="手机号">
+        <div class="hq-input">
+          <label for="phone" class="form-label"><span class="asterisk mr-1">*</span>手机号</label>
+          <div class="hq-col">
+            <input maxlength="11" label="手机号" type="text" class="form-control" formControlName="phone" placeholder="手机号">
+          </div>
         </div>
-        <label for="sex" class="col-1 col-form-label">性别</label>
-        <div class="col-2">
-          <select id="sex" formControlName="sex" class="form-control">
+        <div class="hq-input">
+          <label for="sex" class="form-label">性别</label>
+          <div class="hq-col">
+            <select id="sex" formControlName="sex" class="form-control">
                 <option value="true" [selected]="true">男</option>
                 <option value="false">女</option>
                 <option value="">保密</option>
               </select>
+          </div>
         </div>
-        <label for="birthday" class="col-1 col-form-label">生日</label>
-        <div class="col-2">
-          <input readonly class="form-control form-control" type="text" formControlName="birthday" ngui-datetime-picker date-format="YYYY-MM-DD"
-            date-only="true" />
+        <div class="hq-input">
+          <label for="birthday" class="form-label">生日</label>
+          <div class="hq-col">
+            <input readonly class="form-control form-control" type="text" formControlName="birthday" ngui-datetime-picker date-format="YYYY-MM-DD"
+              date-only="true" />
+          </div>
         </div>
-        <label for="identityCard" class="col-1 col-form-label">身份证号</label>
-        <div class="col-2">
-          <input maxlength="18" label="身份证号" type="text" class="form-control form-control" formControlName="identityCard" id="identityCard"
-            placeholder="身份证号">
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="customerName" class="col-1 col-form-label"><span class="asterisk mr-1">*</span>车主</label>
-        <div class="col-2">
-          <input maxlength="15" type="text" required class="form-control" formControlName="name" placeholder="车主">
-          <input type="hidden" formControlName="id">
-        </div>
-        <label for="tel" class="col-1 col-form-label">电话</label>
-        <div class="col-2">
-          <input maxlength="8" label="电话" type="text" class="form-control" formControlName="tel" id="tel" placeholder="电话">
-        </div>
-        <label for="fax" class="col-1 col-form-label">传真</label>
-        <div class="col-2">
-          <input maxlength="8" label="传真" type="text" class="form-control" formControlName="fax" placeholder="传真" id="fax">
-        </div>
-        <label for="email" class="col-1 col-form-label">Email</label>
-        <div class="col-2">
-          <input maxlength="18" label="电子邮箱" type="text" class="form-control" formControlName="email" id="email" placeholder="电子邮箱">
+        <div class="hq-input">
+          <label for="identityCard" class="form-label">身份证号</label>
+          <div class="hq-col">
+            <input maxlength="18" label="身份证号" type="text" class="form-control form-control" formControlName="identityCard" id="identityCard"
+              placeholder="身份证号">
+          </div>
         </div>
       </div>
       <div class="form-group row">
-        <label for="province" class="col-1 col-form-label">省份</label>
-        <div class="col-2">
-          <select #province (change)="onProvinceChange(province.value)" formControlName="province" id="province" class="form-control">
+        <div class="hq-input">
+          <label for="customerName" class="form-label"><span class="asterisk mr-1">*</span>车主</label>
+          <div class="hq-col">
+            <input maxlength="15" type="text" required class="form-control" formControlName="name" placeholder="车主">
+            <input type="hidden" formControlName="id">
+          </div>
+        </div>
+        <div class="hq-input">
+          <label for="tel" class="form-label">电话</label>
+          <div class="hq-col">
+            <input maxlength="8" label="电话" type="text" class="form-control" formControlName="tel" id="tel" placeholder="电话">
+          </div>
+        </div>
+        <div class="hq-input">
+          <label for="fax" class="form-label">传真</label>
+          <div class="hq-col">
+            <input maxlength="8" label="传真" type="text" class="form-control" formControlName="fax" placeholder="传真" id="fax">
+          </div>
+        </div>
+        <div class="hq-input">
+          <label for="email" class="form-label">Email</label>
+          <div class="hq-col">
+            <input maxlength="18" label="电子邮箱" type="text" class="form-control" formControlName="email" id="email" placeholder="电子邮箱">
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="hq-input">
+          <label for="province" class="form-label">省份</label>
+          <div class="hq-col">
+            <select #province (change)="onProvinceChange(province.value)" formControlName="province" id="province" class="form-control">
                 <option style="display:none">
                 <option *ngFor="let province of provincesData" value="{{province.id}},{{province.name}}">{{province.name}}</option>
               </select>
+          </div>
         </div>
-        <label [hidden]="isProvinceLevelMunicipality" for="city" class="col-1 col-form-label">城市</label>
-        <label [hidden]="!isProvinceLevelMunicipality" for="city" class="col-1 col-form-label">区县</label>
-        <div class="col-2">
-          <select #city (change)="onCityChange(city.value)" formControlName="city" id="city" class="form-control">
+        <div class="hq-input">
+          <label [hidden]="isProvinceLevelMunicipality" for="city" class="form-label">城市</label>
+          <label [hidden]="!isProvinceLevelMunicipality" for="city" class="form-label">区县</label>
+          <div class="hq-col">
+            <select #city (change)="onCityChange(city.value)" formControlName="city" id="city" class="form-control">
                 <option style="display:none">
                 <option *ngFor="let city of citiesData" value="{{city.id}},{{city.name}}">{{city.name}}</option>
               </select>
+          </div>
         </div>
-        <label [hidden]="isProvinceLevelMunicipality" for="area" class="col-1 col-form-label">区县</label>
-        <div [hidden]="isProvinceLevelMunicipality" class="col-2">
-          <select id="area" #area (change)="onAreaChange(area.value)" formControlName="area" class="form-control">
+        <div class="hq-input">
+          <label [hidden]="isProvinceLevelMunicipality" for="area" class="form-label">区县</label>
+          <div [hidden]="isProvinceLevelMunicipality" class="hq-col">
+            <select id="area" #area (change)="onAreaChange(area.value)" formControlName="area" class="form-control">
                 <option style="display:none">
                 <option  *ngFor="let area of areasData" value="{{area.id}},{{area.name}}">{{area.name}}</option>
               </select>
+          </div>
         </div>
       </div>
       <div class="form-group row">
-        <label for="address" class="col-1 col-form-label">详细地址</label>
-        <div class="col-5">
-          <input maxlength="25" type="text" class="form-control form-control" formControlName="address" placeholder="详细地址" id="address">
+        <div class="hq-input" style="width:75%">
+          <label for="address" class="form-label">详细地址</label>
+          <div class="hq-col">
+            <input maxlength="25" type="text" class="form-control form-control" formControlName="address" placeholder="详细地址" id="address">
+          </div>
         </div>
       </div>
     </form>
     <hr>
     <tabset>
-      <tab heading="车辆信息">
+      <tab>
+        <template tabHeading>
+          <i class="fa fa-car mr-2" aria-hidden="true"></i>车辆信息
+        </template>
         <div class="table-container">
           <table class="table table-bordered">
             <thead>
               <tr>
                 <th>操作</th>
-                <th><span class="asterisk mr-1">*</span>车牌号</th>
-                <th><span class="asterisk mr-1">*</span>品牌</th>
-                <th><span class="asterisk mr-1">*</span>车系</th>
-                <th><span class="asterisk mr-1">*</span>车型</th>
-                <th><span class="asterisk mr-1">*</span>VIN</th>
+                <th>车牌号</th>
+                <th>品牌</th>
+                <th>车系</th>
+                <th>车型</th>
+                <th>VIN</th>
                 <th>发动机号</th>
                 <th>车身颜色</th>
                 <th>购车日期</th>
@@ -105,8 +132,8 @@
               <tr *ngFor="let vehicle of newVehiclesData">
                 <td>
                   <!--更新车主信息的时候才显示编辑操作 编辑的时候 有车辆id  添加的时候木有-->
-                  <!--<button type="button" class="btn btn-sm btn-success" (click)="onEditVehicle(vehicle.id);">编辑</button>-->
-                  <button type="button" class="btn btn-sm btn-danger" (click)="onDelVehicleConfirmHandler(vehicle.plateNo)">删除</button>
+                  <button type="button" class="btn btn-sm btn-success" (click)="selectedVehicle=vehicle;vehicleModal.show();">编辑</button>
+                  <!--<button type="button" class="btn btn-sm btn-danger" (click)="onDelVehicleConfirmHandler(vehicle.plateNo)">删除</button>-->
                 </td>
                 <td>{{vehicle.plateNo}}</td>
                 <td>{{vehicle.brand}}</td>
@@ -142,12 +169,12 @@
     <div class="modal-content">
       <div class="modal-header">
         <h6 class="modal-title pull-left">编辑车主信息</h6>
-        <button type="button" class="close pull-right" (click)="vehicleModal.hide()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+        <button type="button" class="close pull-right" (click)="vehicleModal.hide();selectedVehicle = null;" aria-label="Close">
+          <span aria-hidden="true"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
         </button>
       </div>
       <div class="modal-body">
-        <hq-add-vehicle (onAddVehicleCancel)="vehicleModal.hide()" (onAddVehicleConfirm)="vehicleModal.hide();onAddVehicleConfirmHandler($event)"></hq-add-vehicle>
+        <hq-add-vehicle [vehicle]="selectedVehicle" (onVehicleCancel)="vehicleModal.hide();selectedVehicle = null;" (onVehicleConfirm)="onVehicleConfirmHandler($event, vehicleModal)"></hq-add-vehicle>
       </div>
     </div>
   </div>

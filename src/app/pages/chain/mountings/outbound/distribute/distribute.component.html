@@ -6,41 +6,61 @@
   </div>
   <div class="card-block">
     <div>
-      <form class="form-in serach-input">
-        <input [hqTableTypeahead]="PlatNoSource" [(ngModel)]="initValue" name="initValue" [columns]="typeaheadColumns" (onSelect)="onPlateNoSelect($event)"
-          class="form-control input-left" placeholder="请输入车牌号/工单号">
-        <span class='button-right'>
+      <form class="form-inline">
+        <div class="input-group m-1">
+          <span class="input-group-addon">选择工单</span>
+          <input [hqTableTypeahead]="PlatNoSource" [(ngModel)]="initValue" name="initValue" [columns]="typeaheadColumns" (onSelect)="onPlateNoSelect($event)"
+            class="form-control input-left" placeholder="请输入车牌号/工单号">
+          <span class='button-right'>
         </span>
+        </div>
       </form>
     </div>
-    <div class="serach-main">
-      <div class="serach-list">工单号:&nbsp;&nbsp;{{orderDetail?.billCode}}</div>
-      <div class="serach-list">车主:&nbsp;&nbsp;{{orderDetail?.customerName}}</div>
-    </div>
-    <div class="serach-main">
-      <div class="serach-list">车型:&nbsp;&nbsp;{{orderDetail?.vehicleName}}</div>
-      <div class="serach-list">VIN:&nbsp;&nbsp;{{orderDetail?.vin}}</div>
-      <div class="serach-list">维修类型:&nbsp;&nbsp;{{orderDetail?.typeName}}</div>
-      <div class="serach-list">开单时间：&nbsp;&nbsp;{{orderDetail?.createdOnUtc |sDatetime}}</div>
-    </div>
-    <div [hqSpinner]="serviceShow" *ngIf="serviceData?.length>0">
+    <table class="table table-order-info table-bordered">
+      <thead>
+        <tr>
+          <th colspan="4" class="tr-left-bold">车辆信息</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>工单号</td>
+          <td>{{orderDetail?.billCode}}</td>
+          <td>车主</td>
+          <td>{{orderDetail?.customerName}}</td>
+        </tr>
+        <tr>
+          <td>车型</td>
+          <td>{{orderDetail?.vehicleName}}</td>
+          <td>VIN</td>
+          <td>{{orderDetail?.vin}}</td>
+        </tr>
+        <tr>
+          <td>维修类型</td>
+          <td>{{orderDetail?.typeName}}</td>
+          <td>开单时间</td>
+          <td>{{orderDetail?.createdOnUtc |sDatetime}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div [hqSpinner]="serviceShow" class="top-px" *ngIf="serviceData?.length>0">
       <div class="tab-title">
         维修项目
       </div>
       <div class="table-container">
-        <table class="table  table-bordered">
+        <table class="table table-bordered">
           <thead>
             <tr>
-              <th>操作</th>
-              <th>维修项目</th>
-              <th>维修技师</th>
+              <th class="operation">操作</th>
+              <th class="service">维修项目</th>
+              <th class="service">维修技师</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor='let item of serviceData;let index=index'>
-              <td><button class="btn btn-primary" (dataName)="item.serviceName" [disabled]="!(item.maintenanceEmployees.length>0)"
+              <td><button class="btn-sm btn-primary" (dataName)="item.serviceName" [disabled]="!(item.maintenanceEmployees.length>0)"
                   (click)="OnCreatBound(item)">发料</button></td>
-              <td>{{item.serviceName}}<span *ngIf="item.type === 3" class="append-stamp">增项</span></td>
+              <td>{{item.serviceName}}<span *ngIf="item.type === 3" class="append-stamp">增项</span><span [class.accept-stamp]="item.teamType === 6"></span></td>
               <td>
                 <span *ngIf="item.employeeNames">{{item?.employeeNames.join(',')}}</span>
                 <span *ngIf="item.turnEmployeeNames">{{item?.turnEmployeeNames.join(',')}}</span></td>
@@ -49,12 +69,12 @@
         </table>
       </div>
     </div>
-    <div *ngIf="newMainData.length>0">
+    <div *ngIf="newMainData.length>0" class="top-px">
       <div class="tab-title">
         新增维修发料
       </div>
       <div class="table-container">
-        <table class="table  table-borderd">
+        <table class="table   table-borderd">
           <thead>
             <tr>
               <th>操作</th>
@@ -98,11 +118,11 @@
         </table>
       </div>
     </div>
-    <div [hqSpinner]="serialShow">
+    <div [hqSpinner]="serialShow" class="top-px">
       <tabset #staticTabs *ngIf="serialData?.length>0">
         <tab heading="维修发料记录">
           <div class="table-container">
-            <table class="table  table-bordered">
+            <table class="table table-bordered">
               <thead>
                 <tr>
                   <th>流水号</th>
@@ -148,7 +168,7 @@
         </tab>
         <tab heading="维修退料记录" *ngIf="MRData?.length>0">
           <div class="table-container">
-            <table class="table table-bordered">
+            <table class="table   table-bordered">
               <thead>
                 <tr>
                   <th>流水号</th>
@@ -200,7 +220,7 @@
     <button class="btn btn-primary" [disabled]="!(newMainData.length>0)" [hqSpinner]="generat" (click)="OnCreatBill()">生成维修发料单</button>
     <!--<button class="btn btn-secondary" (click)="finishedOrder($event,  confirmModal)">取消</button>-->
     <button class="btn btn-info btn-suspend" [disabled]="!(newMainData.length>0)" (click)="suspend()">挂单</button>
-    <button class="btn btn-secondary " options="printOptions" (onConfirm)="onConfirmNumber($event)" [hqMutilSelect]="numberPrintList"
+    <button class="btn btn-export" options="printOptions" (onConfirm)="onConfirmNumber($event)" [hqMutilSelect]="numberPrintList"
       title="选择流水号" href="#" [disabled]="!(serialData.length>0)" placement="right">打印</button>
   </div>
 

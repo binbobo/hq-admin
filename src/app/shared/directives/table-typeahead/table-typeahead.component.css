@@ -4,6 +4,7 @@
     border-radius: 4px;
     position: absolute;
     z-index: 4;
+    border: 1px solid #27b394;
 }
 
 td,th{
@@ -15,8 +16,11 @@ td,th{
 tbody tr{
     cursor: pointer;
 }
-
 .close{
     position: absolute;
     right: -20px;
 }
+.form-inline .form-control,.goto{
+    border:1px solid #27b394 !important;
+}
+

@@ -29,7 +29,7 @@ export class InventoryEditComponent extends FormHandle<Inventory> implements OnI
       id: [this.model.id],
       storeId: [this.model.storeId],
       locationId: [this.model.locationId],
-      locationName: [this.model.locationName, [Validators.maxLength(50)]],
+      locationName: [this.model.locationName, [Validators.required, Validators.maxLength(50)]],
       maxCount: [this.model.maxCount, [CustomValidators.min(0)]],
       minCount: [this.model.minCount, [CustomValidators.min(0)]],
       description: [this.model.description, [Validators.maxLength(200)]],
@@ -80,6 +80,14 @@ export class InventoryEditComponent extends FormHandle<Inventory> implements OnI
   }
 
   onUpdate() {
+    if (this.model.count > 0) {
+      let formData = this.form.value;
+      if (formData.locationId !== this.model.locationId && formData.locationName) {
+        if (!confirm(`是否将${this.model.name}(库存量：${this.model.count})全部移至${formData.locationName}？`)) {
+          return false;
+        }
+      }
+    }
     let vehicles = this.vehicles && this.vehicles.map(m => m.vehicleId);
     this.form.patchValue({ vehicleId: vehicles });
     return super.onUpdate();

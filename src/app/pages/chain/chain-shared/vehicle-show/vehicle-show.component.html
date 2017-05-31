@@ -1,6 +1,6 @@
 <div *ngIf="vehicles&&vehicles.length">
   <span>{{vehicles[0].name}}</span>
-  <button class="btn btn-secondary btn-sm" placement="bottom" [popover]="popTemplate" *ngIf="vehicles.length>1"><i class="fa fa-ellipsis-h"></i></button>
+  <i triggers="mouseenter:mouseleave" placement="bottom" [popover]="popTemplate" *ngIf="vehicles.length>1" class="fa fa-ellipsis-h"></i>
 </div>
 <template #popTemplate>
   <table class="table table-sm">

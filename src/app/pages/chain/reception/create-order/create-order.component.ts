@@ -178,12 +178,10 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 根据客户车辆id查询上次工单信息
     this.service.getLastOrderInfo(evt.id).then(lastOrder => {
       console.log('根据客户车辆id自动带出的上次工单信息：', JSON.stringify(lastOrder));
-      if (lastOrder) {
-        // 加载上次维修记录
-        this.loadLastOrderInfo(lastOrder);
-        // 保存上次工单记录
-        this.lastOrderData = lastOrder;
-      }
+      // 加载上次维修记录
+      this.loadLastOrderInfo(lastOrder);
+      // 保存上次工单记录
+      this.lastOrderData = lastOrder;
       // 设置选择为true
       this.isSelected = true;
     }).catch(err => {
@@ -200,8 +198,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       this.workSheetForm.patchValue({
         // 传过去预检单id  用于删除当前预检单
         preCheckId: lastOrder.preCheckId,
-        contactUser: lastOrder.contactUser,
-        contactInfo: lastOrder.contactInfo,
+        contactUser: lastOrder.contactUser || lastOrder.customerName,
+        contactInfo: lastOrder.contactInfo || lastOrder.phone,
         type: lastOrder.type,
         mileage: lastOrder.mileage,
         introducer: lastOrder.introducer,
@@ -214,8 +212,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     } else {
       // 上次维修记录 带出部分信息
       this.workSheetForm.patchValue({
-        contactUser: lastOrder.contactUser,
-        contactInfo: lastOrder.contactInfo,
+        contactUser: lastOrder.contactUser || lastOrder.customerName, // 没有默认带车主
+        contactInfo: lastOrder.contactInfo || lastOrder.phone, // 没有默认带车主电话
         lastEnter: moment(lastOrder.lastEnter).format('YYYY-MM-DD HH:mm'),
         lastMileage: lastOrder.lastMileage,
       });
@@ -228,7 +226,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 加载客户车辆信息
     this.workSheetForm.patchValue({
       plateNo: customerVehicle.plateNo,
-      customerName: customerVehicle.customerName,
+      customerName: customerVehicle.name || customerVehicle.customerName,
       phone: customerVehicle.phone,
       vin: customerVehicle.vin,
       brand: customerVehicle.brand,
@@ -569,7 +567,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.workSheetForm.reset({
       // 默认为当前时间后延2小时
       expectLeave: moment().add(2, 'hours').format('YYYY-MM-DD HH:mm'),
-    }, {emitEvent: false});
+    }, { emitEvent: false });
 
     // 清空维修项目数据
     this.newMaintenanceItemData = [];
