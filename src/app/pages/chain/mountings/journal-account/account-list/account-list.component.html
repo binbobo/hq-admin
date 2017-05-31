@@ -33,12 +33,11 @@
             <tr>
               <th>单号</th>
               <th>发生时间</th>
-              <th>进出类型</th>
-              <th>入库量</th>
+              <th>数量</th>
               <th>成本单价</th>
-              <th>成本总金额</th>
+              <th>成本金额</th>
               <th>销售单价</th>
-              <th>销售总金额</th>
+              <th>销售金额</th>
               <th>库存量</th>
               <th>车牌号</th>
               <th>客户名称</th>
@@ -49,7 +48,6 @@
             <tr *ngFor="let item of list">
               <td class="text-center">{{item.billCode}}</td>
               <td class="text-center">{{item.createTime|sDatetime}}</td>
-              <td>{{item.billType}}</td>
               <td class="text-center">{{item.inCount}}</td>
               <td class="text-right">{{item.costPrice|centToYuan}}</td>
               <td class="text-center">{{item.costAmount}}</td>
@@ -67,12 +65,11 @@
             <tr>
               <th>单号</th>
               <th>发生时间</th>
-              <th>进出类型</th>
-              <th>入库量</th>
+              <th>数量</th>
               <th>成本单价</th>
-              <th>成本总金额</th>
+              <th>成本金额</th>
               <th>销售单价</th>
-              <th>销售总金额</th>
+              <th>销售金额</th>
               <th>库存量</th>
               <th>客户名称</th>
               <th>手机号</th>
@@ -83,7 +80,6 @@
             <tr *ngFor="let item of list">
               <td class="text-center">{{item.billCode}}</td>
               <td class="text-center">{{item.createTime|sDatetime}}</td>
-              <td>{{item.billType}}</td>
               <td class="text-center">{{item.inCount}}</td>
               <td class="text-right">{{item.costPrice|centToYuan}}</td>
               <td class="text-center">{{item.costAmount}}</td>
@@ -101,8 +97,7 @@
             <tr>
               <th>单号</th>
               <th>发生时间</th>
-              <th>进出类型</th>
-              <th>入库量</th>
+              <th>数量</th>
               <th>不含税单价</th>
               <th>不含税金额</th>
               <th>含税单价</th>
@@ -116,7 +111,6 @@
             <tr *ngFor="let item of list">
               <td class="text-center">{{item.billCode}}</td>
               <td class="text-center">{{item.createTime|sDatetime}}</td>
-              <td>{{item.billType}}</td>
               <td class="text-center">{{item.inCount}}</td>
               <td class="text-right">{{item.exTaxPrice|centToYuan}}</td>
               <td class="text-center">{{item.exTaxAmount}}</td>
@@ -133,12 +127,11 @@
             <tr>
               <th>单号</th>
               <th>发生时间</th>
-              <th>进出类型</th>
               <th>入库量</th>
               <th>成本单价</th>
-              <th>成本总金额</th>
+              <th>成本金额</th>
               <th>销售单价</th>
-              <th>销售总金额</th>
+              <th>销售金额</th>
               <th>库存量</th>
               <th>领用人</th>
               <th>领用部门</th>
@@ -149,7 +142,6 @@
             <tr *ngFor="let item of list">
               <td class="text-center">{{item.billCode}}</td>
               <td class="text-center">{{item.createTime|sDatetime}}</td>
-              <td>{{item.billType}}</td>
               <td class="text-center">{{item.inCount}}</td>
               <td class="text-right">{{item.costPrice|centToYuan}}</td>
               <td class="text-center">{{item.costAmount}}</td>
