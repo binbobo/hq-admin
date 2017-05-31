@@ -3,13 +3,14 @@
   <div class="card-header">
     盘点清单详情
   </div>
-  <div hqPrint #printer="hq-print" class="card-block">
+  <div hqPrint #printer="hq-print" print-title="盘点清单" class="card-block">
     <div id="printpage">
       <div class="mb-2">
+        <span class="mr-3">店铺名称：{{item?.orgName}}</span>
         <span class="mr-3">盘点单号：{{item?.billCode}}</span>
         <span class="mr-3">生成时间：{{item?.createdOn|sDatetime}}</span>
-        <span class="mr-3 pr-5 print-visible">盘点人：</span>
-        <span class="pr-5 print-visible">盘点时间：</span>
+        <span class="mr-3 pr-3 print-visible">盘点人：</span>
+        <span class="pr-3 print-visible">盘点时间：</span>
       </div>
       <table class="table table-bordered table-sm">
         <thead>

@@ -5,7 +5,7 @@
     <ng-template hqSuspendBill="RR" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
   <div class='card-block'>
-    <form class="form-inline">
+    <form class="form-inline"  autocomplete="off">
       <div class="input-group m-1">
         <!--<span class="input-group-addon">选择工单</span>-->
         <input [hqTableTypeahead]="PlatNoSource" [(ngModel)]="initValue" [columns]="typeaheadColumns" name="initValue" (onSelect)="onPlateNoSelect($event)"
@@ -252,4 +252,4 @@
     </div>
   </div>
 </div>
-<hq-maintain-print *ngIf="printList" [hidden]="true" [data]="printList" hqPrint #printer="hq-print"></hq-maintain-print>
+<hq-maintain-print *ngIf="printList" [hidden]="true" [data]="printList" hqPrint #printer="hq-print"  print-title="华汽汽服燕郊店维修退料单"></hq-maintain-print>
