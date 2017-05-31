@@ -2,31 +2,33 @@
   <div class="card-header">维修发料统计</div>
   <div class="card-block">
     <div class="container-fluid">
-      <form [formGroup]="distributeForm" (ngSubmit)="onSearch()">
+      <form class="form-inline mb-2" [formGroup]="distributeForm" (ngSubmit)="onSearch()">
         <div class="form-group row">
-          <label for="" class="col-form-label margin-l">车牌号:</label>
-          <div class="col-2">
-            <input type="text" hqPlateNoTypeahead class="form-control" formControlName="plateNo">
+          <div class="input-group m-1">
+            <span class="input-group-addon">车牌号</span>
+            <input hqPlateNoTypeahead name="plateNo" class="form-control" formControlName="plateNo" placeholder="请输车牌号" />
           </div>
-          <label for="" class="col-form-label margin-l ">查询时间：</label>
-          <div class="col-2">
-            <input type="text" class="form-control" formControlName="searchStart" [close-on-select]="false" ngui-datetime-picker>
+          <div class="input-group m-1">
+            <span class="input-group-addon">查询时间</span>
+            <input class="form-control datetime-picker" style="border-right:0;" formControlName="searchStart" id="starttime" name="starttime"
+              type="text" ngui-datetime-picker/>
+            <span class="input-group-addon">-</span>
+            <input class="form-control datetime-picker" style="border-right-width:1px;" id="endtime" formControlName="searchEnd" name="endtime"
+              type="text" ngui-datetime-picker/>
           </div>
-          <label for="" class="col-form-label margin-l ">至</label>
-          <div class="col-2">
-            <input type="text" class="form-control" formControlName="searchEnd" [close-on-select]="false" ngui-datetime-picker>
-          </div>
-          <label for="" class="col-form-label margin-l ">门店查询：</label>
-          <div *ngIf="true" class="col-2">
-            <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)">
-            </ngx-dropdown-treeview>
+          <div class="input-group m-1">
+            <span class="input-group-addon">门店查询：</span>
+            <div *ngIf="true" class="form-controls">
+              <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)">
+              </ngx-dropdown-treeview>
+            </div>
           </div>
           <button type="submit" class="btn btn-primary">查询</button>
         </div>
       </form>
     </div>
     <hr>
-    <h6>温馨提示：系统为您找到<span style="color:red;font-weight:bold;">{{total}}</span>条记录</h6>
+    <p>温馨提示：系统为您找到<span style="font-size:16px;color:red;font-weight:bold;">{{total}}</span>条记录</p>
     <div class="table-responsive">
       <table class="table table-bordered text-center">
         <tr>
@@ -40,7 +42,7 @@
         </tr>
         <tr *ngFor="let item of list">
           <td>
-            <button type="button" [hqSpinner]="false" class="btn btn-info btn-sm  " (click)="alert(item,item.id,bdModal)">详情</button>
+            <button type="button" [hqSpinner]="false" class="btn btn-primary btn-sm" (click)="alert(item,item.id,bdModal,item.billCode)">详情</button>
           </td>
           <td>{{item.plateNo }}</td>
           <td>{{item.billCode }}</td>
@@ -57,7 +59,7 @@
 </div>
 <!--详情-->
 <div class="modal fade" bsModal #bdModal="bs-modal" role="dialog">
-  <div class="modal-dialog modal-lg modal-content card" style="min-width:1200px;width:60%;">
+  <div class="modal-dialog modal-lg modal-content card">
     <div class="modal-header">
       <div class="modal-title">维修发料详情</div>
       <button class="close pull-right" (click)="bdModal.hide()">&times;</button>
@@ -65,21 +67,21 @@
     <div class="modal-body">
       <div class="card-block">
         <div class="row">
-          <div class="col-3">
+          <div class="col-6">
             <label for="">发料单号：</label>
-            <span>{{detail?.number }}</span>
+            <span>{{detail?.billCode }}</span>
           </div>
-          <div class="col-3">
-            <label for="">车牌号</label>
+          <div class="col-6">
+            <label for="">车牌号：</label>
             <span>{{detail?.plateNo }}</span>
           </div>
-          <div class="col-3">
+          <div class="col-6">
             <label for="">开单时间：</label>
             <span>{{detail?.createBillTime |date:'yyyy/MM/dd HH:mm:ss'}}</span>
           </div>
-          <div class="col-3">
+          <div class="col-6">
             <label for="">操作人：</label>
-            <span>{{detail?.operator }}</span>
+            <span>{{detail?.operator  }}</span>
           </div>
         </div>
       </div>
@@ -110,8 +112,8 @@
                 <td>{{item.productName }}</td>
                 <td>{{item.brandName }}</td>
                 <td>{{item.productSpecification }}</td>
-                <td>{{item.specification}}</td>
-                <td>个（mock）</td>
+                <td>{{item.specification || '个'}}</td>
+                <td>{{item.storeName }}</td>
                 <td>{{item.locationName }}</td>
                 <td>{{item.price }}</td>
                 <td>{{item.count }}</td>
@@ -126,8 +128,10 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" (click)="print()" class="btn btn-secondary">打印</button>
+      <div class="text-center" style="width:100%;">
+        <button type="button" (click)="print()" class="btn btn-export">打印</button>
+      </div>
     </div>
   </div>
 </div>
-<hq-distribute-print  hqPrint #printer="hq-print" [hidden]="true"></hq-distribute-print>
+<hq-distribute-print hqPrint #printer="hq-print" [hidden]="true" [detail]="detail" [detailItems]="detailItems" [detailItemsLength]="detailItemsLength"></hq-distribute-print>

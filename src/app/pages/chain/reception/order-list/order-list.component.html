@@ -1,7 +1,7 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
   <div class="card-header">
-    工单列表
+    工单查询
   </div>
   <div class="card-block">
     <form #form="ngForm" (ngSubmit)="onSearch()">
@@ -69,7 +69,7 @@
           <div class="hq-col">
             <button type="submit" [disabled]="false" class="btn btn-primary mr-2">查询</button>
             <button type="reset" class="btn btn-warning mr-2">清空</button>
-            <button [hqSpinner]="generating" type="button" (click)="export()" class="btn btn-secondary mr-2">导出</button>
+            <button [hqSpinner]="generating" type="button" (click)="export()" class="btn btn-export mr-2">导出</button>
           </div>
         </div>
       </div>
@@ -151,7 +151,7 @@
               <div class="hq-col">
                 <button type="submit" [disabled]="false" class="btn btn-primary mr-2">查询</button>
                 <button type="reset" class="btn btn-warning mr-2">清空</button>
-                <button [hqSpinner]="generating" type="button" (click)="export()" class="btn btn-secondary mr-2">导出</button>
+                <button [hqSpinner]="generating" type="button" (click)="export()" class="btn btn-export mr-2">导出</button>
               </div>
             </div>
           </div>

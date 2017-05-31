@@ -40,13 +40,17 @@ export class DistributeService implements BasicService<any>{
 
   //详情
   public get(id: string): Promise<any> {
-    const url = Urls.chain.concat('/StoreInOutDetails/MMDetailStatic?BillId=', id);
+    const url = Urls.chain.concat('/StoreInOutDetails/MMDetailStatic?BillId=',id);
     return this.httpService
       .get<ApiResult<any>>(url)
-      .then(result => result.data).then(data=>{
-        console.log('详情',data)
+      .then(result => {
+        console.log('维修发料统计详情',result.data);
+        return result.data;
       })
-      .then(data => data || Promise.reject('获取详情失败'))
+      .then(data => {
+        console.log('data',data)
+        return data || Promise.reject('获取详情失败')
+      })
       .catch(err => Promise.reject(`获取详情数据失败：${err}`))
   }
   constructor(private httpService: HttpService) { }

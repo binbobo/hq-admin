@@ -2,43 +2,35 @@
 <div class="card">
   <div class="card-header">内部领用统计</div>
   <div class="card-block">
-    <form class="" [formGroup]="receiveForm" (ngSubmit)="onSearch()">
-      <div class="container-fluid">
-        <div class="form-group row">
-          <label for="joinOrderNumber" class="col-form-label">领用人：</label>
-          <div class="col-2">
-            <select class="form-control" #LeadParty (change)="onReceiverSelect($event)">
+    <form class="form-inline mb-2" [formGroup]="receiveForm" (ngSubmit)="onSearch()">
+      <div class="input-group m-1">
+        <span class="input-group-addon">领用人</span>
+        <select formControlName="takeUser" class="form-control" (change)="onReceiverSelect($event)">
               <option *ngFor="let item of employees" [value]="item.value">{{item.text}}</option>
             </select>
-          </div>
-
-          <label for="supplier" class="col-form-label">部门：</label>
-          <div class="col-2">
-            <select class="form-control" formControlName="a">        
-          <option *ngFor="let item of departments" [value]="item.value">{{item.text}}</option>
+      </div>
+      <div class="input-group m-1">
+        <span class="input-group-addon">部门</span>
+        <select formControlName="takeDepart" class="form-control">
+              <option *ngFor="let item of departments" [value]="item.value">{{item.text}}</option>
             </select>
-          </div>
-
-          <label for="" class="col-form-label">查询日期：</label>
-          <div class="col-2">
-            <input type="text" formControlName="searchStart" class="form-control" placeholder="开始日期" [close-on-select]="false" ngui-datetime-picker>
-          </div>
-
-          <label for="" class="col-form-label ">至</label>
-          <div class="col-2 col-offset-1">
-            <input type="text" class="form-control" formControlName="searchEnd" placeholder="结束日期" [close-on-select]="false" ngui-datetime-picker>
-          </div>
-        </div>
-
-        <div class="form-group row">
-          <label for="findStore" class="col-form-label">门店查询：</label>
-          <div *ngIf="true" class="col-2">
-            <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)">
-            </ngx-dropdown-treeview>
-          </div>
-          <button type="submit" class="btn btn-primary">查询</button>
+      </div>
+      <div class="input-group m-1">
+        <span class="input-group-addon">查询日期</span>
+        <input class="form-control datetime-picker" style="border-right:0;" formControlName="searchStart" id="starttime" name="starttime"
+          type="text" ngui-datetime-picker/>
+        <span class="input-group-addon">-</span>
+        <input class="form-control datetime-picker" style="border-right-width:1px;" id="endtime" formControlName="searchEnd" name="endtime"
+          type="text" ngui-datetime-picker/>
+      </div>
+      <div class="input-group m-1">
+        <span class="input-group-addon">门店查询：</span>
+        <div *ngIf="true" class="form-controls">
+          <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)">
+          </ngx-dropdown-treeview>
         </div>
       </div>
+      <button type="submit" class="btn btn-primary">查询</button>
     </form>
     <hr>
     <p>温馨提示：系统为您找到 <span style="font-size:16px;color:red;font-weight:bold;">{{total}}</span> 条记录</p>
@@ -54,13 +46,13 @@
           <th>操作人</th>
         </tr>
         <tr *ngFor="let item of list">
-          <td width="100"><button [hqSpinner]="item.hqSpinner" class="btn btn-info btn-sm  " (click)="alert(item,item.id,bdModal)">详情</button></td>
-          <td>{{item.outUnitName}}</td>
+          <td width="100"><button [hqSpinner]="item.hqSpinner" class="btn btn-primary btn-sm" (click)="alert(item,item.id,bdModal,item.billCode,item.takeUserName,item.takeDepartmentName,item.createBillTime,item.operator)">详情</button></td>
           <td>{{item.billCode}}</td>
-          <td>{{item.createBillTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+          <td>{{item.takeUserName }}</td>
+          <td>{{item.takeDepartmentName }}</td>
+          <td>{{item.amount }}</td>
+          <td>{{item.createBillTime |date:"yyyy/MM/dd HH:mm:ss"}}</td>
           <td>{{item.operator}}</td>
-          <td></td>
-          <td></td>
         </tr>
       </table>
     </div>
@@ -79,25 +71,25 @@
     <div class="modal-body" hqPrint #printer="hq-print">
       <div class="card-block">
         <div class="row">
-          <div class="col-2">
+          <div class="col-4">
             <label for="">领用单号：</label>
-            <span>{{detail?.name}}</span>
-          </div>
-          <div class="col-2">
-            <label for="">领用人</label>
             <span>{{detail?.billCode}}</span>
           </div>
-          <div class="col-2">
+          <div class="col-4">
+            <label for="">领用人:</label>
+            <span>{{detail?.takeUserName}}</span>
+          </div>
+          <div class="col-4">
             <label for="">部门：</label>
-            <span>{{detail?.createUtc|date:'yyyy/MM/dd HH:mm:ss'}}</span>
+            <span>{{detail?.takeDepartmentName}}</span>
           </div>
-          <div class="col-2">
+          <div class="col-4">
             <label for="">开单时间：</label>
-            <span>{{detail?.createName}}</span>
+            <span>{{detail?.createBillTime|date:'yyyy/MM/dd HH:mm:ss'}}</span>
           </div>
-          <div class="col-2">
+          <div class="col-4">
             <label for="">操作人：</label>
-            <span>{{detail?.createName}}</span>
+            <span>{{detail?.operator}}</span>
           </div>
         </div>
       </div>
@@ -120,18 +112,18 @@
                 <th>金额（元）</th>
               </tr>
               <tr class="text-center" *ngFor="let item of detailItems">
-                <td>{{item.storeName}}</td>
-                <td>{{item.locationName}}</td>
-                <td>{{item.productCode}}</td>
-                <td>{{item.productCategory}}</td>
-                <td>{{item.productName}}</td>
-                <td>{{item.brand}}</td>
-                <td>{{item.specification}}</td>
-                <td>{{item.unit}}</td>
+                <td>{{item.productCode }}</td>
+                <td>{{item.locationName || '无'}}</td>
+                <td>{{item.productName }}</td>
+                <td>{{item.brandName}}</td>
+                <td>{{item.specification }}</td>
+                <td>{{item.unit ||'个'}}</td>
+                <td>{{item.storeName }}</td>
+                <td>{{item.locationName }}</td>
+                <td>{{item.existCount  }}</td>
+                <td>{{item.price }}</td>
                 <td>{{item.count }}</td>
-                <td>{{item.price}}</td>
-                <td>{{item.amount}}</td>
-                <td>{{item.exTaxAmount }}</td>
+                <td>{{item.amount  }}</td>
               </tr>
             </table>
           </div>
@@ -140,7 +132,9 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" (click)="print()" class="btn btn-export">打印</button>
+      <div class="text-center" style="width:100%;">
+        <button type="button" (click)="print()" class="btn btn-export">打印</button>
+      </div>
     </div>
   </div>
 </div>
