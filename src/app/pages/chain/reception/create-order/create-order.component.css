@@ -11,7 +11,11 @@
 .fa-plus-circle:before {
   color: #27b394;
 }
-
+/*select:focus {
+  border:1px solid #27b394 !important;
+  outline:none; 
+}
+*/
 
 hr {
     border-top:2px dotted #ccc;

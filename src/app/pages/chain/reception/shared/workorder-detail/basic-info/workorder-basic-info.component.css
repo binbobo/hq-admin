@@ -4,15 +4,12 @@ table.table-order-info{
 
 table.table-order-info td {
     vertical-align: middle;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+    color: #727171;
+    text-align: left;
 }
 
-.table-order-info td{
-    text-align: left;
-    /*width: 25%;*/
-    color: #727171;
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-td.fixed-width {
+table.table-order-info td.fixed-width {
     width: 100px;
 }

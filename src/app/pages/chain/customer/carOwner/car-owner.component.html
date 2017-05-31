@@ -63,7 +63,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of list">
-          <td width="125">
+          <td class="text-center">
             <button [routerLink]="['edit', item.id]" type="button" class="btn btn-sm btn-success">编辑</button>
             <button [hqSpinner]="item.detailGenerating" type="button" class="btn btn-sm btn-info" [disabled]="item.detailGenerating"
               (click)="customerDetail(item, detailLgModal)">详情</button>
@@ -81,7 +81,7 @@
     </table>
     <div style="margin-bottom:10px;">
       <button type="button" class="btn btn-primary" [routerLink]="['add']">新增</button>
-      <button [hqSpinner]="generating" type="button" class="btn btn-secondary mr-2" (click)="export()">导出</button>
+      <button [hqSpinner]="generating" type="button" class="btn btn-export mr-2" (click)="export()">导出</button>
     </div>
     <br>
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
