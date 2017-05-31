@@ -1,7 +1,7 @@
 <ng-template hq-alerter></ng-template>
 <div class="distribute card">
   <div class="card-header">
-    <span>维修发料</span>
+    <span>维修领料</span>
     <ng-template hqSuspendBill="RM" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
   <div class="card-block">
@@ -44,8 +44,7 @@
       </tbody>
     </table>
     <div [hqSpinner]="serviceShow" class="top-px" *ngIf="serviceData?.length>0">
-      <div class="tab-title"><i class="fa fa-clone" aria-hidden="true"></i>
-        维修项目
+      <div class="tab-title"><i class="fa fa-clone" aria-hidden="true"></i> 维修项目
       </div>
       <div class="table-container">
         <table class="table table-bordered">
@@ -104,12 +103,12 @@
               <td>{{ele.brandName}}</td>
               <td>{{ele.productSpecification}}</td>
               <td>{{ele.productUnit}}</td>
-              <td>{{ele.vihicleName}}</td>
+              <td [hqVehicleShow]="ele.vehicleInfoList"></td>
               <td>{{ele.storeName}}</td>
               <td>{{ele.locationName}}</td>
               <td>{{ele.count}}</td>
-              <td>{{ele.price|centToYuan}}</td>
-              <td>{{ele.amount|centToYuan}}</td>
+              <td  class="text-right">{{ele.price|centToYuan}}</td>
+              <td  class="text-right">{{ele.amount|centToYuan}}</td>
               <td>{{ele.description}}</td>
               <td>{{ele.createUserName}}</td>
             </tr>
@@ -155,12 +154,12 @@
                   <td>{{ele.brandName}}</td>
                   <td>{{ele.productSpecification?ele.productSpecification:ele.specifications}}</td>
                   <td>{{ele.productUnit}}</td>
-                  <td>{{ele.vihicleName?ele.vihicleName:ele.vehicleModel}}</td>
+                  <td [hqVehicleShow]="ele.vehicleInfoList"></td>
                   <td>{{ele.storeName?ele.storeName:ele.storeHouse}}</td>
                   <td>{{ele.locationName}}</td>
                   <td>{{ele.count}}</td>
-                  <td>{{ele.price|centToYuan}}</td>
-                  <td>{{ele.amount|centToYuan}}</td>
+                  <td  class="text-right">{{ele.price|centToYuan}}</td>
+                  <td  class="text-right">{{ele.amount|centToYuan}}</td>
                   <td>{{ele.description}}</td>
                   <td>{{ele.takeUser}}</td>
                 </tr>
@@ -204,12 +203,12 @@
                   <td>{{ele.brandName}}</td>
                   <td>{{ele.productSpecification}}</td>
                   <td>{{ele.productUnit}}</td>
-                  <td>{{ele.vihicleName}}</td>
+                  <td [hqVehicleShow]="ele.vehicleInfoList"></td>
                   <td>{{ele.storeName}}</td>
                   <td>{{ele.locationName}}</td>
                   <td>{{ele.count}}</td>
-                  <td>{{ele.price|centToYuan}}</td>
-                  <td>{{ele.amount|centToYuan}}</td>
+                  <td  class="text-right">{{ele.price|centToYuan}}</td>
+                  <td  class="text-right">{{ele.amount|centToYuan}}</td>
                   <td>{{ele.description}}</td>
                   <td>{{ele.returnUser}}</td>
                 </tr>

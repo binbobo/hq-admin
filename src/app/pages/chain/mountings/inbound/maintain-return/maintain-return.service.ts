@@ -182,7 +182,7 @@ export class MaintainReturnListItem {
         public storeId?: string,
         public locationId?: string,
         public locationName: string = "",
-        public vihicleName: string = "",
+        public vehicleInfoList?:any,
         public serviceName: string = "",
         public maintenanceItemId?: string,
         public IODetailId?: string,

@@ -94,7 +94,8 @@ export class DistributeCreatComponent implements OnInit {
       serviceName: [this.model.serviceName],
       maintenanceItemId: [this.model.maintenanceItemId],
       vihicleName: [this.model.vihicleName],
-      description: [this.model.description]
+      description: [this.model.description],
+      vehicleInfoList:[this.vehicleInfoList]
     })
 
   }
@@ -129,13 +130,15 @@ export class DistributeCreatComponent implements OnInit {
     if (!event.isTrusted) return false;
     this.storages = null;
     this.locations = null;
+    this.vehicleInfoList=null;
     let obj = { ...this.model };
     key in obj && delete obj[key];
     this.form.patchValue(obj);
   }
 
-
+vehicleInfoList:any;
   public onItemSelect(event) {
+
     console.log(event)
     let item: any = {
       productUnit: event.unitName,
@@ -150,8 +153,11 @@ export class DistributeCreatComponent implements OnInit {
       storeId: null,
       price: event.price,
       newPrice: event.newPrice,
-      yuan: (event.price || 0) / 100
+      yuan: (event.price || 0) / 100,
+      vehicleInfoList:event.vehicleInfoList
     }
+    this.vehicleInfoList=item.vehicleInfoList;
+    console.log(this.vehicleInfoList)
     this.storages = event.storages;
     this.locations = null;
     if (Array.isArray(event.storages) && event.storages.length) {
