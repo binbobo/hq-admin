@@ -34,6 +34,14 @@ h1::first-letter,h2::first-letter,h3::first-letter,h4::first-letter,h5::first-le
     display: none;
 }
 
+.page-break-before{
+    page-break-before: always;
+}
+
+.page-break-after{
+    page-break-after: always;
+}
+
 .hq-visible{
     visibility: visible!important;
 }

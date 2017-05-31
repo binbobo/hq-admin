@@ -43,10 +43,10 @@ export class UserService {
     }
 
     get user(): User {
-        return this._user || this.getUserFromStroage();
+        return this._user || this.getUserFromStorage();
     }
 
-    private getUserFromStroage() {
+    private getUserFromStorage() {
         let userJson = sessionStorage.getItem(StorageKeys.Identity) || localStorage.getItem(StorageKeys.Identity);
         if (!userJson) return null;
         try {
@@ -60,7 +60,7 @@ export class UserService {
 
     public redirect(): void {
         let url = this.redirectUrl || '/';
-        url=url.includes('login')?'/':url;
+        url = url.includes('login') ? '/' : url;
         console.info('跳转至', url);
         this.router.navigate([url]);
     }

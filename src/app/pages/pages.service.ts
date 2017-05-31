@@ -23,4 +23,9 @@ export class PagesService {
     public getLanguages(): Promise<Array<any>> {
         return this.languageService.getAvailableList(true);
     }
+
+    public getOrganizationInfo() {
+        let url = Urls.chain.concat('/OrganizationInfos/Current');
+        return this.httpService.get<any>(url);
+    }
 }

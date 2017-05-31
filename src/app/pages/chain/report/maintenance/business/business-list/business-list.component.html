@@ -2,12 +2,16 @@
 <div class="card business">
   <div class="card-header">维修历史</div>
   <div class="card-block">
-    <form (ngSubmit)="onSearch()" class="form-inline mb-2">
+    <form (ngSubmit)="onSearch()" class="form-inlines mb-2">
+      <div class="input-group m-1">
+        <span class="input-group-addon">车牌号</span>
+        <input [(ngModel)]="params.plateNo" hqPlateNoTypeahead class="form-control" name="plateNo" id="plateNo" type="text" placeholder="请输入车牌号"/>
+      </div>
       <div class="input-group m-1">
         <span class="input-group-addon">进店时间</span>
         <input [max-date]="maxEnterStartDate" [(ngModel)]="params.enterStartTimeDate" class="form-control" id="enterStartTimeDate"
           name="enterStartTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请输入开始日期" />
-        <span class="input-group-addon">-</span>
+        <span class="input-group-addon">至</span>
         <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" [(ngModel)]="params.enterEndTimeDate" class="form-control"
           id="enterEndTimeDate" name="enterEndTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请输入截止日期"
         />
@@ -16,14 +20,9 @@
         <span class="input-group-addon">出厂时间</span>
         <input [max-date]="maxLeaveStartDate" [(ngModel)]="params.leaveStartTimeDate" class="form-control" id="leaveStartTimeDate"
           name="leaveStartTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请输入开始日期" />
-        <span class="input-group-addon">-</span>
+        <span class="input-group-addon">至</span>
         <input [min-date]="minLeaveEndDate" [max-date]="maxLeaveEndDate" [(ngModel)]="params.leaveEndTimeDate" class="form-control"
           id="leaveEndTimeDate" name="leaveEndTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请输入截止日期"
-        />
-      </div>
-      <div class="input-group m-1">
-        <span class="input-group-addon">车牌号</span>
-        <input [(ngModel)]="params.plateNo" hqPlateNoTypeahead class="form-control" name="plateNo" id="plateNo" type="text" placeholder="请输入车牌号"
         />
       </div>
       <!--<div class="input-group m-1">
@@ -38,14 +37,14 @@
           </ngx-dropdown-treeview>
         </div>
       </div>-->
-      <div class="hq-input">
+      <div class="hq-input m-1">
         <label class="form-label">服务顾问</label>
-        <div class="hq-col">
-        <ngx-dropdown-treeview [config]="nameConfig" [items]="nameItems" (selectedChange)="onSearchNameChange($event)">
-        </ngx-dropdown-treeview>
+        <div class=".hq-col">
+          <ngx-dropdown-treeview [config]="nameConfig" [items]="nameItems" (selectedChange)="onSearchNameChange($event)">
+          </ngx-dropdown-treeview>
         </div>
       </div>
-      <div *ngIf="items" class="hq-input">
+      <div *ngIf="items" class="hq-input m-1">
         <label *ngIf="items" for="searchRange" class="form-label">查询范围</label>
         <div *ngIf="items" class="hq-col">
           <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)">
@@ -278,7 +277,7 @@
                 <tr *ngFor="let item of businessData?.totalCost;let index=index">
                   <td>{{index+1}}</td>
                   <td>{{item.name}}</td>
-                  <td>{{item.receivableCost|centToYuan}}</td>
+                  <td class="text-right">{{item.receivableCost|centToYuan}}</td>
                   <td>{{item.description}}</td>
                 </tr>
               </tbody>
@@ -318,9 +317,9 @@
                   <td>{{index+1}}</td>
                   <td>{{item.serviceName}}</td>
                   <td>{{item.workHour}}</td>
-                  <td>{{item.price|centToYuan}}</td>
+                  <td class="text-right">{{item.price|centToYuan}}</td>
                   <td>{{item.discount}}</td>
-                  <td>{{item.amount|centToYuan}}</td>
+                  <td class="text-right">{{item.amount|centToYuan}}</td>
                   <td>{{item.description}}</td>
                 </tr>
               </tbody>
@@ -358,9 +357,9 @@
                 <tr *ngFor="let item of businessData?.matereialDetails;let index=index">
                   <td>{{index+1}}</td>
                   <td>{{item.productName}}</td>
-                  <td>{{item.price|centToYuan}}</td>
+                  <td class="text-right">{{item.price|centToYuan}}</td>
                   <td>{{item.count}}</td>
-                  <td>{{item.amount|centToYuan}}</td>
+                  <td class="text-right">{{item.amount|centToYuan}}</td>
                   <td>{{item.description}}</td>
                 </tr>
               </tbody>

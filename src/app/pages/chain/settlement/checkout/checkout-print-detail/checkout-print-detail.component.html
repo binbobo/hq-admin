@@ -88,8 +88,8 @@
           <td style="position:relative;">{{record?.serviceName}}<span *ngIf="record.type === 3" class="append-stamp">增项</span>
             <span [class.accept-stamp]="record.teamType === 6"></span></td>
           <td>{{record?.workHour}}</td>
-          <td>{{record?.price|centToYuan}}</td>
-          <td>{{record?.discountCost|centToYuan}}</td>
+          <td  class="text-right">{{record?.price|centToYuan}}</td>
+          <td  class="text-right">{{record?.discountCost|centToYuan}}</td>
           <td>{{record?.discount}}</td>
         </tr>
       </tbody>
@@ -119,8 +119,8 @@
           <td>{{record?.brandName}}</td>
           <td>{{record?.specification}}</td>
           <td>{{record?.count}}</td>
-          <td>{{record?.price|centToYuan}}</td>
-          <td>{{record?.amount|centToYuan}}</td>
+          <td  class="text-right">{{record?.price|centToYuan}}</td>
+          <td  class="text-right">{{record?.amount|centToYuan}}</td>
         </tr>
       </tbody>
     </table>
