@@ -51,7 +51,7 @@ export class OrderService implements BasicService<Order> {
         const url = Urls.chain.concat('/Maintenances/ExportToExcel');
         console.log('导出工单列表参数以及url：', params.serialize(), url);
         return this.httpService
-            .download(url, params.serialize(), '工单列表')
+            .download(url, params.serialize())
             .catch(err => Promise.reject(`工单列表导出失败：${err}`));
     }
 

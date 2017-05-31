@@ -58,3 +58,6 @@ table .tr-left-bold{
 .service{
     width: 40%;
 }
+.fa{
+    padding:0 6px !important;
+}
