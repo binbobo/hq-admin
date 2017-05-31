@@ -51,13 +51,14 @@ export class AddVehicleComponent implements OnInit {
       return;
     }
     // 日期类型没选的话 不传
-    if (!this.vehicleForm.value.purchaseDate) { delete this.vehicleForm.value.purchaseDate; };
-    if (!this.vehicleForm.value.validate) { delete this.vehicleForm.value.validate; };
-    if (!this.vehicleForm.value.insuranceDue) { delete this.vehicleForm.value.insuranceDue; };
-    this.vehicleForm.value.plateNo = this.vehicleForm.value.plateNo.toUpperCase();
+    const vehicleFormVal = this.vehicleForm.getRawValue();
+    if (!vehicleFormVal.purchaseDate) { delete vehicleFormVal.purchaseDate; };
+    if (!vehicleFormVal.validate) { delete vehicleFormVal.validate; };
+    if (!vehicleFormVal.insuranceDue) { delete vehicleFormVal.insuranceDue; };
+    vehicleFormVal.plateNo = vehicleFormVal.plateNo.toUpperCase();
 
     this.onVehicleConfirm.emit({
-        data: this.vehicleForm.getRawValue(),
+        data: vehicleFormVal,
         isEdit: this.vehicle ? true : false
       });
     this.vehicleForm.reset();
