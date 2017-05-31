@@ -1,9 +1,3 @@
-.table-center{
-    text-align: center;
-}
-.table-bordered td,.table-bordered th{
-    border-color:#fff;
-}
-.table-bordered{
-    border-color:#fff;
+div{
+    background-color: #f3f3f4;
 }
