@@ -6,15 +6,13 @@
     <ng-template hqSuspendBill="MWIM" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
   <div class="card-block">
-
     <form class='form-inline'>
       <div class="input-group m-1">
-        <span class="input-group-addon">选择工单</span>
+        <!--<span class="input-group-addon">选择工单</span>-->
         <input [hqTableTypeahead]="typeaheadSource" [(ngModel)]="initValue" name="initValue" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)"
           class="form-control" placeholder="请输入工单号/车牌号" />
       </div>
     </form>
-
   <table class="table table-order-info table-bordered">
     <thead>
       <tr>
@@ -323,7 +321,7 @@
         <span class="fee-name">工时费：<span class="fee-value">{{workHourFee|centToYuan}}</span></span>
         <span class="fee-name"> 材料费：<span class="fee-value">{{materialFee|centToYuan}}</span></span>
         <span class="fee-name"> 优惠：<span class="fee-value">{{(workHourFee-sumFee)|centToYuan}}</span></span>
-        <span class="fee-name pull-right">应收金额：<span class="fee-value">{{(workHourFee+materialFee)|centToYuan}}</span></span>
+        <span class="fee-name pull-right">应收金额：<span class="fee-value">{{sumFee|centToYuan}}</span></span>
       </div>
     </div>
 

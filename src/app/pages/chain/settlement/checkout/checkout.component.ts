@@ -111,7 +111,6 @@ export class CheckoutComponent extends DataList<any> {
       } else {
         this.deduceAmount=data.workReceivableCost-data.workHourCost 
       }
-
     })
   }
   private billData = {};
@@ -130,7 +129,6 @@ export class CheckoutComponent extends DataList<any> {
   }
   //确定收银接口
   private payPost = [];
-
   OnPostPay(dialog) {
     let cost: any = 0;
     if (this.costMoney > 0) {
@@ -142,7 +140,6 @@ export class CheckoutComponent extends DataList<any> {
         return paycheck;
       })
       this.payPost = this.payCheckSingle.filter(item => item.amount != 0);
-
     } else {
       this.payPost = this.payData.filter(item => item.amount === 0).map(item => {
         let paycheck: any = {};
@@ -150,12 +147,10 @@ export class CheckoutComponent extends DataList<any> {
         paycheck.amount = Number(item.amount * 100);
         return paycheck;
       });
-
       this.payCheckSingle = this.payData.filter(item => item.amount || item.amount === '').map(item => {
         cost += item.amount * 100;
       })
     }
-
     console.log(this.payPost);
     if (cost != this.costMoney) {
       this.alerter.error('输入金额与应收金额不符，请重新填写！', true, 3000);
@@ -166,10 +161,6 @@ export class CheckoutComponent extends DataList<any> {
         this.payPost = [];
       }).catch(err => this.alerter.error(err, true, 2000));
     }
-
-
-
-
   }
   createForm() {
     // 初始化数组类型参数

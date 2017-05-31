@@ -4,20 +4,14 @@
   </div>
   <div class='card-block'>
     <div *ngFor="let item of data">
-
       <div class="container">
         <div class="row">
-          <h4 class="col-md-12">维修退料单</h4>
+          <div class="col-4">退料单号：{{item.billCode}}</div>
+          <div class="col-4">流水号：{{item.serialNum}}</div>
+          <div class="col-4">开单时间：{{item.createBillDateTime|sDatetime}}</div>
         </div>
       </div>
-      <div class="container">
-        <div class="row">
-          <div class="col-md-4">退料单号：{{item.billCode}}</div>
-          <div class="col-md-4">流水号：{{item.serialNum}}</div>
-          <div class="col-md-4">开单时间：{{item.createBillDateTime|sDatetime}}</div>
-        </div>
-      </div>
-      <table class="table  table-borderd">
+      <table class="table table-borderd">
         <thead>
           <tr>
             <th>维修项目</th>

@@ -277,8 +277,15 @@ input:focus{
 .page-item.disabled .page-link {
     color:#727171 !important;
 }
-select{
-    background: transparent;
-    border:1px solid #27b394;
-    outline: none;
+/*详情展示或基本信息展示表格样式*/
+.table-order-info td{
+    text-align: left !important;
+    padding-left: 1.1rem !important;
+    width: 25%;
+}
+      /*表格标题左对齐*/
+table .tr-left-bold{
+    text-align: left;
+    font-weight: bold;
+    padding-left: 1.1rem !important;
 }

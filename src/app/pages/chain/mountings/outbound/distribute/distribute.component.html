@@ -8,7 +8,7 @@
     <div>
       <form class="form-inline">
         <div class="input-group m-1">
-          <span class="input-group-addon">选择工单</span>
+          <!--<span class="input-group-addon">选择工单</span>-->
           <input [hqTableTypeahead]="PlatNoSource" [(ngModel)]="initValue" name="initValue" [columns]="typeaheadColumns" (onSelect)="onPlateNoSelect($event)"
             class="form-control input-left" placeholder="请输入车牌号/工单号">
           <span class='button-right'>
@@ -120,7 +120,10 @@
     </div>
     <div [hqSpinner]="serialShow" class="top-px">
       <tabset #staticTabs *ngIf="serialData?.length>0">
-        <tab heading="维修发料记录">
+        <tab>
+          <template tabHeading>
+            <i class="fa fa-cog m-2" aria-hidden="true"></i>维修发料记录
+          </template>
           <div class="table-container">
             <table class="table table-bordered">
               <thead>
@@ -166,7 +169,10 @@
             </table>
           </div>
         </tab>
-        <tab heading="维修退料记录" *ngIf="MRData?.length>0">
+        <tab *ngIf="MRData?.length>0">
+          <template tabHeading>
+            <i class="fa fa-cog m-2" aria-hidden="true"></i>维修退料记录
+          </template>
           <div class="table-container">
             <table class="table   table-bordered">
               <thead>
@@ -193,7 +199,6 @@
                 <tr *ngFor="let ele of item.list">
                   <td>{{item.serialNum}}</td>
                   <td>{{ele.serviceName}}</td>
-
                   <td>{{ele.productCode}}</td>
                   <td>{{ele.productCategory}}</td>
                   <td>{{ele.productName }}</td>
@@ -223,7 +228,6 @@
     <button class="btn btn-export" options="printOptions" (onConfirm)="onConfirmNumber($event)" [hqMutilSelect]="numberPrintList"
       title="选择流水号" href="#" [disabled]="!(serialData.length>0)" placement="right">打印</button>
   </div>
-
   <!--提示是否确认退出-->
   <!--<div bsModal #confirmModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
     aria-hidden="true">
@@ -246,7 +250,6 @@
     </div>
   </div>-->
 </div>
-
 <div class="modal fade" bsModal #createModal="bs-modal" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -260,5 +263,4 @@
     </div>
   </div>
 </div>
-
 <hq-distribute-print *ngIf="printList" [hidden]="true" [data]="printList" hqPrint #printer="hq-print"></hq-distribute-print>

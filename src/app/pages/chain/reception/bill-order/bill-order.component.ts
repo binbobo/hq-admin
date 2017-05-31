@@ -232,10 +232,7 @@ export class BillOrderComponent extends DataList<any>{
             // 记录当前操作的工单记录
             this.selectedOrder = data;
             this.billId = this.selectedOrder["id"]
-        }).catch(err => {
-            this.alerter.error(err, true, 2000);
-            item.generating = false;
-        });
+        }).then(()=>{
         this.service.getCost(id).then(data => {
             if (!data.isSettlement) {
                 this.isShowPrint = false;
@@ -300,6 +297,8 @@ export class BillOrderComponent extends DataList<any>{
             // 显示窗口
             dialog.show();
         })
+    }).catch(err=>{this.alerter.error(err,true,3000);item.generating =false})
+
     }
     private billData = {};
     generat = false;

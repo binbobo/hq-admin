@@ -9,11 +9,18 @@ h4{
     margin-bottom:26px;
 }
 table th,table td{
-     text-overflow:ellipsis; 
-     white-space:nowrap; 
-     overflow:hidden;
+    /*width: 8%;*/
      text-align: center;
+     color:#727171;
+     font-size:16px;
 }
 .container{
     margin-top: 20px;
+}
+.card-block{
+    color:#727171;
+    font-size:14px;
+    height: 35px;
+    line-height: 35px;
+    margin-top:-20px;
 }
