@@ -1,120 +1,73 @@
-<form>
-  <div class="form-group row">
-    <div class="col-4">
-      <label>车牌号：</label>
-      <span>{{data?.plateNo}}</span>
-    </div>
-    <div class="col-4">
-      <label>车型：</label>
-      <span>{{data?.model}}</span>
-    </div>
-    <div class="col-4">
-      <label>VIN：</label>
-      <span>{{data?.vin}}</span>
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-4">
-      <label>送修人：</label>
-      <span>{{data?.contactUser}}</span>
-    </div>
-    <div class="col-4">
-      <label>送修人手机：</label>
-      <span>{{data?.contactInfo}}</span>
-    </div>
-    <div class="col-4">
-      <label>工单号：</label>
-      <span>{{data?.billCode}}</span>
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-4">
-      <label>车主：</label>
-      <span>{{data?.customerName}}</span>
-    </div>
-    <div class="col-4">
-      <label>车主电话：</label>
-      <span>{{data?.customerPhone}}</span>
-    </div>
-    <div class="col-4">
-      <label>预计交车时间：</label>
-      <span>{{data?.deliveryTime}}</span>
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-4">
-      <label>维修技师：</label>
-      <span>{{data?.technicianItems}}</span>
-      <!--如果转派  追加显示转派人-->
-      <!--<span *ngIf="data?.teamType === 2">,{{data?.turnEmployeeNames}}</span>-->
-      <!-- teamType (string, optional): 工单指派类型 0.没指派 1.指派 2.转派 -->
-      <!--<span *ngIf="teamType === 1">{{data?.employeeNames.join(',')}}</span>
-        <span *ngIf="teamType === 2">{{data?.turnEmployeeNames.join(',')}}</span>-->
-    </div>
-    <div class="col-4">
-      <label>服务顾问：</label>
-      <span>{{data?.createdUserName}}</span>
-    </div>
-    <div class="col-4">
-      <label>介绍人：</label>
-      <span>{{data?.introduceName}}</span>
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-4">
-      <label>介绍人电话：</label>
-      <span>{{data?.introducePhone}}</span>
-    </div>
-    <div class="col-4">
-      <label>维修类型：</label>
-      <span>{{data?.typeName}}</span>
-    </div>
-    <div class="col-4">
-      <label>结算方:</label>
-      <span>{{data?.settlementParty}}</span>
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-4">
-      <label>结算单号:</label>
-      <span>{{data?.settlementCode}}</span>
-    </div>
-    <div class="col-4">
-      <label>结算员:</label>
-      <span>{{data?.updateUser}}</span>
-    </div>
-    <div class="col-4">
-      <label>结算时间：</label>
-      <span>{{data?.updateOnUtc|sDatetime}}</span>
-
-    </div>
-  </div>
-
-  <hr>
-  <div class="form-group row">
-    <div class="col-4">
-      <label>进厂时间：</label>
-      <span>{{data?.createdOnUtc|sDatetime}}</span>
-    </div>
-    <div class="col-4">
-      <label>进厂里程：</label>
-      <span>{{data?.mileage}}</span>
-      <span class="ml-2">KM</span>
-    </div>
-    <div class="col-4">
-      <label>出厂里程：</label>
-      <span>{{data?.leaveMileage}}</span>
-      <span class="ml-2">KM</span>
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-4">
-      <label>出厂时间：</label>
-      <span>{{data?.updataTime|sDatetime}}</span>
-    </div>
-  </div>
-</form>
-<hr>
+  <table class="table table-order-info table-bordered">
+  <tbody>
+    <tr>
+      <td>车牌号</td>
+      <td>{{data?.plateNo}}</td>
+      <td>车型</td>
+      <td>{{data?.model}}</td>
+    </tr>
+    <tr>
+      <td>VIN</td>
+      <td>{{data?.vin}}</td>
+      <td>送修人</td>
+      <td>{{data?.contactUser}}</td>
+    </tr>
+    <tr>
+      <td>送修人手机</td>
+      <td>{{data?.contactInfo}}</td>
+      <td>工单号</td>
+      <td>{{data?.billCode}}</td>
+    </tr>
+    <tr>
+      <td>车主</td>
+      <td>{{data?.customerName}}</td>
+      <td>车主电话</td>
+      <td>{{data?.customerPhone}}</td>
+    </tr>
+    <tr>
+      <td>预计交车时间</td>
+      <td>{{data?.deliveryTime}}</td>
+      <td>维修技师</td>
+      <td>{{data?.technicianItems}}</td>
+    </tr>
+    <tr>
+      <td>服务顾问</td>
+      <td>{{data?.createdUserName}}</td>
+      <td>介绍人</td>
+      <td>{{data?.introduceName}}</td>
+    </tr>
+    <tr>
+      <td>介绍人电话</td>
+      <td>{{data?.introducePhone}}</td>
+      <td>维修类型</td>
+      <td>{{data?.typeName}}</td>
+    </tr>
+    <tr>
+      <td>结算方</td>
+      <td>{{data?.settlementParty}}</td>
+      <td>结算单号</td>
+      <td>{{data?.settlementCode}}</td>
+    </tr>
+    <tr>
+      <td>结算员</td>
+      <td>{{data?.updateUser}}</td>
+      <td>结算时间</td>
+      <td>{{data?.updateOnUtc|sDatetime}}</td>
+    </tr>
+    <tr>
+      <td>进厂时间</td>
+      <td>{{data?.createdOnUtc|sDatetime}}</td>
+      <td>进厂里程(KM)</td>
+      <td>{{data?.mileage}}</td>
+    </tr>
+    <tr>
+      <td>出厂里程(KM)</td>
+      <td>{{data?.leaveMileage}}</td>
+      <td>出厂时间</td>
+      <td>{{data?.updataTime|sDatetime}}</td>
+    </tr>
+  </tbody>
+  </table>
 <tabset>
   <tab heading="维修项目" *ngIf="data?.workHours?.length>0">
     <table class="table table-bordered">
@@ -133,7 +86,7 @@
             <span [class.accept-stamp]="record.teamType === 6"></span></td>
           <td>{{record?.workHour}}</td>
           <td>{{record?.price|centToYuan}}</td>
-          <td>{{record?.amount|centToYuan}}</td>
+          <td>{{record?.discountCost|centToYuan}}</td> 
           <td>{{record?.discount}}</td>
         </tr>
       </tbody>
