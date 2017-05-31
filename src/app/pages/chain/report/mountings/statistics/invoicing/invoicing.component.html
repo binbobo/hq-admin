@@ -5,7 +5,7 @@
     <form class="form-inline mb-2" [formGroup]="invoicingForm" (ngSubmit)="onSearch()">
       <div class="input-group m-1">
         <span class="input-group-addon">仓库</span>
-        <select class="form-control">
+        <select class="form-control" formControlName="storeId">
           <option value="">全部仓库</option>
           <option *ngFor="let item of warehouses" value="{{item.value}}">{{item.text}}</option>
         </select>
@@ -46,7 +46,7 @@
           <th>配件销售<br>销售金额</th>
           <th>内部领用<br>成本金额</th>
           <th>内部领用<br>销售金额</th>
-          <th  style="color:red;">其他入库<br>成本金额</th>
+          <th style="color:red;">其他入库<br>成本金额</th>
           <th style="color:red;">其他入库<br>销售金额</th>
           <th style="color:red;">其他出库<br>成本金额</th>
           <th style="color:red;">其他出库<br>销售金额</th>
@@ -128,78 +128,135 @@
       <button class="close pull-right" (click)="bdModal.hide()">&times;</button>
     </div>
     <div class="modal-body" hqPrint #printer="hq-print">
-      <form class="form-inline mb-2" [formGroup]="invoicingForm1" (ngSubmit)="onSearchDetail()">
+      <!--[formGroup]="invoicingDetailForm"-->
+      <form class="form-inline mb-2" (ngSubmit)="onSearchDetail()">
         <div class="input-group m-1">
           <span class="input-group-addon">配件编码</span>
-          <input name="name" class="form-control" formControlName="" placeholder="请输供应商"
-          />
+          <input name="name" class="form-control"  placeholder="请输配件编码" />
         </div>
         <div class="input-group m-1">
           <span class="input-group-addon">配件名称</span>
-          <input name="name" class="form-control" formControlName="" placeholder="请输供应商"
-          />
+          <input name="name" class="form-control"  placeholder="请输配件名称" />
         </div>
         <div class="input-group m-1">
           <span class="input-group-addon">查询日期</span>
-          <input class="form-control datetime-picker" style="border-right:0;" formControlName="" id="starttime" name=""
-            type="text" ngui-datetime-picker/>
+          <input class="form-control datetime-picker" style="border-right:0;"  id="starttime" name="" type="text"
+            ngui-datetime-picker/>
           <span class="input-group-addon">-</span>
-          <input class="form-control datetime-picker" style="border-right-width:1px;" id="endtime" formControlName="" name=""
-            type="text" ngui-datetime-picker/>
+          <input class="form-control datetime-picker" style="border-right-width:1px;" id="endtime"  name="" type="text"
+            ngui-datetime-picker/>
         </div>
+        <button type="submit" class="btn btn-primary">查询</button>
       </form>
       <div class="card-block">
-        <div class="row">
-          <div class="table-responsive">
-            <table class="table table-bordered">
-              <tr class="active">
-                <th>配件编码</th>
-                <th>配件名称</th>
-                <th>期初数量</th>
-                <th>期初金额</th>
-                <th>期末数量</th>
-                <th>期末金额</th>
-                <th>入库数量</th>
-                <th>入库金额</th>
-                <th>出库数量</th>
-                <th>出库成本<br>金额</th>
-                <th>出库销售<br>金额</th>
-                <th>采购入库<br>成本金额</th>
-                <th>维修领料<br>成本金额</th>
-                <th>维修领料<br>销售金额</th>
-                <th>配件销售<br>成本金额</th>
-                <th>配件销售<br>销售金额</th>
-                <th>内部领用<br>成本金额</th>
-                <th>内部领用<br>销售金额</th>
-                <th style="color:red;">其他入库<br>成本金额</th>
-                <th style="color:red;">其他入库<br>销售金额</th>
-                <th style="color:red;">其他出库<br>成本金额</th>
-                <th style="color:red;">其他出库<br>销售金额</th>
-              </tr>
-              <tr class="text-center" *ngFor="let item of detailItems">
-                <td>{{item.storeName}}</td>
-                <td>{{item.locationName}}</td>
-                <td>{{item.productCode}}</td>
-                <td>{{item.categoryList[0] }}</td>
-                <td>{{item.productName}}</td>
-                <td>{{item.brand}}</td>
-                <td>{{item.specification}}</td>
-                <td>{{item.unit}}</td>
-                <td>{{item.count }}</td>
-                <td>{{item.price}}</td>
-                <td>{{item.amount}}</td>
-                <td>{{item.exTaxPrice }}</td>
-                <td>{{item.exTaxAmount }}</td>
-              </tr>
-            </table>
-          </div>
-          <p *ngIf="!!!detailItemsLength">暂无数据</p>
+        <p>温馨提示：系统为您找到 <span style="font-size:16px;color:red;font-weight:bold;">{{total}}</span> 条记录</p>
+        <div class="table-responsive">
+          <table class="table table-bordered text-center" *ngFor="let items of list">
+            <tr>
+              <th>配件编码</th>
+              <th>配件名称</th>
+              <th>期初数量</th>
+              <th>期初金额</th>
+              <th>期末数量</th>
+              <th>期末金额</th>
+              <th>入库数量</th>
+              <th>入库金额</th>
+              <th>出库数量</th>
+              <th>出库成本<br>金额</th>
+              <th>出库销售<br>金额</th>
+              <th>采购入库<br>成本金额</th>
+              <th>维修领料<br>成本金额</th>
+              <th>维修领料<br>销售金额</th>
+              <th>配件销售<br>成本金额</th>
+              <th>配件销售<br>销售金额</th>
+              <th>内部领用<br>成本金额</th>
+              <th>内部领用<br>销售金额</th>
+              <th style="color:red;">其他入库<br>成本金额</th>
+              <th style="color:red;">其他入库<br>销售金额</th>
+              <th style="color:red;">其他出库<br>成本金额</th>
+              <th style="color:red;">其他出库<br>销售金额</th>
+            </tr>
+            <tr *ngFor="let item of items.data">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <!--<td>{{item.beginAmount |centToYuan}}</td>-->
+            </tr>
+          </table>
+        </div>
+        <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+        <div class="table-responsive">
+          <table class="table table-bordered text-center">
+            <tr>
+              <th>合计</th>
+              <th>期初数量</th>
+              <th>期初金额</th>
+              <th>期末数量</th>
+              <th>期末金额</th>
+              <th>入库数量</th>
+              <th>入库金额</th>
+              <th>出库数量</th>
+              <th>出库成本<br>金额</th>
+              <th>出库销售<br>金额</th>
+              <th>采购入库<br>数量</th>
+              <th>采购入库<br>金额</th>
+              <th>维修领料<br>数量</th>
+              <th>维修领料<br>金额</th>
+              <th>配件销售<br>数量</th>
+              <th>配件销售<br>金额</th>
+              <th>内部领用<br>数量</th>
+              <th>内部领用<br>金额</th>
+              <th>其他入库<br>数量</th>
+              <th>其他入库<br>金额</th>
+              <th>其他出库<br>数量</th>
+              <th>其他出库<br>销售金额</th>
+            </tr>
+            <tr >
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </table>
         </div>
       </div>
     </div>
-    <div class="modal-footer">
-      <button type="button" (click)="print()" class="btn btn-export">打印</button>
-    </div>
   </div>
 </div>
-<hq-procurement-print [hidden]="true"></hq-procurement-print>

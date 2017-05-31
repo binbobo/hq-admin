@@ -39,7 +39,7 @@ export class InvoicingService implements BasicService<any>{
 
   //详情
   public get(id: string): Promise<any> {
-    const url = Urls.chain.concat('/StoreInOutDetails/PurchaseSellStockDetailsList?BillId=',id);
+    const url = Urls.chain.concat('/StoreInOutDetails/PurchaseSellStockDetailsList?StoreId=9f885937-c43b-484e-aba4-0aaf7039c2b2&BillId=',id);
     return this.httpService
       .get<ApiResult<any>>(url)
       .then(result => result.data)
@@ -61,6 +61,7 @@ export class InvoicingService implements BasicService<any>{
 
 export class InvoicingRequest extends PagedParams {
   constructor(
+    public storeId?:string, //仓库
     public searchStart?: string,
     public searchEnd?: string,
     public billCode?: string,//单号
