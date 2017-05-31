@@ -1,11 +1,11 @@
-<div class="card">
+
   <!--<div class="card-header">维修历史</div>-->
-  <div class="card-block clearborder">
-    <div>
+  <div class="card-block">
+    <!--<div>
       <img class="pull-left" src="http://sinoauto.com/Themes/SinoAutoAdaption/Content/logonew.png" alt="华汽">
       <p class="text-center">维修历史</p>
     </div>
-    <hr>
+    <hr>-->
     <div class="row">
       <div class="col-4">
         <label>车牌号: </label>
@@ -87,7 +87,7 @@
     </div>
     <hr>
   </div>
-  <div class="card-block">
+  <div class="card-block card-border">
     <table class="table table-bordered">
       <caption>收费结算单</caption>
       <thead>
@@ -122,8 +122,7 @@
       </div>
     </div>
   </div>
-  <br>
-  <div class="card-block">
+  <div class="card-block card-border">
     <table class="table table-bordered">
       <caption>附录二：工时明细</caption>
       <thead>
@@ -164,8 +163,7 @@
       </div>
     </div>
   </div>
-  <br>
-  <div class="card-block">
+  <div class="card-block card-border">
     <table class="table table-bordered">
       <caption>附录三：配件明细</caption>
       <thead>
@@ -204,8 +202,7 @@
       </div>
     </div>
   </div>
-  <br>
-  <div *ngIf="businessData?.appendItems.length" class="card-block">
+  <div *ngIf="businessData?.appendItems.length" class="card-block card-border">
     <table class="table table-bordered">
       <caption>附录四：附加项目</caption>
       <thead>
@@ -222,8 +219,7 @@
       </tbody>
     </table>
   </div>
-  <br>
-  <div *ngIf="businessData?.adviceItems.length" class="card-block">
+  <div *ngIf="businessData?.adviceItems.length" class="card-block card-border">
     <table class="table table-bordered">
       <caption>附录五：建议维修项</caption>
       <thead>
@@ -247,4 +243,3 @@
     <div class="pull-right">操作人：<span class='nbspx'>{{businessData?.currentUserName}}</span> 客户签名： <span class='nbspx'></span>日期：<span class="nbspx-sm"></span>      年 <span class="nbspx-sm"></span>月
       <span class="nbspx-sm"></span>日</div>
   </div>
-</div>

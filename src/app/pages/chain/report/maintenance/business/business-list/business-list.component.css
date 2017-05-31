@@ -4,19 +4,22 @@
 }
 .hq-input{
   display: flex;
-  width: 20%;
-  float: left;
-  padding: 0.3125rem 0.625rem;
-  margin-bottom: -1.25rem;
+  margin: 0.25rem;
+  /*width: 20%;
+  float: left;*/
+  /*padding: 0.3125rem 0.625rem;*/
+  /*margin-bottom: -1.25rem;*/
 }
 .form-label{
-  min-width: 6.25rem;
-  padding: 0 0.625rem;
+  /*min-width: 6.25rem;*/
+  padding: 0.5rem 0.75rem;
   line-height: 2.5rem;
   height: 2.5rem;
-  background:#f3f3f4;
-  color: #727171;
-  font-size: 0.875rem;
+  background-color:#eceeef;
+  color: #464a4c;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(0,0,0,.15);
 }
 .form-control {
   height: 2.5rem;
