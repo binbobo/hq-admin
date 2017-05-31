@@ -22,16 +22,59 @@ caption {
 }
 .pos-top{
     position: relative;
-        height: 52px;
+    height: 52px;
 }
 .close-right{
     position: absolute;
-        right: 14px;
+    right: 14px;
     top: 13px;
 }
 @media (min-width: 992px) {
 .modal-lg {
 max-width: 1000px;
 }
+}
+.btn-sm {
+    padding: 6px 0 !important;
+    width: 80px !important;
+}
+.form-inline{
+    margin-bottom: .8rem;
+    margin-left: -3px;
+}
+.check-label {
+    display: flex;
+    min-height:40px;
+    float: left;
+}
+.check-label-col {
+    flex: 2;
+    min-height: 2.5rem;
+    border: 1px solid rgba(0,0,0,.15);
+    padding: 0 24px 0 8px;
+    border-radius: .25rem;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+.form-check-inline {
+    height: 40px;
+    line-height: 40px;
+    margin-left: 10px;
+}
+.form-check-label{
+    margin-bottom: 0 !important;
+}
+.form-check {
+    margin-bottom: 0 !important;
+}
+
+.form-label{
+  min-width: 6.25rem;
+  padding: 0 0.625rem;
+  line-height: 2.5rem;
+  height: 2.5rem;
+  background:#f3f3f4;
+  color: #727171;
+  font-size: 0.875rem;
 }
 

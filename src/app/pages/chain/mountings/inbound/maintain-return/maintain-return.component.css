@@ -24,7 +24,7 @@ table th,table td{
 }
 .tab-title{
     border: 1px solid #ddd;
-    width: 130px;
+    width: 150px;
     padding: 0 10px;
     text-align: center;
     border-radius: 3px;
@@ -33,18 +33,17 @@ table th,table td{
     border-bottom: 0;
     clear: both;
 }
-.serach-input{
-    width: 60%;
-    margin-bottom: 1rem;
+.table-order-info td{
+    text-align: left;
+    padding-left: 1.1rem !important;
+    width: 25%;
 }
-.serach-main{
-    width: 100%;
-    clear: both;
-    margin:22px auto;
-    margin-left:5px;
+.form-inline{
+    margin-bottom: .8rem;
+    margin-left: -3px;
 }
-.serach-main .serach-list{
-    display:inline-block;
-    width:23%;
-    vertical-align: top;
+table .tr-left-bold{
+    text-align: left;
+    font-weight: bold;
+    padding-left: 1.1rem !important;
 }
