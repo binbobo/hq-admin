@@ -283,5 +283,4 @@
         </div>
       </div>
     </div>
-    <!--*ngIf="lgModal.isShown" class="invisible"-->
-    <hq-workorder-detail-print  [data]="selectedOrder" hqPrint #printer="hq-print" print-title="维修工单"></hq-workorder-detail-print>
+    <hq-workorder-detail-print *ngIf="lgModal.isShown" class="invisible"  [data]="selectedOrder" hqPrint #printer="hq-print" print-title="维修工单"></hq-workorder-detail-print>
