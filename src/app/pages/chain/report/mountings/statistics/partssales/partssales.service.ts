@@ -39,10 +39,13 @@ export class PartssalesService implements BasicService<any>{
 
   //详情
   public get(id: string): Promise<any> {
-    const url = Urls.chain.concat('/SaleDetails/Statistic',id);
+    const url = Urls.chain.concat('/SaleDetails/Statistic?BillId=',id);
     return this.httpService
       .get<ApiResult<any>>(url)
-      .then(result => result.data)
+      .then(result => {
+        console.log('配件销售统计详情',result.data)
+        return result.data;
+      })
       .then(data => data || Promise.reject('获取详情失败'))
       .catch(err => Promise.reject(`获取详情数据失败：${err}`))
   }

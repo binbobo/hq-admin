@@ -2,33 +2,32 @@
   <div class="card-header">配件销售统计</div>
   <div class="card-block">
     <div class="container-fluid">
-      <form [formGroup]="partssalesForm" (ngSubmit)="onSearch()">
-        <div class="form-group row">
-          <label for="" class="col-form-label margin-l ">查询时间：</label>
-          <div class="col-2">
-            <input type="text" class="form-control" formControlName="searchStart" [close-on-select]="false" ngui-datetime-picker>
-          </div>
-          <label for="" class="col-form-label margin-l ">至</label>
-          <div class="col-2">
-            <input type="text" class="form-control" formControlName="searchEnd" [close-on-select]="false" ngui-datetime-picker>
-          </div>
-          <label for="" class="col-form-label margin-l">客户名称:</label>
-          <div class="col-2">
-            <input type="text" hqCustomerTypeahead class="form-control" formControlName="name">
-          </div>
-          <label for="" class="col-form-label margin-l">客户手机:</label>
-          <div class="col-2">
-            <input type="text" class="form-control" formControlName="phone">
-          </div>
+      <form class="form-inline mb-2" [formGroup]="partssalesForm" (ngSubmit)="onSearch()">
+        <div class="input-group m-1">
+          <span class="input-group-addon">查询时间</span>
+          <input [max-date]="maxEnterStartDate" class="form-control datetime-picker" style="border-right:0;" formControlName="searchStart" id="starttime" name="starttime"
+            type="text" [close-on-select]="false" ngui-datetime-picker/>
+          <span class="input-group-addon">-</span>
+          <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" class="form-control datetime-picker" style="border-right-width:1px;" id="endtime" formControlName="searchEnd" name="endtime"
+            type="text" [close-on-select]="false" ngui-datetime-picker/>
         </div>
-        <div class="form-group row">
-          <label for="" class="col-form-label margin-l ">门店查询：</label>
-          <div *ngIf="true" class="col-2">
+        <div class="input-group m-1">
+          <span class="input-group-addon">客户名称</span>
+          <input hqCustomerTypeahead name="name" class="form-control tooltips-top" data-tooltips="top" formControlName="name" placeholder="请输客户名字"
+          />
+        </div>
+        <div class="input-group m-1">
+          <span class="input-group-addon">客户手机</span>
+          <input name="name" class="form-control tooltips-top" data-tooltips="top" formControlName="phone" placeholder="请输客户手机" />
+        </div>
+        <div class="input-group m-1">
+          <span class="input-group-addon">门店查询：</span>
+          <div *ngIf="true" class="form-controls">
             <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)">
             </ngx-dropdown-treeview>
           </div>
-          <button type="submit" class="btn btn-primary">查询</button>
         </div>
+        <div class="col-sm-1"><button class="btn btn-primary">查询</button></div>
       </form>
     </div>
     <hr>
@@ -47,12 +46,12 @@
         </tr>
         <tr *ngFor="let item of list">
           <td>
-            <button type="button" [hqSpinner]="false" class="btn btn-primary btn-sm" (click)="alert(bdModal)">详情</button>
+            <button type="button" [hqSpinner]="false" class="btn btn-primary btn-sm" (click)="alert(item,item.id,bdModal,item.billCode,item.customerName)">详情</button>
           </td>
           <td>{{item.billCode}}</td>
           <td>{{item.customerName }}</td>
           <td>{{item.customerPhone }}</td>
-          <td>{{item.seller }}</td>
+          <td>{{item.sellerName }}</td>
           <td>{{item.amount}}</td>
           <td>{{item.createTime |date:"yyyy/MM/dd HH:mm:ss"}}</td>
           <td>{{item.operator}}</td>
@@ -70,24 +69,24 @@
       <div class="modal-title">配件销售详情</div>
       <button class="close pull-right" (click)="bdModal.hide()">&times;</button>
     </div>
-    <div class="modal-body" hqPrint #printer="hq-print">
+    <div class="modal-body" >
       <div class="card-block">
         <div class="row">
           <div class="col-3">
             <label for="">出库单号：</label>
-            <span>{{detail?.name}}</span>
-          </div>
-          <div class="col-3">
-            <label for="">客户名称：</label>
             <span>{{detail?.billCode}}</span>
           </div>
           <div class="col-3">
+            <label for="">客户名称：</label>
+            <span>{{detail?.customerName}}</span>
+          </div>
+          <div class="col-3">
             <label for="">开单时间：</label>
-            <span>{{detail?.createUtc|date:'yyyy/MM/dd HH:mm:ss'}}</span>
+            <span>{{detail?.createBillTime |date:'yyyy/MM/dd HH:mm:ss'}}</span>
           </div>
           <div class="col-3">
             <label for="">操作人：</label>
-            <span>{{detail?.createName}}</span>
+            <span>{{detail?.operator }}</span>
           </div>
         </div>
       </div>
@@ -109,17 +108,17 @@
                 <th>金额（元）</th>
               </tr>
               <tr class="text-center" *ngFor="let item of detailItems">
-                <td>{{item.storeName}}</td>
-                <td>{{item.locationName}}</td>
-                <td>{{item.productCode}}</td>
-                <td>{{item.categoryList[0] }}</td>
-                <td>{{item.productName}}</td>
-                <td>{{item.brand}}</td>
-                <td>{{item.specification}}</td>
-                <td>{{item.unit}}</td>
+                <td>{{item.productCode }}</td>
+                <td>{{item.categoryName }}</td>
+                <td>{{item.productName }}</td>
+                <td>{{item.brandName}}</td>
+                <td>{{item.specification }}</td>
+                <td>{{item.unit }}</td>
+                <td>{{item.storeName }}</td>
+                <td>{{item.locationName }}</td>
+                <td>{{item.price  }}</td>
                 <td>{{item.count }}</td>
-                <td>{{item.price}}</td>
-                <td>{{item.amount}}</td>
+                <td>{{item.amount }}</td>
               </tr>
             </table>
           </div>
@@ -128,7 +127,10 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" (click)="print()" class="btn btn-export">打印</button>
+      <div class="text-center" style="width:100%;">
+        <button type="button" (click)="print()" class="btn btn-export">打印</button>
+      </div>
     </div>
   </div>
 </div>
+<hq-partssales-print hqPrint #printer="hq-print" [hidden]="true" [detail]="detail" [detailItems]="detailItems" [detailItemsLength]="detailItemsLength" ></hq-partssales-print>

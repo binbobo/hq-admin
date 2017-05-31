@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { DistributeService, DistributeRequest } from './distribute.service'
 import { TreeviewItem, TreeviewConfig } from "ngx-treeview/lib";
 import { DataList } from "app/shared/models";
@@ -47,18 +47,20 @@ export class DistributeComponent extends DataList<any> {
 
 
   //详情模态框
-  alert(ev, id, bdModule) {
+  alert(ev, id, bdModule,billCode) {
     console.log('详情数据', ev, id, bdModule);
     ev.hqSpinner = true;
-    this.service.get(id).then((data) => {
+    this.service.get(id).then(data => {
       this.isLoading = true;
-      this.detail = data;
-      this.detailItemsLength = data.items.length;
-      this.detailItems = data.items;
+      this.detail = data[0];
+      this.detail.billCode=billCode;
+      this.detailItemsLength = data.length;
+      this.detailItems = data;
       bdModule.show();
       ev.hqSpinner = false;
     }).catch((err) => {
-      this.alerter.error(err, true, 2000);
+      console.log('err', err)
+      // this.alerter.error(err, true, 2000);
     });
   }
 
@@ -66,7 +68,13 @@ export class DistributeComponent extends DataList<any> {
   onSearchRangeChange(ev) {
     this.params.orgIds = ev;
   }
+  @ViewChild('printer')
+  public printer: PrintDirective;
 
+  //打印
+  print() {
+    this.printer.print();
+  }
   //导出
   onExport() {
     this.service.export(this.params).then(() => {
