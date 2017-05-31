@@ -39,7 +39,7 @@ export class InvoicingService implements BasicService<any>{
 
   //详情
   public get(id: string): Promise<any> {
-    const url = Urls.chain.concat('StoreInOutDetails/PurchaseSellStockDetailsList?BillId=',id);
+    const url = Urls.chain.concat('/StoreInOutDetails/PurchaseSellStockDetailsList?BillId=',id);
     return this.httpService
       .get<ApiResult<any>>(url)
       .then(result => result.data)
