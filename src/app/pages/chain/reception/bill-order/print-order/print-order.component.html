@@ -65,7 +65,7 @@
         <td></td>
       </tr>
     </table>
-    <div class="table-title">表一：收费结算单</div>
+    <h6>表一：收费结算单</h6>
     <table class="table table-bordered">
       <tr>
         <td>序号</td>
@@ -85,13 +85,13 @@
         </td>
       </tr>
     </table>
-    <div class="table-title">表二：工时明细</div>
+    <h6>表二：工时明细</h6>
     <table class="table table-bordered">
       <tr>
         <td>序号</td>
         <td>维修项目</td>
         <td>结算工时</td>
-        <td>单价(元/个)</td>
+        <td>单价(元)</td>
         <td>折扣率(%)</td>
         <td>金额(元)</td>
         <td>备注</td>
@@ -110,7 +110,7 @@
         <!--<td colspan="7">合计：应收金额：{{(data.moneyObj)?.workCostMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;折扣金额：{{(data.moneyObj)?.discountMoney|centToYuan}}</td>-->
       </tr>
     </table>
-    <div class="table-title">表三：配件明细</div>
+    <h6 *ngIf="data.materialData.length>0">表三：配件明细</h6>
     <table class="table table-bordered" *ngIf="data.materialData.length>0">
       <tr class="table-tr">
         <td>序号</td>
@@ -132,7 +132,7 @@
         <td colspan="8">金额合计：{{(data.moneyObj)?.materialMoney|centToYuan}}</td>
       </tr>
     </table>
-    <div class="table-title" *ngIf="data.appendItems.length>0">表四：附加项目</div>
+    <h6 *ngIf="data.appendItems.length>0">表四：附加项目</h6>
     <table class="table table-bordered" *ngIf="data.appendItems.length>0">
       <tr>
         <td>序号</td>
@@ -143,7 +143,7 @@
         <td>{{items.name}}</td>
       </tr>
     </table>
-    <div class="table-title" *ngIf="data.adviceItems.length>0">表五：建议维修项目</div>
+    <h6 *ngIf="data.adviceItems.length>0">表五：建议维修项目</h6>
     <table class="table table-bordered" *ngIf="data.adviceItems.length>0">
       <tr>
         <td>序号</td>

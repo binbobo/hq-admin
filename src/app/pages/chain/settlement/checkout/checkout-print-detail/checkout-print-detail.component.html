@@ -1,4 +1,4 @@
-  <table class="table table-order-info table-bordered">
+<table class="table table-order-info table-bordered">
   <tbody>
     <tr>
       <td>车牌号</td>
@@ -67,9 +67,12 @@
       <td>{{data?.updataTime|sDatetime}}</td>
     </tr>
   </tbody>
-  </table>
+</table>
 <tabset>
-  <tab heading="维修项目" *ngIf="data?.workHours?.length>0">
+  <tab *ngIf="data?.workHours?.length>0">
+    <template tabHeading>
+      <i class="fa fa-clone" aria-hidden="true"></i>维修项目
+    </template>
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -86,13 +89,16 @@
             <span [class.accept-stamp]="record.teamType === 6"></span></td>
           <td>{{record?.workHour}}</td>
           <td>{{record?.price|centToYuan}}</td>
-          <td>{{record?.discountCost|centToYuan}}</td> 
+          <td>{{record?.discountCost|centToYuan}}</td>
           <td>{{record?.discount}}</td>
         </tr>
       </tbody>
     </table>
   </tab>
-  <tab heading="维修配件" *ngIf="data?.matereialDetails?.length>0">
+  <tab *ngIf="data?.matereialDetails?.length>0">
+    <template tabHeading>
+      <i class="fa fa-wrench" aria-hidden="true"></i>维修配件
+    </template>
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -119,7 +125,10 @@
       </tbody>
     </table>
   </tab>
-  <tab heading="附加项目" *ngIf="data?.appendItems?.length>0">
+  <tab *ngIf="data?.appendItems?.length>0">
+    <template tabHeading>
+      <i class="fa fa-plus-square" aria-hidden="true"></i>附加项目
+    </template>
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -133,7 +142,10 @@
       </tbody>
     </table>
   </tab>
-  <tab heading="建议维修项目" *ngIf="data?.adviceItems?.length>0">
+  <tab *ngIf="data?.adviceItems?.length>0">
+    <template tabHeading>
+      <i class="fa fa-wpforms" aria-hidden="true"></i>建议维修项目
+    </template>
     <table class="table table-bordered">
       <thead>
         <tr>

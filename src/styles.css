@@ -257,6 +257,7 @@ tabset ul li a, tabset ul li a:hover {
     background-color: #dcdddd !important;
     opacity: 1;
     border-color: #dcdddd;
+    cursor:not-allowed;
 }
 /*去除input蓝色边框*/
 input:focus{
