@@ -2,7 +2,7 @@
 <div class="card business">
   <div class="card-header">维修历史</div>
   <div class="card-block">
-    <form (ngSubmit)="onSearch()" class="form-inline mb-2">
+    <form (ngSubmit)="onSearch()" class="form-inlines mb-2">
       <div class="input-group m-1">
         <span class="input-group-addon">进店时间</span>
         <input [max-date]="maxEnterStartDate" [(ngModel)]="params.enterStartTimeDate" class="form-control" id="enterStartTimeDate"
@@ -38,14 +38,14 @@
           </ngx-dropdown-treeview>
         </div>
       </div>-->
-      <div class="hq-input">
+      <div class="hq-input m-1">
         <label class="form-label">服务顾问</label>
-        <div class="hq-col">
-        <ngx-dropdown-treeview [config]="nameConfig" [items]="nameItems" (selectedChange)="onSearchNameChange($event)">
-        </ngx-dropdown-treeview>
+        <div class=".hq-col">
+          <ngx-dropdown-treeview [config]="nameConfig" [items]="nameItems" (selectedChange)="onSearchNameChange($event)">
+          </ngx-dropdown-treeview>
         </div>
       </div>
-      <div *ngIf="items" class="hq-input">
+      <div *ngIf="items" class="hq-input m-1">
         <label *ngIf="items" for="searchRange" class="form-label">查询范围</label>
         <div *ngIf="items" class="hq-col">
           <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)">
