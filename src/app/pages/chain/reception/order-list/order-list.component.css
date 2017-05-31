@@ -1,4 +1,16 @@
-.check-label {
+.advanceFilter {
+    height:40px;
+    line-height:40px;
+}
+.advanceFilter a{
+  color: #1CB4C6;
+}
+.form-check-inline {
+  /*height: 40px;
+  line-height: 40px;*/
+  margin-left: 10px;
+}
+/*.check-label {
     display: flex;
     width: 80%;
     min-height:40px;
@@ -25,13 +37,6 @@ label {
   margin-bottom: 0;
   font-size: 0.875rem;
   color: #727171;
-}
-.advanceFilter {
-    height:40px;
-    line-height:40px;
-}
-.advanceFilter a{
-  color: #1CB4C6;
 }
 .modal-footer {
   border-top: none;
@@ -72,4 +77,4 @@ input[disabled] {
 }
 .btn-color {
   background:#27b394 !important;
-}
+}*/

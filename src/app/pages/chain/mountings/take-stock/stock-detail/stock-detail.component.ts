@@ -3,6 +3,7 @@ import { TakeStockService } from '../take-stock.service';
 import { element } from 'protractor';
 import { PrintDirective, HqAlerter } from 'app/shared/directives';
 import { ActivatedRoute, Params } from '@angular/router';
+import { OrganizationInfo, OrganizationService } from "app/pages/organization.service";
 
 @Component({
   selector: 'hq-stock-detail',
@@ -18,10 +19,12 @@ export class StockDetailComponent implements OnInit {
   @ViewChild('printer')
   public printer: PrintDirective;
   private code: string;
+  private org: OrganizationInfo;
 
   constructor(
     private route: ActivatedRoute,
-    private service: TakeStockService
+    private service: TakeStockService,
+    private orgService: OrganizationService
   ) { }
 
   ngOnInit() {
@@ -30,7 +33,10 @@ export class StockDetailComponent implements OnInit {
       this.service.get(this.code)
         .then(data => this.item = data)
         .catch(err => this.alerter.error(err));
-    })
+    });
+    this.orgService.getOrganization()
+      .then(org => this.org = org)
+      .catch(err => console.log(err));
   }
 
   print() {

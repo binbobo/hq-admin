@@ -55,6 +55,9 @@ export class LoginComponent implements OnInit {
         this.userService.onUserLogin.emit(user);
         this.userService.redirect();
       })
-      .catch(err => this.alerter.error(err));
+      .catch(err => {
+        this.alerter.clear();
+        this.alerter.error(err);
+      });
   }
 }

@@ -122,7 +122,7 @@ export class HttpService {
     }
 
     private handleError(error: Response | any) {
-        console.error(error);
+        console.error(error, 11);
         let errMsg: string = error.statusText;
         if (error instanceof Response) {
             if (error.status == 401) {
@@ -142,13 +142,17 @@ export class HttpService {
     }
 
     public getErrors(response: Response) {
-        let errMsg: string = response.text();
-        let body = response.json() || '';
-        if (body instanceof ProgressEvent) {
-            errMsg = '服务端请求错误！'
-        }
-        else if (body && Object.keys(body).length) {
-            errMsg = body.error || this.handleModelValidateError(body) || JSON.stringify(body);
+        let errMsg: string = response.statusText;
+        try {
+            let body = response.json() || '';
+            if (body instanceof ProgressEvent) {
+                errMsg = '服务端请求错误！'
+            }
+            else if (body && Object.keys(body).length) {
+                errMsg = body.error || this.handleModelValidateError(body) || JSON.stringify(body);
+            }
+        } catch (error) {
+            return errMsg;
         }
         return errMsg;
     }

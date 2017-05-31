@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpService, UserService } from 'app/shared/services';
 import { Urls } from '../shared/services/url.service';
-import { StorageKeys } from 'app/shared/models';
+import { StorageKeys, ApiResult } from 'app/shared/models';
 
 @Injectable()
 export class EmployeeService {
@@ -42,8 +42,9 @@ export class EmployeeService {
     }
 
     private getFromApi() {
-        let url = Urls.platform.concat('/Employees/Current');
-        return this.httpService.get<EmployeeInfo>(url);
+        let url = Urls.chain.concat('/Employees/Current');
+        return this.httpService.get<ApiResult<EmployeeInfo>>(url)
+            .then(result => result.data);
     }
 
 }
