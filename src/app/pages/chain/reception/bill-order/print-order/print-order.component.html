@@ -1,45 +1,39 @@
 <div class="print card">
-  <div class="card-header">
-    <span>维修结算单</span>
-  </div>
   <div class='card-block'>
-    <table class="table table-bordered">
-      <tr>
-        <td colspan="6">
-          <h4>维修结算单</h4>
-        </td>
-      </tr>
+    <table class="table">
       <tr>
         <td>车牌号:</td>
-        <td> {{data.maindata.plateNo}}</td>
+        <td>{{data.maindata.plateNo}}</td>
         <td>车型描述:</td>
         <td>{{data.maindata.model}} </td>
-        <td>VIN:</td>
-        <td>{{data.maindata.vin}} </td>
-
       </tr>
       <tr>
         <td>送修人：</td>
         <td>{{data.maindata.contactUser}}</td>
         <td>送修人电话：</td>
         <td>{{data.maindata.contactInfo}}</td>
-        <td>结算单号:</td>
-        <td>{{data.maindata.settlementCode}}</td>
+      </tr>
+      <tr>
+        <td>VIN:</td>
+        <td>{{data.maindata.vin}} </td>
+        <td>维修类型:</td>
+        <td>{{data.maindata.typeName}}</td>
       </tr>
       <tr>
         <td>工单号:</td>
         <td>{{data.maindata.billCode}}</td>
         <td>结算员:</td>
         <td>{{data.maindata.updateUser}}</td>
+      </tr>
+      <tr>
+        <td>结算单号:</td>
+        <td>{{data.maindata.settlementCode}}</td>
         <td>结算时间：</td>
         <td>{{data.maindata.updateOnUtc|sDatetime}}</td>
-
       </tr>
       <tr>
         <td>结算方：</td>
         <td>{{data.maindata.settlementParty}}</td>
-        <td>维修类型:</td>
-        <td>{{data.maindata.typeName}}</td>
         <td>进厂时间:</td>
         <td>{{data.maindata.createdOnUtc|sDatetime}}</td>
       </tr>
@@ -48,23 +42,18 @@
         <td>{{data.maindata.mileage}}</td>
         <td>出厂里程(KM):</td>
         <td>{{data.maindata.leaveMileage}}</td>
-        <td></td>
-        <td></td>
       </tr>
       <tr>
         <td>服务顾问:</td>
         <td>{{data.maindata.createdUserName}}</td>
         <td></td>
         <td></td>
-        <td></td>
-        <td></td>
       </tr>
     </table>
-
-    <table class="table table-bordered">
-      <tr>
+    <table class="table">
+      <tr class="table-title">
         <td colspan="4">
-          <h5>表一：收费结算单</h5>
+          表一：收费结算单
         </td>
       </tr>
       <tr>
@@ -81,15 +70,14 @@
       </tr>
       <tr>
         <td colspan="4">金额合计：{{(data.moneyObj)?.costMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;优惠：{{(data.moneyObj)?.costCountMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;应收金额：{{data.maindata.actualAmount|centToYuan}}
-          &nbsp;&nbsp;&nbsp;&nbsp;</td>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
       </tr>
     </table>
-
-
-    <table class="table table-bordered">
+    <table class="table">
       <tr>
-        <td colspan="7">
-          <h5>表二：工时明细</h5>
+        <td colspan="7" class="table-title">
+          表二：工时明细
         </td>
       </tr>
       <tr>
@@ -115,13 +103,13 @@
         <!--<td colspan="7">合计：应收金额：{{(data.moneyObj)?.workCostMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;折扣金额：{{(data.moneyObj)?.discountMoney|centToYuan}}</td>-->
       </tr>
     </table>
-    <table class="table table-bordered" *ngIf="data.materialData.length>0">
+    <table class="table" *ngIf="data.materialData.length>0">
       <tr>
-        <td colspan="8">
+        <td colspan="8" class="table-title">
           <h5>表三：配件明细</h5>
         </td>
       </tr>
-      <tr>
+      <tr class="table-tr">
         <td>序号</td>
         <td>配件名称</td>
         <td>单价(元)</td>
@@ -142,9 +130,9 @@
       </tr>
     </table>
 
-    <table class="table table-bordered" *ngIf="data.appendItems.length>0">
+    <table class="table" *ngIf="data.appendItems.length>0">
       <tr>
-        <td colspan="2">
+        <td colspan="2" class="table-title">
           <h5>表四：附加项目</h5>
         </td>
       </tr>
@@ -156,12 +144,10 @@
         <td>{{index+1}}</td>
         <td>{{items.name}}</td>
       </tr>
-
     </table>
-
-    <table class="table table-bordered" *ngIf="data.adviceItems.length>0">
+    <table class="table" *ngIf="data.adviceItems.length>0">
       <tr>
-        <td colspan="3">
+        <td colspan="3" class="table-title">
           <h5>表五：建议维修项目</h5>
         </td>
       </tr>
@@ -175,14 +161,15 @@
         <td>{{item.content}}</td>
         <td>{{item.description}}</td>
       </tr>
-
     </table>
     <hr>
     <div class="print-bot">
-      <div class="pull-left"> 打印时间：{{data.maindata.printOnUtc|sDatetime}}</div>
-
-      <div class="pull-right">操作人：{{data.maindata.currentUserName}}<span class='nbspx'>&nbsp;</span> 客户签名： <span class='nbspx'></span>日期：<span class="nbspx-sm"></span>        年 <span class="nbspx-sm"></span>月
-      </div>
-
+      <div class="bot-left"> 打印时间：{{data.maindata.printOnUtc|sDatetime}}&nbsp;&nbsp;&nbsp;&nbsp;</div>
+      <div class="bot-right pull-right">  客户签名:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </div>
+      
+    </div>
+    <div class="print-bot">
+      <div class="bot-left">操作人：{{data.maindata.currentUserName}}</div>
+      <div class="bot-right pull-right">日期：年月日</div>
     </div>
   </div>

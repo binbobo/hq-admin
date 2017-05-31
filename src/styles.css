@@ -62,23 +62,25 @@ input.ng-touched.ng-invalid,select.ng-touched.ng-invalid{
     border-bottom-right-radius: 0;
     border-right-width: 0;
 }
-table td,th{
+.table-container table td,th{
     padding: 0.5rem!important;
     white-space: nowrap;
     /*line-height: 2.5rem;
     height: 2.5rem;*/
 }
-table td {
+.table-container table td {
     font-size: 0.875rem;
     vertical-align: middle !important;
 }
-table th{
-    text-align: center;
+.table-container table th{
     background: #f3f3f4;
     font-size: 1rem;
     font-weight: 500;
     color: #727171;
     border-color: #dcdddd;
+}
+table th{
+    text-align: center;
 }
 caption {
     caption-side: top;
@@ -107,10 +109,6 @@ input[disabled] {
 }
 hqtabletypeahead ul{
     margin-bottom: 0;
-}
-/*增项标志*/
-table td{
-    position: relative;
 }
 .append-stamp{
     position: relative;
@@ -183,7 +181,7 @@ tabset ul li a, tabset ul li a:hover {
     border: 0
 }
 /*小按钮*/
-.btn-sm{
+.table-container .btn-sm{
     padding:6px 22px;
     cursor: pointer;
 }

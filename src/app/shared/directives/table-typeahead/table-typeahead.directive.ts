@@ -29,6 +29,8 @@ export class TableTypeaheadDirective implements OnInit {
   @Input()
   protected params: Object;
   @Output()
+  protected onEmpty = new EventEmitter<string>();
+  @Output()
   protected onSelect = new EventEmitter<any>();
   private el: HTMLInputElement;
   private componentRef: ComponentRef<TableTypeaheadComponent>;
@@ -81,21 +83,14 @@ export class TableTypeaheadDirective implements OnInit {
     }
     let param = new TypeaheadRequestParams(this.el.value);
     param.setPage(pageIndex, this.pageSize);
-    this.statusElement.classList.add('fa-spinner');
-    let rotate = 0;
-    let animation = setInterval(() => {
-      rotate = (rotate + 10) % 360;
-      this.statusElement.style.transform = `rotate(${rotate}deg)`;
-    }, 20);
-    let stopAnimation = () => {
-      clearInterval(animation);
-      this.statusElement.classList.remove('fa-spinner');
-      this.statusElement.style.transform = 'none';
-    };
     if (this.source) {
+      this.statusElement.classList.add('fa-spinner', 'fa-spin');
       this.source(param)
         .then(result => result || new PagedResult())
         .then(result => {
+          if (!result.data.length) {
+            this.onEmpty.emit(param.text);
+          }
           if (this.multiple && this.checkStrategy) {
             result.data.forEach(m => {
               m.checked = this.checkStrategy(m);
@@ -105,10 +100,10 @@ export class TableTypeaheadDirective implements OnInit {
           this.componentRef.instance.result = result;
           this.show();
         })
-        .then(() => stopAnimation())
+        .then(() => this.statusElement.classList.remove('fa-spinner', 'fa-spin'))
         .catch(err => {
           console.log(err);
-          stopAnimation();
+          this.statusElement.classList.remove('fa-spinner', 'fa-spin');
           this.componentRef.instance.result = null;
         });
     }

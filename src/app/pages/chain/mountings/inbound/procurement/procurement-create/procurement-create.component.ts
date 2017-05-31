@@ -23,6 +23,7 @@ export class ProcurementCreateComponent implements OnInit {
   private controls: QueryList<FormGroupControlErrorDirective>;
   private storages: Array<any>;
   private locations: Array<any>;
+  private isSelected: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -56,13 +57,21 @@ export class ProcurementCreateComponent implements OnInit {
   }
 
   private onResetForm(event: Event, key: string) {
-    if (!event.isTrusted) return false;
+    this.productNotExist = false;
+    if (!event.isTrusted || !this.isSelected) return false;
     let obj = { ...this.model, yuan: 0 };
     key in obj && delete obj[key];
     this.form.patchValue(obj);
     this.storages = null;
     this.locations = null;
+    this.isSelected = false;
   }
+
+  private onEmpty(event) {
+    event && (this.productNotExist = true);
+  }
+
+  private productNotExist: boolean;
 
   public onSubmit(event: Event) {
     let invalid = this.controls
@@ -88,6 +97,7 @@ export class ProcurementCreateComponent implements OnInit {
   }
 
   private onItemSelect(event) {
+    this.isSelected = true;
     let item: any = {
       unit: event.unitName,
       productCode: event.code,
