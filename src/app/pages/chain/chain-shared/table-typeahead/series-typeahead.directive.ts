@@ -27,7 +27,7 @@ export class SeriesTypeaheadDirective extends TableTypeaheadDirective {
     ngOnInit() {
         this.source = (params: TypeaheadRequestParams) => {
             let request = new SeriesSearchRequest();
-            request['seriesName'] = params.text;
+            request['serieName'] = params.text;
             request['brandId'] = this.brandId;
             request.setPage(params.pageIndex, params.pageSize);
             let url = Urls.chain.concat('/VehicleSeries/search');
@@ -42,7 +42,7 @@ export class SeriesTypeaheadDirective extends TableTypeaheadDirective {
 class SeriesSearchRequest extends PagedParams {
     constructor(
         public brandId?: string, // 品牌ID
-        public seriesName?: string, // 车系名称
+        public serieName?: string, // 车系名称
     ) {
         super();
     }
