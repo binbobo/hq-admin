@@ -61,6 +61,7 @@ export class InvoicingService implements BasicService<any>{
 
 export class InvoicingRequest extends PagedParams {
   constructor(
+    public storeId?:string, //仓库
     public searchStart?: string,
     public searchEnd?: string,
     public billCode?: string,//单号

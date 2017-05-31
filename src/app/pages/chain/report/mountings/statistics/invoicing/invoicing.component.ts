@@ -14,7 +14,7 @@ import { CentToYuanPipe, DurationHumanizePipe } from "app/shared/pipes";
 })
 export class InvoicingComponent extends DataList<any> {
   private invoicingForm: FormGroup;
-  private invoicingForm1: FormGroup;
+  private invoicingDetailForm: FormGroup;
   params: InvoicingRequest;
   detail;
   detailItems;
@@ -65,10 +65,10 @@ export class InvoicingComponent extends DataList<any> {
     ev.hqSpinner = true;
     this.service.get(id).then(data => {
       this.isLoading = true;
-      this.detail = data;
-      this.detailItemsLength = data.items.length;
-      this.detailItems = data.items;
-      console.log('详情数据', this.detail.items)
+      // this.detail = data;
+      // this.detailItemsLength = data.items.length;
+      // this.detailItems = data.items;
+      console.log('详情数据', data)
       el.show()
       ev.hqSpinner = false;
     }).catch(err => {
@@ -96,6 +96,7 @@ export class InvoicingComponent extends DataList<any> {
   //绑定表单
   createForm() {
     this.invoicingForm = this.formBuilder.group({
+      storeId:'',
       searchStart: '', //开始时间
       searchEnd: '', // 结束时间
       billCode: '',//单号
