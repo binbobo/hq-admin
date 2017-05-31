@@ -2,9 +2,10 @@ import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PrintDirective } from "app/shared/directives";
 import { InvoicingService, InvoicingRequest } from "./invoicing.service"
-import { DataList } from "app/shared/models";
+import { DataList, SelectOption } from "app/shared/models";
 import { TreeviewItem, TreeviewConfig } from "ngx-treeview/lib";
 import { OrderService } from "app/pages/chain/reception/order.service";
+import { CentToYuanPipe, DurationHumanizePipe } from "app/shared/pipes";
 
 @Component({
   selector: 'hq-procurement',
@@ -12,19 +13,21 @@ import { OrderService } from "app/pages/chain/reception/order.service";
   styleUrls: ['./invoicing.component.css']
 })
 export class InvoicingComponent extends DataList<any> {
-  private procurementForm: FormGroup;
+  private invoicingForm: FormGroup;
+  private invoicingDetailForm: FormGroup;
   params: InvoicingRequest;
   detail;
   detailItems;
   detailItemsLength: number;
   isLoading: boolean = false;
+  private warehouses: Array<SelectOption>;
 
 
   // 用于ngx-treeview组件
   public items: TreeviewItem[];
   public config: TreeviewConfig = {
     isShowAllCheckBox: false,
-    isShowFilter: true,
+    isShowFilter: false,
     isShowCollapseExpand: false,
     maxHeight: 500
   };
@@ -44,8 +47,10 @@ export class InvoicingComponent extends DataList<any> {
       if (data[0].children && data[0].children.length > 0)
         this.items = data;
     });
+    this.service.getWarehouseOptions()
+      .then(options => this.warehouses = options)
+      .catch(err => this.alerter.warn(err));
   }
-
 
   @ViewChild('printer')
   public printer: PrintDirective;
@@ -60,10 +65,10 @@ export class InvoicingComponent extends DataList<any> {
     ev.hqSpinner = true;
     this.service.get(id).then(data => {
       this.isLoading = true;
-      this.detail = data;
-      this.detailItemsLength = data.items.length;
-      this.detailItems = data.items;
-      console.log('详情数据', this.detail.items)
+      // this.detail = data;
+      // this.detailItemsLength = data.items.length;
+      // this.detailItems = data.items;
+      console.log('详情数据', data)
       el.show()
       ev.hqSpinner = false;
     }).catch(err => {
@@ -82,7 +87,7 @@ export class InvoicingComponent extends DataList<any> {
   //搜索
   onSearch() {
     //将表单值赋给params
-    Object.assign(this.params, this.procurementForm.value);
+    Object.assign(this.params, this.invoicingForm.value);
 
     console.log('params', this.params);
     this.onLoadList();
@@ -90,7 +95,8 @@ export class InvoicingComponent extends DataList<any> {
 
   //绑定表单
   createForm() {
-    this.procurementForm = this.formBuilder.group({
+    this.invoicingForm = this.formBuilder.group({
+      storeId:'',
       searchStart: '', //开始时间
       searchEnd: '', // 结束时间
       billCode: '',//单号
@@ -104,10 +110,11 @@ export class InvoicingComponent extends DataList<any> {
   }
 
   joinOrderNumberOnSelect(ev) {
-      this.procurementForm.patchValue({
+      this.invoicingForm.patchValue({
         billCode: ev.billCode,
       });
   }
-
+  //详情里的搜索
+onSearchDetail(){}
 
 }

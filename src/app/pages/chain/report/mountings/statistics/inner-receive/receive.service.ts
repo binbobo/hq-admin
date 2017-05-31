@@ -19,30 +19,33 @@ export class ReceiveService implements BasicService<any>{
 
   //页面加载时分页获取信息
   public getPagedList(params: ReceiveRequest): Promise<PagedResult<any>> {
-    const url = Urls.chain.concat('/Purchases/Statistic?', params.serialize());
+    const url = Urls.chain.concat('/Uses/Statistic?', params.serialize());
     console.log("url", url);
     return this.httpService.get<PagedResult<any>>(url)
       .then(result => {
-        console.log('采购入库数据', result);
+        console.log('内部领用数据', result);
         return result;
       })
-      .catch(err => Promise.reject(`采购入库数据失败：${err}`));
+      .catch(err => Promise.reject(`内部领用数据失败：${err}`));
   }
 
   //导出
   public export(params: ReceiveRequest): Promise<void> {
     const url = Urls.chain.concat('/Purchases/StatisticExportToExcel');
     return this.httpService
-      .download(url, params.serialize(), '采购入库统计')
-      .catch(err => Promise.reject(`采购入库统计导出失败：${err}`));
+      .download(url, params.serialize(), '内部领用统计')
+      .catch(err => Promise.reject(`内部领用导出失败：${err}`));
   }
 
   //详情
   public get(id: string): Promise<any> {
-    const url = Urls.chain.concat('/PurchaseDetails/Details/',id);
+    const url = Urls.chain.concat('/UseDetails/Statistic?BillId=', id);
     return this.httpService
       .get<ApiResult<any>>(url)
-      .then(result => result.data)
+      .then(result => {
+        console.log('内部领用详情',result);
+        return result.data
+      })
       .then(data => data || Promise.reject('获取详情失败'))
       .catch(err => Promise.reject(`获取详情数据失败：${err}`))
   }
@@ -68,10 +71,10 @@ export class ReceiveService implements BasicService<any>{
 
 export class ReceiveRequest extends PagedParams {
   constructor(
+    public takeUser?: '',//领用人
+    public takeDepart?: '',//部门
     public searchStart?: string,
     public searchEnd?: string,
-    public billCode?: string,//单号
-    public name?: string, //供应商
     public orgIds?: Array<any>, //门店查询
   ) {
     super();

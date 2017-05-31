@@ -4,7 +4,7 @@
   </div>
   <div class='card-block'>
     <form (ngSubmit)="onSearch()">
-      <div class="form-group row" *ngIf="orderStatusData">
+      <div class="form-group row" *ngIf="orderStatusData" style="margin-bottom: 5px;">
         <div class="check-label">
           <label class="input-group-addon">工单状态</label>
           <div class="check-label-col">
@@ -104,7 +104,7 @@
 <!--详情 end-->
 <!--收银弹框 begin-->
 <div bsModal #CheckoutModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog">
     <div class="modal-content" style="background-color:#fff;">
       <div class="modal-header">
         <h5>收银</h5>
@@ -112,9 +112,11 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <ng-template hq-alerter></ng-template>
+      <ng-template hq-alerter></ng-template> 
       <div class="modal-body">
-        <div class="cost-money">应收金额：{{costMoney|centToYuan}}元</div>
+        <div class="hq-fee" style="margin-top:0">
+         <span class="fee-name">应收金额：<span class="fee-value">{{costMoney|centToYuan}}</span></span>
+        </div>
         <div class="input-group checkout-item" *ngFor="let item of payData;">
           <span class="input-group-addon" id="sizing-addon2" style="width:150px;">{{item.value}}(元)</span>
           <input type="number" class="form-control" [(ngModel)]="item.amount" aria-label="Username" aria-describedby="sizing-addon1">

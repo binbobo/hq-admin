@@ -5,7 +5,7 @@ import { ProcurementService, ProcurementRequest } from "./procurement.service"
 import { DataList } from "app/shared/models";
 import { TreeviewItem, TreeviewConfig } from "ngx-treeview/lib";
 import { OrderService } from "app/pages/chain/reception/order.service";
-
+import * as moment from 'moment';
 @Component({
   selector: 'hq-procurement',
   templateUrl: './procurement.component.html',
@@ -24,7 +24,7 @@ export class ProcurementComponent extends DataList<any> {
   public items: TreeviewItem[];
   public config: TreeviewConfig = {
     isShowAllCheckBox: false,
-    isShowFilter: true,
+    isShowFilter: false,
     isShowCollapseExpand: false,
     maxHeight: 500
   };
@@ -99,6 +99,16 @@ export class ProcurementComponent extends DataList<any> {
   onSearchRangeChange(ev) {
     // 更新查询范围参数
     this.params.orgIds = ev;
+  }
+  //时间控制
+  public get maxEnterStartDate() {
+    return new Date(this.procurementForm.get('searchEnd').value) || moment().format('YYYY-MM-DD');
+  }
+  public get minEnterEndDate() {
+    return new Date(this.procurementForm.get('searchStart').value) || '';
+  }
+  public get maxEnterEndDate() {
+    return moment().format('YYYY-MM-DD');
   }
 
 }

@@ -1,3 +1,5 @@
 .mb-20{
     margin-bottom:20px;
 }
+table.table-bordered{border:1px solid #F00;border-collapse: collapse}
+table.table-bordered td{border:1px solid #F00; background: green;}

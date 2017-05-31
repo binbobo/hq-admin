@@ -15,11 +15,11 @@ caption {
 }
 .pos-top{
     position: relative;
-        height: 52px;
+    height: 52px;
 }
 .close-right{
     position: absolute;
-        right: 14px;
+    right: 14px;
     top: 13px;
 
 }
@@ -27,8 +27,15 @@ caption {
     text-align: center;
     margin-bottom:8px;
 }
-.checkout-item{
+.checkout-item:nth-child(2n+1){
     margin:4px auto;
+    float: left;
+    width: 50%;
+}
+.checkout-item:nth-child(2n){
+    margin:4px auto;
+    float: right;
+    width: 50%;
 }
 .cost-money{
     margin-bottom: 12px;
@@ -41,7 +48,7 @@ max-width: 1000px;
 }
 .btn-sm {
     padding: 6px 0 !important;
-    width: 80px !important;
+    width: 75px !important;
 }
 .check-label {
     display: flex;
@@ -82,5 +89,7 @@ max-width: 1000px;
     margin-bottom: .8rem;
     margin-left: -3px;
 }
-
+.modal-content{
+    width: 800px !important;
+}
 

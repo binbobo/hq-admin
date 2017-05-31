@@ -5,7 +5,7 @@ import { PartssalesService, PartssalesRequest } from "./partssales.service"
 import { DataList } from "app/shared/models";
 import { TreeviewItem, TreeviewConfig } from "ngx-treeview/lib";
 import { OrderService } from "app/pages/chain/reception/order.service";
-
+import * as moment from 'moment';
 @Component({
   selector: 'hq-partssales',
   templateUrl: './partssales.component.html',
@@ -24,7 +24,7 @@ export class PartssalesComponent extends DataList<any> {
   public items: TreeviewItem[];
   public config: TreeviewConfig = {
     isShowAllCheckBox: false,
-    isShowFilter: true,
+    isShowFilter: false,
     isShowCollapseExpand: false,
     maxHeight: 500
   };
@@ -56,13 +56,15 @@ export class PartssalesComponent extends DataList<any> {
   }
 
   //模态框
-  alert(ev, id, el) {
+  alert(ev, id, el,billCode,customerName) {
     ev.hqSpinner = true;
     this.service.get(id).then(data => {
       this.isLoading = true;
-      this.detail = data;
-      this.detailItemsLength = data.items.length;
-      this.detailItems = data.items;
+      this.detail = data[0];
+      this.detail.billCode=billCode;
+      this.detail.customerName=customerName;
+      this.detailItemsLength = data.length;
+      this.detailItems = data;
       console.log('详情数据', this.detail.items)
       el.show()
       ev.hqSpinner = false;
@@ -108,6 +110,15 @@ export class PartssalesComponent extends DataList<any> {
         billCode: ev.billCode,
       });
   }
-
+//时间控制
+  public get maxEnterStartDate() {
+    return new Date(this.partssalesForm.get('searchEnd').value) || moment().format('YYYY-MM-DD');
+  }
+  public get minEnterEndDate() {
+    return new Date(this.partssalesForm.get('searchStart').value) || '';
+  }
+  public get maxEnterEndDate() {
+    return moment().format('YYYY-MM-DD');
+  }
 
 }

@@ -25,7 +25,7 @@ export class InnerReceiveComponent extends DataList<any> {
   public items: TreeviewItem[];
   public config: TreeviewConfig = {
     isShowAllCheckBox: false,
-    isShowFilter: true,
+    isShowFilter: false,
     isShowCollapseExpand: false,
     maxHeight: 500
   };
@@ -82,14 +82,19 @@ export class InnerReceiveComponent extends DataList<any> {
   }
 
   //模态框
-  alert(ev, id, el) {
+  alert(ev, id, el, billCode, takeUserName, takeDepartmentName, createBillTime, operator) {
     ev.hqSpinner = true;
     this.service.get(id).then(data => {
       this.isLoading = true;
-      this.detail = data;
-      this.detailItemsLength = data.items.length;
-      this.detailItems = data.items;
-      console.log('详情数据', this.detail.items)
+      console.log('详情数据', this.detail)
+      this.detail = data[0];
+      this.detail.billCode = billCode;
+      this.detail.takeUserName = takeUserName;
+      this.detail.takeDepartmentName = takeDepartmentName;
+      this.detail.createBillTime = createBillTime;
+      this.detail.operator = operator;
+      this.detailItemsLength = data.length;
+      this.detailItems = data;
       el.show()
       ev.hqSpinner = false;
     }).catch(err => {
@@ -117,11 +122,10 @@ export class InnerReceiveComponent extends DataList<any> {
   //绑定表单
   createForm() {
     this.receiveForm = this.formBuilder.group({
+      takeUser: '',//领用人
+      takeDepart: '',//部门
       searchStart: '', //开始时间
       searchEnd: '', // 结束时间
-      billCode: '',//单号
-      name: '', //供应商
-      a: '',//部门
     })
   }
 
