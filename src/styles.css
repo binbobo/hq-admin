@@ -110,10 +110,6 @@ input[disabled] {
 hqtabletypeahead ul{
     margin-bottom: 0;
 }
-/*增项标志*/
-/*table td{
-    position: relative;
-}*/
 .append-stamp{
     position: relative;
     left: 14px;
