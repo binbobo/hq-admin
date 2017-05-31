@@ -51,7 +51,7 @@ export class OrderService implements BasicService<Order> {
         const url = Urls.chain.concat('/Maintenances/ExportToExcel');
         console.log('导出工单列表参数以及url：', params.serialize(), url);
         return this.httpService
-            .download(url, params.serialize(), '工单列表')
+            .download(url, params.serialize())
             .catch(err => Promise.reject(`工单列表导出失败：${err}`));
     }
 
@@ -124,7 +124,7 @@ export class OrderService implements BasicService<Order> {
         };
         return orgsArr.map((value, index, array) => {
             // 导航节点
-            const obj = { text: value.name, value: null };
+            const obj = { text: value.name, value: null ,checked:false};
             // 如果有子组织, 递归遍历
             if (value.children && value.children.length > 0) {
                  // 如果有孩子  将父节点组织到孩子节点中  放到前头

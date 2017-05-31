@@ -77,6 +77,8 @@ export class BusinessListComponent extends DataList<any> {
     // 更新查询范围参数
     if (evt.length) {
       this.params.orgIds = evt;
+    }else{
+      this.params.orgIds = null;
     }
     console.log(this.params.orgIds, this.orgItems);
   }
@@ -85,8 +87,11 @@ export class BusinessListComponent extends DataList<any> {
   onSearchNameChange(evt) {
     // 更新查询范围参数
     console.log('选择的人', evt);
-    if (evt.length)
+    if (evt.length){
       this.params.employees = evt;
+    }else{
+      this.params.employees = null;
+    }
   }
 
 

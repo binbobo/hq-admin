@@ -258,5 +258,6 @@ export class DistributeListItem {
         public storeHouse?: string,
         public productCategory?: string,
         public productUnit?:string,
+        public vehicleInfoList?:any
     ) { }
 }

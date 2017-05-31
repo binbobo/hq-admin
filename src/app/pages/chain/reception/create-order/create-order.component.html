@@ -28,8 +28,8 @@
           <label for="customerName" class="form-label"><span class="asterisk mr-1">*</span>车主</label>
           <div class="hq-col">
             <!--placeholder="请输入车主名称"-->
-            <input maxlength="15" #customerName (blur)="onCustomerNameBlur(customerName.value)" hqCustomerVehicleTypeahead label="车主" (onSelect)="onCustomerNameSelect($event)" type="text" class="form-control" formControlName="customerName"
-              id="customerName">
+            <input maxlength="15" #customerName (blur)="onCustomerNameBlur(customerName.value)" hqCustomerVehicleTypeahead label="车主"
+              (onSelect)="onCustomerNameSelect($event)" type="text" class="form-control" formControlName="customerName" id="customerName">
           </div>
         </div>
         <div class="hq-input" *ngIf="!isFuzzySearchEnable">
@@ -205,7 +205,7 @@
     <tabset>
       <tab>
         <template tabHeading>
-          <i class="fa fa-female mr-2" aria-hidden="true"></i>维修项目
+          <i class="fa fa-clone mr-2" aria-hidden="true"></i>维修项目
         </template>
         <div class="table-container">
           <table class="table table-bordered">
@@ -248,13 +248,21 @@
         <template tabHeading>
           <i class="fa fa-history mr-2" aria-hidden="true"></i>上次维修记录
         </template>
-        <hq-maintenance-item-list *ngIf="lastOrderData?.serviceOutputs?.length>0" [showCaption]="true" [serviceOutputs]="lastOrderData?.serviceOutputs"></hq-maintenance-item-list>
+        <div class="table-container" *ngIf="lastOrderData?.serviceOutputs?.length>0">
+          <hq-maintenance-item-list [showCaption]="true" [serviceOutputs]="lastOrderData?.serviceOutputs"></hq-maintenance-item-list>
+        </div>
         <br>
-        <hq-maintenance-fixings-list *ngIf="lastOrderData?.productOutputs?.length>0" [showCaption]="true" [productOutputs]="lastOrderData?.productOutputs"></hq-maintenance-fixings-list>
+        <div class="table-container" *ngIf="lastOrderData?.productOutputs?.length>0">
+          <hq-maintenance-fixings-list [showCaption]="true" [productOutputs]="lastOrderData?.productOutputs"></hq-maintenance-fixings-list>
+        </div>
         <br>
-        <hq-attachment-item-list *ngIf="lastOrderData?.attachServiceOutputs?.length>0" [showCaption]="true" [attachServiceOutputs]="lastOrderData?.attachServiceOutputs"></hq-attachment-item-list>
+        <div class="table-container" *ngIf="lastOrderData?.attachServiceOutputs?.length>0">
+          <hq-attachment-item-list [showCaption]="true" [attachServiceOutputs]="lastOrderData?.attachServiceOutputs"></hq-attachment-item-list>
+        </div>
         <br>
-        <hq-suggested-item-list *ngIf="lastOrderData?.suggestServiceOutputs?.length>0" [showCaption]="true" [suggestServiceOutputs]="lastOrderData?.suggestServiceOutputs"></hq-suggested-item-list>
+        <div class="table-container" *ngIf="lastOrderData?.suggestServiceOutputs?.length>0">
+          <hq-suggested-item-list [showCaption]="true" [suggestServiceOutputs]="lastOrderData?.suggestServiceOutputs"></hq-suggested-item-list>
+        </div>
       </tab>
     </tabset>
     <br>

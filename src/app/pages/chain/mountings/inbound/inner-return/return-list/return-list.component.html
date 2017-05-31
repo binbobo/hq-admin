@@ -8,7 +8,6 @@
     <form class="form-inline mb-2">
       <div class="input-group m-1">
         <span class="input-group-addon">领料人：</span>
-        <!--<input type="text" forceRefresh [(ngModel)]="takeUser" name="takeUser" [hqTableTypeahead]="nameSource" [columns]="itemNameColumns()" (onSelect)="onItemNameSelect($event)" class="form-control" placeholder="请输入领料人">        -->
         <select class="form-control" (change)="onInnerSelect($event)" [value]="takeUser" name="takeUser">
           <option *ngFor="let employee of employees" [value]="employee.takeUser">{{employee.takeUserName}}</option>
         </select>
@@ -131,4 +130,4 @@
   </div>
 </div>
 
-<hq-return-print class="invisible" hqPrint #printer="hq-print" [model]="printModel"></hq-return-print>
+<hq-return-print class="invisible" hqPrint #printer="hq-print" [model]="printModel" print-title="华汽汽服燕郊店内部退料单"></hq-return-print>

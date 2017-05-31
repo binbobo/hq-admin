@@ -3,6 +3,7 @@
     <div *ngFor="let item of data">
       <div class="col-12">退料单号：{{item.billCode}} &nbsp; &nbsp; &nbsp; &nbsp;流水号：{{item.serialNum}} &nbsp; &nbsp; &nbsp; &nbsp;开单时间：{{item.createBillDateTime|sDatetime}}
       </div>
+      <br>
       <table class="table table-borderd">
         <thead>
           <tr>
@@ -34,8 +35,8 @@
             <td>{{ele.storeName}}</td>
             <td>{{ele.locationName}}</td>
             <td>{{ele.count}}</td>
-            <td>{{ele.price |centToYuan}}</td>
-            <td>{{ele.amount|centToYuan}}</td>
+            <td  class="text-right">{{ele.price|centToYuan}}</td>
+            <td  class="text-right">{{ele.amount|centToYuan}}</td>
             <td>{{ele.description}}</td>
             <td>{{ele.employee}}</td>
           </tr>

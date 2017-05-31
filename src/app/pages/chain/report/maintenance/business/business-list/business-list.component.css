@@ -1,22 +1,37 @@
 .hq-col{
-  flex: 2;
+  display: flex;
+  width: 100%;
   position: relative;
 }
 .hq-input{
-  display: flex;
-  width: 20%;
-  float: left;
-  padding: 0.3125rem 0.625rem;
-  margin-bottom: -1.25rem;
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
 }
 .form-label{
-  min-width: 6.25rem;
-  padding: 0 0.625rem;
-  line-height: 2.5rem;
-  height: 2.5rem;
-  background:#f3f3f4;
-  color: #727171;
-  font-size: 0.875rem;
+    padding: .5rem .75rem;
+    margin-bottom: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.25;
+    color: #464a4c;
+    text-align: center;
+    background-color: #eceeef;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+    white-space: nowrap;
+    vertical-align: middle;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        flex-direction: column;
+    -webkit-box-pack: center;
+        justify-content: center;
+}
+.form-label:not(:last-child) {
+    border-right: 0;
 }
 .form-control {
   height: 2.5rem;
@@ -36,7 +51,21 @@ h5{
 .table td{
     vertical-align:middle;
 }
-
+.form-inlines{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-flow: row wrap;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    flex-flow: row wrap;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.form-inlines .input-group,.form-inlines .hq-input{
+    width: auto;
+}
 .business .margin-l{
     margin-left: 15px;
 }
