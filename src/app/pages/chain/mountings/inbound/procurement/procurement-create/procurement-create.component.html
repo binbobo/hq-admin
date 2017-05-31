@@ -41,7 +41,7 @@
         </select>
       </div>
       <div class="form-group">
-        <label class="form-control-label">*库位</label>
+        <label class="form-control-label">库位</label>
         <select [attr.disabled]="!locations?.length||undefined" class="form-control" formControlName="locationId">
           <option *ngFor="let item of locations" [value]="item.id">{{item.name}}</option>
         </select>

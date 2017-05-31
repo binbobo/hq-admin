@@ -43,7 +43,7 @@ export class ProcurementCreateComponent implements OnInit {
       productId: [this.model.productId, [Validators.required, Validators.maxLength(36)]],
       productSpecification: [this.model.productSpecification],
       storeId: [this.model.storeId, [Validators.required, Validators.maxLength(36)]],
-      locationId: [this.model.locationId, [Validators.required, Validators.maxLength(36)]],
+      locationId: [this.model.locationId, [Validators.maxLength(36)]],
       count: [this.model.count, [Validators.required, CustomValidators.min(1), CustomValidators.digits]],
       price: [this.model.price],
       yuan: [this.model.price / 100, [Validators.required, CustomValidators.gt(0)]],
