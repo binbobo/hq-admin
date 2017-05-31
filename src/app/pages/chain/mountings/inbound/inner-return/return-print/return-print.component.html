@@ -1,12 +1,12 @@
-<h3>{{model?.title}}</h3>
-<hr class="blod">
-<div class="row">
-  <div class="col-4">退料单号：{{model?.billCode}}</div>
-  <div class="col-2">退料人：{{model?.takeUser}}</div>
-  <div class="col-2">部门：{{model?.department}}</div>
-  <div class="col-4">开单时间：{{model?.createBillDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</div>
+<!--<h3>{{model?.title}}</h3>-->
+<br>
+<div class="clearfix">
+  <div class="pull-left mr-3">退料单号：{{model?.billCode}}</div>
+  <div class="pull-left mr-3">退料人：{{model?.takeUser}}</div>
+  <div class="pull-left mr-3">部门：{{model?.department}}</div>
+  <div class="pull-left">开单时间：{{model?.createBillDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</div>
 </div>
-<hr>
+<br>
 <div class="page-break-after">
   <table class="table table-bordered">
     <thead>

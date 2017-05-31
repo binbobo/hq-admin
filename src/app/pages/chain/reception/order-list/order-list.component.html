@@ -141,8 +141,9 @@
                 </select>
               </div>
             </div>
+            <!--
             <label for="searchRange" class="col-1 col-form-label">查询范围</label>
-            <!--<div class="col-2">
+            <div class="col-2">
               <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)"> >
               </ngx-dropdown-treeview>
             </div>-->
@@ -283,4 +284,4 @@
         </div>
       </div>
     </div>
-    <hq-workorder-detail-print *ngIf="lgModal.isShown" class="invisible"  [data]="selectedOrder" hqPrint #printer="hq-print" print-title="维修工单"></hq-workorder-detail-print>
+    <hq-workorder-detail-print *ngIf="lgModal.isShown" class="invisible" [data]="selectedOrder" hqPrint #printer="hq-print" print-title="维修工单"></hq-workorder-detail-print>
