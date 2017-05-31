@@ -116,8 +116,8 @@ export class SalesCreateComponent implements OnInit {
       brandName: event.brandName,
       productCategory: event.categoryName,
       storeId: null,
-      price: event.newPrice,
-      yuan: (event.newPrice || 0) / 100
+      price: event.price,
+      yuan: (event.price || 0) / 100
     }
     this.storages = event.storages;
     this.locations = null;
