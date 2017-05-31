@@ -44,7 +44,7 @@
       </tbody>
     </table>
     <div [hqSpinner]="serviceShow" class="top-px" *ngIf="serviceData?.length>0">
-      <div class="tab-title">
+      <div class="tab-title"><i class="fa fa-clone" aria-hidden="true"></i>
         维修项目
       </div>
       <div class="table-container">
@@ -121,7 +121,7 @@
       <tabset #staticTabs *ngIf="serialData?.length>0">
         <tab>
           <template tabHeading>
-            <i class="fa fa-cog m-2" aria-hidden="true"></i>维修发料记录
+            <i class="fa fa-outdent" aria-hidden="true"></i>维修发料记录
           </template>
           <div class="table-container">
             <table class="table table-bordered">
@@ -170,7 +170,7 @@
         </tab>
         <tab *ngIf="MRData?.length>0">
           <template tabHeading>
-            <i class="fa fa-cog m-2" aria-hidden="true"></i>维修退料记录
+            <i class="fa fa-indent" aria-hidden="true"></i>维修退料记录
           </template>
           <div class="table-container">
             <table class="table   table-bordered">

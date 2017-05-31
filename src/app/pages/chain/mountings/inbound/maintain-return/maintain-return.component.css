@@ -48,3 +48,6 @@ table .tr-left-bold{
     padding-left: 1.1rem !important;
     background-color:#f3f3f4;
 }
+.fa{
+    padding:0 6px !important;
+}
