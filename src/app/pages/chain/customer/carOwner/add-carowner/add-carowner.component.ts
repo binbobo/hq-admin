@@ -76,6 +76,7 @@ export class AddCarownerComponent implements OnInit {
       // 新增
       this.newVehiclesData.push(data);
     }
+    this.enableSaveCustomer = this.carOwnerForm.valid && this.newVehiclesData.length > 0;
     vehicleModal.hide();
   }
 

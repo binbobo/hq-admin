@@ -1,0 +1,12 @@
+table{
+     table-layout: fixed !important;
+}
+td{
+    word-wrap:break-word !important;
+    word-break:break-all !important;
+    font-size: 14px;
+    font-weight: normal;
+}
+td.fixed-width {
+    width: 110px;
+}
