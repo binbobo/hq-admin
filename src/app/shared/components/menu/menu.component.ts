@@ -41,7 +41,7 @@ export class MenuComponent implements OnInit {
     menus.forEach(m => {
       m.routes = this.parents.concat(m.path);
       if (!m.children || !Array.isArray(m.children)) return;
-      m.expand = this.activable(m);
+      m.expand = m.title === '华汽连锁' || this.activable(m);
       this.activeMenu(m.children);
     });
   }

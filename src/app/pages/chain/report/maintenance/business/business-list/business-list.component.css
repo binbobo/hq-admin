@@ -49,21 +49,43 @@ h5{
     overflow:hidden;
     text-align: center;
 }
-.mg{
-    margin: 0 auto;
-}
-.modal-header{
-    padding-bottom: 0;
-    border: none;
-}
-.modal-body{
-    padding-top: 0;
-}
-
 .modal-body .card {
     border: none;
     font-size: 14px;
 }
+.modal-body table{
+     table-layout: fixed;
+}
+.modal-body .table-order-info td{
+    text-align: left;
+    padding-left: 1.1rem !important;
+    width: 25%;
+    color: #727171;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.modal-body caption{
+    font-weight: 700;
+    caption-side: top;
+    font-size: 1rem;
+    /*line-height: 2.5rem;*/
+    color: #595757;
+    /*background-color: #f3f3f4;*/
+}
+.modal-body .card-block {
+    border: 1px solid #595757;
+}
+.modal-body th,.modal-body td {
+    /*padding: 0.25rem;*/
+    text-align: center;
+    font-size: 0.875rem;
+    /*white-space: normal; */
+}
+/*
+.modal-body{
+    padding-top: 0;
+}
+
 .modal-body .card-block {
     border: 1px solid #333333;
     font-weight: 400;
@@ -90,7 +112,4 @@ h5{
     padding: 0.25rem;
     text-align: center;
     white-space: normal; 
-}
-.red-color{
-    color:red;
-}
+}*/

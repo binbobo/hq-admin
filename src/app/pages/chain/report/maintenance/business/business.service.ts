@@ -40,7 +40,7 @@ export class BusinessService implements BasicService<any> {
   public export(params: BusinessListRequest): Promise<void> {
     const url = Urls.chain.concat('/Maintenances/history/ExportToExcel');
     return this.httpService
-      .download(url, params.serialize(), '维修历史')
+      .download(url, params.serialize())
       .catch(err => Promise.reject(`维修历史导出失败：${err}`));
   }
 
