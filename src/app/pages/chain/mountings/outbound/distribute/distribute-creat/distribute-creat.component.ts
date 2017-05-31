@@ -72,7 +72,7 @@ export class DistributeCreatComponent implements OnInit {
     let validators = Validators.compose([Validators.required, CustomValidators.min(1), CustomValidators.max(count)])
     countControl.setValidators(validators);
   }
-
+ 
   private buildForm() {
     this.form = this.formBuilder.group({
       brandName: [this.model.brand],
@@ -179,4 +179,14 @@ export class DistributeCreatComponent implements OnInit {
     let amount = (count || 1) * (price || 0);
     this.form.patchValue({ amount: amount, count: count, price: price });
   }
+    onLocationChange(locationId: string) {
+    let location = this.locations && this.locations.find(m => m.id === locationId);
+    let stock = location && location.count || 0;
+    this.form.controls['stockCount'].setValue(stock);
+    let countControl = this.form.controls['count'];
+    let validators = Validators.compose([Validators.required, CustomValidators.min(1), CustomValidators.max(stock)])
+    countControl.setValidators(validators);
+    countControl.updateValueAndValidity();
+  }
+
 }

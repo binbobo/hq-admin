@@ -1,22 +1,8 @@
 <div class="print card">
-  <div class="card-header">
-    <span>维修发料单</span>
-  </div>
   <div class='card-block'>
     <div *ngFor="let item of data">
-      <div class="container">
-        <div class="row">
-          <h4 class="col-md-12">维修发料单</h4>
-        </div>
-      </div>
-      <div class="container">
-        <div class="row">
-          <div class="col-md-3">发料单号：{{item.billCode}}</div>
-          <div class="col-md-3">流水号：{{item.serialNum}}</div>
-          <div class="col-md-3">车牌号：{{item.plateNo}}</div>
-          <div class="col-md-3">开单时间：{{item.createBillDateTime|sDatetime}}</div>
-        </div>
-      </div>
+      <div class="col-12">发料单号：{{item.billCode}} &nbsp; &nbsp; &nbsp; &nbsp;流水号：{{item.serialNum}} &nbsp; &nbsp; &nbsp; &nbsp;车牌号：{{item.plateNo}}
+        &nbsp; &nbsp; &nbsp; &nbsp;开单时间：{{item.createBillDateTime|sDatetime}}</div>
       <table class="table   table-borderd">
         <thead>
           <tr>
@@ -56,12 +42,13 @@
         </tbody>
       </table>
       <div class="container">
-        <div class="row">
-          <div class="col-md-6">打印时间：{{item.printDateTime|sDatetime}}</div>
-          <div class="col-md-6">操作人：{{item.operator}}</div>
-        </div>
+        <p>
+          <span class="mr-2 pull-left">打印时间：{{item.printDateTime|sDatetime}}</span>
+          <span class="mr-2 pull-right">操作人：{{item.operator}}</span>
+          </p>
       </div>
-      <div class="page-break-after"></div>
+      <br>
+      <div class="print-hidden page-break-after"></div>
     </div>
   </div>
 

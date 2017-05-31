@@ -3,13 +3,14 @@
   <div class="card-header">
     盘点清单详情
   </div>
-  <div hqPrint #printer="hq-print" class="card-block">
+  <div hqPrint #printer="hq-print" print-title="盘点清单" class="card-block">
     <div id="printpage">
       <div class="mb-2">
+        <span class="mr-3">店铺名称：{{item?.orgName}}</span>
         <span class="mr-3">盘点单号：{{item?.billCode}}</span>
         <span class="mr-3">生成时间：{{item?.createdOn|sDatetime}}</span>
-        <span class="mr-3 pr-5 print-visible">盘点人：</span>
-        <span class="pr-5 print-visible">盘点时间：</span>
+        <span class="mr-3 pr-3 print-visible">盘点人：</span>
+        <span class="pr-3 print-visible">盘点时间：</span>
       </div>
       <table class="table table-bordered table-sm">
         <thead>
@@ -22,7 +23,7 @@
             <th>品牌</th>
             <th>规格型号</th>
             <th>单位</th>
-            <th class="print-hidden">成本</th>
+            <th>成本</th>
             <th>库存量</th>
             <th class="print-visible">清点数</th>
           </tr>
@@ -32,12 +33,12 @@
             <td>{{ item.houseName}}</td>
             <td>{{ item.locationName}}</td>
             <td>{{ item.productCode }}</td>
-            <td></td>
+            <td>{{ item.categoryName }}</td>
             <td>{{ item.productName }}</td>
-            <td>{{ item.productBrand }}</td>
+            <td>{{ item.brand }}</td>
             <td>{{ item.productSpecification }}</td>
-            <td></td>
-            <td class="text-right print-hidden">{{ item.price|centToYuan }}</td>
+            <td>{{ item.unit }}</td>
+            <td class="text-right">{{ item.price|centToYuan }}</td>
             <td class="text-center">{{ item.stock }}</td>
             <td class="print-visible"></td>
           </tr>

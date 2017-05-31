@@ -1,28 +1,47 @@
-.print tr td,.print tr th{
-    font-size:.9rem;
-}
-.print h5{
-    font-size:1rem;
-    text-align:left;
-    font-weight: bold;
-}
-.print h4{
-    font-size:1.1rem;
-    text-align:center;
-    font-weight: bold;
-}
 .print .center{
     text-align:center;
     clear:both;
 }
-.print .nbspx{
-    width:280px;
-    display: inline-block;
+.nbspx{
+    width: 900in;
 }
-.print .nbspx-sm{
-    width:40px;
-    display: inline-block;
-}
-.print .print-bot{
+.print-bot{
     margin-top:20px;
+    clear: both;
+    overflow: hidden;
+    position: relative;
+}
+.print-bot .bot-left{
+    position: absolute;
+    left: 0;
+    top: 2px;
+}
+.print-bot .bot-right{
+    position: absolute;
+    right: 0;
+    top: 2px;
+}
+.text-right{
+    display: inline-block;
+    text-align: right;
+    clear: both;
+}
+table tr td{
+    overflow-wrap: break-word !important;
+    word-wrap:break-word !important;
+    border: 0 !important;
+    font-size: 12px;
+    color:#727171 !important;
+    width: 100px;   
+    white-space: normal !important;
+}
+tr{
+    border: 0 !important;
+    border-bottom: 0 !important;
+}
+.table-tr{
+    border:1px solid #dcdddd !important;
+}
+.text-center{
+    vertical-align: middle;
 }

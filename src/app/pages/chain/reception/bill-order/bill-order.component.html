@@ -11,8 +11,8 @@
           <div class="check-label-col">
             <div class="form-check form-check-inline" *ngFor="let status of orderStatusData">
               <label class="form-check-label">
-            <input (change)='status.checked = !status.checked' [checked]="status.checked" class="form-check-input"  type="checkbox" value="{{status.id}}"> {{status.value}}
-          </label>
+                <input (change)='status.checked = !status.checked' [checked]="status.checked" class="form-check-input"  type="checkbox" value="{{status.id}}"> {{status.value}}
+              </label>
             </div>
           </div>
         </div>
@@ -34,10 +34,11 @@
 
         <div class="input-group m-1">
           <span class="input-group-addon">进店时间</span>
-          <input class="form-control" style="border-right:0;" [(ngModel)]="params.starttime" id="starttime" name="starttime" type="text" ngui-datetime-picker
-          />
+          <input class="form-control" style="border-right:0;" [(ngModel)]="params.starttime" id="starttime" name="starttime" type="text"
+            ngui-datetime-picker />
           <span class="input-group-addon">至</span>
-          <input class="form-control" id="endtime" style="border-right-width:1px;" [(ngModel)]="params.endtime" name="endtime" type="text" ngui-datetime-picker />
+          <input class="form-control" id="endtime" style="border-right-width:1px;" [(ngModel)]="params.endtime" name="endtime" type="text"
+            ngui-datetime-picker />
           <div class="col-sm-2"><button class="btn btn-primary">查询</button></div>
         </div>
       </div>
@@ -168,4 +169,4 @@
   </div>
 </div>
 <!--详情 end-->
-<hq-print-order *ngIf="printData" [hidden]="true" [data]="printData" hqPrint #printer="hq-print"></hq-print-order>
+<hq-print-order *ngIf="printData" [hidden]="true" [data]="printData" hqPrint #printer="hq-print" print-title="华汽汽服燕郊店维修结算单"></hq-print-order> 

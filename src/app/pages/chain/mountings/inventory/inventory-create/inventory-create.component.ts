@@ -58,7 +58,7 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
       productSpecification: [this.model.productSpecification, [Validators.required, Validators.maxLength(20)]],
       maxCount: [this.model.maxCount, [CustomValidators.min(0)]],
       minCount: [this.model.minCount, [CustomValidators.min(0)]],
-      brandId: [this.model.brandId, [Validators.required]],
+      brandId: [this.model.brandId],
       packageInfo: [this.model.packageInfo, [Validators.maxLength(20)]],
       madeIn: [this.model.madeIn, [Validators.maxLength(100)]],
       description: [this.model.description, [Validators.maxLength(200)]],

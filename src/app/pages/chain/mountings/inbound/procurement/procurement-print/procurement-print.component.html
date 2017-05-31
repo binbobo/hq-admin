@@ -1,11 +1,9 @@
-<h3>{{model?.title}}</h3>
-<hr class="blod">
-<div class="row">
-  <div class="col-4">供应商名称：{{model?.provider}}</div>
-  <div class="col-4">入库单号：{{model?.billCode}}</div>
-  <div class="col-4">开单时间：{{model?.createBillDateTime|sDatetime}}</div>
+<div class="my-3">
+  <span class="mr-3">店铺名称：{{item?.orgName}}</span>
+  <span class="mr-3">供应商名称：{{model?.provider}}</span>
+  <span class="mr-3">入库单号：{{model?.billCode}}</span>
+  <span class="">开单时间：{{model?.createBillDateTime|sDatetime}}</span>
 </div>
-<hr>
 <div class="page-break-after">
   <table class="table table-bordered table-sm">
     <thead>
@@ -43,10 +41,10 @@
       </tr>
     </tbody>
   </table>
-  <div class="row">
-    <div class="col-3">含税金额：{{model?.totalAmount|centToYuan}}</div>
-    <div class="col-3">不含税金额：{{model?.totalAmount|centToYuan}}</div>
-    <div class="col-4">打印时间：{{model?.printDateTime|sDatetime}}</div>
-    <div class="col-2">操作人：</div>
+  <div class="">
+    <span class="mr-3">含税金额：{{model?.totalAmount|centToYuan}}</span>
+    <span class="mr-3">不含税金额：{{model?.totalAmount|centToYuan}}</span>
+    <span class="mr-3">打印时间：{{model?.printDateTime|sDatetime}}</span>
+    <span class="">操作人：</span>
   </div>
 </div>

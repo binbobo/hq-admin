@@ -19,14 +19,14 @@ export class ProcurementService {
     let url = Urls.chain.concat('/PurchaseDetails/Print?BillCode=', code);
     return this.httpService.get<ApiResult<ProcurementPrintItem>>(url)
       .then(result => result.data)
-      .catch(err => Promise.reject(`获取采购单信息失败：${err}`));
+      .catch(err => Promise.reject(`获取采购入库单信息失败：${err}`));
   }
 
   public generate(request: ProcurementRequest): Promise<string> {
     let url = Urls.chain.concat('/StoreInOutDetails/CreatePurchaseBill');
     return this.httpService.post<ApiResult<string>>(url, request)
       .then(result => result.data)
-      .catch(err => Promise.reject(`生成采购单失败：${err}`));
+      .catch(err => Promise.reject(`生成采购入库单失败：${err}`));
   }
 }
 

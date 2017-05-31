@@ -8,11 +8,11 @@
         <div class="check-label">
           <label class="input-group-addon">工单状态</label>
           <div class="check-label-col">
-            <div class="form-check form-check-inline" *ngFor="let status of orderStatusData">
-              <label class="form-check-label">
+          <div class="form-check form-check-inline" *ngFor="let status of orderStatusData">
+            <label class="form-check-label">
             <input (change)='status.checked = !status.checked' [checked]="status.checked" class="form-check-input"  type="checkbox" value="{{status.id}}"> {{status.value}}
           </label>
-            </div>
+          </div>
           </div>
         </div>
       </div>

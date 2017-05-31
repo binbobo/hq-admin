@@ -2,67 +2,49 @@
 <div class="card business">
   <div class="card-header">维修历史</div>
   <div class="card-block">
-    <form (ngSubmit)="onSearch()">
-      <div class="form-group row">
-        <div class="hq-input">
-          <label for="plateNo" class="form-label">车牌号</label>
-          <div class="hq-col">
-            <input [(ngModel)]="params.plateNo" hqPlateNoTypeahead class="form-control" name="plateNo" id="plateNo" type="text" placeholder="请输入车牌号" />
-          </div>
+    <form (ngSubmit)="onSearch()" class="form-inline mb-2">
+        <div class="input-group m-1">
+          <span class="input-group-addon">进店时间</span>
+          <input [max-date]="maxEnterStartDate" [(ngModel)]="params.enterStartTimeDate" class="form-control" id="enterStartTimeDate"
+            name="enterStartTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请输入开始日期"/>
+          <span class="input-group-addon">-</span>
+          <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" [(ngModel)]="params.enterEndTimeDate" class="form-control"
+            id="enterEndTimeDate" name="enterEndTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请输入截止日期"/>
         </div>
-        <div class="hq-input">
-          <label for="searchName" class="form-label">服务顾问</label>
+        <div class="input-group m-1">
+          <span class="input-group-addon">出厂时间</span>
+            <input [max-date]="maxLeaveStartDate" [(ngModel)]="params.leaveStartTimeDate" class="form-control" id="leaveStartTimeDate"
+              name="leaveStartTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请输入开始日期"/>
+          <span class="input-group-addon">-</span>
+            <input [min-date]="minLeaveEndDate" [max-date]="maxLeaveEndDate" [(ngModel)]="params.leaveEndTimeDate" class="form-control"
+              id="leaveEndTimeDate" name="leaveEndTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请输入截止日期"/>
+        </div>
+        <div class="input-group m-1">
+          <span class="input-group-addon">车牌号</span>
+          <input [(ngModel)]="params.plateNo" hqPlateNoTypeahead class="form-control" name="plateNo" id="plateNo" type="text" placeholder="请输入车牌号"
+          />
+        </div>
+        <div class="input-group m-1">
+          <span class="input-group-addon">服务顾问</span>
           <div class="hq-col">
             <ngx-dropdown-treeview [config]="nameConfig" [items]="nameItems" (selectedChange)="onSearchNameChange($event)">
             </ngx-dropdown-treeview>
           </div>
         </div>
-        <div class="hq-input">
-          <label for="enterTime" class="form-label">进店时间</label>
-          <div class="hq-col">
-            <input [max-date]="maxEnterStartDate" [(ngModel)]="params.enterStartTimeDate" class="form-control" id="enterStartTimeDate"
-              name="enterStartTimeDate" date-only="true" type="text" ngui-datetime-picker/>
-          </div>
-        </div>
-        <div class="hq-input">
-          <label class="form-label">至</label>
-          <div class="hq-col">
-            <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" [(ngModel)]="params.enterEndTimeDate" class="form-control"
-              id="enterEndTimeDate" name="enterEndTimeDate" date-only="true" type="text" ngui-datetime-picker/>
-          </div>
-        </div>
-      </div>
-      <div class="form-group row">
-        <div class="hq-input">
-          <label for="leaveTime" class="form-label">出厂时间</label>
-          <div class="hq-col">
-            <input [max-date]="maxLeaveStartDate" [(ngModel)]="params.leaveStartTimeDate" class="form-control" id="leaveStartTimeDate"
-              name="leaveStartTimeDate" date-only="true" type="text" ngui-datetime-picker/>
-          </div>
-        </div>
-        <div class="hq-input">
-          <label class="form-label">至</label>
-          <div class="hq-col">
-            <input [min-date]="minLeaveEndDate" [max-date]="maxLeaveEndDate" [(ngModel)]="params.leaveEndTimeDate" class="form-control"
-              id="leaveEndTimeDate" name="leaveEndTimeDate" date-only="true" type="text" ngui-datetime-picker/>
-          </div>
-        </div>
-        <div class="hq-input">
-          <label *ngIf="items" for="searchRange" class="form-label">查询范围</label>
+        <div class="input-group m-1">
+          <span *ngIf="items" for="searchRange" class="input-group-addon">查询范围</span>
           <div *ngIf="items" class="hq-col">
             <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)">
             </ngx-dropdown-treeview>
           </div>
         </div>
-        <div class="hq-input">
-          <div class="hq-col">
+        <div class="input-group m-1">
             <button type="submit" class="btn btn-primary">查询</button>
-          </div>
         </div>
-      </div>
     </form>
     <hr *ngIf="isSearch">
-    <h5 *ngIf="isSearch">温馨提示：系统找到该车辆在本店维修过<span class="color">{{total}}</span>次</h5>
+    <h5 *ngIf="isShow1">温馨提示：系统找到该车辆在本店维修过<span class="color">{{total}}</span>次。</h5>
+    <h5 *ngIf="isShow2">温馨提示：系统未找到该车辆的历史数据，请重新检索车牌号查询。</h5>
     <hr *ngIf="isSearch">
     <div class="table-container">
       <table class="table table-bordered">
@@ -127,13 +109,13 @@
   <div *ngIf="bdModal.isShown" class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <p class="modal-title mg">维修历史</p>
+        <p class="modal-title">维修历史</p>
         <button class="close pull-right" (click)="bdModal.hide()">&times;</button>
       </div>
       <div class="modal-body">
         <div class="card">
-          <div class="card-block clearborder">
-            <hr>
+          <!--<div class="card-block">-->
+            <!--<hr>
             <div class="row">
               <div class="col-4">
                 <label>车牌号: </label>
@@ -213,8 +195,60 @@
                 <span class="ml-2" *ngIf="businessData.leaveMileage">KM</span>
               </div>
             </div>
-            <hr>
-          </div>
+            <hr>-->
+            <table class="table table-order-info table-bordered">
+              <tbody>
+                <tr>
+                  <td>车牌号</td>
+                  <td>{{businessData?.plateNo}}</td>
+                  <td>车型描述</td>
+                  <td>{{businessData?.model}}</td>
+                </tr>
+                <tr>
+                  <td>维修类型</td>
+                  <td>{{businessData?.typeName}}</td>
+                  <td>VIN</td>
+                  <td>{{businessData?.vin}}</td>
+                </tr>
+                <tr>
+                  <td>送修人</td>
+                  <td>{{businessData?.contactUser}}</td>
+                  <td>送修人手机</td>
+                  <td>{{businessData?.contactInfo}}</td>
+                </tr>
+                <tr>
+                  <td>服务顾问</td>
+                  <td>{{businessData?.createdUserName}}</td>
+                  <td>工单号</td>
+                  <td>{{businessData?.billCode}}</td>
+                </tr>
+                <tr>
+                  <td>结算员</td>
+                  <td>{{businessData?.updateUser}}</td>
+                  <td>结算单号</td>
+                  <td>{{businessData?.settlementCode}}</td>
+                </tr>
+                <tr>
+                  <td>结算方</td>
+                  <td>{{businessData?.settlementParty}}</td>
+                  <td>结算时间</td>
+                  <td>{{businessData?.updateOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                </tr>
+                <tr>
+                  <td>进店里程</td>
+                  <td>{{businessData?.mileage}} km</td>
+                  <td>进店时间</td>
+                  <td>{{businessData?.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                </tr>
+                <tr>
+                  <td>出厂里程</td>
+                  <td>{{businessData?.leaveMileage}} km</td>
+                  <td>出厂时间</td>
+                  <td>{{businessData?.updateOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                </tr>
+              </tbody>
+            </table>
+          <!--</div>-->
           <div class="card-block">
             <table class="table table-bordered">
               <caption>收费结算单</caption>
@@ -299,12 +333,7 @@
               <thead>
                 <tr>
                   <th width="50">序号</th>
-                  <!--<th>维修项目</th>
-                  <th>品牌</th>
-                  <th>配件编码</th>-->
                   <th>配件名称</th>
-                  <!--<th>规格型号</th>-->
-                  <!--<th>单位</th>-->
                   <th>单价（元）</th>
                   <th>数量</th>
                   <th>金额（元）</th>
@@ -314,12 +343,7 @@
               <tbody>
                 <tr *ngFor="let item of businessData?.matereialDetails;let index=index">
                   <td>{{index+1}}</td>
-                  <!--<td>{{index+1}}</td>
-                  <td>{{index+1}}</td>
-                  <td>{{index+1}}</td>-->
                   <td>{{item.productName}}</td>
-                  <!--<td>{{item.productName}}</td>-->
-                  <!--<td>{{item.unit}}</td>-->
                   <td>{{item.price|centToYuan}}</td>
                   <td>{{item.count}}</td>
                   <td>{{item.amount|centToYuan}}</td>

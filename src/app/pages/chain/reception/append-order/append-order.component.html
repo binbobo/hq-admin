@@ -6,7 +6,7 @@
     <ng-template hqSuspendBill="MWIM" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
   <div class="card-block">
-    <form class='form-inline'>
+    <form class='form-inline'  autocomplete="off">
       <div class="input-group m-1">
         <!--<span class="input-group-addon">选择工单</span>-->
         <input [hqTableTypeahead]="typeaheadSource" [(ngModel)]="initValue" name="initValue" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)"
@@ -93,7 +93,7 @@
       <!--维修项目-->
       <tab>
          <template tabHeading>
-         <i class="fa fa-cog m-2" aria-hidden="true"></i>维修项目
+         <i class="fa fa-clone" aria-hidden="true"></i>维修项目
         </template>
         <div class="table-container">
           <table class="table  table-bordered">
@@ -112,7 +112,7 @@
             <tbody>
               <tr *ngFor="let item of maintenanceProjectData">
                 <td>&nbsp;</td>
-                <td>{{item.serviceName}}<span *ngIf="item.type === 3" class="append-stamp">增项</span><span [class.accept-stamp]="item.teamType === 6"></span></td>
+                <td style="position:relative;">{{item.serviceName}}<span *ngIf="item.type === 3" class="append-stamp">增项</span><span [class.accept-stamp]="item.teamType === 6"></span></td>
                 <td>{{item.workHour}}</td>
                 <td>{{item.price|centToYuan}}</td>
                 <td>{{item.discount}}</td>
@@ -145,7 +145,7 @@
       <!--附加项目-->
       <tab>
         <template tabHeading>
-         <i class="fa fa-cog m-2" aria-hidden="true"></i>附加项目
+         <i class="fa fa-plus-square" aria-hidden="true"></i>附加项目
         </template>
         <div class="table-container">
           <table class='table   table-bordered'>
@@ -178,7 +178,7 @@
       <!--建议维修项-->
       <tab>
         <template tabHeading>
-         <i class="fa fa-cog m-2" aria-hidden="true"></i>建议维修项目
+         <i class="fa fa-wpforms" aria-hidden="true"></i>建议维修项目
         </template>
         <div class="table-container">
           <table class='table  table-bordered'>
@@ -218,7 +218,7 @@
       <!--上次维修记录-->
       <tab *ngIf="lastManufactureDetailOutput">
          <template tabHeading>
-         <i class="fa fa-cog m-2" aria-hidden="true"></i>上次维修记录
+         <i class="fa fa-history" aria-hidden="true"></i>上次维修记录
         </template>
         <div class="table-container">
           <table class="table  table-bordered">
@@ -236,7 +236,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let item of lastDataProjectList ">
-                <td>{{item.serviceName}}<span [class.append-stamp]="item.type === 3">增项</span><span [class.accept-stamp]="item.teamType === 6"></span></td>
+                <td style="position:relative;">{{item.serviceName}}<span [class.append-stamp]="item.type === 3">增项</span><span [class.accept-stamp]="item.teamType === 6"></span></td>
                 <td>{{item.workHour}}</td>
                 <td>{{item.price|centToYuan}}</td>
                 <td>{{item.amount|centToYuan}}</td>

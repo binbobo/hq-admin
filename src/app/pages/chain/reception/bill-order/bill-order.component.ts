@@ -89,7 +89,6 @@ export class BillOrderComponent extends DataList<any>{
     suggestServiceOutputs: any = [];
     WorkReceivableCost: any;
     orderDetailsDialog(evt, id, dialog, item) {
-
         item.generat = true;
         console.log(item)
         this.isShowCostDetail = false;
@@ -97,7 +96,6 @@ export class BillOrderComponent extends DataList<any>{
         this.isShowPrint = false;
         this.leaveMileage = "";
         evt.preventDefault();
-
         // 根据id获取工单详细信息
         this.service.get(id).then(data => {
             console.log('根据工单id获取工单详情数据：', data);
@@ -117,7 +115,11 @@ export class BillOrderComponent extends DataList<any>{
                 this.workHourFee = data.workHourCost;
                 // 材料费： 维修配件金额总和
                 this.materialFee = data.materialCost;
-                this.discountAmount = data.deduceAmount || 0 + (data.WorkReceivableCost - data.workHourCost);
+                if (data.deduceAmount) {
+                    this.discountAmount = data.deduceAmount + (data.workReceivableCost - data.workHourCost);
+                } else {
+                    this.discountAmount = data.workReceivableCost - data.workHourCost;
+                }
                 // 其它费： 0
                 this.otherFee = 0;
                 // 总计费： 
@@ -134,8 +136,6 @@ export class BillOrderComponent extends DataList<any>{
             this.alerter.error(err, true, 3000);
             item.generat = false;
         });
-
-
     }
     // 点击撤销结算事件
     finishedOrder(evt, id, confirmModal) {
@@ -155,26 +155,6 @@ export class BillOrderComponent extends DataList<any>{
         }).catch(err => this.alerter.error(err, true, 3000));
 
     }
-    // ngAfterViewChecked() {
-    //     if (this.isShowPrint) {
-    //         this.printData = {
-    //             maindata: {},
-    //             costData: [],
-    //             workHourData: [],
-    //             materialData: [],
-    //             appendItems: [],
-    //             adviceItems: [],
-    //             moneyObj: {
-    //                 workCostMoney: 0,
-    //                 discountMoney: 0,
-    //                 materialMoney: 0,
-    //                 costMoney: 0,
-    //                 costCountMoney: 0,
-    //                 workItemMoney: 0
-    //             }
-    //         }
-    //     }
-    // }
     hideModal(lgModal) {
         lgModal.hide();
         this.isShowPrint = false;
@@ -214,6 +194,24 @@ export class BillOrderComponent extends DataList<any>{
             workItemMoney: 0
         }
     }
+    initprint(){
+        this.printData = {
+        maindata: {},
+        costData: [],
+        workHourData: [],
+        materialData: [],
+        appendItems: [],
+        adviceItems: [],
+        moneyObj: {
+            workCostMoney: 0,
+            discountMoney: 0,
+            materialMoney: 0,
+            costMoney: 0,
+            costCountMoney: 0,
+            workItemMoney: 0
+        }
+    }
+    }
     deduceAmount: any;
     // 点击详情事件
     DetailsDialog(evt, id, dialog, item) {
@@ -232,72 +230,81 @@ export class BillOrderComponent extends DataList<any>{
             // 记录当前操作的工单记录
             this.selectedOrder = data;
             this.billId = this.selectedOrder["id"]
-        }).then(()=>{
-        this.service.getCost(id).then(data => {
-            if (!data.isSettlement) {
-                this.isShowPrint = false;
-            } else {
-                this.service.getPrintDetail(id)
-                    .then(data => {
-                        console.log('结算单', data)
-                        Object.assign(this.selectedOrder, data);
-                        // this.selectedOrder.updateUser = data.updateUser;//结算人
-                        // this.selectedOrder.updateOnUtc = data.updateOnUtc;//结算时间
-                        // this.selectedOrder.settlementParty = data.settlementParty;//结算方
-                        // this.selectedOrder.settlementCode = data.settlementCode;//结算单号
-                        // this.selectedOrder.leaveMileage = data.leaveMileage;//出厂里程
-                        this.printData.maindata = data;
-                        this.printData.costData = data.totalCost; //收费结算单
-                        this.printData.workHourData = data.workHours;//工时明细
-                        this.printData.materialData = data.matereialDetails; //材料明细
-                        this.printData.appendItems = data.appendItems;
-                        this.printData.adviceItems = data.adviceItems;
-                        // 工时明细
-                        this.printData.workHourData.forEach(item => {
-                            //金额
-                            this.printData.moneyObj.workItemMoney = item.amount;
-                            // 工时明细的应收金额和折扣金额
-                            this.printData.moneyObj.workCostMoney += item.discountCost;
-                            this.printData.moneyObj.discountMoney += item.amount * (1 - item.discount / 100);
-                        });
-                        // 材料明细
-                        this.printData.materialData.forEach(item => {
-                            // 材料明细的应收金额
-                            this.printData.moneyObj.materialMoney += item.amount;
+        }).then(() => {
+            this.service.getCost(id).then(data => {
+                if (!data.isSettlement) {
+                    this.isShowPrint = false;
+                } else {
+                    this.service.getPrintDetail(id)
+                        .then(data => {
+                            console.log('结算单', data)
+                            Object.assign(this.selectedOrder, data);
+                            // this.selectedOrder.updateUser = data.updateUser;//结算人
+                            // this.selectedOrder.updateOnUtc = data.updateOnUtc;//结算时间
+                            // this.selectedOrder.settlementParty = data.settlementParty;//结算方
+                            // this.selectedOrder.settlementCode = data.settlementCode;//结算单号
+                            // this.selectedOrder.leaveMileage = data.leaveMileage;//出厂里程
+                            this.printData.maindata = data;
+                            this.printData.costData = data.totalCost; //收费结算单
+                            this.printData.workHourData = data.workHours;//工时明细
+                            this.printData.materialData = data.matereialDetails; //材料明细
+                            this.printData.appendItems = data.appendItems;
+                            this.printData.adviceItems = data.adviceItems;
+                            // 工时明细
+                            console.log(this.printData.workHourData,this.printData.moneyObj.discountMoney);
+                            this.printData.workHourData.forEach(item => {
+                                //金额
+                                this.printData.moneyObj.workItemMoney = item.amount;
+                                // 工时明细的应收金额和折扣金额
+                                this.printData.moneyObj.workCostMoney += item.discountCost;
+                                this.printData.moneyObj.discountMoney += item.amount * (1 - item.discount / 100);
+                            });
+                            console.log(this.printData.moneyObj.discountMoney);
+                            // 材料明细
+                            this.printData.materialData.forEach(item => {
+                                // 材料明细的应收金额
+                                this.printData.moneyObj.materialMoney += item.amount;
+                            })
+                            // 收费结算单金额
+                            this.printData.costData.forEach(item => {
+                                this.printData.moneyObj.costMoney += item.receivableCost;
+                                // this.printData.moneyObj.costCountMoney += (item.receivableCost - item.discountCost);
+                            });
+                            this.printData.moneyObj.costCountMoney = this.printData.moneyObj.discountMoney;
+                            if (data.deduceAmount) {
+                                this.printData.moneyObj.costCountMoney += data.deduceAmount;
+                            }
+                            console.log(this.printData)
+                            this.isShowPrint = true;
+                            item.generating = false;
+                            // 显示窗口
+                            dialog.show();
                         })
-                        // 收费结算单金额
-                        this.printData.costData.forEach(item => {
-                            this.printData.moneyObj.costMoney += item.receivableCost;
-                            this.printData.moneyObj.costCountMoney += (item.receivableCost - item.discountCost);
+                        .catch(err => {
+                            this.alerter.error('获取工单信息失败: ' + err, true, 2000);
+                            item.generating = false;
                         });
-                        this.deduceAmount = data.deduceAmount || 0;
-                        this.printData.moneyObj.costCountMoney += this.deduceAmount;
-                        console.log(this.printData)
-                        this.isShowPrint = true;
-                        item.generating = false;
-                        // 显示窗口
-                        dialog.show();
-                    })
-                    .catch(err => {
-                        this.alerter.error('获取工单信息失败: ' + err, true, 2000);
-                        item.generating = false;
-                    });
-            }
-            console.log("根据工单id获取工单材料费和工时费", data);
-            this.workReceivableCost = data.workReceivableCost;
-            // 工时费： 维修项目打折之后
-            this.workHourFee = data.workHourCost;
-            // 材料费： 维修配件金额总和
-            this.materialFee = data.materialCost;
-            this.discountAmount = data.deduceAmount || 0 + (data.WorkReceivableCost - data.workHourCost);
-            // 总计费： 
-            this.sumFee = data.amount;
-            // this.billPrice = this.sumFee;
-            item.generating = false;
-            // 显示窗口
-            dialog.show();
-        })
-    }).catch(err=>{this.alerter.error(err,true,3000);item.generating =false})
+                }
+                console.log("根据工单id获取工单材料费和工时费", data);
+                this.workReceivableCost = data.workReceivableCost;
+                // 工时费： 维修项目打折之后
+                this.workHourFee = data.workHourCost;
+                // 材料费： 维修配件金额总和
+                this.materialFee = data.materialCost;
+                if (data.deduceAmount) {
+                    this.discountAmount = data.deduceAmount + (data.workReceivableCost - data.workHourCost);
+                } else {
+                    this.discountAmount = data.workReceivableCost - data.workHourCost;
+                }
+
+                // 总计费： 
+                this.sumFee = data.amount;
+                // this.billPrice = this.sumFee;
+                item.generating = false;
+                // 显示窗口
+                dialog.show();
+            })
+        }).catch(err => { this.alerter.error(err, true, 3000); item.generating = false })
 
     }
     private billData = {};
@@ -318,6 +325,7 @@ export class BillOrderComponent extends DataList<any>{
             return false;
         } else {
             if (confirm('是否生成维修结算单？')) {
+                this.initprint();
                 this.generat = true;
                 this.service.post(this.billData, this.billId).then((result) => {
                     this.generat = false;
@@ -340,7 +348,7 @@ export class BillOrderComponent extends DataList<any>{
                                     this.printData.moneyObj.workCostMoney += item.discountCost;
                                     this.printData.moneyObj.discountMoney += item.amount * (1 - item.discount / 100);
                                 });
-
+                                console.log(this.printData.moneyObj.discountMoney);
 
                                 // 材料明细
                                 this.printData.materialData.forEach(item => {
@@ -350,11 +358,15 @@ export class BillOrderComponent extends DataList<any>{
                                 // 收费结算单金额
                                 this.printData.costData.forEach(item => {
                                     this.printData.moneyObj.costMoney += item.receivableCost;
-                                    this.printData.moneyObj.costCountMoney += (item.receivableCost - item.discountCost);
+                                    // this.printData.moneyObj.costCountMoney += (item.receivableCost - item.discountCost);
                                 });
+
+                                this.printData.moneyObj.costCountMoney = this.printData.moneyObj.discountMoney;
                                 if (data.deduceAmount) {
-                                    this.printData.moneyObj.costCountMoney += this.deduceAmount;
+                                    this.printData.moneyObj.costCountMoney += data.deduceAmount;
                                 }
+                                console.log(this.printData.moneyObj.costCountMoney, this.printData.moneyObj.discountMoney, data.deduceAmount)
+
                                 setTimeout(() => this.print(dialog), 200)
                             })
                             .catch(err => {
