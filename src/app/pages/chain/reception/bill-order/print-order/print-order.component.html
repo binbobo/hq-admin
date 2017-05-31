@@ -164,11 +164,12 @@
     </table>
     <hr>
     <div class="print-bot">
-      <div class="pull-left"> 打印时间：{{data.maindata.printOnUtc|sDatetime}}</div>
-      <div class="pull-right">操作人：{{data.maindata.currentUserName}}<span class='nbspx'>&nbsp;</span> 客户签名： <span class='nbspx'></span>
-      </div>
-      <div class="pull-right">
-        日期：<span class="nbspx-sm"></span>年<span class="nbspx-sm"></span>月<span class="nbspx-sm"></span>日
-      </div>
+      <div class="bot-left"> 打印时间：{{data.maindata.printOnUtc|sDatetime}}&nbsp;&nbsp;&nbsp;&nbsp;</div>
+      <div class="bot-right pull-right">  客户签名:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </div>
+      
+    </div>
+    <div class="print-bot">
+      <div class="bot-left">操作人：{{data.maindata.currentUserName}}</div>
+      <div class="bot-right pull-right">日期：年月日</div>
     </div>
   </div>

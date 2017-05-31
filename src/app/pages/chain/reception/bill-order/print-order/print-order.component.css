@@ -2,16 +2,29 @@
     text-align:center;
     clear:both;
 }
-.print .nbspx{
-    width:280px;
-    display: inline-block;
+.nbspx{
+    width: 900in;
 }
-.print .nbspx-sm{
-    width:40px;
-    display: inline-block;
-}
-.print .print-bot{
+.print-bot{
     margin-top:20px;
+    clear: both;
+    overflow: hidden;
+    position: relative;
+}
+.print-bot .bot-left{
+    position: absolute;
+    left: 0;
+    top: 2px;
+}
+.print-bot .bot-right{
+    position: absolute;
+    right: 0;
+    top: 2px;
+}
+.text-right{
+display: inline-block;
+text-align: right;
+clear: both;
 }
 table tr td{
     overflow-wrap: break-word !important;

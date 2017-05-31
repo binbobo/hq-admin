@@ -345,8 +345,7 @@ export class BillOrderComponent extends DataList<any>{
             event.preventDefault();
             return false;
         } else {
-            if (confirm('是否生成维修结算单？')) {
-                
+            if (confirm('是否生成维修结算单？')) {                
                 this.generat = true;
                 this.service.post(this.billData, this.billId).then((result) => {
                     this.generat = false;
