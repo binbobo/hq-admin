@@ -6,17 +6,17 @@
   </div>
   <div class="card-block">
     <form class="form-inline mb-2">
-      <div class="form-group mx-sm-3 mb-2">
-        <label>*客户名称：</label>
+      <div class="input-group m-1">
+        <span class="input-group-addon">客户名称：</span>
         <input type="text" [(ngModel)]="customerName" class="form-control" forceRefresh (onSelect)="onItemNameSelect($event)" [hqTableTypeahead]="nameSource"
           [columns]="itemNameColumns" name="custName" placeholder="客户名称">
       </div>
-      <div class="form-group mx-sm-3 mb-2">
-        <label>手机号：</label>
+      <div class="input-group m-1">
+        <span class="input-group-addon">手机号：</span>
         <input class="form-control" [(ngModel)]="customerPhone" name="custPhone" placeholder="手机号">
       </div>
-      <div class="form-group mx-sm-3 mb-2">
-        <label>*销售出库单：</label>
+      <div class="input-group m-1">
+        <span class="input-group-addon">销售出库单：</span>
         <input type="text" forceRefresh [(ngModel)]="billCode" name="billCode" (onSelect)="onItemCodeSelect($event)" [hqTableTypeahead]="codeSource"
           [columns]="itemCodeColumns" class="form-control" placeholder="请输入出库单号">
       </div>
@@ -48,7 +48,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of list">
-            <td><button [disabled]="item.count<=item.returnCount" class="btn btn-primary" (click)="OnCreatBound(item,item.id)">退库</button></td>
+            <td><button [disabled]="item.count<=item.returnCount" class="btn btn-sm btn-primary" (click)="OnCreatBound(item,item.id)">退库</button></td>
             <td class="text-center">{{item.productCode }}</td>
             <td class="text-center">{{item.categoryName[0]}}</td>
             <td>{{item.productName}}</td>
@@ -89,7 +89,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of salesReturnData;let i = index">
-            <td><button class="btn btn-danger" (click)="onDelCreat(e,i)">删除</button></td>
+            <td><button class="btn btn-sm btn-danger" (click)="onDelCreat(e,i)">删除</button></td>
             <td class="text-center">{{item.productCode }}</td>
             <td class="text-center">{{item.productCategory}}</td>
             <td>{{item.productName}}</td>

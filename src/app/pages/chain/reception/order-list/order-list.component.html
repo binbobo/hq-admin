@@ -5,7 +5,6 @@
   </div>
   <div class="card-block">
     <form #form="ngForm" (ngSubmit)="onSearch()">
-      <!--不同工单状态工单复选框部分-->
       <div class="form-group row" *ngIf="orderStatusData">
         <div class="check-label">
           <label class="form-label">工单状态：</label>
@@ -18,12 +17,10 @@
           </div>
         </div>
       </div>
-      <!--工单基本筛选条件面板-->
       <div class="form-group row">
         <div class="hq-input">
           <label for="plateNo" class="form-label">车牌号</label>
           <div class="hq-col">
-            <!-- placeholder="车牌号"-->
             <input maxlength="12" type="text" [(ngModel)]="params.plateNo" name="plateNo" class="form-control">
           </div>
         </div>
@@ -36,19 +33,16 @@
         <div class="hq-input">
           <label for="phone" class="form-label">车主电话</label>
           <div class="hq-col">
-            <!-- placeholder="车主电话"-->
             <input maxlength="11" type="text" [(ngModel)]="params.phone" name="phone" class="form-control">
           </div>
         </div>
         <div class="hq-input">
           <label for="contactUser" class="form-label">送修人</label>
           <div class="hq-col">
-            <!-- placeholder="送修人"-->
             <input maxlength="15" type="text" [(ngModel)]="params.contactUser" name="contactUser" class="form-control">
           </div>
         </div>
         <div class="hq-input">
-          <!--高级筛选面板-->
           <div class="advanceFilter">
             <a (click)="isCollapsed = !isCollapsed" class="cursor-pointer">
             高级筛选
@@ -62,14 +56,12 @@
         <div class="hq-input">
           <label for="contactInfo" class="form-label">送修人电话</label>
           <div class="hq-col">
-            <!-- placeholder="送修人电话"-->
             <input maxlength="11" type="text" [(ngModel)]="params.contactInfo" name="contactInfo" class="form-control">
           </div>
         </div>
         <div class="hq-input">
           <label for="billCode" class="form-label">工单号</label>
           <div class="hq-col">
-            <!-- placeholder="工单号"-->
             <input maxlength="25" type="text" [(ngModel)]="params.billCode" name="billCode" class="form-control">
           </div>
         </div>
@@ -113,7 +105,6 @@
             <div class="hq-input">
               <label for="leaveFactoryTime" class="form-label">出厂时间</label>
               <div class="hq-col">
-                <!--[max-hour]="maxLeaveStartHours" -->
                 <input readonly [max-date]="maxLeaveStartDate" [(ngModel)]="params.leaveStartTimeDate" name="leaveStartTimeDate" class="form-control"
                   type="text" ngui-datetime-picker [close-on-select]="false" />
               </div>
@@ -121,8 +112,6 @@
             <div class="hq-input">
               <label class="form-label">至</label>
               <div class="hq-col">
-                <!--[min-hour]="minLeaveEndHours" 
-                 [max-hour]="maxLeaveEndHours" -->
                 <input readonly [min-date]="minLeaveEndDate" [max-date]="maxLeaveEndDate" [(ngModel)]="params.leaveEndTimeDate" name="leaveEndTimeDate"
                   class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
               </div>
@@ -152,11 +141,11 @@
                 </select>
               </div>
             </div>
-            <!--<label for="searchRange" class="col-1 col-form-label col-form-label">查询范围</label>
-              <div class="col-2">
-                <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)"> >
-                </ngx-dropdown-treeview>
-              </div>-->
+            <label for="searchRange" class="col-1 col-form-label">查询范围</label>
+            <!--<div class="col-2">
+              <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)"> >
+              </ngx-dropdown-treeview>
+            </div>-->
             <div class="hq-input" style="width:50%" *ngIf="!isCollapsed">
               <div class="hq-col">
                 <button type="submit" [disabled]="false" class="btn btn-primary mr-2">查询</button>
@@ -169,6 +158,52 @@
       </div>
     </form>
     <br>
+
+    <!--<form #form="ngForm" (ngSubmit)="onSearch()">
+      <div class="input-group m-1">
+        <span class="input-group-addon">工单状态</span>
+        <div class="check-label-col">
+          <div class="form-check form-check-inline" *ngFor="let status of orderStatusData">
+            <label class="form-check-label" style="text-overflow:ellipsis">
+                <input (change)='status.checked = !status.checked' [checked]="status.checked" class="form-check-input"  type="checkbox" value="{{status.id}}"> {{status.value}}
+              </label>
+          </div>
+        </div>
+      </div>
+      <div class="form-inline">
+        <div class="input-group m-1 advanceFilter">
+          <a (click)="isCollapsed = !isCollapsed" class="cursor-pointer">
+            高级筛选
+            <i class="fa fa-angle-double-up" [hidden]="isCollapsed"></i>
+            <i class="fa fa-angle-double-down" [hidden]="!isCollapsed"></i>
+          </a>
+        </div>
+        <div class="input-group m-1">
+          <span class="input-group-addon">车牌号</span>
+          <input maxlength="12" type="text" [(ngModel)]="params.plateNo" name="plateNo" class="form-control">
+        </div>
+        <div class="input-group m-1">
+          <span class="input-group-addon">车主</span>
+          <input maxlength="15" type="text" [(ngModel)]="params.customerName" name="customerName" class="form-control">
+        </div>
+        <div class="input-group m-1">
+          <span class="input-group-addon">送修人</span>
+          <input maxlength="15" type="text" [(ngModel)]="params.contactUser" name="contactUser" class="form-control">
+        </div>
+
+      </div>
+      <div class="form-inline">
+        <div class="input-group m-1">
+          <span class="input-group-addon">送修人电话</span>
+          <input maxlength="11" type="text" [(ngModel)]="params.contactInfo" name="contactInfo" class="form-control">
+        </div>
+        <div class="input-group m-1">
+          <span class="input-group-addon">工单号</span>
+          <input maxlength="25" type="text" [(ngModel)]="params.billCode" name="billCode" class="form-control">
+        </div>
+      </div>
+    </form>-->
+
     <div class="table-container">
       <table class="table table-bordered">
         <thead>
@@ -248,4 +283,5 @@
         </div>
       </div>
     </div>
-    <hq-workorder-detail-print *ngIf="lgModal.isShown" class="invisible" [data]="selectedOrder" hqPrint #printer="hq-print" print-title="华汽汽服燕郊店维修工单"></hq-workorder-detail-print>
+    <!--*ngIf="lgModal.isShown" class="invisible"-->
+    <hq-workorder-detail-print  [data]="selectedOrder" hqPrint #printer="hq-print" print-title="维修工单"></hq-workorder-detail-print>

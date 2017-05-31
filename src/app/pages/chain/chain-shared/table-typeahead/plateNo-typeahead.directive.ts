@@ -18,7 +18,7 @@ export class PlateNoTypeaheadDirective extends TableTypeaheadDirective {
 
     protected columns = [
         { name: 'plateNo', title: '车牌号' },
-        { name: 'customerName', title: '车主' },
+        { name: 'name', title: '车主' },
         { name: 'phone', title: '车主电话' },
     ] as Array<TableTypeaheadColumn>;
 
@@ -28,18 +28,7 @@ export class PlateNoTypeaheadDirective extends TableTypeaheadDirective {
             request['keyword'] = params.text;
             request.setPage(params.pageIndex, params.pageSize);
             let url = Urls.chain.concat('/CustomerVehicles/Search');
-            return this.httpService.getPagedList<any>(url, request).then(response => {
-                // console.log('根据车牌号模糊查询客户车辆信息 响应数据', response);
-                console.log('请求url', url, request);
-                // 加工数据
-                response.data = response.data.map(item => {
-                    const o = item;
-                    o.customerName = item.customerInfo.name;
-                    o.phone = item.customerInfo.phone;
-                    return o;
-                });
-                return response;
-            });
+            return this.httpService.getPagedList<any>(url, request);
         };
         super.ngOnInit();
     }

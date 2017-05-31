@@ -107,7 +107,9 @@ export class OrderListComponent extends DataList<Order> {
   }
 
   print() {
-    this.printer.print();
+    setTimeout(() => {
+      this.printer.print();
+    }, 500);
   }
 
   /**

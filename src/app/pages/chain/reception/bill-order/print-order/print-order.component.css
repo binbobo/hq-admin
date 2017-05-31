@@ -22,9 +22,9 @@
     top: 2px;
 }
 .text-right{
-display: inline-block;
-text-align: right;
-clear: both;
+    display: inline-block;
+    text-align: right;
+    clear: both;
 }
 table tr td{
     overflow-wrap: break-word !important;
@@ -32,12 +32,19 @@ table tr td{
     border: 0 !important;
     font-size: 12px;
     color:#727171 !important;
+    width: 100px;   
+    white-space: normal !important;
+}
+table tr td:nth-child(2n+1){
+
 }
 .table-title{
     font-size:14px;
+    margin-bottom:4px;
 }
-.table-print tr{
+tr{
     border: 0 !important;
+    border-bottom: 0 !important;
 }
 .table-tr{
     border:1px solid #dcdddd !important;
