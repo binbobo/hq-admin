@@ -22,7 +22,7 @@
             <th>品牌</th>
             <th>规格型号</th>
             <th>单位</th>
-            <th class="print-hidden">成本</th>
+            <th>成本</th>
             <th>库存量</th>
             <th class="print-visible">清点数</th>
           </tr>
@@ -32,12 +32,12 @@
             <td>{{ item.houseName}}</td>
             <td>{{ item.locationName}}</td>
             <td>{{ item.productCode }}</td>
-            <td></td>
+            <td>{{ item.categoryName }}</td>
             <td>{{ item.productName }}</td>
-            <td>{{ item.productBrand }}</td>
+            <td>{{ item.brand }}</td>
             <td>{{ item.productSpecification }}</td>
-            <td></td>
-            <td class="text-right print-hidden">{{ item.price|centToYuan }}</td>
+            <td>{{ item.unit }}</td>
+            <td class="text-right">{{ item.price|centToYuan }}</td>
             <td class="text-center">{{ item.stock }}</td>
             <td class="print-visible"></td>
           </tr>
