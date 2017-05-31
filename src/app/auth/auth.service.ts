@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Http, Headers, Response } from '@angular/http';
 import { Urls, User, HttpService } from 'app/shared/services';
 
 @Injectable()
@@ -25,7 +25,11 @@ export class AuthService {
         return new User(user.id, model.username, null, user.accessToken, user.refreshToken, model.rememberMe);
       })
       .catch(err => {
-        return Promise.reject(this.httpService.getErrors(err));
+        if (err.status === 404) {
+          return Promise.reject('用户不存在！');
+        } else {
+          return Promise.reject(this.httpService.getErrors(err));
+        }
       });
   }
 

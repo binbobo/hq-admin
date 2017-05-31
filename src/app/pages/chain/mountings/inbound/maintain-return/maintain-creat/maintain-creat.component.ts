@@ -62,7 +62,6 @@ export class MaintainCreatComponent implements OnInit, OnChanges {
       description: [this.model.description],
       productCategory:[this.model.productCategory],
       productUnit:[this.model.productUnit]
-
     })
   }
 

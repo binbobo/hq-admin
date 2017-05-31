@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ReceivePrintItem } from '../receive.service';
+import { OrganizationInfo, OrganizationService } from 'app/pages/organization.service';
 
 @Component({
   selector: 'hq-receive-print',
@@ -11,9 +12,15 @@ export class ReceivePrintComponent implements OnInit {
   @Input()
   private model: ReceivePrintItem;
 
-  constructor() {
-  }
+  private org: OrganizationInfo;
+
+  constructor(
+    private orgService: OrganizationService
+  ) { }
 
   ngOnInit() {
+    this.orgService.getOrganization()
+      .then(org => this.org = org)
+      .catch(err => console.log(err));
   }
 }

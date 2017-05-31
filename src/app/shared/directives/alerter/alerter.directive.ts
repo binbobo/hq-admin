@@ -76,7 +76,7 @@ export class HqAlerter {
   }
 
   public clear() {
-    this.alerts = [];
+    this.alerts.splice(0);
     return this;
   }
 

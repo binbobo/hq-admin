@@ -5,11 +5,11 @@
   </div>
   <div class="card-block">
     <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
-      <div class="form-group mb-2">
-        <label class="mr-sm-1">角色名称</label>
-        <input type="text" class="form-control mx-sm-3" name="name" [(ngModel)]="params.name" placeholder="角色名称">
+      <div class="input-group m-1">
+        <span class="input-group-addon">角色名称</span>
+        <input type="text" class="form-control" name="name" [(ngModel)]="params.name" placeholder="角色名称">
       </div>
-      <div class="form-group mb-2">
+      <div class="input-group m-1">
         <button type="submit" class="btn btn-primary mx-sm-1">查询</button>
         <!--<button type="button" (click)="createModal.show()" class="btn btn-secondary mx-sm-1">新增</button>-->
       </div>

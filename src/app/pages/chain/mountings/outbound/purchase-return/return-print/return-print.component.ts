@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { PurchaseReturnPrintItem } from '../purchase-return.service';
+import { OrganizationInfo, OrganizationService } from "app/pages/organization.service";
 
 @Component({
   selector: 'hq-return-print',
@@ -11,9 +12,15 @@ export class ReturnPrintComponent implements OnInit {
   @Input()
   private model: PurchaseReturnPrintItem;
 
-  constructor() {
-  }
+  private org: OrganizationInfo;
+
+  constructor(
+    private orgService: OrganizationService
+  ) { }
 
   ngOnInit() {
+    this.orgService.getOrganization()
+      .then(org => this.org = org)
+      .catch(err => console.log(err));
   }
 }
