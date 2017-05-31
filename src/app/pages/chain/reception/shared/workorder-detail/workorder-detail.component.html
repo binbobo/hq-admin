@@ -2,13 +2,15 @@
 <tabset>
   <tab *ngIf="data?.serviceOutputs?.length>0">
     <template tabHeading>
-      <i class="fa fa-female mr-2" aria-hidden="true"></i>维修项目
+      <i class="fa fa-clone mr-2" aria-hidden="true"></i>维修项目
     </template>
-    <hq-maintenance-item-list [serviceOutputs]="data?.serviceOutputs"></hq-maintenance-item-list>
+    <div class="table-container">
+      <hq-maintenance-item-list [serviceOutputs]="data?.serviceOutputs"></hq-maintenance-item-list>
+    </div>
   </tab>
   <tab *ngIf="data?.productOutputs?.length>0">
     <template tabHeading>
-      <i class="fa fa-female mr-2" aria-hidden="true"></i>维修配件
+      <i class="fa fa-wrench mr-2" aria-hidden="true"></i>维修配件
     </template>
     <div class="table-container">
       <hq-maintenance-fixings-list [productOutputs]="data?.productOutputs"></hq-maintenance-fixings-list>
@@ -16,14 +18,18 @@
   </tab>
   <tab *ngIf="data?.attachServiceOutputs?.length>0">
     <template tabHeading>
-      <i class="fa fa-female mr-2" aria-hidden="true"></i>附加项目
+      <i class="fa fa-plus-square mr-2" aria-hidden="true"></i>附加项目
     </template>
-    <hq-attachment-item-list [attachServiceOutputs]="data?.attachServiceOutputs"></hq-attachment-item-list>
+    <div class="table-container">
+      <hq-attachment-item-list [attachServiceOutputs]="data?.attachServiceOutputs"></hq-attachment-item-list>
+    </div>
   </tab>
   <tab *ngIf="data?.suggestServiceOutputs?.length>0">
-     <template tabHeading>
-      <i class="fa fa-female mr-2" aria-hidden="true"></i>建议维修项目
+    <template tabHeading>
+      <i class="fa fa-wpforms mr-2" aria-hidden="true"></i>建议维修项目
     </template>
-    <hq-suggested-item-list [suggestServiceOutputs]="data?.suggestServiceOutputs"></hq-suggested-item-list>
+    <div class="table-container">
+      <hq-suggested-item-list [suggestServiceOutputs]="data?.suggestServiceOutputs"></hq-suggested-item-list>
+    </div>
   </tab>
 </tabset>

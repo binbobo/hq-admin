@@ -5,6 +5,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { PagesService } from './pages.service';
 import { StorageKeys } from '../shared/models/storage-keys';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
+import { OrganizationService } from './organization.service';
+import { EmployeeService } from './employee.service';
 
 @Component({
   selector: 'app-pages',
@@ -24,6 +26,8 @@ export class PagesComponent implements OnInit {
     private service: PagesService,
     private translate: TranslateService,
     private dispatcher: EventDispatcher,
+    private employeeService: EmployeeService,
+    private organizationService: OrganizationService,
     private router: Router
   ) {
     router.events.subscribe(event => {
@@ -37,6 +41,8 @@ export class PagesComponent implements OnInit {
 
   ngOnInit() {
     this.loadMenus();
+    this.organizationService.getOrganization();
+    this.employeeService.getEmployee();
     //this.loadLanguages();
   }
 

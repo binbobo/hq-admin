@@ -42,7 +42,7 @@
     </table>
     <!--维修项目-->
     <div [hqSpinner]="serviceisShow" class="top-px">
-      <div class="tab-title" *ngIf="serviceData.length>0">维修项目</div>
+      <div class="tab-title" *ngIf="serviceData.length>0"><i class="fa fa-clone" aria-hidden="true"></i>维修项目</div>
       <div class="table-container">
         <table class="table   table-bordered" *ngIf="serviceData.length>0">
           <thead>
@@ -62,7 +62,7 @@
       </div>
     </div>
     <div [hqSpinner]="serialDataShow" class="top-px" *ngIf="serialData.length>0">
-      <div class="tab-title"><i class="fa fa-cog m-2" aria-hidden="true"></i>维修发料信息</div>
+      <div class="tab-title"><i class="fa fa-outdent" aria-hidden="true"></i>维修发料信息</div>
       <div class="table-container">
         <table class="table  table-bordered">
           <thead>
@@ -98,13 +98,13 @@
               <td>{{ele.brandName}}</td>
               <td>{{ele.productSpecification}}</td>
               <td>{{ele.productUnit}}</td>
-              <td>{{ele.vihicleName}}</td>
+              <td [hqVehicleShow]="ele.vehicleInfoList"></td>
               <td>{{ele.storeName}}</td>
               <td>{{ele.locationName}}</td>
               <td>{{ele.count}}</td>
               <td>{{ele.returnCount}}</td>
-              <td>{{ele.price|centToYuan}}</td>
-              <td>{{ele.amount|centToYuan}}</td>
+              <td  class="text-right">{{ele.price|centToYuan}}</td>
+              <td  class="text-right">{{ele.amount|centToYuan}}</td>
               <td>{{ele.description}}</td>
               <td>{{ele.takeUser}}</td>
             </tr>
@@ -149,12 +149,12 @@
               <td>{{ele.brandName}}</td>
               <td>{{ele.productSpecification}}</td>
               <td>{{ele.productUnit}}</td>
-              <td>{{ele.vihicleName}}</td>
+              <td [hqVehicleShow]="ele.vehicleInfoList"></td>
               <td>{{ele.storeName}}</td>
               <td>{{ele.locationName}}</td>
               <td>{{ele.count}}</td>
-              <td>{{ele.price|centToYuan}}</td>
-              <td>{{ele.amount|centToYuan}}</td>
+              <td  class="text-right">{{ele.price|centToYuan}}</td>
+              <td  class="text-right">{{ele.amount|centToYuan}}</td>
               <td>{{ele.description}}</td>
               <td>{{ele.returnUser}}</td>
             </tr>
@@ -163,7 +163,7 @@
       </div>
     </div>
     <div *ngIf="mrData.length>0" class="top-px">
-      <div class="tab-title"><i class="fa fa-cog m-2" aria-hidden="true"></i>维修退料记录</div>
+      <div class="tab-title"><i class="fa fa-indent" aria-hidden="true"></i>维修退料记录</div>
       <div class="table-container">
         <table class="table table-bordered">
           <thead>
@@ -179,8 +179,8 @@
               <th>适用车型</th>
               <th>仓库</th>
               <th>库位</th>
-              <th>*数量（个）</th>
-              <th>单价（元/个）</th>
+              <th>*数量</th>
+              <th>单价（元）</th>
               <th>金额（元）</th>
               <th>备注</th>
               <th>退料人</th>
@@ -196,12 +196,12 @@
               <td>{{ele.brandName}}</td>
               <td>{{ele.productSpecification?ele.productSpecification:ele.specifications}}</td>
               <td>{{ele.productUnit}}</td>
-              <td>{{ele.vihicleName?ele.vihicleName:ele.vehicleModel}}</td>
+              <td [hqVehicleShow]="ele.vehicleInfoList"></td>
               <td>{{ele.storeName?ele.storeName:ele.storeHouse}}</td>
               <td>{{ele.locationName}}</td>
               <td>{{ele.count}}</td>
-              <td>{{ele.price|centToYuan}}</td>
-              <td>{{ele.amount|centToYuan}}</td>
+              <td class="text-right">{{ele.price|centToYuan}}</td>
+              <td  class="text-right">{{ele.amount|centToYuan}}</td>
               <td>{{ele.description}}</td>
               <td>{{ele.returnUser?ele.returnUser:ele.returnName}}</td>
             </tr>

@@ -1,11 +1,13 @@
-table{
+table.table-order-info{
      table-layout: fixed;
 }
-.table-order-info td{
-    text-align: left;
-    padding-left: 1.1rem !important;
-    width: 25%;
+table.table-order-info td{
+       vertical-align: middle;
+    padding: 0.5rem;
+    font-size: 0.875rem;
     color: #727171;
-    text-overflow: ellipsis;
-    overflow: hidden;
+    text-align: left;
+}
+table.table-order-info td.fixed-width {
+    width: 85px;
 }

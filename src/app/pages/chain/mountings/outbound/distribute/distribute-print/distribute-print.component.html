@@ -3,7 +3,8 @@
     <div *ngFor="let item of data">
       <div class="col-12">发料单号：{{item.billCode}} &nbsp; &nbsp; &nbsp; &nbsp;流水号：{{item.serialNum}} &nbsp; &nbsp; &nbsp; &nbsp;车牌号：{{item.plateNo}}
         &nbsp; &nbsp; &nbsp; &nbsp;开单时间：{{item.createBillDateTime|sDatetime}}</div>
-      <table class="table   table-borderd">
+        <br>
+      <table class="table table-bordered">
         <thead>
           <tr>
             <th>维修项目</th>
@@ -33,9 +34,9 @@
             <td>{{ele.unit}}</td>
             <td>{{ele.storeName}}</td>
             <td>{{ele.locationName}}</td>
-            <td>{{ele.price |centToYuan}}</td>
-            <td>{{ele.count}}</td>
-            <td>{{ele.amount|centToYuan}}</td>
+            <td  class="text-right">{{ele.price |centToYuan}}</td>
+            <td >{{ele.count}}</td>
+            <td  class="text-right">{{ele.amount|centToYuan}}</td>
             <td>{{ele.description}}</td>
             <td>{{ele.employee}}</td>
           </tr>
@@ -45,10 +46,10 @@
         <p>
           <span class="mr-2 pull-left">打印时间：{{item.printDateTime|sDatetime}}</span>
           <span class="mr-2 pull-right">操作人：{{item.operator}}</span>
-          </p>
+        </p>
       </div>
       <br>
-      <div class="print-hidden page-break-after"></div>
+      <div class="page-break-after"></div>
     </div>
   </div>
 

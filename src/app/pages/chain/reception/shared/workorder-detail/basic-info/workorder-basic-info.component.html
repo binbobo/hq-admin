@@ -1,129 +1,9 @@
-<!--<form>
-  <div class="form-group row">
-    <div class="col-4">
-      <label>车牌号：</label>
-      <span>{{data?.plateNo}}</span>
-    </div>
-    <div class="col-4">
-      <label>车型：</label>
-      <span *ngIf="data?.brand">{{data?.brand}}</span>
-      <span *ngIf="data?.series">,{{data?.series}}</span>
-      <span *ngIf="data?.vehicleName">,{{data?.vehicleName}}</span>
-      <clipped-word length="10" [content]="data?.vehicleText"></clipped-word>
-    </div>
-    <div class="col-4">
-      <label>VIN：</label>
-      <span>{{data?.vin}}</span>
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-4">
-      <label>送修人：</label>
-      <span>{{data?.contactUser}}</span>
-    </div>
-    <div class="col-4">
-      <label>送修人手机：</label>
-      <span>{{data?.contactInfo}}</span>
-    </div>
-    <div class="col-4">
-      <label>工单号：</label>
-      <span>{{data?.billCode}}</span>
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-4">
-      <label>车主：</label>
-      <span>{{data?.customerName}}</span>
-    </div>
-    <div class="col-4">
-      <label>车主电话：</label>
-      <span>{{data?.phone}}</span>
-    </div>
-    <div class="col-4">
-      <label>购车日期：</label>
-      <span>{{data?.purchaseDate|sDate}}</span>
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-4">
-      <label>验车日期：</label>
-      <span>{{data?.validate|sDate}}</span>
-    </div>
-    <div class="col-4">
-      <label>预计交车时间：</label>
-      <span>{{data?.expectLeave|sDatetime}}</span>
-    </div>
-    <div class="col-4">
-      <label>维修技师：</label>
-      <span>{{data?.employeeNames}}</span>
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-4">
-      <label>服务顾问：</label>
-      <span>{{data?.createdUserName}}</span>
-    </div>
-    <div class="col-4">
-      <label>介绍人：</label>
-      <span>{{data?.introducer}}</span>
-    </div>
-    <div class="col-4">
-      <label>介绍人电话：</label>
-      <span>{{data?.introPhone}}</span>
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-4">
-      <label>维修类型：</label>
-      <span>{{data?.typeName}}</span>
-    </div>
-    <div class="col-4">
-      <label>超时</label>
-      <span>{{data?.overTime|durationHumanize}}</span>
-    </div>
-    <div class="col-4" *ngIf="data?.settlementParty">
-      <label>结算方:</label>
-      <span>{{data?.settlementParty}}</span>
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-4" *ngIf="data?.settlementCode">
-      <label>结算单号:</label>
-      <span>{{data?.settlementCode}}</span>
-    </div>
-    <div class="col-4" *ngIf="data?.updateUser">
-      <label>结算员:</label>
-      <span>{{data?.updateUser}}</span>
-    </div>
-    <div class="col-4" *ngIf="data?.updateOnUtc">
-      <label>结算时间：</label>
-      <span>{{data?.updateOnUtc|sDatetime}}</span>
-    </div>
-  </div>
-  <hr>
-  <div class="form-group row">
-    <div class="col-4">
-      <label>进厂时间：</label>
-      <span>{{data?.createdOnUtc|sDatetime}}</span>
-    </div>
-    <div class="col-4">
-      <label>进厂里程：</label>
-      <span>{{data?.mileage}}</span>
-      <span class="ml-2">KM</span>
-    </div>
-    <div class="col-4" *ngIf="data?.leaveMileage">
-      <label>出厂里程：</label>
-      <span>{{data?.leaveMileage}}</span>
-      <span class="ml-2" *ngIf="data.leaveMileage">KM</span>
-    </div>
-  </div>
-</form>-->
 <table class="table table-order-info table-bordered">
   <tbody>
     <tr>
-      <td>车牌号</td>
+      <td class="fixed-width">车牌号</td>
       <td>{{data?.plateNo}}</td>
-      <td>车型</td>
+      <td class="fixed-width">车型</td>
       <td>
         <span *ngIf="data?.brand">{{data?.brand}}</span>
         <span *ngIf="data?.series">,{{data?.series}}</span>
@@ -131,65 +11,65 @@
       </td>
     </tr>
     <tr>
-      <td>VIN</td>
+      <td class="fixed-width">VIN</td>
       <td>{{data?.vin}}</td>
-      <td>送修人</td>
+      <td class="fixed-width">送修人</td>
       <td>{{data?.contactUser}}</td>
     </tr>
     <tr>
-      <td>送修人手机</td>
+      <td class="fixed-width">送修人手机</td>
       <td>{{data?.contactInfo}}</td>
-      <td>工单号</td>
+      <td class="fixed-width">工单号</td>
       <td>{{data?.billCode}}</td>
     </tr>
     <tr>
-      <td>车主</td>
+      <td class="fixed-width">车主</td>
       <td>{{data?.customerName}}</td>
-      <td>车主电话</td>
+      <td class="fixed-width">车主电话</td>
       <td>{{data?.phone}}</td>
     </tr>
     <tr>
-      <td>购车日期</td>
+      <td class="fixed-width">购车日期</td>
       <td>{{data?.purchaseDate|sDate}}</td>
-      <td>验车日期</td>
+      <td class="fixed-width">验车日期</td>
       <td>{{data?.validate|sDate}}</td>
     </tr>
     <tr>
-      <td>预计交车时间</td>
+      <td class="fixed-width">预计交车时间</td>
       <td>{{data?.expectLeave|sDate}}</td>
-      <td>维修技师</td>
+      <td class="fixed-width">维修技师</td>
       <td>{{data?.employeeNames}}
       </td>
     </tr>
     <tr>
-      <td>服务顾问</td>
+      <td class="fixed-width">服务顾问</td>
       <td>{{data?.createdUserName}}</td>
-      <td>介绍人</td>
+      <td class="fixed-width">介绍人</td>
       <td>{{data?.introducer}}</td>
     </tr>
     <tr>
-      <td>介绍人电话</td>
+      <td class="fixed-width">介绍人电话</td>
       <td>{{data?.introPhone}}</td>
-      <td>维修类型</td>
+      <td class="fixed-width">维修类型</td>
       <td>{{data?.typeName}}</td>
     </tr>
     <tr>
-      <td>超时</td>
+      <td class="fixed-width">超时</td>
       <td>{{data?.overTime|durationHumanize}}</td>
-      <td>结算方</td>
+      <td class="fixed-width">结算方</td>
       <td>{{data?.updateUser}}</td>
     </tr>
     <tr>
-      <td>结算时间</td>
+      <td class="fixed-width">结算时间</td>
       <td>{{data?.updateOnUtc|sDatetime}}</td>
-      <td>进厂时间</td>
+      <td class="fixed-width">进厂时间</td>
       <td>{{data?.createdOnUtc|sDatetime}}</td>
     </tr>
     <tr>
-      <td>进厂里程</td>
-      <td>{{data?.mileage}}</td>
-      <td>出厂里程</td>
-      <td>{{data?.leaveMileage}}</td>
+      <td class="fixed-width">进厂里程</td>
+      <td>{{data?.mileage}}<span class="pull-right">KM</span></td>
+      <td class="fixed-width">出厂里程</td>
+      <td>{{data?.leaveMileage}}<span class="pull-right">KM</span></td>
     </tr>
   </tbody>
 </table>

@@ -1,3 +1,6 @@
+table td .btn {
+  padding: 6px 22px !important;
+}
 .hq-col{
   flex: 2;
   position: relative;
@@ -28,7 +31,4 @@ input[disabled] {
 }
 .card-block {
   padding-top: 0.625rem;
-}
-.btn-color {
-  background:#27b394 !important;
 }

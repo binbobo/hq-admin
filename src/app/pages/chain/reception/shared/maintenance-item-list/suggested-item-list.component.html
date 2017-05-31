@@ -1,19 +1,17 @@
-<div class="table-container">
-  <table class="table table-bordered">
-    <caption *ngIf="showCaption">建议维修项目</caption>
-    <thead>
-      <tr>
-        <th *ngIf="showNo" width="45">序号</th>
-        <th>建议维修项目</th>
-        <th>备注</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let record of suggestServiceOutputs;let index=index;">
-        <td *ngIf="showNo" class="text-center">{{index+1}}</td>
-        <td>{{record?.content}}</td>
-        <td>{{record?.description}}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<table class="table table-bordered">
+  <caption *ngIf="showCaption">建议维修项目</caption>
+  <thead>
+    <tr>
+      <th *ngIf="showNo" width="45">序号</th>
+      <th>建议维修项目</th>
+      <th>备注</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let record of suggestServiceOutputs;let index=index;">
+      <td *ngIf="showNo" class="text-center">{{index+1}}</td>
+      <td>{{record?.content}}</td>
+      <td>{{record?.description}}</td>
+    </tr>
+  </tbody>
+</table>
