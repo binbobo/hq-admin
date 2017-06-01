@@ -6,11 +6,10 @@ table th,table td{
      color: #727171;
 }
 .append-order .container .row{
-    height: 3rem;
-  
+    height: 3rem;  
 }
 .append-order .container .row div{
-       text-overflow:ellipsis; 
+     text-overflow:ellipsis; 
      white-space:nowrap; 
      overflow:hidden;
 }
@@ -29,6 +28,7 @@ table .tr-left-bold{
     text-align: left;
     font-weight: bold;
     padding-left: 1.1rem !important;
+    background: #f3f3f4;
 }
 input[disabled] {
   background: #f7f8f8;

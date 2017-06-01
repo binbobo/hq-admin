@@ -288,3 +288,9 @@ table .tr-left-bold{
     font-weight: bold;
     padding-left: 1.1rem !important;
 }
+/*.form-control:focus{
+    border-color:#27b394 !important;
+}
+select{
+     border-color:#27b394 !important;
+}*/

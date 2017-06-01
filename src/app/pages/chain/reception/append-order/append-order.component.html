@@ -10,7 +10,7 @@
       <div class="input-group m-1">
         <!--<span class="input-group-addon">选择工单</span>-->
         <input [hqTableTypeahead]="typeaheadSource" [(ngModel)]="initValue" name="initValue" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)"
-          class="form-control" placeholder="请输入车牌号/工单号" />
+          class="form-control" placeholder="请输入车牌号/工单号" style="width:365px;"/>
       </div>
     </form>
   <table class="table table-order-info table-bordered">
