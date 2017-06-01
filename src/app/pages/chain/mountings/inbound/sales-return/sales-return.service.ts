@@ -24,7 +24,6 @@ export class SalesReturnService implements BasicService<any>{
     const url = Urls.chain.concat('/Sales/GetCustomer?', params.serialize());
     return this.httpService.get<PagedResult<any>>(url)
       .then(result => {
-        console.log('客户信息',result);
         return result;
       })
       .catch(err => Promise.reject(`获取客户信息失败：${err}`));
@@ -32,7 +31,6 @@ export class SalesReturnService implements BasicService<any>{
 //   //退库单号模糊查询
   getBillCodePagedList(params: BillCodeRequest): Promise<PagedResult<any>> {
     const url = Urls.chain.concat('/Sales/SearchBillCode?', params.serialize());
-    console.log('单号获取',url);
     return this.httpService.get<PagedResult<any>>(url)
       .then(result => {
         return result;

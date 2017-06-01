@@ -358,7 +358,7 @@
     <hq-fee-statistics [fee]="fee"></hq-fee-statistics>
     <br>
     <div class="text-center">
-      <button [hqSpinner]="generating" type="button" class="btn btn-success btn-color" [disabled]="!enableCreateWorkSheet" (click)="createWorkSheet()">生成工单</button>
+      <button [hqSpinner]="generating" type="button" class="btn btn-success" [disabled]="!enableCreateWorkSheet" (click)="createWorkSheet()">生成工单</button>
       <button [hqSpinner]="suspendBill.suspending" type="button" class="btn btn-primary btn-suspend" (click)="suspendOrder()">挂单</button>
     </div>
   </div>

@@ -77,19 +77,17 @@ export class BusinessListComponent extends DataList<any> {
     // 更新查询范围参数
     if (evt.length) {
       this.params.orgIds = evt;
-    }else{
+    } else {
       this.params.orgIds = null;
     }
-    console.log(this.params.orgIds, this.orgItems);
   }
 
   //服务顾问下拉框选择
   onSearchNameChange(evt) {
     // 更新查询范围参数
-    console.log('选择的人', evt);
-    if (evt.length){
+    if (evt.length) {
       this.params.employees = evt;
-    }else{
+    } else {
       this.params.employees = null;
     }
   }
@@ -101,7 +99,6 @@ export class BusinessListComponent extends DataList<any> {
     this.isShow1 = false;
     this.isShow2 = false;
     this.orgItems = this.params.orgIds;
-    console.log(this.params.orgIds, this.orgItems);
     // this.onLoadList();
     this.params.setPage(1);
     this.loadList()
@@ -127,9 +124,7 @@ export class BusinessListComponent extends DataList<any> {
   //详情
   businessDetailsHandler(eve, id) {
     eve.generating = true;
-    console.log('乱七八糟', eve, id);
     this.detailsId = id;
-    console.log('啊大大大', this.detailsId, this.orgItems);
     this.moneyObj = {
       amountReceivable1: 0,//表一应收金额
       amountReceivable2: 0,//表二应收金额（工时费）
@@ -153,12 +148,12 @@ export class BusinessListComponent extends DataList<any> {
       });
       //表一
       this.businessData.totalCost.forEach(item => {
-        this.moneyObj.discountMoney1 += item.receivableCost - item.discountCost;//优惠
-        if (this.businessData.deduceAmount) {
-          this.moneyObj.discountMoney1 = this.moneyObj.discountMoney1 + this.businessData.deduceAmount;//折扣+抹零
-        }
+        this.moneyObj.discountMoney1 += item.receivableCost - item.discountCost;//折扣
         this.moneyObj.amountReceivable1 += item.receivableCost;//合计金额
       });
+      if (this.businessData.deduceAmount) {
+        this.moneyObj.discountMoney1 = this.moneyObj.discountMoney1 + this.businessData.deduceAmount;//优惠（折扣+抹零）
+      }
       this.businessData['moneyObj'] = this.moneyObj;
       eve.generating = false;
       this.bdModal.show()

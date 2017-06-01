@@ -55,11 +55,9 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   }
   // //选择退库单号
   onItemCodeSelect(event) {
-    console.log('eve', event);
     this.originalBillId = event.id;
     this.billCode = event.billCode;
     if (!this.customerName) {
-      console.log('客户名称为空');
       this.customerId = event.customerID;
       this.customerName = event.customerName;
       this.customerPhone = event.customerPhone;
@@ -68,7 +66,6 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
     this.params.customerId = this.customerId;
     this.params.customerName = this.customerName;
     this.params.billCode = this.billCode;
-    console.log('选择单号带出', this.params.customerId, this.params.customerName);
     this.onLoadList();
   }
   // //选择客户名称
@@ -177,7 +174,6 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
       customerId: this.customerId,
       list: this.salesReturnData,
     }
-    console.log('上传数据', JSON.stringify(this.billData));
     this.salesReturnservice.createReturnList(this.billData)
       .then(data => {
         this.createLoading = false;

@@ -131,7 +131,7 @@ export class SalesCreateComponent implements OnInit {
       item.stockCount = 0;
     }
     let priceControl = this.form.controls['yuan'];
-    this.price = item.price / 100;
+    this.price = event.newPrice / 100;
     let validators = Validators.compose([Validators.required, CustomValidators.gt(0), CustomValidators.min(this.price)]);
     priceControl.setValidators(validators);
     this.form.patchValue(item);

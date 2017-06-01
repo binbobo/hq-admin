@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { EmployeeService } from 'app/pages/employee.service';
+import { OrganizationService } from 'app/pages/organization.service';
 
 @Component({
   selector: 'hq-workorder-detail-print',
@@ -9,10 +11,20 @@ export class WorkorderDetailPrintComponent implements OnInit {
   @Input()
   data: any;
 
-  constructor() { }
+  employeeInfo: any; // 员工信息
+  organizationInfo: any; // 门店信息
+
+  constructor(private employeeService: EmployeeService, private organizationService: OrganizationService) { }
 
   ngOnInit() {
-    // console.log('要打印的工单详情数据为：', this.data);
+    this.employeeService.getEmployee().then(data => {
+      this.employeeInfo = data;
+      console.log(data);
+    });
+    this.organizationService.getOrganization().then(data => {
+      this.organizationInfo = data;
+      console.log(data);
+    });
   }
 
 }

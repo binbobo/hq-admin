@@ -76,7 +76,6 @@ export class ReturnListComponent extends DataList<any> {
     this.departments = null;
     this.takeUser = el.value;
     this.departments = this.employees.find(m => m.takeUser == this.takeUser);
-    console.log('部门数据',this.departments);
     this.takeDepartId = this.departments.departList[0].id;
     this.billCode = null;
     this.list = null;

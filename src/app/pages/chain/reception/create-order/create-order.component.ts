@@ -623,10 +623,11 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
           this.fee.workHours = this.newMaintenanceItemData.reduce((accumulator, currentValue) => {
             return currentValue.workHour;
           }, 0);
-          this.newWorkOrderData.fee = this.fee;
+          // this.newWorkOrderData.fee = this.fee;
           this.newWorkOrderData.serviceOutputs = workSheet.maintenanceItems;
           this.newWorkOrderData.serviceOutputs.fee = this.fee;
           this.newWorkOrderData.typeName = this.maintenanceTypeData.find(item => item.id === workSheet.type).value;
+          this.newWorkOrderData.printDateTime = moment().format('YYYY-MM-DD HH:mm:ss');
           // 延迟打印
           setTimeout(() => {
             this.print();
@@ -652,7 +653,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
         // 出错的话  允许再次提交
         this.enableCreateWorkSheet = true;
 
-        this.alerter.error('创建工单失败:' + err, true, 3000);
+        this.alerter.error(err, true, 3000);
       });
   }
 
