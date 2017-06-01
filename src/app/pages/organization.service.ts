@@ -46,7 +46,8 @@ export class OrganizationService {
     private getFromApi() {
         let url = Urls.chain.concat('/OrganizationInfos/Current');
         return this.httpService.get<ApiResult<OrganizationInfo>>(url)
-            .then(result => result.data);
+            .then(result => result.data)
+            .catch(err => Promise.resolve({}));
     }
 
 }
