@@ -130,7 +130,8 @@ export class OrderService implements BasicService<Order> {
                  // 如果有孩子  将父节点组织到孩子节点中  放到前头
                 value.children = [{
                     name: value.name + '总店',
-                    id: value.id
+                    id: value.id,
+                    checked:false,
                 }].concat(value.children);
                 obj['children'] = this.orgsRecursion(value.children);
             } else {
