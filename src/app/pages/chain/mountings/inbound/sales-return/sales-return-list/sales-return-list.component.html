@@ -50,7 +50,7 @@
           <tr *ngFor="let item of list">
             <td><button [disabled]="item.count<=item.returnCount" class="btn btn-sm btn-primary" (click)="OnCreatBound(item,item.id)">退库</button></td>
             <td class="text-center">{{item.productCode }}</td>
-            <td class="text-center">{{item.categoryName[0]}}</td>
+            <td class="text-center">{{item?.categoryName?.length&&item.categoryName[0]}}</td>
             <td>{{item.productName}}</td>
             <td>{{item.brandName }}</td>
             <td>{{item.specification}}</td>

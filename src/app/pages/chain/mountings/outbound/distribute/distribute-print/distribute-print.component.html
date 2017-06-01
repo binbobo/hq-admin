@@ -1,7 +1,7 @@
 <div class="print card">
   <div class='card-block'>
     <div *ngFor="let item of data">
-      <div class="col-12">门店名称：{{organizationInfo.name}} <br>
+      <div class="col-12">门店名称：{{organizationInfo?.name}} <br>
         发料单号：{{item.billCode}} &nbsp; &nbsp; &nbsp; &nbsp;流水号：{{item.serialNum}} &nbsp; &nbsp; &nbsp; &nbsp;车牌号：{{item.plateNo}}
         &nbsp; &nbsp; &nbsp; &nbsp;开单时间：{{item.createBillDateTime|sDatetime}}</div>
         <br>
@@ -46,7 +46,7 @@
       <div class="container">
         <p>
           <span class="mr-2 pull-left">打印时间：{{item.printDateTime|sDatetime}}</span>
-          <span class="mr-2 pull-right">操作人：{{employeeInfo.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;领料人：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <span class="mr-2 pull-right">操作人：{{employeeInfo?.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;领料人：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
         </p>
       </div>
       <br>

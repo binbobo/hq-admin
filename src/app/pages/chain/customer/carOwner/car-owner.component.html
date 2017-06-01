@@ -44,47 +44,52 @@
           <div class="hq-col">
             <button type="submit" class="btn btn-primary">查询</button>
             <button type="reset" class="btn btn-warning">清空</button>
+            <button [hqSpinner]="generating" type="button" class="btn btn-export mr-2" (click)="export()">导出</button>
           </div>
         </div>
       </div>
     </form>
     <hr>
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>操作</th>
-          <th>建档日期</th>
-          <th>车主</th>
-          <th>手机号</th>
-          <th>首次进店时间</th>
-          <th>末次进店时间</th>
-          <th>创建人</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of list">
-          <td class="text-center">
-            <button [routerLink]="['edit', item.id]" type="button" class="btn btn-sm btn-success">编辑</button>
-            <button [hqSpinner]="item.detailGenerating" type="button" class="btn btn-sm btn-info" [disabled]="item.detailGenerating"
-              (click)="customerDetail(item, detailLgModal)">详情</button>
-            <!--<button [hqSpinner]="item.deleteGenerating" type="button" class="btn btn-sm btn-danger" [disabled]="item.deleteGenerating"
+    <div class="table-container">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>操作</th>
+            <th>建档日期</th>
+            <th>车主</th>
+            <th>手机号</th>
+            <th>首次进店时间</th>
+            <th>末次进店时间</th>
+            <th>创建人</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of list">
+            <td class="text-center">
+              <button [routerLink]="['edit', item.id]" type="button" class="btn btn-sm btn-success">编辑</button>
+              <button [hqSpinner]="item.detailGenerating" type="button" class="btn btn-sm btn-info" [disabled]="item.detailGenerating"
+                (click)="customerDetail(item, detailLgModal)">详情</button>
+              <!--<button [hqSpinner]="item.deleteGenerating" type="button" class="btn btn-sm btn-danger" [disabled]="item.deleteGenerating"
               (click)="customerDel(item)">删除</button>-->
-          </td>
-          <td>{{item.createdOnUtc|sDate}}</td>
-          <td>{{item.name}}</td>
-          <td>{{item.phone}}</td>
-          <td>{{item.firstEnter|sDatetime}}</td>
-          <td>{{item.lastEnter|sDatetime}}</td>
-          <td>{{item.createdUserName}}</td>
-        </tr>
-      </tbody>
-    </table>
-    <div style="margin-bottom:10px;">
-      <button type="button" class="btn btn-primary" [routerLink]="['add']">新增</button>
-      <button [hqSpinner]="generating" type="button" class="btn btn-export mr-2" (click)="export()">导出</button>
+            </td>
+            <td>{{item.createdOnUtc|sDate}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.phone}}</td>
+            <td>{{item.firstEnter|sDatetime}}</td>
+            <td>{{item.lastEnter|sDatetime}}</td>
+            <td>{{item.createdUserName}}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <br>
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+  </div>
+  <div class="card-footer">
+    <div class="text-center">
+      <button type="button" class="btn btn-secondary" [routerLink]="['add']">
+        <i class="fa fa-plus-circle mr-1" aria-hidden="true"></i>新增车主
+      </button>
+    </div>
   </div>
 </div>
 
