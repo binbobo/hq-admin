@@ -44,7 +44,7 @@
     </div>
     <div class="col-4">
       <label>结算时间: </label>
-      <span>{{businessData?.updateOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</span>
+      <span>{{businessData?.updateOnUtc|sDatetime}}</span>
     </div>
   </div>
   <div class="row">
@@ -65,7 +65,7 @@
     </div>
     <div class="col-4">
       <label>进店时间: </label>
-      <span>{{businessData?.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</span>
+      <span>{{businessData?.createdOnUtc|sDatetime}}</span>
     </div>
     <div class="col-4">
       <label>进店里程: </label>
@@ -76,7 +76,7 @@
   <div class="row">
     <div class="col-4">
       <label>出厂时间: </label>
-      <span>{{businessData?.updateOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</span>
+      <span>{{businessData?.updateOnUtc|sDatetime}}</span>
     </div>
     <div class="col-4">
       <label>出厂里程: </label>
@@ -265,7 +265,7 @@
   </table>
   <!--</div>-->
   <div class="row">
-    <div class="col-4"> 打印时间：{{businessData?.printOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</div>
+    <div class="col-4"> 打印时间：{{businessData?.printOnUtc|sDatetime}}</div>
     <div class="col-2">操作人：<span>{{businessData?.currentUserName}}</span></div>
     <div class="col-2">客户签名：</div>
     <div class="col-4">
