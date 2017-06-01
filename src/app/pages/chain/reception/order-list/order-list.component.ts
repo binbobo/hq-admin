@@ -107,9 +107,13 @@ export class OrderListComponent extends DataList<Order> {
   }
 
   print() {
+    this.generating = true;
+    // 记录打印时间
+    this.selectedOrder.printDateTime = moment().format('YYYY-MM-DD HH:mm:ss');
     setTimeout(() => {
+      this.generating = false;
       this.printer.print();
-    }, 500);
+    }, 1000);
   }
 
   /**
@@ -153,7 +157,7 @@ export class OrderListComponent extends DataList<Order> {
         return accumulator + currentValue.amount;
       }, 0);
       this.selectedOrder.serviceOutputs.fee = this.selectedOrder.fee;
-      if (this.selectedOrder.productOutputs && this.selectedOrder.productOutputs.length > 0) {
+      if (data.productOutputs && data.productOutputs.length > 0) {
         this.selectedOrder.productOutputs.fee = this.selectedOrder.fee.material;
       }
 
