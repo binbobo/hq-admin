@@ -127,7 +127,7 @@ export class ProcurementCreateComponent implements OnInit {
 
   onPriceChange(event) {
     let val = event.target.value || 0;
-    let price = Math.floor(val * 100);
+    let price = (val * 100).toFixed();
     this.form.controls['price'].setValue(price);
     this.calculate();
   }
@@ -136,9 +136,9 @@ export class ProcurementCreateComponent implements OnInit {
     let count = this.form.controls['count'].value || 0;
     let price = this.form.controls['price'].value || 0;
     let tax = this.model.taxRate || 0;
-    let exTaxPrice = Math.floor(price / (tax * 0.01 + 1));
+    let exTaxPrice = (price / (tax * 0.01 + 1)).toFixed(0);
     let amount = count * price;
-    let exTaxAmount = count * exTaxPrice;
+    let exTaxAmount = count * +exTaxPrice;
     this.form.patchValue({
       amount: amount,
       count: count,
