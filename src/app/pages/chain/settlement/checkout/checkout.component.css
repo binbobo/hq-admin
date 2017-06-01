@@ -29,7 +29,7 @@ caption {
 .checkout-item:nth-child(2n+1){
     margin:4px auto;
     float: left;
-    width: 50%;
+    width: 45%;
 }
 .checkout-item:nth-child(2n){
     margin:4px auto;
