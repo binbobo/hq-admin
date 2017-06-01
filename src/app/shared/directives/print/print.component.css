@@ -4,7 +4,34 @@ h1::first-letter,h2::first-letter,h3::first-letter,h4::first-letter,h5::first-le
 
 .hq-printing{
     font-size: 12px!important;
+    font-weight: normal!important;
 }
+/*维修工单打印页面样式 --Start*/
+.hq-printing div.order-detail-print-header {
+    margin-top: 15px;
+}
+.hq-printing div.order-detail-print-header p span.fixed-width {
+    display: inline-block;
+    min-width:160px;
+}
+.hq-printing table td{
+    vertical-align: middle;
+    padding: .5rem;
+}
+.hq-printing table td.fixed-width{
+    width: 100px;
+}
+.hq-printing table td.td-header{
+    width: 65px;
+}
+.hq-printing table th {
+    font-weight: normal;
+}
+.hq-printing table caption {
+    font-weight: bold;
+    font-size: larger;
+}
+/*维修工单打印页面样式 --End*/
 
 .print-header{
     /*clear: both;*/
