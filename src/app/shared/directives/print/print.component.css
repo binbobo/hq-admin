@@ -14,7 +14,7 @@ h1::first-letter,h2::first-letter,h3::first-letter,h4::first-letter,h5::first-le
     display: inline-block;
     min-width:160px;
 }
-.hq-printing table td{
+.hq-printing table td{ 
     vertical-align: middle;
     padding: .5rem;
 }
@@ -22,7 +22,7 @@ h1::first-letter,h2::first-letter,h3::first-letter,h4::first-letter,h5::first-le
     width: 100px;
 }
 .hq-printing table td.td-header{
-    width: 65px;
+    width: 25px;
 }
 .hq-printing table th {
     font-weight: normal;
