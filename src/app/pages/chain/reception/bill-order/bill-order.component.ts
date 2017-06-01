@@ -367,7 +367,7 @@ export class BillOrderComponent extends DataList<any>{
                                 }
                                 console.log(this.printData.moneyObj.costCountMoney, this.printData.moneyObj.discountMoney, data.deduceAmount)
 
-                                setTimeout(() => this.print(dialog), 200)
+                                setTimeout(() => this.print(dialog), 1000)
                             })
                             .catch(err => {
                                 this.alerter.error(err, true, 2000);
@@ -386,7 +386,6 @@ export class BillOrderComponent extends DataList<any>{
     }
     // 点击打印事件
     private pathname;
-
     print(dialog) {
         console.log(this.printData)
         this.printer.print();

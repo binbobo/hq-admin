@@ -160,8 +160,8 @@
     <form #form="ngForm" (ngSubmit)="onSearch()">
       <div class="input-group m-1">
         <span class="input-group-addon">工单状态</span>
-        <div class="check-label-col">
-          <div class="form-check form-check-inline" *ngFor="let status of orderStatusData">
+        <div class="form-control d-block">
+          <div class="form-check form-check-inline mb-0" *ngFor="let status of orderStatusData">
             <label class="form-check-label">
                 <input (change)='status.checked = !status.checked' [checked]="status.checked" class="form-check-input"  type="checkbox" value="{{status.id}}"> {{status.value}}
               </label>

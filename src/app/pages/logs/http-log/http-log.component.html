@@ -11,28 +11,28 @@
     <table class="table table-bordered table-sm">
       <thead>
         <tr>
-          <th>application</th>
-          <th>environment</th>
-          <th>endpoint</th>
-          <th>request.url</th>
-          <th>http.method</th>
-          <th>response.code</th>
-          <th>timestamp</th>
-          <th>time.consuming</th>
-          <th>operators</th>
+          <th translate>application</th>
+          <th translate>environment</th>
+          <th translate>endpoint</th>
+          <th translate>request.url</th>
+          <th translate>http.method</th>
+          <th translate>response.code</th>
+          <th translate>timestamp</th>
+          <th translate>time.consuming</th>
+          <th translate>operators</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of list">
           <td>{{ item.applicationName }}</td>
-          <td>{{item.environmentName}}</td>
+          <td class="text-center">{{item.environmentName}}</td>
           <td>{{item.endpoint}}</td>
           <td><clipped-word length="20" [content]="item.requestedUrl"></clipped-word></td>
-          <td>{{ item.requestMethod }}</td>
-          <td>{{item.responseCode}}</td>
-          <td>{{item.timestamp|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+          <td class="text-center">{{ item.requestMethod }}</td>
+          <td class="text-center">{{item.responseCode}}</td>
+          <td class="text-center">{{item.timestamp|sDatetime}}</td>
           <td class="text-right">{{item.takeTime|number:'1.3'}}</td>
-          <td>
+          <td class="text-center">
             <a (click)="showModal(item.id)" class="btn btn-sm btn-info" title="详情"><i class="fa fa-info-circle"></i></a>
           </td>
         </tr>
@@ -53,91 +53,91 @@
       </div>
       <div class="modal-body" *ngIf="model">
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">session.id</label>
+          <label class="col-sm-2 col-form-label" translate>session.id</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.sessionId}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">level</label>
+          <label class="col-sm-2 col-form-label" translate>level</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.logLevel}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">application</label>
+          <label class="col-sm-2 col-form-label" translate>application</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.applicationName}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">timestamp</label>
+          <label class="col-sm-2 col-form-label" translate>timestamp</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.timestamp|date:"yyyy/MM/dd HH:mm:ss"}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">environment</label>
+          <label class="col-sm-2 col-form-label" translate>environment</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.environmentName}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">source</label>
+          <label class="col-sm-2 col-form-label" translate>source</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.sourceName}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">endpoint</label>
+          <label class="col-sm-2 col-form-label" translate>endpoint</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.endpoint}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">request.url</label>
+          <label class="col-sm-2 col-form-label" translate>request.url</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.requestedUrl}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">request.header</label>
+          <label class="col-sm-2 col-form-label" translate>request.header</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.requestHeaders}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">request.body</label>
+          <label class="col-sm-2 col-form-label" translate>request.body</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.requestBody}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">response.code</label>
+          <label class="col-sm-2 col-form-label" translate>response.code</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.responseCode}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">response.header</label>
+          <label class="col-sm-2 col-form-label" translate>response.header</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.responseHeaders}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">response.body</label>
+          <label class="col-sm-2 col-form-label" translate>response.body</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.responseBody}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">cached</label>
+          <label class="col-sm-2 col-form-label" translate>cached</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.isFromCache}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">time.consuming</label>
+          <label class="col-sm-2 col-form-label" translate>time.consuming</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.takeTime}}</p>
           </div>

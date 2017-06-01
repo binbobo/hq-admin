@@ -45,8 +45,8 @@
         </div>
       </div>
       <div *ngIf="items" class="hq-input m-1">
-        <label *ngIf="items" for="searchRange" class="form-label">查询范围</label>
-        <div *ngIf="items" class="hq-col">
+        <label for="searchRange" class="form-label">查询范围</label>
+        <div class="hq-col">
           <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)">
           </ngx-dropdown-treeview>
         </div>
@@ -89,8 +89,8 @@
             <td>{{item.plateNo}}</td>
             <td>{{item.billCode}}</td>
             <td>{{item.typeName}}</td>
-            <td>{{item.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-            <td>{{item.leaveTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+            <td>{{item.createdOnUtc|sDatetime}}</td>
+            <td>{{item.leaveTime|sDatetime}}</td>
             <td [class.overtime]="item.overTime">{{item.overTime|durationHumanize}}</td>
             <td>{{item.vehicleName}}</td>
             <td>{{item.vin}}</td>
@@ -245,19 +245,19 @@
                 <td>结算方</td>
                 <td>{{businessData?.settlementParty}}</td>
                 <td>结算时间</td>
-                <td>{{businessData?.updateOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                <td>{{businessData?.updateOnUtc|sDatetime}}</td>
               </tr>
               <tr>
                 <td>进店里程</td>
                 <td>{{businessData?.mileage}} km</td>
                 <td>进店时间</td>
-                <td>{{businessData?.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                <td>{{businessData?.createdOnUtc|sDatetime}}</td>
               </tr>
               <tr>
                 <td>出厂里程</td>
                 <td>{{businessData?.leaveMileage}} km</td>
                 <td>出厂时间</td>
-                <td>{{businessData?.updateOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                <td>{{businessData?.updateOnUtc|sDatetime}}</td>
               </tr>
             </tbody>
           </table>
@@ -415,7 +415,6 @@
               </tbody>
             </table>
           </div>
-          <br>
           <div class="card-footer text-center">
             <button (click)="print()" type="button" class="btn btn-export">打印</button>
           </div>

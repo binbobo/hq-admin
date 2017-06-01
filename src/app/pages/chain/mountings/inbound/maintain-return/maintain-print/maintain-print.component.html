@@ -1,7 +1,8 @@
 <div class="print card">
   <div class='card-block'>
     <div *ngFor="let item of data">
-      <div class="col-12">退料单号：{{item.billCode}} &nbsp; &nbsp; &nbsp; &nbsp;流水号：{{item.serialNum}} &nbsp; &nbsp; &nbsp; &nbsp;车牌号：{{item.plateNo}}
+      <div class="col-12">门店名称：{{organizationInfo.name}}<br>
+        退料单号：{{item.billCode}} &nbsp; &nbsp; &nbsp; &nbsp;流水号：{{item.serialNum}} &nbsp; &nbsp; &nbsp; &nbsp;车牌号：{{item.plateNo}}
         &nbsp; &nbsp; &nbsp; &nbsp;开单时间：{{item.createBillDateTime|sDatetime}}
       </div>
       <br>
@@ -12,7 +13,7 @@
             <th>配件编码</th>
             <th>配件类型</th>
             <th>配件名称</th>
-            <th>品牌</th>
+            <th>品牌</th> 
             <th>规格型号</th>
             <th>单位</th>
             <th>&nbsp;仓库&nbsp;</th>
@@ -46,12 +47,11 @@
       <div class="container">
         <p>
           <span class="mr-2 pull-left">打印时间：{{item.printDateTime|sDatetime}}</span>
-          <span class="mr-2 pull-right">操作人：{{item.operator}}</span>
+          <span class="mr-2 pull-right">操作人：{{employeeInfo.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;退料人：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
         </p>
       </div>
       <br>
       <div class="page-break-after"></div>
-      <br>
     </div>
   </div>
 </div>
