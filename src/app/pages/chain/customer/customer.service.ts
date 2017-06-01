@@ -98,10 +98,10 @@ export class CustomerService implements BasicService<any> {
      */
     public update(body: any): Promise<void> {
         const url = Urls.chain.concat('/Customers/Vehicle/', body.id);
-        console.log('更新车主信息亲求url: ', url);
+        console.log('更新车主信息url: ', url);
         return this.httpService.
             put<void>(url, body)
-            .catch(err => Promise.reject(`更新车主失败失败：${err}`));
+            .catch(err => Promise.reject(`更新车主失败：${err}`));
     }
 
     /**

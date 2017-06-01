@@ -112,22 +112,36 @@ export class AddCarownerComponent implements OnInit {
 
     console.log('提交的车主对象为：', JSON.stringify(carOwnerBody));
 
-    // // 调用后台添加车主接口
-    this.service.create(carOwnerBody).then(data => {
-      // console.log('创建车主成功, 新创建的车主信息为：', JSON.stringify(data));
+    if (!carOwnerBody.id) {
+      // 调用后台添加车主接口
+      this.service.create(carOwnerBody).then(data => {
+        // console.log('创建车主成功, 新创建的车主信息为：', JSON.stringify(data));
+        this.addCustomerSuccess();
+      }).catch(err => {
+        this.addCustomerFailure(err);
+      });
+    } else {
+      // 更新车主  用于  通过模糊查询选择车主
+      this.service.update(carOwnerBody).then(data => {
+        this.addCustomerSuccess();
+      }).catch(err => {
+        this.addCustomerFailure(err);
+      });
+    }
+  }
 
-      // 提示创建车主成功
-      this.alerter.success('创建车主成功');
-      this.carOwnerForm.reset();
-      this.newVehiclesData = [];
-      this.isProvinceLevelMunicipality = false;
+  private addCustomerSuccess() {
+    this.alerter.success('创建车主成功');
+    this.carOwnerForm.reset();
+    this.newVehiclesData = [];
+    this.isProvinceLevelMunicipality = false;
 
-      this.generating = false;
-    }).catch(err => {
-      this.enableSaveCustomer = true;
-      this.alerter.error(err, true, 3000);
-      this.generating = false;
-    });
+    this.generating = false;
+  }
+  private addCustomerFailure(err) {
+    this.enableSaveCustomer = true;
+    this.alerter.error(err, true, 3000);
+    this.generating = false;
   }
   // 省份选择事件处理程序
   onProvinceChange(provinceValue) {
@@ -189,7 +203,7 @@ export class AddCarownerComponent implements OnInit {
   createForm() {
     // 添加车主表单
     this.carOwnerForm = this.fb.group({
-      id: '', // 车主主键 用于更新
+      id: '', // 车主主键 用于更新(模糊查询选择车主)
       name: ['', [Validators.required]], // 车主
       phone: ['', [Validators.required, HQ_VALIDATORS.mobile]], // 车主手机号
       sex: '', // 车主性别
@@ -271,6 +285,8 @@ export class AddCarownerComponent implements OnInit {
 
     // 初始化车主下面的车辆信息
     this.newVehiclesData = customer.customerVehicles || [];
+
+    this.enableSaveCustomer = this.carOwnerForm.valid && this.newVehiclesData.length > 0;
   }
   /**
  * 选择车主电话
