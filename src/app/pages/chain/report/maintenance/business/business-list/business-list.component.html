@@ -89,8 +89,8 @@
             <td>{{item.plateNo}}</td>
             <td>{{item.billCode}}</td>
             <td>{{item.typeName}}</td>
-            <td>{{item.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-            <td>{{item.leaveTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+            <td>{{item.createdOnUtc|sDatetime}}</td>
+            <td>{{item.leaveTime|sDatetime}}</td>
             <td [class.overtime]="item.overTime">{{item.overTime|durationHumanize}}</td>
             <td>{{item.vehicleName}}</td>
             <td>{{item.vin}}</td>
@@ -245,19 +245,19 @@
                 <td>结算方</td>
                 <td>{{businessData?.settlementParty}}</td>
                 <td>结算时间</td>
-                <td>{{businessData?.updateOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                <td>{{businessData?.updateOnUtc|sDatetime}}</td>
               </tr>
               <tr>
                 <td>进店里程</td>
                 <td>{{businessData?.mileage}} km</td>
                 <td>进店时间</td>
-                <td>{{businessData?.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                <td>{{businessData?.createdOnUtc|sDatetime}}</td>
               </tr>
               <tr>
                 <td>出厂里程</td>
                 <td>{{businessData?.leaveMileage}} km</td>
                 <td>出厂时间</td>
-                <td>{{businessData?.updateOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+                <td>{{businessData?.updateOnUtc|sDatetime}}</td>
               </tr>
             </tbody>
           </table>

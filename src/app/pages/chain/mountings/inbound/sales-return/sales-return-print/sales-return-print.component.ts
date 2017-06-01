@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-// import { SalesReturnPrintItem } from '../sales-return.service';
+import { OrganizationInfo, OrganizationService } from 'app/pages/organization.service';
 
 @Component({
   selector: 'hq-sales-return-print',
@@ -11,9 +11,14 @@ export class SalesReturnPrintComponent implements OnInit {
   @Input()
   private model:any;
 
-  constructor() { }
+ private org: OrganizationInfo;
+  constructor(private orgService: OrganizationService) { }
 
   ngOnInit() {
+    this.orgService.getOrganization()
+      .then(org => this.org = org)
+      .catch(err => console.log(err));
   }
+  
 
 }

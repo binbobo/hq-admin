@@ -1,14 +1,15 @@
 <!--<h3>{{model?.title}}</h3>-->
 <br>
 <div class="clearfix">
+  <span class="pull-left mr-3">店铺名称：{{org?.name}}</span>
   <div class="pull-left mr-3">退料单号：{{model?.billCode}}</div>
   <div class="pull-left mr-3">退料人：{{model?.takeUser}}</div>
   <div class="pull-left mr-3">部门：{{model?.department}}</div>
-  <div class="pull-left">开单时间：{{model?.createBillDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</div>
+  <div class="pull-left">开单时间：{{model?.createBillDateTime|sDatetime}}</div>
 </div>
 <br>
 <div class="page-break-after">
-  <table class="table table-bordered">
+  <table class="table table-bordered table-sm">
     <thead>
       <tr>
         <th>配件编码</th>
@@ -40,10 +41,9 @@
       </tr>
     </tbody>
   </table>
-  <div class="row">
-    <div class="col-2">金额：{{model?.totalAmount|centToYuan}}</div>
-    <div class="col-5">打印时间：{{model?.printDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</div>
-    <div class="col-2">操作人：{{model?.operator}}</div>
-    <div class="col-3">退料人：</div>
+  <div class="">
+    <div class="pull-left mr-3">金额：{{model?.totalAmount|centToYuan}}</div>
+    <div class="pull-left mr-3">打印时间：{{model?.printDateTime|sDatetime}}</div>
+    <div class="pull-left pr-5">操作人：{{model?.operator}}</div>
   </div>
 </div>
