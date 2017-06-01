@@ -6,10 +6,10 @@
       <div class="input-group m-1">
         <span class="input-group-addon">进店时间</span>
         <input [max-date]="maxEnterStartDate" class="form-control datetime-picker" style="border-right:0;" formControlName="searchStart" id="starttime" name="starttime"
-          type="text" ngui-datetime-picker/>
+          date-only="true" type="text" ngui-datetime-picker/>
         <span class="input-group-addon">-</span>
         <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" class="form-control datetime-picker" style="border-right-width:1px;" formControlName="searchEnd" id="endtime" formControlName="searchEnd" name="endtime"
-          type="text" ngui-datetime-picker/>
+          date-only="true" type="text" ngui-datetime-picker/>
       </div>
 
       <div class="input-group m-1">
@@ -18,9 +18,9 @@
         />
       </div>
 
-      <div class="input-group m-1">
+      <div class="input-group m-1" *ngIf="items">
         <span class="input-group-addon">门店查询</span>
-        <div *ngIf="true" class="form-controls">
+        <div class="form-controls">
           <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)">
           </ngx-dropdown-treeview>
         </div>
@@ -44,9 +44,9 @@
           <td width="100"><button [hqSpinner]="item.hqSpinner" class="btn btn-primary btn-sm" (click)="alert(item,item.id,bdModal)">详情</button></td>
           <td>{{item.outUnitName}}</td>
           <td>{{item.billCode}}</td>
-          <td>{{item.amount}}</td>
-          <td>{{item.exTaxAmount}}</td>
-          <td>{{item.createBillTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
+          <td>{{item.amount|centToYuan}}</td>
+          <td>{{item.exTaxAmount|centToYuan}}</td>
+          <td>{{item.createBillTime|sDatetime}}</td>
           <td>{{item.operator}}</td>
         </tr>
       </table>
@@ -78,7 +78,7 @@
 
           <div class="col-6">
             <label for="">开单时间：</label>
-            <span>{{detail?.createUtc|date:'yyyy/MM/dd HH:mm:ss'}}</span>
+            <span>{{detail?.createUtc|sDatetime}}</span>
           </div>
           <div class="col-6">
             <label for="">操作人：</label>
@@ -88,48 +88,36 @@
       </div>
       <div class="card-block">
         <table class="table table-order-info table-bordered" *ngFor="let item of detailItems" >
+          <tr>
+            <th>仓库</th>
+            <th>库位</th>
+            <th>配件编码</th>
+            <th>配件分类</th>
+            <th>配件名称</th>
+            <th>品牌</th>
+            <th>规格型号</th>
+            <th>单位</th>
+            <th>数量</th>
+            <th>含税单价（元）</th>
+            <th>含税金额（元）</th>
+            <th>不含税单价（元）</th>
+            <th>不含税金额（元）</th>
+          </tr>
           <tbody>
             <tr>
-              <td>仓库</td>
               <td>{{item.storeName}}</td>
-              <td>库位</td>
               <td>{{item.locationName}}</td>
-            </tr>
-            <tr>
-              <td>配件编码</td>
               <td>{{item.productCode}}</td>
-              <td>配件分类</td>
               <td>{{item.categoryList[0] }}</td>
-            </tr>
-            <tr>
-              <td>配件名称</td>
               <td>{{item.productName}}</td>
-              <td>品牌</td>
               <td>{{item.brand}}</td>
-            </tr>
-            <tr>
-              <td>规格型号</td>
               <td>{{item.specification}}</td>
-              <td>单位</td>
               <td>{{item.unit}}</td>
-            </tr>
-            <tr>
-              <td>数量</td>
               <td>{{item.count }}</td>
-              <td>含税单价（元）</td>
-              <td>{{item.price}}</td>
-            </tr>
-            <tr>
-              <td>含税金额（元）</td>
-              <td>{{item.amount}}</td>
-              <td>不含税单价（元）</td>
-              <td>{{item.exTaxPrice }}</td>
-            </tr>
-            <tr>
-              <td>不含税金额（元）</td>
-              <td>{{item.exTaxAmount }}</td>
-              <td></td>
-              <td></td>
+              <td>{{item.price|centToYuan}}</td>
+              <td>{{item.amount|centToYuan}}</td>
+              <td>{{item.exTaxPrice |centToYuan}}</td>
+              <td>{{item.exTaxAmount |centToYuan}}</td>
             </tr>
           </tbody>
         </table>

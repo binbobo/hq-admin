@@ -5,6 +5,8 @@ import { DataList } from "app/shared/models";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { OrderService } from "app/pages/chain/reception/order.service";
 import { PrintDirective, TypeaheadRequestParams } from "app/shared/directives";
+import { CentToYuanPipe, DurationHumanizePipe } from "app/shared/pipes";
+import * as moment from 'moment';
 
 @Component({
   selector: 'hq-distribute',
@@ -95,5 +97,18 @@ export class DistributeComponent extends DataList<any> {
       searchStart: '', //开始时间
       searchEnd: '', // 结束时间
     })
+  }
+  //时间控制
+  public get maxEnterStartDate() {
+    if(!this.distributeForm.get('searchEnd').value){
+      return moment().format('YYYY-MM-DD');
+    }
+    return new Date(this.distributeForm.get('searchEnd').value);
+  }
+  public get minEnterEndDate() {
+    return new Date(this.distributeForm.get('searchStart').value) || '';
+  }
+  public get maxEnterEndDate() {
+    return moment().format('YYYY-MM-DD');
   }
 }

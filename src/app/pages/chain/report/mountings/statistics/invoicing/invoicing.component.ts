@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PrintDirective } from "app/shared/directives";
-import { InvoicingService, InvoicingRequest } from "./invoicing.service"
+import { InvoicingService, InvoicingRequest, InvoicingDetailRequest } from "./invoicing.service"
 import { DataList, SelectOption } from "app/shared/models";
 import { TreeviewItem, TreeviewConfig } from "ngx-treeview/lib";
 import { OrderService } from "app/pages/chain/reception/order.service";
 import { CentToYuanPipe, DurationHumanizePipe } from "app/shared/pipes";
+import * as moment from 'moment';
 
 @Component({
   selector: 'hq-procurement',
@@ -13,15 +14,19 @@ import { CentToYuanPipe, DurationHumanizePipe } from "app/shared/pipes";
   styleUrls: ['./invoicing.component.css']
 })
 export class InvoicingComponent extends DataList<any> {
+  totalDetail: number;
+  listDetail: any[];
   private invoicingForm: FormGroup;
   private invoicingDetailForm: FormGroup;
   params: InvoicingRequest;
+  paramsDetail: InvoicingDetailRequest;
   detail;
   detailItems;
+  showIf: boolean = true;
   detailItemsLength: number;
   isLoading: boolean = false;
   private warehouses: Array<SelectOption>;
-
+  storeId: string;
 
   // 用于ngx-treeview组件
   public items: TreeviewItem[];
@@ -40,7 +45,9 @@ export class InvoicingComponent extends DataList<any> {
   ) {
     super(injector, service);
     this.createForm();
+    this.createDetailFrom();
     this.params = new InvoicingRequest();
+    this.paramsDetail = new InvoicingDetailRequest();
     // 获取可以选择的店名, 用于查询范围筛选
     this.orderService.getSelectableStores().subscribe(data => {
       console.log('采购统计门店数据', data);
@@ -55,26 +62,14 @@ export class InvoicingComponent extends DataList<any> {
   @ViewChild('printer')
   public printer: PrintDirective;
 
-  //打印
-  print() {
-    this.printer.print();
-  }
-
   //模态框
-  alert(ev, id, el) {
+  alert(ev, storeId, el) {
+    this.storeId = storeId;
     ev.hqSpinner = true;
-    this.service.get(id).then(data => {
-      this.isLoading = true;
-      // this.detail = data;
-      // this.detailItemsLength = data.items.length;
-      // this.detailItems = data.items;
-      console.log('详情数据', data)
-      el.show()
-      ev.hqSpinner = false;
-    }).catch(err => {
-      this.alerter.error(err, true, 2000);
-      ev.hqSpinner = false;
-    })
+    this.isLoading = true;
+    this.onSearchDetail()
+    this.showIf = false;
+    ev.hqSpinner = false;
   }
 
   //导出
@@ -83,24 +78,55 @@ export class InvoicingComponent extends DataList<any> {
       console.log('导出成功！', this.params);
     });
   }
-
+  onDetailExport() {
+    this.service.exportDetsil(this.paramsDetail).then(() => {
+      console.log('详情导出成功', this.paramsDetail);
+    })
+  }
   //搜索
   onSearch() {
     //将表单值赋给params
     Object.assign(this.params, this.invoicingForm.value);
-
     console.log('params', this.params);
     this.onLoadList();
+  }
+
+  //明细里的搜索
+  onSearchDetail() {
+    console.log('form', this.invoicingDetailForm.value)
+    //将表单值赋给paramsDetail
+    Object.assign(this.paramsDetail, this.invoicingDetailForm.value);
+    this.loading = true;
+    this.listDetail = null;
+    this.service.getDetailPagedList(this.storeId, this.paramsDetail).
+      then(m => {
+        this.loading = false;
+        this.listDetail = m.data;
+        console.log('详情列表',m.data);
+      })
+      .catch(err => {
+        this.alerter.error(err);
+        this.loading = false;
+      })
   }
 
   //绑定表单
   createForm() {
     this.invoicingForm = this.formBuilder.group({
-      storeId:'',
+      storeId: '',
       searchStart: '', //开始时间
       searchEnd: '', // 结束时间
       billCode: '',//单号
       name: '', //供应商
+    })
+  }
+
+  createDetailFrom() {
+    this.invoicingDetailForm = this.formBuilder.group({
+      productCode: '', //配件编码
+      productName: '', //配件名称
+      searchStart: '',
+      searchEnd: '',
     })
   }
 
@@ -110,11 +136,35 @@ export class InvoicingComponent extends DataList<any> {
   }
 
   joinOrderNumberOnSelect(ev) {
-      this.invoicingForm.patchValue({
-        billCode: ev.billCode,
-      });
+    this.invoicingForm.patchValue({
+      billCode: ev.billCode,
+    });
   }
-  //详情里的搜索
-onSearchDetail(){}
 
+  //时间控制
+  public get maxEnterStartDate() {
+    if (!this.invoicingForm.get('searchEnd').value) {
+      return moment().format('YYYY-MM-DD');
+    }
+    return new Date(this.invoicingForm.get('searchEnd').value);
+  }
+  public get minEnterEndDate() {
+    return new Date(this.invoicingForm.get('searchStart').value) || '';
+  }
+  public get maxEnterEndDate() {
+    return moment().format('YYYY-MM-DD');
+  }
+  //详情时间控制
+  public get maxEnterStartDateDetail() {
+    if (!this.invoicingDetailForm.get('searchEnd').value) {
+      return moment().format('YYYY-MM-DD');
+    }
+    return new Date(this.invoicingDetailForm.get('searchEnd').value);
+  }
+  public get minEnterEndDateDetail() {
+    return new Date(this.invoicingDetailForm.get('searchStart').value) || '';
+  }
+  public get maxEnterEndDateDetail() {
+    return moment().format('YYYY-MM-DD');
+  }
 }

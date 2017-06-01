@@ -17,14 +17,14 @@
       </div>
       <div class="input-group m-1">
         <span class="input-group-addon">查询日期</span>
-        <input class="form-control datetime-picker" style="border-right:0;" formControlName="searchStart" id="starttime" name="starttime"
-          type="text" ngui-datetime-picker/>
+        <input [max-date]="maxEnterStartDate" date-only="true" class="form-control datetime-picker" style="border-right:0;" formControlName="searchStart"
+          id="starttime" name="starttime" type="text" ngui-datetime-picker/>
         <span class="input-group-addon">-</span>
-        <input class="form-control datetime-picker" style="border-right-width:1px;" id="endtime" formControlName="searchEnd" name="endtime"
-          type="text" ngui-datetime-picker/>
+        <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" date-only="true" class="form-control datetime-picker" style="border-right-width:1px;"
+          id="endtime" formControlName="searchEnd" name="endtime" type="text" ngui-datetime-picker/>
       </div>
-      <div class="input-group m-1">
-        <span class="input-group-addon">门店查询：</span>
+      <div class="input-group m-1"  *ngIf="items">
+        <span class="input-group-addon">门店查询</span>
         <div *ngIf="true" class="form-controls">
           <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)">
           </ngx-dropdown-treeview>
@@ -50,8 +50,8 @@
           <td>{{item.billCode}}</td>
           <td>{{item.takeUserName }}</td>
           <td>{{item.takeDepartmentName }}</td>
-          <td>{{item.amount }}</td>
-          <td>{{item.createBillTime |date:"yyyy/MM/dd HH:mm:ss"}}</td>
+          <td>{{item.amount|centToYuan }}</td>
+          <td>{{item.createBillTime |sDatetime}}</td>
           <td>{{item.operator}}</td>
         </tr>
       </table>
@@ -85,7 +85,7 @@
           </div>
           <div class="col-4">
             <label for="">开单时间：</label>
-            <span>{{detail?.createBillTime|date:'yyyy/MM/dd HH:mm:ss'}}</span>
+            <span>{{detail?.createBillTime|sDatetime}}</span>
           </div>
           <div class="col-4">
             <label for="">操作人：</label>
@@ -120,10 +120,10 @@
                 <td>{{item.unit ||'个'}}</td>
                 <td>{{item.storeName }}</td>
                 <td>{{item.locationName }}</td>
-                <td>{{item.existCount  }}</td>
+                <td>{{item.existCount }}</td>
                 <td>{{item.price }}</td>
                 <td>{{item.count }}</td>
-                <td>{{item.amount  }}</td>
+                <td>{{item.amount |centToYuan }}</td>
               </tr>
             </table>
           </div>
