@@ -10,7 +10,7 @@
       <td>VIN</td>
       <td>{{data?.vin}}</td>
       <td>送修人</td>
-      <td>{{data?.contactUser}}</td>
+      <td>{{data?.contactUser}}</td> 
     </tr>
     <tr>
       <td>送修人手机</td>
@@ -57,12 +57,12 @@
     <tr>
       <td>进厂时间</td>
       <td>{{data?.createdOnUtc|sDatetime}}</td>
-      <td>进厂里程</td>
-      <td>{{data?.mileage}}KM</td>
+      <td>进厂里程(KM)</td>
+      <td>{{data?.mileage}}</td>
     </tr>
     <tr>
-      <td>出厂里程</td>
-      <td>{{data?.leaveMileage}}KM</td>
+      <td>出厂里程(KM)</td>
+      <td>{{data?.leaveMileage}}</td>
       <td>出厂时间</td>
       <td>{{data?.updataTime|sDatetime}}</td>
     </tr>
