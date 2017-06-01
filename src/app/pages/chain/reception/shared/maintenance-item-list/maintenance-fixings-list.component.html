@@ -23,7 +23,7 @@
       <td class="text-right">{{record?.price|centToYuan}}</td>
       <td class="text-right">{{record?.amount|centToYuan}}</td>
     </tr>
-    <tr *ngIf="showFee">
+    <tr *ngIf="showFee&&productOutputs.fee">
       <td>小计：</td>
       <td colspan="7">
         <i class="fa fa-jpy mr-2" aria-hidden="true">{{productOutputs.fee}}</i> 
