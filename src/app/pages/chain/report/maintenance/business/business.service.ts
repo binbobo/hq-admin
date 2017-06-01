@@ -73,7 +73,7 @@ export class BusinessService implements BasicService<any> {
       .map(response => {
         let employeess = [];
         response.json().data.map((value) => {
-          let obj = { text: value.name, value: value.id };
+          let obj = { text: value.name, value: value.id ,checked: false};
           employeess.push(new TreeviewItem(obj));
         })
         return employeess;

@@ -10,7 +10,7 @@
         <div class="input-group m-1">
           <!--<span class="input-group-addon">选择工单</span>-->
           <input [hqTableTypeahead]="PlatNoSource" [(ngModel)]="initValue" name="initValue" [columns]="typeaheadColumns" (onSelect)="onPlateNoSelect($event)"
-            class="form-control input-left" placeholder="请输入车牌号/工单号">
+            class="form-control input-left" placeholder="请输入车牌号/工单号" style="width:365px;">
           <span class='button-right'>
         </span>
         </div>
