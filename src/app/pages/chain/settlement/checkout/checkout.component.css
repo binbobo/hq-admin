@@ -25,7 +25,7 @@ caption {
 }
 .btn-center{
     text-align: center;
-    margin-bottom:8px;
+    margin-bottom:10px;
 }
 .checkout-item:nth-child(2n+1){
     margin:4px auto;
@@ -89,7 +89,7 @@ max-width: 1000px;
     margin-bottom: .8rem;
     margin-left: -3px;
 }
-.modal-content{
+.money-check .modal-content{
     width: 800px !important;
 }
 
