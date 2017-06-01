@@ -11,28 +11,28 @@
     <table class="table table-bordered table-sm">
       <thead>
         <tr>
-          <th>application</th>
-          <th>environment</th>
-          <th>level</th>
-          <th>message</th>
-          <th class="hidden-md-down">exception</th>
-          <th>timestamp</th>
-          <th>operators</th>
+          <th translate>application</th>
+          <th translate>environment</th>
+          <th translate>level</th>
+          <th translate>message</th>
+          <th class="hidden-md-down" translate>exception</th>
+          <th translate>timestamp</th>
+          <th translate>operators</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of list">
           <td>{{ item.applicationName }}</td>
-          <td>{{item.environmentName}}</td>
-          <td>{{item.logLevel}}</td>
+          <td class="text-center">{{item.environmentName}}</td>
+          <td class="text-center">{{item.logLevel}}</td>
           <td>
             <clipped-word length="20" [content]="item.message"></clipped-word>
           </td>
           <td class="hidden-md-down">
             <clipped-word length="30" [content]="item.exceptionMessage"></clipped-word>
           </td>
-          <td>{{item.timestamp|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-          <td>
+          <td class="text-center">{{item.timestamp|sDatetime}}</td>
+          <td class="text-center">
             <a (click)="showModal(item.id)" class="btn btn-sm btn-info" title="详情"><i class="fa fa-info-circle"></i></a>
           </td>
         </tr>
@@ -53,55 +53,55 @@
       </div>
       <div class="modal-body" *ngIf="model">
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">session.id</label>
+          <label class="col-sm-2 col-form-label" translate>session.id</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.sessionId}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">level</label>
+          <label class="col-sm-2 col-form-label" translate>level</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.logLevel}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">message</label>
+          <label class="col-sm-2 col-form-label" translate>message</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.message}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">exception</label>
+          <label class="col-sm-2 col-form-label" translate>exception</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.exceptionMessage}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">application</label>
+          <label class="col-sm-2 col-form-label" translate>application</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.applicationName}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">timestamp</label>
+          <label class="col-sm-2 col-form-label" translate>timestamp</label>
           <div class="col-sm-10">
-            <p class="form-control-static mb-0">{{model.timestamp|date:"yyyy/MM/dd HH:mm:ss"}}</p>
+            <p class="form-control-static mb-0">{{model.timestamp|sDatetime}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">environment</label>
+          <label class="col-sm-2 col-form-label" translate>environment</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.environmentName}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">stack.trace</label>
+          <label class="col-sm-2 col-form-label" translate>stack.trace</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.stackTrace}}</p>
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">source</label>
+          <label class="col-sm-2 col-form-label" translate>source</label>
           <div class="col-sm-10">
             <p class="form-control-static mb-0">{{model.sourceName}}</p>
           </div>
