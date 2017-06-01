@@ -187,6 +187,9 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     }).catch(err => {
       // 没有上次工单记录  或者  接口出错
       this.isSelected = true;
+
+      this.workSheetForm.controls.contactUser.setValue(evt.name);
+      this.workSheetForm.controls.contactInfo.setValue(evt.phone);
     });
   }
 
@@ -622,6 +625,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
           }, 0);
           this.newWorkOrderData.fee = this.fee;
           this.newWorkOrderData.serviceOutputs = workSheet.maintenanceItems;
+          this.newWorkOrderData.serviceOutputs.fee = this.fee;
           this.newWorkOrderData.typeName = this.maintenanceTypeData.find(item => item.id === workSheet.type).value;
           // 延迟打印
           setTimeout(() => {
