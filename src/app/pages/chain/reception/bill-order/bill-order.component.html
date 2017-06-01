@@ -127,22 +127,22 @@
         <!--结算费用-->
         <form [formGroup]="billSheetForm" [hidden]="!isShowCost" *ngIf="lgModal.isShown">
           <div class="form-inline">
-            <div class="col-4" style="height:50px;">
-            <div class="input-group m-1">
-             <span class="input-group-addon">应收金额(元)</span>
-              <input type="number" class="form-control" [errors]="{lte:'输入金额不能大于应收金额'}" [value]="billPricex|centToYuan" label="金额" formControlName="billPrice">
+            <div class="col-5" style="height:50px;">
+              <div class="input-group m-1">
+                <span class="input-group-addon">应收金额(元)</span>
+                <input type="number" class="form-control" [errors]="{lte:'输入金额不能大于应收金额'}" [value]="billPricex|centToYuan" label="金额" formControlName="billPrice">
+              </div>
             </div>
+            <div class="col-5" style="height:50px;">
+              <div class="input-group m-1">
+                <span class="input-group-addon">出厂里程(KM)：</span>
+                <input type="number" class="form-control" label="出厂里程" [errors]="{gte:'出厂里程不能大于进厂里程'}" formControlName="leaveMileage">
+              </div>
             </div>
-            <div class="col-4" style="height:50px;">
-            <div class="input-group m-1">
-            <span class="input-group-addon">出厂里程(KM)：</span>
-              <input type="number" class="form-control" label="出厂里程" [errors]="{gte:'出厂里程不能大于进厂里程'}" formControlName="leaveMileage">
-            </div>
-            </div>
-            <div class="col-3" style="height:50px;">
-             <div class="input-group m-1">
-              <button type="button" [hqSpinner]="generat" class="btn btn-primary mr-2" aria-label="Close" (click)="BillClick($event,lgModal)">确定</button>
-            </div>
+            <div class="col-2" style="height:50px;">
+              <div class="input-group m-1">
+                <button type="button" [hqSpinner]="generat" class="btn btn-primary mr-2" aria-label="Close" (click)="BillClick($event,lgModal)">确定</button>
+              </div>
             </div>
           </div>
         </form>

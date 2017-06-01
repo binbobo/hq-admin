@@ -6,8 +6,8 @@
     transition: 1s;
 }
 th,td{
-    text-align: center;
-    padding: 0.3rem!important;
+    text-align: justify;
+    padding: 0.3rem 1rem !important;
     color: #595757;
     font-size: .876rem;
     white-space: nowrap;
@@ -48,9 +48,6 @@ th,td{
     position: relative;
     top: 3px;
 }
-.dropdown-toggle:hover{
-    background-color:#f3f3f4;
-}
 .fa-times-bg{
     color:#eb5267;  
 }
@@ -73,17 +70,18 @@ th,td{
     right: 47px;
     width: 0;
     height: 0;
-    border-bottom: 7px solid #f3f3f4;
+    border-bottom: 7px solid #fff;
     border-left: 7px solid transparent;
     border-right: 7px solid transparent;
     border-top: 7px solid transparent;
 }
 table{
     border-color: #dcdddd;
+    box-shadow: -5px 7px 28px rgba(200, 204, 208, 0.98);
 }
 .dropdown-menu{
-    margin-right: -9px;
-    margin-top: 10px;
+    margin-right: -10px;
+    margin-top: 13px;
     transition: 1s;
 }
 .dropdown-toggle{
