@@ -140,10 +140,10 @@
               </div>
               <br>
               <div>
-                <button [hqSpinner]="generating.assign" class="btn btn-secondary mr-2" (onConfirm)="onConfirmTechnicians($event, 1)" [hqMutilSelect]="maintenanceTechnicians"
+                <button [hqSpinner]="generating.assign" class="btn btn-sm btn-primary mr-2" (onConfirm)="onConfirmTechnicians($event, 1)" [hqMutilSelect]="maintenanceTechnicians"
                   mTitle="选择维修技师" [disabled]="!selectedOrder?.serviceOutputs?.enableAssignment" (click)="onMultiSelectorClick($event)"
                   placement="right">指派</button>
-                <button [hqSpinner]="generating.reassign" class="btn btn-secondary" (onConfirm)="onConfirmTechnicians($event, 2)" [hqMutilSelect]="maintenanceTechnicians"
+                <button [hqSpinner]="generating.reassign" class="btn btn-sm btn-success" (onConfirm)="onConfirmTechnicians($event, 2)" [hqMutilSelect]="maintenanceTechnicians"
                   mTitle="选择维修技师" [disabled]="!selectedOrder?.serviceOutputs?.enableAssignment" (click)="onMultiSelectorClick($event)"
                   placement="right">转派</button>
               </div>

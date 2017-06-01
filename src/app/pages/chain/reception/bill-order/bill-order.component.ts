@@ -281,7 +281,8 @@ export class BillOrderComponent extends DataList<any>{
                             dialog.show();
                         })
                         .catch(err => {
-                            this.alerter.error('获取工单信息失败: ' + err, true, 2000);
+                            // 获取工单信息失败
+                            this.alerter.error(err, true, 2000);
                             item.generating = false;
                         });
                 }
