@@ -248,6 +248,9 @@ tabset ul li a, tabset ul li a:hover {
     font-size:1.1rem;
     margin-left:2px;
 }
+.hq-fee .fee-value::before{
+    content: "¥"
+}
 .fa-times-circle {
     font-size: 1rem;
     vertical-align: middle;
