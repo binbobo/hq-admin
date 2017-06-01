@@ -2,29 +2,28 @@
   <div class='card-block'>
     <div>
       <p>
-        <span class="mr-2 pull-left">门店名称：{{organizationInfo.name}}</span>
-        <span class="mr-2 pull-right">门店地址：{{organizationInfo.address}}</span>
+        <span class="mr-2 pull-left">门店名称：{{organizationInfo?.name}}</span>
+        <span class="mr-2 pull-right">门店地址：{{organizationInfo?.address}}</span>
         <span class="clearfix"></span>
       </p>
       <p>
-        <span class="mr-2 pull-left">电话：{{organizationInfo.servicecall}}</span>
-        <span class="mr-2 pull-right">24小时救援电话：{{organizationInfo.rescuecall}}</span>
+        <span class="mr-2 pull-left">电话：{{organizationInfo?.servicecall}}</span>
+        <span class="mr-2 pull-right">24小时救援电话：{{organizationInfo?.rescuecall}}</span>
         <span class="clearfix"></span>
       </p>
     </div>
-    <div style="height:20px">&nbsp;</div>
     <table class="table table-bordered">
       <tr>
-        <td rowspan="3" class="text-center"><br><br><br>托<br>修<br>方</td>
+        <td rowspan="3" class="text-center">托<br>修<br>方</td>
         <td>车牌号</td>
         <td>{{data.maindata.plateNo}}</td>
-        <td>车型描述</td>
+        <td class="td-header">车型描述</td>
         <td>{{data.maindata.model}} </td>
       </tr>
       <tr>
         <td>送修人</td>
         <td>{{data.maindata.contactUser}}</td>
-        <td>送修人电话</td>
+        <td class="fixed-width">送修人电话</td>
         <td>{{data.maindata.contactInfo}}</td>
       </tr>
       <tr>
@@ -34,39 +33,39 @@
         <td>{{data.maindata.billCode}}</td>
       </tr>
       <tr>
-        <td rowspan="5" class="text-center"><br><br><br>承<br>修<br>方</td>
-        <td>维修类型</td>
+        <td rowspan="5" class="text-center">承修方</td>
+        <td class="td-header">维修类型</td>
         <td>{{data.maindata.typeName}}</td>
         <td>结算员</td>
         <td>{{data.maindata.updateUser}}</td>
       </tr>
       <tr>
-        <td>结算单号</td>
+        <td class="td-header">结算单号</td>
         <td>{{data.maindata.settlementCode}}</td>
-        <td>结算时间</td>
+        <td class="td-header">结算时间</td>
         <td>{{data.maindata.updateOnUtc|sDatetime}}</td>
       </tr>
       <tr>
         <td>结算方</td>
         <td>{{data.maindata.settlementParty}}</td>
-        <td>进厂时间</td>
+        <td class="td-header">进厂时间</td>
         <td>{{data.maindata.createdOnUtc|sDatetime}}</td>
       </tr>
       <tr>
-        <td>进厂里程</td>
+        <td class="td-header">进厂里程</td>
         <td>{{data.maindata.mileage}}KM</td>
-        <td>出厂里程</td>
+        <td class="td-header">出厂里程</td>
         <td>{{data.maindata.leaveMileage}}KM</td>
       </tr>
       <tr>
-        <td>服务顾问</td>
+        <td class="td-header">服务顾问</td>
         <td>{{data.maindata.createdUserName}}</td>
         <td></td>
         <td></td>
       </tr>
     </table>
     <h6>表一：收费结算单</h6>
-    <table class="table table-bordered">
+    <table class="table table-bordered" style="text-align:center">
       <tr>
         <td>序号</td>
         <td>名称</td>
@@ -164,7 +163,7 @@
         <span class="clearfix"></span>
       </p>
       <p>
-        <span class="mr-2 pull-left">操作人：{{employeeInfo.name}}</span>
+        <span class="mr-2 pull-left">操作人：{{employeeInfo?.name}}</span>
         <span class="mr-2 pull-right">日期：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         月&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 日</span>
         <span class="clearfix"></span>
