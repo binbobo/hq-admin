@@ -37,6 +37,7 @@ table th,table td{
     text-align: left;
     padding-left: 1.1rem !important;
     width: 25%;
+    color:#727171;
 }
 .form-inline{
     margin-bottom: .8rem;
@@ -47,6 +48,7 @@ table .tr-left-bold{
     font-weight: bold;
     padding-left: 1.1rem !important;
     background-color:#f3f3f4;
+    color:#727171;
 }
 .fa{
     padding:0 6px !important;

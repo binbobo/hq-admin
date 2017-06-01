@@ -26,7 +26,7 @@
     text-align: right;
     clear: both;
 }
-table tr td{
+/*table tr td{
     overflow-wrap: break-word !important;
     word-wrap:break-word !important;
     border: 0 !important;
@@ -34,6 +34,9 @@ table tr td{
     color:#727171 !important;
     width: 100px;   
     white-space: normal !important;
+}*/
+table tr td:nth-child(2n+1){
+    width: 200px !important;   
 }
 tr{
     border: 0 !important;
