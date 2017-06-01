@@ -75,7 +75,7 @@
             <td>{{item.plateNo}}</td>
             <td>{{item?.settlementCode}}</td>
             <td>{{item.billCode}}</td>
-            <td  class="text-right">¥{{item.amount|centToYuan}}</td>
+            <td class="text-right">¥{{item.amount|centToYuan}}</td>
             <td>{{item.typeName}}</td>
             <!--<td>{{item.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>-->
             <td>{{item.expectLeave|sDatetime}}</td>
@@ -124,26 +124,32 @@
         </button>
       </div>
       <div class="modal-body">
-        <!--导出详情begin-->
+        <!--结算费用-->
+        <form [formGroup]="billSheetForm" [hidden]="!isShowCost" *ngIf="lgModal.isShown">
+          <div class="form-inline">
+            <div class="col-4" style="height:50px;">
+            <div class="input-group m-1">
+             <span class="input-group-addon">应收金额(元)</span>
+              <input type="number" class="form-control" [errors]="{lte:'输入金额不能大于应收金额'}" [value]="billPricex|centToYuan" label="金额" formControlName="billPrice">
+            </div>
+            </div>
+            <div class="col-4" style="height:50px;">
+            <div class="input-group m-1">
+            <span class="input-group-addon">出厂里程(KM)：</span>
+              <input type="number" class="form-control" label="出厂里程" [errors]="{gte:'出厂里程不能大于进厂里程'}" formControlName="leaveMileage">
+            </div>
+            </div>
+            <div class="col-3" style="height:50px;">
+             <div class="input-group m-1">
+              <button type="button" [hqSpinner]="generat" class="btn btn-primary mr-2" aria-label="Close" (click)="BillClick($event,lgModal)">确定</button>
+            </div>
+            </div>
+          </div>
+        </form>
         <!--工单详情 start-->
         <hq-workorder-detail [data]="selectedOrder"></hq-workorder-detail>
         <!--结算费用-->
         <div class="card" [hidden]="!isShowCost" *ngIf="lgModal.isShown">
-          <form [formGroup]="billSheetForm">
-            <div class="form-group row" style="margin-left: 16px;margin-top: 21px;">
-              <label for="billPrice" class=" col-form-label">应收金额(元)：</label>
-              <div class="col-3">
-                <input type="number" class="form-control" [errors]="{lte:'输入金额不能大于应收金额'}" [value]="billPricex|centToYuan" label="金额" formControlName="billPrice">
-              </div>
-              <label for="leaveMileage" class="col-form-label">出厂里程(KM)：</label>
-              <div class="col-3">
-                <input type="number" class="form-control" label="出厂里程" [errors]="{gte:'出厂里程不能大于进厂里程'}" formControlName="leaveMileage">
-              </div>
-              <div class="col-2">
-                <button type="button" [hqSpinner]="generat" class="btn btn-primary mr-2" aria-label="Close" (click)="BillClick($event,lgModal)">确定</button>
-              </div>
-            </div>
-          </form>
           <div class="card hq-fee">
             <div>
               <span class="fee-name">工时费：<span class="fee-value">{{workReceivableCost|centToYuan}}</span></span>
@@ -165,10 +171,10 @@
       </div>
       <!--建议维修项 end-->
       <div class="text-center" style="margin-bottom:10px;">
-      <button type="button" class="btn btn-export" aria-label="Close" [hidden]="!isShowPrint" (click)='print(lgModal)'>打印</button>
+        <button type="button" class="btn btn-export" aria-label="Close" [hidden]="!isShowPrint" (click)='print(lgModal)'>打印</button>
       </div>
     </div>
   </div>
 </div>
 <!--详情 end-->
-<hq-print-order *ngIf="printData" [hidden]="true" [data]="printData" hqPrint #printer="hq-print" print-title="维修结算单"></hq-print-order> 
+<hq-print-order *ngIf="printData" [hidden]="true" [data]="printData" hqPrint #printer="hq-print" print-title="维修结算单"></hq-print-order>
