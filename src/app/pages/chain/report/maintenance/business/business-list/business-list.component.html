@@ -45,8 +45,8 @@
         </div>
       </div>
       <div *ngIf="items" class="hq-input m-1">
-        <label *ngIf="items" for="searchRange" class="form-label">查询范围</label>
-        <div *ngIf="items" class="hq-col">
+        <label for="searchRange" class="form-label">查询范围</label>
+        <div class="hq-col">
           <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)">
           </ngx-dropdown-treeview>
         </div>
@@ -415,7 +415,6 @@
               </tbody>
             </table>
           </div>
-          <br>
           <div class="card-footer text-center">
             <button (click)="print()" type="button" class="btn btn-export">打印</button>
           </div>
