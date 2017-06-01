@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { ActivatedRoute, Params } from "@angular/router";
-import { BillOrderService } from "app/pages/chain/reception/bill-order/bill-order.service";
 import { PrintDirective } from 'app/shared/directives';
+import { EmployeeService } from 'app/pages/employee.service';
+import { OrganizationService } from 'app/pages/organization.service';
 
 @Component({
   selector: 'hq-print-order',
@@ -13,14 +13,21 @@ export class PrintOrderComponent implements OnInit {
   @ViewChild('printer')
   public printer: PrintDirective;
 
-  constructor(
-    private route: ActivatedRoute,
-    protected service: BillOrderService
-  ) {
-  }
   @Input()
   data: any;
-  ngOnInit() {
-  }
 
+  ngOnInit() {
+    this.employeeService.getEmployee().then(data => {
+      this.employeeInfo = data;
+      console.log(this.employeeInfo)
+    });
+    this.organizationInfo = this.organizationService.getOrganization().then(data => {
+      this.organizationInfo = data;
+      console.log(this.organizationInfo)
+    });
+  }
+  employeeInfo: any; // 员工信息
+  organizationInfo: any; // 门店信息
+
+  constructor(private employeeService: EmployeeService, private organizationService: OrganizationService) { }
 }
