@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from "@ngx-translate/core";
 import { EventDispatcher } from 'app/shared/services';
 import { StorageKeys } from "app/shared/models";
+import { NguiDatetime } from '@ngui/datetime-picker';
 
 declare var moment: any;
 moment.locale('zh-cn');
@@ -21,6 +22,11 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    NguiDatetime.locale.currentTime = '当前时间';
+    NguiDatetime.locale.time = '时间';
+    NguiDatetime.locale.hour = '小时';
+    NguiDatetime.locale.minute = '分钟';
+    NguiDatetime.locale.year = '年';
     this.translate.setDefaultLang(window.navigator.language);
     let langJSON = localStorage.getItem(StorageKeys.AcceptLanguage);
     if (langJSON) {
