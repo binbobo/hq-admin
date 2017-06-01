@@ -193,8 +193,8 @@ export class DistributeComponent implements OnInit {
           .then(data => {
             console.log(data)
             this.printList = data;
-            setTimeout(() => { this.print() }, 200);
-            setTimeout(() => { this.printList = null }, 400)
+            setTimeout(() => { this.print() }, 1000);
+            setTimeout(() => { this.printList = null }, 1200)
           })
           .catch(err => console.log(err));
       }
@@ -280,8 +280,8 @@ export class DistributeComponent implements OnInit {
       .then(data => {
         console.log(data)
         this.printList = data;
-        setTimeout(() => { this.print(); }, 200);
-        setTimeout(() => { this.printList = null }, 400)
+        setTimeout(() => { this.print(); }, 1000);
+        setTimeout(() => { this.printList = null }, 1200)
       })
       .catch(err => { this.alerter.error(err, true, 2000) });
   }

@@ -19,12 +19,10 @@ export class PrintOrderComponent implements OnInit {
   ngOnInit() {
     this.employeeService.getEmployee().then(data => {
       this.employeeInfo = data;
-      console.log(this.employeeInfo)
     });
     this.organizationInfo = this.organizationService.getOrganization().then(data => {
       this.organizationInfo = data;
-      console.log(this.organizationInfo)
-    });
+    }); 
   }
   employeeInfo: any; // 员工信息
   organizationInfo: any; // 门店信息

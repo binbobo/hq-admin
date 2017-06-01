@@ -21,7 +21,7 @@ export class AddMaintenanceItemComponent implements OnInit {
   item: any = null; // 当前编辑的维修项目
   @Input()
   services: any = []; // 当前已经选择的维修项目列表
-  
+
   serviceIds: any = []; // 维修项目id列表
 
   @ViewChild(HqAlerter)
@@ -61,16 +61,20 @@ export class AddMaintenanceItemComponent implements OnInit {
         // 添加维修项目
         this.service.createMaintenanceItem({ name: this.maintenanceItemForm.value.serviceName })
           .then(data => {
-            this.alerter.success('新建维修项目成功, 返回的数据为：', data);
-            this.maintenanceItemForm.value.serviceId = data.id;
-
+            if (!data || !data.id) {
+              this.alerter.error('新增维修项目失败，返回的数据为空', true, 3000);
+              return;
+            }
+            console.log('新建维修项目成功, 返回的数据为：', JSON.stringify(data));
+            const maintenanceItemFormVal = this.maintenanceItemForm.getRawValue();
+            maintenanceItemFormVal.serviceId = data.id;
             // 验证数据合法性
             this.onConfirm.emit({
-              data: this.maintenanceItemForm.getRawValue(), // 维修项目数据
+              data: maintenanceItemFormVal, // 维修项目数据
               isEdit: this.item ? true : false  // 是否为编辑标志
             });
           }).catch(err => {
-            this.alerter.error('新增维修项目失败：' + err, true, 3000);
+            this.alerter.error(err, true, 3000);
           });
       }
     } else {

@@ -26,7 +26,7 @@
     <tr *ngIf="showFee&&productOutputs.fee">
       <td>小计：</td>
       <td colspan="7">
-        <i class="mr-1" style="font-style:italic;">&#165;</i>{{productOutputs.fee}}
+        <i class="mr-1" style="font-style:italic;">&#165;</i>{{productOutputs.fee|centToYuan}}
       </td>
     </tr>
   </tbody>
