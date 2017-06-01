@@ -76,6 +76,7 @@ export class ReceiveListComponent implements OnInit {
       .then(data => {
         if (data) {
           this.printModel = data;
+          console.log('打印数据',data);
           setTimeout(() => this.printer.print(), 300);
         }
       })
