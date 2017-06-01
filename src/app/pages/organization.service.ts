@@ -16,14 +16,16 @@ export class OrganizationService {
         sessionStorage.removeItem(StorageKeys.OrganizationInfo);
     }
 
+    private setStorage(data: any) {
+        if (!data) return false;
+        sessionStorage.setItem(StorageKeys.OrganizationInfo, JSON.stringify(data));
+        return data;
+    }
+
     public getOrganization(): Promise<OrganizationInfo> {
         let cache = this.getFromStorage();
         if (cache) return Promise.resolve(cache);
-        return this.getFromApi()
-            .then(data => {
-                sessionStorage.setItem(StorageKeys.OrganizationInfo, JSON.stringify(data));
-                return data;
-            });
+        return this.getFromApi().then(data => this.setStorage(data));
     }
 
     private getFromStorage() {
