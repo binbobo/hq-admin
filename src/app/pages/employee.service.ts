@@ -16,14 +16,16 @@ export class EmployeeService {
         sessionStorage.removeItem(StorageKeys.EmployeeInfo);
     }
 
+    private setStorage(data: any) {
+        if (!data) return false;
+        sessionStorage.setItem(StorageKeys.EmployeeInfo, JSON.stringify(data));
+        return data;
+    }
+
     public getEmployee(): Promise<EmployeeInfo> {
         let cache = this.getFromStorage();
         if (cache) return Promise.resolve(cache);
-        return this.getFromApi()
-            .then(data => {
-                sessionStorage.setItem(StorageKeys.EmployeeInfo, JSON.stringify(data));
-                return data;
-            });
+        return this.getFromApi().then(data => this.setStorage(data));
     }
 
     private getFromStorage() {
