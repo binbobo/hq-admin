@@ -25,7 +25,7 @@
     <tr *ngIf="showFee&&serviceOutputs?.fee">
       <td>小计：</td>
       <td colspan="5">
-        <span class="mr-2">工时合计：<i class="fa fa-jpy mr-2" aria-hidden="true">{{serviceOutputs?.fee.workHours}}</i></span>
+        <span class="mr-2">工时合计：{{serviceOutputs?.fee.workHours}}</span>
         <span class="mr-2">工时费：<i class="fa fa-jpy mr-2" aria-hidden="true">{{serviceOutputs?.fee.workHour|centToYuan}}</i></span>
         <span class="mr-2">优惠：<i class="fa fa-jpy mr-2" aria-hidden="true">{{serviceOutputs?.fee.discount|centToYuan}}</i></span>
         <span class="mr-2">应收金额：<i class="fa fa-jpy mr-2" aria-hidden="true">{{serviceOutputs?.fee.workHour-serviceOutputs?.fee.discount|centToYuan}}</i></span>
