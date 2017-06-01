@@ -129,7 +129,7 @@
                 <td  class="text-right">{{item?.price|centToYuan}}</td>
                 <td>{{item?.discount}}</td>
                 <td  class="text-right">{{item?.amount|centToYuan}}</td>
-                <td>{{item?.operationTime|sDatetime}}</td>
+                <!--<td>{{item?.operationTime|sDatetime}}</td>-->
               </tr>
             </tbody>
           </table>
@@ -202,7 +202,7 @@
                 <button class="btn btn-sm btn-danger mr-2" (click)="$event.preventDefault();onDelSuggestItem(item.serviceId)">删除</button>
               </td>
               <td>{{item.serviceName}}</td>
-              <td>{{item.operationTime|sDatetime}}</td>
+              <!--<td>{{item.operationTime|sDatetime}}</td>-->
               <td>{{item.description}}</td>
             </tr>
           </table>
@@ -294,7 +294,7 @@
           </table>
         </div>
         <div class="table-container">
-          <table class="table   table-bordered">
+          <table class="table  table-bordered">
             <caption>建议维修项目</caption>
             <thead>
               <tr>
