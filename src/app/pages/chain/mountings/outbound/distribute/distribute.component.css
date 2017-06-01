@@ -55,7 +55,7 @@ table .tr-left-bold{
     color:#727171;
 }
 .operation{
-    width: 200px;
+    width: 200px !important;
 }
 .service{
     width: 40%;
