@@ -55,7 +55,7 @@ export class AddMaintenanceItemComponent implements OnInit {
     if (!this.maintenanceItemForm.value.serviceId) {
       const index = this.services.findIndex(item => item.name === this.maintenanceItemForm.value.serviceName);
       if (index > -1) {
-        alert('当前输入的维修项目已经添加过了, 如需编辑, 请去编辑页面');
+        alert('当前输入的维修项目已经添加过了, 如需修改, 请去列表页面编辑');
         return;
       } else {
         // 添加维修项目
@@ -65,7 +65,7 @@ export class AddMaintenanceItemComponent implements OnInit {
               this.alerter.error('新增维修项目失败，返回的数据为空', true, 3000);
               return;
             }
-            console.log('新建维修项目成功, 返回的数据为：', JSON.stringify(data));
+            // console.log('新建维修项目成功, 返回的数据为：', JSON.stringify(data));
             const maintenanceItemFormVal = this.maintenanceItemForm.getRawValue();
             maintenanceItemFormVal.serviceId = data.id;
             // 验证数据合法性
