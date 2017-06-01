@@ -19,7 +19,7 @@ export class InvoicingService implements BasicService<any>{
 
   //页面加载时分页获取信息
   public getPagedList(params: InvoicingRequest): Promise<PagedResult<any>> {
-    const url = Urls.chain.concat('/StoreInOutDetails/PurchaseSellStockList?', params.serialize());
+    const url = Urls.chain.concat('/StoreInOutDetails/PurchaseSellStockList?StoreId=4B8CDD93-66A6-48C0-BA22-0DB1CFF123F3&', params.serialize());
     console.log("url", url);
     return this.httpService.get<PagedResult<any>>(url)
       .then(result => {
@@ -29,6 +29,18 @@ export class InvoicingService implements BasicService<any>{
       .catch(err => Promise.reject(`进销存数据失败：${err}`));
   }
 
+  //详情搜索
+  public getDetailPagedList(id: string, paramsDetail: InvoicingRequest): Promise<PagedResult<any>> {
+    let url = Urls.chain.concat('/StoreInOutDetails/PurchaseSellStockDetailsList?StoreId=', id,'&', paramsDetail.serialize());
+    console.log("url", url);
+    return this.httpService.get<PagedResult<any>>(url)
+      .then(result => {
+        console.log('进销存详情数据', result);
+        return result;
+      })
+      .catch(err => Promise.reject(`进销存详情数据失败：${err}`));
+  }
+
   //导出
   public export(params: InvoicingRequest): Promise<void> {
     const url = Urls.chain.concat('/StoreInOutDetails/PurSellStockDetailsExportToExcel');
@@ -36,10 +48,16 @@ export class InvoicingService implements BasicService<any>{
       .download(url, params.serialize(), '进销存入库统计')
       .catch(err => Promise.reject(`进销存入库统计导出失败：${err}`));
   }
-
-  //详情
+  //详情导出
+  public exportDetsil(paramsDetail: InvoicingRequest): Promise<void> {
+    const url = Urls.chain.concat('/StoreInOutDetails/PurSellStockDetailsExportToExcel');
+    return this.httpService
+      .download(url, paramsDetail.serialize(), '进销存入库详情统计')
+      .catch(err => Promise.reject(`进销存入库详情统计导出失败：${err}`));
+  }
+  //
   public get(id: string): Promise<any> {
-    const url = Urls.chain.concat('/StoreInOutDetails/PurchaseSellStockDetailsList?StoreId=9f885937-c43b-484e-aba4-0aaf7039c2b2&BillId=',id);
+    const url = Urls.chain.concat('/StoreInOutDetails/PurchaseSellStockDetailsList?StoreId=9f885937-c43b-484e-aba4-0aaf7039c2b2&BillId=', id);
     return this.httpService
       .get<ApiResult<any>>(url)
       .then(result => result.data)
@@ -61,7 +79,20 @@ export class InvoicingService implements BasicService<any>{
 
 export class InvoicingRequest extends PagedParams {
   constructor(
-    public storeId?:string, //仓库
+    public storeId?: string, //仓库
+    public searchStart?: string,
+    public searchEnd?: string,
+    public billCode?: string,//单号
+    public name?: string, //供应商
+    public orgIds?: Array<any>, //门店查询
+  ) {
+    super();
+  }
+}
+export class InvoicingDetailRequest extends PagedParams {
+  constructor(
+    public productCode?: string, //配件编码
+    public productName?: string, //配件名称
     public searchStart?: string,
     public searchEnd?: string,
     public billCode?: string,//单号

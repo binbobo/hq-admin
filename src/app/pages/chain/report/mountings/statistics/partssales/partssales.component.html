@@ -6,10 +6,10 @@
         <div class="input-group m-1">
           <span class="input-group-addon">查询时间</span>
           <input [max-date]="maxEnterStartDate" class="form-control datetime-picker" style="border-right:0;" formControlName="searchStart" id="starttime" name="starttime"
-            type="text" [close-on-select]="false" ngui-datetime-picker/>
+            type="text" date-only="true" ngui-datetime-picker/>
           <span class="input-group-addon">-</span>
           <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" class="form-control datetime-picker" style="border-right-width:1px;" id="endtime" formControlName="searchEnd" name="endtime"
-            type="text" [close-on-select]="false" ngui-datetime-picker/>
+            type="text" date-only="true" ngui-datetime-picker/>
         </div>
         <div class="input-group m-1">
           <span class="input-group-addon">客户名称</span>
@@ -20,8 +20,8 @@
           <span class="input-group-addon">客户手机</span>
           <input name="name" class="form-control tooltips-top" data-tooltips="top" formControlName="phone" placeholder="请输客户手机" />
         </div>
-        <div class="input-group m-1">
-          <span class="input-group-addon">门店查询：</span>
+        <div class="input-group m-1" *ngIf="items">
+          <span class="input-group-addon">门店查询</span>
           <div *ngIf="true" class="form-controls">
             <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)">
             </ngx-dropdown-treeview>
@@ -52,8 +52,8 @@
           <td>{{item.customerName }}</td>
           <td>{{item.customerPhone }}</td>
           <td>{{item.sellerName }}</td>
-          <td>{{item.amount}}</td>
-          <td>{{item.createTime |date:"yyyy/MM/dd HH:mm:ss"}}</td>
+          <td>{{item.amount|centToYuan}}</td>
+          <td>{{item.createTime |sDatetime}}</td>
           <td>{{item.operator}}</td>
         </tr>
       </table>
@@ -82,7 +82,7 @@
           </div>
           <div class="col-3">
             <label for="">开单时间：</label>
-            <span>{{detail?.createBillTime |date:'yyyy/MM/dd HH:mm:ss'}}</span>
+            <span>{{detail?.createBillTime |sDatetime}}</span>
           </div>
           <div class="col-3">
             <label for="">操作人：</label>
@@ -118,7 +118,7 @@
                 <td>{{item.locationName }}</td>
                 <td>{{item.price  }}</td>
                 <td>{{item.count }}</td>
-                <td>{{item.amount }}</td>
+                <td>{{item.amount |centToYuan}}</td>
               </tr>
             </table>
           </div>
