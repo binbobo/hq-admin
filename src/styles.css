@@ -295,9 +295,7 @@ table .tr-left-bold{
 .form-control:focus{
     border-color:#27b394 !important;
 }
-select{
-     border-color:#27b394 !important;
-}
+
 /*新增按钮样式*/
 .btn-add {
   border: none;
