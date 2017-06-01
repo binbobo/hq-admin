@@ -17,6 +17,8 @@ export class DefaultRequestOptions extends BaseRequestOptions {
         this.setAuthorization(user);
         let utfOffset = moment().utcOffset();
         this.headers.append('x-timezoneutc', utfOffset.toString());
+        this.headers.append('X-Application', '9951112f8dd2b0e52597c27197f1121c');
+        this.headers.append('X-Client', 'bc54f4d60f1cec0f9a6cb70e13f2127a');
         this.headers.append('Content-Type', 'application/json');
         userService.onUserLogin.subscribe(user => this.setAuthorization(user));
         this.dispatcher.subscribe('LanguageChanged', lang => this.setAcceptLanguage(lang))

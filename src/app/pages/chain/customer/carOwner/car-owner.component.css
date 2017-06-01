@@ -29,16 +29,3 @@ input[disabled] {
 .card-block {
   padding-top: 0.625rem;
 }
-.fa-plus-circle {
-  font-size: 1.25rem;
-  vertical-align: middle;
-}
-.fa-plus-circle:before {
-  color: #27b394;
-}
-.btn-secondary {
-  border: none;
-  color: #727171;
-  font-weight: bold;
-  font-size: 0.875rem;
-}
