@@ -27,10 +27,8 @@ export class BusinessService implements BasicService<any> {
   //页面加载时分页获取维修历史信息
   public getPagedList(params: BusinessListRequest): Promise<PagedResult<any>> {
     const url = Urls.chain.concat('/Maintenances/history/search?', params.serialize());
-    console.log('维修历史URL', url);
     return this.httpService.get<PagedResult<any>>(url)
       .then(result => {
-        console.log('维修历史', result);
         return result;
       })
       .catch(err => Promise.reject(`获取维修历史数据失败：${err}`));
@@ -57,7 +55,6 @@ export class BusinessService implements BasicService<any> {
     } else {
       url = Urls.chain.concat('/Settlements/PrintDetail/', id);
     }
-    console.log('uuuuuu', url);
     return this.httpService
       .get<ApiResult<any>>(url)
       .then(result => result.data)
