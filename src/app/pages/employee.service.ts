@@ -46,7 +46,8 @@ export class EmployeeService {
     private getFromApi() {
         let url = Urls.chain.concat('/Employees/Current');
         return this.httpService.get<ApiResult<EmployeeInfo>>(url)
-            .then(result => result.data);
+            .then(result => result.data)
+            .catch(err => Promise.resolve({}));
     }
 
 }
