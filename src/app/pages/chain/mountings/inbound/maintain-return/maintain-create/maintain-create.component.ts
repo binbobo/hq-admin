@@ -8,11 +8,11 @@ import { CustomValidators } from 'ng2-validation';
 import { CentToYuanPipe } from "app/shared/pipes";
 
 @Component({
-  selector: 'hq-maintain-creat',
-  templateUrl: './maintain-creat.component.html',
-  styleUrls: ['./maintain-creat.component.css']
+  selector: 'hq-maintain-create',
+  templateUrl: './maintain-create.component.html',
+  styleUrls: ['./maintain-create.component.css']
 })
-export class MaintainCreatComponent implements OnInit, OnChanges {
+export class MaintainCreateComponent implements OnInit, OnChanges {
   private form: FormGroup;
   private converter: CentToYuanPipe = new CentToYuanPipe();
   @Output()
