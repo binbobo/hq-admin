@@ -20,7 +20,7 @@ h1::first-letter,h2::first-letter,h3::first-letter,h4::first-letter,h5::first-le
 .hq-printing table td.td-header{
     width: 25px;
 }
-.hq-printing table td{ 
+.hq-printing table td, th{ 
     vertical-align: middle;
     padding: .35rem;
 }
