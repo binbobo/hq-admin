@@ -127,7 +127,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       this.workSheetForm.controls.vehicleName.setValue('');
     }
   }
-  onPlateNoBlur(val) {
+  onPlateNoBlur() {
     if (!this.isSelected && this.workSheetForm.controls.plateNo.valid) {
       this.isFuzzySearchEnable = false;
     } else {
@@ -380,13 +380,13 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
    * @memberof CreateOrderComponent
    */
   suspendOrder() {
-    // 获取当前录入的工单数据
-    const workSheet = this.getEdittingOrder();
-    if (!workSheet.plateNo) {
-      this.alerter.error('请先输入车牌号, 再执行挂单操作！', true, 3000);
+    // 判断车牌号是否合法
+    if (!this.workSheetForm.controls.plateNo.valid) {
+      this.alerter.error('请先输入正确的车牌号, 再执行挂单操作！', true, 3000);
       return;
     }
-
+    // 获取当前录入的工单数据
+    const workSheet = this.getEdittingOrder();
     // console.log('提交的挂掉对象为：', JSON.stringify(workSheet));
     this.suspendBill.suspend(workSheet)
       .then(() => this.suspendBill.refresh())
@@ -417,7 +417,10 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
    * @memberOf CreateOrderComponent
    */
   onSuspendedBillSelect(evt) {
-    console.log('当前选择的挂掉记录为：', evt);
+    // 清空数据
+    this.initOrderData();
+
+    // console.log('当前选择的挂掉记录为：', evt);
     const order = evt.value;
     // 保存挂单id
     order.suspendedBillId = evt.id;
@@ -428,6 +431,9 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       this.disableCustomerVehicleField();
       // 设置车辆选择为true
       this.isBrandSelected = this.isSeriesSelected = this.isVehicleSelected = true;
+    } else {
+      // 车主模糊查询不可用
+      this.isFuzzySearchEnable = false;
     }
 
     // 表单赋值
@@ -441,7 +447,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       return accumulator + currentValue.amount * 1;
     }, 0);
 
-    // 需要深copy 维修项目记录  不能改变原对象 
+    // 需要深copy 维修项目记录  不能改变原对象
     // 因为每次选择一个挂掉的时候，挂单记录不会从列表中消失 只有点击创建工单之后  才消失
     this.newMaintenanceItemData = this.deepCopyArray(order.maintenanceItems);
 

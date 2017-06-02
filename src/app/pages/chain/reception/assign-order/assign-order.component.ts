@@ -27,9 +27,6 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
     isDetailModalShown = false; // 详情弹框是否可见
     statistics: any = null; // 各种状态数量统计
 
-    // 当前登录用户信息
-    public user = null;
-
     generating = {
         assign: false,
         reassign: false
@@ -56,28 +53,21 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
                 this.load();
             });
     }
-
-
     constructor(injector: Injector,
         protected service: AssignService) {
         super(injector, service);
         this.params = new AssignListRequest();
 
-        // 获取当前登录用户信息
-        this.user = JSON.parse(sessionStorage.getItem(StorageKeys.Identity));
-        console.log('当前登陆用户: ', this.user);
-
         // 初始化维修技师数据
-        this.service.getMaintenanceTechnicians()
-            .subscribe(data => {
-                this.maintenanceTechnicians = data.map(item => {
-                    return {
-                        text: item.name,
-                        value: item.id,
-                        // checked: false
-                    };
-                });
+        this.service.getMaintenanceTechnicians().subscribe(data => {
+            this.maintenanceTechnicians = data.map(item => {
+                return {
+                    text: item.name,
+                    value: item.id,
+                    // checked: false  // 默认都不选中
+                };
             });
+        });
     }
 
     // 点击多选框处理程序
@@ -285,8 +275,11 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
     assignOrderHandler(type) {
         // 获取选择的工项列表
         const maintenanceItems = this.selectedOrder.serviceOutputs.filter(item => item.checked);
+        // 提示消息
+        let msg = '';
         // 执行指派操作时候  判断是否有已开工的工项
         if (type === 1) {
+            msg = '指派';
             // teamType (integer, optional): 工项状态 1.待派工 2.待开工 3.已开工 4.已转派 5.已完工 = ['1', '2', '3', '4', '5'],
             let started = [];
             maintenanceItems.filter((item, index) => {
@@ -302,11 +295,9 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
                 // 给出提示
                 this.alerter.warn(started.join(',') + ' 已开工, 不可以再指派， 只能转派');
             }
-        }
-
-        // 执行转派操作时候  判断是否有未指派的工项
-        if (type === 2) {
-            // teamType (integer, optional): 工项状态 1.待派工 2.待开工 3.已开工 4.已转派 5.已完工 = ['1', '2', '3', '4', '5'],
+        } else if (type === 2) {
+            msg = '转派';
+            // 执行转派操作时候  判断是否有未指派的工项
             let notAssigned = [];
             maintenanceItems.filter((item, index) => {
                 if (item.teamType === 1) {
@@ -323,29 +314,23 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
                 this.alerter.warn(notAssigned.join(',') + ' 未指派, 不可以转派， 请先指派');
             }
         }
-        // 获取可以选择的工项id列表
+        // 获取过滤之后的工项id列表
         const maintenanceItemIds = maintenanceItems.map(item => item.id);
-
-        console.log('选择的维修工单为：', maintenanceItemIds);
-        // 判断是否选择维修工项
+        // 判断工项id列表是否为空
         if (maintenanceItemIds.length === 0) {
             this.generatingReset(type);
             return;
         }
-
-        // 获取选中的维修技师
+        // 获取选中的维修技师id列表
         const employeeIds = this.selectedTechnicians;
-        // console.log('选择的维修技师为：', employeeIds);
-        // 判断是否选择维修技师
+        // 判断选中的维修技师id列表是否为空
         if (employeeIds.length === 0) {
             this.alerter.warn('请先选择维修技师！', true);
             this.generatingReset(type);
             return;
         }
 
-        // 提示消息
-        let msg = '';
-        // 执行 派工操作
+        // 执行 派工/转派 操作 根据type区分
         this.service.assignOrder({
             type: type,
             employeeIds: employeeIds,
@@ -353,7 +338,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         }).then(data => {
             this.generatingReset(type);
             // 更新页面
-            // console.log('执行指派转派操作之后返回的数据为：', data);
+            // console.log('执行指派/转派操作之后返回的数据为：', data);
 
             // forEach不可修改list数据, 只能遍历
             data.forEach(ele => {
@@ -363,9 +348,8 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
                 }
             });
 
-            // 给出操作成功提示employeeNames
             this.alerter.success('执行' + msg + '操作成功！');
-            // 设置按钮不可用
+            // 设置派工按钮不可用
             this.selectedOrder.serviceOutputs.enableAssignment = false;
 
             // 刷新页面
@@ -375,7 +359,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             this.generatingReset(type);
         });
     }
-
+    // 派工按钮动画重置
     private generatingReset(type) {
         if (type === 1) {
             this.generating.assign = false;
