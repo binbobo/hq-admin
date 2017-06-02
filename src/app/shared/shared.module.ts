@@ -72,16 +72,17 @@ const HQ_SERVICES = [
     services.requestOptionsProvider,
     services.HttpService,
     services.EventDispatcher,
+    services.treeviewI18nProvider,
 ]
 
 export const HQ_VALIDATORS = {
     mobile: directives.MobileValidator.validator,
     tel: directives.TelValidator.validator,
-    plateNo: directives.PlateNoValidator.validator, 
-    vin: directives.VINValidator.validator, 
-    engineNo: directives.EngineNoValidator.validator, 
-    mileage: directives.MileageValidator.validator, 
-    idCard: directives.IDCardValidator.validator, 
+    plateNo: directives.PlateNoValidator.validator,
+    vin: directives.VINValidator.validator,
+    engineNo: directives.EngineNoValidator.validator,
+    mileage: directives.MileageValidator.validator,
+    idCard: directives.IDCardValidator.validator,
 }
 
 @NgModule({

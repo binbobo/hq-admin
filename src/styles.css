@@ -325,4 +325,13 @@ table .tr-left-bold{
     border-radius: 10px;  
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);  
     background-color: rgba(149, 151, 154, 0.31);
-}  
+}
+.form-inline ngx-treeview .form-check,.form-inline ngx-treeview .form-check-label{
+    display: block;
+}
+
+.input-group ngx-dropdown-treeview button{
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    height: 38px;
+}

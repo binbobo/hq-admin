@@ -4,3 +4,5 @@ export * from './url.service';
 export * from './user.service';
 export * from './server-translate-loader.service';
 export * from './event-dispatcher.service';
+export * from './treeview-i18n-cn.service';
+export * from './treeview-event-parser.service';

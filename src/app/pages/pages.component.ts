@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService, HttpService, Urls, DefaultRequestOptions, EventDispatcher } from 'app/shared/services';
+import { UserService, HttpService, Urls, EventDispatcher } from 'app/shared/services';
 import { ListResult } from 'app/shared/models';
 import { TranslateService } from '@ngx-translate/core';
 import { PagesService } from './pages.service';

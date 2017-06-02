@@ -1,0 +1,23 @@
+#total-statistics{
+    margin:10px 0;
+}
+
+#total-statistics div{
+    display: inline-block;
+    margin-right: 10px;
+}
+
+#total-statistics label{
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+#selectedStations .form-control{
+    display: -webkit-box!important;
+}
+
+#selectedStations .selected{
+    border: 1px solid rgba(0,0,0,.15);
+    display: inline-block;
+    border-radius: 2px;
+}
