@@ -27,6 +27,8 @@ export class InvoicingComponent extends DataList<any> {
   isLoading: boolean = false;
   private warehouses: Array<SelectOption>;
   storeId: string;
+  searchStart: string;
+  searchEnd: string;
 
   // 用于ngx-treeview组件
   public items: TreeviewItem[];
@@ -59,12 +61,30 @@ export class InvoicingComponent extends DataList<any> {
       .catch(err => this.alerter.warn(err));
   }
 
+  toDou(n) {
+    return n > 9 ? '' + n : '0' + n;
+  }
+  //获取当前时间
+  newDate() {
+    let date = new Date();
+    let y = date.getFullYear();
+    let m = date.getMonth() + 1;
+    let d = date.getDate();
+    return { 'searchStart': y + '-' + this.toDou(m) + '-' + this.toDou(1), 'searchEnd': y + '-' + this.toDou(m) + '-' + this.toDou(d) }
+  }
+
   @ViewChild('printer')
   public printer: PrintDirective;
 
   //模态框
   alert(ev, storeId, el) {
     this.storeId = storeId;
+    this.invoicingDetailForm.patchValue({
+      searchStart: this.invoicingForm.get('searchStart').value,
+      searchEnd: this.invoicingForm.get('searchEnd').value
+    });
+    // this.searchStart = this.invoicingForm.get('searchStart').value;
+    // this.searchEnd = this.invoicingForm.get('searchEnd').value;
     ev.hqSpinner = true;
     this.isLoading = true;
     this.onSearchDetail()
@@ -78,8 +98,10 @@ export class InvoicingComponent extends DataList<any> {
       console.log('导出成功！', this.params);
     });
   }
+  //明细导出
   onDetailExport() {
-    this.service.exportDetsil(this.paramsDetail).then(() => {
+    this.service.exportDetsil(this.storeId, this.paramsDetail).then(() => {
+      console.log(this.searchStart)
       console.log('详情导出成功', this.paramsDetail);
     })
   }
@@ -102,7 +124,8 @@ export class InvoicingComponent extends DataList<any> {
       then(m => {
         this.loading = false;
         this.listDetail = m.data;
-        console.log('详情列表',m.data);
+        console.log(this.searchStart)
+        console.log('详情列表', m.data);
       })
       .catch(err => {
         this.alerter.error(err);
@@ -110,7 +133,7 @@ export class InvoicingComponent extends DataList<any> {
       })
   }
   //改变页码
-  onPageDetailChanged(event: { page: number, itemsPerPage: number }){
+  onPageDetailChanged(event: { page: number, itemsPerPage: number }) {
     this.paramsDetail.setPage(event.page, event.itemsPerPage);
     this.onSearchDetail();
   }
@@ -118,8 +141,8 @@ export class InvoicingComponent extends DataList<any> {
   createForm() {
     this.invoicingForm = this.formBuilder.group({
       storeId: '',
-      searchStart: '', //开始时间
-      searchEnd: '', // 结束时间
+      searchStart: this.newDate().searchStart, //开始时间
+      searchEnd: this.newDate().searchEnd, // 结束时间
       billCode: '',//单号
       name: '', //供应商
     })
@@ -127,10 +150,10 @@ export class InvoicingComponent extends DataList<any> {
 
   createDetailFrom() {
     this.invoicingDetailForm = this.formBuilder.group({
-      productCode: '', //配件编码
-      productName: '', //配件名称
       searchStart: '',
       searchEnd: '',
+      productCode: '', //配件编码
+      productName: '', //配件名称
     })
   }
 
