@@ -37,9 +37,9 @@ export class PrintDirective implements OnInit {
     document.body.insertAdjacentElement('afterbegin', componentRef.location.nativeElement);
     setTimeout(() => {
       window.print();
-      this.showOthers();
-      componentRef.location.nativeElement.remove();
-      copy = null;
+      // this.showOthers();
+      // componentRef.location.nativeElement.remove();
+      // copy = null;
     }, 100);
   }
 

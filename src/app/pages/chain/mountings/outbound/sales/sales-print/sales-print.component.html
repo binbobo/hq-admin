@@ -1,9 +1,9 @@
 <div class="my-3">
-  <span class="mr-3">店铺名称：{{org?.name}}</span>
-  <span class="mr-3">出库单号：{{model?.billCode}}</span>
-  <span class="mr-3">客户名称：{{model?.customerName}}</span>
-  <span class="mr-3">销售员：{{model?.seller}}</span>
-  <span>开单时间：{{model?.createBillDateTime|sDatetime}}</span>
+  <span class="mr-3"><label class="print-label">店铺名称：</label>{{org?.name}}</span>
+  <span class="mr-3"><label class="print-label">出库单号：</label>{{model?.billCode}}</span>
+  <span class="mr-3"><label class="print-label">客户名称：</label>{{model?.customerName}}</span>
+  <span class="mr-3"><label class="print-label">销售员：</label>{{model?.seller}}</span>
+  <span><label class="print-label">开单时间：</label>{{model?.createBillDateTime|sDatetime}}</span>
 </div>
 <div class="page-break-after">
   <table class="table table-bordered table-sm">
@@ -39,8 +39,8 @@
     </tbody>
   </table>
   <div class="">
-    <span class="mr-3">金额：{{model?.totalAmount|centToYuan}}</span>
-    <span class="mr-3">打印时间：{{model?.printDateTime|sDatetime}}</span>
-    <span class="pr-5">操作人：</span>
+    <span class="mr-3"><label class="print-label">金额：</label>{{model?.totalAmount|centToYuan}}</span>
+    <span class="mr-3"><label class="print-label">打印时间：</label>{{model?.printDateTime|sDatetime}}</span>
+    <span class=""><label class="print-label">操作人：</label>{{employee?.name}}</span>
   </div>
 </div>

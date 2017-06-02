@@ -1,5 +1,7 @@
-<div class="jumbotron jumbotron-fluid">
+<div hqPrint #printer="hq-print" class="jumbotron jumbotron-fluid">
   <div class="container">
     <h3 class="display-3">{{org?.name}}欢迎您！</h3>
   </div>
 </div>
+
+<button type="button" (click)="printer.print()" class="btn btn-large btn-block btn-info">button</button>
