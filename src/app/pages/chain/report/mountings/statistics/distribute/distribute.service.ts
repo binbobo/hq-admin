@@ -34,7 +34,7 @@ export class DistributeService implements BasicService<any>{
     const url = Urls.chain.concat('/StoreInOutDetails/MMStoreStatic');
     console.log('导出', url)
     return this.httpService
-      .download(url, params.serialize(), '维修发料统计')
+      .download(url, params.serialize())
       .catch(err => Promise.reject(`维修发料统计导出失败：${err}`));
   }
 

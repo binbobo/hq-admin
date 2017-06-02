@@ -33,7 +33,7 @@ export class ReceiveService implements BasicService<any>{
   public export(params: ReceiveRequest): Promise<void> {
     const url = Urls.chain.concat('/Uses/StatExportToExcel');
     return this.httpService
-      .download(url, params.serialize(), '内部领用统计')
+      .download(url, params.serialize())
       .catch(err => Promise.reject(`内部领用导出失败：${err}`));
   }
 
