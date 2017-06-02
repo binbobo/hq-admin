@@ -256,7 +256,7 @@
         <button class="close pull-right" (click)="createModal.hide()">&times;</button>
       </div>
       <div class="modal-body">
-        <hq-distribute-creat *ngIf="createModal.isShown" [InputData]="InputData" (formSubmit)="onCreate($event)"></hq-distribute-creat>
+        <hq-distribute-create *ngIf="createModal.isShown" [InputData]="InputData" (formSubmit)="onCreate($event)"></hq-distribute-create>
       </div>
     </div>
   </div>
