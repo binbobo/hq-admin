@@ -4,7 +4,7 @@ h1::first-letter,h2::first-letter,h3::first-letter,h4::first-letter,h5::first-le
 
 .hq-printing{
     font-size: 12px!important;
-    font-weight: normal!important;
+    font-weight: 100!important;
 }
 /*维修工单打印页面样式 --Start*/
 .hq-printing div.order-detail-print-header {
@@ -14,22 +14,27 @@ h1::first-letter,h2::first-letter,h3::first-letter,h4::first-letter,h5::first-le
     display: inline-block;
     min-width:160px;
 }
-.hq-printing table td{ 
-    vertical-align: middle;
-    padding: .5rem;
-}
 .hq-printing table td.fixed-width{
     width: 100px;
 }
 .hq-printing table td.td-header{
     width: 25px;
 }
+.hq-printing table td{ 
+    vertical-align: middle;
+    padding: .35rem;
+}
 .hq-printing table th {
-    font-weight: normal;
+    font-weight: 200 !important;
+    font-size: 14px;
 }
 .hq-printing table caption {
-    font-weight: bold;
-    font-size: larger;
+    font-weight: normal !important;
+    font-size: 16px;
+}
+.hq-printing .print-label {
+    font-weight: normal !important;
+    font-size: 14px;
 }
 /*维修工单打印页面样式 --End*/
 
@@ -47,7 +52,7 @@ h1::first-letter,h2::first-letter,h3::first-letter,h4::first-letter,h5::first-le
 
 .print-header .print-title{
     float: right;
-    font-weight: bold;
+    /*font-weight: bold;*/
     font-size: 1.2rem;
     height: 20px;
     line-height: 20px;

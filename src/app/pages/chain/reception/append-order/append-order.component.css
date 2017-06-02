@@ -30,14 +30,8 @@ table .tr-left-bold{
     padding-left: 1.1rem !important;
     background: #f3f3f4;
 }
-input[disabled] {
-  background: #f7f8f8;
-}
 .card-block {
   padding-top: 0.625rem;
-}
-.btn-color {
-  background:#27b394 !important;
 }
 .fa-times-circle {
   font-size: 1rem;
