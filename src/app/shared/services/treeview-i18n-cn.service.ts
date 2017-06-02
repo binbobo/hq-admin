@@ -2,7 +2,7 @@ import { TreeviewItem, TreeviewI18n } from 'ngx-treeview';
 import { Injectable } from '@angular/core';
 
 @Injectable()
-class TreeviewI18nCN extends TreeviewI18n {
+export class TreeviewI18nCN extends TreeviewI18n {
     getText(checkededItems: TreeviewItem[], isAll: boolean): string {
         if (isAll) {
             return '全部';
