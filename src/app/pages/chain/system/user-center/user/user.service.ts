@@ -6,7 +6,7 @@ import { TreeviewItem } from 'ngx-treeview';
 @Injectable()
 export class UserService implements BasicService<User>{
   getRoleOptions() {
-    let url = Urls.platform.concat('/Roles/Options');
+    let url = Urls.platform.concat('/Roles/Application');
     return this.httpService.getList<SelectOption>(url, "type=0")
       .catch(error => Promise.reject(`获取角色信息失败： ${error}`));
   }

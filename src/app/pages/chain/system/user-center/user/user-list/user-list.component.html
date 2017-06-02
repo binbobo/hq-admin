@@ -37,13 +37,13 @@
             </td>
             <td>{{item.name}}</td>
             <td>
-              {{item?.roles?.slice(0,3)|pluck:'name'}}
+              {{item?.roles|slice:0:3|pluck:'name'}}
             </td>
             <td>
-              {{item?.partPositionItems?.slice(0,3)|pluck:'positionItems'|flatten|pluck:'name'}}
+              {{item?.partPositionItems|slice:0:3|pluck:'positionItems'|flatten|slice:0:3|pluck:'name'}}
             </td>
             <td>
-              {{item?.partPositionItems?.slice(0,3)|pluck:'name'}}
+              {{item?.partPositionItems|slice:0:3|pluck:'name'}}
             </td>
             <td class="text-center">{{item.phone}}</td>
             <td class="text-center">{{item.createTime|date:'y/MM/dd HH:mm:ss'}}</td>
