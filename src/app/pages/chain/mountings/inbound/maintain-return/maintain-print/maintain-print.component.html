@@ -1,9 +1,9 @@
 <div class="print card">
   <div class='card-block'>
     <div *ngFor="let item of data">
-      <div class="col-12">门店名称：{{organizationInfo?.name}}<br>
-        退料单号：{{item.billCode}} &nbsp; &nbsp; &nbsp; &nbsp;流水号：{{item.serialNum}} &nbsp; &nbsp; &nbsp; &nbsp;车牌号：{{item.plateNo}}
-        &nbsp; &nbsp; &nbsp; &nbsp;开单时间：{{item.createBillDateTime|sDatetime}}
+      <div class="col-12"><span class="print-label">门店名称：</span>{{organizationInfo?.name}}<br>
+        <span class="print-label">退料单号：</span>{{item.billCode}}<span class="mr-3"></span><span class="print-label">流水号：</span>{{item.serialNum}} <span class="mr-3"></span><span class="print-label">车牌号：</span>{{item.plateNo}}
+       <span class="mr-3"></span><span class="print-label">开单时间：</span>{{item.createBillDateTime|sDatetime}}
       </div>
       <br>
       <table class="table table-bordered">
@@ -46,8 +46,8 @@
       </table>
       <div class="container">
         <p>
-          <span class="mr-2 pull-left">打印时间：{{item.printDateTime|sDatetime}}</span>
-          <span class="mr-2 pull-right">操作人：{{employeeInfo?.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;退料人：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <span class="mr-2 pull-left"><span class="print-label">打印时间：</span>{{item.printDateTime|sDatetime}}</span>
+          <span class="mr-2 pull-right"><span class="print-label">操作人：</span>{{employeeInfo?.name}}<span class="mr-3"></span><span class="print-label">退料人：</span><span class="mr-5"></span><span class="mr-5"></span></span>
         </p>
       </div>
       <br>

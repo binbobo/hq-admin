@@ -21,7 +21,6 @@ export class DistributeService implements BasicService<any>{
     delete(id: string): Promise<void> {
         throw new Error('Method not implemented.');
     }
-
     constructor(private httpService: HttpService) { }
     /**
     * 分页获取工单列表信息
