@@ -31,7 +31,7 @@ export class InvoicingService implements BasicService<any>{
 
   //详情搜索
   public getDetailPagedList(id: string, paramsDetail: InvoicingRequest): Promise<PagedResult<any>> {
-    let url = Urls.chain.concat('/StoreInOutDetails/PurchaseSellStockDetailsList?StoreId=', id,'&', paramsDetail.serialize());
+    let url = Urls.chain.concat('/StoreInOutDetails/PurchaseSellStockDetailsList?storeId=', id, '&', paramsDetail.serialize());
     console.log("url", url);
     return this.httpService.get<PagedResult<any>>(url)
       .then(result => {
@@ -40,7 +40,7 @@ export class InvoicingService implements BasicService<any>{
       })
       .catch(err => Promise.reject(`进销存详情数据失败：${err}`));
   }
-
+ 
   //导出
   public export(params: InvoicingRequest): Promise<void> {
     const url = Urls.chain.concat('/StoreInOutDetails/PurSellStockExportToExcel');
@@ -49,8 +49,8 @@ export class InvoicingService implements BasicService<any>{
       .catch(err => Promise.reject(`进销存入库统计导出失败：${err}`));
   }
   //详情导出
-  public exportDetsil(paramsDetail: InvoicingRequest): Promise<void> {
-    const url = Urls.chain.concat('/StoreInOutDetails/PurSellStockDetailsExportToExcel');
+  public exportDetsil(id: string,  paramsDetail: InvoicingRequest): Promise<void> {
+    const url = Urls.chain.concat('/StoreInOutDetails/PurSellStockDetailsExportToExcel?StoreId=', id,'&');
     return this.httpService
       .download(url, paramsDetail.serialize())
       .catch(err => Promise.reject(`进销存入库详情统计导出失败：${err}`));
