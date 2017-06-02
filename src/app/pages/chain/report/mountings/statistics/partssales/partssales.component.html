@@ -5,11 +5,11 @@
       <form class="form-inline mb-2" [formGroup]="partssalesForm" (ngSubmit)="onSearch()">
         <div class="input-group m-1">
           <span class="input-group-addon">查询时间</span>
-          <input [max-date]="maxEnterStartDate" class="form-control datetime-picker" style="border-right:0;" formControlName="searchStart" id="starttime" name="starttime"
-            type="text" date-only="true" ngui-datetime-picker/>
+          <input [max-date]="maxEnterStartDate" class="form-control datetime-picker" style="border-right:0;" formControlName="searchStart"
+            id="starttime" name="starttime" type="text" date-only="true" ngui-datetime-picker/>
           <span class="input-group-addon">-</span>
-          <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" class="form-control datetime-picker" style="border-right-width:1px;" id="endtime" formControlName="searchEnd" name="endtime"
-            type="text" date-only="true" ngui-datetime-picker/>
+          <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" class="form-control datetime-picker" style="border-right-width:1px;"
+            id="endtime" formControlName="searchEnd" name="endtime" type="text" date-only="true" ngui-datetime-picker/>
         </div>
         <div class="input-group m-1">
           <span class="input-group-addon">客户名称</span>
@@ -64,12 +64,12 @@
 </div>
 <!--详情-->
 <div class="modal fade" bsModal #bdModal="bs-modal" role="dialog">
-  <div class="modal-dialog modal-lg modal-content card" style="min-width:1200px;width:60%;">
+  <div class="modal-dialog modal-lg modal-content card">
     <div class="modal-header">
       <div class="modal-title">配件销售详情</div>
       <button class="close pull-right" (click)="bdModal.hide()">&times;</button>
     </div>
-    <div class="modal-body" >
+    <div class="modal-body">
       <div class="card-block">
         <div class="row">
           <div class="col-3">
@@ -116,7 +116,7 @@
                 <td>{{item.unit }}</td>
                 <td>{{item.storeName }}</td>
                 <td>{{item.locationName }}</td>
-                <td>{{item.price  }}</td>
+                <td>{{item.price }}</td>
                 <td>{{item.count }}</td>
                 <td>{{item.amount |centToYuan}}</td>
               </tr>
@@ -133,4 +133,6 @@
     </div>
   </div>
 </div>
-<hq-partssales-print hqPrint #printer="hq-print" [hidden]="true" [detail]="detail" [detailItems]="detailItems" [detailItemsLength]="detailItemsLength" ></hq-partssales-print>
+<div hqPrint #printer="hq-print">
+  <hq-partssales-print [hidden]="true" [detail]="detail" [detailItems]="detailItems" [detailItemsLength]="detailItemsLength"></hq-partssales-print>
+</div>

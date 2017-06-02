@@ -1,3 +1,63 @@
-<p>
-  receive-print works!
-</p>
+<div class="modal-body" >
+      <div class="card-block">
+        <div class="row">
+          <div class="col-4">
+            <label for="">领用单号：</label>
+            <span>{{detail?.billCode}}</span>
+          </div>
+          <div class="col-4">
+            <label for="">领用人:</label>
+            <span>{{detail?.takeUserName}}</span>
+          </div>
+          <div class="col-4">
+            <label for="">部门：</label>
+            <span>{{detail?.takeDepartmentName}}</span>
+          </div>
+          <div class="col-4">
+            <label for="">开单时间：</label>
+            <span>{{detail?.createBillTime|sDatetime}}</span>
+          </div>
+          <div class="col-4">
+            <label for="">操作人：</label>
+            <span>{{detail?.operator}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-block">
+        <div class="row">
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <tr class="active">
+                <th>配件编码</th>
+                <th>配件分类</th>
+                <th>配件名称</th>
+                <th>品牌</th>
+                <th>规格型号</th>
+                <th>单位</th>
+                <th>仓库</th>
+                <th>库位</th>
+                <th>库存量</th>
+                <th>单价（元）</th>
+                <th>数量（个）</th>
+                <th>金额（元）</th>
+              </tr>
+              <tr class="text-center" *ngFor="let item of detailItems">
+                <td>{{item.productCode }}</td>
+                <td>{{item.locationName || '无'}}</td>
+                <td>{{item.productName }}</td>
+                <td>{{item.brandName}}</td>
+                <td>{{item.specification }}</td>
+                <td>{{item.unit ||'个'}}</td>
+                <td>{{item.storeName }}</td>
+                <td>{{item.locationName }}</td>
+                <td>{{item.existCount }}</td>
+                <td>{{item.price }}</td>
+                <td>{{item.count }}</td>
+                <td>{{item.amount |centToYuan }}</td>
+              </tr>
+            </table>
+          </div>
+          <p *ngIf="!!!detailItemsLength">暂无数据</p>
+        </div>
+      </div>
+    </div>

@@ -5,11 +5,12 @@
     <form class="form-inline mb-2" [formGroup]="procurementForm" (ngSubmit)="onSearch()">
       <div class="input-group m-1">
         <span class="input-group-addon">进店时间</span>
-        <input [max-date]="maxEnterStartDate" class="form-control datetime-picker" style="border-right:0;" formControlName="searchStart" id="starttime" name="starttime"
-          date-only="true" type="text" ngui-datetime-picker/>
+        <input [max-date]="maxEnterStartDate" class="form-control datetime-picker" style="border-right:0;" formControlName="searchStart"
+          id="starttime" name="starttime" date-only="true" type="text" ngui-datetime-picker/>
         <span class="input-group-addon">-</span>
-        <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" class="form-control datetime-picker" style="border-right-width:1px;" formControlName="searchEnd" id="endtime" formControlName="searchEnd" name="endtime"
-          date-only="true" type="text" ngui-datetime-picker/>
+        <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" class="form-control datetime-picker" style="border-right-width:1px;"
+          formControlName="searchEnd" id="endtime" formControlName="searchEnd" name="endtime" date-only="true" type="text"
+          ngui-datetime-picker/>
       </div>
 
       <div class="input-group m-1">
@@ -86,41 +87,43 @@
           </div>
         </div>
       </div>
-      <div class="card-block">
-        <table class="table table-order-info table-bordered" *ngFor="let item of detailItems" >
-          <tr>
-            <th>仓库</th>
-            <th>库位</th>
-            <th>配件编码</th>
-            <th>配件分类</th>
-            <th>配件名称</th>
-            <th>品牌</th>
-            <th>规格型号</th>
-            <th>单位</th>
-            <th>数量</th>
-            <th>含税单价（元）</th>
-            <th>含税金额（元）</th>
-            <th>不含税单价（元）</th>
-            <th>不含税金额（元）</th>
-          </tr>
-          <tbody>
+      <div class="card-block" *ngIf="detailItems">
+        <div class="table-responsive">
+          <table class="table table-order-info table-bordered" *ngFor="let item of detailItems">
             <tr>
-              <td>{{item.storeName}}</td>
-              <td>{{item.locationName}}</td>
-              <td>{{item.productCode}}</td>
-              <td>{{item.categoryList[0] }}</td>
-              <td>{{item.productName}}</td>
-              <td>{{item.brand}}</td>
-              <td>{{item.specification}}</td>
-              <td>{{item.unit}}</td>
-              <td>{{item.count }}</td>
-              <td>{{item.price|centToYuan}}</td>
-              <td>{{item.amount|centToYuan}}</td>
-              <td>{{item.exTaxPrice |centToYuan}}</td>
-              <td>{{item.exTaxAmount |centToYuan}}</td>
+              <th>仓库</th>
+              <th>库位</th>
+              <th>配件编码</th>
+              <th>配件分类</th>
+              <th>配件名称</th>
+              <th>品牌</th>
+              <th>规格型号</th>
+              <th>单位</th>
+              <th>数量</th>
+              <th>含税单价（元）</th>
+              <th>含税金额（元）</th>
+              <th>不含税单价（元）</th>
+              <th>不含税金额（元）</th>
             </tr>
-          </tbody>
-        </table>
+            <tbody>
+              <tr>
+                <td>{{item.storeName}}</td>
+                <td>{{item.locationName}}</td>
+                <td>{{item.productCode}}</td>
+                <td>{{item.categoryList[0] }}</td>
+                <td>{{item.productName}}</td>
+                <td>{{item.brand}}</td>
+                <td>{{item.specification}}</td>
+                <td>{{item.unit}}</td>
+                <td>{{item.count }}</td>
+                <td>{{item.price|centToYuan}}</td>
+                <td>{{item.amount|centToYuan}}</td>
+                <td>{{item.exTaxPrice |centToYuan}}</td>
+                <td>{{item.exTaxAmount |centToYuan}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <p *ngIf="!!!detailItemsLength">暂无数据</p>
     </div>
@@ -131,4 +134,6 @@
     </div>
   </div>
 </div>
-<hq-procurement-print hqPrint #printer="hq-print" [hidden]="true" [detail]="detail" [detailItems]="detailItems" [detailItemsLength]="detailItemsLength"></hq-procurement-print>
+<div hqPrint #printer="hq-print">
+  <hq-procurement-print [hidden]="true" [detail]="detail" [detailItems]="detailItems" [detailItemsLength]="detailItemsLength"></hq-procurement-print>
+</div>
