@@ -33,7 +33,7 @@ export class PartssalesService implements BasicService<any>{
   public export(params: PartssalesRequest): Promise<void> {
     const url = Urls.chain.concat('/Sales/StatExportToExcel');
     return this.httpService
-      .download(url, params.serialize(), '配件销售统计')
+      .download(url, params.serialize())
       .catch(err => Promise.reject(`配件销售统计导出失败：${err}`));
   }
 
@@ -56,7 +56,7 @@ export class PartssalesRequest extends PagedParams {
   constructor(
     public searchStart?: string,
     public searchEnd?: string,
-    public name?: string,//客户名称
+    public customerName?: string,//客户名称
     public phone?:string, //客户手机
     public orgIds?: Array<any>, //门店查询
   ) {

@@ -159,16 +159,16 @@ export class InvoicingComponent extends DataList<any> {
     return moment().format('YYYY-MM-DD');
   }
   //详情时间控制
-  public get maxEnterStartDateDetail() {
-    if (!this.invoicingDetailForm.get('searchEnd').value) {
-      return moment().format('YYYY-MM-DD');
-    }
-    return new Date(this.invoicingDetailForm.get('searchEnd').value);
-  }
-  public get minEnterEndDateDetail() {
-    return new Date(this.invoicingDetailForm.get('searchStart').value) || '';
-  }
-  public get maxEnterEndDateDetail() {
-    return moment().format('YYYY-MM-DD');
-  }
+  // public get maxEnterStartDateDetail() {
+  //   if (!this.invoicingDetailForm.get('searchEnd').value) {
+  //     return moment().format('YYYY-MM-DD');
+  //   }
+  //   return new Date(this.invoicingDetailForm.get('searchEnd').value);
+  // }
+  // public get minEnterEndDateDetail() {
+  //   return new Date(this.invoicingDetailForm.get('searchStart').value) || '';
+  // }
+  // public get maxEnterEndDateDetail() {
+  //   return moment().format('YYYY-MM-DD');
+  // }
 }
