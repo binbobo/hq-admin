@@ -5,6 +5,8 @@ import { ReceiveService, ReceiveRequest } from "./receive.service"
 import { DataList, SelectOption } from "app/shared/models";
 import { TreeviewItem, TreeviewConfig } from "ngx-treeview/lib";
 import { OrderService } from "app/pages/chain/reception/order.service";
+import { CentToYuanPipe, DurationHumanizePipe } from "app/shared/pipes";
+import * as moment from 'moment';
 
 @Component({
   selector: 'hq-inner-receive',
@@ -140,5 +142,17 @@ export class InnerReceiveComponent extends DataList<any> {
     });
   }
 
-
+  //时间控制
+  public get maxEnterStartDate() {
+    if(!this.receiveForm.get('searchEnd').value){
+      return moment().format('YYYY-MM-DD');
+    }
+    return new Date(this.receiveForm.get('searchEnd').value);
+  }
+  public get minEnterEndDate() {
+    return new Date(this.receiveForm.get('searchStart').value) || '';
+  }
+  public get maxEnterEndDate() {
+    return moment().format('YYYY-MM-DD');
+  }
 }

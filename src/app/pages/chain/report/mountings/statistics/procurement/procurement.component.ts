@@ -5,6 +5,7 @@ import { ProcurementService, ProcurementRequest } from "./procurement.service"
 import { DataList } from "app/shared/models";
 import { TreeviewItem, TreeviewConfig } from "ngx-treeview/lib";
 import { OrderService } from "app/pages/chain/reception/order.service";
+import { CentToYuanPipe, DurationHumanizePipe } from "app/shared/pipes";
 import * as moment from 'moment';
 @Component({
   selector: 'hq-procurement',
@@ -102,7 +103,10 @@ export class ProcurementComponent extends DataList<any> {
   }
   //时间控制
   public get maxEnterStartDate() {
-    return new Date(this.procurementForm.get('searchEnd').value) || moment().format('YYYY-MM-DD');
+    if(!this.procurementForm.get('searchEnd').value){
+      return moment().format('YYYY-MM-DD');
+    }
+    return new Date(this.procurementForm.get('searchEnd').value);
   }
   public get minEnterEndDate() {
     return new Date(this.procurementForm.get('searchStart').value) || '';

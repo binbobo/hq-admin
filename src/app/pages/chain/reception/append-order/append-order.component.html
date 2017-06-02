@@ -134,8 +134,8 @@
             </tbody>
           </table>
         </div>
-        <div class="text-center">
-          <button class="btn btn-secondary" (click)="addModal.show();">
+        <div class="text-center mt-3">
+          <button class="btn btn-secondary btn-add" (click)="addModal.show();">
           <span><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i></span>
             新增维修项目
             </button>
@@ -167,8 +167,8 @@
             </tr>
           </table>
         </div>
-        <div class="text-center">
-          <button class="btn btn-secondary" [disabled]="!!((newAttachData?.length)>=1)" (click)="attachModal.show();">
+        <div class="text-center mt-3">
+          <button class="btn btn-secondary btn-add" [disabled]="!!((newAttachData?.length)>=1)" (click)="attachModal.show();">
           <span><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i></span>
             新增附加项目
             </button>
@@ -207,8 +207,8 @@
             </tr>
           </table>
         </div>
-        <div class="text-center">
-          <button class="btn btn-secondary" (click)="suggestModal.show();">
+        <div class="text-center mt-3">
+          <button class="btn btn-secondary btn-add" (click)="suggestModal.show();">
           <span><i class="fa fa-plus-circle mr-1" aria-hidden="true"></i></span>
             新增建议维修项目
             </button>
