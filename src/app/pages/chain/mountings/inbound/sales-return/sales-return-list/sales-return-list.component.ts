@@ -46,7 +46,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   ) {
     super(injector, salesReturnservice);
     this.params = new SaleDetailsRequest();
-    // this.size = 5;
+    this.size = 5;
   }
 
   ngOnInit() {
