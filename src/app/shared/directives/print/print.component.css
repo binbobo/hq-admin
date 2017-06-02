@@ -27,6 +27,7 @@ h1::first-letter,h2::first-letter,h3::first-letter,h4::first-letter,h5::first-le
 .hq-printing table th {
     font-weight: 200 !important;
     font-size: 14px;
+    padding: .35rem;
 }
 .hq-printing table caption {
     font-weight: normal !important;

@@ -56,7 +56,7 @@ export class PartssalesRequest extends PagedParams {
   constructor(
     public searchStart?: string,
     public searchEnd?: string,
-    public customerName?: string,//客户名称
+    public name?: string,//客户名称
     public phone?:string, //客户手机
     public orgIds?: Array<any>, //门店查询
   ) {
