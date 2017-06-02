@@ -53,7 +53,6 @@ export class DistributeService implements BasicService<any>{
             .then(result => {
                 return result.data
             })
-            .then(data => data || Promise.reject('获取数据无效！'))
             .catch(err => Promise.reject(`加载失败：${err}`));
     }
 

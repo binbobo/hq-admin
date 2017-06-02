@@ -18,7 +18,6 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
 
   private warehouses: Array<SelectOption>;
   private units: Array<SelectOption>;
-  private categories: Array<TreeviewItem>;
   private owned: boolean;
   private selectedProduct: any;
 
@@ -72,12 +71,6 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
       .then(options => this.warehouses = options)
       .then(options => options.length ? options[0].value : '')
       .then(id => this.patchValue('storeId', id))
-      .catch(err => this.alerter.warn(err));
-    this.moutingsService.getCategoryOptions()
-      .then(options => options.map(m => new TreeviewItem(m as TreeItem)))
-      .then(options => this.categories = options)
-      .then(options => options.length ? options[0].value : '')
-      .then(id => this.patchValue('categoryId', id))
       .catch(err => this.alerter.warn(err));
     this.moutingsService.getUnitOptions()
       .then(options => this.units = options)

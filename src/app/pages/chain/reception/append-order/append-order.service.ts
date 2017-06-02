@@ -57,7 +57,6 @@ export class AppendOrderService implements BasicService<any> {
         console.log(result.data)
         return result.data
       })
-      .then(data => data || Promise.reject('获取数据无效！'))
       .catch(err => Promise.reject(`加载失败：${err}`));
   }
   //  增项 /Maintenances/increase/{id}

@@ -11,7 +11,6 @@ export class ClientService implements BasicService<Client> {
     let url = Urls.platform.concat('/clients/options');
     return this.httpService.get<ListResult<SelectOption>>(url)
       .then(result => result.data)
-      .then(data => data || Promise.reject('返回数据无效'))
       .catch(err => Promise.reject(`客户端列表加载失败：${err}`));
   }
 
