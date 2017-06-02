@@ -14,7 +14,7 @@ import { ReceiveService } from './receive/receive.service';
 import { ReceivePrintComponent } from './receive/receive-print/receive-print.component';
 import { SalesPrintComponent } from './sales/sales-print/sales-print.component';
 import { ChainSharedModule } from '../../chain-shared/chain-shared.module';
-import { DistributeCreatComponent } from './distribute/distribute-creat/distribute-creat.component';
+import { DistributeCreateComponent } from './distribute/distribute-creat/distribute-create.component';
 import { ProviderService } from '../provider/provider.service';
 import { ReturnListComponent } from './purchase-return/return-list/return-list.component';
 import { ReturnCreateComponent } from './purchase-return/return-create/return-create.component';
@@ -46,7 +46,7 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
   providers: [SalesService, ReceiveService, ProviderService, PurchaseReturnService],
-  declarations: [DistributeComponent, SalesListComponent, SalesCreateComponent, ReceiveListComponent, ReceiveCreateComponent, ReceivePrintComponent, SalesPrintComponent, ReturnListComponent, ReturnCreateComponent, ReturnPrintComponent, DistributeCreatComponent, DistributePrintComponent, SalesOutBillDirective, ReceiveOutBillDirective, PurchaseOutBillDirective]
+  declarations: [DistributeComponent, SalesListComponent, SalesCreateComponent, ReceiveListComponent, ReceiveCreateComponent, ReceivePrintComponent, SalesPrintComponent, ReturnListComponent, ReturnCreateComponent, ReturnPrintComponent, DistributeCreateComponent, DistributePrintComponent, SalesOutBillDirective, ReceiveOutBillDirective, PurchaseOutBillDirective]
 
 
 })
