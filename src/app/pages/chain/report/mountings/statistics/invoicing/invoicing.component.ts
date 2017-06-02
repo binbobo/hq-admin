@@ -109,7 +109,11 @@ export class InvoicingComponent extends DataList<any> {
         this.loading = false;
       })
   }
-
+  //改变页码
+  onPageDetailChanged(event: { page: number, itemsPerPage: number }){
+    this.paramsDetail.setPage(event.page, event.itemsPerPage);
+    this.onSearchDetail();
+  }
   //绑定表单
   createForm() {
     this.invoicingForm = this.formBuilder.group({

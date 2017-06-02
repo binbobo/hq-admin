@@ -14,7 +14,7 @@ import { ReceiveService } from './receive/receive.service';
 import { ReceivePrintComponent } from './receive/receive-print/receive-print.component';
 import { SalesPrintComponent } from './sales/sales-print/sales-print.component';
 import { ChainSharedModule } from '../../chain-shared/chain-shared.module';
-import { DistributeCreateComponent } from './distribute/distribute-creat/distribute-create.component';
+import { DistributeCreateComponent } from './distribute/distribute-create/distribute-create.component';
 import { ProviderService } from '../provider/provider.service';
 import { ReturnListComponent } from './purchase-return/return-list/return-list.component';
 import { ReturnCreateComponent } from './purchase-return/return-create/return-create.component';

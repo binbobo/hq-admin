@@ -9,7 +9,7 @@ import { CentToYuanPipe } from "app/shared/pipes";
 
 
 @Component({
-  selector: 'hq-distribute-creat',
+  selector: 'hq-distribute-create',
   templateUrl: './distribute-create.component.html',
   styleUrls: ['./distribute-create.component.css']
 })

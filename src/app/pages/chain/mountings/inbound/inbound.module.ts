@@ -16,7 +16,7 @@ import { ReturnListComponent } from './inner-return/return-list/return-list.comp
 import { ReturnCreateComponent } from './inner-return/return-create/return-create.component';
 import { ReturnPrintComponent } from './inner-return/return-print/return-print.component';
 import { InnerReturnService } from "./inner-return/inner-return.service";
-import { MaintainCreatComponent } from './maintain-return/maintain-creat/maintain-creat.component';
+import { MaintainCreateComponent } from './maintain-return/maintain-create/maintain-create.component';
 import { ChainSharedModule } from "app/pages/chain/chain-shared/chain-shared.module";
 import { SalesReturnListComponent } from './sales-return/sales-return-list/sales-return-list.component';
 import { SalesReturnCreateComponent } from './sales-return/sales-return-create/sales-return-create.component';
@@ -50,7 +50,7 @@ import { PurchaseInBillDirective } from './procurement/purchase-in-bill.directiv
     CustomFormsModule,
     BsDropdownModule.forRoot(),
   ],
-  declarations: [routedComponents, ReturnListComponent, ReturnCreateComponent, ReturnPrintComponent, SalesReturnListComponent, SalesReturnCreateComponent, SalesReturnPrintComponent, ProcurementListComponent, ProcurementCreateComponent, ProcurementPrintComponent, MaintainCreatComponent, MaintainPrintComponent, PurchaseInBillDirective],
+  declarations: [routedComponents, ReturnListComponent, ReturnCreateComponent, ReturnPrintComponent, SalesReturnListComponent, SalesReturnCreateComponent, SalesReturnPrintComponent, ProcurementListComponent, ProcurementCreateComponent, ProcurementPrintComponent, MaintainCreateComponent, MaintainPrintComponent, PurchaseInBillDirective],
   providers: [MaintainReturnService, ProcurementService, ProviderService, InnerReturnService, SalesReturnService],
 
   entryComponents: [routedComponents[0]],
