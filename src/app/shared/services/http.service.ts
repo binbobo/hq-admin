@@ -44,6 +44,11 @@ export class HttpService {
             .then(result => Array.isArray(result.data) ? result.data : []);
     }
 
+    getObject<T>(url: string, search?: string): Promise<T> {
+        return this.get<ApiResult<T>>(url, search)
+            .then(result => result.data);
+    }
+
     post<TResult>(url: string, body: any): Promise<TResult> {
         return this.promise(url, { method: RequestMethod.Post, body: body })
             .then(resp => this.extractData<TResult>(resp))

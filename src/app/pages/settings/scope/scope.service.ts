@@ -11,7 +11,6 @@ export class ScopeService implements BasicService<Scope>{
     var params = new PagedParams(null, 1, 1000);
     return this.getPagedList(params)
       .then(result => result.data)
-      .then(data => data || Promise.reject('无效的数据！'))
       .then(data => data.map(m => new SelectOption(m.name, m.id)));
   }
 

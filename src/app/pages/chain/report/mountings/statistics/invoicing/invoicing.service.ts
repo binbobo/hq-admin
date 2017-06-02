@@ -43,7 +43,7 @@ export class InvoicingService implements BasicService<any>{
 
   //导出
   public export(params: InvoicingRequest): Promise<void> {
-    const url = Urls.chain.concat('/StoreInOutDetails/PurSellStockDetailsExportToExcel');
+    const url = Urls.chain.concat('/StoreInOutDetails/PurSellStockExportToExcel');
     return this.httpService
       .download(url, params.serialize(), '进销存入库统计')
       .catch(err => Promise.reject(`进销存入库统计导出失败：${err}`));

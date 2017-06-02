@@ -71,7 +71,7 @@ export class AssignService implements BasicService<any> {
         const url = Urls.chain.concat('/MaintenanceTeams');
         return this.httpService
             .post<ApiResult<any>>(url, body)
-            .catch(err => Promise.reject(`派工失败：${err}`));
+            .catch(err => Promise.reject(`${err}`));
     }
 
 
