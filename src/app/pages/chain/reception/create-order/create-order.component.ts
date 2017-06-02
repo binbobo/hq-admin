@@ -50,10 +50,9 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   // 费用计算相关
   fee = {
-    workHours: 0,
-    workHour: 0,
-    material: 0,
-    discount: 0
+    workHours: 0, // 工时合计
+    workHour: 0, // 工时费
+    discount: 0 // 优惠
   };
 
   // 品牌车系车型是否选择标志
@@ -582,7 +581,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.newMaintenanceItemData = [];
 
     // 重置费用
-    this.fee.workHour = this.fee.material = this.fee.discount = this.fee.workHours = 0;
+    this.fee.workHour = this.fee.discount = this.fee.workHours = 0;
 
     // 清空上次维修工单数据
     this.lastOrderData = null;
