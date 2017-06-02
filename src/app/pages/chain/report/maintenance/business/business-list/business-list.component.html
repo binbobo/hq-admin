@@ -83,7 +83,7 @@
         <tbody>
           <tr *ngFor="let item of list" class="text-center">
             <td width="75">
-              <button [hqSpinner]="item.generating" [disabled]="item.generating" type="button" class="btn btn-primary btn-sm" (click)="businessDetailsHandler(item, item.id)">详情</button>
+              <button [hqSpinner]="item.generating" [disabled]="item.generating" type="button" class="btn btn-info btn-sm" (click)="businessDetailsHandler(item, item.id)">详情</button>
             </td>
             <td *ngIf="items">{{item.orgName}}</td>
             <td>{{item.plateNo}}</td>
