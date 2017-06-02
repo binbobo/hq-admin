@@ -38,9 +38,6 @@ export class OrderListComponent extends DataList<Order> {
   // 定义OrderListRequest类型的参数对 象， 覆盖父类的
   params: OrderListRequest;
 
-  // 当前登录用户信息
-  public user = null;
-
   generating = false;
 
   @ViewChild('printer')
@@ -64,11 +61,6 @@ export class OrderListComponent extends DataList<Order> {
       });
     // 获取可以选择的店名, 用于查询范围筛选
     // this.service.getSelectableStores().subscribe(data => this.items = data);
-
-    // 获取当前登录用户信息
-    this.user = JSON.parse(sessionStorage.getItem(StorageKeys.Identity));
-    console.log('当前登陆用户: ', this.user);
-    //
     this.reset();
   }
 

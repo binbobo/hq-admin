@@ -51,7 +51,7 @@
           <th style="color:red;">其他出库<br>成本金额</th>
           <th style="color:red;">其他出库<br>销售金额</th>-->
         </tr>
-        <tr *ngFor="let item of items.data">
+        <tr *ngFor="let item of items?.data">
           <td width="100"><button [hqSpinner]="item.hqSpinner" class="btn btn-primary btn-sm" (click)="alert(item,item.id,bdModal)">查看明细</button></td>
           <td>{{item.storeName }}</td>
           <td>{{item.beginAmount |centToYuan}}</td>

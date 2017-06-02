@@ -21,21 +21,14 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
   selectedOrder = null;
   isDetailModalShown = false; // 详情弹框是否可见
 
-  // 当前登录用户信息
-  public user = null;
-
   statistics: any = null; // 各种状态数量统计
-
+  // 执行验收操作加载动画
   generating = false;
 
   constructor(injector: Injector,
     protected service: WorkshopService) {
     super(injector, service);
     this.params = new WorkshopListRequest();
-
-    // 获取当前登录用户信息
-    this.user = JSON.parse(sessionStorage.getItem(StorageKeys.Identity));
-    console.log('当前登陆用户: ', this.user);
   }
 
   ngOnInit() {
