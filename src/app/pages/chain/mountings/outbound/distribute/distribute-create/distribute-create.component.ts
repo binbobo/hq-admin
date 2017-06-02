@@ -10,10 +10,10 @@ import { CentToYuanPipe } from "app/shared/pipes";
 
 @Component({
   selector: 'hq-distribute-creat',
-  templateUrl: './distribute-creat.component.html',
-  styleUrls: ['./distribute-creat.component.css']
+  templateUrl: './distribute-create.component.html',
+  styleUrls: ['./distribute-create.component.css']
 })
-export class DistributeCreatComponent implements OnInit {
+export class DistributeCreateComponent implements OnInit {
   private form: FormGroup;
   private converter: CentToYuanPipe = new CentToYuanPipe();
   @Output()

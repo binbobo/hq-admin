@@ -87,6 +87,10 @@ export class ReturnListComponent extends DataList<any> {
   onDepartSelect(event: Event) {
     let el = event.target as HTMLSelectElement;
     this.takeDepartId = el.value;
+    this.billCode = null;
+    this.list = null;
+    this.originalBillId = null;
+    this.returnData = [];
   }
 
   //生成退料单
