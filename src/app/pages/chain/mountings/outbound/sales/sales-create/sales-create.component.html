@@ -50,7 +50,7 @@
         <input readonly label="库存" formControlName="stockCount" [errors]="{min:'库存不足'}" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*单价（元/个）</label>
+        <label class="form-control-label">*单价（元）</label>
         <input label="单价" type="number" formControlName="yuan" [errors]="priceError" class="form-control" (input)="onPriceChange($event)"
         />
       </div>

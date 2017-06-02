@@ -121,7 +121,6 @@ hqtabletypeahead ul{
     text-align: center;
     background-color: #fff;
     border-radius: 2px;
-    /*border-radius: .25rem;*/
     font-size:.875rem;
 }
 .append-stamp::before {  

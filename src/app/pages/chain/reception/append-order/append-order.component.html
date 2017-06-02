@@ -8,7 +8,6 @@
   <div class="card-block">
     <form class='form-inline'  autocomplete="off">
       <div class="input-group m-1">
-        <!--<span class="input-group-addon">选择工单</span>-->
         <input [hqTableTypeahead]="typeaheadSource" [(ngModel)]="initValue" name="initValue" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)"
           class="form-control" placeholder="请输入车牌号/工单号" style="width:365px;"/>
       </div>
@@ -371,7 +370,7 @@
 
 <div bsModal #suggestModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <!--每次都创建一个新的 为了清空表单-->
-  <div *ngIf="suggestModal.isShown" class="modal-dialog">
+  <div *ngIf="suggestModal.isShown" class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h6 class="modal-title pull-left">新增建议维修项目</h6>

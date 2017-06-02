@@ -96,7 +96,7 @@ export class PartssalesComponent extends DataList<any> {
     this.partssalesForm = this.formBuilder.group({
       searchStart: '',  //开始时间
       searchEnd: '',    // 结束时间
-      name: '',         //供应商
+      customerName: '',         //供应商
       phone:'',         //供应商手机
     })
   }
