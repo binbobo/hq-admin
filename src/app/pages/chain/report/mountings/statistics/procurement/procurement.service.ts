@@ -33,7 +33,7 @@ export class ProcurementService implements BasicService<any>{
   public export(params: ProcurementRequest): Promise<void> {
     const url = Urls.chain.concat('/Purchases/StatisticExportToExcel');
     return this.httpService
-      .download(url, params.serialize(), '采购入库统计')
+      .download(url, params.serialize())
       .catch(err => Promise.reject(`采购入库统计导出失败：${err}`));
   }
 

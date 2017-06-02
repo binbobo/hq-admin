@@ -2,63 +2,63 @@
   <div class='card-block'>
     <div>
       <p>
-        <span class="mr-2 pull-left">门店名称：{{organizationInfo?.name}}</span>
-        <span class="mr-2 pull-right">门店地址：{{organizationInfo?.address}}</span>
+        <span class="mr-2 pull-left"><span class="print-label">门店名称</span>：{{organizationInfo?.name}}</span>
+        <span class="mr-2 pull-right"><span class="print-label">门店地址</span>：{{organizationInfo?.address}}</span>
         <span class="clearfix"></span>
       </p>
       <p>
-        <span class="mr-2 pull-left">电话：{{organizationInfo?.servicecall}}</span>
-        <span class="mr-2 pull-right">24小时救援电话：{{organizationInfo?.rescuecall}}</span>
+        <span class="mr-2 pull-left"><span class="print-label">电话</span>：{{organizationInfo?.servicecall}}</span>
+        <span class="mr-2 pull-right"><span class="print-label">24小时救援电话</span>：{{organizationInfo?.rescuecall}}</span>
         <span class="clearfix"></span>
       </p>
     </div>
     <table class="table table-bordered">
       <tr>
-        <td rowspan="3" class="td-header">托修方</td>
-        <td>车牌号</td>
+        <td rowspan="3" class="td-header"><span class="print-label">托修方</span></td>
+        <td class="print-label">车牌号</td>
         <td>{{data.maindata.plateNo}}</td>
-        <td class="fixed-width">车型描述</td>
+        <td class="fixed-width print-label">车型描述</td>
         <td>{{data.maindata.model}} </td>
       </tr>
       <tr>
-        <td>送修人</td>
+        <td><span class="print-label">送修人</span></td>
         <td>{{data.maindata.contactUser}}</td>
-        <td class="fixed-width">送修人电话</td>
+        <td class="fixed-width"><span class="print-label">送修人电话</span></td>
         <td>{{data.maindata.contactInfo}}</td>
       </tr>
       <tr>
-        <td>VIN</td>
+        <td><span class="print-label">VIN</span></td>
         <td>{{data.maindata.vin}} </td>
-        <td>工单号</td>
+        <td><span class="print-label">工单号</span></td>
         <td>{{data.maindata.billCode}}</td>
       </tr>
       <tr>
-        <td rowspan="5" class="td-header">承修方</td>
-        <td class="fixed-width">维修类型</td>
+        <td rowspan="5" class="td-header"><span class="print-label">承修方</span></td>
+        <td class="fixed-width"><span class="print-label">维修类型</span></td>
         <td>{{data.maindata.typeName}}</td>
-        <td>结算员</td>
+        <td><span class="print-label">结算员</span></td>
         <td>{{data.maindata.updateUser}}</td>
       </tr>
       <tr>
-        <td class="fixed-width">结算单号</td>
+        <td class="fixed-width"><span class="print-label">结算单号</span></td>
         <td>{{data.maindata.settlementCode}}</td>
-        <td class="fixed-width">结算时间</td>
+        <td class="fixed-width"><span class="print-label">结算时间</span></td>
         <td>{{data.maindata.updateOnUtc|sDatetime}}</td>
       </tr>
       <tr>
-        <td>结算方</td>
+        <td><span class="print-label">结算方</span></td>
         <td>{{data.maindata.settlementParty}}</td>
-        <td class="fixed-width">进厂时间</td>
+        <td class="fixed-width"><span class="print-label">进厂时间</span></td>
         <td>{{data.maindata.createdOnUtc|sDatetime}}</td>
       </tr>
       <tr>
-        <td class="fixed-width">进厂里程(KM)</td>
+        <td class="fixed-width"><span class="print-label">进厂里程(KM)</span></td>
         <td>{{data.maindata.mileage}}</td>
-        <td class="fixed-width">出厂里程(KM)</td>
+        <td class="fixed-width"><span class="print-label">出厂里程(KM)</span></td>
         <td>{{data.maindata.leaveMileage}}</td>
       </tr>
       <tr>
-        <td class="fixed-width">服务顾问</td>
+        <td class="fixed-width"><span class="print-label">服务顾问</span></td>
         <td>{{data.maindata.createdUserName}}</td>
         <td></td>
         <td></td>
@@ -66,106 +66,127 @@
     </table>
     <table class="table table-bordered">
       <caption>表一：收费结算单</caption>
-      <tr>
-        <td class="text-center">序号</td>
-        <td class="text-center">名称</td>
-        <td class="text-center">金额(元)</td>
-        <td class="text-center">备注</td>
-      </tr>
-      <tr *ngFor="let item of data?.costData;let index=index">
-        <td class="text-center">{{index+1}}</td>
-        <td class="text-center">{{item?.name}}</td>
-        <td  class="text-right">{{item?.discountCost|centToYuan}}</td>
-        <td class="text-center">{{item?.description}}</td>
-      </tr>
-      <tr>
-        <td colspan="4">金额合计：{{(data.moneyObj)?.costMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;优惠：{{(data.moneyObj).costCountMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;应收金额：{{data.maindata.actualAmount|centToYuan}}
-          &nbsp;&nbsp;&nbsp;&nbsp;
-        </td>
-      </tr>
-    </table>    
+      <thead>
+        <tr>
+          <th class="text-center">序号</th>
+          <th class="text-center">名称</th>
+          <th class="text-center">金额(元)</th>
+          <th class="text-center">备注</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of data?.costData;let index=index">
+          <td class="text-center">{{index+1}}</td>
+          <td class="text-center">{{item?.name}}</td>
+          <td class="text-right">{{item?.discountCost|centToYuan}}</td>
+          <td class="text-center">{{item?.description}}</td>
+        </tr>
+        <tr>
+          <td colspan="4"><span class="print-label">金额合计：</span>{{(data.moneyObj)?.costMoney|centToYuan}}<span class="mr-4"></span><span class="print-label">优惠：</span>{{(data.moneyObj).costCountMoney|centToYuan}}
+            <span class="mr-4"></span><span class="print-label">应收金额：</span>{{data.maindata.actualAmount|centToYuan}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
     <table class="table table-bordered">
       <caption>表二：工时明细</caption>
-      <tr>
-        <td class="text-center">序号</td>
-        <td class="text-center">维修项目</td>
-        <td class="text-center">结算工时</td>
-        <td class="text-center">单价(元)</td>
-        <td class="text-center">折扣率(%)</td>
-        <td class="text-center">金额(元)</td>
-        <td class="text-center">备注</td>
-      </tr>
-      <tr *ngFor="let item of data?.workHourData;let index=index">
-        <td class="text-center">{{index+1}}</td>
-        <td class="text-center">{{item?.serviceName}}</td>
-        <td class="text-center">{{item?.workHour}}</td>
-        <td class="text-right">{{item?.price|centToYuan}}</td>
-        <td class="text-center">{{item?.discount}}</td>
-        <td class="text-right">{{item?.discountCost|centToYuan}}</td>
-        <td class="text-center">{{item?.description}}</td>
-      </tr>
-      <tr>
-        <td colspan="7">金额合计：{{(data.moneyObj)?.workItemMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;优惠：{{(data.moneyObj).discountMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;应收金额：{{(data.moneyObj)?.workCostMoney|centToYuan}}</td>
-        <!--<td colspan="7">合计：应收金额：{{(data.moneyObj)?.workCostMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;折扣金额：{{(data.moneyObj)?.discountMoney|centToYuan}}</td>-->
-      </tr>
+      <thead>
+        <tr>
+          <th class="text-center">序号</th>
+          <th class="text-center">维修项目</th>
+          <th class="text-center">结算工时</th>
+          <th class="text-center">单价(元)</th>
+          <th class="text-center">折扣率(%)</th>
+          <th class="text-center">金额(元)</th>
+          <th class="text-center">备注</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of data?.workHourData;let index=index">
+          <td class="text-center">{{index+1}}</td>
+          <td class="text-center">{{item?.serviceName}}</td>
+          <td class="text-center">{{item?.workHour}}</td>
+          <td class="text-right">{{item?.price|centToYuan}}</td>
+          <td class="text-center">{{item?.discount}}</td>
+          <td class="text-right">{{item?.discountCost|centToYuan}}</td>
+          <td class="text-center">{{item?.description}}</td>
+        </tr>
+        <tr>
+          <td colspan="7"><span class="print-label">金额合计：</span>{{(data.moneyObj)?.workItemMoney|centToYuan}}<span class="mr-4"></span><span class="print-label">优惠：</span>{{(data.moneyObj).discountMoney|centToYuan}}
+            <span class="mr-4"></span><span class="print-label">应收金额：</span>{{(data.moneyObj)?.workCostMoney|centToYuan}}</td>
+          <!--<td colspan="7">合计：应收金额：{{(data.moneyObj)?.workCostMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;折扣金额：{{(data.moneyObj)?.discountMoney|centToYuan}}</td>-->
+        </tr>
+      </tbody>
     </table>
     <table class="table table-bordered" *ngIf="data.materialData.length>0">
       <caption>表三：配件明细</caption>
-      <tr class="table-tr">
-        <td class="text-center">序号</td>
-        <td class="text-center">配件名称</td>
-        <td class="text-center">单价(元)</td>
-        <td class="text-center">数量</td>
-        <td class="text-center">金额(元)</td>
-        <td class="text-center">备注</td>
-      </tr>
-      <tr *ngFor="let item of data?.materialData;let index=index;">
-        <td class="text-center">{{index+1}}</td>
-        <td class="text-center">{{item?.productName}}</td>
-        <td class="text-right">{{item?.price|centToYuan}}</td>
-        <td class="text-center">{{item?.count}}</td>
-        <td class="text-right">{{item?.amount|centToYuan}}</td>
-        <td class="text-center">{{item?.description}}</td>
-      </tr>
-      <tr>
-        <td colspan="8">金额合计：{{(data.moneyObj)?.materialMoney|centToYuan}}</td>
-      </tr>
+      <thead>
+        <tr class="table-tr">
+          <th class="text-center">序号</th>
+          <th class="text-center">配件名称</th>
+          <th class="text-center">单价(元)</th>
+          <th class="text-center">数量</th>
+          <th class="text-center">金额(元)</th>
+          <th class="text-center">备注</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of data?.materialData;let index=index;">
+          <td class="text-center">{{index+1}}</td>
+          <td class="text-center">{{item?.productName}}</td>
+          <td class="text-right">{{item?.price|centToYuan}}</td>
+          <td class="text-center">{{item?.count}}</td>
+          <td class="text-right">{{item?.amount|centToYuan}}</td>
+          <td class="text-center">{{item?.description}}</td>
+        </tr>
+        <tr>
+          <td colspan="8"><span class="print-label">金额合计：</span>{{(data.moneyObj)?.materialMoney|centToYuan}}</td>
+        </tr>
+      </tbody>
     </table>
     <table class="table table-bordered" *ngIf="data.appendItems.length>0">
       <caption>表四：附加项目</caption>
-      <tr>
-        <td class="text-center">序号</td>
-        <td class="text-center">备注</td>
-      </tr>
-      <tr *ngFor="let items of data?.appendItems;let index=index;">
-        <td class="text-center">{{index+1}}</td>
-        <td class="text-center">{{items.name}}</td>
-      </tr>
+      <thead>
+        <tr>
+          <th class="text-center">序号</th>
+          <th class="text-center">备注</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let items of data?.appendItems;let index=index;">
+          <td class="text-center">{{index+1}}</td>
+          <td class="text-center">{{items.name}}</td>
+        </tr>
+      </tbody>
     </table>
     <table class="table table-bordered" *ngIf="data.adviceItems.length>0">
       <caption>表五：建议维修项目</caption>
-      <tr>
-        <td class="text-center">序号</td>
-        <td class="text-center">建议维修项目</td>
-        <td class="text-center">备注</td>
-      </tr>
-      <tr *ngFor="let item of data?.adviceItems;let index=index;">
-        <td class="text-center">{{index+1}}</td>
-        <td class="text-center">{{item.content}}</td>
-        <td class="text-center">{{item.description}}</td>
-      </tr>
+      <thead>
+        <tr>
+          <th class="text-center">序号</th>
+          <th class="text-center">建议维修项目</th>
+          <th class="text-center">备注</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of data?.adviceItems;let index=index;">
+          <td class="text-center">{{index+1}}</td>
+          <td class="text-center">{{item.content}}</td>
+          <td class="text-center">{{item.description}}</td>
+        </tr>
+      </tbody>
     </table>
     <hr>
-     <div>
+    <div class="mb-3">
       <p>
-        <span class="mr-2 pull-left">打印时间：{{data.maindata.printOnUtc|sDatetime}}</span>
-        <span class="mr-2 pull-right">客户签名:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <span class="mr-2 pull-left"><span class="print-label">打印时间：</span>{{data.maindata.printOnUtc|sDatetime}}</span>
+        <span class="mr-5 pull-right"><span class="print-label">操作人：</span>{{employeeInfo?.name}}<span class="mr-5"></span><span class="mr-5"></span><span class="mr-5"></span></span>
         <span class="clearfix"></span>
       </p>
       <p>
-        <span class="mr-2 pull-left">操作人：{{employeeInfo?.name}}</span>
-        <span class="mr-2 pull-right">日期：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        月&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 日</span>
+        <span class="mr-2 pull-left"><span class="print-label">客户签名：</span></span>
+        <span class="mr-1 pull-right"><span class="print-label mr-5">日期：</span><span class="print-label mr-5">年</span>
+        <span class="print-label mr-5">月</span><span class="print-label mr-5">日</span></span>
         <span class="clearfix"></span>
       </p>
     </div>

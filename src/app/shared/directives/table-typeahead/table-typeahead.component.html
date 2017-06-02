@@ -2,7 +2,7 @@
   <button (click)="hide()" class="close" [hidden]="!multiple">
     <span>&times;</span>
   </button>
-  <table class="table table-sm table-bordered table-hover"> 
+  <table class="table table-sm table-bordered table-hover">
     <thead [hidden]="!showTitle">
       <tr>
         <th [hidden]="!multiple"><input [checked]="allChecked" (change)="onSelectAll($event)" type="checkbox" /></th>
@@ -18,6 +18,8 @@
       </tr>
     </tbody>
   </table>
-  <pagination [hidden]="!showPagination" class="pagination-sm" [maxSize]="3" [boundaryLinks]="true" [itemsPerPage]="size" previousText="&lsaquo;"
-    nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" [totalItems]="result?.totalCount" [(ngModel)]="index" (pageChanged)="pageChanged($event)"></pagination>
+  <div class="text-center">
+    <pagination [hidden]="!showPagination" class="pagination-sm" [maxSize]="3" [boundaryLinks]="true" [itemsPerPage]="size" previousText="&lsaquo;"
+      nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" [totalItems]="result?.totalCount" [(ngModel)]="index" (pageChanged)="pageChanged($event)"></pagination>
+  </div>
 </div>

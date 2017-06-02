@@ -1,17 +1,21 @@
 <ng-template hq-alerter></ng-template>
 <form [formGroup]="suggestItemForm" autocomplete="off">
-   <!--<div class="input-group">
+  <!--<div class="input-group">
           <span class="input-group-addon">工单状态</span>-->
   <div class="form-group row">
-    <div class="input-group col-12">
-      <span class="input-group-addon">建议维修项目</span>
-      <input hqMaintenanceItemTypeahead [serviceIds]="serviceIds" (onSelect)="serviceTypeaheadOnSelect($event)" type="text" label="维修项目名称"
-        class="form-control" formControlName="serviceName" placeholder="请输入建议维修项目">
-      <input type="hidden" formControlName="serviceId">
+    <div class="hq-input hq-input-column">
+      <label for="serviceName" class="form-label"><span class="asterisk mr-1">*</span>建议维修项目</label>
+      <div class="hq-col">
+        <input hqMaintenanceItemTypeahead [serviceIds]="serviceIds" (onSelect)="serviceTypeaheadOnSelect($event)" type="text" label="维修项目名称"
+          class="form-control" formControlName="serviceName" placeholder="请输入建议维修项目">
+        <input type="hidden" formControlName="serviceId">
+      </div>
     </div>
-     <div class="input-group col-12" style="padding-top:18px;">
-       <span class="input-group-addon">备注</span>
-      <input formControlName="description" class="form-control" type="text">
+    <div class="hq-input hq-input-column">
+      <label for="description" class="form-label">备注</label>
+      <div class="hq-col">
+        <input formControlName="description" class="form-control" type="text">
+      </div>
     </div>
     <!--<div class="col-6">
       <label for="operationTime" class="col-form-label">操作时间</label>
