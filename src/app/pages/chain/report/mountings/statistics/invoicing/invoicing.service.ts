@@ -19,7 +19,7 @@ export class InvoicingService implements BasicService<any>{
 
   //页面加载时分页获取信息
   public getPagedList(params: InvoicingRequest): Promise<PagedResult<any>> {
-    const url = Urls.chain.concat('/StoreInOutDetails/PurchaseSellStockList?StoreId=4B8CDD93-66A6-48C0-BA22-0DB1CFF123F3&', params.serialize());
+    const url = Urls.chain.concat('/StoreInOutDetails/PurchaseSellStockList?', params.serialize());
     console.log("url", url);
     return this.httpService.get<PagedResult<any>>(url)
       .then(result => {

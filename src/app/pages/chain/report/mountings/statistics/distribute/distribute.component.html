@@ -10,13 +10,13 @@
           </div>
           <div class="input-group m-1">
             <span class="input-group-addon">查询时间</span>
-            <input [max-date]="maxEnterStartDate" date-only="true" class="form-control datetime-picker" style="border-right:0;" formControlName="searchStart" id="starttime" name="starttime"
-              type="text" ngui-datetime-picker/>
+            <input [max-date]="maxEnterStartDate" date-only="true" class="form-control datetime-picker" style="border-right:0;" formControlName="searchStart"
+              id="starttime" name="starttime" type="text" ngui-datetime-picker/>
             <span class="input-group-addon">-</span>
-            <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" date-only="true" class="form-control datetime-picker" style="border-right-width:1px;" id="endtime" formControlName="searchEnd" name="endtime"
-              type="text" ngui-datetime-picker/>
+            <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" date-only="true" class="form-control datetime-picker" style="border-right-width:1px;"
+              id="endtime" formControlName="searchEnd" name="endtime" type="text" ngui-datetime-picker/>
           </div>
-          <div class="input-group m-1"  *ngIf="items">
+          <div class="input-group m-1" *ngIf="items">
             <span class="input-group-addon">门店查询</span>
             <div *ngIf="true" class="form-controls">
               <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)">
@@ -42,7 +42,7 @@
         </tr>
         <tr *ngFor="let item of list">
           <td>
-            <button type="button" [hqSpinner]="false" class="btn btn-primary btn-sm" (click)="alert(item,item.id,bdModal,item.billCode)">详情</button>
+            <button type="button" [hqSpinner]="false" class="btn btn-info btn-sm" (click)="alert(item,item.id,bdModal,item.billCode)">详情</button>
           </td>
           <td>{{item.plateNo }}</td>
           <td>{{item.billCode }}</td>
@@ -54,7 +54,7 @@
       </table>
     </div>
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
-    <button type="button" (click)="onExport()" class="btn btn-secondary">导出</button>
+    <button type="button" (click)="onExport()" class="btn btn-export">导出</button>
   </div>
 </div>
 <!--详情-->
@@ -94,10 +94,10 @@
                 <th>配件编号</th>
                 <th>配件类型</th>
                 <th>配件名称</th>
-                <th>品牌</th>
+                <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;品牌&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                 <th>规格型号</th>
                 <th>单位</th>
-                <th>仓库</th>
+                <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;仓库&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                 <th>库位</th>
                 <th>单价</th>
                 <th>数量</th>
@@ -134,4 +134,6 @@
     </div>
   </div>
 </div>
-<hq-distribute-print hqPrint #printer="hq-print" [hidden]="true" [detail]="detail" [detailItems]="detailItems" [detailItemsLength]="detailItemsLength"></hq-distribute-print>
+<div hqPrint #printer="hq-print" print-title="内部领用统计">
+  <hq-distribute-print [hidden]="true" [detail]="detail" [detailItems]="detailItems" [detailItemsLength]="detailItemsLength"></hq-distribute-print>
+</div>

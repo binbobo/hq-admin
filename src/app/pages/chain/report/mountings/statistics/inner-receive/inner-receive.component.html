@@ -46,7 +46,7 @@
           <th>操作人</th>
         </tr>
         <tr *ngFor="let item of list">
-          <td width="100"><button [hqSpinner]="item.hqSpinner" class="btn btn-primary btn-sm" (click)="alert(item,item.id,bdModal,item.billCode,item.takeUserName,item.takeDepartmentName,item.createBillTime,item.operator)">详情</button></td>
+          <td width="100"><button [hqSpinner]="item.hqSpinner" class="btn btn-info btn-sm" (click)="alert(item,item.id,bdModal,item.billCode,item.takeUserName,item.takeDepartmentName,item.createBillTime,item.operator)">详情</button></td>
           <td>{{item.billCode}}</td>
           <td>{{item.takeUserName }}</td>
           <td>{{item.takeDepartmentName }}</td>
@@ -58,7 +58,7 @@
     </div>
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
     <hr>
-    <button type="button" (click)="onExport()" class="btn btn-secondary">导出</button>
+    <button type="button" (click)="onExport()" class="btn btn-export">导出</button>
   </div>
 </div>
 <!--详情-->
@@ -101,10 +101,10 @@
                 <th>配件编码</th>
                 <th>配件分类</th>
                 <th>配件名称</th>
-                <th>品牌</th>
+                <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;品牌&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                 <th>规格型号</th>
                 <th>单位</th>
-                <th>仓库</th>
+                <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;仓库&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                 <th>库位</th>
                 <th>库存量</th>
                 <th>单价（元）</th>
@@ -138,6 +138,6 @@
     </div>
   </div>
 </div>
-<div hqPrint #printer="hq-print">
+<div hqPrint #printer="hq-print" print-title="内部领用统计">
   <hq-procurement-print [hidden]="true" [detail]="detail" [detailItems]="detailItems" [detailItemsLength]="detailItemsLength"></hq-procurement-print>
 </div>
