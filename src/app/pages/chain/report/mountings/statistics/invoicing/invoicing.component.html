@@ -179,15 +179,15 @@
           </tr>
           <tbody>
             <tr *ngFor="let item of listDetail?.data">
-              <td>{{item.ProductCode}}</td>
-              <td>{{item.ProductName}}</td>
-              <td>{{item.BeginCount}}</td>
+              <td>{{item.productCode}}</td>
+              <td>{{item.productName}}</td>
+              <td>{{item.beginCount}}</td>
               <td>{{item.beginAmount|centToYuan }}</td>
-              <td>{{item.EndCount}}</td>
+              <td>{{item.endCount}}</td>
               <td>{{item.endAmount|centToYuan }}</td>
-              <td>{{item.InCount}}</td>
+              <td>{{item.inCount}}</td>
               <td>{{item.inAmount |centToYuan }}</td>
-              <td>{{item.OutCount}}</td>
+              <td>{{item.outCount}}</td>
               <td>{{item.outCostAmount |centToYuan }}</td>
               <td>{{item.outSaleAmount |centToYuan }}</td>
               <td>{{item.purchInCostAmount |centToYuan }}</td>
@@ -230,22 +230,22 @@
           </tr>
           <tr *ngIf="listDetail">
             <td></td>
-            <td>{{listDetail.BeginCount}}</td>
+            <td>{{listDetail.beginCount}}</td>
             <td>{{listDetail.beginAmount |centToYuan}}</td>
-            <td>{{listDetail.EndCount}}</td>
+            <td>{{listDetail.endCount}}</td>
             <td>{{listDetail.endAmount |centToYuan}}</td>
-            <td>{{listDetail.InCount}}</td>
+            <td>{{listDetail.inCount}}</td>
             <td>{{listDetail.inAmount |centToYuan}}</td>
-            <td>{{listDetail.OutCount}}</td>
+            <td>{{listDetail.outCount}}</td>
             <td>{{listDetail.outCostAmount|centToYuan }}</td>
             <td>{{listDetail.outSaleAmount|centToYuan }}</td>
-            <td>{{listDetail.PurchInCount}}</td>
+            <td>{{listDetail.purchInCount}}</td>
             <td>{{listDetail.purCostAmount|centToYuan}}</td>
-            <td>{{listDetail.MaintCount}}</td>
+            <td>{{listDetail.maintCount}}</td>
             <td>{{listDetail.mainCostAmount|centToYuan }}</td>
-            <td>{{listDetail.SaleCount}}</td>
+            <td>{{listDetail.saleCount}}</td>
             <td>{{listDetail.saleCostAmount|centToYuan }}</td>
-            <td>{{listDetail.UseCount}}</td>
+            <td>{{listDetail.useCount}}</td>
             <td>{{listDetail.useCostAmount|centToYuan }}</td>
             <!--<td></td>
             <td></td>
