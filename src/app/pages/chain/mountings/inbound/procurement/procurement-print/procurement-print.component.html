@@ -1,8 +1,8 @@
 <div class="my-3">
-  <span class="mr-3"><label class="print-label">店铺名称：<label>{{org?.name}}</span>
-  <span class="mr-3"><label class="print-label">供应商名称：<label>{{model?.provider}}</span>
-  <span class="mr-3"><label class="print-label">入库单号：<label>{{model?.billCode}}</span>
-  <span class=""><label class="print-label">开单时间：<label>{{model?.createBillDateTime|sDatetime}}</span>
+  <span class="mr-3"><label class="print-label">店铺名称：</label>{{org?.name}}</span>
+  <span class="mr-3"><label class="print-label">供应商名称：</label>{{model?.provider}}</span>
+  <span class="mr-3"><label class="print-label">入库单号：</label>{{model?.billCode}}</span>
+  <span class=""><label class="print-label">开单时间：</label>{{model?.createBillDateTime|sDatetime}}</span>
 </div>
 <div class="page-break-after">
   <table class="table table-bordered table-sm">
@@ -42,9 +42,9 @@
     </tbody>
   </table>
   <div class="">
-    <span class="mr-3"><label class="print-label">含税金额：<label>{{model?.totalAmount|centToYuan}}</span>
-    <span class="mr-3"><label class="print-label">不含税金额：<label>{{model?.totalExTaxAmount|centToYuan}}</span>
-    <span class="mr-3"><label class="print-label">打印时间：<label>{{model?.printDateTime|sDatetime}}</span>
-    <span class=""><label class="print-label">操作人：<label>{{employee?.name}}</span>
+    <span class="mr-3"><label class="print-label">含税金额：</label>{{model?.totalAmount|centToYuan}}</span>
+    <span class="mr-3"><label class="print-label">不含税金额：</label>{{model?.totalExTaxAmount|centToYuan}}</span>
+    <span class="mr-3"><label class="print-label">打印时间：</label>{{model?.printDateTime|sDatetime}}</span>
+    <span class=""><label class="print-label">操作人：</label>{{employee?.name}}</span>
   </div>
 </div>
