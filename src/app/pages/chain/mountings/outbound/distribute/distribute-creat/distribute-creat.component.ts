@@ -4,7 +4,6 @@ import { DistributeListItem, DistributeService } from '../distribute.service';
 import { Observable } from "rxjs/Rx";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FormGroupControlErrorDirective, TypeaheadRequestParams, HqAlerter, PrintDirective } from 'app/shared/directives';
-import { GetMountingsListRequest, MountingsService } from '../../../mountings.service';
 import { CustomValidators } from 'ng2-validation';
 import { CentToYuanPipe } from "app/shared/pipes";
 
@@ -27,7 +26,6 @@ export class DistributeCreatComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private moutingsService: MountingsService,
   ) { }
   @Input()
   InputData;

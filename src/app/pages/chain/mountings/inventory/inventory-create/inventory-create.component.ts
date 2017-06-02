@@ -3,7 +3,7 @@ import { FormHandle, SelectOption, PagedResult } from 'app/shared/models';
 import { Inventory, InventoryService } from '../inventory.service';
 import { Observable } from 'rxjs/Observable';
 import { FormGroup, Validators } from '@angular/forms';
-import { MountingsService, GetMountingsListRequest } from '../../../mountings/mountings.service';
+import { MountingsService } from '../../../mountings/mountings.service';
 import { TypeaheadMatch } from "ngx-bootstrap";
 import { TypeaheadRequestParams } from 'app/shared/directives';
 import { TreeviewItem, TreeItem } from 'ngx-treeview';

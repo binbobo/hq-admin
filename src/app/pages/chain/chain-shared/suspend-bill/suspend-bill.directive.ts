@@ -2,6 +2,7 @@ import { Directive, Input, ElementRef, ViewContainerRef, ComponentFactoryResolve
 import { SuspendBillComponent } from './suspend-bill.component';
 import { SuspendedBillItem } from './suspend-bill.service';
 import { SuspendBillService } from './suspend-bill.service';
+import { PagedResult } from 'app/shared/models';
 
 @Directive({
   selector: '[hqSuspendBill]',
@@ -13,6 +14,8 @@ export class SuspendBillDirective implements OnInit {
   protected type: string;
   @Input()
   protected columns: Array<SuspendBillColumn>;
+  @Input()
+  protected resultHandle: (result: PagedResult<any>) => void;
   @Output()
   protected onSelect = new EventEmitter<SuspendedBillItem>();
   @Output()
@@ -33,6 +36,7 @@ export class SuspendBillDirective implements OnInit {
     this.component.columns = this.columns;
     this.component.type = this.type;
     this.component.onSelect = this.onSelect;
+    this.component.resultHandle = this.resultHandle;
     this.component.onSelect.subscribe(m => {
       this.selectedItem = m;
     });

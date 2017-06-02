@@ -2,7 +2,6 @@ import { Component, OnInit, Output, ViewChildren, EventEmitter, QueryList, Input
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { CentToYuanPipe } from "app/shared/pipes";
 import { TypeaheadRequestParams, FormGroupControlErrorDirective, HqAlerter } from "app/shared/directives";
-import { MountingsService, GetMountingsListRequest } from "app/pages/chain/mountings/mountings.service";
 import { CustomValidators } from "ng2-validation/dist";
 import { SalesReturnListItem } from "../sales-return.service";
 
@@ -34,7 +33,6 @@ export class SalesReturnCreateComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private moutingsService: MountingsService,
   ) { }
 
   ngOnInit() {

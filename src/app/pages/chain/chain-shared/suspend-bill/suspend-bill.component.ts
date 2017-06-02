@@ -23,6 +23,7 @@ export class SuspendBillComponent implements OnInit {
   @Output()
   public onSelect: EventEmitter<SuspendedBillItem> = new EventEmitter<SuspendedBillItem>();
   public result: PagedResult<SuspendedBillItem>;
+  public resultHandle: (result) => void;
 
   constructor(
     private service: SuspendBillService
@@ -36,6 +37,7 @@ export class SuspendBillComponent implements OnInit {
     this.result = null;
     this.service.get(this.type)
       .then(result => this.result = result)
+      .then(result => this.resultHandle && this.resultHandle(this.result))
       .catch(err => console.error(err));
   }
 

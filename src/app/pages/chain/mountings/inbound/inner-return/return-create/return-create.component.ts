@@ -2,7 +2,6 @@ import { Component, OnInit, Injector, Output, EventEmitter, ViewChildren, QueryL
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { CentToYuanPipe } from "app/shared/pipes";
 import { FormGroupControlErrorDirective, TypeaheadRequestParams, HqAlerter } from "app/shared/directives";
-import { MountingsService, GetMountingsListRequest } from "../../../mountings.service";
 import { CustomValidators } from "ng2-validation/dist";
 import { InnerListItem, InnerReturnService } from "../inner-return.service";
 import { FormHandle } from 'app/shared/models';
@@ -35,7 +34,6 @@ export class ReturnCreateComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private moutingsService: MountingsService,
   ) { }
 
   ngOnInit() {
