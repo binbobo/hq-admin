@@ -27,6 +27,20 @@ export class OrderService implements BasicService<Order> {
     }
 
     /**
+     * 获取维修项目类型数据
+     * @memberOf OrderService
+     */
+    getServiceTypes(): Observable<any[]> {
+        const url = Urls.chain.concat('/Services/serach/type');
+        return this.httpService
+            .request(url)
+            .map(response => {
+                // console.log('查询维修项目类型数据：', response.json().data);
+                return response.json().data as any[];
+            });
+    }
+
+    /**
     * 获取工单状态数据  用于工单列表条件过滤
     * @memberOf OrderService
     */
@@ -124,14 +138,14 @@ export class OrderService implements BasicService<Order> {
         };
         return orgsArr.map((value, index, array) => {
             // 导航节点
-            const obj = { text: value.name, value: null ,checked:false};
+            const obj = { text: value.name, value: null, checked: false };
             // 如果有子组织, 递归遍历
             if (value.children && value.children.length > 0) {
-                 // 如果有孩子  将父节点组织到孩子节点中  放到前头
+                // 如果有孩子  将父节点组织到孩子节点中  放到前头
                 value.children = [{
                     name: value.name + '总店',
                     id: value.id,
-                    checked:false,
+                    checked: false,
                 }].concat(value.children);
                 obj['children'] = this.orgsRecursion(value.children);
             } else {

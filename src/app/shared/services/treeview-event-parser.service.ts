@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { TreeviewComponent } from 'ngx-treeview';
 
 @Injectable()
-class HQTreeviewEventParser extends TreeviewEventParser {
+export class HQTreeviewEventParser extends TreeviewEventParser {
     getSelectedChange(component: TreeviewComponent): any[] {
         const checkedItems = component.checkedItems;
         if (checkedItems) {
