@@ -2,11 +2,11 @@
 <!--<hr class="invisible">-->
 <br>
 <div class="clearfix">
-  <span class="pull-left mr-3">店铺名称：{{org?.name}}</span>
-  <div class="pull-left mr-3">退库单号：{{model?.billCode}}</div>
-  <div class="pull-left mr-3">客户名称：{{model?.customerName}}</div>
-  <div class="pull-left mr-3">销售员：{{model?.seller}}</div>
-  <div class="pull-left">开单时间：{{model?.createBillDateTime|sDatetime}}</div>
+  <span class="pull-left mr-3 print-label">店铺名称：{{org?.name}}</span>
+  <div class="pull-left mr-3 print-label">退库单号：{{model?.billCode}}</div>
+  <div class="pull-left mr-3 print-label">客户名称：{{model?.customerName}}</div>
+  <div class="pull-left mr-3 print-label">销售员：{{model?.seller}}</div>
+  <div class="pull-left print-label">开单时间：{{model?.createBillDateTime|sDatetime}}</div>
 </div>
 <br>
 <!--<hr lass="invisible">-->
@@ -44,8 +44,8 @@
     </tbody>
   </table>
   <div class="">
-    <div class="pull-left mr-3">金额：{{model?.totalAmount|centToYuan}}</div>
-    <div class="pull-left mr-3">打印时间：{{model?.printDateTime|sDatetime}}</div>
-    <div class="pull-left mr-3 pr-5">操作人：{{model?.operator}}</div> 
+    <div class="pull-left mr-3 print-label">金额：{{model?.totalAmount|centToYuan}}</div>
+    <div class="pull-left mr-3 print-label">打印时间：{{model?.printDateTime|sDatetime}}</div>
+    <div class="pull-left mr-3 pr-5 print-label">操作人：{{model?.operator}}</div> 
   </div>
 </div>

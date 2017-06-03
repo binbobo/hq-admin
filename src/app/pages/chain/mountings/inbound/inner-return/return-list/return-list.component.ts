@@ -58,10 +58,10 @@ export class ReturnListComponent extends DataList<any> {
   ngOnInit() {
     this.innerReturnService.getInnerOptions()
       .then(data => {
-        this.takeUser = data[0].takeUser;
+        this.takeUser = data && data[0].takeUser;
         this.employees = data;
         this.departments = this.employees.find(m => m.takeUser == this.takeUser);
-        this.takeDepartId = this.departments.departList[0].id;
+        this.takeDepartId =this.departments && this.departments.departList[0].id;
       })
       .catch(err => this.alerter.error(err));
     this.lazyLoad = true;
@@ -76,7 +76,7 @@ export class ReturnListComponent extends DataList<any> {
     this.departments = null;
     this.takeUser = el.value;
     this.departments = this.employees.find(m => m.takeUser == this.takeUser);
-    this.takeDepartId = this.departments.departList[0].id;
+    this.takeDepartId =this.departments && this.departments.departList[0].id;
     this.billCode = null;
     this.list = null;
     this.originalBillId = null;
