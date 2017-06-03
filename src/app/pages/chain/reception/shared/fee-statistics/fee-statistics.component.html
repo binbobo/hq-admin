@@ -1,8 +1,8 @@
 <div class="card hq-fee">
   <div>
-    <span class="fee-name">工时费：<span class="fee-value">{{fee.workHour|centToYuan}}</span></span>
-    <span class="fee-name"> 材料费：<span class="fee-value">{{fee.material|centToYuan}}</span></span>
-    <span class="fee-name"> 优惠：<span class="fee-value">{{fee.discount|centToYuan}}</span></span>
-    <span class="fee-name pull-right">应收金额：<span class="fee-value">{{fee.workHour+fee.material-fee.discount|centToYuan}}</span></span>
+    <span class="fee-name">工时费：<span class="fee-value">{{fee?.workHour|centToYuan}}</span></span>
+    <span class="fee-name"> 材料费：<span class="fee-value">{{fee?.material|centToYuan}}</span></span>
+    <span class="fee-name"> 优惠：<span class="fee-value">{{fee?.discount|centToYuan}}</span></span>
+    <span class="fee-name pull-right">应收金额：<span class="fee-value">{{fee?.amount|centToYuan}}</span></span>
   </div>
 </div>

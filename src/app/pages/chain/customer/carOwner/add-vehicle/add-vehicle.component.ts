@@ -30,8 +30,6 @@ export class AddVehicleComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
-
-    console.log('当前编辑的车辆为：', this.vehicle);
     // 编辑
     if (this.vehicle) {
       this.vehicleForm.patchValue(this.vehicle, {
@@ -92,7 +90,6 @@ export class AddVehicleComponent implements OnInit {
   onModelSelect(evt) {
     this.isVehicleSelected = true;
     // 设置当前选择的车系id
-    console.log('当前选择的车型', evt);
     this.vehicleForm.controls.vehicleId.setValue(evt.id);
     this.vehicleForm.controls.vehicleName.setValue(evt.name);
 

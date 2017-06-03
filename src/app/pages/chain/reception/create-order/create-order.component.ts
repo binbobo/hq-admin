@@ -52,7 +52,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   fee = {
     workHours: 0, // 工时合计
     workHour: 0, // 工时费
-    discount: 0 // 优惠
+    discount: 0, // 优惠
+    amount: 0 // 应收金额
   };
 
   // 品牌车系车型是否选择标志
@@ -170,13 +171,13 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.disableCustomerVehicleField();
 
     if (!evt.id) {
-      console.log('加载上次工单信息失败！缺少客户车辆ID');
+      // console.log('加载上次工单信息失败！缺少客户车辆ID');
       return;
     }
 
     // 根据客户车辆id查询上次工单信息
     this.service.getLastOrderInfo(evt.id).then(lastOrder => {
-      console.log('根据客户车辆id自动带出的上次工单信息：', JSON.stringify(lastOrder));
+      // console.log('根据客户车辆id自动带出的上次工单信息：', JSON.stringify(lastOrder));
       // 加载上次维修记录
       this.loadLastOrderInfo(lastOrder);
       // 保存上次工单记录
@@ -327,10 +328,9 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       // 更新价格
       const workHourFeediff = data.price * data.workHour - (this.selectedItem.price * 100) * this.selectedItem.workHour;
       this.fee.workHour += workHourFeediff * 1;
-      // 看看折扣了多少钱
       const discountFeediff = (data.price * data.workHour - data.amount) - ((this.selectedItem.price * 100) * this.selectedItem.workHour - this.selectedItem.amount * 100);
       this.fee.discount += discountFeediff * 1;
-
+      this.fee.amount = this.fee.workHour - this.fee.discount;
       // 清空当前编辑的维修项目记录
       this.selectedItem = null;
     } else {
@@ -338,8 +338,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       this.newMaintenanceItemData.push(data);
       // 费用计算
       this.fee.workHour += data.price * data.workHour;
-      //
       this.fee.discount += data.price * data.workHour - data.amount;
+      this.fee.amount = this.fee.workHour - this.fee.discount;
     }
     // 记录当前选择的维修项目
     this.selectedServices = this.getSelectedServices();
@@ -357,6 +357,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
         // 费用计算
         this.fee.workHour -= item.price * item.workHour;
         this.fee.discount -= item.price * item.workHour - item.amount;
+        this.fee.amount = this.fee.workHour - this.fee.discount;
         // 如果新增项目为0 设置生成工单按钮不可用
         this.enableCreateWorkSheet = (this.newMaintenanceItemData.length > 0) && this.workSheetForm.controls.vehicleId.value && this.workSheetForm.valid;
         return;
@@ -403,7 +404,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
    * @param evt 
    */
   onSuspendedBillRemove(evt) {
-    console.log('当前删除的挂单记录为：', evt);
     // 如果当前删除的挂单记录  正好是当前正在编辑的挂掉记录
     if (this.workSheetForm.value.suspendedBillId && this.workSheetForm.value.suspendedBillId === evt.id) {
       // 重置表单数据
@@ -445,6 +445,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.fee.discount = this.fee.workHour - order.maintenanceItems.reduce((accumulator, currentValue) => {
       return accumulator + currentValue.amount * 1;
     }, 0);
+    this.fee.amount += this.fee.workHour - this.fee.discount;
 
     // 需要深copy 维修项目记录  不能改变原对象
     // 因为每次选择一个挂掉的时候，挂单记录不会从列表中消失 只有点击创建工单之后  才消失
@@ -581,7 +582,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.newMaintenanceItemData = [];
 
     // 重置费用
-    this.fee.workHour = this.fee.discount = this.fee.workHours = 0;
+    this.fee.workHour = this.fee.discount = this.fee.workHours = this.fee.amount = 0;
 
     // 清空上次维修工单数据
     this.lastOrderData = null;
@@ -613,12 +614,11 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     }
 
     // 调用创建工单接口
-    console.log('提交的工单对象： ', JSON.stringify(workSheet));
+    // console.log('提交的工单对象： ', JSON.stringify(workSheet));
 
     this.service.create(workSheet)
       .then(data => {
         this.generating = false;
-        console.log('创建工单成功之后， 返回的工单对象：', JSON.stringify(data));
         // 创建订单成功之后  做一些重置操作
         if (confirm('创建工单成功！ 是否打印？')) {
           // 组织打印需要的数据
@@ -628,7 +628,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
           this.fee.workHours = this.newMaintenanceItemData.reduce((accumulator, currentValue) => {
             return currentValue.workHour;
           }, 0);
-          // this.newWorkOrderData.fee = this.fee;
           this.newWorkOrderData.serviceOutputs = workSheet.maintenanceItems;
           this.newWorkOrderData.serviceOutputs.fee = this.fee;
           this.newWorkOrderData.typeName = this.maintenanceTypeData.find(item => item.id === workSheet.type).value;

@@ -29,7 +29,6 @@ export class WorkshopService implements BasicService<any> {
         return this.httpService
             .request(url)
             .map(response => {
-                console.log('查询维修验收类型数据：', response.json().data);
                 return response.json().data as any[];
             });
     }
@@ -44,7 +43,6 @@ export class WorkshopService implements BasicService<any> {
         return this.httpService
             .get<PagedResult<any>>(url)
             .then(result => {
-                console.log('维修验收工单列表数据', result);
                 return result;
             })
             .catch(err => Promise.reject(`加载维修验收工单列表失败：${err}`));

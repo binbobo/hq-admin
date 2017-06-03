@@ -22,7 +22,6 @@ export class AssignService implements BasicService<any> {
         return this.httpService
             .request(url)
             .map(response => {
-                console.log('查询维修指派类型数据：', response.json().data);
                 return response.json().data as any[];
             });
     }
@@ -42,7 +41,6 @@ export class AssignService implements BasicService<any> {
                 }
             })
             .map(response => {
-                console.log('查询维修技师列表数据：', response.json().data);
                 return response.json().data as any[];
             });
     }
@@ -57,7 +55,6 @@ export class AssignService implements BasicService<any> {
         return this.httpService
             .get<PagedResult<any>>(url)
             .then(result => {
-                console.log('工单列表数据', result);
                 return result;
             })
             .catch(err => Promise.reject(`加载工单列表失败：${err}`));

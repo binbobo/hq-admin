@@ -21,7 +21,6 @@ export class OrderService implements BasicService<Order> {
         return this.httpService
             .request(url)
             .map(response => {
-                // console.log('查询维修类型数据：', response.json().data);
                 return response.json().data as MaintenanceType[];
             });
     }
@@ -35,7 +34,6 @@ export class OrderService implements BasicService<Order> {
         return this.httpService
             .request(url)
             .map(response => {
-                // console.log('查询维修项目类型数据：', response.json().data);
                 return response.json().data as any[];
             });
     }
@@ -49,7 +47,6 @@ export class OrderService implements BasicService<Order> {
         return this.httpService
             .request(url)
             .map(response => {
-                // console.log('查询工单状态数据：', response.json().data);
                 return response.json().data as any[];
             });
     }
@@ -63,7 +60,6 @@ export class OrderService implements BasicService<Order> {
  */
     public export(params: OrderListRequest): Promise<void> {
         const url = Urls.chain.concat('/Maintenances/ExportToExcel');
-        console.log('导出工单列表参数以及url：', params.serialize(), url);
         return this.httpService
             .download(url, params.serialize())
             .catch(err => Promise.reject(`工单列表导出失败：${err}`));
@@ -80,7 +76,6 @@ export class OrderService implements BasicService<Order> {
     getMaintenanceItemsByName(params: FuzzySearchRequest): Promise<PagedResult<any>> {
         const search = params.serialize();
         const url = Urls.chain.concat('/Services/GetByName');
-        console.log('模糊查询维修项目:', url + search);
         return this.httpService
             .get<PagedResult<any>>(url, search);
     }
@@ -165,7 +160,6 @@ export class OrderService implements BasicService<Order> {
         return this.httpService
             .get<PagedResult<Order>>(url)
             .then(result => {
-                console.log('工单列表数据', result);
                 return result;
             })
             .catch(err => Promise.reject(`列表失败：${err}`));
@@ -186,6 +180,23 @@ export class OrderService implements BasicService<Order> {
             .then(result => result.data)
             .then(data => data || Promise.reject('获取数据无效！'))
             .catch(err => Promise.reject(`获取工单详情数据失败：${err}`));
+    }
+
+    /**
+   * 根据工单id查询工单费用统计信息
+   * 
+   * @param {string} id 
+   * @returns {Promise<any>} 
+   * 
+   * @memberOf OrderService
+   */
+    public getSettlements(id: string): Promise<any> {
+        const url = Urls.chain.concat('/Settlements/Maintenance/', id);
+        return this.httpService
+            .get<ApiResult<any>>(url)
+            .then(result => result.data)
+            .then(data => data || Promise.reject('获取数据无效！'))
+            .catch(err => Promise.reject(`获取工单费用统计信息失败：${err}`));
     }
 
     public update(body: Order): Promise<void> {

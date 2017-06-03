@@ -58,7 +58,6 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
     * @param evt 
     */
   toggleCheckboxAll(cb) {
-    console.log('维修验收切换全选复选框', cb.checked);
     // 更新全选复选框状态
     this.selectedOrder.serviceOutputs.checkedAll = cb.checked;
     // 更新维修工项复选框状态
@@ -115,7 +114,6 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
 
     // 获取选择的工项列表
     const maintenanceItemIds = this.selectedOrder.serviceOutputs.filter(item => item.checked).map(item => item.id);
-    console.log('选择的工项列表为：', maintenanceItemIds);
     // 判断是否选择维修工项
     if (maintenanceItemIds.length === 0) {
       this.alerter.warn('请选择维修工项！');
@@ -163,9 +161,6 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
       checkedStatus = this.maintenanceCheckTypes;
     }
     this.params.status = checkedStatus.filter(item => item.id !== 'all').map(item => item.id);
-
-    console.log('当前选择的工单状态为：', this.params.status);
-
     // 执行查询
     this.load();
   }
@@ -176,7 +171,6 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
 
     this.params.setPage(1);
     this.loadList().then((result: any) => {
-      console.log('维修验收列表统计数据：', result.tabList);
       this.statistics = {};
       // 统计各种状态下面的工单数量
       result.tabList.forEach(item => {
@@ -226,8 +220,6 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
 
     // 根据id获取工单详细信息
     this.service.get(item.id).then(data => {
-      // console.log('根据工单id获取工单详情数据：', data);
-
       // 记录当前操作的工单记录
       this.selectedOrder = data;
       // 指派按钮是否可用标志

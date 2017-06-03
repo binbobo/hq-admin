@@ -42,7 +42,7 @@ export class AddMaintenanceItemComponent implements OnInit {
   ngOnInit() {
     this.createForm();
 
-    console.log('当前已经选择的维修项目列表为：', this.services);
+    // console.log('当前已经选择的维修项目列表为：', this.services);
     this.serviceIds = this.services.map(item => item.id);
     // 编辑
     if (this.item) {
@@ -50,12 +50,17 @@ export class AddMaintenanceItemComponent implements OnInit {
     }
   }
 
+  serviceNameInput() {
+    this.maintenanceItemForm.controls.serviceId.reset();
+    this.maintenanceItemForm.controls.serviceType.enable();
+    this.maintenanceItemForm.controls.serviceType.reset();
+  }
+
   serviceTypeaheadOnSelect(evt) {
-    // console.log('当前选择的维修项目为；', evt);
     this.maintenanceItemForm.controls.serviceId.setValue(evt.id);
     this.maintenanceItemForm.controls.serviceName.setValue(evt.name);
-    // this.maintenanceItemForm.controls.serviceType.setValue(evt.type);
-    // this.maintenanceItemForm.controls.serviceType.disable();
+    this.maintenanceItemForm.controls.serviceType.setValue(evt.type);
+    this.maintenanceItemForm.controls.serviceType.disable();
   }
 
   onCancelHandler() {
@@ -66,9 +71,8 @@ export class AddMaintenanceItemComponent implements OnInit {
       const index = this.services.findIndex(item => item.name === this.maintenanceItemForm.value.serviceName);
       if (index > -1) {
         alert('当前输入的维修项目已经添加过了, 如需修改, 请去列表页面编辑');
-        return;
       } else {
-        // 添加维修项目
+        // 新增维修项目
         this.service.createMaintenanceItem({ name: this.maintenanceItemForm.value.serviceName })
           .then(data => {
             if (!data || !data.id) {
@@ -78,7 +82,6 @@ export class AddMaintenanceItemComponent implements OnInit {
             // console.log('新建维修项目成功, 返回的数据为：', JSON.stringify(data));
             const maintenanceItemFormVal = this.maintenanceItemForm.getRawValue();
             maintenanceItemFormVal.serviceId = data.id;
-            // 验证数据合法性
             this.onConfirm.emit({
               data: maintenanceItemFormVal, // 维修项目数据
               isEdit: this.item ? true : false  // 是否为编辑标志
@@ -88,7 +91,6 @@ export class AddMaintenanceItemComponent implements OnInit {
           });
       }
     } else {
-      // 验证数据合法性
       this.onConfirm.emit({
         data: this.maintenanceItemForm.getRawValue(),
         isEdit: this.item ? true : false
@@ -106,7 +108,7 @@ export class AddMaintenanceItemComponent implements OnInit {
     this.maintenanceItemForm = this.fb.group({
       serviceName: ['', [Validators.required]],
       serviceId: [''],
-      // serviceType: '', // 维修项目类型
+      serviceType: ['', [Validators.required]],// 维修项目类型
       type: 1, // 1表示维修项目/
       workHour: ['', Validators.compose([Validators.required, Validators.pattern(workHourPriceRegex)])],
       price: ['', Validators.compose([Validators.required, Validators.pattern(workHourPriceRegex)])],

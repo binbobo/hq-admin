@@ -17,14 +17,7 @@ export class WorkorderDetailPrintComponent implements OnInit {
   constructor(private employeeService: EmployeeService, private organizationService: OrganizationService) { }
 
   ngOnInit() {
-    this.employeeService.getEmployee().then(data => {
-      this.employeeInfo = data;
-      console.log(data);
-    });
-    this.organizationService.getOrganization().then(data => {
-      this.organizationInfo = data;
-      console.log(data);
-    });
+    this.employeeService.getEmployee().then(data => this.employeeInfo = data);
+    this.organizationService.getOrganization().then(data => this.organizationInfo = data);
   }
-
 }

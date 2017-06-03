@@ -39,7 +39,6 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         // 初始化维修指派类型数据
         this.service.getMaintenanceAssignTypes()
             .subscribe(data => {
-                console.log('维修派工状态类型数据：', data);
                 this.maintenanceAssignTypes = [{
                     id: 'all',
                     value: '全部'
@@ -91,7 +90,6 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         this.params.setPage(1);
         this.loadList().then((result: any) => {
             if (!result || !result.tabList) { return; }
-            console.log('维修派工列表统计数据：', result.tabList);
             this.statistics = {};
             // 统计各种状态下面的工单数量
             result.tabList.forEach(item => {
@@ -118,9 +116,6 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             checkedStatus = this.maintenanceAssignTypes;
         }
         this.params.status = checkedStatus.filter(item => item.id !== 'all').map(item => item.id);
-
-        console.log('当前选择的工单状态为：', JSON.stringify(this.params.status));
-
         // 执行查询
         this.load();
     }
@@ -153,7 +148,6 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
      * @param evt 
      */
     assignToggleCheckboxAll(cb) {
-        console.log('维修派工切换全选复选框', cb.checked);
         // 更新全选复选框状态
         this.selectedOrder.serviceOutputs.checkedAll = cb.checked;
         // 更新维修工项复选框状态
@@ -210,8 +204,6 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
 
         // 根据id获取工单详细信息
         this.service.get(item.id).then(data => {
-            // console.log('根据工单id获取工单详情数据：', data);
-
             // 记录当前操作的工单记录
             this.selectedOrder = data;
             // 指派按钮是否可用标志
@@ -306,7 +298,6 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
                     maintenanceItems.splice(index, 1);
                 }
             });
-            console.log('未指派的工项', JSON.stringify(notAssigned));
             // 判断是否有未指派的工项  如果有给出提示
             if (notAssigned.length > 0) {
                 notAssigned = notAssigned.map(item => item.serviceName);
@@ -337,9 +328,6 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             maintenanceItemIds: maintenanceItemIds
         }).then(data => {
             this.generatingReset(type);
-            // 更新页面
-            // console.log('执行指派/转派操作之后返回的数据为：', data);
-
             // forEach不可修改list数据, 只能遍历
             data.forEach(ele => {
                 const index = this.selectedOrder.serviceOutputs.findIndex(m => m.id === ele.id);

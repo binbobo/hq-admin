@@ -113,13 +113,10 @@ export class EditCarownerComponent implements OnInit {
     // 获取车辆信息
     carOwnerBody.customerVehicles = this.newVehiclesData;
 
-    console.log('提交的车主对象为：', JSON.stringify(carOwnerBody));
-
+    // console.log('提交的车主对象为：', JSON.stringify(carOwnerBody));
 
     // 调用后台更新车主接口
     this.service.update(carOwnerBody).then(data => {
-      // console.log('更新车主成功, 更新后的车主对象为：', JSON.stringify(data));
-
       // 提示更新车主成功
       this.alerter.success('更新车主成功');
       // this.carOwnerForm.reset();
@@ -136,8 +133,6 @@ export class EditCarownerComponent implements OnInit {
   }
   // 省份选择事件处理程序
   onProvinceChange(provinceValue) {
-    console.log('当前选择的省份为：', provinceValue);
-
     const provinceId = provinceValue.split(',')[0];
     const provinceName = provinceValue.split(',')[1];
 
@@ -158,8 +153,6 @@ export class EditCarownerComponent implements OnInit {
   }
   // 城市选择事件处理程序
   onCityChange(cityValue) {
-    console.log('当前选择的城市为：', cityValue);
-
     const cityId = cityValue.split(',')[0];
     const cityName = cityValue.split(',')[1];
 
@@ -173,8 +166,6 @@ export class EditCarownerComponent implements OnInit {
   }
   // 区县选择事件处理程序
   onAreaChange(areaValue) {
-    console.log('当前选择的区县为：', areaValue);
-
     const areaId = areaValue.split(',')[0];
     const areaName = areaValue.split(',')[1];
 
@@ -194,11 +185,10 @@ export class EditCarownerComponent implements OnInit {
       const id = params['id'];
       this.service.get(id)
         .then(data => {
-          console.log('当前要编辑的车主详情数据为：', data);
           // 加载客户信息
           this.loadCustomer(data);
         })
-        .catch(err => console.log(err));
+        .catch(err => this.alerter.error(err, true, 3000));
     });
   }
 

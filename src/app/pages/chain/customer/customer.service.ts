@@ -15,7 +15,7 @@ export class CustomerService implements BasicService<any> {
     }
 
     /**
-    * 获取维修类型数据
+    * 获取省份数据
     * @memberOf OrderService
     */
     getProvincesData(): Observable<any[]> {
@@ -23,7 +23,6 @@ export class CustomerService implements BasicService<any> {
         return this.httpService
             .request(url)
             .map(response => {
-                // console.log('查询省份数据：', response.json().data);
                 return response.json().data as any[];
             });
     }
@@ -38,7 +37,6 @@ export class CustomerService implements BasicService<any> {
         return this.httpService
             .request(url)
             .map(response => {
-                // console.log('查询城市或者区县数据：', response.json().data);
                 return response.json().data as any[];
             });
     }
@@ -50,11 +48,9 @@ export class CustomerService implements BasicService<any> {
      */
     public getPagedList(params: CustomerListRequest): Promise<PagedResult<any>> {
         const url = Urls.chain.concat('/Customers?', params.serialize());
-        console.log('查询客户车主列表数据url: ', url);
         return this.httpService
             .get<PagedResult<any>>(url)
             .then(result => {
-                console.log('客户列表数据', result);
                 return result;
             })
             .catch(err => Promise.reject(`加载客户列表数据失败：${err}`));
@@ -69,7 +65,6 @@ export class CustomerService implements BasicService<any> {
      */
     public export(params: CustomerListRequest): Promise<void> {
         const url = Urls.chain.concat('/Customers/ExportToExcel');
-        console.log('导出客户列表参数以及url：', params.serialize(), url);
         return this.httpService
             .download(url, params.serialize())
             .catch(err => Promise.reject(`客户列表导出失败：${err}`));
@@ -98,7 +93,6 @@ export class CustomerService implements BasicService<any> {
      */
     public update(body: any): Promise<void> {
         const url = Urls.chain.concat('/Customers/Vehicle/', body.id);
-        console.log('更新车主信息url: ', url);
         return this.httpService.
             put<void>(url, body)
             .catch(err => Promise.reject(`更新车主失败：${err}`));

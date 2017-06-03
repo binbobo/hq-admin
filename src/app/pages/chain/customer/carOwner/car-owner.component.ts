@@ -58,8 +58,6 @@ export class CarOwnerComponent extends DataList<any>  {
 
     // 根据id获取客户详细信息
     this.service.get(item.id).then(data => {
-      console.log('根据客户id获取客户详情数据：', data);
-
       // 记录当前操作的客户记录
       this.selectedCustomer = data;
 
