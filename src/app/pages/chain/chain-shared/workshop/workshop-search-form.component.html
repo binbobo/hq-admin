@@ -1,0 +1,17 @@
+<form (ngSubmit)="onFormSubmit()">
+  <div class="input-group serach-input">
+    <input [(ngModel)]="keyword" name="keyword" placeholder="请输入车牌号/工单号" class="form-control mr-3">
+    <button class="btn btn-primary" type="submit">查询</button>
+  </div>
+  <div class="input-group mb-3" *ngIf="types">
+    <span class="input-group-addon">工单状态</span>
+    <div class="form-control d-block">
+      <div class="form-check form-check-inline mb-0" *ngFor="let type of types">
+        <label class="form-check-label">
+            <input class="form-check-input" (change)='onStatusChange(type)' [checked]="type.checked"  type="checkbox" value="{{type.id}}"> {{type.value}}
+            </label>
+        <span *ngIf="statistics">({{statistics[type.id]}})</span>
+      </div>
+    </div>
+  </div>
+</form>

@@ -8,6 +8,7 @@ import { ModalModule } from 'ngx-bootstrap';
 import { NguiDatetimePickerModule } from '@ngui/datetime-picker';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { SharedModule } from 'app/shared/shared.module';
+import { ChainSharedModule } from '../chain-shared/chain-shared.module';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { SharedModule } from 'app/shared/shared.module';
     AlertModule.forRoot(),
     TypeaheadModule.forRoot(),
     ModalModule.forRoot(),
-    NguiDatetimePickerModule
+    NguiDatetimePickerModule,
+    ChainSharedModule
   ],
   declarations: [routedComponents],
   providers: [WorkshopService],

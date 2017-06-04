@@ -4,23 +4,8 @@
     维修派工
   </div>
   <div class='card-block'>
-    <form (ngSubmit)="onSearch()">
-      <div class="input-group serach-input">
-        <input [(ngModel)]="params.keyword" name="keyword" placeholder="请输入车牌号/工单号" class="form-control mr-3">
-        <button class="btn btn-primary" type="submit">查询</button>
-      </div>
-      <div class="input-group mb-2" *ngIf="maintenanceAssignTypes">
-        <span class="input-group-addon">工单状态</span>
-        <div class="form-control d-block">
-          <div class="form-check form-check-inline mb-0" *ngFor="let type of maintenanceAssignTypes">
-            <label class="form-check-label">
-            <input class="form-check-input" (change)='onStatusChange(type)' [checked]="type.checked"  type="checkbox" value="{{type.id}}"> {{type.value}}
-            </label>
-            <span *ngIf="statistics">({{statistics[type.id]}})</span>
-          </div>
-        </div>
-      </div>
-    </form>
+    <hq-workshop-search-form (formSubmit)="onSearch($event)" [types]="maintenanceAssignTypes" [statistics]="statistics">
+    </hq-workshop-search-form>
     <div class="table-container">
       <table class="table table-bordered">
         <thead>
@@ -29,8 +14,9 @@
             <th>状态</th>
             <th>车牌号</th>
             <th>工单号</th>
-            <th>维修类型</th>
             <th>维修技师</th>
+            <th>维修类型</th>
+            <th>转派</th>
             <th>进厂时间</th>
             <th>预计交车时间</th>
             <th>超时</th>
@@ -49,18 +35,17 @@
               <button [hqSpinner]="item.finishGenerating" type="button" class="btn btn-sm btn-danger" [disabled]="item.finishGenerating"
                 (click)="finishedOrder(item)">完工</button>
             </td>
-            <td>
-              {{item.statusName}}
-            </td>
+            <td>{{item.statusName}}</td>
             <td>{{item.plateNo}}</td>
             <td>{{item.billCode}}</td>
+            <!-- 指派的人或者最后更改人 -->
             <td>
-              {{item.typeName}}
+              <span *ngIf="item.teamType === 1 || item.teamType === 2"> {{item.employeeNames?.join(',')}}</span>
             </td>
+            <td>{{item.typeName}}</td>
+            <!-- 转派的人-->
             <td>
-              {{item.employeeNames}}
-              <!--如果转派  追加显示转派人-->
-              <!--<span *ngIf="item.teamType === 2">,{{item.turnEmployeeNames}}</span>-->
+              <span *ngIf="item.teamType === 2"> {{item.turnEmployeeNames?.join(',')}}</span>
             </td>
             <td>{{item.createdOnUtc|sDatetime}}</td>
             <td>{{item.expectLeave|sDatetime}}</td>
@@ -81,90 +66,63 @@
     <br>
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
-
-  <div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
-    <div *ngIf="lgModal.isShown" class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <ng-template *ngIf="isDetailModalShown" hq-alerter></ng-template>
-        <div class="modal-header">
-          <h6 class="modal-title pull-left">维修派工详情</h6>
-          <button type="button" class="close pull-right" (click)="lgModal.hide();isDetailModalShown=false;" aria-label="Close">
+</div>
+<div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div *ngIf="lgModal.isShown" class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <ng-template *ngIf="isDetailModalShown" hq-alerter></ng-template>
+      <div class="modal-header">
+        <h6 class="modal-title pull-left">维修派工详情</h6>
+        <button type="button" class="close pull-right" (click)="lgModal.hide();isDetailModalShown=false;" aria-label="Close">
           <span aria-hidden="true"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
         </button>
-        </div>
-        <div class="modal-body">
-          <tabset>
-            <tab *ngIf="selectedOrder?.serviceOutputs?.length>0">
-              <template tabHeading>
-                <i class="fa fa-clone mr-2" aria-hidden="true"></i>维修项目
-              </template>
-              <div class="table-container">
-                <table class="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th width="30"><input value="all" #checkAll (change)="assignToggleCheckboxAll(checkAll)" [checked]="selectedOrder?.serviceOutputs?.checkedAll"
-                          type="checkbox" /></th>
-                      <th>指派维修技师</th>
-                      <th>转派</th>
-                      <th>项目名称</th>
-                      <th>维修工时(小时)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let record of selectedOrder?.serviceOutputs" [class.checked]="record.checked" (click)="$event.stopPropagation();assignToggleCheckbox(record)">
-                      <td>
-                        <!--teamType (integer, optional): 工项状态 1.待派工 2.待开工 3.已开工 4.已转派 5.已完工 = ['1', '2', '3', '4', '5'],-->
-                        <!--只能转派一次 转派之后  不再可以指派和转派-->
-                        <input [disabled]="record.teamType === 4 || record.teamType === 5" value="{{record.id}}" (click)="$event.stopPropagation();assignToggleCheckbox(record)"
-                          [checked]="record.checked" type="checkbox" />
-                      </td>
-                      <td>
-                        <span *ngIf="record.teamType !== 1">
-                        {{record?.employeeNames.join(',')}}
-                      </span>
-                      </td>
-                      <td>
-                        <span *ngIf="record.teamType === 4 || record.teamType === 5">
-                        {{record?.turnEmployeeNames.join(',')}}
-                      </span>
-                      </td>
-                      <td style="position:relative;">{{record?.serviceName}}
-                        <!-- 类型3表示增项 -->
-                        <span *ngIf="record.type === 3" class="append-stamp">增项</span><span [class.accept-stamp]="record.teamType === 6"></span>
-                      </td>
-                      <td>{{record?.workHour }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <br>
-              <div>
-                <button [hqSpinner]="generating.assign" class="btn btn-sm btn-primary mr-2" (onConfirm)="onConfirmTechnicians($event, 1)"
-                  [hqMutilSelect]="maintenanceTechnicians" mTitle="选择维修技师" [disabled]="!selectedOrder?.serviceOutputs?.enableAssignment"
-                  (click)="onMultiSelectorClick($event)" placement="right">指派</button>
-                <button [hqSpinner]="generating.reassign" class="btn btn-sm btn-success" (onConfirm)="onConfirmTechnicians($event, 2)" [hqMutilSelect]="maintenanceTechnicians"
-                  mTitle="选择维修技师" [disabled]="!selectedOrder?.serviceOutputs?.enableAssignment" (click)="onMultiSelectorClick($event)"
-                  placement="right">转派</button>
-              </div>
-            </tab>
-            <tab *ngIf="selectedOrder?.attachServiceOutputs?.length>0">
-              <template tabHeading>
-                <i class="fa fa-wrench mr-2" aria-hidden="true"></i>附加项目
-              </template>
-              <div class="table-container">
-                <hq-attachment-item-list [attachServiceOutputs]="selectedOrder.attachServiceOutputs"></hq-attachment-item-list>
-              </div>
-            </tab>
-            <tab *ngIf="selectedOrder?.suggestServiceOutputs?.length>0">
-              <template tabHeading>
-                <i class="fa fa-wpforms mr-2" aria-hidden="true"></i>建议维修项目
-              </template>
-              <div class="table-container">
-                <hq-suggested-item-list [suggestServiceOutputs]="selectedOrder?.suggestServiceOutputs"></hq-suggested-item-list>
-              </div>
-            </tab>
-          </tabset>
-        </div>
+      </div>
+      <div class="modal-body">
+        <hq-workshop-order-operation [selectedOrder]="selectedOrder">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th width="30"><input value="all" #checkAll (change)="toggleCheckboxAll(checkAll)" [checked]="selectedOrder?.serviceOutputs?.checkedAll"
+                    type="checkbox" /></th>
+                <th>指派维修技师</th>
+                <th>转派</th>
+                <th>项目名称</th>
+                <th>维修工时(小时)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let record of selectedOrder?.serviceOutputs" [class.checked]="record.checked" (click)="$event.stopPropagation();toggleCheckbox(record)">
+                <td>
+                  <input [disabled]="record.teamType === 4 || record.teamType === 5" value="{{record.id}}" (click)="$event.stopPropagation();toggleCheckbox(record)"
+                    [checked]="record.checked" type="checkbox" />
+                </td>
+                <td>
+                  <span *ngIf="record.teamType !== 1">
+                {{record?.employeeNames}}
+              </span>
+                </td>
+                <td>
+                  <span *ngIf="record.teamType === 4 || record.teamType === 5">
+                {{record?.turnEmployeeNames}}
+              </span>
+                </td>
+                <td style="position:relative;">{{record?.serviceName}}
+                  <span *ngIf="record.type === 3" class="append-stamp">增项</span>
+                  <span [class.accept-stamp]="record.teamType === 6"></span>
+                </td>
+                <td>{{record?.workHour }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div>
+            <button [hqSpinner]="generating.assign" class="btn btn-sm btn-primary mr-2" (onConfirm)="onConfirmTechnicians($event, 1)"
+              [hqMutilSelect]="maintenanceTechnicians" mTitle="选择维修技师" [disabled]="!selectedOrder?.serviceOutputs?.enableBtn"
+              (click)="onMultiSelectorClick($event)" placement="right">指派</button>
+            <button [hqSpinner]="generating.reassign" class="btn btn-sm btn-success" (onConfirm)="onConfirmTechnicians($event, 2)" [hqMutilSelect]="maintenanceTechnicians"
+              mTitle="选择维修技师" [disabled]="!selectedOrder?.serviceOutputs?.enableBtn" (click)="onMultiSelectorClick($event)"
+              placement="right">转派</button>
+          </div>
+        </hq-workshop-order-operation>
       </div>
     </div>
   </div>

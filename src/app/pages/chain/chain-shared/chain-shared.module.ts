@@ -19,12 +19,16 @@ import { ProductCategoryTypeaheadDirective } from './table-typeahead/product-cat
 import { ProductBrandTypeaheadDirective } from './table-typeahead/product-brand-typeahead.directive';
 import { VehicleShowDirective, VehicleShowComponent } from './vehicle-show';
 import { PopoverModule } from 'ngx-bootstrap/popover';
+import { AttachmentItemListComponent, SuggestedItemListComponent, MaintenanceItemListComponent, MaintenanceFixingsListComponent } from './maintenance-item-list';
+import { WorkshopSearchFormComponent, WorkshopOrderOperationComponent } from './workshop';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 
 @NgModule({
   imports: [
     SharedModule,
     PopoverModule.forRoot(),
     BsDropdownModule.forRoot(),
+    TabsModule.forRoot()
   ],
   exports: [
     SuspendBillDirective,
@@ -42,6 +46,13 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
     ProductCategoryTypeaheadDirective,
     ProductBrandTypeaheadDirective,
     VehicleShowDirective,
+    
+    AttachmentItemListComponent,
+    SuggestedItemListComponent,
+    MaintenanceItemListComponent,
+    MaintenanceFixingsListComponent,
+    WorkshopSearchFormComponent, 
+    WorkshopOrderOperationComponent
   ],
   declarations: [
     SuspendBillDirective,
@@ -61,6 +72,13 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
     ProductBrandTypeaheadDirective,
     VehicleShowDirective,
     VehicleShowComponent,
+    
+    AttachmentItemListComponent,
+    SuggestedItemListComponent,
+    MaintenanceItemListComponent,
+    MaintenanceFixingsListComponent,
+    WorkshopSearchFormComponent,
+    WorkshopOrderOperationComponent,
   ],
   providers: [SuspendBillService],
   entryComponents: [SuspendBillComponent, VehicleShowComponent]
