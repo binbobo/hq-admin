@@ -17,7 +17,7 @@
         <span>{{detail?.operator }}</span>
       </div>-->
 </div>
-<div class="row">
+<div class="">
   <!--<div class="table-responsive">-->
   <table class="table table-bordered">
     <tr class="active">
@@ -35,16 +35,16 @@
     </tr>
     <tr class="text-center" *ngFor="let item of detailItems">
       <td>{{item.productCode }}</td>
-      <td>{{item.categoryName }}</td>
-      <td>{{item.productName }}</td>
-      <td>{{item.brandName}}</td>
-      <td>{{item.specification }}</td>
+      <td class="text-left">{{item.categoryName }}</td>
+      <td class="text-left">{{item.productName }}</td>
+      <td class="text-left">{{item.brandName}}</td>
+      <td class="text-left">{{item.specification }}</td>
       <td>{{item.unit }}</td>
-      <td>{{item.storeName }}</td>
-      <td>{{item.locationName }}</td>
-      <td>{{item.price|centToYuan }}</td>
+      <td class="text-left">{{item.storeName }}</td>
+      <td class="text-left">{{item.locationName }}</td>
+      <td class="text-right">{{item.price|centToYuan }}</td>
       <td>{{item.count }}</td>
-      <td>{{item.amount |centToYuan}}</td>
+      <td class="text-right">{{item.amount |centToYuan}}</td>
     </tr>
   </table>
   <!--</div>-->
