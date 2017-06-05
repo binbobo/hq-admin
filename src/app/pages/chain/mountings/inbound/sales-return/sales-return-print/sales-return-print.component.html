@@ -2,11 +2,11 @@
 <!--<hr class="invisible">-->
 <br>
 <div class="clearfix">
-  <span class="pull-left mr-3 print-label">店铺名称：{{org?.name}}</span>
-  <div class="pull-left mr-3 print-label">退库单号：{{model?.billCode}}</div>
-  <div class="pull-left mr-3 print-label">客户名称：{{model?.customerName}}</div>
-  <div class="pull-left mr-3 print-label">销售员：{{model?.seller}}</div>
-  <div class="pull-left print-label">开单时间：{{model?.createBillDateTime|sDatetime}}</div>
+  <span class="pull-left mr-3"><label class="print-label">店铺名称：</label>{{org?.name}}</span>
+  <div class="pull-left mr-3"><label class="print-label">退库单号：</label>{{model?.billCode}}</div>
+  <div class="pull-left mr-3"><label class="print-label">客户名称：</label>{{model?.customerName}}</div>
+  <div class="pull-left mr-3"><label class="print-label">销售员：</label>{{model?.seller}}</div>
+  <div class="pull-left"><label class="print-label">开单时间：</label>{{model?.createBillDateTime|sDatetime}}</div>
 </div>
 <br>
 <!--<hr lass="invisible">-->
@@ -29,14 +29,14 @@
     </thead>
     <tbody>
       <tr *ngFor="let item of model?.list;let i=index">
-        <td>{{item.productCode }}</td>
-        <td>{{item.productCategory}}</td>
-        <td>{{item.productName}}</td>
-        <td>{{item.brand}}</td>
-        <td>{{item.productSpecification}}</td>
-        <td>{{item.unit}}</td>
-        <td>{{item.storeName }}</td>
-        <td>{{item.locationName }}</td>
+        <td class="text-center">{{item.productCode }}</td>
+        <td class="text-left">{{item.productCategory}}</td>
+        <td class="text-left">{{item.productName}}</td>
+        <td class="text-left">{{item.brand}}</td>
+        <td class="text-left">{{item.productSpecification}}</td>
+        <td class="text-center">{{item.unit}}</td>
+        <td class="text-left">{{item.storeName }}</td>
+        <td class="text-left">{{item.locationName }}</td>
         <td class="text-right">{{item.price|centToYuan }}</td>
         <td class="text-center">{{item.count}}</td>
         <td class="text-right">{{item.amount|centToYuan }}</td>
@@ -44,8 +44,8 @@
     </tbody>
   </table>
   <div class="">
-    <div class="pull-left mr-3 print-label">金额：{{model?.totalAmount|centToYuan}}</div>
-    <div class="pull-left mr-3 print-label">打印时间：{{model?.printDateTime|sDatetime}}</div>
-    <div class="pull-left mr-3 pr-5 print-label">操作人：{{model?.operator}}</div> 
+    <div class="pull-left mr-3"><label class="print-label">金额：</label>{{model?.totalAmount|centToYuan}}</div>
+    <div class="pull-left mr-3"><label class="print-label">打印时间：</label>{{model?.printDateTime|sDatetime}}</div>
+    <div class="pull-left mr-3"><label class="print-label">操作人：</label>{{employee?.name}}</div> 
   </div>
 </div>

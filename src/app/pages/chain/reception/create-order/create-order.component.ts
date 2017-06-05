@@ -476,8 +476,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       series: [{ value: '', disabled: true }, [Validators.required]], // 车系
       vehicleName: [{ value: '', disabled: true }, [Validators.required]], // 车型
       plateNo: ['', [Validators.required, HQ_VALIDATORS.plateNo]], // 车牌号
-      vin: ['', [Validators.required, HQ_VALIDATORS.vin]], // vin  底盘号
-      validate: [null, [CustomValidators.date]], // 验车日期
+      vin: ['', [HQ_VALIDATORS.vin]], // vin  底盘号
+      validate: [null, [CustomValidators.date]], // 验车日期f
       type: ['', [Validators.required]], // 维修类型
       expectLeave: [moment().add(2, 'hours').format('YYYY-MM-DD HH:mm'), [Validators.required, CustomValidators.date]], // 预计交车时间
       mileage: ['', [Validators.required, HQ_VALIDATORS.mileage]], // 行驶里程

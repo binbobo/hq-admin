@@ -184,6 +184,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
       .then(data => {
         if (data) {
           this.printModel = data;
+          console.log('打印数据',this.printModel);
           setTimeout(() => this.printer.print(), 300);
         }
       })
