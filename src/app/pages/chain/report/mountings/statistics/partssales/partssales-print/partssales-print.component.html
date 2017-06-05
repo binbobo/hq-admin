@@ -1,22 +1,22 @@
 <div class="modal-body">
   <div class="card-block">
     <div class="row">
-      <div class="col-3">
+      <div class="col-4">
         <label for="">出库单号：</label>
         <span>{{detail?.billCode || "无"}}</span>
       </div>
-      <div class="col-3">
+      <div class="col-4">
         <label for="">客户名称：</label>
         <span>{{detail?.customerName|| "无"}}</span>
       </div>
-      <div class="col-3">
+      <div class="col-4">
         <label for="">开单时间：</label>
-        <span>{{detail?.createBillTime |date:'yyyy/MM/dd HH:mm:ss'}}</span>
+        <span>{{detail?.createBillTime |sDatetime}}</span>
       </div>
-      <div class="col-3">
+      <!--<div class="col-3">
         <label for="">操作人：</label>
         <span>{{detail?.operator }}</span>
-      </div>
+      </div>-->
     </div>
   </div>
   <div class="card-block">
@@ -54,4 +54,8 @@
       <p *ngIf="!!!detailItemsLength">暂无数据</p>
     </div>
   </div>
+</div>
+<div class="row">
+  <p class="col-4 text-center">打印时间：{{newDate}}</p>
+  <p class="col-4">操作人：{{detail?.operator}}</p>
 </div>
