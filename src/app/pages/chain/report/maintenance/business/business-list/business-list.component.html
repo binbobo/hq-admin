@@ -8,7 +8,7 @@
         <input [(ngModel)]="params.plateNo" hqPlateNoTypeahead class="form-control" name="plateNo" id="plateNo" type="text" placeholder="请输入车牌号"/>
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">进店时间</span>
+        <span class="input-group-addon">进厂时间</span>
         <input [max-date]="maxEnterStartDate" [(ngModel)]="params.enterStartTimeDate" class="form-control" id="enterStartTimeDate"
           name="enterStartTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请输入开始日期" />
         <span class="input-group-addon">至</span>
@@ -25,18 +25,6 @@
           id="leaveEndTimeDate" name="leaveEndTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请输入截止日期"
         />
       </div>
-      <!--<div class="input-group m-1">
-        <span class="input-group-addon">服务顾问</span>
-        <ngx-dropdown-treeview [config]="nameConfig" [items]="nameItems" (selectedChange)="onSearchNameChange($event)">
-        </ngx-dropdown-treeview>
-      </div>
-      <div class="input-group m-1">
-        <span *ngIf="items" for="searchRange" class="input-group-addon">查询范围</span>
-        <div *ngIf="items" class="hq-col">
-          <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)">
-          </ngx-dropdown-treeview>
-        </div>
-      </div>-->
       <div class="hq-input m-1">
         <label class="form-label">服务顾问</label>
         <div class=".hq-col">
@@ -248,9 +236,9 @@
                 <td>{{businessData?.updateOnUtc|sDatetime}}</td>
               </tr>
               <tr>
-                <td>进店里程</td>
+                <td>进厂里程</td>
                 <td>{{businessData?.mileage}} km</td>
-                <td>进店时间</td>
+                <td>进厂时间</td>
                 <td>{{businessData?.createdOnUtc|sDatetime}}</td>
               </tr>
               <tr>
@@ -300,7 +288,7 @@
           <br>
           <div class="card-block">
             <table class="table table-bordered">
-              <caption>附录一：工时明细</caption>
+              <caption>表一：工时明细</caption>
               <thead>
                 <tr>
                   <th width="50">序号</th>
@@ -342,7 +330,7 @@
           <br>
           <div class="card-block">
             <table class="table table-bordered">
-              <caption>附录三：材料明细</caption>
+              <caption>表三：材料明细</caption>
               <thead>
                 <tr>
                   <th width="50">序号</th>
@@ -380,7 +368,7 @@
           <br>
           <div *ngIf="businessData?.appendItems.length" class="card-block">
             <table class="table table-bordered">
-              <caption>附录四：附加项目</caption>
+              <caption>表四：附加项目</caption>
               <thead>
                 <tr>
                   <th width="50">序号</th>
@@ -398,7 +386,7 @@
           <br>
           <div *ngIf="businessData?.adviceItems.length" class="card-block">
             <table class="table table-bordered">
-              <caption>附录五：建议维修项</caption>
+              <caption>表五：建议维修项</caption>
               <thead>
                 <tr>
                   <th width="50">序号</th>
