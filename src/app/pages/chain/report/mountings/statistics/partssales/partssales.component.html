@@ -13,7 +13,7 @@
         </div>
         <div class="input-group m-1">
           <span class="input-group-addon">客户名称</span>
-          <input hqCustomerTypeahead name="name" class="form-control tooltips-top" data-tooltips="top" formControlName="name" placeholder="请输客户名字"
+          <input hqCustomerTypeahead name="name" class="form-control tooltips-top" (input)="changeVal($event)"  data-tooltips="top" formControlName="name" placeholder="请输客户名字"
           />
         </div>
         <div class="input-group m-1">
@@ -63,7 +63,11 @@
   </div>
 </div>
 <!--详情-->
+<<<<<<< HEAD
+<div class="modal fade" hqBsModal #vehicleModal="hq-bs-modal" role="dialog">
+=======
 <div class="modal fade" hqBsModal #bdModal="hq-bs-modal" role="dialog">
+>>>>>>> 8ba8a1b1ea0d99a4f417859d484afdf3affd1ec6
   <div class="modal-dialog modal-lg modal-content card">
     <div class="modal-header">
       <div class="modal-title">配件销售详情</div>

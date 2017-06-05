@@ -294,7 +294,7 @@ table .tr-left-bold{
 .form-control:focus{
     border-color:#27b394 !important;
 }
-/*新增按钮样式*/
+/*新增维修工项按钮样式*/
 .btn-add {
   border: none;
   color: #727171;
@@ -308,14 +308,15 @@ table .tr-left-bold{
 .fa-plus-circle:before {
   color: #27b394;
 }
+/*滚动条样式*/
 ::-webkit-scrollbar{  
     width: 8px;  
     height: 8px;  
     background-color: rgba(68, 36, 36, 0.07);
 }  
 ::-webkit-scrollbar-thumb:hover{
-    background-color: rgba(41, 45, 51, 0.42);
-  }
+    background-color: rgba(41, 45, 51, 0.42);     
+}
 ::-webkit-scrollbar-track{  
     -webkit-box-shadow: inset 2 0 1px rgba(0,0,0,0.3);
     border-radius: 10px;  
@@ -329,7 +330,6 @@ table .tr-left-bold{
 .form-inline ngx-treeview .form-check,.form-inline ngx-treeview .form-check-label{
     display: block;
 }
-
 .input-group ngx-dropdown-treeview button{
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;

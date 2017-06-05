@@ -57,13 +57,13 @@ export class PartssalesComponent extends DataList<any> {
   }
 
   //模态框
-  alert(ev, id, el,billCode,customerName) {
+  alert(ev, id, el, billCode, customerName) {
     ev.hqSpinner = true;
     this.service.get(id).then(data => {
       this.isLoading = true;
       this.detail = data[0];
-      this.detail.billCode=billCode;
-      this.detail.customerName=customerName;
+      this.detail.billCode = billCode;
+      this.detail.customerName = customerName;
       this.detailItemsLength = data.length;
       this.detailItems = data;
       console.log('详情数据', this.detail.items)
@@ -82,6 +82,11 @@ export class PartssalesComponent extends DataList<any> {
     });
   }
 
+  //客戶名陳
+  changeVal(e) {
+    console.log('客戶名稱', e.target.value)
+  }
+
   //搜索
   onSearch() {
     //将表单值赋给params
@@ -97,7 +102,7 @@ export class PartssalesComponent extends DataList<any> {
       searchStart: '',  //开始时间
       searchEnd: '',    // 结束时间
       name: '',         //供应商
-      phone:'',         //供应商手机
+      phone: '',         //供应商手机
     })
   }
 
@@ -107,13 +112,13 @@ export class PartssalesComponent extends DataList<any> {
   }
 
   joinOrderNumberOnSelect(ev) {
-      this.partssalesForm.patchValue({
-        billCode: ev.billCode,
-      });
+    this.partssalesForm.patchValue({
+      billCode: ev.billCode,
+    });
   }
-//时间控制
+  //时间控制
   public get maxEnterStartDate() {
-    if(!this.partssalesForm.get('searchEnd').value){
+    if (!this.partssalesForm.get('searchEnd').value) {
       return moment().format('YYYY-MM-DD');
     }
     return new Date(this.partssalesForm.get('searchEnd').value);

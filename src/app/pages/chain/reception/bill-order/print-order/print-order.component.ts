@@ -22,7 +22,7 @@ export class PrintOrderComponent implements OnInit {
     });
     this.organizationInfo = this.organizationService.getOrganization().then(data => {
       this.organizationInfo = data;
-    }); 
+    });
   }
   employeeInfo: any; // 员工信息
   organizationInfo: any; // 门店信息

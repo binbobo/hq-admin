@@ -53,9 +53,23 @@ export class InnerReceiveComponent extends DataList<any> {
         this.loadDepartments(data[0].value);
       })
       // .then(data => data.length && this.loadDepartments(data[0].value))
-      // .then(data => this.reset())
+      .then(data => this.reset())
       .catch(err => this.alerter.error(err));
   }
+
+reset() {
+    if (Array.isArray(this.employees) && this.employees.length) {
+      this.receiveForm.patchValue({
+        takeUser:this.employees[0].value
+      })
+    }
+    if (Array.isArray(this.departments) && this.departments.length) {
+      this.receiveForm.patchValue({
+        takeDepart:this.departments[0].value
+      })
+    }
+  }
+
   onReceiverSelect(event: Event) {
     let el = event.target as HTMLSelectElement;
     this.loadDepartments(el.value);
@@ -67,7 +81,7 @@ export class InnerReceiveComponent extends DataList<any> {
       .then(() => {
         if (Array.isArray(this.departments) && this.departments.length) {
           this.receiveForm.patchValue({
-            a: this.departments[0].value,
+            takeDepart: this.departments[0].value,
           })
         }
       })

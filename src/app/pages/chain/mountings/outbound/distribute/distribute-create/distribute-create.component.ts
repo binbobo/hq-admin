@@ -37,16 +37,11 @@ export class DistributeCreateComponent implements OnInit {
     this.model.createUserName = this.InputData.employeesData[0].name;
     this.form.controls.createUser.setValue(this.InputData.employeesData[0].id)
   }
-
-
   onSellerSelect(evt) {
-    console.log(evt)
     let creatAry = [];
     creatAry = this.InputData.employeesData.filter(item => item.id === evt.target.value);
-    console.log(creatAry)
     this.model.createUserName = creatAry[0].name;
     this.model.createUser = creatAry[0].id;
-    console.log(this.model, this.form.value)
     this.form.value["createUserName"] = this.model.createUserName;
   }
 
@@ -99,7 +94,6 @@ export class DistributeCreateComponent implements OnInit {
   }
 
   public onSubmit(event: Event) {
-    console.log(this.form.value, event, this.model)
     this.form.value["createUserName"] = this.model["createUserName"];
     let invalid = this.controls
       .map(c => c.validate())
@@ -136,8 +130,6 @@ export class DistributeCreateComponent implements OnInit {
 
 vehicleInfoList:any;
   public onItemSelect(event) {
-
-    console.log(event)
     let item: any = {
       productUnit: event.unitName,
       productId: event.id,
@@ -155,7 +147,6 @@ vehicleInfoList:any;
       vehicleInfoList:event.vehicleInfoList
     }
     this.vehicleInfoList=item.vehicleInfoList;
-    console.log(this.vehicleInfoList)
     this.storages = event.storages;
     this.locations = null;
     if (Array.isArray(event.storages) && event.storages.length) {

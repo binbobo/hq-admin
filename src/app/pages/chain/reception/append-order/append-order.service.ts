@@ -54,7 +54,6 @@ export class AppendOrderService implements BasicService<any> {
     return this.httpService
       .get<ApiResult<DetailData>>(url)
       .then(result => {
-        console.log(result.data)
         return result.data
       })
       .catch(err => Promise.reject(`加载失败：${err}`));

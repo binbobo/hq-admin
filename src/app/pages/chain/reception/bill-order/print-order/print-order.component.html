@@ -82,8 +82,8 @@
           <td class="text-center">{{item?.description}}</td>
         </tr>
         <tr>
-          <td colspan="4"><span class="print-label">金额合计：</span>{{(data.moneyObj)?.costMoney|centToYuan}}<span class="mr-4"></span><span class="print-label">优惠：</span>{{(data.moneyObj).costCountMoney|centToYuan}}
-            <span class="mr-4"></span><span class="print-label">应收金额：</span>{{data.maindata.actualAmount|centToYuan}}
+          <td colspan="4"><span class="print-label">金额合计：</span>¥{{(data.moneyObj)?.costMoney|centToYuan}}<span class="mr-4"></span><span class="print-label">优惠：</span>¥{{(data.moneyObj).costCountMoney|centToYuan}}
+            <span class="mr-4"></span><span class="print-label">应收金额：</span>¥{{data.maindata.actualAmount|centToYuan}}
           </td>
         </tr>
       </tbody>
@@ -112,8 +112,8 @@
           <td class="text-center">{{item?.description}}</td>
         </tr>
         <tr>
-          <td colspan="7"><span class="print-label">金额合计：</span>{{(data.moneyObj)?.workItemMoney|centToYuan}}<span class="mr-4"></span><span class="print-label">优惠：</span>{{(data.moneyObj).discountMoney|centToYuan}}
-            <span class="mr-4"></span><span class="print-label">应收金额：</span>{{(data.moneyObj)?.workCostMoney|centToYuan}}</td>
+          <td colspan="7"><span class="print-label">金额合计：</span>¥{{(data.moneyObj)?.workItemMoney|centToYuan}}<span class="mr-4"></span><span class="print-label">优惠：</span>¥{{(data.moneyObj).discountMoney|centToYuan}}
+            <span class="mr-4"></span><span class="print-label">应收金额：</span>¥{{(data.moneyObj)?.workCostMoney|centToYuan}}</td>
           <!--<td colspan="7">合计：应收金额：{{(data.moneyObj)?.workCostMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;折扣金额：{{(data.moneyObj)?.discountMoney|centToYuan}}</td>-->
         </tr>
       </tbody>
@@ -140,7 +140,7 @@
           <td class="text-center">{{item?.description}}</td>
         </tr>
         <tr>
-          <td colspan="8"><span class="print-label">金额合计：</span>{{(data.moneyObj)?.materialMoney|centToYuan}}</td>
+          <td colspan="8"><span class="print-label">金额合计：</span>¥{{(data.moneyObj)?.materialMoney|centToYuan}}</td>
         </tr>
       </tbody>
     </table>
@@ -185,10 +185,9 @@
       </p>
       <p>
         <span class="mr-2 pull-left"><span class="print-label">客户签名：</span></span>
-        <span class="mr-1 pull-right"><span class="print-label mr-5">日期：</span><span class="print-label mr-5">年</span>
+        <span class="pull-right"><span class="print-label">日期：</span><span class="mr-5"></span><span class="print-label mr-5">年</span>
         <span class="print-label mr-5">月</span><span class="print-label mr-5">日</span></span>
         <span class="clearfix"></span>
       </p>
     </div>
-
   </div>
