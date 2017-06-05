@@ -228,24 +228,24 @@
             <th>其他出库<br>数量</th>
             <th>其他出库<br>销售金额</th>-->
           </tr>
-          <tr *ngIf="listDetail">
+          <tr *ngIf="listDetail" class="text-right">
             <td></td>
-            <td>{{listDetail.beginCount}}</td>
+            <td class="text-center">{{listDetail.beginCount}}</td>
             <td>{{listDetail.beginAmount |centToYuan}}</td>
-            <td>{{listDetail.endCount}}</td>
+            <td class="text-center">{{listDetail.endCount}}</td>
             <td>{{listDetail.endAmount |centToYuan}}</td>
-            <td>{{listDetail.inCount}}</td>
+            <td class="text-center">{{listDetail.inCount}}</td>
             <td>{{listDetail.inAmount |centToYuan}}</td>
-            <td>{{listDetail.outCount}}</td>
+            <td class="text-center">{{listDetail.outCount}}</td>
             <td>{{listDetail.outCostAmount|centToYuan }}</td>
             <td>{{listDetail.outSaleAmount|centToYuan }}</td>
-            <td>{{listDetail.purchInCount}}</td>
+            <td class="text-center">{{listDetail.purchInCount}}</td>
             <td>{{listDetail.purCostAmount|centToYuan}}</td>
-            <td>{{listDetail.maintCount}}</td>
+            <td class="text-center">{{listDetail.maintCount}}</td>
             <td>{{listDetail.mainCostAmount|centToYuan }}</td>
-            <td>{{listDetail.saleCount}}</td>
+            <td class="text-center">{{listDetail.saleCount}}</td>
             <td>{{listDetail.saleCostAmount|centToYuan }}</td>
-            <td>{{listDetail.useCount}}</td>
+            <td class="text-center">{{listDetail.useCount}}</td>
             <td>{{listDetail.useCostAmount|centToYuan }}</td>
             <!--<td></td>
             <td></td>
