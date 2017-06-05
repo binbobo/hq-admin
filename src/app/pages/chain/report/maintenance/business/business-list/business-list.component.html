@@ -80,14 +80,14 @@
             <td>{{item.typeName}}</td>
             <td>{{item.createdOnUtc|sDatetime}}</td>
             <td>{{item.leaveTime|sDatetime}}</td>
-            <td [class.overtime]="item.overTime">{{item.overTime|durationHumanize}}</td>
-            <td>{{item.vehicleName}}</td>
+            <td [class.overtime]="item.overTime" class="text-right">{{item.overTime|durationHumanize}}</td>
+            <td class="text-left">{{item.vehicleName}}</td>
             <td>{{item.vin}}</td>
-            <td>{{item.contactUser}}</td>
+            <td class="text-left">{{item.contactUser}}</td>
             <td>{{item.contactInfo}}</td>
-            <td>{{item.employeeNames}}</td>
-            <td>{{item.createdUserName}}</td>
-            <td>{{item.checkoutedAmount|centToYuan}}</td>
+            <td class="text-left">{{item.employeeNames}}</td>
+            <td class="text-left">{{item.createdUserName}}</td>
+            <td class="text-right">{{item.checkoutedAmount|centToYuan}}</td>
           </tr>
         </tbody>
         <tfoot *ngIf="list?.length <= 0">
@@ -97,7 +97,7 @@
         </tfoot>
       </table>
     </div>
-    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    <hq-pagination [(itemsPerPage)]="size" [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
   <div class="card-footer">
     <button type="button" (click)="onExport()" class="btn btn-export">导出</button>
@@ -309,7 +309,7 @@
               <tbody>
                 <tr *ngFor="let item of businessData?.workHours;let index=index">
                   <td>{{index+1}}</td>
-                  <td>{{item.serviceName}}</td>
+                  <td class="text-left">{{item.serviceName}}</td>
                   <td>{{item.workHour}}</td>
                   <td class="text-right">{{item.price|centToYuan}}</td>
                   <td>{{item.discount}}</td>
@@ -355,7 +355,7 @@
               <tbody>
                 <tr *ngFor="let item of businessData?.matereialDetails;let index=index">
                   <td>{{index+1}}</td>
-                  <td>{{item.productName}}</td>
+                  <td class="text-left">{{item.productName}}</td>
                   <td class="text-right">{{item.price|centToYuan}}</td>
                   <td>{{item.count}}</td>
                   <td class="text-right">{{item.amount|centToYuan}}</td>
