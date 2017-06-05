@@ -5,7 +5,7 @@
   </div>
   <!--填写车主信息表单-->
   <div class="card-block">
-    <form [formGroup]="carOwnerForm" autocomplete="off">
+    <!--<form [formGroup]="carOwnerForm" autocomplete="off">
       <div class="form-group row">
         <div class="hq-input">
           <label for="phone" class="form-label"><span class="asterisk mr-1">*</span>手机号</label>
@@ -41,10 +41,8 @@
         <div class="hq-input">
           <label for="name" class="form-label"><span class="asterisk mr-1">*</span>车主</label>
           <div class="hq-col">
-            <!--新增的时候模糊搜索-->
             <input maxlength="15" type="text" [hqCustomerTypeahead]="'name'" (onSelect)="onCustomerNameSelect($event)" label="车主" class="form-control"
               formControlName="name">
-            <!--客户id 用于更新-->
             <input type="hidden" formControlName="id">
           </div>
         </div>
@@ -105,7 +103,8 @@
           </div>
         </div>
       </div>
-    </form>
+    </form>-->
+    <hq-customer-add-form #customerForm (formValueChanges)="enableSaveCustomer=$event" (load)="enableSaveCustomer=$event.isFormValid;newVehiclesData=$event.vehicles"></hq-customer-add-form>
     <br>
     <!--(delClick)="onDelVehicleConfirmHandler($event)"-->
     <hq-vehicle-add [data]="newVehiclesData" (addClick)="vehicleModal.show();" (editClick)="selectedVehicle=$event;vehicleModal.show();"></hq-vehicle-add>
