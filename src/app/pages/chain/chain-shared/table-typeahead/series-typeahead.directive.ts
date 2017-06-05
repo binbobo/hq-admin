@@ -1,4 +1,4 @@
-import { Directive, ViewContainerRef, ComponentFactoryResolver, Input } from '@angular/core';
+import { Directive, Input, Injector, ViewContainerRef } from '@angular/core';
 import { TableTypeaheadDirective, TableTypeaheadColumn, TypeaheadRequestParams } from 'app/shared/directives';
 import { HttpService, Urls } from 'app/shared/services';
 import { PagedParams } from 'app/shared/models';
@@ -9,16 +9,15 @@ import { PagedParams } from 'app/shared/models';
 export class SeriesTypeaheadDirective extends TableTypeaheadDirective {
 
     constructor(
-        protected viewContainerRef: ViewContainerRef,
-        protected componentFactoryResolver: ComponentFactoryResolver,
+        injector: Injector,
         protected httpService: HttpService,
+        protected container?: ViewContainerRef,
     ) {
-        super(viewContainerRef, componentFactoryResolver);
-        this.showTitle = false;
+        super(injector);
     }
 
     protected columns = [
-        { name: 'name', title: '车系' },
+        { name: 'name', title: '车系', selected: true },
     ] as Array<TableTypeaheadColumn>;
 
     @Input()
@@ -26,7 +25,7 @@ export class SeriesTypeaheadDirective extends TableTypeaheadDirective {
 
     ngOnInit() {
         this.source = (params: TypeaheadRequestParams) => {
-            let request = new SeriesSearchRequest();
+            let request = new PagedParams();
             request['serieName'] = params.text;
             request['brandId'] = this.brandId;
             request.setPage(params.pageIndex, params.pageSize);
@@ -37,14 +36,5 @@ export class SeriesTypeaheadDirective extends TableTypeaheadDirective {
         super.ngOnInit();
     }
 
-}
-
-class SeriesSearchRequest extends PagedParams {
-    constructor(
-        public brandId?: string, // 品牌ID
-        public serieName?: string, // 车系名称
-    ) {
-        super();
-    }
 }
 
