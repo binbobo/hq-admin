@@ -108,7 +108,7 @@
           <label for="mileage" class="form-label"><span class="asterisk mr-1">*</span>行驶里程</label>
           <div class="hq-col">
             <div class="input-group">
-              <input maxlength="10" label="行驶里程" type="text" class="form-control" formControlName="mileage" id="mileage">
+              <input #mileage (blur)="resetNextMileageValidators(mileage.value)" maxlength="10" label="行驶里程" type="text" class="form-control" formControlName="mileage" id="mileage">
               <span class="input-group-addon">KM</span>
             </div>
           </div>
@@ -159,14 +159,14 @@
         <div class="hq-input">
           <label for="nextDate" class="form-label">建议下次保养日期</label>
           <div class="hq-col">
-            <input readonly class="form-control" type="text" formControlName="nextDate" ngui-datetime-picker date-only="true" />
+            <input readonly [min-date]="currentDate" [min-hour]="currentHours" class="form-control" type="text" formControlName="nextDate" ngui-datetime-picker date-only="true" />
           </div>
         </div>
         <div class="hq-input">
           <label for="nextMileage" class="form-label">建议下次保养里程</label>
           <div class="hq-col">
             <div class="input-group">
-              <input maxlength="10" label="建议下次保养里程" type="text" class="form-control" formControlName="nextMileage" id="nextMileage">
+              <input maxlength="10" [errors]="{gte:'输入里程不能小于行驶里程'}"  label="建议下次保养里程" type="text" class="form-control" formControlName="nextMileage" id="nextMileage">
               <span class="input-group-addon">KM</span>
             </div>
           </div>
