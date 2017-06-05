@@ -11,6 +11,7 @@ export class PlateNoTypeaheadDirective extends TableTypeaheadDirective {
     constructor(
         injector: Injector,
         protected httpService: HttpService,
+        protected container: ViewContainerRef,
     ) {
         super(injector);
         this.showTitle = false;

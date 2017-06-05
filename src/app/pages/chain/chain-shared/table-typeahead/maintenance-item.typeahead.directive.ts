@@ -12,7 +12,7 @@ export class MaintenanceItemTypeaheadDirective extends TableTypeaheadDirective {
     constructor(
         injector: Injector,
         protected httpService: HttpService,
-        protected container?: ViewContainerRef,
+        protected container: ViewContainerRef,
     ) {
         super(injector);
         this.showTitle = false;

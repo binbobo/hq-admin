@@ -11,7 +11,7 @@ export class ProductCategoryTypeaheadDirective extends TableTypeaheadDirective {
   constructor(
     injector: Injector,
     protected httpService: HttpService,
-    protected container?: ViewContainerRef,
+    protected container: ViewContainerRef,
   ) {
     super(injector);
   }

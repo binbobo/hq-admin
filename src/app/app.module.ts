@@ -18,13 +18,13 @@ const appRoutes: Routes = [
     AppComponent,
   ],
   imports: [
+    SharedModule.forRoot(),
     RouterModule.forRoot(appRoutes, { useHash: false }),
     PagesModule,
     AuthModule,
     BrowserModule,
-    SharedModule.forRoot(),
   ],
-  providers: [],
+  providers: [TranslateStore],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

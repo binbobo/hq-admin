@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import * as services from 'app/shared/services';
 import * as components from "./components";
@@ -9,7 +9,6 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { FormsModule, NgModel } from '@angular/forms';
 import { PaginationModule, PopoverModule, AlertModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
-import { TranslateStore } from "@ngx-translate/core/src/translate.store";
 import { NgPipesModule } from 'ngx-pipes';
 import { PhoneDirective } from './directives/validators/phone.directive';
 import { TelValidator } from './directives/validators/tel.directive';
@@ -97,7 +96,7 @@ export const HQ_VALIDATORS = {
         PopoverModule.forRoot(),
         Ng2SmartTableModule,
         TranslateModule.forChild({
-            loader: { provide: TranslateLoader, useClass: services.ServerTranslateLoader },
+            loader: { provide: TranslateLoader, useClass: services.ServerTranslateLoader }
         }),
     ],
     exports: [
@@ -108,14 +107,14 @@ export const HQ_VALIDATORS = {
         HQ_PIPES,
         HQ_DIRECTIVES,
     ],
-    declarations: [HQ_COMPONENTS, HQ_PIPES, HQ_DIRECTIVE_COMPONENTS, HQ_DIRECTIVES, HqBsModalDirective],
+    declarations: [HQ_COMPONENTS, HQ_PIPES, HQ_DIRECTIVE_COMPONENTS, HQ_DIRECTIVES],
     entryComponents: [HQ_DIRECTIVE_COMPONENTS]
 })
 export class SharedModule {
     static forRoot() {
         return {
             ngModule: SharedModule,
-            providers: [HQ_SERVICES, TranslateStore]
+            providers: [HQ_SERVICES]
         }
     }
 }

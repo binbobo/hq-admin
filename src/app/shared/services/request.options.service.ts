@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BaseRequestOptions, RequestOptions } from '@angular/http';
 import { UserService } from "app/shared/services/user.service";
-import { TranslateService } from '@ngx-translate/core';
 import { EventDispatcher } from './event-dispatcher.service';
 import * as moment from 'moment';
 

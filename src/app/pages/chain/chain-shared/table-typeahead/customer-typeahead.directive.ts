@@ -1,4 +1,4 @@
-import { Directive, Input, Optional, Injector } from '@angular/core';
+import { Directive, Input, Optional, Injector, ViewContainerRef } from '@angular/core';
 import { TableTypeaheadDirective, TableTypeaheadColumn, TypeaheadRequestParams } from 'app/shared/directives';
 import { HttpService, Urls } from 'app/shared/services';
 import { PagedParams } from 'app/shared/models';
@@ -12,6 +12,7 @@ export class CustomerTypeaheadDirective extends TableTypeaheadDirective {
   constructor(
     injector: Injector,
     protected httpService: HttpService,
+    protected container: ViewContainerRef,
   ) {
     super(injector);
   }

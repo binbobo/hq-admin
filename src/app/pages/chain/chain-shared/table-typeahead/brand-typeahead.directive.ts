@@ -1,4 +1,4 @@
-import { Directive, Injector } from '@angular/core';
+import { Directive, Injector, ViewContainerRef } from '@angular/core';
 import { TableTypeaheadDirective, TableTypeaheadColumn, TypeaheadRequestParams } from 'app/shared/directives';
 import { HttpService, Urls } from 'app/shared/services';
 import { PagedParams } from 'app/shared/models';
@@ -13,6 +13,7 @@ export class BrandTypeaheadDirective extends TableTypeaheadDirective {
     constructor(
         injector: Injector,
         protected httpService: HttpService,
+        protected container: ViewContainerRef,
     ) {
         super(injector);
         // 不显示标题

@@ -18,22 +18,22 @@
     <table class="table table-bordered table-sm">
       <thead>
         <tr>
-          <th>title</th>
-          <th>icon</th>
-          <th>path</th>
-          <th>display.order</th>
-          <th>status</th>
-          <th>operator</th>
+          <th translate>title</th>
+          <th translate>icon</th>
+          <th translate>path</th>
+          <th translate>display.order</th>
+          <th translate>status</th>
+          <th translate>operator</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of list">
           <td>{{ item.title }}</td>
-          <td><i class="{{ item.icon }}"></i></td>
+          <td class="text-center"><i class="{{ item.icon }}"></i></td>
           <td>{{ item.path}}</td>
-          <td>{{ item.displayOrder }}</td>
-          <td><i class="fa fa-{{ item.enabled?'check':'times' }}"></i></td>
-          <td>
+          <td class="text-center">{{ item.displayOrder }}</td>
+          <td class="text-center"><i class="fa fa-{{ item.enabled?'check':'times' }}"></i></td>
+          <td class="text-center">
             <a [routerLink]="['create']" [queryParams]="{parentId:item.id}" class="btn btn-sm btn-secondary" title="添加子菜单"><i class="fa fa-plus"></i></a>
             <a [routerLink]="['edit',item.id]" class="btn btn-sm btn-success" title="编辑"><i class="fa fa-pencil-square-o"></i></a>
             <a (click)="onDelete($event,item.id)" class="btn btn-sm btn-danger" title="删除"><i class="fa fa-trash-o"></i></a>
