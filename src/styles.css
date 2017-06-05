@@ -335,3 +335,6 @@ table .tr-left-bold{
     border-bottom-left-radius: 0;
     height: 38px;
 }
+table tr:not(:last-child) th{
+    border-bottom-width: 0px;
+}
