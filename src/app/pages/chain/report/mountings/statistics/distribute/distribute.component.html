@@ -42,7 +42,7 @@
         </tr>
         <tr *ngFor="let item of list">
           <td>
-            <button type="button" [hqSpinner]="false" class="btn btn-info btn-sm" (click)="alert(item,item.id,bdModal,item.billCode)">详情</button>
+            <button type="button" [hqSpinner]="false" class="btn btn-info btn-sm" (click)="alert(item,item.id,vehicleModal,item.billCode)">详情</button>
           </td>
           <td>{{item.plateNo }}</td>
           <td>{{item.billCode }}</td>
@@ -58,15 +58,11 @@
   </div>
 </div>
 <!--详情-->
-<<<<<<< HEAD
 <div class="modal fade" hqBsModal #vehicleModal="hq-bs-modal" role="dialog">
-=======
-<div class="modal fade" hqBsModal #bdModal="hq-bs-modal" role="dialog">
->>>>>>> 8ba8a1b1ea0d99a4f417859d484afdf3affd1ec6
   <div class="modal-dialog modal-lg modal-content card">
     <div class="modal-header">
       <div class="modal-title">维修发料详情</div>
-      <button class="close pull-right" (click)="bdModal.hide()">&times;</button>
+      <button class="close pull-right" (click)="vehicleModal.hide()">&times;</button>
     </div>
     <div class="modal-body">
       <div class="card-block">

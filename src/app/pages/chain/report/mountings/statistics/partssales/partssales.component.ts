@@ -82,9 +82,12 @@ export class PartssalesComponent extends DataList<any> {
     });
   }
 
-  //客戶名陳
+  //客戶名陳/手机联动
   changeVal(e) {
-    console.log('客戶名稱', e.target.value)
+    this.partssalesForm.patchValue({
+      name:e.name,
+      phone:e.phone
+    });
   }
 
   //搜索

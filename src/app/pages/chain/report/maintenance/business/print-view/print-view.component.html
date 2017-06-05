@@ -105,14 +105,17 @@
         <td class="text-right">{{item.receivableCost|centToYuan}}</td>
         <td class="text-center">{{item.description}}</td>
       </tr>
+      <tr *ngIf="businessData?.totalCost?.length <= 0">
+        <td colspan="4">系统未找到相关内容</td>
+      </tr>
       <tr>
         <td colspan="4">
-            <label>金额合计：</label>
-            <span>{{businessData?.moneyObj.amountReceivable1|centToYuan}}</span>
-            <label>&nbsp;&nbsp;&nbsp;&nbsp;优惠：</label>
-            <span>{{businessData?.moneyObj.discountMoney1|centToYuan}}</span>
-            <label>&nbsp;&nbsp;&nbsp;&nbsp;应收金额：</label>
-            <span>{{businessData?.actualAmount|centToYuan}}</span>
+          <label>金额合计：</label>
+          <span>{{businessData?.moneyObj.amountReceivable1|centToYuan}}</span>
+          <label>&nbsp;&nbsp;&nbsp;&nbsp;优惠：</label>
+          <span>{{businessData?.moneyObj.discountMoney1|centToYuan}}</span>
+          <label>&nbsp;&nbsp;&nbsp;&nbsp;应收金额：</label>
+          <span>{{businessData?.actualAmount|centToYuan}}</span>
         </td>
       </tr>
     </tbody>
@@ -133,7 +136,7 @@
   </div>-->
   <!--</div>
   <div class="card-block card-border">-->
-  <h6>表二：工时明细</h6>
+  <h6>表一：工时明细</h6>
   <table class="table table-bordered">
     <!--<caption>附录二：工时明细</caption>-->
     <thead>
@@ -157,14 +160,17 @@
         <td class="text-right">{{item.amount|centToYuan}}</td>
         <td class="text-center">{{item.description}}</td>
       </tr>
+      <tr *ngIf="businessData?.workHours?.length <= 0">
+        <td colspan="7">系统未找到相关内容</td>
+      </tr>
       <tr>
         <td colspan="7">
-            <label>金额合计：</label>
-            <span>{{businessData?.moneyObj.amountReceivable2|centToYuan}}</span>
-            <label>&nbsp;&nbsp;&nbsp;&nbsp;优惠：</label>
-            <span>{{businessData?.moneyObj.discountMoney2|centToYuan}}</span>
-            <label>&nbsp;&nbsp;&nbsp;&nbsp;应收金额：</label>
-            <span>{{businessData?.moneyObj.countMoney2|centToYuan}}</span>
+          <label>金额合计：</label>
+          <span>{{businessData?.moneyObj.amountReceivable2|centToYuan}}</span>
+          <label>&nbsp;&nbsp;&nbsp;&nbsp;优惠：</label>
+          <span>{{businessData?.moneyObj.discountMoney2|centToYuan}}</span>
+          <label>&nbsp;&nbsp;&nbsp;&nbsp;应收金额：</label>
+          <span>{{businessData?.moneyObj.countMoney2|centToYuan}}</span>
         </td>
       </tr>
     </tbody>
@@ -185,7 +191,7 @@
   </div>-->
   <!--</div>
   <div class="card-block card-border">-->
-  <h6>表三：配件明细</h6>
+  <h6>表二：材料明细</h6>
   <table class="table table-bordered">
     <!--<caption>附录三：配件明细</caption>-->
     <thead>
@@ -209,10 +215,13 @@
         <td class="text-right">{{item.amount|centToYuan}}</td>
         <td class="text-center">{{item.description}}</td>
       </tr>
+      <tr *ngIf="businessData?.matereialDetails?.length <= 0">
+        <td colspan="6">系统未找到相关内容</td>
+      </tr>
       <tr>
         <td colspan="6">
-            <label>应收金额：</label>
-            <span>{{businessData?.moneyObj.amountReceivable3|centToYuan}}</span>
+          <label>应收金额：</label>
+          <span>{{businessData?.moneyObj.amountReceivable3|centToYuan}}</span>
         </td>
       </tr>
     </tbody>
@@ -227,8 +236,8 @@
   </div>-->
   <!--</div>
   <div *ngIf="businessData?.appendItems.length" class="card-block card-border">-->
-    <h6 *ngIf="businessData?.appendItems.length>0">表四：附加项目</h6>
-  <table *ngIf="businessData?.appendItems.length>0" class="table table-bordered text-center">
+  <h6 *ngIf="businessData?.appendItems&&businessData?.appendItems.length>0">表三：附加项目</h6>
+  <table *ngIf="businessData?.appendItems&&businessData?.appendItems.length>0" class="table table-bordered text-center">
     <!--<caption>附录四：附加项目</caption>-->
     <thead>
       <tr>
@@ -245,8 +254,8 @@
   </table>
   <!--</div>
   <div *ngIf="businessData?.adviceItems.length" class="card-block card-border">-->
-  <h6 *ngIf="businessData?.adviceItems.length>0">表五：建议维修项</h6>
-  <table *ngIf="businessData?.adviceItems.length>0" class="table table-bordered text-center">
+  <h6 *ngIf="businessData?.adviceItems&&businessData?.adviceItems.length>0">表四：建议维修项</h6>
+  <table *ngIf="businessData?.adviceItems&&businessData?.adviceItems.length>0" class="table table-bordered text-center">
     <!--<caption>附录五：建议维修项</caption>-->
     <thead>
       <tr>
@@ -269,8 +278,8 @@
     <div class="mr-3 pull-left">操作人：<span>{{businessData?.currentUserName}}</span></div>
     <div class="mr-5 pr-3 pull-left">客户签名：</div>
     <div class="pull-left">
-    日期：<span class="mr-5"></span>年 <span class="mr-4"></span>月
+      日期：<span class="mr-5"></span>年 <span class="mr-4"></span>月
       <span class="mr-4"></span>日
-      </div>
+    </div>
   </div>
 </div>

@@ -18,7 +18,7 @@ const routes: Routes = [
     NguiDatetimePickerModule,
     RouterModule.forChild(routes),
   ],
-  providers: [TotalValueService,treeviewEventParser],
+  providers: [TotalValueService, treeviewEventParser],
   declarations: [TotalValueComponent]
 })
 export class TotalValueModule { }
