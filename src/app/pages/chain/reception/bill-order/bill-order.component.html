@@ -126,17 +126,21 @@
       <div class="modal-body">
         <!--结算费用-->
         <form [formGroup]="billSheetForm" [hidden]="!isShowCost" *ngIf="lgModal.isShown">
-          <div class="form-inline">
+          <div class="form-inline bill-form">
             <div class="col-5" style="height:50px;">
               <div class="input-group m-1">
                 <span class="input-group-addon">应收金额(元)</span>
-                <input type="number" class="form-control" [errors]="{lte:'输入金额不能大于应收金额'}" [value]="billPricex|centToYuan" label="金额" formControlName="billPrice">
+                <div class="hq-col">
+                  <input type="number" class="form-control" [errors]="{lte:'输入金额不能大于应收金额'}" [value]="billPricex|centToYuan" label="金额" formControlName="billPrice">
+                </div>
               </div>
             </div>
             <div class="col-5" style="height:50px;">
               <div class="input-group m-1">
                 <span class="input-group-addon">出厂里程(KM)：</span>
-                <input type="number" class="form-control" label="出厂里程" [errors]="{gte:'出厂里程不能大于进厂里程'}" formControlName="leaveMileage">
+                <div class="hq-col">
+                  <input type="number" class="form-control" label="出厂里程" [errors]="{gte:'出厂里程不能小于进厂里程'}" formControlName="leaveMileage">
+                </div>
               </div>
             </div>
             <div class="col-2" style="height:50px;">
