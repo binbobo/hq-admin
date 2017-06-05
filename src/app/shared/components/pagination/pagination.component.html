@@ -9,8 +9,12 @@
     <option value="50">50</option>
     <option value="100">100</option>
   </select>
-  <pagination [totalItems]="totalItems" [maxSize]="maxSize" [boundaryLinks]="boundaryLinks" [itemsPerPage]="itemsPerPage" firstText="{{'first.text'|translate}}"
+  <!--<pagination [totalItems]="totalItems" [maxSize]="maxSize" [boundaryLinks]="boundaryLinks" [itemsPerPage]="itemsPerPage" firstText="{{'first.text'|translate}}"
     lastText="{{'last.text'|translate}}" previousText="{{'previous.text'|translate}}" nextText="{{'next.text'|translate}}"
+    [(ngModel)]="currentPage" (numPages)="onNumPages($event)" (pageChanged)="onPageChanged($event)">
+  </pagination>-->
+  <pagination [totalItems]="totalItems" [maxSize]="maxSize" [boundaryLinks]="boundaryLinks" [itemsPerPage]="itemsPerPage" firstText="首页"
+    lastText="尾页" previousText="上一页" nextText="下一页"
     [(ngModel)]="currentPage" (numPages)="onNumPages($event)" (pageChanged)="onPageChanged($event)">
   </pagination>
   <label class="mx-sm-2">跳转到</label>
