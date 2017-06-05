@@ -29,7 +29,7 @@ import { BillOrderService } from "app/pages/chain/reception/bill-order/bill-orde
     ModalModule.forRoot(),
     ReceptionRoutingModule,
     ChainSharedModule,
-    SharedModule,
+    SharedModule.forRoot(),
     Ng2SmartTableModule,
     ReactiveFormsModule,
     NguiDatetimePickerModule

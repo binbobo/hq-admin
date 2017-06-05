@@ -9,7 +9,7 @@ import { ChainSharedModule } from '../chain-shared/chain-shared.module';
 
 @NgModule({
   imports: [
-    SharedModule,
+    SharedModule.forRoot(),
     ChainSharedModule,
     NgPipesModule,
     MountingsRoutingModule,

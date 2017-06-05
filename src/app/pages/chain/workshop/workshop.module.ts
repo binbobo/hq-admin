@@ -13,7 +13,7 @@ import { ChainSharedModule } from '../chain-shared/chain-shared.module';
 @NgModule({
   imports: [
     WorkshopRoutingModule,
-    SharedModule,
+    SharedModule.forRoot(),
     ReactiveFormsModule,
     TabsModule.forRoot(),
     AlertModule.forRoot(),

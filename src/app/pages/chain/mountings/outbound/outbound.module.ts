@@ -35,7 +35,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    SharedModule,
+    SharedModule.forRoot(),
     ChainSharedModule,
     TabsModule.forRoot(),
     ModalModule.forRoot(),

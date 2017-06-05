@@ -21,13 +21,13 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    SharedModule,
+    TreeviewModule.forRoot(),
+    SharedModule.forRoot(),
     ChainSharedModule,
     FormsModule,
     ReactiveFormsModule,
     ModalModule,
     NgPipesModule,
-    TreeviewModule.forRoot(),
     TypeaheadModule.forRoot(),
     RouterModule.forChild(routes)
   ],

@@ -11,7 +11,6 @@ import { PaginationModule, PopoverModule, AlertModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
 import { TranslateStore } from "@ngx-translate/core/src/translate.store";
 import { NgPipesModule } from 'ngx-pipes';
-import { TreeviewModule } from "ngx-treeview";
 import { PhoneDirective } from './directives/validators/phone.directive';
 import { TelValidator } from './directives/validators/tel.directive';
 import { MobileValidator } from './directives/validators/mobile.directive';
@@ -20,6 +19,7 @@ import { VINValidator } from './directives/validators/vin.directive';
 import { EngineNoValidator } from './directives/validators/engineNo.directive';
 import { MileageValidator } from './directives/validators/mileage.directive';
 import { IDCardValidator } from './directives/validators/idCard.directive';
+import { HqBsModalDirective } from './directives/modal/hq-bs-modal.directive';
 
 
 const HQ_COMPONENTS = [
@@ -56,6 +56,7 @@ const HQ_DIRECTIVES = [
     directives.EngineNoValidator,
     directives.MileageValidator,
     directives.IDCardValidator,
+    directives.HqBsModalDirective,
 ]
 
 const HQ_PIPES = [
@@ -107,7 +108,7 @@ export const HQ_VALIDATORS = {
         HQ_PIPES,
         HQ_DIRECTIVES,
     ],
-    declarations: [HQ_COMPONENTS, HQ_PIPES, HQ_DIRECTIVE_COMPONENTS, HQ_DIRECTIVES],
+    declarations: [HQ_COMPONENTS, HQ_PIPES, HQ_DIRECTIVE_COMPONENTS, HQ_DIRECTIVES, HqBsModalDirective],
     entryComponents: [HQ_DIRECTIVE_COMPONENTS]
 })
 export class SharedModule {

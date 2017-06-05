@@ -12,7 +12,7 @@ export class TotalValueComponent extends DataList<TotalValue> implements OnInit 
 
   params: TotalValueSearchParams = new TotalValueSearchParams();
   private stations: Array<TreeviewItem>;
-  private selectedStations: Array<any>;
+  private selectedStations: Array<any> = [];
 
   constructor(
     injector: Injector,
@@ -25,7 +25,7 @@ export class TotalValueComponent extends DataList<TotalValue> implements OnInit 
     this.totalValueService.getStationTreeView()
       .then(data => this.stations = data)
       .catch(err => this.alerter.error(err));
-    console.log(this.params);
+    super.ngOnInit();
   }
 
   onStationSelect(event) {
@@ -47,6 +47,11 @@ export class TotalValueComponent extends DataList<TotalValue> implements OnInit 
       m.checked = this.selectedStations.findIndex(s => s.value === m.value) >= 0;
       this.resetStations(m.children);
     });
+  }
+
+  loadList() {
+    this.params.orgIds = this.selectedStations.map(m => m.value);
+    return super.loadList();
   }
 
 }

@@ -11,7 +11,7 @@ import { SharedModule } from 'app/shared/shared.module';
   imports: [
     HttpModule,
     FormsModule,
-    SharedModule,
+    SharedModule.forRoot(),
     ReactiveFormsModule,
     AuthRoutingModule,
     AlertModule.forRoot()
