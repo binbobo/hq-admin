@@ -35,7 +35,6 @@ export class BillOrderService implements BasicService<any>{
     return this.httpService
       .get<PagedResult<OrderListSearch>>(url)
       .then(result => {
-        console.log('工单列表数据', result);
         return result;
       })
       .catch(err => Promise.reject(`加载工单列表失败：${err}`));
