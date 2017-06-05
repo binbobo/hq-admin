@@ -34,10 +34,10 @@
     </form>
     <hr>
     <p>温馨提示：系统为您找到 <span style="font-size:16px;color:red;font-weight:bold;">{{total}}</span> 条记录</p>
-    <div class="table-responsive">
+    <div class="table-container">
       <table class="table table-bordered text-center">
         <tr>
-          <th width="100">操作</th>
+          <th>操作</th>
           <th>领用单号</th>
           <th>领用人</th>
           <th>部门</th>
@@ -46,7 +46,7 @@
           <th>操作人</th>
         </tr>
         <tr *ngFor="let item of list">
-          <td width="100"><button [hqSpinner]="item.hqSpinner" class="btn btn-info btn-sm" (click)="alert(item,item.id,vehicleModal,item.billCode,item.takeUserName,item.takeDepartmentName,item.createBillTime,item.operator)">详情</button></td>
+          <td><button [hqSpinner]="item.hqSpinner" class="btn btn-info btn-sm" (click)="alert(item,item.id,vehicleModal,item.billCode,item.takeUserName,item.takeDepartmentName,item.createBillTime,item.operator)">详情</button></td>
           <td>{{item.billCode}}</td>
           <td>{{item.takeUserName }}</td>
           <td>{{item.takeDepartmentName }}</td>
@@ -96,7 +96,7 @@
       <div class="card-block">
         <div class="row">
           <div class="table-responsive">
-            <table class="table table-sm table-bordered">
+            <table class="table table-bordered"  style="white-space: nowrap">
               <tr class="active">
                 <th>配件编码</th>
                 <th>配件分类</th>
@@ -121,7 +121,7 @@
                 <td>{{item.storeName }}</td>
                 <td>{{item.locationName }}</td>
                 <td>{{item.existCount }}</td>
-                <td>{{item.price }}</td>
+                <td>{{item.price |centToYuan}}</td>
                 <td>{{item.count }}</td>
                 <td>{{item.amount |centToYuan }}</td>
               </tr>

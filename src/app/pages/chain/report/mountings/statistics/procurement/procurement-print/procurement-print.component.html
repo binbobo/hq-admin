@@ -20,8 +20,8 @@
     <span>{{detail?.createName}}</span>
   </div>-->
 </div>
-<table class="table table-order-info table-bordered" *ngFor="let item of detailItems">
-  <tr>
+<table class="table table-bordered" *ngFor="let item of detailItems">
+  <tr class="text-center">
     <th>仓库</th>
     <th>库位</th>
     <th>配件编码</th>
@@ -31,26 +31,26 @@
     <th>规格型号</th>
     <th>单位</th>
     <th>数量</th>
-    <th>含税单价<br>（元）</th>
-    <th>含税金额<br>（元）</th>
-    <th>不含税单价<br>（元）</th>
-    <th>不含税金额<br>（元）</th>
+    <th>含税单价（元）</th>
+    <th>含税金额（元）</th>
+    <th>不含税单价（元）</th>
+    <th>不含税金额（元）</th>
   </tr>
   <tbody>
     <tr>
       <td>{{item.storeName}}</td>
       <td>{{item.locationName}}</td>
-      <td>{{item.productCode}}</td>
+      <td class="text-center">{{item.productCode}}</td>
       <td>{{item.categoryList[0] }}</td>
       <td>{{item.productName}}</td>
       <td>{{item.brand}}</td>
       <td>{{item.specification}}</td>
-      <td>{{item.unit}}</td>
-      <td>{{item.count }}</td>
-      <td>{{item.price|centToYuan}}</td>
-      <td>{{item.amount|centToYuan}}</td>
-      <td>{{item.exTaxPrice |centToYuan}}</td>
-      <td>{{item.exTaxAmount |centToYuan}}</td>
+      <td class="text-center">{{item.unit}}</td>
+      <td class="text-center">{{item.count }}</td>
+      <td class="text-right">{{item.price|centToYuan}}</td>
+      <td class="text-right">{{item.amount|centToYuan}}</td>
+      <td class="text-right">{{item.exTaxPrice |centToYuan}}</td>
+      <td class="text-right">{{item.exTaxAmount |centToYuan}}</td>
     </tr>
   </tbody>
 </table>

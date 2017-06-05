@@ -30,10 +30,10 @@
     </form>
     <hr>
     <p>温馨提示：系统为您找到 <span style="font-size:16px;color:red;font-weight:bold;">{{total}}</span> 条记录</p>
-    <div class="table-responsive">
-      <table class="table table-bordered text-center">
-        <tr>
-          <th width="100">操作</th>
+    <div class="table-container">
+      <table class="table table-bordered">
+        <tr class="text-center">
+          <th>操作</th>
           <th>供应商名称</th>
           <th>入库单号</th>
           <th>含税金额（元）</th>
@@ -42,12 +42,12 @@
           <th>操作人</th>
         </tr>
         <tr *ngFor="let item of list">
-          <td width="100"><button [hqSpinner]="item.hqSpinner" class="btn btn-info btn-sm" (click)="alert(item,item.id,vehicleModal)">详情</button></td>
+          <td class="text-center"><button [hqSpinner]="item.hqSpinner" class="btn btn-info btn-sm" (click)="alert(item,item.id,vehicleModal)">详情</button></td>
           <td>{{item.outUnitName}}</td>
-          <td>{{item.billCode}}</td>
-          <td>{{item.amount|centToYuan}}</td>
-          <td>{{item.exTaxAmount|centToYuan}}</td>
-          <td>{{item.createBillTime|sDatetime}}</td>
+          <td class="text-center">{{item.billCode}}</td>
+          <td class="text-right">{{item.amount|centToYuan}}</td>
+          <td class="text-right">{{item.exTaxAmount|centToYuan}}</td>
+          <td class="text-center">{{item.createBillTime|sDatetime}}</td>
           <td>{{item.operator}}</td>
         </tr>
       </table>
@@ -88,9 +88,9 @@
         </div>
       </div>
       <div class="card-block" *ngIf="detailItems">
-        <div class="table-responsive text-center">
-          <table class="table table-sm table-order-info table-bordered" *ngFor="let item of detailItems">
-            <tr>
+        <div class="table-responsive">
+          <table class="table table-bordered" *ngFor="let item of detailItems" style="white-space: nowrap">
+            <tr class="text-center">
               <th class="clo-4">仓库</th>
               <th>库位</th>
               <th>配件编码</th>
@@ -100,26 +100,26 @@
               <th>规格型号</th>
               <th>单位</th>
               <th>数量</th>
-              <th>含税单价<br>（元）</th>
-              <th>含税金额<br>（元）</th>
-              <th>不含税单价<br>（元）</th>
-              <th>不含税金额<br>（元）</th>
+              <th>含税单价（元）</th>
+              <th>含税金额（元）</th>
+              <th>不含税单价（元）</th>
+              <th>不含税金额（元）</th>
             </tr>
             <tbody>
               <tr>
                 <td>{{item.storeName}}</td>
-                <td>{{item.locationName}}</td>
+                <td class="text-center">{{item.locationName}}</td>
                 <td>{{item.productCode}}</td>
                 <td>{{item.categoryList[0] }}</td>
                 <td>{{item.productName}}</td>
                 <td>{{item.brand}}</td>
-                <td>{{item.specification}}</td>
+                <td class="text-center">{{item.specification}}</td>
                 <td>{{item.unit}}</td>
                 <td>{{item.count }}</td>
-                <td>{{item.price|centToYuan}}</td>
-                <td>{{item.amount|centToYuan}}</td>
-                <td>{{item.exTaxPrice |centToYuan}}</td>
-                <td>{{item.exTaxAmount |centToYuan}}</td>
+                <td class="text-right">{{item.price|centToYuan}}</td>
+                <td class="text-right">{{item.amount|centToYuan}}</td>
+                <td class="text-right">{{item.exTaxPrice |centToYuan}}</td>
+                <td class="text-right">{{item.exTaxAmount |centToYuan}}</td>
               </tr>
             </tbody>
           </table>
