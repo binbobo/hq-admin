@@ -12,7 +12,7 @@ import { SharedModule } from "app/shared/shared.module";
 
 @NgModule({
   imports: [
-    SharedModule,
+    SharedModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
     PropertyRoutingModule,

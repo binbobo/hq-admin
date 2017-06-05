@@ -362,7 +362,7 @@
       <button [hqSpinner]="suspendBill.suspending" type="button" class="btn btn-primary btn-suspend" (click)="suspendOrder()">挂单</button>
     </div>
   </div>
-  <div bsModal #addModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div hqBsModal #addModal="hq-bs-modal" class="modal fade" tabindex="-1" role="dialog">
     <div *ngIf="addModal.isShown" class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">

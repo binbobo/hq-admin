@@ -23,9 +23,9 @@ const routes: Routes = [
 @NgModule({
   imports: [
     NgPipesModule,
-    SharedModule,
-    FormsModule,
     TreeviewModule.forRoot(),
+    SharedModule.forRoot(),
+    FormsModule,
     ReactiveFormsModule,
     ModalModule.forRoot(),
     RouterModule.forChild(routes),

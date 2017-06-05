@@ -34,10 +34,10 @@ import { PurchaseInBillDirective } from './procurement/purchase-in-bill.directiv
 
 @NgModule({
   imports: [
-    SharedModule,
+    TreeviewModule.forRoot(),
+    SharedModule.forRoot(),
     ChainSharedModule,
     InboundRoutingModule,
-    TreeviewModule.forRoot(),
     CollapseModule.forRoot(),
     TabsModule.forRoot(),
     PopoverModule.forRoot(),

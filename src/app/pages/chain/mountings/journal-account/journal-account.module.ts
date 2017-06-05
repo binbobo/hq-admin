@@ -14,7 +14,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    SharedModule,
+    SharedModule.forRoot(),
     ChainSharedModule,
     RouterModule.forChild(routes),
     NguiDatetimePickerModule,
