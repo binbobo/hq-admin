@@ -32,7 +32,7 @@
     </div>
     <hr>
     <p>温馨提示：系统为您找到<span style="font-size:16px;color:red;font-weight:bold;">{{total}}</span>条记录</p>
-    <div class="table-responsive">
+    <div class="table-container">
       <table class="table table-bordered text-center">
         <tr>
           <th>操作</th>
@@ -93,15 +93,15 @@
       <div class="card-block">
         <div class="row" style="overflow-x:auto;">
           <div class="table-responsive">
-            <table class="table table-bordered">
+            <table class="table table-bordered"  style="white-space: nowrap">
               <tr class="active">
                 <th>配件编码</th>
                 <th>配件分类</th>
                 <th>配件名称</th>
-                <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;品牌&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th>品牌</th>
                 <th>规格型号</th>
                 <th>单位</th>
-                <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;仓库&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th>仓库</th>
                 <th>库位</th>
                 <th>单价（元）</th>
                 <th>数量</th>
@@ -116,7 +116,7 @@
                 <td>{{item.unit }}</td>
                 <td>{{item.storeName }}</td>
                 <td>{{item.locationName }}</td>
-                <td>{{item.price }}</td>
+                <td>{{item.price |centToYuan}}</td>
                 <td>{{item.count }}</td>
                 <td>{{item.amount |centToYuan}}</td>
               </tr>
