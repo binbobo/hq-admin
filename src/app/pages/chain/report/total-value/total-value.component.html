@@ -18,7 +18,7 @@
       </div>
       <div class="input-group m-1"><button class="btn btn-primary">查询</button></div>
     </form>
-    <div id="selectedStations" class="input-group" [hidden]="!selectedStations?.length">
+    <div id="selectedStations" class="input-group mb-2" [hidden]="!selectedStations?.length">
       <span class="input-group-addon">已选店铺</span>
       <div class="form-control p-0">
         <div *ngFor="let item of selectedStations" class="selected mx-1 p-1">
@@ -58,7 +58,7 @@
         </tfoot>
       </table>
     </div>
-    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" [(itemsPerPage)]="size" (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
   <div class="d-none card-footer text-center">
     <button class="btn btn-primary" (click)="export()">导出</button>

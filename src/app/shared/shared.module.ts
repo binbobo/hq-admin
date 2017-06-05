@@ -10,7 +10,6 @@ import { FormsModule, NgModel } from '@angular/forms';
 import { PaginationModule, PopoverModule, AlertModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
 import { NgPipesModule } from 'ngx-pipes';
-import { PhoneDirective } from './directives/validators/phone.directive';
 import { TelValidator } from './directives/validators/tel.directive';
 import { MobileValidator } from './directives/validators/mobile.directive';
 import { PlateNoValidator } from './directives/validators/plateNo.directive';

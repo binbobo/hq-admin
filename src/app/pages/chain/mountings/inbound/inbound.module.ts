@@ -31,7 +31,6 @@ import { ProviderService } from '../provider/provider.service';
 import { MaintainPrintComponent } from './maintain-return/maintain-print/maintain-print.component';
 import { PurchaseInBillDirective } from './procurement/purchase-in-bill.directive';
 
-
 @NgModule({
   imports: [
     TreeviewModule.forRoot(),
@@ -52,7 +51,6 @@ import { PurchaseInBillDirective } from './procurement/purchase-in-bill.directiv
   ],
   declarations: [routedComponents, ReturnListComponent, ReturnCreateComponent, ReturnPrintComponent, SalesReturnListComponent, SalesReturnCreateComponent, SalesReturnPrintComponent, ProcurementListComponent, ProcurementCreateComponent, ProcurementPrintComponent, MaintainCreateComponent, MaintainPrintComponent, PurchaseInBillDirective],
   providers: [MaintainReturnService, ProcurementService, ProviderService, InnerReturnService, SalesReturnService],
-
   entryComponents: [routedComponents[0]],
 })
 export class InboundModule { }
