@@ -14,7 +14,7 @@
     </label>
   </div>
   <div class="text-right mt-1">
-    <span [hidden]="options?.length">当前没有可用的选项！</span>
+    <span [hidden]="options?.length">{{emptyInfo||'当前没有可用的选项！'}}</span>
     <button [hidden]="!options||!options.length" class="btn btn-primary btn-sm" (click)="submit()">确定</button>
     <button class="btn btn-secondary btn-sm" (click)="cancel()">取消</button>
   </div>

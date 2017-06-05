@@ -6,13 +6,13 @@
   <div class="card-block">
     <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
       <div class="input-group my-1 mr-1">
-        <span class="input-group-addon">查询日期</span>
+        <span class="input-group-addon">日期</span>
         <input class="form-control" [(ngModel)]="params.startTimeDate" name="startTimeDate" date-only="true" ngui-datetime-picker/>
         <span class="input-group-addon">-</span>
         <input class="form-control" [(ngModel)]="params.endTimeDate" name="endTimeDate" date-only="true" ngui-datetime-picker/>
       </div>
       <div class="input-group m-1" *ngIf="stations">
-        <span class="input-group-addon">门店查询</span>
+        <span class="input-group-addon">门店</span>
         <ngx-dropdown-treeview [items]="stations" (selectedChange)="onStationSelect($event)">
         </ngx-dropdown-treeview>
       </div>
@@ -25,15 +25,6 @@
           <span>{{item.text}}</span>
           <i class="cursor-pointer fa fa-times" (click)="onStationRemove(item)"></i>
         </div>
-      </div>
-    </div>
-    <div class="input-group" id="total-statistics">
-      <span class="input-group-addon">统计</span>
-      <div class="form-control mr-0">
-        <div><label>进厂台次：</label>{{result?.vehicleCount}}</div>
-        <div><label>平均单产：</label>{{result?.averageProduction|number:'1.2-2'}}</div>
-        <div><label>产值合计：</label>{{result?.totalValue|number:'1.2-2'}}</div>
-        <div *ngFor="let item of result?.totalProductions"><label>{{item.nameColumn}}：</label>{{item.amount|number:'1.2-2'}}</div>
       </div>
     </div>
     <div class="table-container">
@@ -57,6 +48,14 @@
             <td class="text-right" *ngFor="let item of item.productions">{{item.amount|number:'1.2-2'}}</td>
           </tr>
         </tbody>
+        <tfoot>
+          <tr>
+            <td class="text-center">总计</td>
+            <td class="text-center">{{result?.vehicleCount}}</td>
+            <td class="text-right">{{result?.averageProduction|number:'1.2-2'}}</td>
+            <td *ngFor="let item of result?.totalProductions" class="text-right">{{item?.amount|number:'1.2-2'}}</td>
+          </tr>
+        </tfoot>
       </table>
     </div>
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>

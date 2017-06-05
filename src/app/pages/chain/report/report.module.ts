@@ -5,7 +5,7 @@ import { ReportRoutingModule } from "./report.routing";
 @NgModule({
   imports: [
     SharedModule.forRoot(),
-    ReportRoutingModule
+    ReportRoutingModule,
   ],
   declarations: []
 })

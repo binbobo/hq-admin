@@ -51,6 +51,9 @@ export class MultiSelectorDirective implements OnChanges {
   @Input()
   public get isOpen(): boolean { return this._selector.isShown; }
 
+  @Input()
+  public emptyInfo: string;
+
   public set isOpen(value: boolean) {
     if (value) { this.show(); } else { this.hide(); }
   }
@@ -110,7 +113,8 @@ export class MultiSelectorDirective implements OnChanges {
         options: this.options,
         onChange: this.onChange,
         onConfirm: this.onSubmit,
-        onCancel: this.onCancel
+        onCancel: this.onCancel,
+        emptyInfo: this.emptyInfo,
       });
     this.isOpen = true;
   }

@@ -6,6 +6,7 @@ import { TotalValueService } from './total-value.service';
 import { Routes, RouterModule } from '@angular/router';
 import { TreeviewModule } from 'ngx-treeview';
 import { treeviewEventParser } from "app/shared/services";
+import { NgPipesModule } from 'ngx-pipes';
 
 const routes: Routes = [
   { path: '', component: TotalValueComponent }
@@ -17,6 +18,7 @@ const routes: Routes = [
     SharedModule.forRoot(),
     NguiDatetimePickerModule,
     RouterModule.forChild(routes),
+    NgPipesModule
   ],
   providers: [TotalValueService, treeviewEventParser],
   declarations: [TotalValueComponent]
