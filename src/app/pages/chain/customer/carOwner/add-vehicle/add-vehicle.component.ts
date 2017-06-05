@@ -107,7 +107,7 @@ export class AddVehicleComponent implements OnInit {
       seriesId: '',
       vehicleId: '',
       engineNo: ['', [HQ_VALIDATORS.engineNo]],
-      vin: ['', [Validators.required, HQ_VALIDATORS.vin]],
+      vin: ['', [HQ_VALIDATORS.vin]],
       vehicleColor: '',
       purchaseDate: [null, [CustomValidators.date]],
       validate: [null, [CustomValidators.date]],

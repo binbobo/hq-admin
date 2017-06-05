@@ -2,20 +2,22 @@
   <div class="form-group row">
     <div class="hq-input">
       <label for="phone" class="form-label"><span class="asterisk mr-1">*</span>手机号</label>
-      <div class="hq-col">
-        <input *ngIf="" label="手机号" [hqCustomerTypeahead]="'phone'" (onSelect)="onCustomerPhoneSelect($event)" type="text" maxlength="11"
+      <div class="hq-col" *ngIf="!customerId">
+        <input label="手机号" #phone (input)="onCustomerPhoneInput(phone.value)" [hqCustomerTypeahead]="'phone'" (onSelect)="onCustomerPhoneSelect($event)" type="text" maxlength="11"
           class="form-control" formControlName="phone">
-        <input *ngIf="" maxlength="11" label="手机号" type="text" class="form-control" formControlName="phone">
+      </div>
+      <div class="hq-col" *ngIf="customerId">
+        <input maxlength="11" label="手机号" type="text" class="form-control" formControlName="phone">
       </div>
     </div>
     <div class="hq-input">
       <label for="sex" class="form-label">性别</label>
       <div class="hq-col">
         <select id="sex" formControlName="sex" class="form-control">
-                <option value="true" [selected]="true">男</option>
-                <option value="false">女</option>
-                <option value="">保密</option>
-              </select>
+          <option value="true" [selected]="true">男</option>
+          <option value="false">女</option>
+          <option value="">保密</option>
+        </select>
       </div>
     </div>
     <div class="hq-input">
@@ -34,10 +36,14 @@
   <div class="form-group row">
     <div class="hq-input">
       <label for="name" class="form-label"><span class="asterisk mr-1">*</span>车主</label>
-      <div class="hq-col">
+      <div class="hq-col" *ngIf="!customerId">
         <!--新增的时候模糊搜索-->
-        <input maxlength="15" type="text" [hqCustomerTypeahead]="'name'" (onSelect)="onCustomerNameSelect($event)" label="车主" class="form-control"
+        <input #name (input)="onCustomerNameInput(name.value)" maxlength="15" type="text" [hqCustomerTypeahead]="'name'" (onSelect)="onCustomerNameSelect($event)" label="车主" class="form-control"
           formControlName="name">
+        <!--客户id 用于更新-->
+        <input type="hidden" formControlName="id">
+      </div>
+      <div class="hq-col" *ngIf="customerId">
         <input maxlength="15" type="text" required label="车主" class="form-control" formControlName="name">
         <!--客户id 用于更新-->
         <input type="hidden" formControlName="id">
@@ -67,9 +73,9 @@
       <label for="province" class="form-label">省份</label>
       <div class="hq-col">
         <select #province (change)="onProvinceChange(province.value)" formControlName="province" id="province" class="form-control">
-                <option style="display:none">
-                <option *ngFor="let province of provincesData" value="{{province.id}},{{province.name}}">{{province.name}}</option>
-              </select>
+          <option style="display:none">
+          <option *ngFor="let province of provincesData" value="{{province.id}},{{province.name}}">{{province.name}}</option>
+        </select>
       </div>
     </div>
     <div class="hq-input">
@@ -77,18 +83,18 @@
       <label [hidden]="!isProvinceLevelMunicipality" for="city" class="form-label">区县</label>
       <div class="hq-col">
         <select #city (change)="onCityChange(city.value)" formControlName="city" id="city" class="form-control">
-                <option style="display:none">
-                <option *ngFor="let city of citiesData" value="{{city.id}},{{city.name}}">{{city.name}}</option>
-              </select>
+          <option style="display:none">
+          <option *ngFor="let city of citiesData" value="{{city.id}},{{city.name}}">{{city.name}}</option>
+        </select>
       </div>
     </div>
     <div class="hq-input">
       <label [hidden]="isProvinceLevelMunicipality" for="area" class="form-label">区县</label>
       <div [hidden]="isProvinceLevelMunicipality" class="hq-col">
         <select id="area" #area (change)="onAreaChange(area.value)" formControlName="area" class="form-control">
-                <option style="display:none">
-                <option *ngFor="let area of areasData" value="{{area.id}},{{area.name}}">{{area.name}}</option>
-              </select>
+          <option style="display:none">
+          <option *ngFor="let area of areasData" value="{{area.id}},{{area.name}}">{{area.name}}</option>
+        </select>
       </div>
     </div>
   </div>

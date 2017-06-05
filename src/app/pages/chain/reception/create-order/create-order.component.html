@@ -42,12 +42,6 @@
       </div>
       <div class="form-group row">
         <div class="hq-input">
-          <label for="vin" class="form-label"><span class="asterisk mr-1">*</span>VIN</label>
-          <div class="hq-col">
-            <input maxlength="17" label="车辆识别码" type="text" class="form-control" formControlName="vin" id="vin">
-          </div>
-        </div>
-        <div class="hq-input">
           <label for="brand" class="form-label"><span class="asterisk mr-1">*</span>品牌</label>
           <div class="hq-col">
             <input label="品牌" forceRefresh="true" hqBrandTypeahead (onSelect)="onBrandSelect($event)" type="text" class="form-control"
@@ -69,6 +63,12 @@
             <input (blur)="onVehicleBlur()" forceRefresh="true" hqModelTypeahead [brandId]="workSheetForm.value.brandId" [seriesId]="workSheetForm.value.seriesId"
               (onSelect)="onModelSelect($event)" type="text" class="form-control" formControlName="vehicleName" id="vehicleName">
             <input type="hidden" formControlName="vehicleId" />
+          </div>
+        </div>
+        <div class="hq-input">
+          <label for="vin" class="form-label">VIN</label>
+          <div class="hq-col">
+            <input maxlength="17" label="车辆识别码" type="text" class="form-control" formControlName="vin" id="vin">
           </div>
         </div>
       </div>

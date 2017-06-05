@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HQ_VALIDATORS } from 'app/shared/shared.module';
 import { CustomValidators } from 'ng2-validation';
@@ -11,27 +11,23 @@ import * as moment from 'moment';
   styleUrls: ['./customer-add-form.component.css']
 })
 export class CustomerAddFormComponent implements OnInit {
-  // 是否为直辖市标志
-  isProvinceLevelMunicipality = false;
-
-  // 添加车主
-  // 1.省市县
-  cityIdList = []; // 保存省份,城市, 区县id
-  cityNameList = []; // 保存省份,城市, 区县Name
-
   // 保存省份数据
-  provincesData: any[];
+  protected provincesData: any[];
   // 保存城市数据
-  citiesData: any[];
+  protected citiesData: any[];
   // 保存区县数据
-  areasData: any[];
+  protected areasData: any[];
+
+  carOwnerForm: FormGroup; // 添加车主表单
+  isProvinceLevelMunicipality = false;// 是否为直辖市标志
+  cityIdList = []; // 省份,城市, 区县id列表
+  cityNameList = []; // 省份,城市, 区县Name列表
 
 
-  // 添加车主表单
-  carOwnerForm: FormGroup;
-
-  @Output() formValueChanges = new EventEmitter<any>();
-
+  @Output() formValueChanges = new EventEmitter<any>(); // 表单值改变
+  @Output() load = new EventEmitter<any>(); // 加载客户信息
+  @Input()
+  customerId: string; // 客户信息  用于编辑
 
   constructor(
     private fb: FormBuilder,
@@ -44,9 +40,13 @@ export class CustomerAddFormComponent implements OnInit {
       .subscribe(data => this.provincesData = data);
 
     this.createForm();
+    // 用于编辑车主
+    if (this.customerId) {
+      this.getCustomerById(this.customerId);
+    }
   }
 
-  createForm() {
+  private createForm() {
     // 添加车主表单
     this.carOwnerForm = this.fb.group({
       id: '', // 车主主键 用于更新(模糊查询选择车主)
@@ -117,11 +117,40 @@ export class CustomerAddFormComponent implements OnInit {
   * @memberof CarOwnerComponent
   */
   onCustomerPhoneSelect(evt) {
-    this.service.get(evt.id).then(customer => {
+    this.getCustomerById(evt.id);
+  }
+  /**
+  * 选择车主电话
+  * @memberof CarOwnerComponent
+  */
+  onCustomerPhoneInput(evt) {
+    this.initData();
+    this.carOwnerForm.controls.phone.setValue(evt);
+  }
+
+  private initData() {
+    this.carOwnerForm.reset();
+    this.load.emit({
+      vehicles: [], // 初始化车主下面的车辆数据
+      isFormValid: false
+    });
+  }
+
+  /**
+  * 选择车主电话
+  * @memberof CarOwnerComponent
+  */
+  onCustomerNameInput(evt) {
+    this.initData();
+    this.carOwnerForm.controls.name.setValue(evt);
+  }
+
+  private getCustomerById(id) {
+    this.service.get(id).then(customer => {
       // 加载车主数据
       this.loadCustomer(customer);
     }).catch(err => {
-      // this.alerter.error('获取车主信息失败：' + err, true, 3000);
+      // console.log('获取车主信息失败：' + err);
     });
   }
 
@@ -137,7 +166,7 @@ export class CustomerAddFormComponent implements OnInit {
   }
 
   // 从模糊 查询列表中 选择一条车主记录后 加载客户信息 
-  loadCustomer(customer) {
+  private loadCustomer(customer) {
     // 组织省份数据
     let provinceId = '', provinceName = '';
     let cityId = '', cityName = '';
@@ -182,9 +211,9 @@ export class CustomerAddFormComponent implements OnInit {
     // 初始化车主表单数据
     this.carOwnerForm.patchValue(customer);
 
-    this.formValueChanges.emit({
+    this.load.emit({
       vehicles: customer.customerVehicles || [], // 初始化车主下面的车辆数据
-      formValid: this.carOwnerForm.valid
+      isFormValid: this.carOwnerForm.valid
     });
   }
 }
