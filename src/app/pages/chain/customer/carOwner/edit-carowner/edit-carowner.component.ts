@@ -79,7 +79,7 @@ export class EditCarownerComponent implements OnInit {
       // 新增
       this.newVehiclesData.push(data);
     }
-    this.enableSaveCustomer = this.carOwnerForm.valid && this.newVehiclesData.length > 0;
+    this.enableSaveCustomer = this.carOwnerForm.valid && this.newVehiclesData.length >= 0;
     vehicleModal.hide();
   }
 
@@ -92,7 +92,7 @@ export class EditCarownerComponent implements OnInit {
         return;
       }
     });
-    this.enableSaveCustomer = this.carOwnerForm.valid && this.newVehiclesData.length > 0;
+    this.enableSaveCustomer = this.carOwnerForm.valid && this.newVehiclesData.length >= 0;
   }
 
   // 添加车主
@@ -213,7 +213,7 @@ export class EditCarownerComponent implements OnInit {
     // 表单域中的值改变事件监听
     this.carOwnerForm.valueChanges.subscribe(data => {
       // 只有表单域合法 保存车主按钮才可用
-      this.enableSaveCustomer = this.carOwnerForm.valid && this.newVehiclesData.length > 0;;
+      this.enableSaveCustomer = this.carOwnerForm.valid && this.newVehiclesData.length >= 0;
     });
   }
 
