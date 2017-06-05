@@ -27,9 +27,6 @@ hr {
   border-bottom-left-radius: 0 !important;
   border-top-left-radius: 0 !important;
 }
-input[disabled] {
-  background: #f7f8f8;
-}
 .card-block {
   padding-top: 0.625rem;
 }

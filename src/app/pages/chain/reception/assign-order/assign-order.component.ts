@@ -39,7 +39,6 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         // 初始化维修指派类型数据
         this.service.getMaintenanceAssignTypes()
             .subscribe(data => {
-                console.log('维修派工状态类型数据：', data);
                 this.maintenanceAssignTypes = [{
                     id: 'all',
                     value: '全部'
@@ -91,7 +90,6 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         this.params.setPage(1);
         this.loadList().then((result: any) => {
             if (!result || !result.tabList) { return; }
-            console.log('维修派工列表统计数据：', result.tabList);
             this.statistics = {};
             // 统计各种状态下面的工单数量
             result.tabList.forEach(item => {
@@ -110,50 +108,17 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
     * 根据条件查询工单数据
     * @memberOf OrderListComponent
     */
-    onSearch() {
-        // 组织工单状态数据
-        let checkedStatus = this.maintenanceAssignTypes.filter(item => item.checked);
-        // 没选的话   查询所有
-        if (checkedStatus.length === 0) {
-            checkedStatus = this.maintenanceAssignTypes;
-        }
-        this.params.status = checkedStatus.filter(item => item.id !== 'all').map(item => item.id);
-
-        console.log('当前选择的工单状态为：', JSON.stringify(this.params.status));
-
+    onSearch(evt?: any) {
+        this.params.status = evt.chechedStatusIds;
+        this.params.keyword = evt.keyword;
         // 执行查询
         this.load();
     }
-
-    /**
-     * 状态改变事件处理程序
-     * @param type
-     */
-    onStatusChange(type) {
-        type.checked = !type.checked;
-
-        if (type.id === 'all') {
-            this.maintenanceAssignTypes.map(item => item.checked = type.checked);
-        } else {
-            if (!type.checked) {
-                this.maintenanceAssignTypes[0].checked = false;
-            } else {
-                const len = this.maintenanceAssignTypes.filter(item => item !== type && item.id !== 'all' && item.checked).length;
-                if (len === this.maintenanceAssignTypes.length - 2) {
-                    this.maintenanceAssignTypes[0].checked = true;
-                }
-            }
-        }
-        // 获取数据
-        this.onSearch();
-    }
-
-    /**
+      /**
      * 维修派工全选/反选事件处理程序
      * @param evt 
      */
-    assignToggleCheckboxAll(cb) {
-        console.log('维修派工切换全选复选框', cb.checked);
+    toggleCheckboxAll(cb) {
         // 更新全选复选框状态
         this.selectedOrder.serviceOutputs.checkedAll = cb.checked;
         // 更新维修工项复选框状态
@@ -171,14 +136,14 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             });
         }
         // 指派  转派按钮是否可用
-        this.selectedOrder.serviceOutputs.enableAssignment = this.selectedOrder.serviceOutputs.filter(item => item.checked).length > 0;
+        this.selectedOrder.serviceOutputs.enableBtn = this.selectedOrder.serviceOutputs.filter(item => item.checked).length > 0;
     }
 
     /**
      * 复选框切换事件
      * @param record 
      */
-    assignToggleCheckbox(record) {
+    toggleCheckbox(record) {
         if (record.teamType === 4 || record.teamType === 5) {
             // 已转派或者已完工的不可以再操作
             return false;
@@ -195,7 +160,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
 
         this.selectedOrder.serviceOutputs.checkedAll = (checked + disabled) === tmp.length;
         // 指派  转派按钮是否可用
-        this.selectedOrder.serviceOutputs.enableAssignment = this.selectedOrder.serviceOutputs.filter(item => item.checked).length > 0;
+        this.selectedOrder.serviceOutputs.enableBtn = this.selectedOrder.serviceOutputs.filter(item => item.checked).length > 0;
     }
 
     /**
@@ -210,12 +175,10 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
 
         // 根据id获取工单详细信息
         this.service.get(item.id).then(data => {
-            // console.log('根据工单id获取工单详情数据：', data);
-
             // 记录当前操作的工单记录
             this.selectedOrder = data;
             // 指派按钮是否可用标志
-            this.selectedOrder.serviceOutputs.enableAssignment = false;
+            this.selectedOrder.serviceOutputs.enableBtn = false;
             // 全选复选框是否选中标志
             this.selectedOrder.serviceOutputs.checkedAll = false;
 
@@ -293,7 +256,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             if (started.length > 0) {
                 started = started.map(item => item.serviceName);
                 // 给出提示
-                this.alerter.warn(started.join(',') + ' 已开工, 不可以再指派， 只能转派');
+                this.alerter.error(started.join(',') + ' 已开工, 不可以再指派， 只能转派', true, 3000);
             }
         } else if (type === 2) {
             msg = '转派';
@@ -306,12 +269,11 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
                     maintenanceItems.splice(index, 1);
                 }
             });
-            console.log('未指派的工项', JSON.stringify(notAssigned));
             // 判断是否有未指派的工项  如果有给出提示
             if (notAssigned.length > 0) {
                 notAssigned = notAssigned.map(item => item.serviceName);
                 // 给出提示
-                this.alerter.warn(notAssigned.join(',') + ' 未指派, 不可以转派， 请先指派');
+                this.alerter.error(notAssigned.join(',') + ' 未指派, 不可以转派,  请先指派', true, 3000);
             }
         }
         // 获取过滤之后的工项id列表
@@ -325,7 +287,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         const employeeIds = this.selectedTechnicians;
         // 判断选中的维修技师id列表是否为空
         if (employeeIds.length === 0) {
-            this.alerter.warn('请先选择维修技师！', true);
+            this.alerter.error('您还未选择维修技师,请先选择维修技师！', true, 3000);
             this.generatingReset(type);
             return;
         }
@@ -337,9 +299,6 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             maintenanceItemIds: maintenanceItemIds
         }).then(data => {
             this.generatingReset(type);
-            // 更新页面
-            // console.log('执行指派/转派操作之后返回的数据为：', data);
-
             // forEach不可修改list数据, 只能遍历
             data.forEach(ele => {
                 const index = this.selectedOrder.serviceOutputs.findIndex(m => m.id === ele.id);
@@ -350,12 +309,12 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
 
             this.alerter.success('执行' + msg + '操作成功！');
             // 设置派工按钮不可用
-            this.selectedOrder.serviceOutputs.enableAssignment = false;
+            this.selectedOrder.serviceOutputs.enableBtn = false;
 
             // 刷新页面
             this.load();
         }).catch(err => {
-            this.alerter.error('执行' + msg + '操作失败：' + err, true, 3000);
+            this.alerter.error(err, true, 30000);
             this.generatingReset(type);
         });
     }

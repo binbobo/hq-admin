@@ -110,12 +110,11 @@ export class AddCarownerComponent implements OnInit {
     // 获取车辆信息
     carOwnerBody.customerVehicles = this.newVehiclesData;
 
-    console.log('提交的车主对象为：', JSON.stringify(carOwnerBody));
+    // console.log('提交的车主对象为：', JSON.stringify(carOwnerBody));
 
     if (!carOwnerBody.id) {
       // 调用后台添加车主接口
       this.service.create(carOwnerBody).then(data => {
-        // console.log('创建车主成功, 新创建的车主信息为：', JSON.stringify(data));
         this.addCustomerSuccess();
       }).catch(err => {
         this.addCustomerFailure(err);
@@ -145,8 +144,6 @@ export class AddCarownerComponent implements OnInit {
   }
   // 省份选择事件处理程序
   onProvinceChange(provinceValue) {
-    console.log('当前选择的省份为：', provinceValue);
-
     const provinceId = provinceValue.split(',')[0];
     const provinceName = provinceValue.split(',')[1];
 
@@ -167,8 +164,6 @@ export class AddCarownerComponent implements OnInit {
   }
   // 城市选择事件处理程序
   onCityChange(cityValue) {
-    console.log('当前选择的城市为：', cityValue);
-
     const cityId = cityValue.split(',')[0];
     const cityName = cityValue.split(',')[1];
 
@@ -182,8 +177,6 @@ export class AddCarownerComponent implements OnInit {
   }
   // 区县选择事件处理程序
   onAreaChange(areaValue) {
-    console.log('当前选择的区县为：', areaValue);
-
     const areaId = areaValue.split(',')[0];
     const areaName = areaValue.split(',')[1];
 
@@ -230,7 +223,6 @@ export class AddCarownerComponent implements OnInit {
  * @memberof CarOwnerComponent
  */
   onCustomerNameSelect(evt) {
-    console.log('通过车主姓名模糊查询车主下拉选择：', evt);
     // 主键id是否有用
 
     // 加载车主数据
@@ -293,9 +285,7 @@ export class AddCarownerComponent implements OnInit {
  * @memberof CarOwnerComponent
  */
   onCustomerPhoneSelect(evt) {
-    // console.log('通过车主手机号模糊查询车主下拉选择：', evt);
     this.service.get(evt.id).then(customer => {
-      console.log('通过车主手机号模糊查询车主车主信息：', customer);
       // 加载车主数据
       this.loadCustomer(customer);
     }).catch(err => {

@@ -57,7 +57,6 @@ export class OrderListComponent extends DataList<Order> {
     this.service.getOrderStatus()
       .subscribe(data => {
         this.orderStatusData = data;
-        // console.log('工单状态数据：', JSON.stringify(data));
       });
     // 获取可以选择的店名, 用于查询范围筛选
     // this.service.getSelectableStores().subscribe(data => this.items = data);
@@ -74,9 +73,6 @@ export class OrderListComponent extends DataList<Order> {
       return item.checked;
     });
     this.params.states = checkedStatus.map(item => item.id);
-
-    console.log('当前选择的工单状态为：', this.params.states);
-
     // 执行查询
     this.onLoadList();
   }
@@ -89,8 +85,6 @@ export class OrderListComponent extends DataList<Order> {
     evt.preventDefault();
 
     this.service.delete(id).then(res => {
-      console.log('根据工单id删除/作废工单：', res);
-
       this.alerter.success('执行作废操作成功');
 
       // 重新加载页面
@@ -105,7 +99,7 @@ export class OrderListComponent extends DataList<Order> {
     setTimeout(() => {
       this.generating = false;
       this.printer.print();
-    }, 1000);
+    }, 500);
   }
 
   /**
@@ -121,43 +115,44 @@ export class OrderListComponent extends DataList<Order> {
     const id = item.id;
     // 根据id获取工单详细信息
     this.service.get(id).then(data => {
-      // console.log('根据工单id获取工单详情数据：', data);
-
       // 记录当前操作的工单记录
       this.selectedOrder = data;
       this.selectedOrder.id = id;
 
-      // 组织车型显示文本
-      // this.selectedOrder.vehicleText = ''.concat(this.selectedOrder.brand, this.selectedOrder.series, this.selectedOrder.vehicleName);
+      this.service.getSettlements(id).then(feeData => {
+        console.log('各项费用数据：', feeData);
+        // 统计各项费用
+        const fee: any = {};
+        // 工时合计  临时放在fee下面 以后都通过接口获取
+        fee.workHours = this.selectedOrder.serviceOutputs.reduce((accumulator, currentValue) => {
+          return accumulator + currentValue.workHour;
+        }, 0);
+        // 工时费： 维修项目金额总和
+        fee.workHour = feeData.workHourCost;
+        // 材料费： 维修配件金额总和
+        fee.material = feeData.materialCost;
+        // 优惠：维修项目有折扣 + 结算抹零
+        fee.discount = feeData.deduceAmount;
+        //实收金额
+        fee.amount = feeData.amount;
+        
+        this.selectedOrder.fee = fee;
+        // 维修项目费用
+        this.selectedOrder.serviceOutputs.fee = fee;
+        // 材料费
+        if (data.productOutputs && data.productOutputs.length > 0) {
+          this.selectedOrder.productOutputs.fee = fee.material;
+        }
 
-      // 统计各项费用
-      this.selectedOrder.fee = {};
-      // 工时合计  临时放在fee下面 以后都通过接口获取
-      this.selectedOrder.fee.workHours = data.serviceOutputs.reduce((accumulator, currentValue) => {
-        return accumulator + currentValue.workHour;
-      }, 0);
-      // 工时费： 维修项目金额总和
-      this.selectedOrder.fee.workHour = data.serviceOutputs.reduce((accumulator, currentValue) => {
-        return accumulator + currentValue.price * currentValue.workHour;
-      }, 0);
-      // 材料费： 维修配件金额总和
-      this.selectedOrder.fee.material = data.productOutputs.reduce((accumulator, currentValue) => {
-        return accumulator + currentValue.price * currentValue.count;
-      }, 0);
-      // 优惠：目前只有维修项目有折扣
-      this.selectedOrder.fee.discount = this.selectedOrder.fee.workHour - data.serviceOutputs.reduce((accumulator, currentValue) => {
-        return accumulator + currentValue.amount;
-      }, 0);
-      this.selectedOrder.serviceOutputs.fee = this.selectedOrder.fee;
-      if (data.productOutputs && data.productOutputs.length > 0) {
-        this.selectedOrder.productOutputs.fee = this.selectedOrder.fee.material;
-      }
-
-      item.generating = false;
-      // 显示窗口
-      modalDialog.show();
+        item.generating = false;
+        // 显示窗口
+        modalDialog.show();
+      }).catch(err => {
+        this.alerter.error(err, true, 2000);
+        item.generating = false;
+      })
     }).catch(err => {
-      this.alerter.error('获取工单信息失败: ' + err, true, 2000);
+      this.alerter.error(err, true, 2000);
       item.generating = false;
     });
   }
@@ -168,7 +163,7 @@ export class OrderListComponent extends DataList<Order> {
   export() {
     this.generating = true;
     this.service.export(this.params).then(() => {
-      console.log('导出工单列表数据成功！');
+      this.alerter.success('导出工单列表数据成功！');
       this.generating = false;
     }).catch(err => {
       this.generating = false;
@@ -186,7 +181,7 @@ export class OrderListComponent extends DataList<Order> {
     // 更新查询范围参数
     this.params.orgIds = evt;
 
-    console.log('当前选择的查询范围列表：', this.params.orgIds);
+    // console.log('当前选择的查询范围列表：', this.params.orgIds);
   }
 
 

@@ -52,13 +52,11 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
       });
 
   }
-
-  /**
+   /**
     * 维修验收全选/反选事件处理程序
     * @param evt 
     */
   toggleCheckboxAll(cb) {
-    console.log('维修验收切换全选复选框', cb.checked);
     // 更新全选复选框状态
     this.selectedOrder.serviceOutputs.checkedAll = cb.checked;
     // 更新维修工项复选框状态
@@ -75,8 +73,8 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
         item.checked = false;
       });
     }
-    // 指派  转派按钮是否可用
-    this.selectedOrder.serviceOutputs.enableCheck = this.selectedOrder.serviceOutputs.filter(item => item.checked).length > 0;
+    // 通过按钮是否可用
+    this.selectedOrder.serviceOutputs.enableBtn = this.selectedOrder.serviceOutputs.filter(item => item.checked).length > 0;
   }
 
   /**
@@ -96,12 +94,14 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
     // 选中的维修项目
     const checked = tmp.filter(item => item.checked).length;
     // 验收过的维修项目
-    const disabled = tmp.filter(item => item.teamType === '10').length;
+    const disabled = tmp.filter(item => item.teamType === 6).length;
 
     this.selectedOrder.serviceOutputs.checkedAll = (checked + disabled) === tmp.length;
-    // 同意按钮是否可用
-    this.selectedOrder.serviceOutputs.enableCheck = this.selectedOrder.serviceOutputs.filter(item => item.checked).length > 0;
+    // 通过按钮是否可用
+    this.selectedOrder.serviceOutputs.enableBtn = this.selectedOrder.serviceOutputs.filter(item => item.checked).length > 0;
   }
+
+
 
   /**
    * 维修验收  通过按钮处理程序
@@ -115,10 +115,11 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
 
     // 获取选择的工项列表
     const maintenanceItemIds = this.selectedOrder.serviceOutputs.filter(item => item.checked).map(item => item.id);
-    console.log('选择的工项列表为：', maintenanceItemIds);
+    
+    console.log('test特色test：', maintenanceItemIds);
     // 判断是否选择维修工项
     if (maintenanceItemIds.length === 0) {
-      this.alerter.warn('请选择维修工项！');
+      this.alerter.error('您还未选择任何维修工项, 请选择维修工项！', true, 3000);
       return;
     }
     // 调用接口  执行通过验收动作
@@ -137,15 +138,15 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
       }
       // 设置验收操作按钮不可用
       this.selectedOrder.serviceOutputs.checkedAll = false;
-      this.selectedOrder.serviceOutputs.enableCheck = false;
+      this.selectedOrder.serviceOutputs.enableBtn =  false;
       // 验收通过
-      this.alerter.success('执行验收通过操作成功！', true, 2000);
+      this.alerter.success('执行验收通过操作成功！', true, 3000);
       this.generating = false;
 
       // 刷新列表
       this.load();
     }).catch(err => {
-      this.alerter.error('执行验收通过操作失败：' + err, true, 2000);
+      this.alerter.error('执行验收通过操作失败：' + err, true, 3000);
       this.generating = false;
     });
   }
@@ -155,17 +156,9 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
  * 根据条件查询工单数据
  * @memberOf OrderListComponent
  */
-  onSearch() {
-    // 组织工单状态数据
-    let checkedStatus = this.maintenanceCheckTypes.filter(item => item.checked);
-    // 没选的话   查询所有
-    if (checkedStatus.length === 0) {
-      checkedStatus = this.maintenanceCheckTypes;
-    }
-    this.params.status = checkedStatus.filter(item => item.id !== 'all').map(item => item.id);
-
-    console.log('当前选择的工单状态为：', this.params.status);
-
+  onSearch(evt) {
+    this.params.status = evt.chechedStatusIds;
+    this.params.keyword = evt.keyword;
     // 执行查询
     this.load();
   }
@@ -176,7 +169,6 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
 
     this.params.setPage(1);
     this.loadList().then((result: any) => {
-      console.log('维修验收列表统计数据：', result.tabList);
       this.statistics = {};
       // 统计各种状态下面的工单数量
       result.tabList.forEach(item => {
@@ -188,30 +180,6 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
         }
       });
     });
-  }
-
-
-  /**
-     * 状态改变事件处理程序
-     * @param type
-     */
-  onStatusChange(type) {
-    type.checked = !type.checked;
-
-    if (type.id === 'all') {
-      this.maintenanceCheckTypes.map(item => item.checked = type.checked);
-    } else {
-      if (!type.checked) {
-        this.maintenanceCheckTypes[0].checked = false;
-      } else {
-        const len = this.maintenanceCheckTypes.filter(item => item !== type && item.id !== 'all' && item.checked).length;
-        if (len === this.maintenanceCheckTypes.length - 2) {
-          this.maintenanceCheckTypes[0].checked = true;
-        }
-      }
-    }
-
-    this.onSearch();
   }
 
   /**
@@ -226,12 +194,10 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
 
     // 根据id获取工单详细信息
     this.service.get(item.id).then(data => {
-      // console.log('根据工单id获取工单详情数据：', data);
-
       // 记录当前操作的工单记录
       this.selectedOrder = data;
       // 指派按钮是否可用标志
-      this.selectedOrder.serviceOutputs.enableCheck = false;
+      this.selectedOrder.serviceOutputs.enableBtn = false;
       // 全选复选框是否选中标志
       this.selectedOrder.serviceOutputs.checkedAll = false;
 
@@ -240,7 +206,7 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
       modalDialog.show();
       this.isDetailModalShown = true;
     }).catch(err => {
-      this.alerter.error('获取工单信息失败: ' + err, true, 2000);
+      this.alerter.error('获取工单信息失败: ' + err, true, 3000);
       item.checkGenerating = false;
     });
   }

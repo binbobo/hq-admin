@@ -11,10 +11,7 @@ import { AddMaintenanceItemComponent } from './shared/add-maintenance-item/add-m
 import { WorkorderDetailPrintComponent } from './shared/workorder-detail-print/workorder-detail-print.component';
 import { AddAttachItemComponent } from './shared/add-attach-item/add-attach-item.component';
 import { AddSuggestItemComponent } from './shared/add-suggest-item/add-suggest-item.component';
-import { MaintenanceItemListComponent } from './shared/maintenance-item-list/maintenance-item-list.component';
-import { MaintenanceFixingsListComponent } from './shared/maintenance-item-list/maintenance-fixings-list.component';
-import { AttachmentItemListComponent } from './shared/maintenance-item-list/attachment-item-list.component';
-import { SuggestedItemListComponent } from './shared/maintenance-item-list/suggested-item-list.component';
+// import {AttachmentItemListComponent, SuggestedItemListComponent, MaintenanceItemListComponent, MaintenanceFixingsListComponent} from './shared/maintenance-item-list';
 import { FeeStatisticsComponent } from './shared/fee-statistics/fee-statistics.component';
 import { WorkorderBasicInfoComponent } from './shared/workorder-detail/basic-info/workorder-basic-info.component';
 
@@ -39,5 +36,5 @@ const routes: Routes = [
 })
 export class ReceptionRoutingModule { }
 
-export const routedComponents = [MaintenanceItemListComponent, MaintenanceFixingsListComponent,AttachmentItemListComponent,SuggestedItemListComponent, WorkorderBasicInfoComponent, FeeStatisticsComponent, AddAttachItemComponent, AddSuggestItemComponent, WorkorderDetailPrintComponent, WorkorderDetailComponent, AddMaintenanceItemComponent, OrderListComponent, AssignOrderComponent, CreateOrderComponent, BillOrderComponent, AppendOrderComponent, PrintOrderComponent];
+export const routedComponents = [WorkorderBasicInfoComponent, FeeStatisticsComponent, AddAttachItemComponent, AddSuggestItemComponent, WorkorderDetailPrintComponent, WorkorderDetailComponent, AddMaintenanceItemComponent, OrderListComponent, AssignOrderComponent, CreateOrderComponent, BillOrderComponent, AppendOrderComponent, PrintOrderComponent];
 
