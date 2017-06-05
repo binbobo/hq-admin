@@ -12,7 +12,7 @@
         <span class="input-group-addon">进厂时间</span>
         <input [max-date]="maxEnterStartDate" [(ngModel)]="params.enterStartTimeDate" class="form-control" id="enterStartTimeDate"
           name="enterStartTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请输入开始日期" />
-        <span class="input-group-addon">至</span>
+        <span class="input-group-addon">-</span>
         <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" [(ngModel)]="params.enterEndTimeDate" class="form-control"
           id="enterEndTimeDate" name="enterEndTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请输入截止日期"
         />
@@ -21,7 +21,7 @@
         <span class="input-group-addon">出厂时间</span>
         <input [max-date]="maxLeaveStartDate" [(ngModel)]="params.leaveStartTimeDate" class="form-control" id="leaveStartTimeDate"
           name="leaveStartTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请输入开始日期" />
-        <span class="input-group-addon">至</span>
+        <span class="input-group-addon">-</span>
         <input [min-date]="minLeaveEndDate" [max-date]="maxLeaveEndDate" [(ngModel)]="params.leaveEndTimeDate" class="form-control"
           id="leaveEndTimeDate" name="leaveEndTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请输入截止日期"
         />
