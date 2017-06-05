@@ -2,7 +2,7 @@
 <div class="card business">
   <div class="card-header">维修历史</div>
   <div class="card-block">
-    <form (ngSubmit)="onSearch()" class="form-inlines mb-2">
+    <form (ngSubmit)="onSearch()" class="form-inline mb-2">
       <div class="input-group m-1">
         <span class="input-group-addon">车牌号</span>
         <input [(ngModel)]="params.plateNo" hqPlateNoTypeahead class="form-control" name="plateNo" id="plateNo" type="text" placeholder="请输入车牌号"/>
@@ -25,19 +25,19 @@
           id="leaveEndTimeDate" name="leaveEndTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请输入截止日期"
         />
       </div>
-      <div class="hq-input m-1">
-        <label class="form-label">服务顾问</label>
-        <div class=".hq-col">
-          <ngx-dropdown-treeview [config]="nameConfig" [items]="nameItems" (selectedChange)="onSearchNameChange($event)">
+      <div class="input-group m-1">
+        <label class="input-group-addon">服务顾问</label>
+        <!--<div class=".hq-col">-->
+          <ngx-dropdown-treeview [items]="nameItems" (selectedChange)="onSearchNameChange($event)">
           </ngx-dropdown-treeview>
-        </div>
+        <!--</div>-->
       </div>
-      <div *ngIf="items" class="hq-input m-1">
-        <label for="searchRange" class="form-label">查询范围</label>
-        <div class="hq-col">
-          <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)">
+      <div *ngIf="items" class="input-group m-1">
+        <label class="input-group-addon">查询范围</label>
+        <!--<div class="hq-col">-->
+          <ngx-dropdown-treeview [items]="items" (selectedChange)="onSearchRangeChange($event)">
           </ngx-dropdown-treeview>
-        </div>
+        <!--</div>-->
       </div>
       <div class="input-group m-1">
         <button type="submit" class="btn btn-primary">查询</button>
