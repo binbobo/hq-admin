@@ -1,4 +1,4 @@
-import { Directive, ViewContainerRef, ComponentFactoryResolver, Input } from '@angular/core';
+import { Directive, ViewContainerRef, ComponentFactoryResolver, Input, Injector } from '@angular/core';
 import { TableTypeaheadDirective, TableTypeaheadColumn, TypeaheadRequestParams } from 'app/shared/directives';
 import { HttpService, Urls } from 'app/shared/services';
 import { PagedParams } from 'app/shared/models';
@@ -9,11 +9,11 @@ import { PagedParams } from 'app/shared/models';
 export class PlateNoTypeaheadDirective extends TableTypeaheadDirective {
 
     constructor(
-        protected viewContainerRef: ViewContainerRef,
-        protected componentFactoryResolver: ComponentFactoryResolver,
+        injector: Injector,
         protected httpService: HttpService,
     ) {
-        super(viewContainerRef, componentFactoryResolver);
+        super(injector);
+        this.showTitle = false;
     }
 
     protected columns = [

@@ -1,4 +1,4 @@
-import { Directive, ViewContainerRef, ComponentFactoryResolver, Input } from '@angular/core';
+import { Directive, Input, Injector, ViewContainerRef } from '@angular/core';
 import { TableTypeaheadDirective, TableTypeaheadColumn, TypeaheadRequestParams } from 'app/shared/directives';
 import { HttpService, Urls } from 'app/shared/services';
 import { PagedParams, SelectOption } from 'app/shared/models';
@@ -9,26 +9,26 @@ import { PagedParams, SelectOption } from 'app/shared/models';
 export class ProductBrandTypeaheadDirective extends TableTypeaheadDirective {
 
   constructor(
-    protected viewContainerRef: ViewContainerRef,
-    protected componentFactoryResolver: ComponentFactoryResolver,
+    injector: Injector,
     protected httpService: HttpService,
+    protected container?: ViewContainerRef,
   ) {
-    super(viewContainerRef, componentFactoryResolver);
+    super(injector);
   }
 
   @Input("hqProductBrandTypeahead")
-  protected filed: string;
+  protected field: string;
 
   protected columns = [
-    { name: 'name', title: '配件品牌', weight: 1 },
+    { name: 'name', title: '配件品牌', selected: true },
   ] as Array<TableTypeaheadColumn>;
 
   ngOnInit() {
-    this.filed = this.filed || 'brandName';
+    this.field = this.field || 'brandName';
     this.showTitle = false;
     this.source = (params: TypeaheadRequestParams) => {
       let request = new PagedParams();
-      request[this.filed] = params.text;
+      request[this.field] = params.text;
       request.setPage(params.pageIndex, params.pageSize);
       let url = Urls.chain.concat('/Brands/Product/search');
       return this.httpService.getPagedList<any>(url, request);

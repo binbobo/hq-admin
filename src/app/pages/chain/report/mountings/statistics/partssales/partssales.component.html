@@ -49,12 +49,12 @@
             <button type="button" [hqSpinner]="false" class="btn btn-info btn-sm" (click)="alert(item,item.id,vehicleModal,item.billCode,item.customerName)">详情</button>
           </td>
           <td>{{item.billCode}}</td>
-          <td>{{item.customerName }}</td>
+          <td class="text-left">{{item.customerName }}</td>
           <td>{{item.customerPhone }}</td>
-          <td>{{item.sellerName }}</td>
-          <td>{{item.amount|centToYuan}}</td>
+          <td class="text-left">{{item.sellerName }}</td>
+          <td class="text-right">{{item.amount|centToYuan}}</td>
           <td>{{item.createTime |sDatetime}}</td>
-          <td>{{item.operator}}</td>
+          <td class="text-left">{{item.operator}}</td>
         </tr>
       </table>
     </div>
@@ -116,9 +116,9 @@
                 <td>{{item.unit }}</td>
                 <td>{{item.storeName }}</td>
                 <td>{{item.locationName }}</td>
-                <td>{{item.price |centToYuan}}</td>
+                <td class="text-right">{{item.price |centToYuan}}</td>
                 <td>{{item.count }}</td>
-                <td>{{item.amount |centToYuan}}</td>
+                <td class="text-right">{{item.amount |centToYuan}}</td>
               </tr>
             </table>
           </div>

@@ -48,11 +48,11 @@
         <tr *ngFor="let item of list">
           <td><button [hqSpinner]="item.hqSpinner" class="btn btn-info btn-sm" (click)="alert(item,item.id,vehicleModal,item.billCode,item.takeUserName,item.takeDepartmentName,item.createBillTime,item.operator)">详情</button></td>
           <td>{{item.billCode}}</td>
-          <td>{{item.takeUserName }}</td>
-          <td>{{item.takeDepartmentName }}</td>
-          <td>{{item.amount|centToYuan }}</td>
+          <td class="text-left">{{item.takeUserName }}</td>
+          <td class="text-left">{{item.takeDepartmentName }}</td>
+          <td class="text-right">{{item.amount|centToYuan }}</td>
           <td>{{item.createBillTime |sDatetime}}</td>
-          <td>{{item.operator}}</td>
+          <td class="text-left">{{item.operator}}</td>
         </tr>
       </table>
     </div>
