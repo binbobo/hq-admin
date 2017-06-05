@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ViewChildren, QueryList, Injector } from 
 import { ModalDirective } from "ngx-bootstrap";
 import { HqAlerter, PrintDirective, TypeaheadRequestParams, FormGroupControlErrorDirective } from "app/shared/directives";
 import { SelectOption, PagedResult, DataList, PagedParams } from "app/shared/models";
-import { InnerListRequest, InnerListItem, InnerReturnService, InnerPrintItem, BillCodeSearchRequest } from "../inner-return.service";
+import { InnerReturnService, InnerPrintItem, BillCodeSearchRequest } from "../inner-return.service";
 import { SuspendBillDirective } from "app/pages/chain/chain-shared";
 import { FormGroup, FormBuilder } from "@angular/forms/";
 
@@ -210,16 +210,6 @@ export class ReturnListComponent extends DataList<any> {
     this.list = item.value.model;
     this.returnData = item.value.returnData;
   }
-  // reset() {
-  //   this.model = new InnerListRequest();
-  //   this.returnData = [];
-  //   if (Array.isArray(this.employees) && this.employees.length) {
-  //     this.model.returnUser = this.employees[0].value;
-  //   }
-  //   if (Array.isArray(this.departments) && this.departments.length) {
-  //     this.model.returnDepart = this.departments[0].value;
-  //   }
-  // }
 
   //挂单列表
   get innerColumns() {

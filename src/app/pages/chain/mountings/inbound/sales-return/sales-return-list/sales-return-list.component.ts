@@ -55,12 +55,12 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   }
   // //选择退库单号
   onItemCodeSelect(event) {
-    this.originalBillId = event.id;
-    this.billCode = event.billCode;
+    this.originalBillId = event && event.id;
+    this.billCode = event && event.billCode;
     if (!this.customerName) {
-      this.customerId = event.customerID;
-      this.customerName = event.customerName;
-      this.customerPhone = event.customerPhone;
+      this.customerId = event && event.customerID;
+      this.customerName = event && event.customerName;
+      this.customerPhone = event && event.customerPhone;
     }
     this.salesReturnData = [];
     this.params.customerId = this.customerId;
@@ -70,9 +70,9 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   }
   // //选择客户名称
   onItemNameSelect(event) {
-    this.customerId = event.customerId;
-    this.customerName = event.customerName;
-    this.customerPhone = event.customerPhone;
+    this.customerId = event && event.customerId;
+    this.customerName = event && event.customerName;
+    this.customerPhone = event && event.customerPhone;
     this.billCode = null;
     this.list = null;
     this.salesReturnData = [];
@@ -157,14 +157,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
     this.salesReturnData = item.value.salesReturnData;
   }
 
-  // reset() {
-  //   this.model = new SalesReturnListRequest();
-  //   if (Array.isArray(this.salesmen) && this.salesmen.length) {
-  //     this.model.seller = this.salesmen[0].value;
-  //   }
-  // }
-
-  //生成退料单
+  //生成退库单
   createReturnList() {
     this.createLoading = true;
     this.billData = {
@@ -184,7 +177,6 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
       .then(data => {
         if (data) {
           this.printModel = data;
-          console.log('打印数据',this.printModel);
           setTimeout(() => this.printer.print(), 300);
         }
       })

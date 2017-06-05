@@ -77,15 +77,15 @@ export class InnerPrintItem {
   public operator: string;
   public list: Array<any>
 }
-export class InnerListRequest {
-  constructor(
-    public list: Array<InnerListItem> = [],
-    public returnUser?: string,
-    public returnDepart?: string,
-    public suspendedBillId?: string,
-  ) {
-  }
-}
+// export class InnerListRequest {
+//   constructor(
+//     public list: Array<InnerListItem> = [],
+//     public returnUser?: string,
+//     public returnDepart?: string,
+//     public suspendedBillId?: string,
+//   ) {
+//   }
+// }
 //配件信息参数
 export class InnerListItem {
   constructor(
