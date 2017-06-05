@@ -10,7 +10,7 @@ import { ServerTranslateLoader } from 'app/shared/services';
 
 @NgModule({
   imports: [
-    SharedModule,
+    SharedModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
     GroupRoutingModule,

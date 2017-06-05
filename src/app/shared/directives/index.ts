@@ -6,3 +6,4 @@ export * from './form-control-error';
 export * from './spinner';
 export * from './trim';
 export * from './validators';
+export * from './modal';

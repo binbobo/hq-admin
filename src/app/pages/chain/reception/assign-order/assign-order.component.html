@@ -67,7 +67,7 @@
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
 </div>
-<div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+<div hqBsModal #lgModal="hq-bs-modal" class="modal fade" tabindex="-1" role="dialog">
   <div *ngIf="lgModal.isShown" class="modal-dialog modal-lg">
     <div class="modal-content">
       <ng-template *ngIf="isDetailModalShown" hq-alerter></ng-template>

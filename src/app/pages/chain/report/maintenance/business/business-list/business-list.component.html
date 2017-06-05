@@ -106,7 +106,7 @@
 <hq-print-view *ngIf="businessData" class="invisible" hqPrint #printer="hq-print" [businessData]="businessData" print-title="维修历史"></hq-print-view>
 
 <!--详情弹框-->
-<div class="modal fade" bsModal #bdModal="bs-modal" tabindex="-1" role="dialog">
+<div class="modal fade" hqBsModal #bdModal="hq-bs-modal" tabindex="-1" role="dialog">
   <div *ngIf="bdModal.isShown" class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">

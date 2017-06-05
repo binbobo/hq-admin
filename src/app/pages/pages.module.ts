@@ -13,7 +13,7 @@ import { EmployeeService } from './employee.service';
 @NgModule({
   imports: [
     PagesRoutingModule,
-    SharedModule,
+    SharedModule.forRoot(),
     TypeaheadModule.forRoot(),
     BsDropdownModule.forRoot(),
     NguiDatetimePickerModule,
