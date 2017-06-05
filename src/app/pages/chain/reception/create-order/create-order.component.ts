@@ -1,6 +1,6 @@
 import { Component, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, MaintenanceType } from '../order.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { TabsetComponent, ModalDirective } from 'ngx-bootstrap';
 import * as moment from 'moment';
 import { PrintDirective } from 'app/shared/directives';
@@ -144,6 +144,10 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       this.workSheetForm.controls.contactInfo.setValue(val);
     }
   }
+  // 重新设置下次里程验证器 实现多个表单域联动验证
+  private resetNextMileageValidators(val) {
+    this.workSheetForm.controls.nextMileage.setValidators([HQ_VALIDATORS.mileage, CustomValidators.gte(val)]);
+  }
 
   // 从模糊查询下拉列表中选择一个车型事件处理程序
   onModelSelect(evt) {
@@ -212,6 +216,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
         nextDate: lastOrder.nextDate ? moment(lastOrder.nextDate).format('YYYY-MM-DD') : '',
         nextMileage: lastOrder.nextMileage,
       });
+      this.resetNextMileageValidators(lastOrder.mileage);
     } else {
       // 上次维修记录 带出部分信息
       this.workSheetForm.patchValue({
@@ -437,6 +442,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
     // 表单赋值
     this.workSheetForm.patchValue(order);
+    this.resetNextMileageValidators(order.mileage);
 
     // 计算费用
     this.fee.workHour = order.maintenanceItems.reduce((accumulator, currentValue) => {
