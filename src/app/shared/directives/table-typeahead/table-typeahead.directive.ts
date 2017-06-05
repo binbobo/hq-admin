@@ -1,10 +1,11 @@
-import { Directive, ViewContainerRef, ComponentFactoryResolver, Input, EventEmitter, Output, OnInit, HostListener, ElementRef, Component, ComponentRef, Injector, TemplateRef } from '@angular/core';
+import { Directive, ViewContainerRef, ComponentFactoryResolver, Input, EventEmitter, Output, OnInit, HostListener, Component, ComponentRef, Injector, TemplateRef, Optional } from '@angular/core';
 import { TableTypeaheadComponent } from './table-typeahead.component';
 import { PagedResult, PagedParams } from 'app/shared/models';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/debounceTime';
+import { FormControlName, NgModel, FormControl } from '@angular/forms';
 @Directive({
   selector: '[hqTableTypeahead]',
   exportAs: 'hq-table-typeahead'
@@ -32,15 +33,22 @@ export class TableTypeaheadDirective implements OnInit {
   protected onEmpty = new EventEmitter<string>();
   @Output()
   protected onSelect = new EventEmitter<any>();
+  @Input()
+  protected filed: string;
+
   private el: HTMLInputElement;
   private componentRef: ComponentRef<TableTypeaheadComponent>;
   private paging = false;
-  private sortedKeys: Array<string> = [];
   private statusElement: HTMLElement;
-  private disabled = false;
+  private control: FormControl;
+
   constructor(
     protected viewContainerRef: ViewContainerRef,
-    protected componentFactoryResolver: ComponentFactoryResolver
+    protected componentFactoryResolver: ComponentFactoryResolver,
+    @Optional()
+    protected formControlName?: FormControlName,
+    @Optional()
+    protected ngModel?: NgModel,
   ) {
     this.el = this.viewContainerRef.element.nativeElement;
   }
@@ -77,7 +85,6 @@ export class TableTypeaheadDirective implements OnInit {
     this.componentRef.instance.hide();
   }
   private search(pageIndex = 1) {
-    if (this.disabled) return;
     if (!this.paging) {
       this.componentRef.instance.result = null;
     }
@@ -94,7 +101,6 @@ export class TableTypeaheadDirective implements OnInit {
           if (this.multiple && this.checkStrategy) {
             result.data.forEach(m => {
               m.checked = this.checkStrategy(m);
-              console.log(m.checked);
             });
           }
           this.componentRef.instance.result = result;
@@ -109,16 +115,8 @@ export class TableTypeaheadDirective implements OnInit {
     }
   }
   ngOnInit(): void {
-    if (this.columns) {
-      this.sortedKeys = this.columns
-        .slice(0)
-        .sort((m, n) => {
-          m.weight = m.weight || 0;
-          n.weight = n.weight || 0;
-          return m.weight === n.weight ? 0 : n.weight - m.weight
-        })
-        .map(m => m.name);
-    }
+    this.control = this.formControlName && this.formControlName.control;
+    this.control = this.control || this.ngModel && this.ngModel.control;
     this.el.style.borderBottomLeftRadius = "0.25rem";
     this.el.style.borderTopLeftRadius = "0.25rem";
     let wrapper = document.createElement("div");
@@ -150,23 +148,16 @@ export class TableTypeaheadDirective implements OnInit {
       this.search(params.pageIndex);
     });
     component.onSelect.subscribe((item) => {
-      let originValue = this.el.value;
-      if (!this.multiple) {
-        let selectedValue = this.sortedKeys
-          .filter(key => item[key])
-          .map(key => item[key].toString())
-          .find(value => value.includes(originValue));
-        if (selectedValue) {
-          this.disabled = true;
+      let selectedValue = item[this.filed];
+      if (!this.multiple && selectedValue) {
+        if (this.control) {
+          this.control.setValue(selectedValue.trim());
+        } else {
           this.el.value = selectedValue.trim();
-          let event = new Event('input');
-          this.el.dispatchEvent(event);
-          this.el.focus();
-          setTimeout(() => {
-            this.paging = false;
-            this.disabled = false;
-          }, this.delay + 100);
         }
+        setTimeout(() => {
+          this.paging = false;
+        }, this.delay + 100);
       }
       this.onSelect.emit(item);
     })
@@ -179,7 +170,7 @@ export class TableTypeaheadDirective implements OnInit {
       });
     this.statusElement.addEventListener('click', (event: MouseEvent) => {
       event.stopPropagation();
-      if (this.el.disabled || this.el.readOnly) return false;
+      if (this.el.readOnly) return false;
       let el = event.target as HTMLElement;
       if (!el.classList.contains('fa-spinner')) {
         this.search();

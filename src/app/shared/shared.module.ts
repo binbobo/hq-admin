@@ -115,7 +115,7 @@ export class SharedModule {
     static forRoot() {
         return {
             ngModule: SharedModule,
-            providers: [HQ_SERVICES, TranslateStore, NgModel]
+            providers: [HQ_SERVICES, TranslateStore]
         }
     }
 }

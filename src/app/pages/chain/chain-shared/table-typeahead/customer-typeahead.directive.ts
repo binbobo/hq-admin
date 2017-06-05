@@ -1,7 +1,8 @@
-import { Directive, ViewContainerRef, ComponentFactoryResolver, Input } from '@angular/core';
+import { Directive, ViewContainerRef, ComponentFactoryResolver, Input, Optional, Injector } from '@angular/core';
 import { TableTypeaheadDirective, TableTypeaheadColumn, TypeaheadRequestParams } from 'app/shared/directives';
 import { HttpService, Urls } from 'app/shared/services';
 import { PagedParams } from 'app/shared/models';
+import { FormControlName, NgModel } from '@angular/forms';
 
 @Directive({
   selector: '[hqCustomerTypeahead]'
@@ -12,14 +13,19 @@ export class CustomerTypeaheadDirective extends TableTypeaheadDirective {
     protected viewContainerRef: ViewContainerRef,
     protected componentFactoryResolver: ComponentFactoryResolver,
     protected httpService: HttpService,
+    @Optional()
+    protected formControlName: FormControlName,
+    @Optional()
+    protected ngModel: NgModel,
   ) {
-    super(viewContainerRef, componentFactoryResolver);
+    super(viewContainerRef, componentFactoryResolver, formControlName, ngModel);
   }
 
   protected columns = [
-    { name: 'name', title: '客户名称', weight: 1 },
+    { name: 'name', title: '客户名称' },
     { name: 'phone', title: '手机号' }
   ] as Array<TableTypeaheadColumn>;
+
   @Input("hqCustomerTypeahead")
   protected filed: string = 'name';
 

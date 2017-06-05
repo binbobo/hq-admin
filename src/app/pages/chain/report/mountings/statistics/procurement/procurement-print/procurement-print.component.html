@@ -1,24 +1,24 @@
 <p style="clear:both;"> </p>
 <div class="row">
-  <div class="col-3 text-center">
-    <label for="">入库单号：</label>
+  <div class="col-4">
+    <label for=""  class="print-label">入库单号：</label>
     <span>{{detail?.billCode}}</span>
   </div>
 
-  <div class="col-3">
-    <label for="">供应商：</label>
+  <div class="col-4">
+    <label for="" class="print-label">供应商：</label>
     <span>{{detail?.name}}</span>
   </div>
 
-  <div class="col-3">
-    <label for="">开单时间：</label>
-    <span>{{detail?.createUtc|date:'yyyy/MM/dd HH:mm:ss'}}</span>
+  <div class="col-4">
+    <label for="" class="print-label">开单时间：</label>
+    <span>{{detail?.createUtc|sDatetime}}</span>
   </div>
 
-  <div class="col-3">
+  <!--<div class="col-3">
     <label for="">操作人：</label>
     <span>{{detail?.createName}}</span>
-  </div>
+  </div>-->
 </div>
 <table class="table table-order-info table-bordered" *ngFor="let item of detailItems">
   <tr>
@@ -31,10 +31,10 @@
     <th>规格型号</th>
     <th>单位</th>
     <th>数量</th>
-    <th>含税单价（元）</th>
-    <th>含税金额（元）</th>
-    <th>不含税单价（元）</th>
-    <th>不含税金额（元）</th>
+    <th>含税单价<br>（元）</th>
+    <th>含税金额<br>（元）</th>
+    <th>不含税单价<br>（元）</th>
+    <th>不含税金额<br>（元）</th>
   </tr>
   <tbody>
     <tr>
@@ -55,9 +55,7 @@
   </tbody>
 </table>
 <p *ngIf="!!!detailItemsLength">暂无数据</p>
-<!--<br>
-<div class="row text-center">
-  <p class="col-2">第 1 页，共 5 页</p>
-  <p class="col-8">打印时间：2017-04-15 13:13:13</p>
-  <p class="col-2">操作人：桃儿</p>
-</div>-->
+<div class="row">
+  <p class="col-4"><span class="print-label">打印时间：</span>{{newDate}}</p>
+  <p class="col-4"><span class="print-label">操作人：</span>{{detail?.createName}}</p>
+</div>
