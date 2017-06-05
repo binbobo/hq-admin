@@ -1,17 +1,17 @@
 <p style="clear:both;"> </p>
-<div class="row font">
-  <div class="col-4 text-center">
-    <label for="">入库单号：</label>
+<div class="row">
+  <div class="col-4">
+    <label for=""  class="print-label">入库单号：</label>
     <span>{{detail?.billCode}}</span>
   </div>
 
   <div class="col-4">
-    <label for="">供应商：</label>
+    <label for="" class="print-label">供应商：</label>
     <span>{{detail?.name}}</span>
   </div>
 
   <div class="col-4">
-    <label for="">开单时间：</label>
+    <label for="" class="print-label">开单时间：</label>
     <span>{{detail?.createUtc|sDatetime}}</span>
   </div>
 
@@ -56,6 +56,6 @@
 </table>
 <p *ngIf="!!!detailItemsLength">暂无数据</p>
 <div class="row">
-  <p class="col-4  text-center">打印时间：{{newDate}}</p>
-  <p class="col-4">操作人：{{detail?.createName}}</p>
+  <p class="col-4"><span class="print-label">打印时间：</span>{{newDate}}</p>
+  <p class="col-4"><span class="print-label">操作人：</span>{{detail?.createName}}</p>
 </div>

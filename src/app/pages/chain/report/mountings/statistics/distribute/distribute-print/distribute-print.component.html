@@ -1,14 +1,15 @@
+<p style="clear:both;"> </p>
 <div class="row">
   <div class="col-4">
-    <label for="" class=" text-center">发料单号：</label>
+    <label for="" class="print-label">发料单号：</label>
     <span>{{detail?.billCode }}</span>
   </div>
   <div class="col-4">
-    <label for="">车牌号：</label>
+    <label for="" class="print-label">车牌号：</label>
     <span>{{detail?.plateNo }}</span>
   </div>
   <div class="col-4">
-    <label for="">开单时间：</label>
+    <label for="" class="print-label">开单时间：</label>
     <span>{{detail?.createBillTime|sDatetime}}</span>
   </div>
   <!--<div class="col-3">
@@ -16,42 +17,40 @@
     <span>{{detail?.operator }}</span>
   </div>-->
 </div>
-<div class="card-block">
-  <table class="table table-bordered">
-    <tr>
-      <th>配件编码</th>
-      <th>配件类型</th>
-      <th>配件名称</th>
-      <th>品牌</th>
-      <th>规格型号</th>
-      <th>单位</th>
-      <th>仓库</th>
-      <th>库位</th>
-      <th>单价</th>
-      <th>数量</th>
-      <th>金额</th>
-      <th>备注</th>
-      <th>领料人</th>
-    </tr>
-    <tr class="text-center" *ngFor="let item of detailItems">
-      <td>{{item.productCode }}</td>
-      <td>{{item.productSpecification }}</td>
-      <td>{{item.productName }}</td>
-      <td>{{item.brandName }}</td>
-      <td>{{item.productSpecification }}</td>
-      <td>{{item.specification || '个'}}</td>
-      <td>{{item.storeName }}</td>
-      <td>{{item.locationName }}</td>
-      <td>{{item.price }}</td>
-      <td>{{item.count }}</td>
-      <td>{{item.amount }}</td>
-      <td>{{item.description }}</td>
-      <td>{{item.takeUser }}</td>
-    </tr>
-  </table>
-  <p *ngIf="!!!detailItemsLength">暂无数据</p>
-</div>
+<table class="table table-bordered">
+  <tr>
+    <th>配件编码</th>
+    <th>配件类型</th>
+    <th>配件名称</th>
+    <th>品牌</th>
+    <th>规格型号</th>
+    <th>单位</th>
+    <th>仓库</th>
+    <th>库位</th>
+    <th>单价</th>
+    <th>数量</th>
+    <th>金额</th>
+    <th>备注</th>
+    <th>领料人</th>
+  </tr>
+  <tr class="text-center" *ngFor="let item of detailItems">
+    <td>{{item.productCode }}</td>
+    <td>{{item.productSpecification }}</td>
+    <td>{{item.productName }}</td>
+    <td>{{item.brandName }}</td>
+    <td>{{item.productSpecification }}</td>
+    <td>{{item.specification || '个'}}</td>
+    <td>{{item.storeName }}</td>
+    <td>{{item.locationName }}</td>
+    <td>{{item.price }}</td>
+    <td>{{item.count }}</td>
+    <td>{{item.amount }}</td>
+    <td>{{item.description }}</td>
+    <td>{{item.takeUser }}</td>
+  </tr>
+</table>
+<p *ngIf="!!!detailItemsLength">暂无数据</p>
 <div class="row">
-  <p class="col-4  text-center">打印时间：{{newDate}}</p>
-  <p class="col-4">操作人：{{detail?.operator}}</p>
+  <p class="col-4"><span class="print-label">打印时间：</span>{{newDate}}</p>
+  <p class="col-4"><span class="print-label">操作人：</span>{{detail?.operator}}</p>
 </div>
