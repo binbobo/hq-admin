@@ -33,7 +33,6 @@ export class AddSuggestItemComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
-    console.log('当前已经选择的维修项目列表为：', this.services);
     this.serviceIds = this.services.map(item => item.id);
     // 编辑
     if (this.item) {

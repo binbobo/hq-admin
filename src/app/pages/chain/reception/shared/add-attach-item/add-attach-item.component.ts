@@ -44,7 +44,6 @@ export class AddAttachItemComponent implements OnInit {
   }
 
   public onSubmit(event: Event) {
-    console.log(this.form.value)
     if (!this.form.controls.description.value) {
       this.alerter.error("备注不能为空", true, 3000);
       return false;

@@ -41,8 +41,6 @@ export class AddMaintenanceItemComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
-
-    // console.log('当前已经选择的维修项目列表为：', this.services);
     this.serviceIds = this.services.map(item => item.id);
     // 编辑
     if (this.item) {
@@ -79,7 +77,6 @@ export class AddMaintenanceItemComponent implements OnInit {
               this.alerter.error('新增维修项目失败，返回的数据为空', true, 3000);
               return;
             }
-            // console.log('新建维修项目成功, 返回的数据为：', JSON.stringify(data));
             const maintenanceItemFormVal = this.maintenanceItemForm.getRawValue();
             maintenanceItemFormVal.serviceId = data.id;
             this.onConfirm.emit({

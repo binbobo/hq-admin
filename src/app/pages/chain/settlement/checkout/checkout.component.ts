@@ -74,7 +74,6 @@ export class CheckoutComponent extends DataList<any> {
 
     this.service.getPrintDetail(id)
       .then(data => {
-        console.log('结算单', data)
         this.selectedOrder = data;
         this.billId = this.selectedOrder["id"];
         // Object.assign(this.selectedOrder, data);
@@ -87,11 +86,10 @@ export class CheckoutComponent extends DataList<any> {
           this.selectedOrder.updataTime = item.updateOnUtc;//出厂时间
         }
         item.generating = false;
-
         // 显示窗口
-        setTimeout(() => dialog.show(), 200); 
+        setTimeout(() => dialog.show(), 200);
       })
-      .catch(err => { console.log(err); item.generating = true; });
+      .catch(err => { this.alerter.error(err, true, 2000); item.generating = false; });
 
     // 根据工单id获取工单材料费和工时费
     this.service.getCost(id).then(data => {
@@ -107,22 +105,19 @@ export class CheckoutComponent extends DataList<any> {
       this.billPrice = data.amount;
 
       if (data.deduceAmount) {
-        this.deduceAmount = data.deduceAmount+data.workReceivableCost-data.workHourCost;
+        this.deduceAmount = data.deduceAmount + data.workReceivableCost - data.workHourCost;
       } else {
-        this.deduceAmount=data.workReceivableCost-data.workHourCost 
+        this.deduceAmount = data.workReceivableCost - data.workHourCost
       }
     })
   }
   private billData = {};
   private billPrice;
-
   // 点击收银显示弹框
   OnCheckout(evt, amount, id, dialog) {
     evt.preventDefault();
-    console.log(this.payData)
     // 显示窗口
     this.payData.map(item => item.amount = "");
-    console.log(this.payData)
     dialog.show();
     this.billId = id;
     this.costMoney = amount;
@@ -151,7 +146,6 @@ export class CheckoutComponent extends DataList<any> {
         cost += item.amount * 100;
       })
     }
-    console.log(this.payPost);
     if (cost != this.costMoney) {
       this.alerter.error('输入金额与应收金额不符，请重新填写！', true, 3000);
     } else {
