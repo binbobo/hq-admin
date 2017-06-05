@@ -303,7 +303,7 @@
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
 
     <!--详情 begin-->
-    <div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div hqBsModal #lgModal="hq-bs-modal" class="modal fade" tabindex="-1" role="dialog">
       <div *ngIf="lgModal.isShown" class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">

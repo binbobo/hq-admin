@@ -7,14 +7,16 @@ import * as moment from 'moment';
 @Injectable()
 export class TotalValueService implements PagedService<TotalValue> {
 
-  getPagedList(params: PagedParams): Promise<PagedResult<TotalValue>> {
-    throw new Error("Method not implemented.");
+  getPagedList(params: TotalValueSearchParams): Promise<PagedResult<TotalValue>> {
+    let url = Urls.chain.concat('/Maintenances/TotalValue');
+    return this.httpService.getPagedList<TotalValue>(url, params)
+      .catch(err => Promise.reject(err => `获取产值汇总信息失败：${err}`));
   }
 
   getStationTreeView(): Promise<Array<TreeviewItem>> {
     const url = Urls.chain.concat('/Organizations');
     return this.httpService.getObject(url)
-      .then(data => [data].concat({name:'测试店铺',id:'1'},{name:'测试店铺1',id:'2'},{name:'测试店铺2',id:'3'},))
+      .then(data => [data])
       .then(arr => this.convertToTreeView(arr))
       .catch(err => Promise.reject(`获取门店列表失败：${err}`));
   }
@@ -37,17 +39,27 @@ export class TotalValueService implements PagedService<TotalValue> {
 }
 
 export class TotalValue {
+  public vehicleCount: number;
+  public averageProduction: number;
+  public totalValue: number;
+  public totalProductions: Array<TotalValueProduct>;
+  public chainTotalValueList: Array<{ date: string, vchicleCount: number, averageProduction: number, productions: Array<TotalValueProduct> }>;
+}
 
+export class TotalValueProduct {
+  public id: string;
+  public nameColumn: string;
+  public amount: number;
 }
 
 export class TotalValueSearchParams extends PagedParams {
   constructor(
-    public startTime?: string,
-    public endTime?: string,
-    public stations?: Array<string>
+    public startTimeDate?: string,
+    public endTimeDate?: string,
+    public orgIds?: Array<string>
   ) {
     super();
-    this.startTime = startTime || moment().subtract(30, 'd').format('YYYY-MM-DD');
-    this.endTime = endTime || moment().format('YYYY-MM-DD');
+    this.startTimeDate = startTimeDate || moment().subtract(30, 'd').format('YYYY-MM-DD');
+    this.endTimeDate = endTimeDate || moment().format('YYYY-MM-DD');
   }
 }

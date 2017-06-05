@@ -79,20 +79,17 @@ export class DistributeComponent implements OnInit {
     this.service.getOrderItemData(this.listId)
       .then(data => {
         this.serviceShow = false;
-        console.log(data)
         this.orderDetail = data;
         this.plateNo = data.plateNo;
         this.customerName = data.customerName;
         this.serviceData = data.serviceOutputs;
         this.productData = data.productOutputs;
         this.serviceData.forEach(element => {
-          console.log(this.serviceData)
           if(element.maintenanceEmployees.length>0){
             element.isable=true;
           }else{
             element.isable=false;
           }
-          console.log(this.serviceData)
         });
       }).catch(err => { this.alerter.error(err), this.serviceShow = false });
 
@@ -100,7 +97,6 @@ export class DistributeComponent implements OnInit {
     this.service.getMMList(this.billCode).toPromise()
       .then(data => {
         this.serialShow = false;
-        console.log(data)
         this.serialData = data;
         this.serialData.sort((a, b) => {
           return a.serialNum - b.serialNum
@@ -180,23 +176,18 @@ export class DistributeComponent implements OnInit {
     }
     let el = event.target as HTMLButtonElement;
     // el.disabled = true;
-    console.log(this.billData);
-    let postData = JSON.stringify(this.billData)
-    console.log(postData);
+    let postData = JSON.stringify(this.billData);
     this.service.postBill(postData).then((result) => {
-
-      console.log(result)
       this.suspendBill.refresh();
       this.generat = false;
       if (confirm('生成发料单成功！ 是否打印？')) {
         this.service.getPrintList(this.listId, this.billCode, result.data[0].serialNum).toPromise()
           .then(data => {
-            console.log(data)
             this.printList = data;
             setTimeout(() => { this.print() }, 1000);
             setTimeout(() => { this.printList = null }, 1200)
           })
-          .catch(err => console.log(err));
+          .catch(err => { this.alerter.error(err, true, 2000); this.generat = false; });
       }
 
       this.isablePrint = true;
@@ -214,7 +205,6 @@ export class DistributeComponent implements OnInit {
           checked: item.serialNum === num,
         };
       });
-      console.log(this.numberList)
       this.numberList.sort((a, b) => {
         return a.value - b.value
       });
@@ -239,7 +229,6 @@ export class DistributeComponent implements OnInit {
   // }
   hasList: any;
   onCreate(evt) {
-    console.log(evt);
     evt.price = evt.price;
     evt.amount = evt.amount;
 
@@ -275,10 +264,8 @@ export class DistributeComponent implements OnInit {
   }
   onConfirmNumber(evt) {
     this.SerialNumsList = evt.value;
-    console.log(this.SerialNumsList)
     this.service.getPrintList(this.listId, this.billCode, this.SerialNumsList).toPromise()
       .then(data => {
-        console.log(data)
         this.printList = data;
         setTimeout(() => { this.print(); }, 1000);
         setTimeout(() => { this.printList = null }, 1200)
@@ -297,7 +284,6 @@ export class DistributeComponent implements OnInit {
   private suspendData: any;
   private sunspendRequest: any;
   onSuspendSelect(item) {
-    console.log(item)
     this.sunspendRequest = JSON.parse(item.data);
     this.billCode = this.sunspendRequest["billCode"]
     this.listId = this.sunspendRequest["id"];
@@ -336,13 +322,10 @@ export class DistributeComponent implements OnInit {
     if (this.sunspendRequest) {
       Object.assign(this.suspendData, this.sunspendRequest);
     }
-    console.log(this.suspendData)
     if (!this.suspendData.billCode) {
       alert('请选择工单');
       return false;
-    }
-
-   
+    }   
     this.suspendBill.suspend(this.suspendData)
       .then(() => { this.alerter.success('挂单成功！'); this.initDetailOrder(); this.initValue = ""; })
       .then(() => this.suspendBill.refresh())

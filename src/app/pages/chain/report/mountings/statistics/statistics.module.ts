@@ -32,10 +32,10 @@ import { InvoicingService } from "app/pages/chain/report/mountings/statistics/in
 @NgModule({
   imports: [
     NguiDatetimePickerModule,
-    CommonModule,
+    TreeviewModule.forRoot(),
     StatisticsRoutingModule,
     ChainSharedModule,
-    SharedModule,
+    SharedModule.forRoot(),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
     TypeaheadModule.forRoot(),
@@ -46,7 +46,6 @@ import { InvoicingService } from "app/pages/chain/report/mountings/statistics/in
     FormsModule,
     ReactiveFormsModule,
     CustomFormsModule,
-    TreeviewModule.forRoot()
   ],
   declarations: [
       ProcurementComponent,

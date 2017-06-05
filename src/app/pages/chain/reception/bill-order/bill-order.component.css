@@ -80,4 +80,15 @@ max-width: 1000px;
 .fa{
   padding: 0 6px;
 }
-
+.bill-form .hq-col{
+    width: 100%;
+}
+.bill-form .hq-col .form-control{
+    width: 100%;
+    border-radius: .25rem;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+.bill-form .input-group-addon{
+    height: 38px;
+}

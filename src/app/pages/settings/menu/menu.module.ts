@@ -10,7 +10,7 @@ import { ClientService } from '../client/client.service';
 
 @NgModule({
   imports: [
-    SharedModule,
+    SharedModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
     MenuRoutingModule
