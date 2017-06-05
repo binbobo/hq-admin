@@ -314,7 +314,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             // 刷新页面
             this.load();
         }).catch(err => {
-            this.alerter.error(err, true, 30000);
+            this.alerter.error(err, true, 3000);
             this.generatingReset(type);
         });
     }
