@@ -300,7 +300,7 @@
       </table>
     </div>
     <br>
-    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    <hq-pagination [(itemsPerPage)]="size" [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
 
     <!--详情 begin-->
     <div hqBsModal #lgModal="hq-bs-modal" class="modal fade" tabindex="-1" role="dialog">

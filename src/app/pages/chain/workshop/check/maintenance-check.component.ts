@@ -167,7 +167,7 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
   load() {
     this.statistics = null;
 
-    this.params.setPage(1);
+    this.params.setPage(1, this.size);
     this.loadList().then((result: any) => {
       this.statistics = {};
       // 统计各种状态下面的工单数量
