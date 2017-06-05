@@ -1,8 +1,9 @@
 <div class="print card">
   <div class='card-block'>
     <div *ngFor="let item of data">
-      <div class="col-12"><span class="print-label">门店名称</span>：{{organizationInfo?.name}} <br>
-        <span class="print-label">发料单号：</span>{{item.billCode}} <span class="mr-3"></span><span class="print-label">流水号：</span>{{item.serialNum}} <span class="mr-3"></span><span class="print-label">车牌号：</span>{{item.plateNo}}
+      <div class="col-12">
+        <!--<span class="print-label">门店名称</span>：{{organizationInfo?.name}} <br>-->
+        <span class="print-label">领料单号：</span>{{item.billCode}} <span class="mr-3"></span><span class="print-label">流水号：</span>{{item.serialNum}} <span class="mr-3"></span><span class="print-label">车牌号：</span>{{item.plateNo}}
         <span class="mr-3"></span><span class="print-label">开单时间：</span>{{item.createBillDateTime|sDatetime}}</div>
         <br>
       <table class="table table-bordered">

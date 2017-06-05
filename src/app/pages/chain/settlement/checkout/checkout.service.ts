@@ -35,7 +35,6 @@ export class CheckOutService implements BasicService<any>{
         return this.httpService
             .get<PagedResult<OrderListSearch>>(url)
             .then(result => {
-                console.log('工单列表数据', result);
                 return result;
             })
             .catch(err => Promise.reject(`加载工单列表失败：${err}`));
@@ -78,7 +77,7 @@ export class CheckOutService implements BasicService<any>{
     }
     //    根据id获取结算单信息
     public getPrintDetail(id: string): Promise<any> {
-        const url = Urls.chain.concat('/Settlements/PrintDetail/', id);
+        const url = Urls.chain.concat('/Settlements/Details/', id);
         return this.httpService
             .get<ApiResult<any>>(url)
             .then(result => result.data)

@@ -38,11 +38,9 @@ export class AppendOrderService implements BasicService<any> {
   // 有分页的
   // public getPagedList(params: PagedParams): Promise<PagedResult<DetailData>> {
   //   const url = Urls.chain.concat('/Maintenances/', params.serialize());
-  //   console.log(url)
   //   return this.httpService
   //     .get<PagedResult<DetailData>>(url)
   //     .then(result => {
-  //       console.log('工单列表数据', result);
   //       return result;
   //     })
   //     .catch(err => Promise.reject(`加载工单列表失败：${err}`));

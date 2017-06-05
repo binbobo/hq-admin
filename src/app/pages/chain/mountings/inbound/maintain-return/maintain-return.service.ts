@@ -30,7 +30,6 @@ export class MaintainReturnService implements BasicService<any>{
         return this.httpService
             .get<PagedResult<any>>(url)
             .then(result => {
-                console.log('工单列表数据', result);
                 return result;
             })
             .catch(err => Promise.reject(`列表失败：${err}`));
@@ -81,7 +80,6 @@ export class MaintainReturnService implements BasicService<any>{
                 }
             })
             .map(response => {
-                console.log(response.json())
                 return response.json().data as any[];
             });
     }

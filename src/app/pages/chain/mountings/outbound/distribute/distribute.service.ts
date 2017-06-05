@@ -30,7 +30,6 @@ export class DistributeService implements BasicService<any>{
         return this.httpService
             .get<PagedResult<any>>(url)
             .then(result => {
-                console.log('工单列表数据', result);
                 return result;
             })
             .catch(err => Promise.reject(`列表失败：${err}`));
@@ -39,7 +38,6 @@ export class DistributeService implements BasicService<any>{
     getOrderPageData(params: DistributeRequest): Promise<PagedResult<SearchReturnData>> {
         let search = params.serialize();
         const url = Urls.chain.concat('/Maintenances/Material');
-        console.log(url, search);
         return this.httpService
             .get<PagedResult<SearchReturnData>>(url, search)
     }
@@ -95,7 +93,6 @@ export class DistributeService implements BasicService<any>{
     //     return this.httpService
     //         .get<ApiResult<any>>(url)
     //         .then(result => {
-    //             console.log(result.data)
     //             return result.data
     //         })
     //         .then(data => data || Promise.reject('获取数据无效！'))
