@@ -5,7 +5,8 @@
     <form (ngSubmit)="onSearch()" class="form-inline mb-2">
       <div class="input-group m-1">
         <span class="input-group-addon">车牌号</span>
-        <input [(ngModel)]="params.plateNo" hqPlateNoTypeahead class="form-control" name="plateNo" id="plateNo" type="text" placeholder="请输入车牌号"/>
+        <input [(ngModel)]="params.plateNo" hqPlateNoTypeahead class="form-control" name="plateNo" id="plateNo" type="text" placeholder="请输入车牌号"
+        />
       </div>
       <div class="input-group m-1">
         <span class="input-group-addon">进厂时间</span>
@@ -28,15 +29,15 @@
       <div class="input-group m-1">
         <label class="input-group-addon">服务顾问</label>
         <!--<div class=".hq-col">-->
-          <ngx-dropdown-treeview [items]="nameItems" (selectedChange)="onSearchNameChange($event)">
-          </ngx-dropdown-treeview>
+        <ngx-dropdown-treeview [items]="nameItems" (selectedChange)="onSearchNameChange($event)">
+        </ngx-dropdown-treeview>
         <!--</div>-->
       </div>
       <div *ngIf="items" class="input-group m-1">
         <label class="input-group-addon">查询范围</label>
         <!--<div class="hq-col">-->
-          <ngx-dropdown-treeview [items]="items" (selectedChange)="onSearchRangeChange($event)">
-          </ngx-dropdown-treeview>
+        <ngx-dropdown-treeview [items]="items" (selectedChange)="onSearchRangeChange($event)">
+        </ngx-dropdown-treeview>
         <!--</div>-->
       </div>
       <div class="input-group m-1">
@@ -91,7 +92,7 @@
         </tbody>
         <tfoot *ngIf="list?.length <= 0">
           <tr>
-            <td colspan="19">查询结果为空</td>
+            <td colspan="19">系统未找到相关内容</td>
           </tr>
         </tfoot>
       </table>
@@ -269,6 +270,11 @@
                   <td>{{item.description}}</td>
                 </tr>
               </tbody>
+              <tfoot *ngIf="businessData?.totalCost?.length <= 0">
+                <tr>
+                  <td colspan="4">系统未找到相关内容</td>
+                </tr>
+              </tfoot>
             </table>
             <div class="row">
               <div class="col-4">
@@ -311,6 +317,11 @@
                   <td>{{item.description}}</td>
                 </tr>
               </tbody>
+              <tfoot *ngIf="businessData?.workHours?.length <= 0">
+                <tr>
+                  <td colspan="7">系统未找到相关内容</td>
+                </tr>
+              </tfoot>
             </table>
             <div class="row">
               <div class="col-4">
@@ -330,7 +341,7 @@
           <br>
           <div class="card-block">
             <table class="table table-bordered">
-              <caption>表三：材料明细</caption>
+              <caption>表二：材料明细</caption>
               <thead>
                 <tr>
                   <th width="50">序号</th>
@@ -351,14 +362,15 @@
                   <td>{{item.description}}</td>
                 </tr>
               </tbody>
+              <tfoot *ngIf="businessData?.matereialDetails?.length <= 0">
+                <tr>
+                  <td colspan="6">系统未找到相关内容</td>
+                </tr>
+              </tfoot>
             </table>
             <div class="row">
-              <div class="col-4">
-                <!--<label>合计：</label>-->
-              </div>
-              <div class="col-4">
-                <!--<label>合计：</label>-->
-              </div>
+              <div class="col-4"> </div>
+              <div class="col-4"></div>
               <div class="col-4">
                 <label>应收金额：</label>
                 <span>{{moneyObj?.amountReceivable3|centToYuan}}</span>
@@ -366,42 +378,47 @@
             </div>
           </div>
           <br>
-          <div *ngIf="businessData?.appendItems.length" class="card-block">
-            <table class="table table-bordered">
-              <caption>表四：附加项目</caption>
-              <thead>
-                <tr>
-                  <th width="50">序号</th>
-                  <th>项目内容</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of businessData?.appendItems;let index=index">
-                  <td>{{index+1}}</td>
-                  <td>{{item.name}}</td>
-                </tr>
-              </tbody>
-            </table>
+          <div *ngIf="businessData?.appendItems&&businessData?.appendItems.length>0">
+            <div class="card-block">
+              <table class="table table-bordered">
+                <caption>表三：附加项目</caption>
+                <thead>
+                  <tr>
+                    <th width="50">序号</th>
+                    <th>项目内容</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of businessData?.appendItems;let index=index">
+                    <td>{{index+1}}</td>
+                    <td>{{item.name}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <br>
           </div>
-          <br>
-          <div *ngIf="businessData?.adviceItems.length" class="card-block">
-            <table class="table table-bordered">
-              <caption>表五：建议维修项</caption>
-              <thead>
-                <tr>
-                  <th width="50">序号</th>
-                  <th>建议维修项目</th>
-                  <th>备注</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of businessData?.adviceItems;let index=index">
-                  <td>{{index+1}}</td>
-                  <td>{{item.content}}</td>
-                  <td>{{item.description}}</td>
-                </tr>
-              </tbody>
-            </table>
+          <div *ngIf="businessData?.adviceItems&&businessData?.adviceItems.length>0">
+            <div class="card-block">
+              <table class="table table-bordered">
+                <caption>表四：建议维修项</caption>
+                <thead>
+                  <tr>
+                    <th width="50">序号</th>
+                    <th>建议维修项目</th>
+                    <th>备注</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of businessData?.adviceItems;let index=index">
+                    <td>{{index+1}}</td>
+                    <td>{{item.content}}</td>
+                    <td>{{item.description}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <br>
           </div>
           <div class="card-footer text-center">
             <button (click)="print()" type="button" class="btn btn-export">打印</button>
