@@ -30,10 +30,10 @@
     <div class="input-group" id="total-statistics">
       <span class="input-group-addon">统计</span>
       <div class="form-control mr-0">
-        <div><label>进厂台次：</label>{{result?.data?.vehicleCount}}</div>
-        <div><label>平均单产：</label>{{result?.data?.averageProduction}}</div>
-        <div><label>产值合计：</label>{{result?.data?.totalValue}}</div>
-        <div *ngFor="let item of result?.data?.totalProductions"><label>{{item.nameColumn}}：</label>{{item.amount|number:'1.2-2'}}</div>
+        <div><label>进厂台次：</label>{{result?.vehicleCount}}</div>
+        <div><label>平均单产：</label>{{result?.averageProduction|number:'1.2-2'}}</div>
+        <div><label>产值合计：</label>{{result?.totalValue|number:'1.2-2'}}</div>
+        <div *ngFor="let item of result?.totalProductions"><label>{{item.nameColumn}}：</label>{{item.amount|number:'1.2-2'}}</div>
       </div>
     </div>
     <div class="table-container">
@@ -46,11 +46,11 @@
             <th colspan="6">产值</th>
           </tr>
           <tr>
-            <th *ngFor="let item of result?.data?.totalProductions">{{item.nameColumn}}</th>
+            <th *ngFor="let item of result?.totalProductions">{{item.nameColumn}}</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of result?.data?.chainTotalValueList">
+          <tr *ngFor="let item of list">
             <td class="text-center">{{item.date|sDatetime}}</td>
             <td class="text-center">{{item.vehicleCount}}</td>
             <td class="text-right">{{item.averageProduction|number:'1.2-2'}}</td>

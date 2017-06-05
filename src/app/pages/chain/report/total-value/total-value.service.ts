@@ -10,7 +10,7 @@ export class TotalValueService implements PagedService<TotalValue> {
   getPagedList(params: TotalValueSearchParams): Promise<PagedResult<TotalValue>> {
     let url = Urls.chain.concat('/Maintenances/TotalValue');
     return this.httpService.getPagedList<TotalValue>(url, params)
-      .catch(err => Promise.reject(err => `获取产值汇总信息失败：${err}`));
+      .catch(err => Promise.reject(`获取产值汇总信息失败：${err}`));
   }
 
   getStationTreeView(): Promise<Array<TreeviewItem>> {
@@ -38,12 +38,18 @@ export class TotalValueService implements PagedService<TotalValue> {
 
 }
 
-export class TotalValue {
+export class TotalValueResult extends PagedResult<any>{
   public vehicleCount: number;
   public averageProduction: number;
   public totalValue: number;
   public totalProductions: Array<TotalValueProduct>;
-  public chainTotalValueList: Array<{ date: string, vchicleCount: number, averageProduction: number, productions: Array<TotalValueProduct> }>;
+}
+
+export class TotalValue {
+  public date: string;
+  public vchicleCount: number;
+  public averageProduction: number;
+  public productions: Array<TotalValueProduct>;
 }
 
 export class TotalValueProduct {
