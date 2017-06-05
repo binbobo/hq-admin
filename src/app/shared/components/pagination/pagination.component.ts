@@ -20,6 +20,7 @@ export class PaginationComponent {
   @Output() numPages = new EventEmitter<any>();
   @Output() pageChanged = new EventEmitter<any>();
   @Output() currentPageChange = new EventEmitter<number>();
+  @Output() itemsPerPageChange = new EventEmitter<number>();
 
   constructor() { }
 
@@ -48,6 +49,7 @@ export class PaginationComponent {
     let value = parseInt(ele.value);
     if (isNaN(value)) return;
     this.itemsPerPage = value;
+    this.itemsPerPageChange.emit(value);
     this.pageChanged.emit({ page: this.currentPage, itemsPerPage: value });
   }
 
