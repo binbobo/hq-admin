@@ -28,17 +28,13 @@
       </div>
       <div class="input-group m-1">
         <label class="input-group-addon">服务顾问</label>
-        <!--<div class=".hq-col">-->
         <ngx-dropdown-treeview [items]="nameItems" (selectedChange)="onSearchNameChange($event)">
         </ngx-dropdown-treeview>
-        <!--</div>-->
       </div>
       <div *ngIf="items" class="input-group m-1">
         <label class="input-group-addon">查询范围</label>
-        <!--<div class="hq-col">-->
         <ngx-dropdown-treeview [items]="items" (selectedChange)="onSearchRangeChange($event)">
         </ngx-dropdown-treeview>
-        <!--</div>-->
       </div>
       <div class="input-group m-1">
         <button type="submit" class="btn btn-primary">查询</button>
@@ -116,88 +112,6 @@
       </div>
       <div class="modal-body">
         <div class="card">
-          <!--<div class="card-block">-->
-          <!--<hr>
-            <div class="row">
-              <div class="col-4">
-                <label>车牌号: </label>
-                <span>{{businessData?.plateNo}}</span>
-              </div>
-              <div class="col-4">
-                <label>车型描述: </label>
-                <span>{{businessData?.model}}</span>
-              </div>
-              <div class="col-4">
-                <label>VIN: </label>
-                <span>{{businessData?.vin}}</span>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-4">
-                <label>送修人: </label>
-                <span>{{businessData?.contactUser}}</span>
-              </div>
-              <div class="col-4">
-                <label>送修人手机: </label>
-                <span>{{businessData?.contactInfo}}</span>
-              </div>
-              <div class="col-4">
-                <label>结算单号: </label>
-                <span>{{businessData?.settlementCode}}</span>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-4">
-                <label>工单号: </label>
-                <span>{{businessData?.billCode}}</span>
-              </div>
-              <div class="col-4">
-                <label>结算员: </label>
-                <span>{{businessData?.updateUser}}</span>
-              </div>
-              <div class="col-4">
-                <label>结算时间: </label>
-                <span>{{businessData?.updateOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</span>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-4">
-                <label>结算方: </label>
-                <span>{{businessData?.settlementParty}}</span>
-              </div>
-              <div class="col-4">
-                <label>服务顾问: </label>
-                <span>{{businessData?.createdUserName}}</span>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-4">
-                <label>维修类型: </label>
-                <span>{{businessData?.typeName}}</span>
-              </div>
-              <div class="col-4">
-                <label>进店时间: </label>
-                <span>{{businessData?.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</span>
-              </div>
-              <div class="col-4">
-                <label>进店里程: </label>
-                <span>{{businessData?.mileage}}</span>
-                <span class="ml-2" *ngIf="businessData.mileage">KM</span>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-4">
-                <label>出厂时间: </label>
-                <span>{{businessData?.updateOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</span>
-              </div>
-              <div class="col-4">
-                <label>出厂里程: </label>
-                <span>{{businessData?.leaveMileage}}</span>
-                <span class="ml-2" *ngIf="businessData.leaveMileage">KM</span>
-              </div>
-            </div>
-            <hr>-->
           <table class="table table-order-info table-bordered">
             <tbody>
               <tr>
@@ -250,7 +164,6 @@
               </tr>
             </tbody>
           </table>
-          <!--</div>-->
           <div class="card-block">
             <table class="table table-bordered">
               <caption>收费结算单</caption>

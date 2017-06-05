@@ -61,35 +61,3 @@ h5{
     font-size: 0.875rem;
     /*white-space: normal; */
 }
-/*
-.modal-body{
-    padding-top: 0;
-}
-
-.modal-body .card-block {
-    border: 1px solid #333333;
-    font-weight: 400;
-}
-.modal-body .clearborder{
-    border: none;
-    padding-top: 0;
-    font-size: 12px;
-}
-.modal-body .card-block label {
-    width: 70px;
-}
-.modal-body .clearborder label{
-    text-align: right;
-}
-.modal-body caption{
-    font-weight: 700;
-    caption-side: top;
-}
-.modal-body hr {
-    border-top: 2px solid #333333;
-}
-.modal-body th,.modal-body td {
-    padding: 0.25rem;
-    text-align: center;
-    white-space: normal; 
-}*/
