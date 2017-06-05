@@ -4,12 +4,12 @@
     <span>产值汇总</span>
   </div>
   <div class="card-block">
-    <form class="form-inline mb-2" (ngSubmit)="onSearch()">
+    <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
       <div class="input-group my-1 mr-1">
         <span class="input-group-addon">查询日期</span>
-        <input class="form-control" [(ngModel)]="params.startTime" name="startTime" date-only="true" ngui-datetime-picker/>
+        <input class="form-control" [(ngModel)]="params.startTimeDate" name="startTimeDate" date-only="true" ngui-datetime-picker/>
         <span class="input-group-addon">-</span>
-        <input class="form-control" [(ngModel)]="params.endTime" name="endTime" date-only="true" ngui-datetime-picker/>
+        <input class="form-control" [(ngModel)]="params.endTimeDate" name="endTimeDate" date-only="true" ngui-datetime-picker/>
       </div>
       <div class="input-group m-1" *ngIf="stations">
         <span class="input-group-addon">门店查询</span>
@@ -30,14 +30,10 @@
     <div class="input-group" id="total-statistics">
       <span class="input-group-addon">统计</span>
       <div class="form-control mr-0">
-        <div><label>进厂台次：</label>372</div>
-        <div><label>平均单产：</label>372</div>
-        <div><label>产值合计：</label>372</div>
-        <div><label>机修：</label>372</div>
-        <div><label>钣喷：</label>372</div>
-        <div><label>洗车：</label>372</div>
-        <div><label>配件：</label>372</div>
-        <div><label>销售部：</label>372</div>
+        <div><label>进厂台次：</label>{{result?.data?.vehicleCount}}</div>
+        <div><label>平均单产：</label>{{result?.data?.averageProduction}}</div>
+        <div><label>产值合计：</label>{{result?.data?.totalValue}}</div>
+        <div *ngFor="let item of result?.data?.totalProductions"><label>{{item.nameColumn}}：</label>{{item.amount|number:'1.2-2'}}</div>
       </div>
     </div>
     <div class="table-container">
@@ -45,59 +41,27 @@
         <thead>
           <tr>
             <th rowspan="2" class="align-middle">日期</th>
-            <th rowspan="2" class="align-middle">进场台次</th>
+            <th rowspan="2" class="align-middle">进厂台次</th>
             <th rowspan="2" class="align-middle">平均单产</th>
             <th colspan="6">产值</th>
           </tr>
           <tr>
-            <th>机修</th>
-            <th>钣喷</th>
-            <th>洗车</th>
-            <th>美容/精品</th>
-            <th>配件</th>
-            <th>合计</th>
+            <th *ngFor="let item of result?.data?.totalProductions">{{item.nameColumn}}</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="text-center">2017-5-31</td>
-            <td class="text-center">186</td>
-            <td class="text-right">9876.00</td>
-            <td class="text-right">150.00</td>
-            <td class="text-right">150.00</td>
-            <td class="text-right">150.00</td>
-            <td class="text-right">150.00</td>
-            <td class="text-right">150.00</td>
-            <td class="text-right">400.00</td>
-          </tr>
-          <tr>
-            <td class="text-center">2017-5-31</td>
-            <td class="text-center">186</td>
-            <td class="text-right">9876.00</td>
-            <td class="text-right">150.00</td>
-            <td class="text-right">150.00</td>
-            <td class="text-right">150.00</td>
-            <td class="text-right">150.00</td>
-            <td class="text-right">150.00</td>
-            <td class="text-right">400.00</td>
-          </tr>
-          <tr *ngFor="let item of list">
-            <td class="text-center">{{item.status?'启用':'停用'}}</td>
-            <td class="text-center">{{item.name}}</td>
-            <td class="text-right">{{item.shortName}}</td>
-            <td class="text-right">{{item.contactUser}}</td>
-            <td class="text-right">{{item.tel}}</td>
-            <td class="text-right">{{item.fax}}</td>
-            <td class="text-right">{{item.address}}</td>
-            <td class="text-right">{{item.postal}}</td>
-            <td class="text-right">{{item.description}}</td>
+          <tr *ngFor="let item of result?.data?.chainTotalValueList">
+            <td class="text-center">{{item.date|sDatetime}}</td>
+            <td class="text-center">{{item.vehicleCount}}</td>
+            <td class="text-right">{{item.averageProduction|number:'1.2-2'}}</td>
+            <td class="text-right" *ngFor="let item of item.productions">{{item.amount|number:'1.2-2'}}</td>
           </tr>
         </tbody>
       </table>
     </div>
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
-  <div class="card-footer text-center">
+  <div class="d-none card-footer text-center">
     <button class="btn btn-primary" (click)="export()">导出</button>
   </div>
 </div>

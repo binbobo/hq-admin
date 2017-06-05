@@ -14,9 +14,9 @@ import { OrderService } from "app/pages/chain/reception/order.service";
 
 @NgModule({
   imports: [
-    SharedModule,
-    ChainSharedModule,
     TreeviewModule.forRoot(),
+    SharedModule.forRoot(),
+    ChainSharedModule,
     CollapseModule.forRoot(),
     TabsModule.forRoot(),
     PopoverModule.forRoot(),

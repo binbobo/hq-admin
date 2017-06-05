@@ -14,7 +14,7 @@ import { ChainSharedModule } from '../chain-shared/chain-shared.module';
 @NgModule({
   imports: [
     CustomerRoutingModule,
-    SharedModule,
+    SharedModule.forRoot(),
     ReactiveFormsModule,
     TabsModule.forRoot(),
     AlertModule.forRoot(),

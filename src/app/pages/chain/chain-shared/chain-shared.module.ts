@@ -25,7 +25,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 
 @NgModule({
   imports: [
-    SharedModule,
+    SharedModule.forRoot(),
     PopoverModule.forRoot(),
     BsDropdownModule.forRoot(),
     TabsModule.forRoot()

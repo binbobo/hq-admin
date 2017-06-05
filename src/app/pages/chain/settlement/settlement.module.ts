@@ -26,7 +26,7 @@ import { CheckoutPrintDetailComponent } from './checkout/checkout-print-detail/c
     TypeaheadModule.forRoot(),
     ModalModule.forRoot(),
     SettlementRoutingModule,
-    SharedModule,
+    SharedModule.forRoot(),
     Ng2SmartTableModule,
     ReactiveFormsModule,
     NguiDatetimePickerModule
