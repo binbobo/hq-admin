@@ -5,13 +5,13 @@
   </div>
   <!--填写车主信息表单-->
   <div class="card-block">
-    <form [formGroup]="carOwnerForm" autocomplete="off" (ngSubmit)="addCarOwner()">
+    <form [formGroup]="carOwnerForm" autocomplete="off">
       <div class="form-group row">
         <div class="hq-input">
           <label for="phone" class="form-label"><span class="asterisk mr-1">*</span>手机号</label>
           <div class="hq-col">
             <input label="手机号" [hqCustomerTypeahead]="'phone'" (onSelect)="onCustomerPhoneSelect($event)" type="text" maxlength="11"
-              class="form-control" formControlName="phone" >
+              class="form-control" formControlName="phone">
           </div>
         </div>
         <div class="hq-input">
@@ -63,7 +63,7 @@
         <div class="hq-input">
           <label for="email" class="form-label">Email</label>
           <div class="hq-col">
-            <input maxlength="18" label="电子邮箱" type="text" class="form-control" formControlName="email" id="email" >
+            <input maxlength="18" label="电子邮箱" type="text" class="form-control" formControlName="email" id="email">
           </div>
         </div>
       </div>
@@ -101,68 +101,16 @@
         <div class="hq-input" style="width:75%">
           <label for="address" class="form-label">详细地址</label>
           <div class="hq-col">
-            <input maxlength="25" type="text" class="form-control form-control" formControlName="address"  id="address">
+            <input maxlength="25" type="text" class="form-control form-control" formControlName="address" id="address">
           </div>
         </div>
       </div>
     </form>
     <br>
-    <tabset>
-      <tab>
-        <template tabHeading>
-          <i class="fa fa-car mr-2" aria-hidden="true"></i>车辆信息
-        </template>
-        <div class="table-container">
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th>操作</th>
-                <th>车牌号</th>
-                <th>品牌</th>
-                <th>车系</th>
-                <th>车型</th>
-                <th>VIN</th>
-                <th>发动机号</th>
-                <th>车身颜色</th>
-                <th>购车日期</th>
-                <th>验车日期</th>
-                <th>保险到期日期</th>
-                <th>保险公司</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let vehicle of newVehiclesData">
-                <td>
-                  <!--更新车主信息的时候才显示编辑操作 编辑的时候 有车辆id  添加的时候木有-->
-                  <button type="button" class="btn btn-sm btn-success" (click)="selectedVehicle=vehicle;vehicleModal.show();">编辑</button>
-                  <!--<button type="button" class="btn btn-sm btn-danger" (click)="onDelVehicleConfirmHandler(vehicle.plateNo)">删除</button>-->
-                </td>
-                <td>{{vehicle.plateNo}}</td>
-                <td>{{vehicle.brand}}</td>
-                <td>{{vehicle.series}}</td>
-                <td>{{vehicle.vehicleName}}</td>
-                <td>{{vehicle.vin}}</td>
-                <td>{{vehicle.engineNo}}</td>
-                <td>{{vehicle.vehicleColor}}</td>
-                <td>{{vehicle.purchaseDate|sDate}}</td>
-                <td>{{vehicle.validate|sDate}}</td>
-                <td>{{vehicle.insuranceDue|sDate}}</td>
-                <td>{{vehicle.insuranceCompany}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <br>
-        <div class="text-center">
-          <button class="btn btn-secondary btn-add" (click)="vehicleModal.show();">
-          <i class="fa fa-plus-circle mr-1" aria-hidden="true"></i>
-            新增车辆
-            </button>
-        </div>
-      </tab>
-    </tabset>
+    <!--(delClick)="onDelVehicleConfirmHandler($event)"-->
+    <hq-vehicle-add [data]="newVehiclesData" (addClick)="vehicleModal.show();" (editClick)="selectedVehicle=$event;vehicleModal.show();"></hq-vehicle-add>
     <hr>
-    <div style="text-align:center">
+    <div class="text-center">
       <button [hqSpinner]="generating" type="button" class="btn btn-primary" [disabled]="!enableSaveCustomer" (click)="saveCustomer()">保存车主信息</button>
       <button type="button" class="btn btn-secondary" [disabled]="false" (click)="goBack()">返回车主列表</button>
     </div>

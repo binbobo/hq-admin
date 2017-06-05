@@ -35,21 +35,9 @@ export class BusinessListComponent extends DataList<any> {
 
   // 用于查询范围ngx-treeview组件
   public items: TreeviewItem[];
-  public config: TreeviewConfig = {
-    isShowAllCheckBox: true,
-    isShowFilter: true,
-    isShowCollapseExpand: true,
-    maxHeight: 500
-  };
 
   // 用于服务顾问ngx-treeview组件
   public nameItems: TreeviewItem[];
-  public nameConfig: TreeviewConfig = {
-    isShowAllCheckBox: true,
-    isShowFilter: true,
-    isShowCollapseExpand: false,
-    maxHeight: 500
-  };
 
   constructor(
     injector: Injector,

@@ -93,17 +93,14 @@ export class AppendOrderComponent {
     this.listId = $event.id;
     this.workHourFee = 0;
     this.sumFee = 0;
-    console.log($event);
     this.suspendData = $event;
     this.service1.get(this.listId)
       .then(data => {
-        console.log(data)
         this.SearchappendList = data;
         this.maintenanceId = data.id;
         //维修项目
         this.maintenanceProjectData = data.serviceOutputs;
         this.suspendData.maintenanceProjectData = this.maintenanceProjectData;
-        console.log(this.maintenanceProjectData);
         (this.maintenanceProjectData).forEach((item, index) => {
           this.workHourFee += Number(item.price) * Number(item.workHour);
           this.sumFee += Number(item.amount);
@@ -155,7 +152,6 @@ export class AppendOrderComponent {
 
 
   submitAddOrder() {
-    console.log(this.newMaintenanceItemData);
     this.isableAppend = false;
 
     this.newSuggestData.forEach(item => {
@@ -169,10 +165,7 @@ export class AppendOrderComponent {
       suspendedBillId: this.suspendedBillId
     };
 
-    console.log(postData);
-    let dada = JSON.stringify(postData);
-    console.log(dada);
-
+    // let dada = JSON.stringify(postData);
     this.service1.put(postData, this.listId).then((result) => {
       this.isableAppend = false;
       let returnData = result.data;
@@ -216,8 +209,6 @@ export class AppendOrderComponent {
   }
 
   onConfirmNewMaintenanceItem(evt, addModal) {
-    console.log('新增的维修项目数据为：', evt);
-
     // 获取维修项目数据
     let data = evt.data;
     data.type = 3;
@@ -242,9 +233,7 @@ export class AppendOrderComponent {
     } else {
       // 新增
       this.newMaintenanceItemData.push(data);
-      console.log(data)
       // 费用计算
-
       this.workHourFee += Number(data.price) * Number(data.workHour);
       this.sumFee += Number(data.amount);
 
@@ -309,9 +298,7 @@ export class AppendOrderComponent {
     } else {
       // 新增
       this.newAttachData.push(evt);
-
     }
-
     if (this.newMaintenanceItemData.length > 0 || this.newAttachData.length > 0 || this.newSuggestData.length > 0) {
       this.isableAppend = true;
       this.isableSuspend = true;
@@ -324,15 +311,12 @@ export class AppendOrderComponent {
 
   onAttachEdit(evt, addModal, item) {
     evt.preventDefault();
-
     this.selectedAttachItem = item;
-
     // 显示窗口
     addModal.show();
   }
   // 从表格中删除一条添加的附加项目事件处理程序
   onDelAttachItem(i) {
-    console.log(i);
     this.newAttachData.splice(i, 1);
     if (this.newMaintenanceItemData.length > 0 || this.newAttachData.length > 0 || this.newSuggestData.length > 0) {
       this.isableAppend = true;
@@ -363,9 +347,7 @@ export class AppendOrderComponent {
 
 
   onConfirmNewSuggestItem(evt, addModal) {
-    console.log('新增的建议维修项目数据为：', evt);
     evt.maintenanceId = this.maintenanceId;
-
     if (!this.newSuggestData) {
       this.newSuggestData = []
     }
@@ -420,7 +402,6 @@ export class AppendOrderComponent {
     }
     this.suspendData.newSuggestData = this.newSuggestData;
   }
-
   private getSelectedSuggestServices() {
     return (this.newSuggestData.concat(this.newMaintenanceItemData, this.maintenanceProjectData)).map(item => {
       return {
@@ -429,9 +410,6 @@ export class AppendOrderComponent {
       };
     });
   }
-
-
-
   get columns() {
     return [
       { name: 'billCode', title: '工单号' },
@@ -445,7 +423,6 @@ export class AppendOrderComponent {
     this.isShowAppend = true;
     this.isableAppend = true;
     this.isableSuspend = true;
-    console.log(item)
     this.sunspendRequest = JSON.parse(item.data);
     this.suspendedBillId = item.id;
     this.SearchappendList = this.sunspendRequest;
@@ -460,7 +437,6 @@ export class AppendOrderComponent {
     this.newSuggestData = this.sunspendRequest["newSuggestData"] ? this.sunspendRequest["newSuggestData"] : [];
     this.newAttachData = this.sunspendRequest["newAttachData"] ? this.sunspendRequest["newAttachData"] : [];
     this.newMaintenanceItemData = this.sunspendRequest["newMaintenanceItemData"] ? this.sunspendRequest["newMaintenanceItemData"] : [];
-
   }
   suspendData = {
     maintenanceProjectData: [],
@@ -486,12 +462,10 @@ export class AppendOrderComponent {
       alert('请选择工单');
       return false;
     }
-    console.log(this.suspendData);
     // let el = event.target as HTMLButtonElement;
     // el.disabled = true;
     this.suspendBill.suspend(this.suspendData)
       // .then(() => el.disabled = false)
-
       .then(() => { this.alerter.success('挂单成功！'); this.initOrderData(); this.initValue = "" })
       .then(() => this.suspendBill.refresh())
       .catch(err => {
@@ -499,17 +473,13 @@ export class AppendOrderComponent {
         this.alerter.error(err);
       })
   }
-
   initOrderData() {
-
     this.isShowAppend = false;
     this.isableAppend = false;
     this.isableSuspend = false;
-
     // 重置费用
     this.workHourFee = 0;
     this.sumFee = 0;
-
     // 清空上次维修工单数据
     this.maintenanceProjectData = [],
       this.attachServiceOutputs = [],
