@@ -1,4 +1,4 @@
-import { Directive, ViewContainerRef, ComponentFactoryResolver, Input } from '@angular/core';
+import { Directive, Input, Injector } from '@angular/core';
 import { TableTypeaheadDirective, TableTypeaheadColumn, TypeaheadRequestParams } from 'app/shared/directives';
 import { HttpService, Urls } from 'app/shared/services';
 import { PagedParams, SelectOption } from 'app/shared/models';
@@ -9,15 +9,14 @@ import { PagedParams, SelectOption } from 'app/shared/models';
 export class InventoryProductTypeaheadDirective extends TableTypeaheadDirective {
 
   constructor(
-    protected viewContainerRef: ViewContainerRef,
-    protected componentFactoryResolver: ComponentFactoryResolver,
+    injector: Injector,
     protected httpService: HttpService,
   ) {
-    super(viewContainerRef, componentFactoryResolver);
+    super(injector);
   }
 
   @Input("hqInventoryProductTypeahead")
-  protected filed: string;
+  protected field: string;
 
   protected columns = [
     { name: 'brandName', title: '品牌' },
@@ -28,10 +27,10 @@ export class InventoryProductTypeaheadDirective extends TableTypeaheadDirective 
   ] as Array<TableTypeaheadColumn>;
 
   ngOnInit() {
-    this.filed = this.filed || 'name';
+    this.field = this.field || 'name';
     this.source = (params: TypeaheadRequestParams) => {
       let request = new PagedParams();
-      request[this.filed] = params.text;
+      request[this.field] = params.text;
       request.setPage(params.pageIndex, params.pageSize);
       let url = Urls.chain.concat('/Products/SearchProducts');
       return this.httpService.getPagedList<any>(url, request)
@@ -40,8 +39,8 @@ export class InventoryProductTypeaheadDirective extends TableTypeaheadDirective 
           return result;
         })
     };
-    this.filed === 'code' && (this.columns[1].weight = 1);
-    this.filed === 'name' && (this.columns[3].weight = 1);
+    this.field === 'code' && (this.columns[1].selected = true);
+    this.field === 'name' && (this.columns[3].selected = true);
     super.ngOnInit();
   }
 

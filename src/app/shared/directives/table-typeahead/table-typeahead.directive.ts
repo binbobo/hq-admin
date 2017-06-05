@@ -1,4 +1,4 @@
-import { Directive, ViewContainerRef, ComponentFactoryResolver, Input, EventEmitter, Output, OnInit, HostListener, Component, ComponentRef, Injector, TemplateRef, Optional } from '@angular/core';
+import { Directive, ViewContainerRef, ComponentFactoryResolver, Input, EventEmitter, Output, OnInit, HostListener, Component, ComponentRef, Injector, TemplateRef, Optional, ElementRef } from '@angular/core';
 import { TableTypeaheadComponent } from './table-typeahead.component';
 import { PagedResult, PagedParams } from 'app/shared/models';
 import { Observable } from 'rxjs/Observable';
@@ -6,6 +6,7 @@ import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/debounceTime';
 import { FormControlName, NgModel, FormControl } from '@angular/forms';
+import { inject } from '@angular/core/testing';
 @Directive({
   selector: '[hqTableTypeahead]',
   exportAs: 'hq-table-typeahead'
@@ -34,7 +35,7 @@ export class TableTypeaheadDirective implements OnInit {
   @Output()
   protected onSelect = new EventEmitter<any>();
   @Input()
-  protected filed: string;
+  protected selectedField: string;
 
   private el: HTMLInputElement;
   private componentRef: ComponentRef<TableTypeaheadComponent>;
@@ -42,16 +43,29 @@ export class TableTypeaheadDirective implements OnInit {
   private statusElement: HTMLElement;
   private control: FormControl;
 
+  protected viewContainerRef: ViewContainerRef;
+  protected componentFactoryResolver: ComponentFactoryResolver
+
   constructor(
-    protected viewContainerRef: ViewContainerRef,
-    protected componentFactoryResolver: ComponentFactoryResolver,
-    @Optional()
-    protected formControlName?: FormControlName,
-    @Optional()
-    protected ngModel?: NgModel,
+    private injector: Injector,
   ) {
+    this.viewContainerRef = this.injector.get(ViewContainerRef);
+    this.componentFactoryResolver = this.injector.get(ComponentFactoryResolver);
     this.el = this.viewContainerRef.element.nativeElement;
   }
+
+  ngOnInit(): void {
+    if (!this.selectedField) {
+      let col = this.columns && this.columns.find(m => m.selected);
+      col = col || this.columns && this.columns.length && this.columns[0];
+      col && (this.selectedField = col.name);
+    }
+    this.setControl();
+    this.generateHtml();
+    this.initComponent();
+    this.bindEvent();
+  }
+
   @HostListener('blur', ['$event'])
   onBlur(event) {
     if (!this.multiple) {
@@ -114,9 +128,18 @@ export class TableTypeaheadDirective implements OnInit {
         });
     }
   }
-  ngOnInit(): void {
-    this.control = this.formControlName && this.formControlName.control;
-    this.control = this.control || this.ngModel && this.ngModel.control;
+
+  private setControl() {
+    this.control = this.injector.get(FormControl, null);
+    if (this.control) return;
+    let controlName = this.injector.get(FormControlName, null);
+    controlName && (this.control = controlName.control);
+    if (this.control) return;
+    let ngModel = this.injector.get(NgModel, null);
+    ngModel && (this.control = ngModel.control);
+  }
+
+  private generateHtml() {
     this.el.style.borderBottomLeftRadius = "0.25rem";
     this.el.style.borderTopLeftRadius = "0.25rem";
     let wrapper = document.createElement("div");
@@ -133,6 +156,9 @@ export class TableTypeaheadDirective implements OnInit {
     this.componentRef = this.viewContainerRef.createComponent(componentFactory);
     let ne = this.componentRef.location.nativeElement;
     wrapper.insertAdjacentElement('afterbegin', ne);
+  }
+
+  private initComponent() {
     if (this.showTitle) {
       if (!this.columns || this.columns.length < 2) {
         this.showTitle = false;
@@ -148,7 +174,7 @@ export class TableTypeaheadDirective implements OnInit {
       this.search(params.pageIndex);
     });
     component.onSelect.subscribe((item) => {
-      let selectedValue = item[this.filed];
+      let selectedValue = item[this.selectedField];
       if (!this.multiple && selectedValue) {
         if (this.control) {
           this.control.setValue(selectedValue.trim());
@@ -161,6 +187,9 @@ export class TableTypeaheadDirective implements OnInit {
       }
       this.onSelect.emit(item);
     })
+  }
+
+  private bindEvent() {
     Observable.fromEvent(this.el, 'input')
       .map((e: any) => e.target.value)
       .debounceTime(this.delay)
@@ -181,9 +210,9 @@ export class TableTypeaheadDirective implements OnInit {
 export class TableTypeaheadColumn {
   constructor(
     public name: string,
-    public weight: number = 0,
     public title?: string,
     public maxLength?: number,
+    public selected?: boolean,
   ) { }
 }
 export class TypeaheadRequestParams extends PagedParams {

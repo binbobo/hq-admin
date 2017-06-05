@@ -1,7 +1,8 @@
-import { Directive, ViewContainerRef, ComponentFactoryResolver, Input } from '@angular/core';
+import { Directive, ViewContainerRef, Input, Optional, Injector } from '@angular/core';
 import { TableTypeaheadDirective, TableTypeaheadColumn, TypeaheadRequestParams } from 'app/shared/directives';
 import { HttpService, Urls } from 'app/shared/services';
 import { PagedParams } from 'app/shared/models';
+import { FormControlName, NgModel } from '@angular/forms';
 
 @Directive({
     selector: '[hqMaintenanceItemTypeahead]'
@@ -9,16 +10,16 @@ import { PagedParams } from 'app/shared/models';
 export class MaintenanceItemTypeaheadDirective extends TableTypeaheadDirective {
 
     constructor(
-        protected viewContainerRef: ViewContainerRef,
-        protected componentFactoryResolver: ComponentFactoryResolver,
+        injector: Injector,
         protected httpService: HttpService,
+        protected container?: ViewContainerRef,
     ) {
-        super(viewContainerRef, componentFactoryResolver);
+        super(injector);
         this.showTitle = false;
     }
 
     protected columns = [
-        { name: 'name', title: '维修项目名称' },
+        { name: 'name', title: '维修项目名称', selected: true },
     ] as Array<TableTypeaheadColumn>;
 
     @Input()
@@ -26,7 +27,7 @@ export class MaintenanceItemTypeaheadDirective extends TableTypeaheadDirective {
 
     ngOnInit() {
         this.source = (params: TypeaheadRequestParams) => {
-            let request = new MaintenanceItemSearchRequest();
+            let request = new PagedParams();
             request['keyword'] = params.text;
             request.setPage(params.pageIndex, params.pageSize);
             let url = Urls.chain.concat('/Services/GetByName');
@@ -41,15 +42,6 @@ export class MaintenanceItemTypeaheadDirective extends TableTypeaheadDirective {
             });
         };
         super.ngOnInit();
-    }
-
-}
-
-class MaintenanceItemSearchRequest extends PagedParams {
-    constructor(
-        public keyword?: string, // 维修项目搜索关键字
-    ) {
-        super();
     }
 }
 

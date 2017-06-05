@@ -1,4 +1,4 @@
-import { Directive, ViewContainerRef, ComponentFactoryResolver, Input } from '@angular/core';
+import { Directive, Input, Injector } from '@angular/core';
 import { TableTypeaheadDirective, TableTypeaheadColumn, TypeaheadRequestParams } from 'app/shared/directives';
 import { HttpService, Urls } from 'app/shared/services';
 import { PagedParams } from 'app/shared/models';
@@ -9,11 +9,10 @@ import { PagedParams } from 'app/shared/models';
 export class VehicleTypeaheadDirective extends TableTypeaheadDirective {
 
   constructor(
-    protected viewContainerRef: ViewContainerRef,
-    protected componentFactoryResolver: ComponentFactoryResolver,
+    injector: Injector,
     protected httpService: HttpService,
   ) {
-    super(viewContainerRef, componentFactoryResolver);
+    super(injector);
   }
 
   protected columns = [
@@ -23,13 +22,13 @@ export class VehicleTypeaheadDirective extends TableTypeaheadDirective {
   ] as Array<TableTypeaheadColumn>;
 
   @Input()
-  protected filed: string = 'name';
+  protected field: string = 'name';
 
   ngOnInit() {
     this.multiple = true;
     this.source = (params: TypeaheadRequestParams) => {
       let request = new VehicleSearchRequest();
-      request[this.filed] = params.text;
+      request[this.field] = params.text;
       request.setPage(params.pageIndex, params.pageSize);
       let url = Urls.chain.concat('/Vehicles/GetAllVehicle');
       return this.httpService.getPagedList<any>(url, request);

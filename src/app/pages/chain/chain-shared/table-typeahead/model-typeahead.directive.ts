@@ -1,4 +1,4 @@
-import { Directive, ViewContainerRef, ComponentFactoryResolver, Input } from '@angular/core';
+import { Directive, Input, Injector, ViewContainerRef } from '@angular/core';
 import { TableTypeaheadDirective, TableTypeaheadColumn, TypeaheadRequestParams } from 'app/shared/directives';
 import { HttpService, Urls } from 'app/shared/services';
 import { PagedParams } from 'app/shared/models';
@@ -9,16 +9,16 @@ import { PagedParams } from 'app/shared/models';
 export class ModelTypeaheadDirective extends TableTypeaheadDirective {
 
     constructor(
-        protected viewContainerRef: ViewContainerRef,
-        protected componentFactoryResolver: ComponentFactoryResolver,
+        injector: Injector,
         protected httpService: HttpService,
+        protected container?: ViewContainerRef,
     ) {
-        super(viewContainerRef, componentFactoryResolver);
+        super(injector);
         this.showTitle = false;
     }
 
     protected columns = [
-        { name: 'name', title: '车系' },
+        { name: 'name', title: '车系', selected: true },
     ] as Array<TableTypeaheadColumn>;
 
     @Input()

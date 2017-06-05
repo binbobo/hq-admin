@@ -1,8 +1,9 @@
-import { Directive, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
+import { Directive, Injector } from '@angular/core';
 import { TableTypeaheadDirective, TableTypeaheadColumn, TypeaheadRequestParams } from 'app/shared/directives';
 import { HttpService, Urls } from 'app/shared/services';
 import { PagedParams } from 'app/shared/models';
 import { element } from 'protractor';
+import { FormControlName, NgModel } from '@angular/forms';
 
 @Directive({
     selector: '[hqBrandTypeahead]'
@@ -10,17 +11,16 @@ import { element } from 'protractor';
 export class BrandTypeaheadDirective extends TableTypeaheadDirective {
 
     constructor(
-        protected viewContainerRef: ViewContainerRef,
-        protected componentFactoryResolver: ComponentFactoryResolver,
+        injector: Injector,
         protected httpService: HttpService,
     ) {
-        super(viewContainerRef, componentFactoryResolver);
+        super(injector);
         // 不显示标题
         this.showTitle = false;
     }
 
     protected columns = [
-        { name: 'name', title: '品牌' },
+        { name: 'name', title: '品牌', selected: true },
     ] as Array<TableTypeaheadColumn>;
 
     ngOnInit() {
