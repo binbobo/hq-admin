@@ -24,4 +24,6 @@ tbody tr{
 .form-inline .form-control,.goto{
     border:1px solid #27b394 !important;
 }
-
+.hq-search{
+    background-color:#fff;
+}

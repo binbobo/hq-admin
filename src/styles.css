@@ -347,3 +347,14 @@ table .tr-left-bold{
 table tr:not(:last-child) th{
     border-bottom-width: 0px;
 }
+.input-group-addon{
+    background-color:#f3f3f4;
+    border-color: #eef0f1;
+    color:#727171;
+}
+.form-control{
+    border-color: #e8e8e8;
+}
+.form-control:disabled, .form-control[readonly]{
+    background-color: #f7f8f8;
+}
