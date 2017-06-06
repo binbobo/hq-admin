@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BasicService, PagedParams, PagedResult, ApiResult, SelectOption, ListResult } from "app/shared/models";
 import { HttpService, Urls } from "app/shared/services";
+import * as moment from 'moment';
 
 @Injectable()
 export class InvoicingService implements BasicService<any>{
@@ -87,6 +88,8 @@ export class InvoicingRequest extends PagedParams {
     public orgIds?: Array<any>, //门店查询
   ) {
     super();
+    this.searchStart = searchStart || moment().subtract(30, 'd').format('YYYY-MM-DD');
+    this.searchEnd = searchEnd || moment().format('YYYY-MM-DD');
   }
 }
 export class InvoicingDetailRequest extends PagedParams {
@@ -100,5 +103,7 @@ export class InvoicingDetailRequest extends PagedParams {
     public orgIds?: Array<any>, //门店查询
   ) {
     super();
+    this.searchStart = searchStart || moment().subtract(30, 'd').format('YYYY-MM-DD');
+    this.searchEnd = searchEnd || moment().format('YYYY-MM-DDTHH:mm:ss.SSS');
   }
 }

@@ -87,13 +87,19 @@ caption {
 }
 /*必选项前面的星号样式*/ 
 .asterisk {
-    color: #c9302c;
+    color: #eb5267;
 }
 form .asterisk {
     line-height: 2.5rem;
     vertical-align: middle;
     font-weight: bold;
     font-size: 1rem;
+}
+/*必填项星号*/
+.hq-required::before{
+    content: "*";
+    color: #eb5267;
+    padding-right: 2px;
 }
 .overtime {
     color: #c9302c;
@@ -340,4 +346,15 @@ table .tr-left-bold{
 }
 table tr:not(:last-child) th{
     border-bottom-width: 0px;
+}
+.input-group-addon{
+    background-color:#f3f3f4;
+    border-color: #eef0f1;
+    color:#727171;
+}
+.form-control{
+    border-color: #e8e8e8;
+}
+.form-control:disabled, .form-control[readonly]{
+    background-color: #f7f8f8;
 }

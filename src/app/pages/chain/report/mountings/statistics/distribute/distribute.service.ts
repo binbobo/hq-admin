@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BasicService, PagedParams, PagedResult, ApiResult } from "app/shared/models";
 import { HttpService, Urls } from "app/shared/services";
+import * as moment from 'moment';
 
 @Injectable()
 export class DistributeService implements BasicService<any>{
@@ -64,5 +65,7 @@ export class DistributeRequest extends PagedParams {
     public orgIds?: Array<any>, //门店查询
   ) {
     super();
+    this.searchStart = searchStart || moment().subtract(30, 'd').format('YYYY-MM-DD');
+    this.searchEnd = searchEnd || moment().format('YYYY-MM-DDTHH:mm:ss.SSS');
   }
 }

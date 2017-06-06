@@ -55,6 +55,7 @@ max-width: 1000px;
     border-radius: .25rem;
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
+    border-color: #e8e8e8;
 }
 .form-check-inline {
     height: 40px;
@@ -63,6 +64,7 @@ max-width: 1000px;
 }
 .form-check-label{
     margin-bottom: 0 !important;
+    color: #727171;
 }
 .form-check {
     margin-bottom: 0 !important;

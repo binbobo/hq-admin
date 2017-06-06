@@ -100,7 +100,7 @@ export class AddMaintenanceItemComponent implements OnInit {
   createForm() {
     // 保留一位小数正则
     const workHourRegex = /^[1-9]+(\.\d{1})?$|^[0]{1}(\.[1-9]{1}){1}$/; // 正浮点数  保留一位小数 不能为0 只能有一个前导0(不可以000.3)
-    const workHourPriceRegex = /^[0-9]{1,6}(\.\d{1})?$/; // 可以为0
+    const workHourPriceRegex = /^[0-9]{1,6}(\.\d{1})?$/; // 可以为0  /^[0]{1}(\.\d{1})?$|^[1-9]+(\.\d{1})?$/
 
     this.maintenanceItemForm = this.fb.group({
       serviceName: ['', [Validators.required]],

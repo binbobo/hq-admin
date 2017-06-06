@@ -31,15 +31,14 @@
           <span class="input-group-addon">车牌号</span>
           <input type="text" [(ngModel)]="params.carnumber" class="form-control" id="carnumber" name="carnumber" placeholder="请输入车牌号">
         </div>
-
         <div class="input-group m-1">
           <span class="input-group-addon">进厂时间</span>
-          <input class="form-control" style="border-right:0;" [max-date]="maxEnterStartDate" [(ngModel)]="params.starttime" id="starttime" name="starttime" type="text"
-            ngui-datetime-picker placeholder="请选择开始时间"/>
+          <input class="form-control" style="border-right:0;" [max-date]="params.endtime" [(ngModel)]="params.starttime" id="starttime"
+            name="starttime" type="text" ngui-datetime-picker placeholder="请选择开始时间" />
           <span class="input-group-addon">-</span>
-          <input class="form-control" id="endtime" style="border-right-width:1px;" [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" [(ngModel)]="params.endtime" name="endtime" type="text"
-            ngui-datetime-picker placeholder="请选择截止时间"/>
-          <div class="col-sm-2"><button class="btn btn-primary">查询</button></div> 
+          <input class="form-control" id="endtime" style="border-right-width:1px;" [min-date]="params.starttime"
+            [(ngModel)]="params.endtime" name="endtime" type="text" ngui-datetime-picker placeholder="请选择截止时间" />
+          <div class="col-sm-2"><button class="btn btn-primary">查询</button></div>
         </div>
       </div>
     </form>

@@ -90,6 +90,7 @@ export class Inventory extends BasicModel {
     public count?: number,
     public vehicleName?: string,
     public unit?: string,
+    public unitId?: string,
     public price?: string,
     public newPrice?: string,
     public packageInfo?: string,
@@ -100,7 +101,8 @@ export class Inventory extends BasicModel {
     public inCount?: string,
     public outCount?: string,
     public maxCount?: string,
-    public minCount?: string
+    public minCount?: string,
+    public dataSource?: string,
   ) {
     super();
   }

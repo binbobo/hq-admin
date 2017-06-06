@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Urls, HttpService } from "app/shared/services";
 import { ApiResult, BasicService, PagedParams, PagedResult } from 'app/shared/models';
 import { Observable } from "rxjs/Observable";
+import * as moment from 'moment';
 
 @Injectable()
 export class BillOrderService implements BasicService<any>{
@@ -98,5 +99,11 @@ export class OrderListSearch extends PagedParams {
     public endtime?: string, // 进店结束时间
   ) {
     super();
+    this.starttime = starttime || moment().subtract(30, 'd').format('YYYY-MM-DD');
+    this.endtime = endtime || moment().format('YYYY-MM-DD');
+  }
+  serialize() {
+    this.endtime = moment(this.endtime).endOf('day').format('YYYY-MM-DDTHH:mm:ss.SSS');
+    return super.serialize();
   }
 }

@@ -9,7 +9,7 @@
             <input hqPlateNoTypeahead name="plateNo" class="form-control" formControlName="plateNo" placeholder="请输车牌号" />
           </div>
           <div class="input-group m-1">
-            <span class="input-group-addon">查询时间</span>
+            <span class="input-group-addon">查询日期</span>
             <input [max-date]="maxEnterStartDate" date-only="true" class="form-control datetime-picker" style="border-right:0;" formControlName="searchStart"
               id="starttime" name="starttime" type="text" ngui-datetime-picker/>
             <span class="input-group-addon">-</span>
@@ -112,11 +112,11 @@
                 <td>{{item.productName }}</td>
                 <td>{{item.brandName }}</td>
                 <td>{{item.productSpecification }}</td>
-                <td>{{item.specification || '个'}}</td>
+                <td class="text-center">{{item.specification || '个'}}</td>
                 <td>{{item.storeName }}</td>
                 <td>{{item.locationName }}</td>
                 <td class="text-right">{{item.price |centToYuan}}</td>
-                <td>{{item.count }}</td>
+                <td class="text-center">{{item.count }}</td>
                 <td class="text-right">{{item.amount |centToYuan}}</td>
                 <td>{{item.description }}</td>
                 <td>{{item.takeUser }}</td>

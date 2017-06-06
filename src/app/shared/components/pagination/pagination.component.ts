@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewEncapsulation, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'hq-pagination',
@@ -9,7 +9,7 @@ import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angu
   },
   encapsulation: ViewEncapsulation.None,
 })
-export class PaginationComponent {
+export class PaginationComponent implements OnChanges {
 
   @Input() loading: boolean;
   @Input() totalItems: number;
@@ -24,12 +24,16 @@ export class PaginationComponent {
 
   constructor() { }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    
+  }
+
   get totalPages() {
     return Math.ceil(this.totalItems / this.itemsPerPage);
   }
 
   onPageChanged(event) {
-    this.currentPageChange.emit(this.currentPage);
+    this.currentPageChange.emit(event.page);
     this.pageChanged.emit(event);
   }
 

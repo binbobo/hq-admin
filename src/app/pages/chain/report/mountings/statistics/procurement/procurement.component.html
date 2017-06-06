@@ -4,7 +4,7 @@
   <div class="card-block">
     <form class="form-inline mb-2" [formGroup]="procurementForm" (ngSubmit)="onSearch()">
       <div class="input-group m-1">
-        <span class="input-group-addon">进厂时间</span>
+        <span class="input-group-addon">查询日期</span>
         <input [max-date]="maxEnterStartDate" class="form-control datetime-picker" style="border-right:0;" formControlName="searchStart"
           id="starttime" name="starttime" date-only="true" type="text" ngui-datetime-picker/>
         <span class="input-group-addon">-</span>
@@ -65,6 +65,21 @@
       <button class="close pull-right" (click)="vehicleModal.hide()">&times;</button>
     </div>
     <div class="modal-body">
+
+      <!--<table class="table table-bordered">
+        <tr>
+          <td>入库单号：</td>
+          <td>{{detail?.billCode}}</td>
+          <td>供应商：</td>
+          <td>{{detail?.name}}</td>
+        </tr>
+        <tr>
+          <td>开单时间：</td>
+          <td>{{detail?.createUtc|sDatetime}}</td>
+          <td>操作人：</td>
+          <td>{{detail?.createName}}</td>
+        </tr>
+      </table>-->
       <div class="card-block">
         <div class="row">
           <div class="col-6">
@@ -134,6 +149,6 @@
     </div>
   </div>
 </div>
-<div hqPrint #printer="hq-print"  print-title="采购入库统计">
+<div hqPrint #printer="hq-print" print-title="采购入库统计">
   <hq-procurement-print [hidden]="true" [detail]="detail" [detailItems]="detailItems" [detailItemsLength]="detailItemsLength"></hq-procurement-print>
 </div>

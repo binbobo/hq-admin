@@ -148,6 +148,7 @@ export class TableTypeaheadDirective implements OnInit {
     wrapper.appendChild(this.el);
     let span = document.createElement('span');
     span.className = "input-group-addon";
+    span.style.backgroundColor="#fff";
     this.statusElement = document.createElement('i');
     this.statusElement.className = "cursor-pointer fa fa-search";
     span.appendChild(this.statusElement);

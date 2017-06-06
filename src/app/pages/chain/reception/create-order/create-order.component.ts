@@ -668,9 +668,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   }
 
   public get currentDate() {
-    return moment().format('YYYY-MM-DD');
+    return moment().toDate();
   }
-
   public get currentHours() {
     return moment().hours();
   }

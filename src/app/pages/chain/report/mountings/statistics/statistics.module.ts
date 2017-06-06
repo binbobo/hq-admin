@@ -7,7 +7,7 @@ import { NguiDatetimePickerModule } from "@ngui/datetime-picker/dist";
 import { CustomFormsModule } from "ng2-validation/dist";
 import { TreeviewModule } from "ngx-treeview/lib";
 import { StatisticsRoutingModule } from "./statistics.routing";
-import { FormsModule ,ReactiveFormsModule} from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 //组件
 import { ProcurementComponent } from './procurement/procurement.component';
@@ -48,17 +48,17 @@ import { InvoicingService } from "app/pages/chain/report/mountings/statistics/in
     CustomFormsModule,
   ],
   declarations: [
-      ProcurementComponent,
-      DistributeComponent,
-      PartssalesComponent,
-      InnerReceiveComponent,
-      InvoicingComponent,
-      DistributePrintComponent,
-      ProcurementPrintComponent,
-      ReceivePrintComponent,
-      InvoicingPrintComponent,
-      PartssalesPrintComponent
+    ProcurementComponent,
+    DistributeComponent,
+    PartssalesComponent,
+    InnerReceiveComponent,
+    InvoicingComponent,
+    DistributePrintComponent,
+    ProcurementPrintComponent,
+    ReceivePrintComponent,
+    InvoicingPrintComponent,
+    PartssalesPrintComponent,
   ],
-  providers:[ProcurementService,OrderService,DistributeService,PartssalesService,ReceiveService,InvoicingService]
+  providers: [ProcurementService, OrderService, DistributeService, PartssalesService, ReceiveService, InvoicingService]
 })
 export class StatisticsModule { }
