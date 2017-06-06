@@ -48,7 +48,7 @@ export class InventoryEditComponent extends FormHandle<Inventory> implements OnI
       categoryName: [this.model.category],
       code: [this.model.code, [Validators.required, Validators.maxLength(36)]],
       name: [this.model.name, [Validators.required, Validators.maxLength(60)]],
-      productSpecification: [this.model.productSpecification, [Validators.required, Validators.maxLength(20)]],
+      productSpecification: [this.model['specification'], [Validators.required, Validators.maxLength(20)]],
       maxCount: [this.model.maxCount, [CustomValidators.min(0)]],
       minCount: [this.model.minCount, [CustomValidators.min(0)]],
       brandId: [this.model.brandId],
