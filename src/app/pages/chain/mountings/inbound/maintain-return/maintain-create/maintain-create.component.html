@@ -51,7 +51,7 @@
         <input readonly type="text" formControlName="locationName" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*数量(可退数量：{{inputData.count - inputData.returnCount}}&nbsp;)</label>
+        <label class="form-control-label hq-required">数量(可退数量：{{inputData.count - inputData.returnCount}}&nbsp;)</label>
         <input label="数量" type="number" formControlName="initcount" (change)="onChangeCount($event)" class="form-control">
       </div>
        <div class="form-group">

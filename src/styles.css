@@ -87,13 +87,19 @@ caption {
 }
 /*必选项前面的星号样式*/ 
 .asterisk {
-    color: #c9302c;
+    color: #eb5267;
 }
 form .asterisk {
     line-height: 2.5rem;
     vertical-align: middle;
     font-weight: bold;
     font-size: 1rem;
+}
+/*必填项星号*/
+.hq-required::before{
+    content: "*";
+    color: #eb5267;
+    padding-right: 2px;
 }
 .overtime {
     color: #c9302c;

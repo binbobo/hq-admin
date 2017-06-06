@@ -2,31 +2,31 @@
   <form *ngIf="form" class="card-block row" [formGroup]="form" (ngSubmit)="onSubmit($event)">
     <div class="col-6">
       <div class="form-group">
-        <label class="form-control-label">维修项目</label>
+        <label class="form-control-label hq-required">维修项目</label>
         <input readonly type="text" formControlName="serviceName" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*配件编码</label>
+        <label class="form-control-label hq-required">配件编码</label>
         <input [hqProductTypeahead]="'code'" (onSelect)="onItemSelect($event)" (input)="onResetForm($event,'productCode')" formControlName="productCode"
           class="form-control" placeholder="请输入配件编码">
         <input type="hidden" label="配件编码" formControlName="productId">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*配件名称</label>
+        <label class="form-control-label hq-required">配件名称</label>
         <input label="配件名称" [hqProductTypeahead]="'name'" (onSelect)="onItemSelect($event)" (input)="onResetForm($event,'productName')"
           formControlName="productName" class="form-control" placeholder="请输入配件名称">
         <input type="hidden" label="配件名称" formControlName="productId">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*配件分类</label>
+        <label class="form-control-label hq-required">配件分类</label>
         <input readonly formControlName="productCategory" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">品牌</label>
+        <label class="form-control-label hq-required">品牌</label>
         <input readonly formControlName="brandName" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">规格型号</label>
+        <label class="form-control-label hq-required">规格型号</label>
         <input readonly formControlName="productSpecification" class="form-control">
       </div>
       <div class="form-group">
@@ -41,7 +41,7 @@
     </div>
     <div class="col-6">
       <div class="form-group">
-        <label class="form-control-label">*仓库</label>
+        <label class="form-control-label hq-required">仓库</label> 
         <select class="form-control" (change)="onStorageChange($event.target.value)" formControlName="storeId">
           <option *ngFor="let item of storages" [value]="item.id">{{item.name}}</option>
         </select>
@@ -53,11 +53,11 @@
         </select>
       </div>
       <div class="form-group">
-        <label class="form-control-label">*库存</label>
+        <label class="form-control-label hq-required">库存</label>
         <input readonly label="库存" formControlName="stockCount" [errors]="{min:'库存不足'}" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*数量</label>
+        <label class="form-control-label hq-required">数量</label>
         <input label="数量" (input)="calculate()" type="number" formControlName="count" class="form-control">
       </div>
       <div class="form-group">
@@ -65,17 +65,17 @@
         <input readonly formControlName="productUnit" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*单价（元）</label>
+        <label class="form-control-label hq-required">单价（元）</label>
         <input label="单价" type="number" formControlName="yuan" class="form-control" (input)="onPriceChange($event)" />
       </div>
 
       <div class="form-group">
-        <label class="form-control-label">*金额(元)</label>
+        <label class="form-control-label hq-required">金额(元)</label>
         <input readonly class="form-control" value="{{form?.controls['amount']?.value|centToYuan}}">
         <input type="hidden" readonly label="金额" formControlName="amount" [value]="centToYuan|centToYuan" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*领料人</label>
+        <label class="form-control-label hq-required">领料人</label>
         <select #person class="form-control" label="领料人" ormControlName="createUser" id="person" (change)="onSellerSelect($event)">
           <option *ngFor="let item of InputData.employeesData" value="{{item.id}}">{{item.name}}</option>
         </select>
