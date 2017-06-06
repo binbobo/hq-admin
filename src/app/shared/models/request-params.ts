@@ -1,7 +1,7 @@
 export abstract class RequestParams {
-    public serialize(): string {
-        let self = this;
-        return Object.keys(this)
+    public serialize(others?: object): string {
+        let self = Object.assign({}, this, others);
+        return Object.keys(self)
             .filter(key => key !== "keyName")
             .map(function (key) {
                 if (self[key] === '' || self[key] === null || self[key] === undefined) return null;
