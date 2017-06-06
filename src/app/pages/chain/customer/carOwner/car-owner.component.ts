@@ -96,8 +96,7 @@ export class CarOwnerComponent extends DataList<any>  {
   }
   public get minCreatedEndDate() {
     if(this.params.createdStartDate) {
-      const minDate = moment(this.params.createdStartDate).subtract(1, 'd');
-      return minDate.toDate();
+      return moment(this.params.createdStartDate).subtract(1, 'd').toDate();
     }
     return '';
   }

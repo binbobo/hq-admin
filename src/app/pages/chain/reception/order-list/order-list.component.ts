@@ -195,12 +195,15 @@ export class OrderListComponent extends DataList<Order> {
   }
 
 
-  // 时间选择限制
+  // 时间选择限制  ngui-date-timer的值类型为： moment().toDate()   看源码可知
   public get maxLeaveStartDate() {
     return !!this.endDateParams.leaveEndTimeDate ? this.endDateParams.leaveEndTimeDate : moment().toDate()
   }
   public get minLeaveEndDate() {
-    return this.params.leaveStartTimeDate || '';
+    if(this.params.leaveStartTimeDate) {
+      return moment(this.params.leaveStartTimeDate).subtract(1, 'd').toDate();
+    }
+    return '';
   }
   public get maxLeaveEndDate() {
     return moment().toDate();
@@ -209,7 +212,10 @@ export class OrderListComponent extends DataList<Order> {
     return !!this.endDateParams.enterEndTimeDate ? this.endDateParams.enterEndTimeDate : moment().toDate();
   }
   public get minEnterEndDate() {
-    return this.params.enterStartTimeDate || '';
+      if(this.params.enterStartTimeDate) {
+      return moment(this.params.enterStartTimeDate).subtract(1, 'd').toDate();
+    }
+    return '';
   }
   public get maxEnterEndDate() {
     return moment().toDate();
