@@ -94,6 +94,7 @@ export class SalesCreateComponent implements OnInit {
       let storage = formData.storeId && this.storages.find(m => m.id === formData.storeId);
       let value = { ...formData, locationName: location && location.name, houseName: storage && storage.name };
       this.formSubmit.emit(value);
+      this.onReset();
     }
   }
 
@@ -153,5 +154,9 @@ export class SalesCreateComponent implements OnInit {
     let amount = (count || 0) * (price || 0);
     this.form.patchValue({ amount: amount, count: count, price: price });
   }
-
+  public onReset() {
+    this.form = null;
+    setTimeout(() => this.buildForm(), 1);
+    return false;
+  }
 }

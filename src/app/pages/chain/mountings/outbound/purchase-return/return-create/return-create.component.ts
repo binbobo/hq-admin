@@ -62,6 +62,7 @@ export class ReturnCreateComponent implements OnInit {
       let value = Object.assign({}, this.model, this.form.value);
       this.submit.emit(value);
       this.form.reset(this.model);
+      this.onReset();
     }
   }
 
@@ -79,4 +80,10 @@ export class ReturnCreateComponent implements OnInit {
       exTaxPrice: exTaxPrice
     });
   }
+  public onReset() {
+    this.form = null;
+    setTimeout(() => this.buildForm(), 1);
+    return false;
+  }
+
 }

@@ -109,6 +109,7 @@ export class DistributeCreateComponent implements OnInit {
       let value = { ...formData, locationName: location && location.name, storeName: storage && storage.name };
       Object.assign(this.form.value, this.model);
       this.formSubmit.emit(value);
+      this.onReset();
     }
   }
 
