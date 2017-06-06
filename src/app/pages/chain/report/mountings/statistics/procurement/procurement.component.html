@@ -15,7 +15,7 @@
 
       <div class="input-group m-1">
         <span class="input-group-addon">供应商</span>
-        <input hqProviderTypeahead name="name" class="form-control tooltips-top" data-tooltips="top" formControlName="name" placeholder="请输供应商"
+        <input hqProviderTypeahead (onSelect)="onProviderSelect($event)" name="name" class="form-control tooltips-top" data-tooltips="top" formControlName="name" placeholder="请输供应商"
         />
       </div>
 

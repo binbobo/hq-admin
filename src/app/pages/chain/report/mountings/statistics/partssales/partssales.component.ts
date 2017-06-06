@@ -122,7 +122,7 @@ export class PartssalesComponent extends DataList<any> {
   //时间控制
   public get maxEnterStartDate() {
     if (!this.partssalesForm.get('searchEnd').value) {
-      return moment().format('YYYY-MM-DD');
+      return new Date(moment().format('YYYY-MM-DD'));
     }
     return new Date(this.partssalesForm.get('searchEnd').value);
   }
@@ -130,7 +130,7 @@ export class PartssalesComponent extends DataList<any> {
     return new Date(moment(this.partssalesForm.get('searchStart').value).subtract(1, 'd').format('YYYY-MM-DD')) || '';
   }
   public get maxEnterEndDate() {
-    return moment().format('YYYY-MM-DD');
+    return new Date(moment().format('YYYY-MM-DD'));
   }
 
 }

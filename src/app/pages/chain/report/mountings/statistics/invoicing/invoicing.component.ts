@@ -156,11 +156,10 @@ export class InvoicingComponent extends DataList<any> {
       billCode: ev.billCode,
     });
   }
-
   //时间控制
   public get maxEnterStartDate() {
     if (!this.invoicingForm.get('searchEnd').value) {
-      return moment().format('YYYY-MM-DD');
+      return new Date(moment().format('YYYY-MM-DD'));
     }
     return new Date(this.invoicingForm.get('searchEnd').value);
   }
@@ -168,7 +167,7 @@ export class InvoicingComponent extends DataList<any> {
     return new Date(moment(this.invoicingForm.get('searchStart').value).subtract(1, 'd').format('YYYY-MM-DD')) || '';
   }
   public get maxEnterEndDate() {
-    return moment().format('YYYY-MM-DD');
+    return new Date(moment().format('YYYY-MM-DD'));
   }
   //详情时间控制
   // public get maxEnterStartDateDetail() {
