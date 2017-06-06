@@ -43,6 +43,7 @@ export class OrderListComponent extends DataList<Order> {
   @ViewChild('printer')
   public printer: PrintDirective;
 
+  // 结束时间参数对象
   endDateParams = {
     leaveEndTimeDate: undefined,
     enterEndTimeDate: undefined
@@ -54,7 +55,6 @@ export class OrderListComponent extends DataList<Order> {
   ) {
     super(injector, service);
     this.params = new OrderListRequest();
-    console.log(this.params);
 
     // 获取维修类型数据
     this.service.getMaintenanceTypes()
@@ -75,10 +75,8 @@ export class OrderListComponent extends DataList<Order> {
    */
   onSearch() {
     // 组织工单状态数据
-    const checkedStatus = this.orderStatusData.filter(item => {
-      return item.checked;
-    });
-    this.params.states = checkedStatus.map(item => item.id);
+    this.params.states = this.orderStatusData.filter(item => item.checked).map(item => item.id);
+    // 处理时间
     if (this.endDateParams.enterEndTimeDate)
       this.params.enterEndTimeDate = this.endDateParams.enterEndTimeDate + ':59.999';
     if (this.endDateParams.leaveEndTimeDate)
@@ -201,6 +199,7 @@ export class OrderListComponent extends DataList<Order> {
   }
   public get minLeaveEndDate() {
     if(this.params.leaveStartTimeDate) {
+      // ngui-date-timer [min-date] 不包含指定的值,所以需要在指定的值的基础上减1
       return moment(this.params.leaveStartTimeDate).subtract(1, 'd').toDate();
     }
     return '';
