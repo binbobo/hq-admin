@@ -13,6 +13,8 @@ export class MaintenanceItemTypeaheadDirective extends TableTypeaheadDirective {
         injector: Injector,
         protected httpService: HttpService,
         protected container: ViewContainerRef,
+        @Optional()
+        private formControlName?: FormControlName,
     ) {
         super(injector);
         this.showTitle = false;

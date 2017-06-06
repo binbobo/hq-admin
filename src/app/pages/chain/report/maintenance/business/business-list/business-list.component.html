@@ -93,7 +93,7 @@
         </tfoot>-->
       </table>
     </div>
-    <hq-pagination [(itemsPerPage)]="size" [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" [(itemsPerPage)]="size" (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
   <div class="card-footer">
     <button type="button" (click)="onExport()" class="btn btn-export">导出</button>
