@@ -75,7 +75,7 @@ export class JournalAccountListRequest extends PagedParams {
   }
 
   serialize() {
-    return super.serialize({ endTimeDate: moment(this.createEndTime).endOf('day').format('YYYY-MM-DDTHH:mm:ss.SSS') });
+    return super.serialize({ endTimeDate: this.createEndTime + 'T23:59:59.999' });
   }
 }
 
