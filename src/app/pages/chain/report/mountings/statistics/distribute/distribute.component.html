@@ -6,7 +6,7 @@
         <div class="form-group row">
           <div class="input-group m-1">
             <span class="input-group-addon">车牌号</span>
-            <input hqPlateNoTypeahead name="plateNo" class="form-control" formControlName="plateNo" placeholder="请输车牌号" />
+            <input hqPlateNoTypeahead (onSelect)="onSelect($event)" name="plateNo" class="form-control" formControlName="plateNo" placeholder="请输车牌号" />
           </div>
           <div class="input-group m-1">
             <span class="input-group-addon">查询日期</span>
