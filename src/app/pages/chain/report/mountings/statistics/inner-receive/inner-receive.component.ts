@@ -130,7 +130,7 @@ export class InnerReceiveComponent extends DataList<any> {
   onSearch() {
     //将表单值赋给params
     Object.assign(this.params, this.receiveForm.value);
-    this.params.searchEnd=this.receiveForm.get('searchEnd').value+'T23:59:59.999';
+    this.params.searchEnd = this.receiveForm.get('searchEnd').value && this.receiveForm.get('searchEnd').value + 'T23:59:59.999';
     console.log('params', this.params);
     this.onLoadList();
   }
@@ -140,7 +140,7 @@ export class InnerReceiveComponent extends DataList<any> {
     this.receiveForm = this.formBuilder.group({
       takeUser: '',//领用人
       takeDepart: '',//部门
-      searchStart:moment().subtract(30, 'd').format('YYYY-MM-DD'), //开始时间
+      searchStart: moment().subtract(30, 'd').format('YYYY-MM-DD'), //开始时间
       searchEnd: moment().format('YYYY-MM-DD'), // 结束时间
     })
   }
@@ -164,7 +164,7 @@ export class InnerReceiveComponent extends DataList<any> {
     return new Date(this.receiveForm.get('searchEnd').value);
   }
   public get minEnterEndDate() {
-    return new Date(this.receiveForm.get('searchStart').value) || '';
+    return new Date(moment(this.receiveForm.get('searchStart').value).subtract(1, 'd').format('YYYY-MM-DD')) || '';
   }
   public get maxEnterEndDate() {
     return moment().format('YYYY-MM-DD');
