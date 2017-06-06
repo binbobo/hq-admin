@@ -118,7 +118,7 @@
           <tr *ngFor="let item of list" class="text-center">
             <td width="40">
               <!--<a href="#" (click)="nullifyHandler($event, item.id)">作废</a> |-->
-              <button [hqSpinner]="item.generating" type="button" class="btn btn-sm btn-info  " [disabled]="item.generating" (click)="orderDetailsHandler(item, lgModal)">详情</button>
+              <button [hqSpinner]="item.generating" type="button" class="btn btn-sm btn-info" [disabled]="item.generating" (click)="orderDetailsHandler(item, lgModal)">详情</button>
             </td>
             <td>{{item.statusName}}</td>
             <td>{{item.plateNo}}</td>
@@ -148,7 +148,6 @@
     </div>
     <br>
     <hq-pagination [(itemsPerPage)]="size" [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
-
     <!--详情 begin-->
     <div hqBsModal #lgModal="hq-bs-modal" class="modal fade" tabindex="-1" role="dialog">
       <div *ngIf="lgModal.isShown" class="modal-dialog modal-lg">
@@ -156,7 +155,7 @@
           <div class="modal-header">
             <h6 class="modal-title pull-left">维修工单详情</h6>
             <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
-              <span aria-hidden="true"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+              <span aria-hidden="true" class="fa-stack hq-fa-lg"><i class="fa fa-cir fa-stack-2x" aria-hidden="true"></i><i class="fa fa-times fa-stack-1x" aria-hidden="true"></i></span>
             </button>
           </div>
           <div class="modal-body">
