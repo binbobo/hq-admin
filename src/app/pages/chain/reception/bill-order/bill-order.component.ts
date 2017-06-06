@@ -45,6 +45,12 @@ export class BillOrderComponent extends DataList<any>{
     isShowCostDetail = false;
     isShowPrint = false;
     public user = null;
+
+    // 结束时间参数对象
+    endDateParams = {
+        endtime: undefined,
+    }
+
     constructor(
         private router: Router,
         injector: Injector,
@@ -75,6 +81,8 @@ export class BillOrderComponent extends DataList<any>{
             return item.checked;
         });
         this.params.statekey = checkedStatus.map(item => item.key);
+        if (this.endDateParams.endtime)
+            this.params.endtime = this.endDateParams.endtime + ':59.999';
         // 执行查询
         this.onLoadList();
     }
@@ -391,10 +399,13 @@ export class BillOrderComponent extends DataList<any>{
     }
 
     public get maxStartTime() {
-        return !!this.endDateParams.endtime ? this.endDateParams.leaveEndTimeDate : moment().toDate()
+        return !!this.endDateParams.endtime ? this.endDateParams.endtime : moment().toDate()
+    }
+    public get maxEndTime() {
+        return moment().toDate();
     }
 
-    public get minStartTime() {
+    public get minEndTime() {
         if (this.params.starttime) {
             return moment(this.params.starttime).subtract(1, 'd').toDate();
         }

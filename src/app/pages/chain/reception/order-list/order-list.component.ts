@@ -199,6 +199,7 @@ export class OrderListComponent extends DataList<Order> {
   }
   public get minLeaveEndDate() {
     if(this.params.leaveStartTimeDate) {
+      // ngui-date-timer [min-date] 不包含指定的值,所以需要在指定的值的基础上减1
       return moment(this.params.leaveStartTimeDate).subtract(1, 'd').toDate();
     }
     return '';
