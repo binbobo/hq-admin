@@ -4,7 +4,7 @@
     客户信息
   </div>
   <div class="card-block">
-    <form (ngSubmit)="onLoadList()">
+    <form (ngSubmit)="onSearch()">
       <div class="form-group row">
         <div class="hq-input">
           <label for="name" class="form-label">车主</label>
@@ -36,7 +36,7 @@
         <div class="hq-input">
           <label class="form-label text-center">-</label>
           <div class="hq-col">
-            <input readonly [min-date]="minCreatedEndDate" [max-date]="maxCreatedEndDate" [(ngModel)]="params.createdEndDate" class="form-control"
+            <input readonly [min-date]="minCreatedEndDate" [max-date]="maxCreatedEndDate" [(ngModel)]="endDateParams.createdEndDate" class="form-control"
               type="text" name="createdEndDate" ngui-datetime-picker date-only="true" />
           </div>
         </div>

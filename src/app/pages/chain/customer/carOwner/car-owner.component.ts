@@ -18,11 +18,21 @@ export class CarOwnerComponent extends DataList<any>  {
   // 导出加载动画
   generating = false;
 
+  endDateParams = {
+    createdEndDate: undefined
+  }
+
   constructor(
     injector: Injector,
     protected service: CustomerService) {
     super(injector, service);
     this.params = new CustomerListRequest();
+  }
+
+  onSearch() {
+    if (this.endDateParams.createdEndDate)
+      this.params.createdEndDate = this.endDateParams.createdEndDate + ' 23:59:59.999';
+    this.onLoadList();
   }
 
   customerDel(item) {
@@ -82,10 +92,14 @@ export class CarOwnerComponent extends DataList<any>  {
   }
 
   public get maxCreatedStartDate() {
-    return this.params.createdEndDate || moment().format('YYYY-MM-DD');
+    return !!this.endDateParams.createdEndDate ? this.endDateParams.createdEndDate : moment().format('YYYY-MM-DD');
   }
   public get minCreatedEndDate() {
-    return this.params.createdStartDate || '';
+    if(this.params.createdStartDate) {
+      const minDate = moment(this.params.createdStartDate).subtract(1, 'd');
+      return minDate.format('YYYY-MM-DD');
+    }
+    return '';
   }
   public get maxCreatedEndDate() {
     return moment().format('YYYY-MM-DD');

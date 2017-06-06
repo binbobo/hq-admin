@@ -71,7 +71,7 @@
           <input readonly [max-date]="maxLeaveStartDate" [(ngModel)]="params.leaveStartTimeDate" name="leaveStartTimeDate" class="form-control"
             type="text" ngui-datetime-picker [close-on-select]="false" />
           <span class="input-group-addon">-</span>
-          <input readonly [min-date]="minLeaveEndDate" [max-date]="maxLeaveEndDate" [(ngModel)]="params.leaveEndTimeDate" name="leaveEndTimeDate"
+          <input readonly [min-date]="minLeaveEndDate" [max-date]="maxLeaveEndDate" [(ngModel)]="endDateParams.leaveEndTimeDate" name="leaveEndTimeDate"
             class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
         </div>
         <div class="input-group m-1" *ngIf="!isCollapsed">
@@ -79,7 +79,7 @@
           <input readonly [max-date]="maxEnterStartDate" [(ngModel)]="params.enterStartTimeDate" name="enterStartTimeDate" class="form-control"
             type="text" ngui-datetime-picker [close-on-select]="false" />
           <span class="input-group-addon">-</span>
-          <input readonly [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" [(ngModel)]="params.enterEndTimeDate" name="enterEndTimeDate"
+          <input readonly [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" [(ngModel)]="endDateParams.enterEndTimeDate" name="enterEndTimeDate"
             class="form-control" type="text" ngui-datetime-picker [close-on-select]="false" />
         </div>
         <div class="input-group m-1">
