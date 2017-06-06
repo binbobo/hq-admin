@@ -1,4 +1,4 @@
-import { Directive, Injector, ViewContainerRef } from '@angular/core';
+import { Directive, Injector, ViewContainerRef, Optional } from '@angular/core';
 import { TableTypeaheadDirective, TableTypeaheadColumn, TypeaheadRequestParams } from 'app/shared/directives';
 import { HttpService, Urls } from 'app/shared/services';
 import { PagedParams } from 'app/shared/models';
@@ -14,6 +14,8 @@ export class BrandTypeaheadDirective extends TableTypeaheadDirective {
         injector: Injector,
         protected httpService: HttpService,
         protected container: ViewContainerRef,
+        @Optional()
+        private formControlName?: FormControlName,
     ) {
         super(injector);
         // 不显示标题
