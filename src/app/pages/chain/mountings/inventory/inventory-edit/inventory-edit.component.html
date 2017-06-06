@@ -3,31 +3,31 @@
   <form *ngIf="form" class="card-block row" [formGroup]="form" (ngSubmit)="onUpdate()">
     <div class="col-6">
       <div class="form-group">
-        <label class="form-control-label">*仓库：</label>
+        <label class="form-control-label hq-required">仓库：</label>
         <input type="text" class="form-control" disabled value="{{model?.houseName}}">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*配件编码：</label>
+        <label class="form-control-label hq-required">配件编码：</label>
         <input type="text" class="form-control" disabled value="{{model?.code}}">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*配件分类：</label>
+        <label class="form-control-label hq-required">配件分类：</label>
         <input type="text" class="form-control" disabled value="{{model?.categoryList|pluck:'text'}}">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*配件名称：</label>
+        <label class="form-control-label hq-required">配件名称：</label>
         <input type="text" class="form-control" disabled value="{{model?.name}}">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*品牌：</label>
+        <label class="form-control-label hq-required">品牌：</label>
         <input disabled value="{{model?.brand}}" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*规格型号：</label>
+        <label class="form-control-label hq-required">规格型号：</label>
         <input disabled type="text" class="form-control" disabled value="{{model?.specification}}">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*单位：</label>
+        <label class="form-control-label hq-required">单位：</label>
         <input disabled value="{{model?.unit}}" class="form-control">
       </div>
     </div>
