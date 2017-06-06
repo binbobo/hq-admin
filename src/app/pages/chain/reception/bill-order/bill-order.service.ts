@@ -95,8 +95,8 @@ export class OrderListSearch extends PagedParams {
     public statekey?: any, // 工单状态
     public carnumber?: string, // 车牌号
     public billcode?: string, // 工单号
-    public starttime?: string, // 进店开始时间
-    public endtime?: string, // 进店结束时间
+    public starttime?: any, // 进店开始时间
+    public endtime?: any, // 进店结束时间
   ) {
     super();
     this.starttime = starttime || moment().subtract(30, 'd').format('YYYY-MM-DD');
