@@ -43,12 +43,18 @@ export class OrderListComponent extends DataList<Order> {
   @ViewChild('printer')
   public printer: PrintDirective;
 
+  endDateParams = {
+    leaveEndTimeDate: undefined,
+    enterEndTimeDate: undefined
+  }
+
   constructor(
     injector: Injector,
     protected service: OrderService,
   ) {
     super(injector, service);
     this.params = new OrderListRequest();
+    console.log(this.params);
 
     // 获取维修类型数据
     this.service.getMaintenanceTypes()
@@ -73,6 +79,10 @@ export class OrderListComponent extends DataList<Order> {
       return item.checked;
     });
     this.params.states = checkedStatus.map(item => item.id);
+    if (this.endDateParams.enterEndTimeDate)
+      this.params.enterEndTimeDate = this.endDateParams.enterEndTimeDate + ':59.999';
+    if (this.endDateParams.leaveEndTimeDate)
+      this.params.leaveEndTimeDate = this.endDateParams.leaveEndTimeDate + ':59.999';
     // 执行查询
     this.onLoadList();
   }
@@ -135,7 +145,7 @@ export class OrderListComponent extends DataList<Order> {
         fee.discount = feeData.deduceAmount;
         //实收金额
         fee.amount = feeData.amount;
-        
+
         this.selectedOrder.fee = fee;
         // 维修项目费用
         this.selectedOrder.serviceOutputs.fee = fee;
@@ -187,22 +197,22 @@ export class OrderListComponent extends DataList<Order> {
 
   // 时间选择限制
   public get maxLeaveStartDate() {
-    return this.params.leaveEndTimeDate || moment().format('YYYY-MM-DD');
+    return !!this.endDateParams.leaveEndTimeDate ? this.endDateParams.leaveEndTimeDate : moment().toDate()
   }
   public get minLeaveEndDate() {
     return this.params.leaveStartTimeDate || '';
   }
   public get maxLeaveEndDate() {
-    return moment().format('YYYY-MM-DD');
+    return moment().toDate();
   }
   public get maxEnterStartDate() {
-    return this.params.enterEndTimeDate || moment().format('YYYY-MM-DD');
+    return !!this.endDateParams.enterEndTimeDate ? this.endDateParams.enterEndTimeDate : moment().toDate();
   }
   public get minEnterEndDate() {
     return this.params.enterStartTimeDate || '';
   }
   public get maxEnterEndDate() {
-    return moment().format('YYYY-MM-DD');
+    return moment().toDate();
   }
 
 

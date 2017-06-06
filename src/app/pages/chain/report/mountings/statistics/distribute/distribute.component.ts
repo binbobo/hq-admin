@@ -87,7 +87,7 @@ export class DistributeComponent extends DataList<any> {
   //搜索
   onSearch() {
     Object.assign(this.params, this.distributeForm.value)
-    this.params.searchEnd=this.distributeForm.get('searchEnd').value+'T23:59:59.999';
+    this.params.searchEnd = this.distributeForm.get('searchEnd').value && this.distributeForm.get('searchEnd').value + 'T23:59:59.999';
     this.onLoadList();
   }
 
@@ -107,7 +107,7 @@ export class DistributeComponent extends DataList<any> {
     return new Date(this.distributeForm.get('searchEnd').value);
   }
   public get minEnterEndDate() {
-    return new Date(this.distributeForm.get('searchStart').value) || '';
+    return new Date(moment(this.distributeForm.get('searchStart').value).subtract(1, 'd').format('YYYY-MM-DD')) || '';
   }
   public get maxEnterEndDate() {
     return moment().format('YYYY-MM-DD');
