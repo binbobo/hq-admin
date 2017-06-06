@@ -47,9 +47,6 @@ table th,table td{
 disabled{
     background: #ddd !important;
 }
-.btn-sm2{
-    padding:7px 30px !important;
-}
 table .tr-left-bold{
     text-align: left;
     font-weight: bold;

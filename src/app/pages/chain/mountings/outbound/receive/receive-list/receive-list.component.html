@@ -1,7 +1,7 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
   <div class="card-header">
-    <span>内部领料</span>
+    <span>内部领用</span>
     <ng-template hqReceiveOutBill (onRemove)="onSuspendRemove($event)" (onSelect)="onSuspendSelect($event)"></ng-template>
   </div>
   <div class="card-block">
@@ -45,7 +45,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of model.list;let i=index">
-            <td class="text-center"><button (click)="onProductRemove(item)" class="btn btn-sm btn-warning">删除</button></td>
+            <td class="text-center"><button (click)="onProductRemove(item)" class="btn btn-sm btn-danger">删除</button></td>
             <td class="text-center">{{item.productCode }}</td>
             <td class="text-center">{{item.productCategory }}</td>
             <td>{{item.productName}}</td>

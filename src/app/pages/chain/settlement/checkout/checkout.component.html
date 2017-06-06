@@ -27,13 +27,13 @@
         </div>
         <div class="input-group m-1">
           <span class="input-group-addon">进厂时间</span>
-          <input class="form-control datetime-picker" style="border-right:0;" [max-date]="maxEnterStartDate" [(ngModel)]="params.starttime" id="starttime" name="starttime"
+          <input class="form-control datetime-picker" style="border-right:0;" [max-date]="params.endtime" [(ngModel)]="params.starttime" id="starttime" name="starttime"
             type="text" placeholder="请选择开始时间" ngui-datetime-picker/>
           <span class="input-group-addon">-</span>
-          <input class="form-control  datetime-picker" style="border-right-width:1px;" id="endtime" [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" [(ngModel)]="params.endtime" name="endtime"
+          <input class="form-control  datetime-picker" style="border-right-width:1px;" id="endtime" [min-date]="params.starttime" [(ngModel)]="params.endtime" name="endtime"
             type="text" placeholder="请选择截止时间" ngui-datetime-picker/>
           <div class="col-sm-1"><button class="btn btn-primary">查询</button></div>
-        </div>
+        </div> 
       </div>
     </form>
     <div class="table-container">

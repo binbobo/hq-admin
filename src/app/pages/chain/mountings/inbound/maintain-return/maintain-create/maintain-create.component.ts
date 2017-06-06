@@ -72,7 +72,7 @@ export class MaintainCreateComponent implements OnInit, OnChanges {
     Object.assign(this.form.value, this.model);
 
     if (this.model.count > (this.inputData.count - this.inputData.returnCount)) {
-      this.alerter.error("数量不能高于当前发料数量，请重新填写", true, 3000);
+      this.alerter.error("数量不能高于当前可退数量，请重新填写", true, 3000);
       return false;
     }
     let invalid = this.controls

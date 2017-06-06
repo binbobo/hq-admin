@@ -51,11 +51,11 @@
         <input label="数量" (input)="calculate()" type="number" formControlName="count" #aa="hq-error" class="form-control" placeholder="请输入采购数量">
       </div>
       <div class="form-group">
-        <label class="form-control-label hq-required">含税单价（元/个）</label>
+        <label class="form-control-label hq-required">含税单价（元）</label>
         <input type="number" label="单价" formControlName="yuan" (input)="onPriceChange($event)" class="form-control" placeholder="请输入含税单价">
       </div>
       <div class="form-group">
-        <label class="form-control-label hq-required">不含税单价（元/个）</label>
+        <label class="form-control-label hq-required">不含税单价（元）</label>
         <input readonly class="form-control" value="{{form?.controls['exTaxPrice']?.value|centToYuan}}">
         <input type="hidden" readonly label="不含税单价" formControlName="exTaxPrice" class="form-control">
       </div>
