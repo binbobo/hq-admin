@@ -70,7 +70,6 @@ export class TotalValueSearchParams extends PagedParams {
   }
 
   serialize() {
-    this.endTimeDate = moment(this.endTimeDate).endOf('day').format('YYYY-MM-DDTHH:mm:ss.SSS');
-    return super.serialize();
+    return super.serialize({ endTimeDate: this.endTimeDate + 'T23:59:59.999' });
   }
 }

@@ -16,6 +16,10 @@ import * as moment from 'moment';
 })
 export class BusinessListComponent extends DataList<any> {
 
+  private enterStartTime: string;//进厂开始时间
+  private enterEndTime: string;//进厂截止时间
+  private leaveStartTime: string;//出厂开始时间
+  private leaveEndTime: string;//出厂截止时间
   private detailsId;
   private orgItems;
   private businessForm: FormGroup;
@@ -80,7 +84,6 @@ export class BusinessListComponent extends DataList<any> {
     }
   }
 
-
   //条件查询维修历史
   onSearch() {
     this.isSearch = false;
@@ -88,6 +91,12 @@ export class BusinessListComponent extends DataList<any> {
     this.isShow2 = false;
     this.orgItems = this.params.orgIds;
     // this.onLoadList();
+    this.params.enterStartTimeDate = this.enterStartTime;
+    this.params.enterEndTimeDate = this.enterEndTime;
+    this.params.leaveStartTimeDate = this.leaveStartTime;
+    this.params.leaveEndTimeDate = this.leaveEndTime;
+    this.params.enterEndTimeDate = this.params.enterEndTimeDate && moment(this.params.enterEndTimeDate).endOf('day').format('YYYY-MM-DDTHH:mm:ss.SSS');
+    this.params.leaveEndTimeDate = this.params.leaveEndTimeDate && moment(this.params.leaveEndTimeDate).endOf('day').format('YYYY-MM-DDTHH:mm:ss.SSS');
     this.params.setPage(1);
     this.loadList()
       .then(() => {
@@ -157,23 +166,33 @@ export class BusinessListComponent extends DataList<any> {
   }
   //进厂时间控制
   public get maxEnterStartDate() {
-    return this.params.enterEndTimeDate || moment().format('YYYY-MM-DD');
+    if (!this.enterEndTime)
+      return new Date(moment().format('YYYY-MM-DD'));
+    let newDate = moment(this.enterEndTime).toDate();
+    return newDate;
   }
   public get minEnterEndDate() {
-    return this.params.enterStartTimeDate || '';
+    if (!this.enterStartTime)
+      return '';
+    return new Date(moment(this.enterStartTime).subtract(1, 'd').format('YYYY-MM-DD'));
   }
   public get maxEnterEndDate() {
-    return moment().format('YYYY-MM-DD');
+    return new Date(moment().format('YYYY-MM-DD'));
   }
   //出厂时间控制
   public get maxLeaveStartDate() {
-    return this.params.leaveEndTimeDate || moment().format('YYYY-MM-DD');
+    if (!this.leaveEndTime)
+      return new Date(moment().format('YYYY-MM-DD'));
+    let newDate = moment(this.leaveEndTime).toDate();
+    return newDate;
   }
   public get minLeaveEndDate() {
-    return this.params.leaveStartTimeDate || '';
+    if (!this.leaveStartTime)
+      return '';
+    return new Date(moment(this.leaveStartTime).subtract(1, 'd').format('YYYY-MM-DD'));
   }
   public get maxLeaveEndDate() {
-    return moment().format('YYYY-MM-DD');
+    return new Date(moment().format('YYYY-MM-DD'));
   }
 
 }

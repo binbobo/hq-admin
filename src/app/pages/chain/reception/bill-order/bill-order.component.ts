@@ -385,15 +385,6 @@ export class BillOrderComponent extends DataList<any>{
             }
         }
     }
-    // public get maxEnterStartDate() {
-    //     return this.params.endtime || moment().format('YYYY-MM-DDTHH:mm:ss.SSS');
-    // }
-    // public get minEnterEndDate() {
-    //     return this.params.starttime || '';
-    // }
-    // public get maxEnterEndDate() {
-    //     return moment().format('YYYY-MM-DDTHH:mm:ss.SSS');
-    // }
     // 重置为初始查询条件
     reset() {
         this.statekey = [];
