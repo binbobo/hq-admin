@@ -92,16 +92,16 @@ export class CarOwnerComponent extends DataList<any>  {
   }
 
   public get maxCreatedStartDate() {
-    return !!this.endDateParams.createdEndDate ? this.endDateParams.createdEndDate : moment().format('YYYY-MM-DD');
+    return !!this.endDateParams.createdEndDate ? this.endDateParams.createdEndDate : moment().toDate();
   }
   public get minCreatedEndDate() {
     if(this.params.createdStartDate) {
       const minDate = moment(this.params.createdStartDate).subtract(1, 'd');
-      return minDate.format('YYYY-MM-DD');
+      return minDate.toDate();
     }
     return '';
   }
   public get maxCreatedEndDate() {
-    return moment().format('YYYY-MM-DD');
+    return moment().toDate();
   }
 }

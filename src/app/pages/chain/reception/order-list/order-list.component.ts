@@ -197,22 +197,22 @@ export class OrderListComponent extends DataList<Order> {
 
   // 时间选择限制
   public get maxLeaveStartDate() {
-    return !!this.endDateParams.leaveEndTimeDate ? this.endDateParams.leaveEndTimeDate : moment().format('YYYY-MM-DD');
+    return !!this.endDateParams.leaveEndTimeDate ? this.endDateParams.leaveEndTimeDate : moment().toDate()
   }
   public get minLeaveEndDate() {
     return this.params.leaveStartTimeDate || '';
   }
   public get maxLeaveEndDate() {
-    return moment().format('YYYY-MM-DD');
+    return moment().toDate();
   }
   public get maxEnterStartDate() {
-    return !!this.endDateParams.enterEndTimeDate ? this.endDateParams.enterEndTimeDate : moment().format('YYYY-MM-DD');
+    return !!this.endDateParams.enterEndTimeDate ? this.endDateParams.enterEndTimeDate : moment().toDate();
   }
   public get minEnterEndDate() {
     return this.params.enterStartTimeDate || '';
   }
   public get maxEnterEndDate() {
-    return moment().format('YYYY-MM-DD');
+    return moment().toDate();
   }
 
 
