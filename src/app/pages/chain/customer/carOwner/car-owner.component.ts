@@ -18,6 +18,7 @@ export class CarOwnerComponent extends DataList<any>  {
   // 导出加载动画
   generating = false;
 
+  // 结束时间参数对象
   endDateParams = {
     createdEndDate: undefined
   }

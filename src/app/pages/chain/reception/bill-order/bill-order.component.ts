@@ -398,4 +398,15 @@ export class BillOrderComponent extends DataList<any>{
     reset() {
         this.statekey = [];
     }
+
+    public get maxStartTime() {
+        return !!this.endDateParams.endtime ? this.endDateParams.leaveEndTimeDate : moment().toDate()
+    }
+
+    public get minStartTime() {
+        if (this.params.starttime) {
+            return moment(this.params.starttime).subtract(1, 'd').toDate();
+        }
+        return '';
+    }
 }
