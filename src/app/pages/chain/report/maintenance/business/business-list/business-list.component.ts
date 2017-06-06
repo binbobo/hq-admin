@@ -155,7 +155,7 @@ export class BusinessListComponent extends DataList<any> {
     this.printer.print();
     this.bdModal.hide();
   }
-  //进店时间控制
+  //进厂时间控制
   public get maxEnterStartDate() {
     return this.params.enterEndTimeDate || moment().format('YYYY-MM-DD');
   }

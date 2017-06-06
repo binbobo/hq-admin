@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BasicService, PagedParams, PagedResult, ApiResult } from "app/shared/models";
 import { HttpService, Urls } from "app/shared/services";
+import * as moment from 'moment';
 
 @Injectable()
 export class ProcurementService implements BasicService<any>{
@@ -39,7 +40,7 @@ export class ProcurementService implements BasicService<any>{
 
   //详情
   public get(id: string): Promise<any> {
-    const url = Urls.chain.concat('/PurchaseDetails/Details/',id);
+    const url = Urls.chain.concat('/PurchaseDetails/Details/', id);
     return this.httpService
       .get<ApiResult<any>>(url)
       .then(result => result.data)
@@ -57,5 +58,7 @@ export class ProcurementRequest extends PagedParams {
     public orgIds?: Array<any>, //门店查询
   ) {
     super();
+    this.searchStart = searchStart || moment().subtract(30, 'd').format('YYYY-MM-DD');
+    this.searchEnd = searchEnd || moment().format('YYYY-MM-DDTHH:mm:ss.SSS');
   }
 }

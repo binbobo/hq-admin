@@ -123,27 +123,6 @@ export class CustomerAddFormComponent implements OnInit {
   * 选择车主电话
   * @memberof CarOwnerComponent
   */
-  onCustomerPhoneInput(evt) {
-    this.initData();
-    this.carOwnerForm.controls.phone.setValue(evt);
-  }
-
-  private initData() {
-    this.carOwnerForm.reset();
-    this.load.emit({
-      vehicles: [], // 初始化车主下面的车辆数据
-      isFormValid: false
-    });
-  }
-
-  /**
-  * 选择车主电话
-  * @memberof CarOwnerComponent
-  */
-  onCustomerNameInput(evt) {
-    this.initData();
-    this.carOwnerForm.controls.name.setValue(evt);
-  }
 
   private getCustomerById(id) {
     this.service.get(id).then(customer => {

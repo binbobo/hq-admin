@@ -7,6 +7,7 @@ import { TreeviewItem, TreeviewConfig } from "ngx-treeview/lib";
 import { OrderService } from "app/pages/chain/reception/order.service";
 import { CentToYuanPipe, DurationHumanizePipe } from "app/shared/pipes";
 import * as moment from 'moment';
+
 @Component({
   selector: 'hq-procurement',
   templateUrl: './procurement.component.html',
@@ -45,8 +46,8 @@ export class ProcurementComponent extends DataList<any> {
       if (data[0].children && data[0].children.length > 0)
         this.items = data;
     });
+    // this.onSearch();
   }
-
 
   @ViewChild('printer')
   public printer: PrintDirective;
@@ -84,6 +85,7 @@ export class ProcurementComponent extends DataList<any> {
   onSearch() {
     //将表单值赋给params
     Object.assign(this.params, this.procurementForm.value);
+    this.params.searchEnd=this.procurementForm.get('searchEnd').value+'T23:59:59.999';
     console.log('params', this.params);
     this.onLoadList();
   }
@@ -91,8 +93,8 @@ export class ProcurementComponent extends DataList<any> {
   //绑定表单
   createForm() {
     this.procurementForm = this.formBuilder.group({
-      searchStart: '', //开始时间
-      searchEnd: '', // 结束时间
+      searchStart: moment().subtract(30, 'd').format('YYYY-MM-DD'), //开始时间
+      searchEnd: moment().format('YYYY-MM-DD'), // 结束时间
       name: '', //供应商
     })
   }
@@ -103,7 +105,7 @@ export class ProcurementComponent extends DataList<any> {
   }
   //时间控制
   public get maxEnterStartDate() {
-    if(!this.procurementForm.get('searchEnd').value){
+    if (!this.procurementForm.get('searchEnd').value) {
       return moment().format('YYYY-MM-DD');
     }
     return new Date(this.procurementForm.get('searchEnd').value);

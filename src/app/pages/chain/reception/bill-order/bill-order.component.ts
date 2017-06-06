@@ -6,6 +6,7 @@ import { Router } from "@angular/router";
 import { HqAlerter } from "app/shared/directives";
 import { PrintDirective, FormGroupControlErrorDirective } from 'app/shared/directives';
 import { CustomValidators } from "ng2-validation/dist";
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-bill-order',
@@ -58,10 +59,8 @@ export class BillOrderComponent extends DataList<any>{
                 this.orderStatusData = data;
             });
         this.user = JSON.parse(sessionStorage.getItem(StorageKeys.Identity));
-        // 构建表单
-        this.createForm();
+        this.reset();
         this.billForm();
-
     }
     billSheetForm: FormGroup;
     billForm() {
@@ -189,23 +188,23 @@ export class BillOrderComponent extends DataList<any>{
             workItemMoney: 0
         }
     }
-    initprint(){
+    initprint() {
         this.printData = {
-        maindata: {},
-        costData: [],
-        workHourData: [],
-        materialData: [],
-        appendItems: [],
-        adviceItems: [],
-        moneyObj: {
-            workCostMoney: 0,
-            discountMoney: 0,
-            materialMoney: 0,
-            costMoney: 0,
-            costCountMoney: 0,
-            workItemMoney: 0
+            maindata: {},
+            costData: [],
+            workHourData: [],
+            materialData: [],
+            appendItems: [],
+            adviceItems: [],
+            moneyObj: {
+                workCostMoney: 0,
+                discountMoney: 0,
+                materialMoney: 0,
+                costMoney: 0,
+                costCountMoney: 0,
+                workItemMoney: 0
+            }
         }
-    }
     }
     deduceAmount: any;
     // 点击详情事件
@@ -389,16 +388,18 @@ export class BillOrderComponent extends DataList<any>{
             }
         }
     }
-    createForm() {
-        // 初始化数组类型参数
-        this.statekey = []
-        this.workSheetSearchForm = this.fb.group({
-            carnumber: '', // 车牌号
-            billcode: '',//工单号
-            SettlementCode: '',
-            starttime: '',
-            endtime: '',
 
-        });
+    public get maxEnterStartDate() {
+        return this.params.endtime || moment().format('YYYY-MM-DD');
+    }
+    public get minEnterEndDate() {
+        return this.params.starttime || '';
+    }
+    public get maxEnterEndDate() {
+        return moment().format('YYYY-MM-DD');
+    }
+    // 重置为初始查询条件
+    reset() {
+        this.statekey = [];
     }
 }

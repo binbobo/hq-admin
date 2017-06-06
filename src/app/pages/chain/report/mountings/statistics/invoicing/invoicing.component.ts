@@ -61,18 +61,6 @@ export class InvoicingComponent extends DataList<any> {
       .catch(err => this.alerter.warn(err));
   }
 
-  toDou(n) {
-    return n > 9 ? '' + n : '0' + n;
-  }
-  //获取当前时间
-  newDate() {
-    let date = new Date();
-    let y = date.getFullYear();
-    let m = date.getMonth() + 1;
-    let d = date.getDate();
-    return { 'searchStart': y + '-' + this.toDou(m) + '-' + this.toDou(1), 'searchEnd': y + '-' + this.toDou(m) + '-' + this.toDou(d) }
-  }
-
   @ViewChild('printer')
   public printer: PrintDirective;
 
@@ -109,6 +97,7 @@ export class InvoicingComponent extends DataList<any> {
   onSearch() {
     //将表单值赋给params
     Object.assign(this.params, this.invoicingForm.value);
+    this.params.searchEnd=this.invoicingForm.get('searchEnd').value+'T23:59:59.999';
     console.log('params', this.params);
     this.onLoadList();
   }
@@ -141,8 +130,8 @@ export class InvoicingComponent extends DataList<any> {
   createForm() {
     this.invoicingForm = this.formBuilder.group({
       storeId: '',
-      searchStart: this.newDate().searchStart, //开始时间
-      searchEnd: this.newDate().searchEnd, // 结束时间
+      searchStart: moment().subtract(30, 'd').format('YYYY-MM-DD'), //开始时间
+      searchEnd: moment().format('YYYY-MM-DD'), // 结束时间
       billCode: '',//单号
       name: '', //供应商
     })

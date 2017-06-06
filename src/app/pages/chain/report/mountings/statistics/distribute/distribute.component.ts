@@ -49,13 +49,13 @@ export class DistributeComponent extends DataList<any> {
 
 
   //详情模态框
-  alert(ev, id, bdModule,billCode) {
+  alert(ev, id, bdModule, billCode) {
     console.log('详情数据', ev, id, bdModule);
     ev.hqSpinner = true;
     this.service.get(id).then(data => {
       this.isLoading = true;
       this.detail = data[0];
-      this.detail.billCode=billCode;
+      this.detail.billCode = billCode;
       this.detailItemsLength = data.length;
       this.detailItems = data;
       bdModule.show();
@@ -87,6 +87,7 @@ export class DistributeComponent extends DataList<any> {
   //搜索
   onSearch() {
     Object.assign(this.params, this.distributeForm.value)
+    this.params.searchEnd=this.distributeForm.get('searchEnd').value+'T23:59:59.999';
     this.onLoadList();
   }
 
@@ -94,13 +95,13 @@ export class DistributeComponent extends DataList<any> {
   bindForm() {
     this.distributeForm = this.formBuilder.group({
       plateNo: '',//车牌号
-      searchStart: '', //开始时间
-      searchEnd: '', // 结束时间
+      searchStart: moment().subtract(30, 'd').format('YYYY-MM-DD'), //开始时间
+      searchEnd: moment().format('YYYY-MM-DD'), // 结束时间
     })
   }
   //时间控制
   public get maxEnterStartDate() {
-    if(!this.distributeForm.get('searchEnd').value){
+    if (!this.distributeForm.get('searchEnd').value) {
       return moment().format('YYYY-MM-DD');
     }
     return new Date(this.distributeForm.get('searchEnd').value);
