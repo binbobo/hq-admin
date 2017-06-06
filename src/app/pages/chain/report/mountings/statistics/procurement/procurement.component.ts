@@ -85,7 +85,7 @@ export class ProcurementComponent extends DataList<any> {
   onSearch() {
     //将表单值赋给params
     Object.assign(this.params, this.procurementForm.value);
-    this.params.searchEnd=this.procurementForm.get('searchEnd').value+'T23:59:59.999';
+    this.params.searchEnd = this.procurementForm.get('searchEnd').value && this.procurementForm.get('searchEnd').value + 'T23:59:59.999';
     console.log('params', this.params);
     this.onLoadList();
   }
@@ -103,6 +103,7 @@ export class ProcurementComponent extends DataList<any> {
     // 更新查询范围参数
     this.params.orgIds = ev;
   }
+
   //时间控制
   public get maxEnterStartDate() {
     if (!this.procurementForm.get('searchEnd').value) {
@@ -111,7 +112,7 @@ export class ProcurementComponent extends DataList<any> {
     return new Date(this.procurementForm.get('searchEnd').value);
   }
   public get minEnterEndDate() {
-    return new Date(this.procurementForm.get('searchStart').value) || '';
+    return new Date(moment(this.procurementForm.get('searchStart').value).subtract(1, 'd').format('YYYY-MM-DD')) || '';
   }
   public get maxEnterEndDate() {
     return moment().format('YYYY-MM-DD');

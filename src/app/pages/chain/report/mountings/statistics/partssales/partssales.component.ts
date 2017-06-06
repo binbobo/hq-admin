@@ -94,7 +94,7 @@ export class PartssalesComponent extends DataList<any> {
   onSearch() {
     //将表单值赋给params
     Object.assign(this.params, this.partssalesForm.value);
-    this.params.searchEnd=this.partssalesForm.get('searchEnd').value+'T23:59:59.999';
+    this.params.searchEnd = this.partssalesForm.get('searchEnd').value && this.partssalesForm.get('searchEnd').value + 'T23:59:59.999';
     console.log('params', this.params);
     this.onLoadList();
   }
@@ -127,7 +127,7 @@ export class PartssalesComponent extends DataList<any> {
     return new Date(this.partssalesForm.get('searchEnd').value);
   }
   public get minEnterEndDate() {
-    return new Date(this.partssalesForm.get('searchStart').value) || '';
+    return new Date(moment(this.partssalesForm.get('searchStart').value).subtract(1, 'd').format('YYYY-MM-DD')) || '';
   }
   public get maxEnterEndDate() {
     return moment().format('YYYY-MM-DD');
