@@ -45,6 +45,7 @@ export class PartssalesComponent extends DataList<any> {
       if (data[0].children && data[0].children.length > 0)
         this.items = data;
     });
+    this.onSearch();
   }
 
 
@@ -85,8 +86,8 @@ export class PartssalesComponent extends DataList<any> {
   //客戶名陳/手机联动
   changeVal(e) {
     this.partssalesForm.patchValue({
-      name:e.name,
-      phone:e.phone
+      name: e.name,
+      phone: e.phone
     });
   }
 
@@ -102,8 +103,8 @@ export class PartssalesComponent extends DataList<any> {
   //绑定表单
   createForm() {
     this.partssalesForm = this.formBuilder.group({
-      searchStart: '',  //开始时间
-      searchEnd: '',    // 结束时间
+      searchStart: moment().subtract(30, 'd').format('YYYY-MM-DD'),  //开始时间
+      searchEnd: moment().format('YYYY-MM-DD'),    // 结束时间
       name: '',         //供应商
       phone: '',         //供应商手机
     })
