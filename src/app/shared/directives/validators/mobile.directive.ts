@@ -8,7 +8,7 @@ import { Validator, NG_VALIDATORS, AbstractControl, ValidationErrors } from "@an
 export class MobileValidator implements Validator {
 
   static validator = (c: AbstractControl) => {
-    const valid = /^1\d{10}$/.test(c.value);
+    const valid = /^[1][3,5,7,8]\d{9}$/.test(c.value);
     return c.value && !valid ? { 'mobile': true } : null;
   }
 
