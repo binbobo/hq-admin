@@ -487,7 +487,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       type: ['', [Validators.required]], // 维修类型
       expectLeave: [moment().add(2, 'hours').format('YYYY-MM-DD HH:mm'), [Validators.required, CustomValidators.date]], // 预计交车时间
       mileage: ['', [Validators.required, HQ_VALIDATORS.mileage]], // 行驶里程
-      lastEnter: [{ value: null, disabled: true }], // 上次进店时间
+      lastEnter: [{ value: null, disabled: true }], // 上次进厂时间
       location: '', // 维修工位
       nextDate: [null, [CustomValidators.date]], // 建议下次保养日期
       lastMileage: [{ value: '', disabled: true }], // 上次进店里程

@@ -280,7 +280,7 @@ export class Order extends BasicModel {
         public status: string, // 状态
         public type: string, // 维修类型
         public billCode: string, // 工单号
-        // 进店时间 / 开单时间  使用父类的createdOnUtc字段
+        // 进厂时间 / 开单时间  使用父类的createdOnUtc字段
         public expectLeave: Date, // 预计交车时间
         public overTime: number, // 超时(时间)
         public createdUserName: string, // 服务顾问
@@ -301,7 +301,7 @@ export class Order extends BasicModel {
         public employeeNames: string, // 维修技师
         public leaveTime: string, // 出厂时间
         public location: string, // 维修工位
-        public lastEnter: Date, // 上次进店时间
+        public lastEnter: Date, // 上次进厂时间
         public lastMileage: number, // 上次进店里程
         public nextDate: Date, // 建议下次保养日期
         public nextMileage: number, // 建议下次保养里程

@@ -131,7 +131,7 @@ export class SearchReturnData {
         public typeName: string = '',   //维修类型
         public expectLeave: string = '',  //预计交车日期
         public mileage: number = 0, //行驶里程
-        public lastEnterDate: string = '',//上次进店时间
+        public lastEnterDate: string = '',//上次进厂时间
         public nextDate: string = '',   //建议下次保养日期
         public location: string = '',   //维修工位
         public lastMileage: string = '', //上次进店里程
