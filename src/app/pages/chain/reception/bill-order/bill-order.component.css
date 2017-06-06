@@ -64,6 +64,7 @@ max-width: 1000px;
 }
 .form-check-label{
     margin-bottom: 0 !important;
+    color: #727171;
 }
 .form-check {
     margin-bottom: 0 !important;

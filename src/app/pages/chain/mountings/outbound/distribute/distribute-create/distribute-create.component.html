@@ -41,14 +41,15 @@
     </div>
     <div class="col-6">
       <div class="form-group">
-        <label class="form-control-label hq-required">仓库</label> 
-        <select class="form-control" (change)="onStorageChange($event.target.value)" formControlName="storeId">
+        <label class="form-control-label hq-required">仓库</label>
+        <select class="form-control" [attr.disabled]="!storages?.length||undefined" (change)="onStorageChange($event.target.value)"
+          formControlName="storeId">
           <option *ngFor="let item of storages" [value]="item.id">{{item.name}}</option>
         </select>
       </div>
       <div class="form-group">
         <label class="form-control-label">库位</label>
-        <select class="form-control" formControlName="locationId" (change)="onLocationChange($event.target.value)">
+        <select class="form-control" [attr.disabled]="!locations?.length||undefined" formControlName="locationId" (change)="onLocationChange($event.target.value)">
           <option *ngFor="let item of locations" [value]="item.id">{{item.name}}</option>
         </select>
       </div>
@@ -61,7 +62,7 @@
         <input label="数量" (input)="calculate()" type="number" formControlName="count" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label">单位</label>
+        <label class="form-control-label hq-required">单位</label>
         <input readonly formControlName="productUnit" class="form-control">
       </div>
       <div class="form-group">

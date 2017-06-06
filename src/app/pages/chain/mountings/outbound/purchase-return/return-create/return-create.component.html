@@ -36,12 +36,12 @@
         <input label="数量" (input)="calculate()" type="number" formControlName="count" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label hq-required">含税单价（元/个）</label>
+        <label class="form-control-label hq-required">含税单价（元）</label>
         <input readonly class="form-control" value="{{form?.controls['price']?.value|centToYuan}}">
         <input type="hidden" readonly label="单价" formControlName="price" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label hq-required">不含税单价（元/个）</label>
+        <label class="form-control-label hq-required">不含税单价（元）</label>
         <input readonly class="form-control" value="{{form?.controls['exTaxPrice']?.value|centToYuan}}">
         <input type="hidden" readonly label="不含税单价" formControlName="exTaxPrice" class="form-control">
       </div>

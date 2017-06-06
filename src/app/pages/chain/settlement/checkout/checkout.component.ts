@@ -168,13 +168,13 @@ export class CheckoutComponent extends DataList<any> {
       endtime: '',
     });
   }
-  public get maxEnterStartDate() {
-    return this.params.endtime || moment().format('YYYY-MM-DD');
-  }
-  public get minEnterEndDate() {
-    return this.params.starttime || '';
-  }
-  public get maxEnterEndDate() {
-    return moment().format('YYYY-MM-DD');
-  }
+  // public get maxEnterStartDate() {
+  //   return this.params.endtime || moment().format('YYYY-MM-DD');
+  // }
+  // public get minEnterEndDate() {
+  //   return this.params.starttime || '';
+  // }
+  // public get maxEnterEndDate() {
+  //   return moment().format('YYYY-MM-DD');
+  // }
 }

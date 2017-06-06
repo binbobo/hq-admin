@@ -30,11 +30,11 @@
           <label for="createdStartDate" class="form-label">建档日期</label>
           <div class="hq-col">
             <input readonly [max-date]="maxCreatedStartDate" [(ngModel)]="params.createdStartDate" class="form-control" type="text" name="createdStartDate"
-              ngui-datetime-picker date-only="true" />
+              ngui-datetime-picker date-only="true" style="border-bottom-right-radius: 0;border-top-right-radius: 0;"/>
           </div>
         </div>
-        <div class="hq-input">
-          <label class="form-label text-center">-</label>
+        <div class="hq-input" style="margin-left: -21px;">
+          <label class="form-label" style="min-width: 0;">-</label>
           <div class="hq-col">
             <input readonly [min-date]="minCreatedEndDate" [max-date]="maxCreatedEndDate" [(ngModel)]="endDateParams.createdEndDate" class="form-control"
               type="text" name="createdEndDate" ngui-datetime-picker date-only="true" />
