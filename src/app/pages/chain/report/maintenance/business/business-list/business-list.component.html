@@ -10,20 +10,20 @@
       </div>
       <div class="input-group m-1">
         <span class="input-group-addon">进厂时间</span>
-        <input [max-date]="maxEnterStartDate" [(ngModel)]="params.enterStartTimeDate" class="form-control" id="enterStartTimeDate"
-          name="enterStartTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请输入开始日期" />
+        <input [max-date]="maxEnterStartDate" [(ngModel)]="enterStartTime" class="form-control" id="enterStartTimeDate"
+          name="enterStartTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请选择开始日期" />
         <span class="input-group-addon">-</span>
-        <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" [(ngModel)]="params.enterEndTimeDate" class="form-control"
-          id="enterEndTimeDate" name="enterEndTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请输入截止日期"
+        <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" [(ngModel)]="enterEndTime" class="form-control"
+          id="enterEndTimeDate" name="enterEndTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请选择截止日期"
         />
       </div>
       <div class="input-group m-1">
         <span class="input-group-addon">出厂时间</span>
-        <input [max-date]="maxLeaveStartDate" [(ngModel)]="params.leaveStartTimeDate" class="form-control" id="leaveStartTimeDate"
-          name="leaveStartTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请输入开始日期" />
+        <input [max-date]="maxLeaveStartDate" [(ngModel)]="leaveStartTime" class="form-control" id="leaveStartTimeDate"
+          name="leaveStartTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请选择开始日期" />
         <span class="input-group-addon">-</span>
-        <input [min-date]="minLeaveEndDate" [max-date]="maxLeaveEndDate" [(ngModel)]="params.leaveEndTimeDate" class="form-control"
-          id="leaveEndTimeDate" name="leaveEndTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请输入截止日期"
+        <input [min-date]="minLeaveEndDate" [max-date]="maxLeaveEndDate" [(ngModel)]="leaveEndTime" class="form-control"
+          id="leaveEndTimeDate" name="leaveEndTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请选择截止日期"
         />
       </div>
       <div class="input-group m-1">
@@ -86,11 +86,11 @@
             <td class="text-right">{{item.checkoutedAmount|centToYuan}}</td>
           </tr>
         </tbody>
-        <tfoot *ngIf="list?.length <= 0">
+        <!--<tfoot *ngIf="list?.length <= 0">
           <tr>
             <td colspan="19">系统未找到相关内容</td>
           </tr>
-        </tfoot>
+        </tfoot>-->
       </table>
     </div>
     <hq-pagination [(itemsPerPage)]="size" [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
