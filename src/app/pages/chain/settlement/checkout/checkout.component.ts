@@ -28,6 +28,12 @@ export class CheckoutComponent extends DataList<any> {
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
   public user = null;
+
+  // 结束时间参数对象
+  endDateParams = {
+    endtime: undefined,
+  }
+
   constructor(
     private router: Router,
     injector: Injector,
@@ -35,6 +41,7 @@ export class CheckoutComponent extends DataList<any> {
     private fb: FormBuilder) {
     super(injector, service);
     this.params = new OrderListSearch();
+    this.endDateParams.endtime = this.params.endtime;
     // 状态
     this.service.getOrderStatus()
       .subscribe(data => {
@@ -51,12 +58,9 @@ export class CheckoutComponent extends DataList<any> {
   // 点击查询
   onSearch() {
     // 组织工单状态数据
-    const checkedStatus = this.orderStatusData.filter(item => {
-      return item.checked;
-    });
-    this.params.statekey = checkedStatus.map(item => item.key);
-
-    // this.params.endtime += " 23:59:59";
+    this.params.statekey = this.orderStatusData.filter(item => item.checked).map(item => item.key);
+    if (this.endDateParams.endtime)
+      this.params.endtime = this.endDateParams.endtime + ':59.999';
     // 执行查询
     this.onLoadList();
   }
@@ -168,13 +172,17 @@ export class CheckoutComponent extends DataList<any> {
       endtime: '',
     });
   }
-  // public get maxEnterStartDate() {
-  //   return this.params.endtime || moment().format('YYYY-MM-DD');
-  // }
-  // public get minEnterEndDate() {
-  //   return this.params.starttime || '';
-  // }
-  // public get maxEnterEndDate() {
-  //   return moment().format('YYYY-MM-DD');
-  // }
+  
+  public get maxStartTime() {
+    return !!this.endDateParams.endtime ? this.endDateParams.endtime : moment().toDate()
+  }
+  public get maxEndTime() {
+    return moment().toDate();
+  }
+  public get minEndTime() {
+    if (this.params.starttime) {
+      return moment(this.params.starttime).subtract(1, 'd').toDate();
+    }
+    return '';
+  }
 }

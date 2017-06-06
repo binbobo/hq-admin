@@ -100,10 +100,6 @@ export class OrderListSearch extends PagedParams {
     ) {
         super();
         this.starttime = starttime || moment().subtract(30, 'd').format('YYYY-MM-DD');
-        this.endtime = endtime || moment().format('YYYY-MM-DD');
-    }
-    serialize() {
-        this.endtime = moment(this.endtime).endOf('day').format('YYYY-MM-DDTHH:mm:ss.SSS');
-        return super.serialize();
+        this.endtime = endtime || moment().endOf('day').format('YYYY-MM-DD HH:mm');
     }
 }

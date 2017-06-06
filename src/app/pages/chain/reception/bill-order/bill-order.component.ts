@@ -58,6 +58,7 @@ export class BillOrderComponent extends DataList<any>{
         private fb: FormBuilder) {
         super(injector, service);
         this.params = new OrderListSearch();
+        this.endDateParams.endtime = this.params.endtime;
         // 状态
         this.service.getOrderStatus()
             .subscribe(data => {
