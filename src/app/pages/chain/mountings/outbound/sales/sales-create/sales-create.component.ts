@@ -1,9 +1,9 @@
-import { Component, OnInit, Injector, Output, EventEmitter, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, Injector, Output, EventEmitter, ViewChildren, QueryList, ViewChild } from '@angular/core';
 import { FormHandle } from 'app/shared/models';
 import { SalesListItem } from '../sales.service';
 import { Observable } from "rxjs/Rx";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { TypeaheadRequestParams, FormGroupControlErrorDirective } from 'app/shared/directives';
+import { TypeaheadRequestParams, FormGroupControlErrorDirective, HqAlerter } from 'app/shared/directives';
 import { CustomValidators } from 'ng2-validation';
 import { CentToYuanPipe } from "app/shared/pipes";
 
@@ -21,6 +21,8 @@ export class SalesCreateComponent implements OnInit {
   private model: SalesListItem = new SalesListItem();
   @ViewChildren(FormGroupControlErrorDirective)
   private controls: QueryList<FormGroupControlErrorDirective>;
+  @ViewChild(HqAlerter)
+  protected alerter: HqAlerter;
   private storages: Array<any>;
   private locations: Array<any>;
 
@@ -94,7 +96,7 @@ export class SalesCreateComponent implements OnInit {
       let storage = formData.storeId && this.storages.find(m => m.id === formData.storeId);
       let value = { ...formData, locationName: location && location.name, houseName: storage && storage.name };
       this.formSubmit.emit(value);
-      this.onReset();
+      this.reset();
     }
   }
 
@@ -154,9 +156,13 @@ export class SalesCreateComponent implements OnInit {
     let amount = (count || 0) * (price || 0);
     this.form.patchValue({ amount: amount, count: count, price: price });
   }
-  public onReset() {
+
+
+  private reset() {
     this.form = null;
-    setTimeout(() => this.buildForm(), 1);
-    return false;
+    this.storages = null;
+    this.locations = null;
+    this.buildForm();
   }
+
 }

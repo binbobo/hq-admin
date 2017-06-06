@@ -115,7 +115,10 @@ export class DistributeCreateComponent implements OnInit {
 
   public onReset() {
     this.form = null;
-    setTimeout(() => this.buildForm(), 1);
+    this.storages = null;
+    this.locations = null;
+    this.vehicleInfoList=null;
+    this.buildForm();
     return false;
   }
 

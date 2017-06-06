@@ -2,7 +2,6 @@ import { Component, OnInit, EventEmitter, Output, ViewChildren, QueryList, Input
 import { TypeaheadRequestParams, FormGroupControlErrorDirective, } from 'app/shared/directives';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
-import { CentToYuanPipe } from 'app/shared/pipes';
 import { PurchaseReturnItem, PurchaseReturnService, GetProductsRequest } from '../purchase-return.service';
 
 @Component({
@@ -13,11 +12,8 @@ import { PurchaseReturnItem, PurchaseReturnService, GetProductsRequest } from '.
 export class ReturnCreateComponent implements OnInit {
 
   private form: FormGroup;
-  private converter: CentToYuanPipe = new CentToYuanPipe();
   @Output()
   private submit = new EventEmitter<PurchaseReturnItem>();
-  @Output()
-  private close = new EventEmitter();
   @Input()
   private model: PurchaseReturnItem;
   @ViewChildren(FormGroupControlErrorDirective)
