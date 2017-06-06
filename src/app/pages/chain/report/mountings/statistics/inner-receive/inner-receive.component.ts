@@ -55,17 +55,19 @@ export class InnerReceiveComponent extends DataList<any> {
       // .then(data => data.length && this.loadDepartments(data[0].value))
       .then(data => this.reset())
       .catch(err => this.alerter.error(err));
+    this.onSearch();
+
   }
 
-reset() {
+  reset() {
     if (Array.isArray(this.employees) && this.employees.length) {
       this.receiveForm.patchValue({
-        takeUser:this.employees[0].value
+        takeUser: this.employees[0].value
       })
     }
     if (Array.isArray(this.departments) && this.departments.length) {
       this.receiveForm.patchValue({
-        takeDepart:this.departments[0].value
+        takeDepart: this.departments[0].value
       })
     }
   }
@@ -140,8 +142,8 @@ reset() {
     this.receiveForm = this.formBuilder.group({
       takeUser: '',//领用人
       takeDepart: '',//部门
-      searchStart: '', //开始时间
-      searchEnd: '', // 结束时间
+      searchStart:moment().subtract(30, 'd').format('YYYY-MM-DD'), //开始时间
+      searchEnd: moment().format('YYYY-MM-DD'), // 结束时间
     })
   }
 
@@ -158,7 +160,7 @@ reset() {
 
   //时间控制
   public get maxEnterStartDate() {
-    if(!this.receiveForm.get('searchEnd').value){
+    if (!this.receiveForm.get('searchEnd').value) {
       return moment().format('YYYY-MM-DD');
     }
     return new Date(this.receiveForm.get('searchEnd').value);
