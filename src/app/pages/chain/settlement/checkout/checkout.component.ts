@@ -4,6 +4,7 @@ import { DataList, StorageKeys } from "app/shared/models";
 import { Router } from "@angular/router";
 import { OrderListSearch, CheckOutService } from "./checkout.service";
 import { HqAlerter } from "app/shared/directives";
+import * as moment from 'moment';
 
 @Component({
   selector: 'hq-checkout',
@@ -166,5 +167,14 @@ export class CheckoutComponent extends DataList<any> {
       starttime: '',
       endtime: '',
     });
+  }
+  public get maxEnterStartDate() {
+    return this.params.endtime || moment().format('YYYY-MM-DD');
+  }
+  public get minEnterEndDate() {
+    return this.params.starttime || '';
+  }
+  public get maxEnterEndDate() {
+    return moment().format('YYYY-MM-DD');
   }
 }

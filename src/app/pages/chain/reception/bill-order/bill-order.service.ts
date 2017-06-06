@@ -97,6 +97,6 @@ export class OrderListSearch extends PagedParams {
     public starttime?: string, // 进店开始时间
     public endtime?: string, // 进店结束时间
   ) {
-    super('OrderListSearchParams');
+    super();
   }
 }
