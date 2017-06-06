@@ -35,3 +35,4 @@ export class DefaultRequestOptions extends BaseRequestOptions {
 }
 
 export const requestOptionsProvider = { provide: RequestOptions, useClass: DefaultRequestOptions };
+export const defaultRequestOptionProvider = { provide: RequestOptions, useClass: BaseRequestOptions }
