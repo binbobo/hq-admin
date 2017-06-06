@@ -3,32 +3,39 @@
   <form *ngIf="form" class="card-block row" [formGroup]="form" (ngSubmit)="onUpdate()">
     <div class="col-6">
       <div class="form-group">
-        <label class="form-control-label">*仓库：</label>
-        <input type="text" class="form-control" disabled value="{{model?.houseName}}">
+        <label class="form-control-label hq-required">仓库：</label>
+        <select label="仓库" (change)="onStorageChange($event)" formControlName="storeId" class="form-control">
+          <option *ngFor="let item of warehouses" value="{{item.value}}">{{item.text}}</option>
+        </select>
       </div>
       <div class="form-group">
-        <label class="form-control-label">*配件编码：</label>
-        <input type="text" class="form-control" disabled value="{{model?.code}}">
+        <label class="form-control-label hq-required">配件编码：</label>
+        <input type="text" class="form-control" [attr.disabled]="editable" formControlName="code">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*配件分类：</label>
-        <input type="text" class="form-control" disabled value="{{model?.categoryList|pluck:'text'}}">
+        <label class="form-control-label hq-required">配件分类：</label>
+        <input label="配件分类：" [attr.disabled]='editable' (input)="onCategoryChange($event)" hqProductCategoryTypeahead (onSelect)="onCategorySelect($event)"
+          formControlName="categoryName" class="form-control" placeholder="请输入配件分类">
+        <input label="配件分类" formControlName="categoryId" [errors]="{required:'请选择一个有效的分类'}" type="hidden">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*配件名称：</label>
-        <input type="text" class="form-control" disabled value="{{model?.name}}">
+        <label class="form-control-label hq-required">配件名称：</label>
+        <input type="text" class="form-control" [attr.disabled]="editable" formControlName="name">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*品牌：</label>
-        <input disabled value="{{model?.brand}}" class="form-control">
+        <label class="form-control-label hq-required">品牌：</label>
+        <input label="品牌" [attr.disabled]='editable' (input)="onBrandChange($event)" hqProductBrandTypeahead (onSelect)="onBrandSelect($event)"
+          formControlName="brandName" class="form-control" placeholder="请输入品牌">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*规格型号：</label>
-        <input disabled type="text" class="form-control" disabled value="{{model?.specification}}">
+        <label class="form-control-label hq-required">规格型号：</label>
+        <input [attr.disabled]='editable' formControlName="productSpecification" class="form-control" placeholder="请输入规格型号">
       </div>
       <div class="form-group">
-        <label class="form-control-label">*单位：</label>
-        <input disabled value="{{model?.unit}}" class="form-control">
+        <label class="form-control-label hq-required">单位：</label>
+        <select label="单位" [attr.disabled]="editable" formControlName="unit" class="form-control">
+          <option *ngFor="let item of units" value="{{item.value}}">{{item.text}}</option>
+        </select>
       </div>
     </div>
     <div class="col-6">
@@ -47,11 +54,11 @@
       </div>
       <div class="form-group">
         <label class="form-control-label">产地：</label>
-        <input type="text" class="form-control" disabled value="{{model?.madeIn}}">
+        <input label='产地' [attr.disabled]='editable' formControlName="madeIn" class="form-control" placeholder="请输入产地">
       </div>
       <div class="form-group">
         <label class="form-control-label">包装规格：</label>
-        <input type="text" class="form-control" disabled value="{{model?.packageInfo}}">
+        <input label='备注' [attr.disabled]='editable' formControlName="packageInfo" class="form-control" placeholder="请输入包装规格">
       </div>
       <div class="form-group">
         <label class="form-control-label">备注：</label>

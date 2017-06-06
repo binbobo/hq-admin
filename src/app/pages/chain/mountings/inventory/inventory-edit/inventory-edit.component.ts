@@ -1,9 +1,10 @@
 import { Component, OnInit, Injector } from '@angular/core';
-import { FormHandle } from 'app/shared/models';
+import { FormHandle, SelectOption } from 'app/shared/models';
 import { Inventory, InventoryService } from '../inventory.service';
 import { Observable } from 'rxjs/Observable';
 import { FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
+import { MountingsService } from '../../mountings.service';
 
 @Component({
   selector: 'hq-inventory-edit',
@@ -13,27 +14,49 @@ import { CustomValidators } from 'ng2-validation';
 export class InventoryEditComponent extends FormHandle<Inventory> implements OnInit {
 
   private vehicles: Array<any> = [];
+  private warehouses: Array<SelectOption>;
+  private units: Array<SelectOption>;
 
   constructor(
     injector: Injector,
     service: InventoryService,
+    private moutingsService: MountingsService,
   ) {
     super(injector, service);
   }
 
+  private get editable() {
+    return this.model.dataSource === "2" ? undefined : true;
+  }
+
   protected getModel(): Observable<Inventory> {
+    if (Array.isArray(this.model.categoryList) && this.model.categoryList.length) {
+      let category = this.model.categoryList[0];
+      this.model.categoryId = category.value;
+      this.model.category = category.text;
+    }
     return Observable.of(this.model)
   }
   protected buidForm(): FormGroup {
     return this.formBuilder.group({
-      id: [this.model.id],
-      storeId: [this.model.storeId],
-      locationId: [this.model.locationId],
-      locationName: [this.model.locationName, [Validators.required, Validators.maxLength(50)]],
+      locationName: [this.model.locationName, [Validators.maxLength(50)]],
+      locationId: [this.model.locationId, [Validators.maxLength(50)]],
+      storeId: [this.model.storeId, [Validators.required, Validators.maxLength(36)]],
+      vehicleId: [this.model.vehicleId],
+      unit: [this.model.unitId, [Validators.required, Validators.maxLength(36)]],
+      categoryId: [this.model.categoryId, [Validators.required]],
+      categoryName: [this.model.category],
+      code: [this.model.code, [Validators.required, Validators.maxLength(36)]],
+      name: [this.model.name, [Validators.required, Validators.maxLength(60)]],
+      productSpecification: [this.model.productSpecification, [Validators.required, Validators.maxLength(20)]],
       maxCount: [this.model.maxCount, [CustomValidators.min(0)]],
       minCount: [this.model.minCount, [CustomValidators.min(0)]],
+      brandId: [this.model.brandId],
+      packageInfo: [this.model.packageInfo, [Validators.maxLength(20)]],
+      madeIn: [this.model.madeIn, [Validators.maxLength(100)]],
       description: [this.model.description, [Validators.maxLength(200)]],
-      vehicleId: [this.model.vehicleId],
+      id: [this.model.id],
+      brandName: [this.model.brand, [Validators.required, Validators.maxLength(50)]],
     });
   }
 
@@ -42,10 +65,43 @@ export class InventoryEditComponent extends FormHandle<Inventory> implements OnI
     if (Array.isArray(this.model.vehicleInfoList)) {
       this.vehicles = this.model.vehicleInfoList;
     }
+    this.moutingsService.getWarehouseOptions()
+      .then(options => this.warehouses = options)
+      .then(options => options.length ? options[0].value : '')
+      .then(id => this.patchValue('storeId', id))
+      .catch(err => this.alerter.warn(err));
+    this.moutingsService.getUnitOptions()
+      .then(options => this.units = options)
+      .then(options => options.length ? options[0].value : '')
+      .then(id => this.patchValue('unit', id))
+      .catch(err => this.alerter.warn(err));
   }
 
   get typeaheadParams() {
-    return { storeId: this.model.storeId };
+    return { storeId: this.form.get('storeId').value };
+  }
+
+  private onCategoryChange(event: Event) {
+    if (event.isTrusted) {
+      this.form.patchValue({ categoryId: undefined });
+    }
+  }
+
+  private onCategorySelect(event) {
+    this.form.patchValue({
+      categoryId: event.value,
+      name: event.text,
+    });
+  }
+
+  onBrandSelect(event) {
+    this.form.patchValue({ brandId: event.id });
+  }
+
+  onBrandChange(event: Event) {
+    if (event.isTrusted) {
+      this.form.patchValue({ brandId: undefined });
+    }
   }
 
   onLocationChange(event: Event) {

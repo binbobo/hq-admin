@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpService, Urls } from 'app/shared/services';
 import { PagedParams, PagedResult, PagedService, ApiResult } from 'app/shared/models';
+import * as moment from 'moment';
 
 
 @Injectable()
@@ -71,6 +72,11 @@ export class JournalAccountListRequest extends PagedParams {
     public createEndTime?: string,
   ) {
     super();
+  }
+
+  serialize() {
+    this.createEndTime = moment(this.createEndTime).endOf('day').format('YYYY-MM-DDTHH:mm:ss.SSS');
+    return super.serialize();
   }
 }
 

@@ -29,7 +29,7 @@ export class ProviderEditComponent extends FormHandle<Provider> implements OnIni
       name: [this.model.name, [Validators.required, Validators.maxLength(100),]],
       shortName: [this.model.shortName, [Validators.maxLength(30),]],
       contactUser: [this.model.contactUser, [Validators.required, Validators.maxLength(20),]],
-      tel: [this.model.tel, [Validators.required, HQ_VALIDATORS.mobile,]],
+      tel: [this.model.tel, [HQ_VALIDATORS.mobile,]],
       address: [this.model.address, [Validators.maxLength(40),]],
       postal: [this.model.postal, [Validators.maxLength(10),]],
       fax: [this.model.fax, [HQ_VALIDATORS.tel, Validators.maxLength(20)]],

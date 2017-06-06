@@ -7,9 +7,11 @@
     <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
       <div class="input-group my-1 mr-1">
         <span class="input-group-addon">日期</span>
-        <input class="form-control" [(ngModel)]="params.startTimeDate" name="startTimeDate" date-only="true" ngui-datetime-picker/>
+        <input class="form-control" [(ngModel)]="params.startTimeDate" [max-date]="params.endTimeDate" name="startTimeDate" date-only="true"
+          ngui-datetime-picker/>
         <span class="input-group-addon">-</span>
-        <input class="form-control" [(ngModel)]="params.endTimeDate" name="endTimeDate" date-only="true" ngui-datetime-picker/>
+        <input class="form-control" [(ngModel)]="params.endTimeDate" [min-date]="params.startTimeDate" name="endTimeDate" date-only="true"
+          ngui-datetime-picker/>
       </div>
       <div class="input-group m-1" *ngIf="stations">
         <span class="input-group-addon">门店</span>

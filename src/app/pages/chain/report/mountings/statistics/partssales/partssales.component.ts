@@ -85,8 +85,8 @@ export class PartssalesComponent extends DataList<any> {
   //客戶名陳/手机联动
   changeVal(e) {
     this.partssalesForm.patchValue({
-      name:e.name,
-      phone:e.phone
+      name: e.name,
+      phone: e.phone
     });
   }
 
@@ -94,7 +94,7 @@ export class PartssalesComponent extends DataList<any> {
   onSearch() {
     //将表单值赋给params
     Object.assign(this.params, this.partssalesForm.value);
-
+    this.params.searchEnd = this.partssalesForm.get('searchEnd').value && this.partssalesForm.get('searchEnd').value + 'T23:59:59.999';
     console.log('params', this.params);
     this.onLoadList();
   }
@@ -102,8 +102,8 @@ export class PartssalesComponent extends DataList<any> {
   //绑定表单
   createForm() {
     this.partssalesForm = this.formBuilder.group({
-      searchStart: '',  //开始时间
-      searchEnd: '',    // 结束时间
+      searchStart: moment().subtract(30, 'd').format('YYYY-MM-DD'),  //开始时间
+      searchEnd: moment().format('YYYY-MM-DD'),    // 结束时间
       name: '',         //供应商
       phone: '',         //供应商手机
     })
@@ -127,7 +127,7 @@ export class PartssalesComponent extends DataList<any> {
     return new Date(this.partssalesForm.get('searchEnd').value);
   }
   public get minEnterEndDate() {
-    return new Date(this.partssalesForm.get('searchStart').value) || '';
+    return new Date(moment(this.partssalesForm.get('searchStart').value).subtract(1, 'd').format('YYYY-MM-DD')) || '';
   }
   public get maxEnterEndDate() {
     return moment().format('YYYY-MM-DD');

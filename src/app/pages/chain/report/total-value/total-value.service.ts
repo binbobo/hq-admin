@@ -68,4 +68,9 @@ export class TotalValueSearchParams extends PagedParams {
     this.startTimeDate = startTimeDate || moment().subtract(30, 'd').format('YYYY-MM-DD');
     this.endTimeDate = endTimeDate || moment().format('YYYY-MM-DD');
   }
+
+  serialize() {
+    this.endTimeDate = moment(this.endTimeDate).endOf('day').format('YYYY-MM-DDTHH:mm:ss.SSS');
+    return super.serialize();
+  }
 }
