@@ -55,8 +55,6 @@ export class InnerReceiveComponent extends DataList<any> {
       // .then(data => data.length && this.loadDepartments(data[0].value))
       .then(data => this.reset())
       .catch(err => this.alerter.error(err));
-    this.onSearch();
-
   }
 
   reset() {
@@ -132,7 +130,7 @@ export class InnerReceiveComponent extends DataList<any> {
   onSearch() {
     //将表单值赋给params
     Object.assign(this.params, this.receiveForm.value);
-
+    this.params.searchEnd=this.receiveForm.get('searchEnd').value+'T23:59:59.999';
     console.log('params', this.params);
     this.onLoadList();
   }

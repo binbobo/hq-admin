@@ -59,7 +59,6 @@ export class InvoicingComponent extends DataList<any> {
     this.service.getWarehouseOptions()
       .then(options => this.warehouses = options)
       .catch(err => this.alerter.warn(err));
-    this.onSearch();
   }
 
   @ViewChild('printer')
@@ -98,6 +97,7 @@ export class InvoicingComponent extends DataList<any> {
   onSearch() {
     //将表单值赋给params
     Object.assign(this.params, this.invoicingForm.value);
+    this.params.searchEnd=this.invoicingForm.get('searchEnd').value+'T23:59:59.999';
     console.log('params', this.params);
     this.onLoadList();
   }

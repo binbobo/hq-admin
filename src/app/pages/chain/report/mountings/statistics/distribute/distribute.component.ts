@@ -36,7 +36,6 @@ export class DistributeComponent extends DataList<any> {
       if (data[0].children && data[0].children.length > 0)
         this.items = data;
     });
-    this.onSearch();
   }
 
   // 用于ngx-treeview组件
@@ -88,6 +87,7 @@ export class DistributeComponent extends DataList<any> {
   //搜索
   onSearch() {
     Object.assign(this.params, this.distributeForm.value)
+    this.params.searchEnd=this.distributeForm.get('searchEnd').value+'T23:59:59.999';
     this.onLoadList();
   }
 

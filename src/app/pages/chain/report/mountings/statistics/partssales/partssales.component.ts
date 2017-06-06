@@ -45,7 +45,6 @@ export class PartssalesComponent extends DataList<any> {
       if (data[0].children && data[0].children.length > 0)
         this.items = data;
     });
-    this.onSearch();
   }
 
 
@@ -95,7 +94,7 @@ export class PartssalesComponent extends DataList<any> {
   onSearch() {
     //将表单值赋给params
     Object.assign(this.params, this.partssalesForm.value);
-
+    this.params.searchEnd=this.partssalesForm.get('searchEnd').value+'T23:59:59.999';
     console.log('params', this.params);
     this.onLoadList();
   }
