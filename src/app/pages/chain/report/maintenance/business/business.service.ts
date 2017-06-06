@@ -3,6 +3,7 @@ import { HttpService, Urls } from "app/shared/services";
 import { BasicService, PagedParams, PagedResult, ApiResult } from "app/shared/models";
 import { Observable } from "rxjs/Observable";
 import { TreeviewItem } from "ngx-treeview/lib";
+import * as moment from 'moment';
 
 @Injectable()
 export class BusinessService implements BasicService<any> {
