@@ -15,8 +15,8 @@
 
       <div class="input-group m-1">
         <span class="input-group-addon">供应商</span>
-        <input hqProviderTypeahead (onSelect)="onProviderSelect($event)" name="name" class="form-control tooltips-top" data-tooltips="top" formControlName="name" placeholder="请输供应商"
-        />
+        <input hqProviderTypeahead (onSelect)="onProviderSelect($event)" name="name" class="form-control tooltips-top" data-tooltips="top"
+          formControlName="name" placeholder="请输供应商" />
       </div>
 
       <div class="input-group m-1" *ngIf="items">
@@ -68,43 +68,21 @@
     </div>
     <div class="modal-body">
 
-      <!--<table class="table table-bordered">
+      <table class="table table-order-info table-bordered">
         <tr>
-          <td>入库单号：</td>
+          <td class="fixed-width">入库单号：</td>
           <td>{{detail?.billCode}}</td>
-          <td>供应商：</td>
+          <td class="fixed-width">供应商：</td>
           <td>{{detail?.name}}</td>
         </tr>
         <tr>
-          <td>开单时间：</td>
+          <td class="fixed-width">开单时间：</td>
           <td>{{detail?.createUtc|sDatetime}}</td>
-          <td>操作人：</td>
+          <td class="fixed-width">操作人：</td>
           <td>{{detail?.createName}}</td>
         </tr>
-      </table>-->
-      <div class="card-block">
-        <div class="row">
-          <div class="col-6">
-            <label for="">入库单号：</label>
-            <span>{{detail?.billCode}}</span>
-          </div>
-
-          <div class="col-6">
-            <label for="">供应商：</label>
-            <span>{{detail?.name}}</span>
-          </div>
-
-          <div class="col-6">
-            <label for="">开单时间：</label>
-            <span>{{detail?.createUtc|sDatetime}}</span>
-          </div>
-          <div class="col-6">
-            <label for="">操作人：</label>
-            <span>{{detail?.createName}}</span>
-          </div>
-        </div>
-      </div>
-      <div class="card-block" *ngIf="detailItems">
+      </table>
+      <div class="" *ngIf="detailItems">
         <div class="table-container">
           <table class="table table-bordered" *ngFor="let item of detailItems" style="white-space: nowrap">
             <tr class="text-center">
