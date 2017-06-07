@@ -16,6 +16,8 @@ export class ProcurementListComponent implements OnInit {
   private suspendBill: PurchaseInBillDirective;
   @ViewChild('createModal')
   private createModal: ModalDirective;
+  @ViewChild('editModal')
+  private editModal: ModalDirective;
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
   @ViewChild('printer')
@@ -25,6 +27,7 @@ export class ProcurementListComponent implements OnInit {
   private generating: boolean;
   private printModel: ProcurementPrintItem;
   private model = new ProcurementRequest();
+  private selectedModel;
 
   constructor(
     private procurementService: ProcurementService,
@@ -52,6 +55,19 @@ export class ProcurementListComponent implements OnInit {
       this.model.list.push(event);
     }
     //this.createModal.hide();
+  }
+
+  onEdit(model: ProcurementItem) {
+    this.selectedModel = model;
+    this.editModal.show();
+  }
+
+  onUpdated(event: ProcurementItem) {
+    let exists = this.model.list.find(m => m.productId == event.productId && m.locationId === event.locationId);
+    if (exists) {
+      Object.assign(exists, event);
+    }
+    this.editModal.hide();
   }
 
   reset() {
@@ -95,7 +111,7 @@ export class ProcurementListComponent implements OnInit {
       })
   }
 
-  private onProductRemove(item) {
+  private onRemove(item) {
     if (!confirm('确定要删除？')) return;
     let index = this.model.list.indexOf(item);
     this.model.list.splice(index, 1);

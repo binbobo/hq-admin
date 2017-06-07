@@ -1,5 +1,5 @@
-import { Directive, Input, OnInit, Host, ViewContainerRef, ComponentFactoryResolver, ElementRef, HostListener, ComponentRef, Type } from '@angular/core';
-import { ControlContainer, FormGroupDirective, FormGroup, FormControl, FormControlName } from '@angular/forms';
+import { Directive, Input, OnInit, Host, ViewContainerRef, ComponentFactoryResolver, ElementRef, HostListener, ComponentRef, Type, OnChanges, SimpleChanges } from '@angular/core';
+import { ControlContainer, FormGroupDirective, FormGroup, FormControl, FormControlName, NgModel } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import { FormControlErrorComponent } from './form-control-error.component';
 import { Observable } from 'rxjs/Observable';
@@ -7,7 +7,11 @@ import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/debounceTime';
 
-export class FormControlErrorDirective<T extends FormControlErrorComponent> implements OnInit {
+export class FormControlErrorDirective<T extends FormControlErrorComponent> implements OnInit, OnChanges {
+
+  ngOnChanges(changes: SimpleChanges): void {
+
+  }
 
   @Input()
   protected label: string = "";
@@ -21,9 +25,7 @@ export class FormControlErrorDirective<T extends FormControlErrorComponent> impl
   @HostListener('blur', ['$event'])
   private onblur(event: Event) {
     if (this.readonly === undefined) {
-      setTimeout(() => {
-        this.validate();
-      }, 100);
+      setTimeout(() => this.validate(false), 100);
     }
   }
 
@@ -44,9 +46,9 @@ export class FormControlErrorDirective<T extends FormControlErrorComponent> impl
       Object.keys(this.errors).forEach(key => this.errors[key.toLowerCase()] = this.errors[key]);
     }
     if (this.control) {
-      this.control.valueChanges.subscribe((a) => {
-        if (document.activeElement !== this.el.nativeElement) {
-          this.validate(false);
+      this.control.statusChanges.subscribe(status => {
+        if (status === 'VALID') {
+          this.validate();
         }
       });
     }
@@ -101,7 +103,11 @@ export class FormControlErrorDirective<T extends FormControlErrorComponent> impl
     return control.valid;
   }
 
-  public clear(){
+  public clear() {
+    if (this.control) {
+      this.control.markAsPristine();
+      this.control.markAsUntouched();
+    }
     this.hide();
   }
 

@@ -157,12 +157,10 @@ export class SalesCreateComponent implements OnInit {
     this.form.patchValue({ amount: amount, count: count, price: price });
   }
 
-
   private reset() {
-    this.form = null;
     this.storages = null;
     this.locations = null;
-    this.buildForm();
+    this.form.reset({ ...this.model, yuan: this.model.price / 100 });
   }
 
 }

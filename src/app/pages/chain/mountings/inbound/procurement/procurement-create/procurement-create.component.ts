@@ -81,7 +81,8 @@ export class ProcurementCreateComponent implements OnInit {
       event.preventDefault();
       return false;
     } else {
-      this.formSubmit.emit(this.form.value);
+      let value = { ...this.form.value, taxRate: this.model.taxRate };
+      this.formSubmit.emit(value);
       this.reset();
     }
   }
@@ -150,9 +151,8 @@ export class ProcurementCreateComponent implements OnInit {
   }
 
   private reset() {
-    this.form = null;
     this.storages = null;
     this.locations = null;
-    this.buildForm();
+    this.form.reset({ ...this.model, yuan: this.model.price / 100 });
   }
 }
