@@ -21,7 +21,7 @@
     background-color: #ed1b23;
     color: #fff;
 }
-.input-group-addon,input.form-control{
+.input-group-addon{
     color:#fff;
     background-color: #666;
 }
@@ -29,13 +29,24 @@
     border-color:#727171;
 }
 input.form-control{
-    border: 1px solid #666;
+    border: 1px solid rgba(235, 239, 241, 0.77);
+    background: #fff;
 }
-
 .input-group-addon.ng-untouched.ng-pristine{
     border-right: 1px solid #666;
 }
-
 .form-control{
     height: 40px;
+}
+.form-control:focus{
+    border-color: rgba(102, 102, 102, 0.43) !important;
+}
+.change-right{
+    position: absolute;
+    right: 21px;
+    top:12px;
+    font-weight: 400;
+    font-size: 1rem;
+    color: #666;
+    transition: .2s;
 }
