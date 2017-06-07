@@ -25,7 +25,9 @@
     color:#fff;
     background-color: #666;
 }
-
+.input-group-addon{
+    border-color:#727171;
+}
 input.form-control{
     border: 1px solid #666;
 }

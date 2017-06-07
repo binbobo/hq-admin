@@ -109,12 +109,16 @@ export class DistributeCreateComponent implements OnInit {
       let value = { ...formData, locationName: location && location.name, storeName: storage && storage.name };
       Object.assign(this.form.value, this.model);
       this.formSubmit.emit(value);
+      this.onReset();
     }
   }
 
   public onReset() {
     this.form = null;
-    setTimeout(() => this.buildForm(), 1);
+    this.storages = null;
+    this.locations = null;
+    this.vehicleInfoList=null;
+    this.buildForm();
     return false;
   }
 

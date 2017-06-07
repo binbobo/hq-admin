@@ -51,7 +51,7 @@ export class ProcurementListComponent implements OnInit {
     } else {
       this.model.list.push(event);
     }
-    this.createModal.hide();
+    //this.createModal.hide();
   }
 
   reset() {

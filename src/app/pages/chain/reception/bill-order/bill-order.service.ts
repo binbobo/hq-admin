@@ -99,7 +99,5 @@ export class OrderListSearch extends PagedParams {
     public endtime?: any, // 进店结束时间
   ) {
     super();
-    this.starttime = starttime || moment().subtract(30, 'd').format('YYYY-MM-DD');
-    this.endtime = endtime || moment().endOf('day').format('YYYY-MM-DD HH:mm');
   }
 }

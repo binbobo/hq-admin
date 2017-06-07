@@ -1,7 +1,8 @@
-import { Directive, Input, Injector, ViewContainerRef } from '@angular/core';
+import { Directive, Input, Injector, ViewContainerRef, Optional } from '@angular/core';
 import { TableTypeaheadDirective, TableTypeaheadColumn, TypeaheadRequestParams } from 'app/shared/directives';
 import { HttpService, Urls } from 'app/shared/services';
 import { PagedParams, SelectOption } from 'app/shared/models';
+import { FormControlName } from '@angular/forms';
 
 @Directive({
   selector: '[hqProductTypeahead]'
@@ -12,6 +13,8 @@ export class ProductTypeaheadDirective extends TableTypeaheadDirective {
     injector: Injector,
     protected httpService: HttpService,
     protected container: ViewContainerRef,
+    @Optional()
+    private formControlName?: FormControlName,
   ) {
     super(injector);
   }

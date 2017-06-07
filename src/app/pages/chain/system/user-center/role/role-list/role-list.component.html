@@ -44,7 +44,9 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title pull-left">新增角色</h5>
-        <button class="close pull-right" (click)="createModal.hide()">&times;</button>
+        <button class="close pull-right" (click)="createModal.hide()">
+           <span aria-hidden="true" class="fa-stack hq-fa-lg"><i class="fa fa-cir fa-stack-2x" aria-hidden="true"></i><i class="fa fa-times fa-stack-1x" aria-hidden="true"></i></span>
+        </button>
       </div>
       <div class="modal-body">
         <hq-role-create (onSubmit)="onRoleCreate($event)"></hq-role-create>
@@ -58,7 +60,9 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title pull-left">修改角色</h5>
-        <button class="close pull-right" (click)="editModal.hide()">&times;</button>
+        <button class="close pull-right" (click)="editModal.hide()">
+           <span aria-hidden="true" class="fa-stack hq-fa-lg"><i class="fa fa-cir fa-stack-2x" aria-hidden="true"></i><i class="fa fa-times fa-stack-1x" aria-hidden="true"></i></span>
+        </button>
       </div>
       <div *ngIf="role" class="modal-body">
         <hq-role-edit (onSubmit)="onRoleUpdate($event)" [model]="role"></hq-role-edit>
@@ -72,7 +76,9 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title pull-left">分配权限</h5>
-        <button class="close pull-right" (click)="allocateModal.hide()">&times;</button>
+        <button class="close pull-right" (click)="allocateModal.hide()">
+           <span aria-hidden="true" class="fa-stack hq-fa-lg"><i class="fa fa-cir fa-stack-2x" aria-hidden="true"></i><i class="fa fa-times fa-stack-1x" aria-hidden="true"></i></span>
+        </button>
       </div>
       <div class="modal-body" *ngIf="role&&allocateModal.isShown">
         <hq-role-allocate (cancel)="allocateModal.hide()" (submit)="onRoleAllocate($event)" [model]="role"></hq-role-allocate>

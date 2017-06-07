@@ -82,6 +82,7 @@ export class ProcurementCreateComponent implements OnInit {
       return false;
     } else {
       this.formSubmit.emit(this.form.value);
+      this.reset();
     }
   }
 
@@ -146,5 +147,12 @@ export class ProcurementCreateComponent implements OnInit {
       exTaxAmount: exTaxAmount,
       exTaxPrice: exTaxPrice
     });
+  }
+
+  private reset() {
+    this.form = null;
+    this.storages = null;
+    this.locations = null;
+    this.buildForm();
   }
 }
