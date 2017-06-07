@@ -145,6 +145,13 @@ export class InvoicingComponent extends DataList<any> {
       productName: '', //配件名称
     })
   }
+  //配件模糊搜索
+  onSelect(ev) { 
+    this.invoicingDetailForm.patchValue({
+      productCode:ev.code,
+      productName:ev.name
+    });
+  }
 
   onSearchRangeChange(ev) {
     // 更新查询范围参数

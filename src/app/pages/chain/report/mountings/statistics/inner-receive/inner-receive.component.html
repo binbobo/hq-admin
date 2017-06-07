@@ -71,34 +71,30 @@
       </button>
     </div>
     <div class="modal-body">
-      <div class="card-block">
-        <div class="row">
-          <div class="col-6">
-            <label for="">领用单号：</label>
-            <span>{{detail?.billCode}}</span>
-          </div>
-          <div class="col-3">
-            <label for="">领用人:</label>
-            <span>{{detail?.takeUserName}}</span>
-          </div>
-          <div class="col-3">
-            <label for="">部门：</label>
-            <span>{{detail?.takeDepartmentName}}</span>
-          </div>
-          <div class="col-6">
-            <label for="">开单时间：</label>
-            <span>{{detail?.createBillTime|sDatetime}}</span>
-          </div>
-          <div class="col-4">
-            <label for="">操作人：</label>
-            <span>{{detail?.operator}}</span>
-          </div>
-        </div>
-      </div>
-      <div class="card-block">
-        <div class="row">
+      <table class="table table-order-info table-bordered">
+        <tr>
+          <td class="fixed-width">领用单号：</td>
+          <td>{{detail?.billCode}}</td>
+          <td class="fixed-width">领用人：</td>
+          <td>{{detail?.takeUserName}}</td>
+        </tr>
+        <tr>
+          <td class="fixed-width">部门：</td>
+          <td>{{detail?.takeDepartmentName}}</td>
+          <td class="fixed-width">开单时间：</td>
+          <td>{{detail?.createBillTime|sDatetime}}</td>
+        </tr>
+        <tr>
+          <td class="fixed-width">操作人：</td>
+          <td>{{detail?.operator}}</td>
+          <td class="fixed-width"></td>
+          <td></td>
+        </tr>
+      </table>
+      <div class="">
+        <div class="">
           <div class="table-container">
-            <table class="table table-bordered"  style="white-space: nowrap">
+            <table class="table table-bordered" style="white-space: nowrap">
               <tr class="active">
                 <th>配件编码</th>
                 <th>配件分类</th>
