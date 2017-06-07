@@ -3,7 +3,7 @@
     <span>维修收银</span>
   </div>
   <div class='card-block'>
-    <form (ngSubmit)="onSearch()">
+    <form (ngSubmit)="onSearch()" autocomplete="off">
       <div class="form-group row" *ngIf="orderStatusData" style="margin-bottom: 5px;">
         <div class="check-label">
           <label class="input-group-addon">工单状态</label>
