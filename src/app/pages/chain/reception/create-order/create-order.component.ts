@@ -271,7 +271,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.workSheetForm.controls.plateNo.enable();
     this.workSheetForm.controls.customerName.enable();
     this.workSheetForm.controls.phone.enable();
-    this.workSheetForm.controls.vin.enable();
+    // this.workSheetForm.controls.vin.enable();
     this.workSheetForm.controls.brand.enable();
     this.workSheetForm.controls.series.enable();
     this.workSheetForm.controls.vehicleName.enable();
@@ -281,7 +281,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.workSheetForm.controls.plateNo.disable();
     this.workSheetForm.controls.customerName.disable();
     this.workSheetForm.controls.phone.disable();
-    this.workSheetForm.controls.vin.disable();
+    // this.workSheetForm.controls.vin.disable();
     this.workSheetForm.controls.brand.disable();
     this.workSheetForm.controls.series.disable();
     this.workSheetForm.controls.vehicleName.disable();
