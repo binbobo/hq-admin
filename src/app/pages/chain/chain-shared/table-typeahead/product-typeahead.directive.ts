@@ -5,7 +5,8 @@ import { PagedParams, SelectOption } from 'app/shared/models';
 import { FormControlName } from '@angular/forms';
 
 @Directive({
-  selector: '[hqProductTypeahead]'
+  selector: '[hqProductTypeahead]',
+  exportAs: 'hq-product-typeahead',
 })
 export class ProductTypeaheadDirective extends TableTypeaheadDirective {
 

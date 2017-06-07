@@ -61,7 +61,7 @@ export abstract class FormHandle<T> implements OnInit {
         setTimeout(() => this.form = f, 1);
     }
 
-    protected onUpdate() {
+    protected onUpdate(event?: Event): any {
         let valid = this.validate();
         if (!valid) {
             return false;
@@ -81,7 +81,7 @@ export abstract class FormHandle<T> implements OnInit {
             });
     }
 
-    protected onCreate() {
+    protected onCreate(event?: Event): any {
         let valid = this.validate();
         if (!valid) {
             return false;

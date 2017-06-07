@@ -13,7 +13,7 @@ import { inject } from '@angular/core/testing';
 })
 export class TableTypeaheadDirective implements OnInit {
   @Input("hqTableTypeahead")
-  protected source: (params: TypeaheadRequestParams) => Promise<PagedResult<any>>;
+  public source: (params: TypeaheadRequestParams) => Promise<PagedResult<any>>;
   @Input()
   protected delay: number = 600;
   @Input()

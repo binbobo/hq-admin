@@ -79,6 +79,6 @@ export abstract class DataList<T> implements OnInit {
   protected onLoadList() {
     this.index = 1;
     this.params.setPage(1, this.size);
-    this.loadList();
+    return this.loadList();
   }
 }
