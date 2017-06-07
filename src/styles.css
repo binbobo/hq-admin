@@ -367,12 +367,22 @@ table tr:not(:last-child) th{
 }
 .hq-fa-lg .fa-times::before{
   color:#727171;
-  background-color: #fff;
+  background-color: transparent;
   font-size:1rem;
+  position: relative;
+  top:-1px;
 }
 .hq-fa-lg .fa-cir{
   width:1.5rem;
   height: 1.5rem;
   border-radius: 1rem;
   border:2px solid #727171;
+}
+/*去除蓝色边框*/
+button:focus,.close:active,button:active{
+    border-width:0;
+　　border-color:white;
+　　border-style:none;
+　　background:none;
+    outline: none;
 }
