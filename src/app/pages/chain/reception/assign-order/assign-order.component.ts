@@ -66,6 +66,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
                     // checked: false  // 默认都不选中
                 };
             });
+            this.maintenanceTechnicians = [];
         });
     }
 
