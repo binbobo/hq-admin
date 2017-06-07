@@ -10,21 +10,19 @@
       </div>
       <div class="input-group m-1">
         <span class="input-group-addon">进厂时间</span>
-        <input [max-date]="maxEnterStartDate" [(ngModel)]="enterStartTime" class="form-control" id="enterStartTimeDate"
-          name="enterStartTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请选择开始日期" />
+        <input [max-date]="maxEnterStartDate" [(ngModel)]="enterStartTime" class="form-control" id="enterStartTimeDate" name="enterStartTimeDate"
+          date-only="true" type="text" ngui-datetime-picker placeholder="请选择开始日期" />
         <span class="input-group-addon">-</span>
-        <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" [(ngModel)]="enterEndTime" class="form-control"
-          id="enterEndTimeDate" name="enterEndTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请选择截止日期"
-        />
+        <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" [(ngModel)]="enterEndTime" class="form-control" id="enterEndTimeDate"
+          name="enterEndTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请选择截止日期" />
       </div>
       <div class="input-group m-1">
         <span class="input-group-addon">出厂时间</span>
-        <input [max-date]="maxLeaveStartDate" [(ngModel)]="leaveStartTime" class="form-control" id="leaveStartTimeDate"
-          name="leaveStartTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请选择开始日期" />
+        <input [max-date]="maxLeaveStartDate" [(ngModel)]="leaveStartTime" class="form-control" id="leaveStartTimeDate" name="leaveStartTimeDate"
+          date-only="true" type="text" ngui-datetime-picker placeholder="请选择开始日期" />
         <span class="input-group-addon">-</span>
-        <input [min-date]="minLeaveEndDate" [max-date]="maxLeaveEndDate" [(ngModel)]="leaveEndTime" class="form-control"
-          id="leaveEndTimeDate" name="leaveEndTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请选择截止日期"
-        />
+        <input [min-date]="minLeaveEndDate" [max-date]="maxLeaveEndDate" [(ngModel)]="leaveEndTime" class="form-control" id="leaveEndTimeDate"
+          name="leaveEndTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请选择截止日期" />
       </div>
       <div class="input-group m-1">
         <label class="input-group-addon">服务顾问</label>
@@ -167,30 +165,32 @@
             </tbody>
           </table>
           <div class="card-block">
-            <table class="table table-bordered">
-              <caption>收费结算单</caption>
-              <thead>
-                <tr>
-                  <th width="50">序号</th>
-                  <th>名称</th>
-                  <th>金额（元）</th>
-                  <th>备注</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of businessData?.totalCost;let index=index">
-                  <td>{{index+1}}</td>
-                  <td>{{item.name}}</td>
-                  <td class="text-right">{{item.receivableCost|centToYuan}}</td>
-                  <td>{{item.description}}</td>
-                </tr>
-              </tbody>
-              <tfoot *ngIf="businessData?.totalCost?.length <= 0">
-                <tr>
-                  <td colspan="4">系统未找到相关内容</td>
-                </tr>
-              </tfoot>
-            </table>
+            <div class="table-container">
+              <table class="table table-bordered">
+                <caption>收费结算单</caption>
+                <thead>
+                  <tr>
+                    <th width="50">序号</th>
+                    <th>名称</th>
+                    <th>金额（元）</th>
+                    <th>备注</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of businessData?.totalCost;let index=index">
+                    <td>{{index+1}}</td>
+                    <td>{{item.name}}</td>
+                    <td class="text-right">{{item.receivableCost|centToYuan}}</td>
+                    <td>{{item.description}}</td>
+                  </tr>
+                </tbody>
+                <tfoot *ngIf="businessData?.totalCost?.length <= 0">
+                  <tr>
+                    <td colspan="4">系统未找到相关内容</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
             <div class="row">
               <div class="col-4">
                 <label>金额合计：</label>
@@ -208,36 +208,38 @@
           </div>
           <br>
           <div class="card-block">
-            <table class="table table-bordered">
-              <caption>表一：工时明细</caption>
-              <thead>
-                <tr>
-                  <th width="50">序号</th>
-                  <th>维修项目</th>
-                  <th>结算工时</th>
-                  <th>单价（元/工时）</th>
-                  <th>折扣率(%)</th>
-                  <th>金额（元）</th>
-                  <th>备注</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of businessData?.workHours;let index=index">
-                  <td>{{index+1}}</td>
-                  <td class="text-left">{{item.serviceName}}</td>
-                  <td>{{item.workHour}}</td>
-                  <td class="text-right">{{item.price|centToYuan}}</td>
-                  <td>{{item.discount}}</td>
-                  <td class="text-right">{{item.amount|centToYuan}}</td>
-                  <td>{{item.description}}</td>
-                </tr>
-              </tbody>
-              <tfoot *ngIf="businessData?.workHours?.length <= 0">
-                <tr>
-                  <td colspan="7">系统未找到相关内容</td>
-                </tr>
-              </tfoot>
-            </table>
+            <div class="table-container">
+              <table class="table table-bordered">
+                <caption>表一：工时明细</caption>
+                <thead>
+                  <tr>
+                    <th width="50">序号</th>
+                    <th>维修项目</th>
+                    <th>结算工时</th>
+                    <th>单价（元/工时）</th>
+                    <th>折扣率(%)</th>
+                    <th>金额（元）</th>
+                    <th>备注</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of businessData?.workHours;let index=index">
+                    <td>{{index+1}}</td>
+                    <td class="text-left">{{item.serviceName}}</td>
+                    <td>{{item.workHour}}</td>
+                    <td class="text-right">{{item.price|centToYuan}}</td>
+                    <td>{{item.discount}}</td>
+                    <td class="text-right">{{item.amount|centToYuan}}</td>
+                    <td>{{item.description}}</td>
+                  </tr>
+                </tbody>
+                <tfoot *ngIf="businessData?.workHours?.length <= 0">
+                  <tr>
+                    <td colspan="7">系统未找到相关内容</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
             <div class="row">
               <div class="col-4">
                 <label>金额合计：</label>
@@ -255,34 +257,36 @@
           </div>
           <br>
           <div class="card-block">
-            <table class="table table-bordered">
-              <caption>表二：材料明细</caption>
-              <thead>
-                <tr>
-                  <th width="50">序号</th>
-                  <th>配件名称</th>
-                  <th>单价（元）</th>
-                  <th>数量</th>
-                  <th>金额（元）</th>
-                  <th>备注</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of businessData?.matereialDetails;let index=index">
-                  <td>{{index+1}}</td>
-                  <td class="text-left">{{item.productName}}</td>
-                  <td class="text-right">{{item.price|centToYuan}}</td>
-                  <td>{{item.count}}</td>
-                  <td class="text-right">{{item.amount|centToYuan}}</td>
-                  <td>{{item.description}}</td>
-                </tr>
-              </tbody>
-              <tfoot *ngIf="businessData?.matereialDetails?.length <= 0">
-                <tr>
-                  <td colspan="6">系统未找到相关内容</td>
-                </tr>
-              </tfoot>
-            </table>
+            <div class="table-container">
+              <table class="table table-bordered">
+                <caption>表二：材料明细</caption>
+                <thead>
+                  <tr>
+                    <th width="50">序号</th>
+                    <th>配件名称</th>
+                    <th>单价（元）</th>
+                    <th>数量</th>
+                    <th>金额（元）</th>
+                    <th>备注</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of businessData?.matereialDetails;let index=index">
+                    <td>{{index+1}}</td>
+                    <td class="text-left">{{item.productName}}</td>
+                    <td class="text-right">{{item.price|centToYuan}}</td>
+                    <td>{{item.count}}</td>
+                    <td class="text-right">{{item.amount|centToYuan}}</td>
+                    <td>{{item.description}}</td>
+                  </tr>
+                </tbody>
+                <tfoot *ngIf="businessData?.matereialDetails?.length <= 0">
+                  <tr>
+                    <td colspan="6">系统未找到相关内容</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
             <div class="row">
               <div class="col-4"> </div>
               <div class="col-4"></div>
@@ -295,43 +299,47 @@
           <br>
           <div *ngIf="businessData?.appendItems&&businessData?.appendItems.length>0">
             <div class="card-block">
-              <table class="table table-bordered">
-                <caption>表三：附加项目</caption>
-                <thead>
-                  <tr>
-                    <th width="50">序号</th>
-                    <th>项目内容</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of businessData?.appendItems;let index=index">
-                    <td>{{index+1}}</td>
-                    <td>{{item.name}}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="table-container">
+                <table class="table table-bordered">
+                  <caption>表三：附加项目</caption>
+                  <thead>
+                    <tr>
+                      <th width="50">序号</th>
+                      <th>项目内容</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of businessData?.appendItems;let index=index">
+                      <td>{{index+1}}</td>
+                      <td>{{item.name}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
             <br>
           </div>
           <div *ngIf="businessData?.adviceItems&&businessData?.adviceItems.length>0">
             <div class="card-block">
-              <table class="table table-bordered">
-                <caption>表四：建议维修项</caption>
-                <thead>
-                  <tr>
-                    <th width="50">序号</th>
-                    <th>建议维修项目</th>
-                    <th>备注</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of businessData?.adviceItems;let index=index">
-                    <td>{{index+1}}</td>
-                    <td>{{item.content}}</td>
-                    <td>{{item.description}}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="table-container">
+                <table class="table table-bordered">
+                  <caption>表四：建议维修项</caption>
+                  <thead>
+                    <tr>
+                      <th width="50">序号</th>
+                      <th>建议维修项目</th>
+                      <th>备注</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of businessData?.adviceItems;let index=index">
+                      <td>{{index+1}}</td>
+                      <td>{{item.content}}</td>
+                      <td>{{item.description}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
             <br>
           </div>
