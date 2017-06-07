@@ -1,0 +1,18 @@
+<div class="modal fade" [config]="cfg" bsModal #modal="bs-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-{{size}}">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">{{title}}</h5>
+        <button class="close pull-right" (click)="modal.hide()">
+           <span class="fa-stack hq-fa-lg">
+             <i class="fa fa-cir fa-stack-2x"></i>
+             <i class="fa fa-times fa-stack-1x"></i>
+            </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ng-content></ng-content>
+      </div>
+    </div>
+  </div>
+</div>

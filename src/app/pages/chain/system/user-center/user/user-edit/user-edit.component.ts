@@ -55,7 +55,6 @@ export class UserEditComponent extends FormHandle<User> implements OnInit {
     this.userService.getRoleOptions()
       .then(options => this.roles = this.convertToTreeView(options, this.model.roles))
       .catch(err => this.alerter.error(err));
-    console.log(this.model.partPositionItems, this.model.positions);
     this.userService.getPositionOptions()
       .then(options => this.positions = this.convertToTreeView(options, this.model.positions))
       .catch(err => this.alerter.error(err));

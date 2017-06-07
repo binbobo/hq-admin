@@ -48,19 +48,10 @@ export class FormControlErrorDirective<T extends FormControlErrorComponent> impl
     if (this.control) {
       this.control.statusChanges.subscribe(status => {
         if (status === 'VALID') {
-          this.validate();
+          this.hide();
         }
       });
     }
-    // if (!this.readonly) {
-    //   Observable.fromEvent(this.el.nativeElement, 'input')
-    //     .map((e: any) => e.target.value)
-    //     .debounceTime(100)
-    //     .subscribe(value => {
-    //       this.controlErrors = [];
-    //       this.validate(false);
-    //     });
-    // }
   }
 
   protected show(): void {

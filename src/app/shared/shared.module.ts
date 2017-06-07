@@ -7,7 +7,7 @@ import * as pipes from './pipes';
 import * as directives from './directives';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { FormsModule, NgModel } from '@angular/forms';
-import { PaginationModule, PopoverModule, AlertModule } from 'ngx-bootstrap';
+import { PaginationModule, PopoverModule, AlertModule, ModalModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
 import { NgPipesModule } from 'ngx-pipes';
 import { TelValidator } from './directives/validators/tel.directive';
@@ -18,6 +18,8 @@ import { EngineNoValidator } from './directives/validators/engineNo.directive';
 import { MileageValidator } from './directives/validators/mileage.directive';
 import { IDCardValidator } from './directives/validators/idCard.directive';
 import { HqBsModalDirective } from './directives/modal/hq-bs-modal.directive';
+import { HqModalDirective } from './directives/modal/hq-modal.directive';
+import { HqModalComponent } from './directives/modal/hq-modal/hq-modal.component';
 
 
 const HQ_COMPONENTS = [
@@ -34,6 +36,7 @@ const HQ_DIRECTIVE_COMPONENTS = [
     directives.PrintComponent,
     directives.FormGroupControlErrorComponent,
     directives.FormInlineControlErrorComponent,
+    directives.HqModalComponent,
 ];
 
 const HQ_DIRECTIVES = [
@@ -55,6 +58,7 @@ const HQ_DIRECTIVES = [
     directives.MileageValidator,
     directives.IDCardValidator,
     directives.HqBsModalDirective,
+    directives.HqModalDirective,
 ]
 
 const HQ_PIPES = [
@@ -90,6 +94,7 @@ export const HQ_VALIDATORS = {
         FormsModule,
         NgPipesModule,
         RouterModule,
+        ModalModule.forRoot(),
         PaginationModule.forRoot(),
         AlertModule.forRoot(),
         PopoverModule.forRoot(),

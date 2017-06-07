@@ -2,6 +2,7 @@ import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { DataList } from 'app/shared/models';
 import { User, UserService, UserSearchParams } from '../user.service';
 import { ModalDirective } from 'ngx-bootstrap';
+import { HqModalDirective } from "app/shared/directives";
 
 @Component({
   selector: 'hq-user-list',
@@ -13,10 +14,10 @@ export class UserListComponent extends DataList<User> implements OnInit {
   private user: User;
 
   @ViewChild('createModal')
-  private createModal: ModalDirective;
+  private createModal: HqModalDirective;
 
   @ViewChild('editModal')
-  private editModal: ModalDirective;
+  private editModal: HqModalDirective;
 
   constructor(
     injector: Injector,
@@ -54,15 +55,19 @@ export class UserListComponent extends DataList<User> implements OnInit {
       });
   }
 
-  onUserUpdate(event: Event, user: User) {
-    this.user = Object.assign({}, user);
-    this.editModal.show();
+  onUserCreate() {
+    this.createModal.show();
   }
 
   onUserCreated() {
     this.alerter.success('新增用户成功！');
     this.createModal.hide();
     this.loadList();
+  }
+
+  onUserUpdate(event: Event, user: User) {
+    this.user = Object.assign({}, user);
+    this.editModal.show();
   }
 
   onUserUpdated() {
