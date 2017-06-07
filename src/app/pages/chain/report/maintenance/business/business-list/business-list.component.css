@@ -53,11 +53,18 @@ h5{
     /*background-color: #f3f3f4;*/
 }
 .modal-body .card-block {
-    border: 1px solid #595757;
+    border: 1px solid #eceeef;
 }
-.modal-body th,.modal-body td {
+.modal-body td {
     /*padding: 0.25rem;*/
     text-align: center;
     font-size: 0.875rem;
     /*white-space: normal; */
+}
+.modal-body .table-container{
+    border: 0 !important;
+}
+.modal-body .table-container table{
+    margin-bottom: 1rem!important;
+    border: 1px solid #eceeef!important;
 }
