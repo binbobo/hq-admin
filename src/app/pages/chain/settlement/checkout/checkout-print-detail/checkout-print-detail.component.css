@@ -3,9 +3,6 @@ table th,table td{
     text-align: center;
     
 }
-.fa{
-  padding: 0 6px !important;
-}
 table.table-order-info{
      table-layout: fixed;
 }
