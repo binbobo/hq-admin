@@ -8,7 +8,7 @@ import { Validator, NG_VALIDATORS, AbstractControl, ValidationErrors } from "@an
 export class VINValidator implements Validator {
 
   static validator = (c: AbstractControl) => {
-    const valid = /^[A-HJ-NPR-Z\d]{8}[\dX][A-HJ-NPR-Z\d]{2}\d{6}$/.test(c.value);
+    const valid = /^[A-HJ-NPR-Z\d]{8}[\dX][A-HJ-NPR-Z\d]{3}\d{5}$/.test(c.value);
     return c.value && !valid ? { 'vin': true } : null;
   }
 
