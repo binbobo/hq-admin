@@ -59,7 +59,7 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
     } else {
       this.model.list.push(item);
     }
-    // this.createModal.hide();
+    this.createModal.hide();
   }
 
   private reset() {
