@@ -167,6 +167,7 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
   load() {
     this.statistics = null;
 
+    this.index = 1;
     this.params.setPage(1, this.size);
     this.loadList().then((result: any) => {
       if (!result || !result.tabList) { return; }

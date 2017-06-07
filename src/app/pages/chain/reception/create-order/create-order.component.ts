@@ -146,7 +146,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   }
   // 重新设置下次里程验证器 实现多个表单域联动验证
   private resetNextMileageValidators(val) {
-    this.workSheetForm.controls.nextMileage.setValidators([HQ_VALIDATORS.mileage, CustomValidators.gte(val)]);
+    if (val)
+      this.workSheetForm.controls.nextMileage.setValidators([HQ_VALIDATORS.mileage, CustomValidators.gte(val)]);
   }
 
   // 从模糊查询下拉列表中选择一个车型事件处理程序
