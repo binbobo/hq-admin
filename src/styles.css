@@ -386,3 +386,30 @@ button:focus,.close:active,button:active{
 　　background:none;
     outline: none;
 }
+
+/*创建工单页面样式*/
+.hq-col{
+  flex: 2;
+  position: relative;
+}
+.hq-input{
+  display: flex;
+  width: 25%;
+  float: left;
+  padding: 0.3125rem 0.625rem;
+  margin-bottom: -1.25rem;
+}
+.hq-input .form-label{
+  min-width: 6.25rem;
+  padding: 0 0.625rem;
+  line-height: 2.5rem;
+  height: 2.5rem;
+  background:#f3f3f4;
+  color: #727171;
+  font-size: 0.875rem;
+}
+.hq-input .form-control {
+  height: 2.5rem;
+  border-bottom-left-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+}
