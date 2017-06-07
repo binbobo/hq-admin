@@ -37,7 +37,8 @@ export class AssignService implements BasicService<any> {
         return this.httpService
             .request(url, {
                 params: {
-                    'key': 'ST'  // ST 代表维修技师
+                    'key': 'ST',  // ST 代表维修技师
+                    'pageSize': 50
                 }
             })
             .map(response => {
