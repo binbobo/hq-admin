@@ -121,25 +121,22 @@
   </div>
 </div>
 <!--详情-->
-<!--<div class="modal fade" hqBsModal #bdModal="hq-bs-modal" role="dialog">-->
-<!--<div class="modal-dialog modal-lg modal-content card" >-->
 <div class="card" *ngIf="!showIf">
   <div class="card-header">
     <div class="card-title" style="float:left;">进销存明细</div>
-    <button class="close pull-right"  style="float:right;" (click)="showIf=true;">
+    <button class="close pull-right" style="float:right;" (click)="showIf=true;">
        <span aria-hidden="true" class="fa-stack hq-fa-lg"><i class="fa fa-cir fa-stack-2x" aria-hidden="true"></i><i class="fa fa-times fa-stack-1x" aria-hidden="true"></i></span>
     </button>
   </div>
-  <!--class="modal-body"-->
   <div class="card-block" hqPrint #printer="hq-print">
     <form class="form-inline mb-2" [formGroup]="invoicingDetailForm" (ngSubmit)="onSearchDetail()">
       <div class="input-group m-1">
         <span class="input-group-addon">配件编码</span>
-        <input name="name" class="form-control" formControlName="productCode" placeholder="请输配件编码" />
+        <input [hqProductTypeahead]='code' name="name" class="form-control" (onSelect)="onSelect($event)" formControlName="productCode" placeholder="请输配件编码" />
       </div>
       <div class="input-group m-1">
         <span class="input-group-addon">配件名称</span>
-        <input name="name" class="form-control" formControlName="productName" placeholder="请输配件名称" />
+        <input [hqProductTypeahead]='name' name="name" class="form-control" (onSelect)="onSelect($event)" formControlName="productName" placeholder="请输配件名称" />
       </div>
       <!--<div class="input-group m-1">
         <span class="input-group-addon">查询日期</span>
@@ -151,114 +148,114 @@
       </div>-->
       <button type="submit" class="btn btn-primary">查询</button>
     </form>
-    <div class="card-block">
-      <p>温馨提示：系统为您找到 <span style="font-size:16px;color:red;font-weight:bold;">{{listDetail?.totalCount}}</span> 条记录</p>
-      <div class="table-container">
-        <table class="table table-bordered text-center">
-          <tr>
-            <th>配件编码</th>
-            <th>配件名称</th>
-            <th>期初数量</th>
-            <th>期初金额</th>
-            <th>期末数量</th>
-            <th>期末金额</th>
-            <th>入库数量</th>
-            <th>入库金额</th>
-            <th>出库数量</th>
-            <th>出库成本<br>金额</th>
-            <th>出库销售<br>金额</th>
-            <th>采购入库<br>成本金额</th>
-            <th>维修领料<br>成本金额</th>
-            <th>维修领料<br>销售金额</th>
-            <th>配件销售<br>成本金额</th>
-            <th>配件销售<br>销售金额</th>
-            <th>内部领用<br>成本金额</th>
-            <th>内部领用<br>销售金额</th>
-            <!--<th style="color:red;">其他入库<br>成本金额</th>
+    <!--<div class="card-block">-->
+    <p>温馨提示：系统为您找到 <span style="font-size:16px;color:red;font-weight:bold;">{{listDetail?.totalCount}}</span> 条记录</p>
+    <div class="table-container">
+      <table class="table table-bordered text-center">
+        <tr>
+          <th>配件编码</th>
+          <th>配件名称</th>
+          <th>期初数量</th>
+          <th>期初金额</th>
+          <th>期末数量</th>
+          <th>期末金额</th>
+          <th>入库数量</th>
+          <th>入库金额</th>
+          <th>出库数量</th>
+          <th>出库成本<br>金额</th>
+          <th>出库销售<br>金额</th>
+          <th>采购入库<br>成本金额</th>
+          <th>维修领料<br>成本金额</th>
+          <th>维修领料<br>销售金额</th>
+          <th>配件销售<br>成本金额</th>
+          <th>配件销售<br>销售金额</th>
+          <th>内部领用<br>成本金额</th>
+          <th>内部领用<br>销售金额</th>
+          <!--<th style="color:red;">其他入库<br>成本金额</th>
             <th style="color:red;">其他入库<br>销售金额</th>
             <th style="color:red;">其他出库<br>成本金额</th>
             <th style="color:red;">其他出库<br>销售金额</th>-->
+        </tr>
+        <tbody>
+          <tr *ngFor="let item of listDetail?.data" class="text-right">
+            <td class="text-center">{{item.productCode}}</td>
+            <td class="text-left">{{item.productName}}</td>
+            <td class="text-center">{{item.beginCount}}</td>
+            <td>{{item.beginAmount|centToYuan }}</td>
+            <td class="text-center">{{item.endCount}}</td>
+            <td>{{item.endAmount|centToYuan }}</td>
+            <td class="text-center">{{item.inCount}}</td>
+            <td>{{item.inAmount |centToYuan }}</td>
+            <td class="text-center">{{item.outCount}}</td>
+            <td>{{item.outCostAmount |centToYuan }}</td>
+            <td>{{item.outSaleAmount |centToYuan }}</td>
+            <td>{{item.purchInCostAmount |centToYuan }}</td>
+            <td>{{item.mainCostAmount |centToYuan }}</td>
+            <td>{{item.mainSaleAmount |centToYuan }}</td>
+            <td>{{item.saleCostAmount |centToYuan }}</td>
+            <td>{{item.saleAmount |centToYuan }}</td>
+            <td>{{item.useCostAmount |centToYuan }}</td>
+            <td>{{item.useSaleAmount|centToYuan }}</td>
           </tr>
-          <tbody>
-            <tr *ngFor="let item of listDetail?.data" class="text-right">
-              <td class="text-center">{{item.productCode}}</td>
-              <td class="text-left">{{item.productName}}</td>
-              <td class="text-center">{{item.beginCount}}</td>
-              <td>{{item.beginAmount|centToYuan }}</td>
-              <td class="text-center">{{item.endCount}}</td>
-              <td>{{item.endAmount|centToYuan }}</td>
-              <td class="text-center">{{item.inCount}}</td>
-              <td>{{item.inAmount |centToYuan }}</td>
-              <td class="text-center">{{item.outCount}}</td>
-              <td>{{item.outCostAmount |centToYuan }}</td>
-              <td>{{item.outSaleAmount |centToYuan }}</td>
-              <td>{{item.purchInCostAmount |centToYuan }}</td>
-              <td>{{item.mainCostAmount |centToYuan }}</td>
-              <td>{{item.mainSaleAmount |centToYuan }}</td>
-              <td>{{item.saleCostAmount |centToYuan }}</td>
-              <td>{{item.saleAmount |centToYuan }}</td>
-              <td>{{item.useCostAmount |centToYuan }}</td>
-              <td>{{item.useSaleAmount|centToYuan }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <hq-pagination [(itemsPerPage)]="size" [loading]="loading" [totalItems]="listDetail?.totalCount" [(currentPage)]="index" (pageChanged)="onPageDetailChanged($event)"></hq-pagination>
-      <div class="table-container">
-        <table class="table table-bordered text-center">
-          <tr>
-            <th>合计</th>
-            <th>期初数量</th>
-            <th>期初金额</th>
-            <th>期末数量</th>
-            <th>期末金额</th>
-            <th>入库数量</th>
-            <th>入库金额</th>
-            <th>出库数量</th>
-            <th>出库成本<br>金额</th>
-            <th>出库销售<br>金额</th>
-            <th>采购入库<br>数量</th>
-            <th>采购入库<br>金额</th>
-            <th>维修领料<br>数量</th>
-            <th>维修领料<br>金额</th>
-            <th>配件销售<br>数量</th>
-            <th>配件销售<br>金额</th>
-            <th>内部领用<br>数量</th>
-            <th>内部领用<br>金额</th>
-            <!--<th>其他入库<br>数量</th>
+        </tbody>
+      </table>
+    </div>
+    <hq-pagination [(itemsPerPage)]="size" [loading]="loading" [totalItems]="listDetail?.totalCount" [(currentPage)]="index"
+      (pageChanged)="onPageDetailChanged($event)"></hq-pagination>
+    <div class="table-container">
+      <table class="table table-bordered text-center">
+        <tr>
+          <th>合计</th>
+          <th>期初数量</th>
+          <th>期初金额</th>
+          <th>期末数量</th>
+          <th>期末金额</th>
+          <th>入库数量</th>
+          <th>入库金额</th>
+          <th>出库数量</th>
+          <th>出库成本<br>金额</th>
+          <th>出库销售<br>金额</th>
+          <th>采购入库<br>数量</th>
+          <th>采购入库<br>金额</th>
+          <th>维修领料<br>数量</th>
+          <th>维修领料<br>金额</th>
+          <th>配件销售<br>数量</th>
+          <th>配件销售<br>金额</th>
+          <th>内部领用<br>数量</th>
+          <th>内部领用<br>金额</th>
+          <!--<th>其他入库<br>数量</th>
             <th>其他入库<br>金额</th>
             <th>其他出库<br>数量</th>
             <th>其他出库<br>销售金额</th>-->
-          </tr>
-          <tr *ngIf="listDetail" class="text-right">
-            <td></td>
-            <td class="text-center">{{listDetail.beginCount}}</td>
-            <td>{{listDetail.beginAmount |centToYuan}}</td>
-            <td class="text-center">{{listDetail.endCount}}</td>
-            <td>{{listDetail.endAmount |centToYuan}}</td>
-            <td class="text-center">{{listDetail.inCount}}</td>
-            <td>{{listDetail.inAmount |centToYuan}}</td>
-            <td class="text-center">{{listDetail.outCount}}</td>
-            <td>{{listDetail.outCostAmount|centToYuan }}</td>
-            <td>{{listDetail.outSaleAmount|centToYuan }}</td>
-            <td class="text-center">{{listDetail.purchInCount}}</td>
-            <td>{{listDetail.purCostAmount|centToYuan}}</td>
-            <td class="text-center">{{listDetail.maintCount}}</td>
-            <td>{{listDetail.mainCostAmount|centToYuan }}</td>
-            <td class="text-center">{{listDetail.saleCount}}</td>
-            <td>{{listDetail.saleCostAmount|centToYuan }}</td>
-            <td class="text-center">{{listDetail.useCount}}</td>
-            <td>{{listDetail.useCostAmount|centToYuan }}</td>
-            <!--<td></td>
+        </tr>
+        <tr *ngIf="listDetail" class="text-right">
+          <td></td>
+          <td class="text-center">{{listDetail.beginCount}}</td>
+          <td>{{listDetail.beginAmount |centToYuan}}</td>
+          <td class="text-center">{{listDetail.endCount}}</td>
+          <td>{{listDetail.endAmount |centToYuan}}</td>
+          <td class="text-center">{{listDetail.inCount}}</td>
+          <td>{{listDetail.inAmount |centToYuan}}</td>
+          <td class="text-center">{{listDetail.outCount}}</td>
+          <td>{{listDetail.outCostAmount|centToYuan }}</td>
+          <td>{{listDetail.outSaleAmount|centToYuan }}</td>
+          <td class="text-center">{{listDetail.purchInCount}}</td>
+          <td>{{listDetail.purCostAmount|centToYuan}}</td>
+          <td class="text-center">{{listDetail.maintCount}}</td>
+          <td>{{listDetail.mainCostAmount|centToYuan }}</td>
+          <td class="text-center">{{listDetail.saleCount}}</td>
+          <td>{{listDetail.saleCostAmount|centToYuan }}</td>
+          <td class="text-center">{{listDetail.useCount}}</td>
+          <td>{{listDetail.useCostAmount|centToYuan }}</td>
+          <!--<td></td>
             <td></td>
             <td></td>
             <td></td>-->
-          </tr>
-        </table>
-      </div>
-      <hr>
-      <button type="button" (click)="onDetailExport()" class="btn btn-export">导出</button>
+        </tr>
+      </table>
     </div>
+    <hr>
+    <button type="button" (click)="onDetailExport()" class="btn btn-export">导出</button>
     <!--</div>-->
   </div>
 </div>

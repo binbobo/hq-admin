@@ -146,7 +146,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   }
   // 重新设置下次里程验证器 实现多个表单域联动验证
   private resetNextMileageValidators(val) {
-    this.workSheetForm.controls.nextMileage.setValidators([HQ_VALIDATORS.mileage, CustomValidators.gte(val)]);
+    if (val)
+      this.workSheetForm.controls.nextMileage.setValidators([HQ_VALIDATORS.mileage, CustomValidators.gte(val)]);
   }
 
   // 从模糊查询下拉列表中选择一个车型事件处理程序
@@ -175,7 +176,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.disableCustomerVehicleField();
 
     if (!evt.id) {
-      // console.log('加载上次工单信息失败！缺少客户车辆ID');
       return;
     }
 
@@ -197,7 +197,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     });
   }
 
-  // 根据车牌号， 车主， vin 自动带出客户车辆信息
+  // 根据车牌号， 车主自动带出上次维修历史记录信息
   loadLastOrderInfo(lastOrder) {
     // 区分预检单还是 上次维修记录
     if (lastOrder.preCheckId) {
@@ -228,7 +228,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     }
   }
 
-  // 根据车牌号， 车主， vin 自动带出客户车辆信息
+  // 根据车牌号， 车主 自动带出客户车辆信息
   loadCustomerVehicleInfo(customerVehicle) {
     // console.log('当前选择的客户车辆信息', JSON.stringify(customerVehicle));
     // 加载客户车辆信息

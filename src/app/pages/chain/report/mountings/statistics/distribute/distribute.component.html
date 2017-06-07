@@ -1,32 +1,29 @@
 <div class="card">
   <div class="card-header">维修发料统计</div>
   <div class="card-block">
-    <div class="container-fluid">
-      <form class="form-inline mb-2" [formGroup]="distributeForm" (ngSubmit)="onSearch()">
-        <div class="form-group row">
-          <div class="input-group m-1">
-            <span class="input-group-addon">车牌号</span>
-            <input hqPlateNoTypeahead (onSelect)="onSelect($event)" name="plateNo" class="form-control" formControlName="plateNo" placeholder="请输车牌号" />
-          </div>
-          <div class="input-group m-1">
-            <span class="input-group-addon">查询日期</span>
-            <input [max-date]="maxEnterStartDate" date-only="true" class="form-control datetime-picker" style="border-right:0;" formControlName="searchStart"
-              id="starttime" name="starttime" type="text" ngui-datetime-picker/>
-            <span class="input-group-addon">-</span>
-            <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" date-only="true" class="form-control datetime-picker" style="border-right-width:1px;"
-              id="endtime" formControlName="searchEnd" name="endtime" type="text" ngui-datetime-picker/>
-          </div>
-          <div class="input-group m-1" *ngIf="items">
-            <span class="input-group-addon">门店查询</span>
-            <div *ngIf="true" class="form-controls">
-              <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)">
-              </ngx-dropdown-treeview>
-            </div>
-          </div>
-          <button type="submit" class="btn btn-primary">查询</button>
+    <form class="form-inline mb-2" [formGroup]="distributeForm" (ngSubmit)="onSearch()">
+      <div class="input-group m-1">
+        <span class="input-group-addon">车牌号</span>
+        <input hqPlateNoTypeahead (onSelect)="onSelect($event)" name="plateNo" class="form-control" formControlName="plateNo" placeholder="请输车牌号"
+        />
+      </div>
+      <div class="input-group m-1">
+        <span class="input-group-addon">查询日期</span>
+        <input [max-date]="maxEnterStartDate" date-only="true" class="form-control datetime-picker" style="border-right:0;" formControlName="searchStart"
+          id="starttime" name="starttime" type="text" ngui-datetime-picker/>
+        <span class="input-group-addon">-</span>
+        <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" date-only="true" class="form-control datetime-picker" style="border-right-width:1px;"
+          id="endtime" formControlName="searchEnd" name="endtime" type="text" ngui-datetime-picker/>
+      </div>
+      <div class="input-group m-1" *ngIf="items">
+        <span class="input-group-addon">门店查询</span>
+        <div *ngIf="true" class="form-controls">
+          <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)">
+          </ngx-dropdown-treeview>
         </div>
-      </form>
-    </div>
+      </div>
+      <button type="submit" class="btn btn-primary">查询</button>
+    </form>
     <hr>
     <p>温馨提示：系统为您找到<span style="font-size:16px;color:red;font-weight:bold;">{{total}}</span>条记录</p>
     <div class="table-container">
@@ -67,28 +64,22 @@
       </button>
     </div>
     <div class="modal-body">
-      <div class="card-block">
-        <div class="row">
-          <div class="col-6">
-            <label for="">发料单号：</label>
-            <span>{{detail?.billCode }}</span>
-          </div>
-          <div class="col-6">
-            <label for="">车牌号：</label>
-            <span>{{detail?.plateNo }}</span>
-          </div>
-          <div class="col-6">
-            <label for="">开单时间：</label>
-            <span>{{detail?.createBillTime |sDatetime}}</span>
-          </div>
-          <div class="col-6">
-            <label for="">操作人：</label>
-            <span>{{detail?.operator  }}</span>
-          </div>
-        </div>
-      </div>
-      <div class="card-block">
-        <div class="row">
+      <table class="table table-order-info table-bordered">
+        <tr>
+          <td class="fixed-width">发料单号：</td>
+          <td>{{detail?.billCode }}</td>
+          <td class="fixed-width">车牌号：</td>
+          <td>{{detail?.plateNo }}</td>
+        </tr>
+        <tr>
+          <td class="fixed-width">开单时间：</td>
+          <td>{{detail?.createBillTime |sDatetime}}</td>
+          <td class="fixed-width">操作人：</td>
+          <td>{{detail?.operator }}</td>
+        </tr>
+      </table>
+      <div class="">
+        <div class="">
           <div class="table-container">
             <table class="table table-bordered" style="white-space: nowrap">
               <tr class="text-center">

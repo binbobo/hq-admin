@@ -38,13 +38,13 @@
             <td>{{item.statusName}}</td>
             <td>{{item.plateNo}}</td>
             <td>{{item.billCode}}</td>
-            <!-- 指派的人或者最后更改人 -->
             <td>
+              <!-- 指派的人或者最后更改人 -->
               <span *ngIf="item.teamType === 1 || item.teamType === 2"> {{item.employeeNames?.join(',')}}</span>
             </td>
             <td>{{item.typeName}}</td>
-            <!-- 转派的人-->
             <td>
+              <!-- 转派的人-->
               <span *ngIf="item.teamType === 2"> {{item.turnEmployeeNames?.join(',')}}</span>
             </td>
             <td>{{item.createdOnUtc|sDatetime}}</td>
@@ -87,7 +87,7 @@
                 <th>指派维修技师</th>
                 <th>转派</th>
                 <th>项目名称</th>
-                <th>维修工时(小时)</th>
+                <th>维修工时</th>
               </tr>
             </thead>
             <tbody>
@@ -118,9 +118,9 @@
             <button emptyInfo="当前没有可指派的技师" [hqSpinner]="generating.assign" class="btn btn-sm btn-primary mr-2" (onConfirm)="onConfirmTechnicians($event, 1)"
               [hqMutilSelect]="maintenanceTechnicians" mTitle="选择维修技师" [disabled]="!selectedOrder?.serviceOutputs?.enableBtn"
               (click)="onMultiSelectorClick($event)" placement="right">指派</button>
-            <button emptyInfo="当前没有可指派的技师" [hqSpinner]="generating.reassign" class="btn btn-sm btn-success" (onConfirm)="onConfirmTechnicians($event, 2)" [hqMutilSelect]="maintenanceTechnicians"
-              mTitle="选择维修技师" [disabled]="!selectedOrder?.serviceOutputs?.enableBtn" (click)="onMultiSelectorClick($event)"
-              placement="right">转派</button>
+            <button emptyInfo="当前没有可指派的技师" [hqSpinner]="generating.reassign" class="btn btn-sm btn-success" (onConfirm)="onConfirmTechnicians($event, 2)"
+              [hqMutilSelect]="maintenanceTechnicians" mTitle="选择维修技师" [disabled]="!selectedOrder?.serviceOutputs?.enableBtn"
+              (click)="onMultiSelectorClick($event)" placement="right">转派</button>
           </div>
         </hq-workshop-order-operation>
       </div>
