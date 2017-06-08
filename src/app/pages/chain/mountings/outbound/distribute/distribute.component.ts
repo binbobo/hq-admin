@@ -3,8 +3,8 @@ import { DataList, PagedResult, StorageKeys, SelectOption } from "app/shared/mod
 import { Router, ActivatedRoute } from "@angular/router";
 import { DistributeService, DistributeRequest, SearchReturnData, ProductRequest } from "./distribute.service";
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { ModalDirective, TabsetComponent } from 'ngx-bootstrap';
-import { TypeaheadRequestParams, HqAlerter, PrintDirective } from "app/shared/directives";
+import { TabsetComponent } from 'ngx-bootstrap';
+import { TypeaheadRequestParams, HqAlerter, PrintDirective, HqModalDirective } from 'app/shared/directives';
 import * as moment from 'moment';
 import { SuspendBillDirective } from "app/pages/chain/chain-shared";
 
@@ -19,7 +19,7 @@ export class DistributeComponent implements OnInit {
   suspendedBillId: any;
   numberPrintList: SelectOption[];
   @ViewChild('createModal')
-  private createModal: ModalDirective;
+  private createModal: HqModalDirective;
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
   @ViewChild(SuspendBillDirective)
