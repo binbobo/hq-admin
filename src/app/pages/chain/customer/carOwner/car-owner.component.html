@@ -30,14 +30,14 @@
           <label for="createdStartDate" class="form-label">建档日期</label>
           <div class="hq-col">
             <input readonly [max-date]="maxCreatedStartDate" [(ngModel)]="params.createdStartDate" class="form-control" type="text" name="createdStartDate"
-              ngui-datetime-picker date-only="true" style="border-bottom-right-radius: 0;border-top-right-radius: 0;"/>
+              ngui-datetime-picker date-only="true" style="border-bottom-right-radius: 0;border-top-right-radius: 0;" />
           </div>
         </div>
         <div class="hq-input" style="margin-left: -21px;">
           <label class="form-label" style="min-width: 0;">-</label>
           <div class="hq-col">
-            <input readonly [min-date]="minCreatedEndDate" [max-date]="maxCreatedEndDate" [(ngModel)]="endDateParams.createdEndDate" class="form-control"
-              type="text" name="createdEndDate" ngui-datetime-picker date-only="true" />
+            <input readonly [min-date]="minCreatedEndDate" [max-date]="maxCreatedEndDate" [(ngModel)]="endDateParams.createdEndDate"
+              class="form-control" type="text" name="createdEndDate" ngui-datetime-picker date-only="true" />
           </div>
         </div>
         <div class="hq-input" style="width:50%">
@@ -82,7 +82,8 @@
         </tbody>
       </table>
     </div>
-    <hq-pagination [(itemsPerPage)]="size" [loading]="loading" [totalItems]="total" [(currentPage)]="index" [(itemsPerPage)]="size" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    <hq-pagination [(itemsPerPage)]="size" [loading]="loading" [totalItems]="total" [(currentPage)]="index" [(itemsPerPage)]="size"
+      (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
   <div class="card-footer">
     <div class="text-center">
@@ -93,19 +94,6 @@
   </div>
 </div>
 
-<!--车主信息详情-->
-<div hqBsModal #detailLgModal="hq-bs-modal" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h6 class="modal-title pull-left">车主信息详情</h6>
-        <button type="button" class="close pull-right" (click)="detailLgModal.hide()" aria-label="Close">
-          <span aria-hidden="true" class="fa-stack hq-fa-lg"><i class="fa fa-cir fa-stack-2x" aria-hidden="true"></i><i class="fa fa-times fa-stack-1x" aria-hidden="true"></i></span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <hq-car-owner-detail [data]="selectedCustomer"></hq-car-owner-detail>
-      </div>
-    </div>
-  </div>
+<div hqModal #detailLgModal="hq-modal" size="lg" modalTitle="车主信息详情">
+  <hq-car-owner-detail *ngIf="detailLgModal.isShown" [data]="selectedCustomer"></hq-car-owner-detail>
 </div>
