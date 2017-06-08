@@ -21,7 +21,7 @@
     "@angular/platform-browser-dynamic": "^4.1.3",
     "@angular/router": "^4.1.3",
     "@ngui/datetime-picker": "^0.16.1",
-    "@ngx-translate/core": "^6.0.1",
+    "@ngx-translate/core": "^7.0.0",
     "bootstrap": "^4.0.0-alpha.6",
     "core-js": "^2.4.1",
     "file-saver": "^1.3.3",
@@ -36,16 +36,16 @@
     "ngx-treeview": "^0.0.5",
     "ngx-uploader": "^3.0.6",
     "rxjs": "^5.4.0",
-    "zone.js": "^0.8.11"
+    "zone.js": "^0.8.12"
   },
   "devDependencies": {
-    "@angular/cli": "1.1.0",
+    "@angular/cli": "1.1.1",
     "@angular/compiler-cli": "^4.0.0",
     "@angular/language-service": "^4.0.0",
     "@types/jasmine": "2.5.51",
     "@types/node": "^6.0.78",
     "codelyzer": "~3.0.1",
-    "jasmine-core": "~2.6.2",
+    "jasmine-core": "^2.6.3",
     "jasmine-spec-reporter": "~4.1.0",
     "karma": "~1.7.0",
     "karma-chrome-launcher": "~2.1.1",
