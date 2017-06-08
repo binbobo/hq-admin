@@ -37,7 +37,8 @@
             name="starttime" type="text" ngui-datetime-picker placeholder="请选择开始时间" [close-on-select]="false" />
           <span class="input-group-addon">-</span>
           <input class="form-control" id="endtime" style="border-right-width:1px;" [min-date]="minEndTime" [max-date]="maxEndTime"
-            [(ngModel)]="endDateParams.endtime" name="endtime" type="text" ngui-datetime-picker placeholder="请选择截止时间" [close-on-select]="false"/>
+            [(ngModel)]="endDateParams.endtime" name="endtime" type="text" ngui-datetime-picker placeholder="请选择截止时间" [close-on-select]="false"
+          />
           <div class="col-sm-2"><button class="btn btn-primary">查询</button></div>
         </div>
       </div>
@@ -90,38 +91,19 @@
   </div>
 
   <!--提示是否确认退出-->
-  <div hqBsModal #confirmModal="hq-bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <div class="modal-header">
-          <p class="modal-title">温馨提示</p>
-          <button type="button" class="close pull-right" aria-label="Close" (click)="confirmModal.hide();">
-           <span aria-hidden="true" class="fa-stack hq-fa-lg"><i class="fa fa-cir fa-stack-2x" aria-hidden="true"></i><i class="fa fa-times fa-stack-1x" aria-hidden="true"></i></span>
-        </button>
-        </div>
-        <div class="modal-body">
-          <p>您确定要撤销结算吗</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="unBill(confirmModal);">确定</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="confirmModal" (click)="confirmModal.hide();">取消</button>
-        </div>
-      </div>
+  <div hqModal #confirmModal="hq-modal" class="modal fade" tabindex="-1" role="dialog" size="sm" modalTitle="温馨提示">
+    <div class="modal-body">
+      <p class="text-center">您确定要撤销结算吗?</p>
+    </div>
+    <div class="text-center">
+      <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="unBill(confirmModal);">确定</button>
+      <button type="button" class="btn btn-secondary" data-dismiss="confirmModal" (click)="confirmModal.hide();">取消</button>
     </div>
   </div>
 </div>
 <!--详情 begin-->
-<div hqBsModal #lgModal="hq-bs-modal" class="modal fade" tabindex="-1" role="dialog">
-  <div *ngIf="lgModal.isShown" class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h6 class="modal-title pull-left">维修结算详情</h6>
-        <button type="button" class="close pull-right" (click)="hideModal(lgModal)" aria-label="Close">
-           <span aria-hidden="true" class="fa-stack hq-fa-lg"><i class="fa fa-cir fa-stack-2x" aria-hidden="true"></i><i class="fa fa-times fa-stack-1x" aria-hidden="true"></i></span>
-        </button>
-      </div>
-      <div class="modal-body">
+<div hqModal #lgModal="hq-modal" class="modal fade" tabindex="-1" role="dialog" size="lg" modalTitle="维修结算详情">
+  <div *ngIf="lgModal.isShown">
         <!--结算费用-->
         <form [formGroup]="billSheetForm" [hidden]="!isShowCost" *ngIf="lgModal.isShown">
           <div class="form-inline bill-form">
@@ -161,7 +143,6 @@
             </div>
           </div>
         </div>
-      </div>
       <!--详情费用-->
       <div class="card hq-fee" [hidden]="!isShowCostDetail" *ngIf="lgModal.isShown">
         <div>
@@ -175,7 +156,6 @@
       <div class="text-center" style="margin-bottom:10px;">
         <button type="button" class="btn btn-export" aria-label="Close" [hidden]="!isShowPrint" (click)='print(lgModal)'>打印</button>
       </div>
-    </div>
   </div>
 </div>
 <!--详情 end-->

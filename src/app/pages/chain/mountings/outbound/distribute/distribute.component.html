@@ -226,19 +226,7 @@
       title="选择流水号" href="#" [disabled]="!(serialData.length>0)" placement="right">打印</button>
   </div>
 </div>
-<div class="modal fade" hqBsModal #createModal="hq-bs-modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title pull-left">新增</h5>
-        <button class="close pull-right" (click)="createModal.hide()">
-           <span aria-hidden="true" class="fa-stack hq-fa-lg"><i class="fa fa-cir fa-stack-2x" aria-hidden="true"></i><i class="fa fa-times fa-stack-1x" aria-hidden="true"></i></span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <hq-distribute-create *ngIf="createModal.isShown" [InputData]="InputData" (formSubmit)="onCreate($event)"></hq-distribute-create>
-      </div>
-    </div>
-  </div>
+<div class="modal fade" hqModal #createModal="hq-modal" size="lg" modalTitle="新增">
+  <hq-distribute-create *ngIf="createModal.isShown" [InputData]="InputData" (formSubmit)="onCreate($event)"></hq-distribute-create>
 </div>
 <hq-distribute-print *ngIf="printList" [hidden]="true" [data]="printList" hqPrint #printer="hq-print" print-title="维修发料单"></hq-distribute-print>

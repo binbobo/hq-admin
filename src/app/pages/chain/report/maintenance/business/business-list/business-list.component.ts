@@ -98,7 +98,7 @@ export class BusinessListComponent extends DataList<any> {
     this.params.enterEndTimeDate = this.params.enterEndTimeDate && moment(this.params.enterEndTimeDate).endOf('day').format('YYYY-MM-DDTHH:mm:ss.SSS');
     this.params.leaveEndTimeDate = this.params.leaveEndTimeDate && moment(this.params.leaveEndTimeDate).endOf('day').format('YYYY-MM-DDTHH:mm:ss.SSS');
     this.index = 1;
-    this.params.setPage(1);
+    this.params.setPage(1,this.size);
     this.loadList()
       .then(() => {
         if (this.params.plateNo) {

@@ -27,13 +27,14 @@
         </div>
         <div class="input-group m-1">
           <span class="input-group-addon">进厂时间</span>
-          <input [max-date]="maxStartTime" class="form-control datetime-picker" style="border-right:0;" [(ngModel)]="params.starttime" id="starttime" name="starttime"
-            type="text" placeholder="请选择开始时间" [close-on-select]="false" ngui-datetime-picker/>
+          <input [max-date]="maxStartTime" class="form-control datetime-picker" style="border-right:0;" [(ngModel)]="params.starttime"
+            id="starttime" name="starttime" type="text" placeholder="请选择开始时间" [close-on-select]="false" ngui-datetime-picker/>
           <span class="input-group-addon">-</span>
-          <input  [min-date]="minEndTime" [max-date]="maxEndTime" class="form-control" style="border-right-width:1px;" id="endtime" [(ngModel)]="endDateParams.endtime" name="endtime"
-            type="text" placeholder="请选择截止时间" [close-on-select]="false" ngui-datetime-picker/>
+          <input [min-date]="minEndTime" [max-date]="maxEndTime" class="form-control" style="border-right-width:1px;" id="endtime"
+            [(ngModel)]="endDateParams.endtime" name="endtime" type="text" placeholder="请选择截止时间" [close-on-select]="false"
+            ngui-datetime-picker/>
           <div class="col-sm-1"><button class="btn btn-primary">查询</button></div>
-        </div> 
+        </div>
       </div>
     </form>
     <div class="table-container">
@@ -78,53 +79,31 @@
   </div>
 </div>
 <!--详情 begin-->
-<div hqBsModal #lgModal="hq-bs-modal" class="modal fade" tabindex="-1" role="dialog">
-  <div *ngIf="lgModal.isShown" class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h6 class="modal-title pull-left">维修收银详情</h6>
-        <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
-          <span aria-hidden="true" class="fa-stack hq-fa-lg"><i class="fa fa-cir fa-stack-2x" aria-hidden="true"></i><i class="fa fa-times fa-stack-1x" aria-hidden="true"></i></span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!--工单详情 start-->
-        <hq-checkout-print-detail [data]="selectedOrder"></hq-checkout-print-detail>
-        <div class="card hq-fee">
-          <div>
-            <span class="fee-name">工时费：<span class="fee-value">{{workHourFee|centToYuan}}</span></span>
-            <span class="fee-name"> 材料费：<span class="fee-value">{{materialFee|centToYuan}}</span></span>
-            <span class="fee-name"> 优惠：<span class="fee-value">{{deduceAmount|centToYuan}}</span></span>
-            <span class="fee-name pull-right">应收金额：<span class="fee-value">{{billPrice|centToYuan}}</span></span>
-          </div>
-        </div>
-      </div>
+<div hqModal #lgModal="hq-modal" class="modal fade" tabindex="-1" role="dialog" size="lg" modalTitle="维修收银详情">
+  <!--工单详情 start-->
+  <hq-checkout-print-detail *ngIf="lgModal.isShown" [data]="selectedOrder"></hq-checkout-print-detail>
+  <div class="card hq-fee">
+    <div>
+      <span class="fee-name">工时费：<span class="fee-value">{{workHourFee|centToYuan}}</span></span>
+      <span class="fee-name"> 材料费：<span class="fee-value">{{materialFee|centToYuan}}</span></span>
+      <span class="fee-name"> 优惠：<span class="fee-value">{{deduceAmount|centToYuan}}</span></span>
+      <span class="fee-name pull-right">应收金额：<span class="fee-value">{{billPrice|centToYuan}}</span></span>
     </div>
   </div>
 </div>
 <!--详情 end-->
 <!--收银弹框 begin-->
-<div hqBsModal #CheckoutModal="hq-bs-modal" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content" style="background-color:#fff;">
-      <div class="modal-header">
-        <h5>收银</h5>
-        <button type="button" class="close pull-right" (click)="CheckoutModal.hide()" aria-label="Close">
-          <span aria-hidden="true" class="fa-stack hq-fa-lg"><i class="fa fa-cir fa-stack-2x" aria-hidden="true"></i><i class="fa fa-times fa-stack-1x" aria-hidden="true"></i></span>
-        </button>
-      </div>
-      <ng-template hq-alerter></ng-template>
-      <div class="modal-body">
-        <div class="hq-fee" style="margin-top:0">
-          <span class="fee-name">应收金额：<span class="fee-value">{{costMoney|centToYuan}}</span></span>
-        </div>
-        <div class="input-group checkout-item" *ngFor="let item of payData;">
-          <span class="input-group-addon" id="sizing-addon2" style="width:150px;">{{item.value}}(元)</span>
-          <input type="number" class="form-control" [(ngModel)]="item.amount" aria-label="Username" aria-describedby="sizing-addon1">
-        </div>
-      </div>
-      <div class="btn-center"><button type="button" class="btn btn-primary" aria-label="Close" (click)="OnPostPay(CheckoutModal)">确定收银</button></div>
+<div hqModal #CheckoutModal="hq-modal" class="modal fade" tabindex="-1" role="dialog" size="lg" modalTitle="收银">
+  <ng-template hq-alerter></ng-template>
+  <div class="modal-body">
+    <div class="hq-fee" style="margin-top:0">
+      <span class="fee-name">应收金额：<span class="fee-value">{{costMoney|centToYuan}}</span></span>
+    </div>
+    <div class="input-group checkout-item" *ngFor="let item of payData;">
+      <span class="input-group-addon" id="sizing-addon2" style="width:150px;">{{item.value}}(元)</span>
+      <input type="number" class="form-control" [(ngModel)]="item.amount" aria-label="Username" aria-describedby="sizing-addon1">
     </div>
   </div>
+  <div class="btn-center"><button type="button" class="btn btn-primary" aria-label="Close" (click)="OnPostPay(CheckoutModal)">确定收银</button></div>
 </div>
 <!--收银弹框 end-->

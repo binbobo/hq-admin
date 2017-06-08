@@ -11,12 +11,12 @@
         <input class="form-control" maxlength="15" type="text" [(ngModel)]="params.name" class="form-control" name="name" id="name">
       </div>
 
-      <div class="input-group m-2">
+      <div class="input-group m-1">
         <label class="input-group-addon">车牌号</label>
         <input class="form-control" maxlength="12" type="text" [(ngModel)]="params.plateNo" class="form-control" name="plateNo" id="plateNo">
       </div>
 
-      <div class="input-group m-2">
+      <div class="input-group m-1">
         <label class="input-group-addon">车主电话</label>
         <input class="form-control" maxlength="11" type="text" [(ngModel)]="params.phone" class="form-control" name="plateNo" id="phone">
       </div>
@@ -82,19 +82,6 @@
   </div>
 </div>
 
-<!--车主信息详情-->
-<div hqBsModal #detailLgModal="hq-bs-modal" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h6 class="modal-title pull-left">车主信息详情</h6>
-        <button type="button" class="close pull-right" (click)="detailLgModal.hide()" aria-label="Close">
-          <span aria-hidden="true" class="fa-stack hq-fa-lg"><i class="fa fa-cir fa-stack-2x" aria-hidden="true"></i><i class="fa fa-times fa-stack-1x" aria-hidden="true"></i></span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <hq-car-owner-detail [data]="selectedCustomer"></hq-car-owner-detail>
-      </div>
-    </div>
-  </div>
+<div hqModal #detailLgModal="hq-modal" size="lg" modalTitle="车主信息详情">
+  <hq-car-owner-detail *ngIf="detailLgModal.isShown" [data]="selectedCustomer"></hq-car-owner-detail>
 </div>

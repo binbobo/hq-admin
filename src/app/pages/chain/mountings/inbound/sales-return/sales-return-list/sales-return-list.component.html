@@ -111,20 +111,8 @@
   </div>
 </div>
 
-<div class="modal fade" hqBsModal #createModel="hq-bs-modal" tabindex="-1" role="dialog">
-  <div *ngIf="createModel.isShown" class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title pull-left">退库</h5>
-        <button class="close pull-right" (click)="createModel.hide()">
-           <span aria-hidden="true" class="fa-stack hq-fa-lg"><i class="fa fa-cir fa-stack-2x" aria-hidden="true"></i><i class="fa fa-times fa-stack-1x" aria-hidden="true"></i></span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <hq-sales-return-create [selectSalesData]="selectSalesData" (formSubmit)="onCreate($event)"></hq-sales-return-create>
-      </div>
-    </div>
-  </div>
+<div hqModal #createModel="hq-modal" modalTitle="退库" size="lg">
+  <hq-sales-return-create *ngIf="createModel.isShown" [selectSalesData]="selectSalesData" (formSubmit)="onCreate($event)"></hq-sales-return-create>
 </div>
 
 <hq-sales-return-print class="invisible" hqPrint #printer="hq-print" [model]="printModel" print-title="销售退库单"></hq-sales-return-print>
