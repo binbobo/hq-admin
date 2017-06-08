@@ -65,12 +65,12 @@ export class DistributeCreateComponent implements OnInit {
     let validators = Validators.compose([Validators.required, CustomValidators.min(1), CustomValidators.max(count)])
     countControl.setValidators(validators);
   }
- 
+
   private buildForm() {
     this.form = this.formBuilder.group({
       brandName: [this.model.brand],
-      productCode: [this.model.productCode, [Validators.required]],
-      productName: [this.model.productName, [Validators.required]],
+      productCode: [this.model.productCode],
+      productName: [this.model.productName],
       productCategory: [this.model.productCategory],
       productId: [this.model.productId, [Validators.required]],
       productSpecification: [this.model.productSpecification],
@@ -88,7 +88,7 @@ export class DistributeCreateComponent implements OnInit {
       maintenanceItemId: [this.model.maintenanceItemId],
       vihicleName: [this.model.vihicleName],
       description: [this.model.description],
-      vehicleInfoList:[this.vehicleInfoList]
+      vehicleInfoList: [this.vehicleInfoList]
     })
 
   }
@@ -114,25 +114,22 @@ export class DistributeCreateComponent implements OnInit {
   }
 
   public onReset() {
-    this.form = null;
     this.storages = null;
     this.locations = null;
-    this.vehicleInfoList=null;
-    this.buildForm();
-    return false;
+    this.form.reset({ ...this.model, yuan: this.model.price / 100 });
   }
 
   private onResetForm(event: Event, key: string) {
     if (!event.isTrusted) return false;
     this.storages = null;
     this.locations = null;
-    this.vehicleInfoList=null;
+    this.vehicleInfoList = null;
     let obj = { ...this.model };
     key in obj && delete obj[key];
     this.form.patchValue(obj);
   }
 
-vehicleInfoList:any;
+  vehicleInfoList: any;
   public onItemSelect(event) {
     let item: any = {
       productUnit: event.unitName,
@@ -148,9 +145,9 @@ vehicleInfoList:any;
       price: event.price,
       newPrice: event.newPrice,
       yuan: (event.price || 0) / 100,
-      vehicleInfoList:event.vehicleInfoList
+      vehicleInfoList: event.vehicleInfoList
     }
-    this.vehicleInfoList=item.vehicleInfoList;
+    this.vehicleInfoList = item.vehicleInfoList;
     this.storages = event.storages;
     this.locations = null;
     if (Array.isArray(event.storages) && event.storages.length) {
@@ -178,7 +175,7 @@ vehicleInfoList:any;
     let amount = (count || 1) * (price || 0);
     this.form.patchValue({ amount: amount, count: count, price: price });
   }
-    onLocationChange(locationId: string) {
+  onLocationChange(locationId: string) {
     let location = this.locations && this.locations.find(m => m.id === locationId);
     let stock = location && location.count || 0;
     this.form.controls['stockCount'].setValue(stock);

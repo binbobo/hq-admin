@@ -358,36 +358,6 @@ table tr:not(:last-child) th{
 .form-control:disabled, .form-control[readonly]{
     background-color: #f7f8f8;
 }
-/*关闭按钮*/
-.hq-fa-lg{
-  font-size:0.5rem;
-  position: relative;
-}
-.close:active{
-  border:0;
-}
-button.close{
-    line-height: 0;
-}
-.hq-fa-lg .fa-times::before{
-  color:#727171;
-  background-color: transparent;
-  font-size:1rem;
-  line-height:1.5rem;
-}
-.hq-fa-lg .fa-cir{
-  width:1.5rem;
-  height:1.5rem;
-  border-radius:1rem;
-  border:2px solid #727171;
-}
-.hq-fa-lg .fa-stack-1x{
-    position: absolute;
-    top: -1px;
-    left: 4px;
-    width: 1rem;
-    height: 1rem;
-}
 /*去除蓝色边框*/
 button:focus,.close:active,button:active{
     border-width:0;
