@@ -34,7 +34,7 @@ export class ProcurementEditComponent extends FormHandle<ProcurementItem> implem
       exTaxAmount: [this.model.exTaxAmount],
       locationName: [this.model.locationName],
       storeName: [this.model['storeName']],
-      unit: [this.model.unit],
+      productUnit: [this.model.productUnit],
     })
   }
 

@@ -81,6 +81,7 @@ export class ReceiveListItem {
     public locationId?: string,
     public description?: string,
     public locationName?: string,
-    public houseName?: string
+    public houseName?: string,
+    public productUnit?: string,
   ) { }
 }

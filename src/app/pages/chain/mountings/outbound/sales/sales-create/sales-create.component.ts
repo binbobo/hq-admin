@@ -74,7 +74,7 @@ export class SalesCreateComponent implements OnInit {
       productSpecification: [this.model.productSpecification, [Validators.required]],
       storeId: [this.model.storeId],
       locationId: [this.model.locationId],
-      unit: [this.model.unit],
+      productUnit: [this.model.productUnit],
       count: [this.model.count, [Validators.required, CustomValidators.min(1)]],
       price: [this.model.price],
       amount: [this.model.amount],
@@ -111,7 +111,7 @@ export class SalesCreateComponent implements OnInit {
 
   public onItemSelect(event) {
     let item: any = {
-      unit: event.unitName,
+      productUnit: event.unitName,
       productId: event.id,
       productCode: event.code,
       productName: event.name,

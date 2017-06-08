@@ -61,7 +61,7 @@ export class SalesListItem {
     public amount: number = 0,
     public stockCount: number = 0,
     public productName?: string,
-    public unit?: string,
+    public productUnit?: string,
     public brand?: string,
     public productId?: string,
     public productCode?: string,
