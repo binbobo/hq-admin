@@ -31,6 +31,7 @@ export class ProcurementCreateComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.model['yuan'] = this.model.price / 100;
     this.buildForm();
   }
 
@@ -46,7 +47,7 @@ export class ProcurementCreateComponent implements OnInit {
       locationId: [this.model.locationId, [Validators.maxLength(36)]],
       count: [this.model.count, [Validators.required, CustomValidators.min(1), CustomValidators.digits]],
       price: [this.model.price],
-      yuan: [this.model.price / 100, [Validators.required, CustomValidators.gt(0)]],
+      yuan: [this.model['yuan'], [Validators.required, CustomValidators.gt(0)]],
       amount: [this.model.amount],
       exTaxPrice: [this.model.exTaxPrice],
       exTaxAmount: [this.model.exTaxAmount],
@@ -59,7 +60,7 @@ export class ProcurementCreateComponent implements OnInit {
   private onResetForm(event: Event, key: string) {
     this.productNotExist = false;
     if (!event.isTrusted || !this.isSelected) return false;
-    let obj = { ...this.model, yuan: 0 };
+    let obj = { ...this.model };
     key in obj && delete obj[key];
     this.form.patchValue(obj);
     this.storages = null;
@@ -153,6 +154,6 @@ export class ProcurementCreateComponent implements OnInit {
   private reset() {
     this.storages = null;
     this.locations = null;
-    this.form.reset({ ...this.model, yuan: this.model.price / 100 });
+    this.form.reset({ ...this.model });
   }
 }

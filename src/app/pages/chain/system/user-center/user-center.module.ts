@@ -6,7 +6,6 @@ import { RoleAllocateComponent } from './role/role-allocate/role-allocate.compon
 import { SharedModule } from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
-import { ModalModule } from 'ngx-bootstrap';
 import { RoleService } from './role/role.service';
 import { TreeviewModule } from 'ngx-treeview';
 import { UserListComponent } from './user/user-list/user-list.component';
@@ -27,7 +26,6 @@ const routes: Routes = [
     SharedModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
-    ModalModule.forRoot(),
     RouterModule.forChild(routes),
   ],
   exports: [RouterModule],

@@ -15,6 +15,7 @@ export class UserEditComponent extends FormHandle<User> implements OnInit {
 
   private roles: Array<TreeviewItem>;
   private positions: Array<TreeviewItem>;
+  private stations: Array<any>;
 
   protected getModel(): Observable<User> {
     let positions = [];
@@ -38,6 +39,7 @@ export class UserEditComponent extends FormHandle<User> implements OnInit {
       name: [this.model.name, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
       phone: [this.model.phone, [Validators.required, HQ_VALIDATORS.mobile]],
       description: [this.model.description, [Validators.maxLength(100)]],
+      orgId: [this.model.orgId, [Validators.required]],
       roles: [[]],
       positions: [[]],
     });
@@ -55,9 +57,22 @@ export class UserEditComponent extends FormHandle<User> implements OnInit {
     this.userService.getRoleOptions()
       .then(options => this.roles = this.convertToTreeView(options, this.model.roles))
       .catch(err => this.alerter.error(err));
-    this.userService.getPositionOptions()
+    this.userService.getStations()
+      .then(data => this.stations = data)
+      .catch(err => this.alerter.error(err));
+    this.loadPostions(this.model.orgId);
+  }
+
+  loadPostions(orgId?: string) {
+    this.userService.getPositionOptions(orgId)
       .then(options => this.positions = this.convertToTreeView(options, this.model.positions))
       .catch(err => this.alerter.error(err));
+  }
+
+  onStationChange(event: Event) {
+    this.form.patchValue({ positions: [] });
+    let element = event.target as HTMLSelectElement;
+    this.loadPostions(element.value);
   }
 
   onRoleSelect(event) {

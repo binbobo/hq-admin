@@ -1,7 +1,7 @@
 import { Component, OnInit, Injector, ViewChild, ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { ProviderService, ProviderListRequest, Provider } from '../provider.service';
 import { DataList } from 'app/shared/models';
-import { ModalDirective } from 'ngx-bootstrap';
+import { HqModalDirective } from 'app/shared/directives';
 
 @Component({
   selector: 'hq-provider-list',
@@ -11,9 +11,9 @@ import { ModalDirective } from 'ngx-bootstrap';
 export class ProviderListComponent extends DataList<Provider> implements OnInit {
 
   @ViewChild('createModal')
-  public createModal: ModalDirective;
+  public createModal: HqModalDirective;
   @ViewChild('editModal')
-  public editModal: ModalDirective;
+  public editModal: HqModalDirective;
 
   private enabled() {
     let items = this.selectedItems;

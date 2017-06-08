@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { ProviderService, ProviderListRequest } from '../../../provider/provider.service';
-import { TypeaheadRequestParams, HqAlerter, PrintDirective } from 'app/shared/directives';
-import { ModalDirective } from 'ngx-bootstrap';
+import { TypeaheadRequestParams, HqAlerter, PrintDirective, HqModalDirective } from 'app/shared/directives';
 import { PurchaseReturnPrintItem, PurchaseReturnItem, PurchaseReturnService, GetBillCodeRequest, GetProductsRequest, PurchaseReturnRequest } from '../purchase-return.service';
 import { SelectOption, DataList } from 'app/shared/models';
 import { PurchaseOutBillDirective } from '../purchase-out-bill.directive';
@@ -16,7 +15,7 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
   @ViewChild(PurchaseOutBillDirective)
   private suspendBill: PurchaseOutBillDirective;
   @ViewChild('createModal')
-  private createModal: ModalDirective;
+  private createModal: HqModalDirective;
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
   @ViewChild('printer')
@@ -145,7 +144,6 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
   }
 
   onProductSelect(item) {
-    console.log(item);
     this.product = item;
     this.createModal.show();
   }

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ViewChildren, QueryList, Injector } from '@angular/core';
 import { ModalDirective } from "ngx-bootstrap";
-import { HqAlerter, PrintDirective, TypeaheadRequestParams, FormGroupControlErrorDirective } from "app/shared/directives";
+import { HqAlerter, PrintDirective, TypeaheadRequestParams, FormGroupControlErrorDirective, HqModalDirective } from "app/shared/directives";
 import { SelectOption, PagedResult, DataList, PagedParams } from "app/shared/models";
 import { InnerReturnService, InnerPrintItem, BillCodeSearchRequest } from "../inner-return.service";
 import { SuspendBillDirective } from "app/pages/chain/chain-shared";
@@ -36,7 +36,7 @@ export class ReturnListComponent extends DataList<any> {
   @ViewChild(SuspendBillDirective)
   private suspendBill: SuspendBillDirective;
   @ViewChild('createModel')
-  private createModel: ModalDirective;
+  private createModel: HqModalDirective;
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
   @ViewChild('printer')
@@ -61,7 +61,7 @@ export class ReturnListComponent extends DataList<any> {
         this.employees = data;
         this.takeUser = this.employees.length && this.employees[0].takeUser;
         this.departments = this.employees.find(m => m.takeUser == this.takeUser);
-        this.takeDepartId =this.departments.departList.length && this.departments.departList[0].id;
+        this.takeDepartId =this.departments.departList && this.departments.departList[0].id;
       })
       .catch(err => this.alerter.error(err));
     this.lazyLoad = true;
@@ -76,7 +76,7 @@ export class ReturnListComponent extends DataList<any> {
     this.departments = null;
     this.takeUser = el.value;
     this.departments = this.employees.find(m => m.takeUser == this.takeUser);
-    this.takeDepartId =this.departments.departList.length && this.departments.departList[0].id;
+    this.takeDepartId =this.departments.departList && this.departments.departList[0].id;
     this.billCode = null;
     this.list = null;
     this.originalBillId = null;
@@ -97,7 +97,7 @@ export class ReturnListComponent extends DataList<any> {
   createReturnList() {
     this.createLoading = true;
     let inner = this.employees.find(m => m.takeUser == this.takeUser);
-    let department = this.departments.departList.find(m => m.id == this.takeDepartId);
+    // let department = this.departments.departList.find(m => m.id == this.takeDepartId);
     this.returnUser = inner && inner.takeUserName;
     this.billData = {
       originalBillId: this.originalBillId,

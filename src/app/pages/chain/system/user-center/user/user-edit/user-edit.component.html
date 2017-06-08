@@ -14,6 +14,12 @@
     </ngx-dropdown-treeview>
   </div>
   <div class="form-group">
+    <label class="form-control-label hq-required">组织</label>
+    <select formControlName="orgId" (change)="onStationChange($event)" class="form-control">
+      <option *ngFor="let item of stations" [value]="item.value" [innerHTML]="item.indent+item.text"></option>
+    </select>
+  </div>
+  <div class="form-group">
     <label class="form-control-label hq-required">职位</label>
     <ngx-dropdown-treeview [items]="positions" (selectedChange)="onPositionSelect($event)">
     </ngx-dropdown-treeview>

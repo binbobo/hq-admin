@@ -30,7 +30,7 @@
             <button (click)="onAllocate($event,item)" class="btn btn-sm btn-success">分配权限</button>
           </td>
           <td>{{item.name}}</td>
-          <td class="text-center">{{item.createTime|date:'y/MM/dd HH:mm:ss'}}</td>
+          <td class="text-center">{{item.createTime|sDatetime}}</td>
           <td>{{item.description}}</td>
         </tr>
       </tbody>
@@ -39,50 +39,14 @@
   </div>
 </div>
 
-<div class="modal fade" hqBsModal #createModal="hq-bs-modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title pull-left">新增角色</h5>
-        <button class="close pull-right" (click)="createModal.hide()">
-           <span aria-hidden="true" class="fa-stack hq-fa-lg"><i class="fa fa-cir fa-stack-2x" aria-hidden="true"></i><i class="fa fa-times fa-stack-1x" aria-hidden="true"></i></span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <hq-role-create (onSubmit)="onRoleCreate($event)"></hq-role-create>
-      </div>
-    </div>
-  </div>
+<div hqModal #createModal="hq-modal" modalTitle="新增角色">
+  <hq-role-create *ngIf="createModal.isShown" (onSubmit)="onRoleCreate($event)"></hq-role-create>
 </div>
 
-<div class="modal fade" hqBsModal #editModal="hq-bs-modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title pull-left">修改角色</h5>
-        <button class="close pull-right" (click)="editModal.hide()">
-           <span aria-hidden="true" class="fa-stack hq-fa-lg"><i class="fa fa-cir fa-stack-2x" aria-hidden="true"></i><i class="fa fa-times fa-stack-1x" aria-hidden="true"></i></span>
-        </button>
-      </div>
-      <div *ngIf="role" class="modal-body">
-        <hq-role-edit (onSubmit)="onRoleUpdate($event)" [model]="role"></hq-role-edit>
-      </div>
-    </div>
-  </div>
+<div hqModal #editModal="hq-modal" modalTitle="修改角色">
+  <hq-role-edit *ngIf="role" (onSubmit)="onRoleUpdate($event)" [model]="role"></hq-role-edit>
 </div>
 
-<div class="modal fade" hqBsModal #allocateModal="hq-bs-modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title pull-left">分配权限</h5>
-        <button class="close pull-right" (click)="allocateModal.hide()">
-           <span aria-hidden="true" class="fa-stack hq-fa-lg"><i class="fa fa-cir fa-stack-2x" aria-hidden="true"></i><i class="fa fa-times fa-stack-1x" aria-hidden="true"></i></span>
-        </button>
-      </div>
-      <div class="modal-body" *ngIf="role&&allocateModal.isShown">
-        <hq-role-allocate (cancel)="allocateModal.hide()" (submit)="onRoleAllocate($event)" [model]="role"></hq-role-allocate>
-      </div>
-    </div>
-  </div>
+<div hqModal #allocateModal="hq-modal" modalTitle="分配权限">
+  <hq-role-allocate *ngIf="role&&allocateModal.isShown" (cancel)="allocateModal.hide()" (submit)="onRoleAllocate($event)" [model]="role"></hq-role-allocate>
 </div>

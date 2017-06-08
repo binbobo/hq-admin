@@ -101,252 +101,242 @@
 <hq-print-view *ngIf="businessData" class="invisible" hqPrint #printer="hq-print" [businessData]="businessData" print-title="维修历史"></hq-print-view>
 
 <!--详情弹框-->
-<div class="modal fade" hqBsModal #bdModal="hq-bs-modal" tabindex="-1" role="dialog">
-  <div *ngIf="bdModal.isShown" class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <p class="modal-title">维修历史</p>
-        <button class="close pull-right" (click)="bdModal.hide()">
-           <span aria-hidden="true" class="fa-stack hq-fa-lg"><i class="fa fa-cir fa-stack-2x" aria-hidden="true"></i><i class="fa fa-times fa-stack-1x" aria-hidden="true"></i></span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="card">
-          <table class="table table-order-info table-bordered">
+<div hqModal #bdModal="hq-modal" modalTitle="维修历史" size="lg">
+  <div class="modal-card">
+    <div class="card" *ngIf="bdModal.isShown">
+      <table class="table table-order-info table-bordered">
+        <tbody>
+          <tr>
+            <td>车牌号</td>
+            <td>{{businessData?.plateNo}}</td>
+            <td>车型描述</td>
+            <td>{{businessData?.model}}</td>
+          </tr>
+          <tr>
+            <td>维修类型</td>
+            <td>{{businessData?.typeName}}</td>
+            <td>VIN</td>
+            <td>{{businessData?.vin}}</td>
+          </tr>
+          <tr>
+            <td>送修人</td>
+            <td>{{businessData?.contactUser}}</td>
+            <td>送修人手机</td>
+            <td>{{businessData?.contactInfo}}</td>
+          </tr>
+          <tr>
+            <td>服务顾问</td>
+            <td>{{businessData?.createdUserName}}</td>
+            <td>工单号</td>
+            <td>{{businessData?.billCode}}</td>
+          </tr>
+          <tr>
+            <td>结算员</td>
+            <td>{{businessData?.updateUser}}</td>
+            <td>结算单号</td>
+            <td>{{businessData?.settlementCode}}</td>
+          </tr>
+          <tr>
+            <td>结算方</td>
+            <td>{{businessData?.settlementParty}}</td>
+            <td>结算时间</td>
+            <td>{{businessData?.updateOnUtc|sDatetime}}</td>
+          </tr>
+          <tr>
+            <td>进厂里程</td>
+            <td>{{businessData?.mileage}} km</td>
+            <td>进厂时间</td>
+            <td>{{businessData?.createdOnUtc|sDatetime}}</td>
+          </tr>
+          <tr>
+            <td>出厂里程</td>
+            <td>{{businessData?.leaveMileage}} km</td>
+            <td>出厂时间</td>
+            <td>{{businessData?.updateOnUtc|sDatetime}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="card-block">
+        <div class="table-container">
+          <table class="table table-bordered">
+            <caption>收费结算单</caption>
+            <thead>
+              <tr>
+                <th width="50">序号</th>
+                <th>名称</th>
+                <th>金额（元）</th>
+                <th>备注</th>
+              </tr>
+            </thead>
             <tbody>
-              <tr>
-                <td>车牌号</td>
-                <td>{{businessData?.plateNo}}</td>
-                <td>车型描述</td>
-                <td>{{businessData?.model}}</td>
-              </tr>
-              <tr>
-                <td>维修类型</td>
-                <td>{{businessData?.typeName}}</td>
-                <td>VIN</td>
-                <td>{{businessData?.vin}}</td>
-              </tr>
-              <tr>
-                <td>送修人</td>
-                <td>{{businessData?.contactUser}}</td>
-                <td>送修人手机</td>
-                <td>{{businessData?.contactInfo}}</td>
-              </tr>
-              <tr>
-                <td>服务顾问</td>
-                <td>{{businessData?.createdUserName}}</td>
-                <td>工单号</td>
-                <td>{{businessData?.billCode}}</td>
-              </tr>
-              <tr>
-                <td>结算员</td>
-                <td>{{businessData?.updateUser}}</td>
-                <td>结算单号</td>
-                <td>{{businessData?.settlementCode}}</td>
-              </tr>
-              <tr>
-                <td>结算方</td>
-                <td>{{businessData?.settlementParty}}</td>
-                <td>结算时间</td>
-                <td>{{businessData?.updateOnUtc|sDatetime}}</td>
-              </tr>
-              <tr>
-                <td>进厂里程</td>
-                <td>{{businessData?.mileage}} km</td>
-                <td>进厂时间</td>
-                <td>{{businessData?.createdOnUtc|sDatetime}}</td>
-              </tr>
-              <tr>
-                <td>出厂里程</td>
-                <td>{{businessData?.leaveMileage}} km</td>
-                <td>出厂时间</td>
-                <td>{{businessData?.updateOnUtc|sDatetime}}</td>
+              <tr *ngFor="let item of businessData?.totalCost;let index=index">
+                <td>{{index+1}}</td>
+                <td>{{item.name}}</td>
+                <td class="text-right">{{item.receivableCost|centToYuan}}</td>
+                <td>{{item.description}}</td>
               </tr>
             </tbody>
+            <tfoot *ngIf="businessData?.totalCost?.length <= 0">
+              <tr>
+                <td colspan="4">系统未找到相关内容</td>
+              </tr>
+            </tfoot>
           </table>
-          <div class="card-block">
-            <div class="table-container">
-              <table class="table table-bordered">
-                <caption>收费结算单</caption>
-                <thead>
-                  <tr>
-                    <th width="50">序号</th>
-                    <th>名称</th>
-                    <th>金额（元）</th>
-                    <th>备注</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of businessData?.totalCost;let index=index">
-                    <td>{{index+1}}</td>
-                    <td>{{item.name}}</td>
-                    <td class="text-right">{{item.receivableCost|centToYuan}}</td>
-                    <td>{{item.description}}</td>
-                  </tr>
-                </tbody>
-                <tfoot *ngIf="businessData?.totalCost?.length <= 0">
-                  <tr>
-                    <td colspan="4">系统未找到相关内容</td>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
-            <div class="row">
-              <div class="col-4">
-                <label>金额合计：</label>
-                <span>{{moneyObj?.amountReceivable1|centToYuan}}</span>
-              </div>
-              <div class="col-4">
-                <label>优惠：</label>
-                <span>{{moneyObj?.discountMoney1|centToYuan}}</span>
-              </div>
-              <div class="col-4">
-                <label>应收金额：</label>
-                <span>{{businessData?.actualAmount|centToYuan}}</span>
-              </div>
-            </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <label>金额合计：</label>
+            <span>{{moneyObj?.amountReceivable1|centToYuan}}</span>
           </div>
-          <br>
-          <div class="card-block">
-            <div class="table-container">
-              <table class="table table-bordered">
-                <caption>表一：工时明细</caption>
-                <thead>
-                  <tr>
-                    <th width="50">序号</th>
-                    <th>维修项目</th>
-                    <th>结算工时</th>
-                    <th>单价（元/工时）</th>
-                    <th>折扣率(%)</th>
-                    <th>金额（元）</th>
-                    <th>备注</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of businessData?.workHours;let index=index">
-                    <td>{{index+1}}</td>
-                    <td class="text-left">{{item.serviceName}}</td>
-                    <td>{{item.workHour}}</td>
-                    <td class="text-right">{{item.price|centToYuan}}</td>
-                    <td>{{item.discount}}</td>
-                    <td class="text-right">{{item.amount|centToYuan}}</td>
-                    <td>{{item.description}}</td>
-                  </tr>
-                </tbody>
-                <tfoot *ngIf="businessData?.workHours?.length <= 0">
-                  <tr>
-                    <td colspan="7">系统未找到相关内容</td>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
-            <div class="row">
-              <div class="col-4">
-                <label>金额合计：</label>
-                <span>{{moneyObj?.amountReceivable2|centToYuan}}</span>
-              </div>
-              <div class="col-4">
-                <label>优惠：</label>
-                <span>{{moneyObj?.discountMoney2|centToYuan}}</span>
-              </div>
-              <div class="col-4">
-                <label>应收金额：</label>
-                <span>{{moneyObj?.countMoney2|centToYuan}}</span>
-              </div>
-            </div>
+          <div class="col-4">
+            <label>优惠：</label>
+            <span>{{moneyObj?.discountMoney1|centToYuan}}</span>
           </div>
-          <br>
-          <div class="card-block">
-            <div class="table-container">
-              <table class="table table-bordered">
-                <caption>表二：材料明细</caption>
-                <thead>
-                  <tr>
-                    <th width="50">序号</th>
-                    <th>配件名称</th>
-                    <th>单价（元）</th>
-                    <th>数量</th>
-                    <th>金额（元）</th>
-                    <th>备注</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of businessData?.matereialDetails;let index=index">
-                    <td>{{index+1}}</td>
-                    <td class="text-left">{{item.productName}}</td>
-                    <td class="text-right">{{item.price|centToYuan}}</td>
-                    <td>{{item.count}}</td>
-                    <td class="text-right">{{item.amount|centToYuan}}</td>
-                    <td>{{item.description}}</td>
-                  </tr>
-                </tbody>
-                <tfoot *ngIf="businessData?.matereialDetails?.length <= 0">
-                  <tr>
-                    <td colspan="6">系统未找到相关内容</td>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
-            <div class="row">
-              <div class="col-4"> </div>
-              <div class="col-4"></div>
-              <div class="col-4">
-                <label>应收金额：</label>
-                <span>{{moneyObj?.amountReceivable3|centToYuan}}</span>
-              </div>
-            </div>
-          </div>
-          <br>
-          <div *ngIf="businessData?.appendItems&&businessData?.appendItems.length>0">
-            <div class="card-block">
-              <div class="table-container">
-                <table class="table table-bordered">
-                  <caption>表三：附加项目</caption>
-                  <thead>
-                    <tr>
-                      <th width="50">序号</th>
-                      <th>项目内容</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let item of businessData?.appendItems;let index=index">
-                      <td>{{index+1}}</td>
-                      <td>{{item.name}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <br>
-          </div>
-          <div *ngIf="businessData?.adviceItems&&businessData?.adviceItems.length>0">
-            <div class="card-block">
-              <div class="table-container">
-                <table class="table table-bordered">
-                  <caption>表四：建议维修项</caption>
-                  <thead>
-                    <tr>
-                      <th width="50">序号</th>
-                      <th>建议维修项目</th>
-                      <th>备注</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let item of businessData?.adviceItems;let index=index">
-                      <td>{{index+1}}</td>
-                      <td>{{item.content}}</td>
-                      <td>{{item.description}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <br>
-          </div>
-          <div class="card-footer text-center">
-            <button (click)="print()" type="button" class="btn btn-export">打印</button>
+          <div class="col-4">
+            <label>应收金额：</label>
+            <span>{{businessData?.actualAmount|centToYuan}}</span>
           </div>
         </div>
+      </div>
+      <br>
+      <div class="card-block">
+        <div class="table-container">
+          <table class="table table-bordered">
+            <caption>表一：工时明细</caption>
+            <thead>
+              <tr>
+                <th width="50">序号</th>
+                <th>维修项目</th>
+                <th>结算工时</th>
+                <th>单价（元/工时）</th>
+                <th>折扣率(%)</th>
+                <th>金额（元）</th>
+                <th>备注</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of businessData?.workHours;let index=index">
+                <td>{{index+1}}</td>
+                <td class="text-left">{{item.serviceName}}</td>
+                <td>{{item.workHour}}</td>
+                <td class="text-right">{{item.price|centToYuan}}</td>
+                <td>{{item.discount}}</td>
+                <td class="text-right">{{item.amount|centToYuan}}</td>
+                <td>{{item.description}}</td>
+              </tr>
+            </tbody>
+            <tfoot *ngIf="businessData?.workHours?.length <= 0">
+              <tr>
+                <td colspan="7">系统未找到相关内容</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <label>金额合计：</label>
+            <span>{{moneyObj?.amountReceivable2|centToYuan}}</span>
+          </div>
+          <div class="col-4">
+            <label>优惠：</label>
+            <span>{{moneyObj?.discountMoney2|centToYuan}}</span>
+          </div>
+          <div class="col-4">
+            <label>应收金额：</label>
+            <span>{{moneyObj?.countMoney2|centToYuan}}</span>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="card-block">
+        <div class="table-container">
+          <table class="table table-bordered">
+            <caption>表二：材料明细</caption>
+            <thead>
+              <tr>
+                <th width="50">序号</th>
+                <th>配件名称</th>
+                <th>单价（元）</th>
+                <th>数量</th>
+                <th>金额（元）</th>
+                <th>备注</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of businessData?.matereialDetails;let index=index">
+                <td>{{index+1}}</td>
+                <td class="text-left">{{item.productName}}</td>
+                <td class="text-right">{{item.price|centToYuan}}</td>
+                <td>{{item.count}}</td>
+                <td class="text-right">{{item.amount|centToYuan}}</td>
+                <td>{{item.description}}</td>
+              </tr>
+            </tbody>
+            <tfoot *ngIf="businessData?.matereialDetails?.length <= 0">
+              <tr>
+                <td colspan="6">系统未找到相关内容</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <div class="row">
+          <div class="col-4"> </div>
+          <div class="col-4"></div>
+          <div class="col-4">
+            <label>应收金额：</label>
+            <span>{{moneyObj?.amountReceivable3|centToYuan}}</span>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div *ngIf="businessData?.appendItems&&businessData?.appendItems.length>0">
+        <div class="card-block">
+          <div class="table-container">
+            <table class="table table-bordered">
+              <caption>表三：附加项目</caption>
+              <thead>
+                <tr>
+                  <th width="50">序号</th>
+                  <th>项目内容</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of businessData?.appendItems;let index=index">
+                  <td>{{index+1}}</td>
+                  <td>{{item.name}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <br>
+      </div>
+      <div *ngIf="businessData?.adviceItems&&businessData?.adviceItems.length>0">
+        <div class="card-block">
+          <div class="table-container">
+            <table class="table table-bordered">
+              <caption>表四：建议维修项</caption>
+              <thead>
+                <tr>
+                  <th width="50">序号</th>
+                  <th>建议维修项目</th>
+                  <th>备注</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of businessData?.adviceItems;let index=index">
+                  <td>{{index+1}}</td>
+                  <td>{{item.content}}</td>
+                  <td>{{item.description}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <br>
+      </div>
+      <div class="card-footer text-center">
+        <button (click)="print()" type="button" class="btn btn-export">打印</button>
       </div>
     </div>
   </div>
