@@ -3,8 +3,7 @@ import { DataList, StorageKeys, SelectOption } from "app/shared/models";
 import { Router, ActivatedRoute } from "@angular/router";
 import { MaintainReturnService, MaintainRequest } from "./maintain-return.service";
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { TypeaheadRequestParams, HqAlerter, PrintDirective } from "app/shared/directives";
-import { ModalDirective } from "ngx-bootstrap";
+import { TypeaheadRequestParams, HqAlerter, PrintDirective, HqModalDirective } from 'app/shared/directives';
 import { SuspendBillDirective } from "app/pages/chain/chain-shared";
 @Component({
   selector: 'app-maintain-return',
@@ -18,7 +17,7 @@ export class MaintainReturnComponent implements OnInit {
   suspendedBillId: any;
   serialData: any = [];
   @ViewChild('createModal')
-  private createModal: ModalDirective;
+  private createModal: HqModalDirective;
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
   @ViewChild(SuspendBillDirective)

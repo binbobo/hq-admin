@@ -1,4 +1,4 @@
-export abstract class RequestParams {
+export class RequestParams {
     public serialize(others?: object): string {
         let self = Object.assign({}, this, others);
         return Object.keys(self)

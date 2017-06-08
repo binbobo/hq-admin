@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from "app/shared/shared.module";
-import { BsDropdownModule, ModalModule, TypeaheadModule, AlertModule, PopoverModule, TabsModule, CollapseModule } from "ngx-bootstrap";
+import { BsDropdownModule, TypeaheadModule, AlertModule, PopoverModule, TabsModule, CollapseModule } from "ngx-bootstrap";
 import { ChainSharedModule } from "app/pages/chain/chain-shared/chain-shared.module";
 import { NguiDatetimePickerModule } from "@ngui/datetime-picker/dist";
 import { CustomFormsModule } from "ng2-validation/dist";
@@ -37,7 +37,6 @@ import { InvoicingService } from "app/pages/chain/report/mountings/statistics/in
     ChainSharedModule,
     SharedModule.forRoot(),
     BsDropdownModule.forRoot(),
-    ModalModule.forRoot(),
     TypeaheadModule.forRoot(),
     AlertModule.forRoot(),
     PopoverModule.forRoot(),

@@ -68,36 +68,12 @@
   </div>
 </div>
 
-<div class="modal fade" hqBsModal #createModal="hq-bs-modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title pull-left">新增</h5>
-        <button class="close pull-right" (click)="createModal.hide()">
-           <span aria-hidden="true" class="fa-stack hq-fa-lg"><i class="fa fa-cir fa-stack-2x" aria-hidden="true"></i><i class="fa fa-times fa-stack-1x" aria-hidden="true"></i></span>
-        </button>
-      </div>
-      <div class="modal-body" *ngIf="createModal.isShown">
-        <hq-procurement-create (formSubmit)="onCreate($event)"></hq-procurement-create>
-      </div>
-    </div>
-  </div>
+<div hqModal #createModal="hq-modal" modalTitle="新增" size="lg">
+  <hq-procurement-create *ngIf="createModal.isShown" (formSubmit)="onCreate($event)"></hq-procurement-create>
 </div>
 
-<div class="modal fade" hqBsModal #editModal="hq-bs-modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title pull-left">编辑</h5>
-        <button class="close pull-right" (click)="editModal.hide()">
-           <span aria-hidden="true" class="fa-stack hq-fa-lg"><i class="fa fa-cir fa-stack-2x" aria-hidden="true"></i><i class="fa fa-times fa-stack-1x" aria-hidden="true"></i></span>
-        </button>
-      </div>
-      <div class="modal-body" *ngIf="editModal.isShown">
-        <hq-procurement-edit [model]="selectedModel" (onSubmit)="onUpdated($event)"></hq-procurement-edit>
-      </div>
-    </div>
-  </div>
+<div hqModal #editModal="hq-modal" modalTitle="新增" size="lg">
+  <hq-procurement-edit *ngIf="editModal.isShown" [model]="selectedModel" (onSubmit)="onUpdated($event)"></hq-procurement-edit>
 </div>
 
 <hq-procurement-print class="invisible" hqPrint #printer="hq-print" print-title="采购入库单" [model]="printModel"></hq-procurement-print>

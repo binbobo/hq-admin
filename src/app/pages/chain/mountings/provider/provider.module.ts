@@ -7,7 +7,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProviderService } from './provider.service';
-import { ModalModule } from 'ngx-bootstrap';
 
 const routes: Routes = [
   { path: '', component: ProviderListComponent },
@@ -20,7 +19,6 @@ const routes: Routes = [
     SharedModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
-    ModalModule.forRoot(),
     RouterModule.forChild(routes)
   ],
   providers: [ProviderService],

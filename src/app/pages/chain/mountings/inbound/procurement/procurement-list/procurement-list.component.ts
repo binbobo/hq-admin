@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { TypeaheadRequestParams, HqAlerter, PrintDirective } from 'app/shared/directives';
-import { ModalDirective } from 'ngx-bootstrap';
+import { TypeaheadRequestParams, HqAlerter, PrintDirective, HqModalDirective } from 'app/shared/directives';
 import { ProcurementService, ProcurementPrintItem, ProcurementItem, ProcurementRequest } from '../procurement.service';
 import { PurchaseInBillDirective } from '../purchase-in-bill.directive';
 import { NgForm } from '@angular/forms';
@@ -15,9 +14,9 @@ export class ProcurementListComponent implements OnInit {
   @ViewChild(PurchaseInBillDirective)
   private suspendBill: PurchaseInBillDirective;
   @ViewChild('createModal')
-  private createModal: ModalDirective;
+  private createModal: HqModalDirective;
   @ViewChild('editModal')
-  private editModal: ModalDirective;
+  private editModal: HqModalDirective;
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
   @ViewChild('printer')

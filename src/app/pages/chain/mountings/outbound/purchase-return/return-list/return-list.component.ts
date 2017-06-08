@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { ProviderService, ProviderListRequest } from '../../../provider/provider.service';
-import { TypeaheadRequestParams, HqAlerter, PrintDirective } from 'app/shared/directives';
-import { ModalDirective } from 'ngx-bootstrap';
+import { TypeaheadRequestParams, HqAlerter, PrintDirective, HqModalDirective } from 'app/shared/directives';
 import { PurchaseReturnPrintItem, PurchaseReturnItem, PurchaseReturnService, GetBillCodeRequest, GetProductsRequest, PurchaseReturnRequest } from '../purchase-return.service';
 import { SelectOption, DataList } from 'app/shared/models';
 import { PurchaseOutBillDirective } from '../purchase-out-bill.directive';
@@ -16,7 +15,7 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
   @ViewChild(PurchaseOutBillDirective)
   private suspendBill: PurchaseOutBillDirective;
   @ViewChild('createModal')
-  private createModal: ModalDirective;
+  private createModal: HqModalDirective;
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
   @ViewChild('printer')
@@ -129,7 +128,7 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
         el.disabled = false;
         this.reset();
         this.suspendBill.refresh();
-        return confirm('已生成出库单，是否需要打印？') ? data : null;
+        return confirm('已生成退库单，是否需要打印？') ? data : null;
       })
       .then(code => code && this.returnService.get(code))
       .then(data => {
@@ -145,7 +144,6 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
   }
 
   onProductSelect(item) {
-    console.log(item);
     this.product = item;
     this.createModal.show();
   }

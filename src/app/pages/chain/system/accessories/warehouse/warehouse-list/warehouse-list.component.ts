@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap';
 import { DataList } from 'app/shared/models';
 import { Warehouse, WarehouseService, WarehouseSearchParams } from '../warehouse.service';
+import { HqModalDirective } from 'app/shared/directives';
 
 @Component({
   selector: 'hq-warehouse-list',
@@ -11,7 +11,7 @@ import { Warehouse, WarehouseService, WarehouseSearchParams } from '../warehouse
 export class WarehouseListComponent extends DataList<Warehouse> implements OnInit {
 
   @ViewChild('createModal')
-  public createModal: ModalDirective;
+  public createModal: HqModalDirective;
 
   constructor(
     injector: Injector,

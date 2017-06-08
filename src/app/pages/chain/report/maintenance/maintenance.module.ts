@@ -3,7 +3,7 @@ import { BusinessListComponent } from './business/business-list/business-list.co
 import { MaintenanceRoutingModule } from "./maintenance.routing";
 import { BusinessService } from "./business/business.service";
 import { NguiDatetimePickerModule } from "@ngui/datetime-picker/dist";
-import { BsDropdownModule, ModalModule, TypeaheadModule, AlertModule, PopoverModule, TabsModule, CollapseModule } from "ngx-bootstrap";
+import { BsDropdownModule, TypeaheadModule, AlertModule, PopoverModule, TabsModule, CollapseModule } from "ngx-bootstrap";
 import { CustomFormsModule } from "ng2-validation/dist";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { TreeviewModule } from "ngx-treeview/lib";
@@ -22,7 +22,6 @@ import { OrderService } from "app/pages/chain/reception/order.service";
     PopoverModule.forRoot(),
     AlertModule.forRoot(),
     TypeaheadModule.forRoot(),
-    ModalModule.forRoot(),
     ReactiveFormsModule,
     NguiDatetimePickerModule,
     FormsModule,

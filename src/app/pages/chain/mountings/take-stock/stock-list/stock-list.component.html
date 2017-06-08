@@ -56,18 +56,6 @@
   </div>
 </div>
 
-<div class="modal fade" hqBsModal #generateModal="hq-bs-modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title pull-left">创建盘点清单</h5>
-        <button class="close pull-right" (click)="generateModal.hide()">
-           <span aria-hidden="true" class="fa-stack hq-fa-lg"><i class="fa fa-cir fa-stack-2x" aria-hidden="true"></i><i class="fa fa-times fa-stack-1x" aria-hidden="true"></i></span>
-        </button>
-      </div>
-      <div class="modal-body" *ngIf="generateModal.isShown">
-        <hq-stock-list-create (onSubmit)="onGenerate($event)" (onCancel)="generateModal.hide()"></hq-stock-list-create>
-      </div>
-    </div>
-  </div>
+<div hqModal #generateModal="hq-modal" modalTitle="创建盘点清单" size="lg">
+  <hq-stock-list-create *ngIf="generateModal.isShown" (onSubmit)="onGenerate($event)" (onCancel)="generateModal.hide()"></hq-stock-list-create>
 </div>

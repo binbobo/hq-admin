@@ -6,7 +6,6 @@ import { SharedModule } from 'app/shared/shared.module';
 import { Routes, RouterModule } from '@angular/router';
 import { WarehouseService } from './warehouse/warehouse.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ModalModule } from 'ngx-bootstrap';
 
 const routes: Routes = [
   { path: 'warehouse', component: WarehouseListComponent }
@@ -17,7 +16,6 @@ const routes: Routes = [
     SharedModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
-    ModalModule.forRoot(),
     RouterModule.forChild(routes)
   ],
   exports: [RouterModule],

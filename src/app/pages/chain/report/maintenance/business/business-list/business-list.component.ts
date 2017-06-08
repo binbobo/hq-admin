@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChildren, QueryList, Injector, ViewChild } from 
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DataList, StorageKeys } from "app/shared/models";
 import { BusinessService, BusinessListRequest, DetailsSearchRequest } from "../business.service";
-import { TypeaheadRequestParams, PrintDirective } from "app/shared/directives";
+import { TypeaheadRequestParams, PrintDirective, HqModalDirective } from "app/shared/directives";
 import { CentToYuanPipe, DurationHumanizePipe } from "app/shared/pipes";
 import { TreeviewItem, TreeviewConfig } from "ngx-treeview/lib";
 import { OrderService } from "app/pages/chain/reception/order.service";
@@ -25,7 +25,7 @@ export class BusinessListComponent extends DataList<any> {
   private businessForm: FormGroup;
   params: BusinessListRequest;
   @ViewChild('bdModal')
-  private bdModal: ModalDirective;
+  private bdModal: HqModalDirective;
 
   public isSearch = false;//温馨提示是否显示
   public isShow1 = false;//温馨提示是否显示

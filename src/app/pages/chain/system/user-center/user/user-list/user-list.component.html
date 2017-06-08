@@ -46,7 +46,7 @@
               {{item?.partPositionItems|slice:0:3|pluck:'name'}}
             </td>
             <td class="text-center">{{item.phone}}</td>
-            <td class="text-center">{{item.createTime|date:'y/MM/dd HH:mm:ss'}}</td>
+            <td class="text-center">{{item.createTime|sDatetime}}</td>
             <td>{{item.description|shorten: 10: '...'}}</td>
           </tr>
         </tbody>

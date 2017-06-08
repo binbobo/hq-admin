@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { SuspendBillDirective } from "app/pages/chain/chain-shared";
 import { ModalDirective } from "ngx-bootstrap";
 import { Router } from '@angular/router';
-import { HqAlerter, PrintDirective, TypeaheadRequestParams } from "app/shared/directives";
+import { HqAlerter, PrintDirective, TypeaheadRequestParams, HqModalDirective } from "app/shared/directives";
 import { SelectOption, DataList } from "app/shared/models";
 import { SalesReturnService, BillCodeRequest, CustomerRequest, SaleDetailsRequest } from "../sales-return.service";
 import { Location } from '@angular/common';
@@ -33,7 +33,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   @ViewChild(SuspendBillDirective)
   private suspendBill: SuspendBillDirective;
   @ViewChild('createModel')
-  private createModel: ModalDirective;
+  private createModel: HqModalDirective;
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
   @ViewChild('printer')

@@ -8,7 +8,6 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { AlertModule } from 'ngx-bootstrap/alert';
-import { ModalModule } from 'ngx-bootstrap';
 import { NguiDatetimePickerModule } from '@ngui/datetime-picker';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { SharedModule } from 'app/shared/shared.module';
@@ -24,7 +23,6 @@ import { CheckoutPrintDetailComponent } from './checkout/checkout-print-detail/c
     PopoverModule.forRoot(),
     AlertModule.forRoot(),
     TypeaheadModule.forRoot(),
-    ModalModule.forRoot(),
     SettlementRoutingModule,
     SharedModule.forRoot(),
     Ng2SmartTableModule,

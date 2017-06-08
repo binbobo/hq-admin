@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HqAlerter, PrintDirective } from 'app/shared/directives';
+import { HqAlerter, PrintDirective, HqModalDirective } from 'app/shared/directives';
 import { SelectOption, PagedResult } from 'app/shared/models';
-import { ModalDirective } from 'ngx-bootstrap';
 import { ReceiveService, ReceiveListRequest, ReceiveListItem, ReceivePrintItem } from '../receive.service';
 import { ReceiveOutBillDirective } from '../receive-out-bill.directive';
 
@@ -14,7 +13,7 @@ export class ReceiveListComponent implements OnInit {
   @ViewChild(ReceiveOutBillDirective)
   private suspendBill: ReceiveOutBillDirective;
   @ViewChild('createModal')
-  private createModal: ModalDirective;
+  private createModal: HqModalDirective;
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
   @ViewChild('printer')
@@ -65,18 +64,16 @@ export class ReceiveListComponent implements OnInit {
 
   generate(event: Event) {
     this.generating = true;
-    console.log('内部领用数据', this.model);
     this.receiveService.generate(this.model)
       .then(data => {
         this.generating = false;
         this.reset();
-        return confirm('已生成出库单，是否需要打印？') ? data : null;
+        return confirm('已生成内部领料单，是否需要打印？') ? data : null;
       })
       .then(code => code && this.receiveService.get(code))
       .then(data => {
         if (data) {
           this.printModel = data;
-          console.log('打印数据',data);
           setTimeout(() => this.printer.print(), 300);
         }
       })

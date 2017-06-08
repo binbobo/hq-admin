@@ -150,7 +150,7 @@ export class BillOrderComponent extends DataList<any>{
     unBill(confirmModal) {
         confirmModal.hide();
         this.service.put(confirmModal.id).then(() => {
-            this.alerter.info('撤销结算成功!', true, 3000);
+            this.alerter.info('撤销结算成功!', true,3000);
             this.onLoadList()
         }).catch(err => this.alerter.error(err, true, 3000));
 
