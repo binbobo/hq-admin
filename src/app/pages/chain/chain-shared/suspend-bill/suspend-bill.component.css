@@ -42,7 +42,7 @@ th,td{
     padding: 0 8px;
     border-radius: 4px;
 }
-.fa-angle-up::before{
+.fa-angle-up::before,.fa-angle-down::before{
     font-size:1.3rem;
     margin-left: 2px;
     position: relative;

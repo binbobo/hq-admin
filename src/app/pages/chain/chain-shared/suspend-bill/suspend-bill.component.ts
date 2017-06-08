@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, HostBinding, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, HostBinding, Output, ElementRef } from '@angular/core';
 import { SuspendBillService, SuspendedBillItem } from './suspend-bill.service';
 import { PagedResult } from 'app/shared/models';
 import { SuspendBillColumn } from './suspend-bill.directive';
@@ -24,15 +24,26 @@ export class SuspendBillComponent implements OnInit {
   public onSelect: EventEmitter<SuspendedBillItem> = new EventEmitter<SuspendedBillItem>();
   public result: PagedResult<SuspendedBillItem>;
   public resultHandle: (result) => void;
+  private faIcon = "fa-angle-up";
 
   constructor(
-    private service: SuspendBillService
+    private service: SuspendBillService,
+    private ele: ElementRef
   ) { }
 
   ngOnInit() {
     this.loadList();
   }
 
+  upclick() {
+    let el = this.ele.nativeElement as HTMLElement;
+    let isUp = el.getElementsByClassName("btn-group")[0].className.indexOf("show") > -1;
+    if (isUp) {
+      this.faIcon = "fa-angle-up"
+    } else {
+      this.faIcon = "fa-angle-down"
+    }
+  }
   loadList() {
     this.result = null;
     this.service.get(this.type)
@@ -40,7 +51,6 @@ export class SuspendBillComponent implements OnInit {
       .then(result => this.resultHandle && this.resultHandle(this.result))
       .catch(err => console.error(err));
   }
-
   remove(event: Event, item) {
     event.preventDefault();
     event.stopPropagation();
