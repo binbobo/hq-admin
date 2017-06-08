@@ -1,10 +1,10 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
-  <div class="card-header">内部领用统计</div>
+  <div class="card-header">内部领料统计</div>
   <div class="card-block">
     <form class="form-inline mb-2" [formGroup]="receiveForm" (ngSubmit)="onSearch()">
       <div class="input-group m-1">
-        <span class="input-group-addon">领用人</span>
+        <span class="input-group-addon">领料人</span>
         <select formControlName="takeUser" class="form-control" (change)="onReceiverSelect($event)">
               <option *ngFor="let item of employees" [value]="item.value">{{item.text}}</option>
             </select>
@@ -38,8 +38,8 @@
       <table class="table table-bordered text-center">
         <tr>
           <th>操作</th>
-          <th>领用单号</th>
-          <th>领用人</th>
+          <th>领料单号</th>
+          <th>领料人</th>
           <th>部门</th>
           <th>金额</th>
           <th>开单时间</th>
@@ -62,12 +62,12 @@
   </div>
 </div>
 <!--详情-->
-<div class="modal fade" hqModal #bdModal="hq-modal" role="dialog" modalTitle="内部领用详情" size="lg">
+<div class="modal fade" hqModal #bdModal="hq-modal" role="dialog" modalTitle="内部领料详情" size="lg">
   <table class="table table-order-info table-bordered">
     <tr>
-      <td class="fixed-width">领用单号：</td>
+      <td class="fixed-width">领料单号：</td>
       <td>{{detail?.billCode}}</td>
-      <td class="fixed-width">领用人：</td>
+      <td class="fixed-width">领料人：</td>
       <td>{{detail?.takeUserName}}</td>
     </tr>
     <tr>
@@ -122,6 +122,6 @@
     </div>
   </div>
 </div>
-<div hqPrint #printer="hq-print" print-title="内部领用统计">
+<div hqPrint #printer="hq-print" print-title="内部领料统计">
   <hq-receive-print [hidden]="true" [detail]="detail" [detailItems]="detailItems" [detailItemsLength]="detailItemsLength"></hq-receive-print>
 </div>
