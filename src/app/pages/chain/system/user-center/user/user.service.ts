@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BasicService, PagedParams, PagedResult, BasicModel, ListResult, SelectOption } from 'app/shared/models';
+import { BasicService, PagedParams, PagedResult, BasicModel, ListResult, SelectOption, RequestParams } from 'app/shared/models';
 import { Urls, HttpService } from 'app/shared/services';
 import { TreeviewItem } from 'ngx-treeview';
 
@@ -10,9 +10,11 @@ export class UserService implements BasicService<User>{
     return this.httpService.getList<SelectOption>(url, "type=0")
       .catch(error => Promise.reject(`获取角色信息失败： ${error}`));
   }
-  getPositionOptions() {
+  getPositionOptions(orgId?: string) {
     let url = Urls.chain.concat('/Departments/Options/Position');
-    return this.httpService.getList<SelectOption>(url)
+    let params = new RequestParams();
+    let search = params.serialize({ orgId: orgId });
+    return this.httpService.getList<SelectOption>(url, search)
       .catch(error => Promise.reject(`获取部门信息失败： ${error}`));
   }
   resetPassword(id: string) {
@@ -51,6 +53,23 @@ export class UserService implements BasicService<User>{
   delete(id: string): Promise<void> {
     throw new Error("Method not implemented.");
   }
+  getStations(): Promise<Array<TreeviewItem>> {
+    const url = Urls.chain.concat('/Organizations');
+    return this.httpService.getObject(url)
+      .then(data => [data])
+      .then(arr => this.convertToArray(arr))
+      .catch(err => Promise.reject(`获取门店列表失败：${err}`));
+  }
+  private convertToArray(options: Array<any>, level = 0): Array<any> {
+    if (!Array.isArray(options) || !options.length) return [];
+    let arr = new Array<any>();
+    options.forEach(m => {
+      let item = { value: m.id, text: m.name, indent: '&nbsp;'.repeat(level * 4) };
+      arr.push(item);
+      arr = arr.concat(this.convertToArray(m.children, level + 1));
+    });
+    return arr;
+  }
 
   constructor(private httpService: HttpService) { }
 
@@ -64,6 +83,7 @@ export class User extends BasicModel {
   public positions: Array<any>;
   public partPositionItems: Array<any>;
   public passWord: string;
+  public orgId: string;
 }
 
 export class UserSearchParams extends PagedParams {

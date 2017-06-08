@@ -8,7 +8,6 @@ import { TakeStockService } from './take-stock.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NguiDatetimePickerModule } from '@ngui/datetime-picker';
 import { MountingsService } from '../mountings.service';
-import { ModalModule } from 'ngx-bootstrap';
 
 const routes: Routes = [
   { path: '', component: StockListComponent },
@@ -20,7 +19,6 @@ const routes: Routes = [
     SharedModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
-    ModalModule.forRoot(),
     NguiDatetimePickerModule,
     RouterModule.forChild(routes)
   ],

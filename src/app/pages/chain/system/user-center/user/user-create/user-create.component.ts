@@ -15,6 +15,7 @@ export class UserCreateComponent extends FormHandle<User> implements OnInit {
 
   private roles: Array<TreeviewItem>;
   private positions: Array<TreeviewItem>;
+  private stations: Array<any>;
 
   protected getModel(): Observable<User> {
     return Observable.of(new User());
@@ -26,6 +27,7 @@ export class UserCreateComponent extends FormHandle<User> implements OnInit {
       password: [this.model.passWord, [Validators.required, Validators.minLength(6), Validators.maxLength(18)]],
       phone: [this.model.phone, [Validators.required, HQ_VALIDATORS.mobile]],
       description: [this.model.description, [Validators.maxLength(100)]],
+      orgId: [this.model.orgId, [Validators.required]],
       roles: [[]],
       positions: [[]],
     });
@@ -43,7 +45,20 @@ export class UserCreateComponent extends FormHandle<User> implements OnInit {
     this.userService.getRoleOptions()
       .then(options => this.roles = this.convertToTreeView(options))
       .catch(err => this.alerter.error(err));
-    this.userService.getPositionOptions()
+    this.userService.getStations()
+      .then(data => this.stations = data)
+      .then(data => data && data.length && data[0].value)
+      .then(orgId => {
+        if (orgId) {
+          this.form.get('orgId').setValue(orgId);
+        }
+        this.loadPostions(orgId);
+      })
+      .catch(err => this.alerter.error(err));
+  }
+
+  loadPostions(orgId?: string) {
+    this.userService.getPositionOptions(orgId)
       .then(options => this.positions = this.convertToTreeView(options))
       .catch(err => this.alerter.error(err));
   }
@@ -54,6 +69,12 @@ export class UserCreateComponent extends FormHandle<User> implements OnInit {
 
   onPositionSelect(event) {
     this.form.patchValue({ positions: event });
+  }
+
+  onStationChange(event: Event) {
+    this.form.patchValue({ positions: [] });
+    let element = event.target as HTMLSelectElement;
+    this.loadPostions(element.value);
   }
 
   convertToTreeView(options: Array<SelectOption>): Array<TreeviewItem> {

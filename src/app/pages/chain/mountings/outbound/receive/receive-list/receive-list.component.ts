@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HqAlerter, PrintDirective } from 'app/shared/directives';
+import { HqAlerter, PrintDirective, HqModalDirective } from 'app/shared/directives';
 import { SelectOption, PagedResult } from 'app/shared/models';
-import { ModalDirective } from 'ngx-bootstrap';
 import { ReceiveService, ReceiveListRequest, ReceiveListItem, ReceivePrintItem } from '../receive.service';
 import { ReceiveOutBillDirective } from '../receive-out-bill.directive';
 
@@ -14,7 +13,7 @@ export class ReceiveListComponent implements OnInit {
   @ViewChild(ReceiveOutBillDirective)
   private suspendBill: ReceiveOutBillDirective;
   @ViewChild('createModal')
-  private createModal: ModalDirective;
+  private createModal: HqModalDirective;
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
   @ViewChild('printer')

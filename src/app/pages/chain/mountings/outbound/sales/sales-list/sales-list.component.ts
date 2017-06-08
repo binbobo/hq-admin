@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HqAlerter, PrintDirective, TypeaheadRequestParams } from 'app/shared/directives';
+import { HqAlerter, PrintDirective, TypeaheadRequestParams, HqModalDirective } from 'app/shared/directives';
 import { SalesListItem, SalesService, SalesListRequest, SalesPrintItem } from '../sales.service';
 import { SelectOption, PagedResult } from 'app/shared/models';
-import { ModalDirective } from 'ngx-bootstrap';
 import { Router } from '@angular/router';
 import { NgForm } from "@angular/forms";
 import { SalesOutBillDirective } from '../sales-out-bill.directive';
@@ -16,7 +15,7 @@ export class SalesListComponent implements OnInit {
   @ViewChild(SalesOutBillDirective)
   private suspendBill: SalesOutBillDirective;
   @ViewChild('createModal')
-  private createModal: ModalDirective;
+  private createModal: HqModalDirective;
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
   @ViewChild('form')

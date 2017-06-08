@@ -2,7 +2,7 @@ import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { DataList, SelectOption } from 'app/shared/models';
 import { Inventory, InventoryService, InventoryListRequest } from '../inventory.service';
 import { MountingsService } from '../../mountings.service';
-import { ModalDirective } from 'ngx-bootstrap';
+import { HqModalDirective } from 'app/shared/directives';
 
 @Component({
   selector: 'hq-inventory-list',
@@ -12,9 +12,9 @@ import { ModalDirective } from 'ngx-bootstrap';
 export class InventoryListComponent extends DataList<Inventory> implements OnInit {
 
   @ViewChild('createModal')
-  private createModal: ModalDirective;
+  private createModal: HqModalDirective;
   @ViewChild('editModal')
-  private editModal: ModalDirective;
+  private editModal: HqModalDirective;
   private warehouses: Array<SelectOption>;
   protected params: InventoryListRequest;
   private model: any;

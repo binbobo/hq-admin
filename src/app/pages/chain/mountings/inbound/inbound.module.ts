@@ -8,7 +8,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { AlertModule } from 'ngx-bootstrap/alert';
-import { ModalModule, BsDropdownModule } from 'ngx-bootstrap';
+import { BsDropdownModule } from 'ngx-bootstrap';
 import { NguiDatetimePickerModule } from '@ngui/datetime-picker';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { MaintainReturnService } from "./maintain-return/maintain-return.service";
@@ -43,7 +43,6 @@ import { ProcurementEditComponent } from './procurement/procurement-edit/procure
     PopoverModule.forRoot(),
     AlertModule.forRoot(),
     TypeaheadModule.forRoot(),
-    ModalModule.forRoot(),
     ReactiveFormsModule,
     NguiDatetimePickerModule,
     FormsModule,
