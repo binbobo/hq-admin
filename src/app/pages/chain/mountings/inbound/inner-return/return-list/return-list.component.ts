@@ -13,7 +13,7 @@ import { FormGroup, FormBuilder } from "@angular/forms/";
 })
 export class ReturnListComponent extends DataList<any> {
 
-  private takeUser: any;//领用人ID
+  private takeUser: any;//领料人ID
   private returnUser: any;//退料人
   private returnDepart: any;//退料人
   private takeDepartId: any;//查部门ID
@@ -68,7 +68,7 @@ export class ReturnListComponent extends DataList<any> {
     super.ngOnInit();
   }
 
-  //选择领用人带出所在部门
+  //选择领料人带出所在部门
   onInnerSelect(event: Event) {
     let el = event.target as HTMLSelectElement;
     this.takeDepartId = null;
@@ -110,7 +110,7 @@ export class ReturnListComponent extends DataList<any> {
     this.innerReturnService.createReturnList(this.billData)
       .then(data => {
         this.createLoading = false;
-        return confirm('已生成退料单，是否需要打印？') ? data : null;
+        return confirm('已生成内部退料单，是否需要打印？') ? data : null;
       })
       .then(code => code && this.innerReturnService.get(code))
       .then(data => {
@@ -215,14 +215,14 @@ export class ReturnListComponent extends DataList<any> {
   get innerColumns() {
     return [
       { name: 'innerReturner', title: '领料人' },
-      { name: 'innerDepartment', title: '领用部门' },
+      { name: 'innerDepartment', title: '领料部门' },
     ]
   }
 
-  //领用单号列表
+  //领料单号列表
   public get itemColumns() {
     return [
-      { name: 'text', title: '内部领用单号' },
+      { name: 'text', title: '内部领料单号' },
     ];
   }
   //模糊查询单号

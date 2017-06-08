@@ -20,11 +20,20 @@ export class DefaultRequestOptions extends BaseRequestOptions {
         this.headers.append('X-Client', 'bc54f4d60f1cec0f9a6cb70e13f2127a');
         this.headers.append('Content-Type', 'application/json');
         userService.onUserLogin.subscribe(user => this.setAuthorization(user));
-        this.dispatcher.subscribe('LanguageChanged', lang => this.setAcceptLanguage(lang))
+        this.dispatcher.subscribe('LanguageChanged', lang => this.setAcceptLanguage(lang));
+        this.dispatcher.subscribe('RequestIdChanged', requestId => this.setRequestId(requestId))
     }
 
     private setAcceptLanguage(lang) {
         this.headers.set('Accept-Language', lang.culture || navigator.language);
+    }
+
+    private setRequestId(requestId) {
+        if (requestId) {
+            this.headers.set('X-RequestId', requestId);
+        } else {
+            this.headers.delete("X-RequestId");
+        }
     }
 
     private setAuthorization(user) {

@@ -19,13 +19,13 @@
         </select>
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">内部领用单号：</span>
+        <span class="input-group-addon">内部领料单号：</span>
         <input type="text" forceRefresh [(ngModel)]="billCode" name="billCode" [hqTableTypeahead]="codeSource" [columns]="itemColumns"
-          (onSelect)="onItemSelect($event)" class="form-control" placeholder="请输入领用单号">
+          (onSelect)="onItemSelect($event)" class="form-control" placeholder="请输入领料单号">
       </div>
     </form>
 
-    <div class="tab-title">内部领用信息</div>
+    <div class="tab-title">内部领料信息</div>
     <div class="table-container">
       <table class="table table-bordered">
         <thead>

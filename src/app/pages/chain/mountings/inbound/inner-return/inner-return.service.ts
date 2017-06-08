@@ -19,14 +19,14 @@ export class InnerReturnService implements BasicService<any>{
   }
   constructor(private httpService: HttpService) { }
 
-  //获取内部领用单号信息
+  //获取内部领料单号信息
   getCodePagedList(params: BillCodeSearchRequest): Promise<PagedResult<any>> {
     const url = Urls.chain.concat('/Uses/SearchBillCode?', params.serialize());
     return this.httpService.get<PagedResult<any>>(url)
       .then(result => {
         return result;
       })
-      .catch(err => Promise.reject(`获取内部领用数据失败：${err}`));
+      .catch(err => Promise.reject(`获取内部领料数据失败：${err}`));
   }
   //获取配件信息
   getPagedList(params: BillCodeSearchRequest): Promise<PagedResult<any>> {
@@ -106,12 +106,12 @@ export class InnerListItem {
   ) {
   }
 }
-//领用单号模糊查询参数
+//领料单号模糊查询参数
 export class BillCodeSearchRequest extends PagedParams {
   constructor(
-    public takeUserId?: string, // 领用人ID
+    public takeUserId?: string, // 领料人ID
     public takeDepartId?: string, // 部门ID
-    public billCode?: string, // 领用单号
+    public billCode?: string, // 领料单号
   ) {
     super();
   }

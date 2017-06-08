@@ -171,7 +171,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
       .then(data => {
         this.createLoading = false;
         this.suspendBill.refresh();
-        return confirm('已生成退库单，是否需要打印？') ? data : null;
+        return confirm('已生成销售退库单，是否需要打印？') ? data : null;
       })
       .then(code => code && this.salesReturnservice.get(code))
       .then(data => {
