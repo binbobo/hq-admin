@@ -128,7 +128,7 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
         el.disabled = false;
         this.reset();
         this.suspendBill.refresh();
-        return confirm('已生成出库单，是否需要打印？') ? data : null;
+        return confirm('已生成退库单，是否需要打印？') ? data : null;
       })
       .then(code => code && this.returnService.get(code))
       .then(data => {

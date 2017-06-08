@@ -64,18 +64,16 @@ export class ReceiveListComponent implements OnInit {
 
   generate(event: Event) {
     this.generating = true;
-    console.log('内部领用数据', this.model);
     this.receiveService.generate(this.model)
       .then(data => {
         this.generating = false;
         this.reset();
-        return confirm('已生成出库单，是否需要打印？') ? data : null;
+        return confirm('已生成内部领料单，是否需要打印？') ? data : null;
       })
       .then(code => code && this.receiveService.get(code))
       .then(data => {
         if (data) {
           this.printModel = data;
-          console.log('打印数据',data);
           setTimeout(() => this.printer.print(), 300);
         }
       })
