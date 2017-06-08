@@ -4,49 +4,37 @@
     客户信息
   </div>
   <div class="card-block">
-    <form (ngSubmit)="onSearch()">
-      <div class="form-group row">
-        <div class="hq-input">
-          <label for="name" class="form-label">车主</label>
-          <div class="hq-col">
-            <input maxlength="15" type="text" [(ngModel)]="params.name" class="form-control" name="name" id="name">
-          </div>
-        </div>
-        <div class="hq-input">
-          <label for="plateNo" class="form-label">车牌号</label>
-          <div class="hq-col">
-            <input maxlength="12" type="text" [(ngModel)]="params.plateNo" class="form-control" name="plateNo" id="plateNo">
-          </div>
-        </div>
-        <div class="hq-input">
-          <label for="phone" class="form-label">车主电话</label>
-          <div class="hq-col">
-            <input maxlength="11" type="text" [(ngModel)]="params.phone" class="form-control" name="plateNo" id="phone">
-          </div>
-        </div>
+    <form (ngSubmit)="onSearch()" class="form-inline mb-2">
+
+      <div class="input-group m-1">
+        <label class="input-group-addon">车主</label>
+        <input class="form-control" maxlength="15" type="text" [(ngModel)]="params.name" class="form-control" name="name" id="name">
       </div>
-      <div class="form-group row">
-        <div class="hq-input">
-          <label for="createdStartDate" class="form-label">建档日期</label>
-          <div class="hq-col">
-            <input readonly [max-date]="maxCreatedStartDate" [(ngModel)]="params.createdStartDate" class="form-control" type="text" name="createdStartDate"
-              ngui-datetime-picker date-only="true" style="border-bottom-right-radius: 0;border-top-right-radius: 0;"/>
-          </div>
-        </div>
-        <div class="hq-input" style="margin-left: -21px;">
-          <label class="form-label" style="min-width: 0;">-</label>
-          <div class="hq-col">
-            <input readonly [min-date]="minCreatedEndDate" [max-date]="maxCreatedEndDate" [(ngModel)]="endDateParams.createdEndDate" class="form-control"
-              type="text" name="createdEndDate" ngui-datetime-picker date-only="true" />
-          </div>
-        </div>
-        <div class="hq-input" style="width:50%">
-          <div class="hq-col">
-            <button type="submit" class="btn btn-primary">查询</button>
-            <button type="reset" class="btn btn-warning">清空</button>
-            <button [hqSpinner]="generating" type="button" class="btn btn-export mr-2" (click)="export()">导出</button>
-          </div>
-        </div>
+
+      <div class="input-group m-2">
+        <label class="input-group-addon">车牌号</label>
+        <input class="form-control" maxlength="12" type="text" [(ngModel)]="params.plateNo" class="form-control" name="plateNo" id="plateNo">
+      </div>
+
+      <div class="input-group m-2">
+        <label class="input-group-addon">车主电话</label>
+        <input class="form-control" maxlength="11" type="text" [(ngModel)]="params.phone" class="form-control" name="plateNo" id="phone">
+      </div>
+
+      <div class="input-group m-1">
+        <label class="input-group-addon">建档日期</label>
+        <input readonly [max-date]="maxCreatedStartDate" [(ngModel)]="params.createdStartDate" class="form-control datetime-picker"
+          type="text" name="createdStartDate" ngui-datetime-picker date-only="true" style="border-bottom-right-radius: 0;border-top-right-radius: 0;"
+        />
+        <label class="input-group-addon">-</label>
+        <input readonly [min-date]="minCreatedEndDate" [max-date]="maxCreatedEndDate" [(ngModel)]="endDateParams.createdEndDate"
+          class="form-control datetime-picker" type="text" name="createdEndDate" ngui-datetime-picker date-only="true" />
+      </div>
+
+      <div class="input-group" style="width:50%">
+        <button type="submit" class="btn btn-primary m-1">查询</button>
+        <button type="reset" class="btn btn-warning m-1">清空</button>
+        <button [hqSpinner]="generating" type="button" class="btn btn-export m-1" (click)="export()">导出</button>
       </div>
     </form>
     <hr>
@@ -82,7 +70,8 @@
         </tbody>
       </table>
     </div>
-    <hq-pagination [(itemsPerPage)]="size" [loading]="loading" [totalItems]="total" [(currentPage)]="index" [(itemsPerPage)]="size" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    <hq-pagination [(itemsPerPage)]="size" [loading]="loading" [totalItems]="total" [(currentPage)]="index" [(itemsPerPage)]="size"
+      (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
   <div class="card-footer">
     <div class="text-center">
