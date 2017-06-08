@@ -79,7 +79,7 @@ export class SalesListComponent implements OnInit {
       .then(data => {
         this.generating = false;
         this.reset();
-        return confirm('已生成出库单，是否需要打印？') ? data : null;
+        return confirm('已生成销售出库单，是否需要打印？') ? data : null;
       })
       .then(code => code && this.salesService.get(code))
       .then(data => {
