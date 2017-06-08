@@ -31,6 +31,7 @@ export class SalesCreateComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.model['yuan'] = this.model.price / 100;
     this.buildForm();
   }
 
@@ -78,7 +79,7 @@ export class SalesCreateComponent implements OnInit {
       price: [this.model.price],
       amount: [this.model.amount],
       stockCount: [this.model.stockCount, [CustomValidators.min(1)]],
-      yuan: [this.model.price / 100, [Validators.required, CustomValidators.gt(0)]]
+      yuan: [this.model['yuan'], [Validators.required, CustomValidators.gt(0)]]
     })
   }
 
@@ -100,13 +101,12 @@ export class SalesCreateComponent implements OnInit {
     }
   }
 
-  private onResetForm(event: Event, key: string) {
+  private onResetForm(event: any, retainKey: string) {
     if (!event.isTrusted) return false;
     this.storages = null;
     this.locations = null;
-    let obj = { ...this.model };
-    obj[key] = this.form.get(key).value;
-    this.form.reset(obj);
+    Object.keys(this.form.controls)
+      .forEach(key => key !== retainKey && this.form.get(key).setValue(this.model[key]));
   }
 
   public onItemSelect(event) {
@@ -160,7 +160,7 @@ export class SalesCreateComponent implements OnInit {
   private reset() {
     this.storages = null;
     this.locations = null;
-    this.form.reset({ ...this.model, yuan: this.model.price / 100 });
+    this.form.reset({ ...this.model });
   }
 
 }
