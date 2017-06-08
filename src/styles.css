@@ -334,7 +334,7 @@ table .tr-left-bold{
     background-color: rgba(149, 151, 154, 0.31);
 }
 .form-inline ngx-treeview .form-check,.form-inline ngx-treeview .form-check-label{
-    display: block;
+    display: inline-block;
 }
 .input-group ngx-dropdown-treeview button{
     border-top-left-radius: 0;
