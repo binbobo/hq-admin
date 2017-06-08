@@ -12,7 +12,7 @@ export class ReceiveService {
     let url = Urls.chain.concat('/UseDetails/Print?BillCode=', code);
     return this.httpService.get<ApiResult<any>>(url)
       .then(result => result.data)
-      .catch(err => Promise.reject(`获取内部领用单信息失败：${err}`));
+      .catch(err => Promise.reject(`获取内部领料单信息失败：${err}`));
   }
 
   generate(data: ReceiveListRequest): Promise<string> {
@@ -28,7 +28,7 @@ export class ReceiveService {
       .then(result => result.data)
       .then(data => Array.isArray(data) ? data : [])
       .then(data => data.map(m => new SelectOption(m.name, m.id)))
-      .catch(err => Promise.reject(`获取领用人选项失败：${err}`));
+      .catch(err => Promise.reject(`获取领料人选项失败：${err}`));
   }
 
   getDepartmentsByReceiver(id: string): Promise<Array<SelectOption>> {

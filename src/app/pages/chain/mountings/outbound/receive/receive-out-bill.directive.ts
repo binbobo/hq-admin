@@ -14,7 +14,7 @@ export class ReceiveOutBillDirective extends SuspendBillDirective {
     super(service, viewContainerRef, componentFactoryResolver);
     this.type = "IU";
     this.columns = [
-      { name: 'reveiver', title: '领用人' },
+      { name: 'reveiver', title: '领料人' },
       { name: 'department', title: '部门' },
     ];
   }

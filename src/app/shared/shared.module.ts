@@ -72,6 +72,7 @@ const HQ_PIPES = [
 
 const HQ_SERVICES = [
     services.UserService,
+    services.RequestIdService,
     services.requestOptionsProvider,
     services.HttpService,
     services.EventDispatcher,
