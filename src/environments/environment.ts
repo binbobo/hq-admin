@@ -6,4 +6,5 @@
 export const environment = {
   production: false,
   baseUrl: 'http://api.test.sinoauto.com/',
+  //  baseUrl: 'http://192.168.58.234/',  
 };

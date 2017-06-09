@@ -21,6 +21,12 @@
           <option *ngFor="let item of salesmen" [value]="item.value">{{item.text}}</option>
         </select>
       </div>
+      <div class="input-group m-1">
+        <span class="input-group-addon">结算方式</span>
+        <select class="form-control" required name="settlementMethodId" [(ngModel)]="model.settlementMethodId">
+          <option *ngFor="let item of settlements" [value]="item.id">{{item.value}}</option>
+        </select>
+      </div>
       <div class="form-group">
         <button [disabled]="form.invalid" (click)="createModal.show()" class="btn btn-primary">新增</button>
       </div>
@@ -65,7 +71,7 @@
     </div>
   </div>
   <div class="card-footer text-muted">
-    <button [hqSpinner]="suspendBill.generating" [disabled]="form.invalid||!model?.list?.length" class="btn btn-primary" (click)="generate($event)">生成销售出库单</button>
+    <button [hqSpinner]="generating" [disabled]="form.invalid||!model?.list?.length" class="btn btn-primary" (click)="generate($event)">生成销售出库单</button>
     <button [hqSpinner]="suspendBill.suspending" [disabled]="form.invalid||!model?.list?.length" class="btn btn-success btn-suspend"
       (click)="suspend($event)">挂单</button>
   </div>

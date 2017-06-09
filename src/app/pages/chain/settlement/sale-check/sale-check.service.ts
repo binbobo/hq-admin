@@ -6,7 +6,9 @@ import * as moment from 'moment';
 
 @Injectable()
 export class SaleCheckService implements BasicService<any>{
-
+     get(body: any): Promise<any> {
+        throw new Error('Method not implemented.');
+    }
     create(body: any): Promise<any> {
         throw new Error('Method not implemented.');
     }
@@ -21,18 +23,10 @@ export class SaleCheckService implements BasicService<any>{
     }
     constructor(private httpService: HttpService) { }
 
-    // 工单详情
-    public get(id: string): Promise<any> {
-        const url = Urls.chain.concat('/Maintenances/', id);
-        return this.httpService
-            .get<ApiResult<any>>(url)
-            .then(result => result.data)
-            .then(data => data || Promise.reject('获取数据无效！'))
-            .catch(err => Promise.reject(`获取工单详情数据失败：${err}`));
-    }
+
     // 获取收银列表
     public getPagedList(params: PagedParams): Promise<PagedResult<OrderListSearch>> {
-        const url = Urls.chain.concat('/Settlements/SummaryBills?', params.serialize());
+        const url = Urls.chain.concat('/Settlements/SalesSummaryBills?', params.serialize());
         return this.httpService
             .get<PagedResult<OrderListSearch>>(url)
             .then(result => {
@@ -40,24 +34,24 @@ export class SaleCheckService implements BasicService<any>{
             })
             .catch(err => Promise.reject(`加载工单列表失败：${err}`));
     }
-
+// //    获取结算方式
+//     public getSettlementType(): Promise<any> {
+//         const url = Urls.chain.concat('/DictValues/SaleEttlementMethod');
+//         return this.httpService
+//             .get<ApiResult<any>>(url)
+//             .then(result => {
+//                 return result.data
+//             })
+//             .catch(err => Promise.reject(`获取结算方式类型失败：${err}`))
+//     }
     // 获取收银查询状态
     public getOrderStatus(): Observable<any[]> {
-        const url = Urls.chain.concat('/DictValues/SummarySearchType');
+        const url = Urls.chain.concat('/DictValues/SettlementSearchType');
         return this.httpService
             .request(url)
             .map(response => {
                 return response.json().data as any[];
             });
-    }
-    // 根据id查询工单的材料费和工时费用
-    public getCost(id: string): Promise<any> {
-        const url = Urls.chain.concat('/Settlements/MaintenanceCost/', id);
-        return this.httpService
-            .get<ApiResult<any>>(url)
-            .then(result => result.data)
-            .then(data => data || Promise.reject('获取费用数据无效'))
-            .catch(err => Promise.reject(`获取费用数据失败：${err}`))
     }
     // 获取支付方式的ID 
     public getPayType(): Promise<any> {
@@ -76,14 +70,14 @@ export class SaleCheckService implements BasicService<any>{
             .post<void>(url, body)
             .catch(err => Promise.reject(`${err}`));
     }
-    //    根据id获取结算单信息
-    public getPrintDetail(id: string): Promise<any> {
-        const url = Urls.chain.concat('/Settlements/Details/', id);
+    //    根据id获取详情
+    public getSaleDetail(id: string): Promise<any> {
+        const url = Urls.chain.concat('/Settlements/SaleDetails/', id);
         return this.httpService
             .get<ApiResult<any>>(url)
             .then(result => result.data)
-            .then(data => data || Promise.reject('获取打印数据无效'))
-            .catch(err => Promise.reject(`获取打印数据失败：${err}`))
+            .then(data => data || Promise.reject('获取详情无效'))
+            .catch(err => Promise.reject(`获取失败：${err}`))
 
     }
 }
@@ -94,9 +88,13 @@ export class OrderListSearch extends PagedParams {
         // 工单列表页面查询参数
         public statekey?: any, // 工单状态
         public carnumber?: string, // 车牌号
+        public phone?:any,//手机号码
+        public customername?:string,//客户名称
         public billcode?: string, // 工单号
-        public starttime?: string, // 进店开始时间
-        public endtime?: string, // 进店结束时间
+        public starttime?: string, // 销售开始时间
+        public endtime?: string, // 销售结束时间
+        public settlementid?:any,//结算方式
+        public settlementcode?:any//结算单号
     ) {
         super();
         // this.starttime = starttime || moment().subtract(30, 'd').format('YYYY-MM-DD');

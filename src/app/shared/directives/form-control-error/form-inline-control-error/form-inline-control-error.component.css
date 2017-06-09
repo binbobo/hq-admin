@@ -1,3 +1,4 @@
 .popover-content{
   color: #a94442;
+  min-width: 100px;
 }
