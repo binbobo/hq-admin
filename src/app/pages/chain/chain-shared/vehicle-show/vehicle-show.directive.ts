@@ -24,7 +24,6 @@ export class VehicleShowDirective implements OnInit, OnChanges {
 
   @Input('hqVehicleShow')
   private vehicles: Array<any>;
-
   constructor(
     private el: ElementRef,
     private viewContainerRef: ViewContainerRef,

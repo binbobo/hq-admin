@@ -13,7 +13,10 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { SharedModule } from 'app/shared/shared.module';
 import { BillOrderService } from "app/pages/chain/reception/bill-order/bill-order.service";
 import { CheckOutService } from "app/pages/chain/settlement/checkout/checkout.service";
+import { SaleCheckService } from "app/pages/chain/settlement/sale-check/sale-check.service";
 import { CheckoutPrintDetailComponent } from './checkout/checkout-print-detail/checkout-print-detail.component';
+import { SaleCheckComponent } from './sale-check/sale-check.component';
+import { SaleCheckDetailComponent } from './sale-check/sale-check-detail/sale-check-detail.component';
 
 @NgModule({
   imports: [
@@ -29,8 +32,8 @@ import { CheckoutPrintDetailComponent } from './checkout/checkout-print-detail/c
     ReactiveFormsModule,
     NguiDatetimePickerModule
   ],
-   declarations: [routedComponents, CheckoutPrintDetailComponent],
-  providers: [CheckOutService],
+   declarations: [routedComponents, CheckoutPrintDetailComponent, SaleCheckComponent, SaleCheckDetailComponent],
+  providers: [CheckOutService,SaleCheckService],
   entryComponents: [routedComponents[0]],
 })
 export class SettlementModule { }

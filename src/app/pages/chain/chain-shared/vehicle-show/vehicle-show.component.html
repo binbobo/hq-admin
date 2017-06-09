@@ -2,7 +2,7 @@
   <span>{{vehicles[0].name}}</span>
   <i triggers="mouseenter:mouseleave" placement="bottom" [popover]="popTemplate" *ngIf="vehicles.length>1" class="fa fa-ellipsis-h"></i>
 </div>
-<template #popTemplate style="height:200px;">
+<template #popTemplate>
   <table class="table table-sm">
     <tr *ngFor="let item of vehicles">
       <td>{{item.brandName}}</td>
