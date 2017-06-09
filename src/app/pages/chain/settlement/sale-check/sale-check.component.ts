@@ -129,7 +129,6 @@ export class SaleCheckComponent extends DataList<any>  {
     if (cost != this.costMoney) {
       this.alerter.error('输入金额与应收金额不符，请重新填写！', true, 3000);
     } else {
-      console.log(JSON.stringify(this.payPost))
       this.service.postPay(this.payPost, this.billId).then(() => {
         this.alerter.info('收银成功!', true, 2000).onClose(() => { dialog.hide(); this.onLoadList(); });
         this.payCheckSingle = [];

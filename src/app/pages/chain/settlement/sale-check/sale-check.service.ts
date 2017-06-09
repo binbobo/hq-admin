@@ -35,7 +35,7 @@ export class SaleCheckService implements BasicService<any>{
     }
     // 获取收银查询状态
     public getOrderStatus(): Observable<any[]> {
-        const url = Urls.chain.concat('/DictValues/SettlementSearchType');
+        const url = Urls.chain.concat('/DictValues/SummarySearchType');
         return this.httpService
             .request(url)
             .map(response => {
@@ -77,13 +77,13 @@ export class OrderListSearch extends PagedParams {
         // 工单列表页面查询参数
         public statekey?: any, // 工单状态
         public carnumber?: string, // 车牌号
-        public phone?:any,//手机号码
-        public customername?:string,//客户名称
+        public phone?: any,//手机号码
+        public customername?: string,//客户名称
         public billcode?: string, // 工单号
         public starttime?: string, // 销售开始时间
         public endtime?: string, // 销售结束时间
-        public settlementid?:any,//结算方式
-        public settlementcode?:any//结算单号
+        public settlementid?: any,//结算方式
+        public settlementcode?: any//结算单号
     ) {
         super();
         // this.starttime = starttime || moment().subtract(30, 'd').format('YYYY-MM-DD');
