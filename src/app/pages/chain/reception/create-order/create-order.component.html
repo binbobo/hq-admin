@@ -11,7 +11,7 @@
         <div class="hq-input">
           <label for="plateNo" class="form-label"><span class="asterisk mr-1">*</span>车牌号</label>
           <div class="hq-col">
-            <input hqConversionCase='upper' (blur)="onPlateNoBlur()" hqPlateNoTypeahead (onSelect)="plateNoOnSelect($event)" class="form-control" formControlName="plateNo"
+            <input (blur)="onPlateNoBlur()" hqPlateNoTypeahead (onSelect)="plateNoOnSelect($event)" class="form-control" formControlName="plateNo"
               id="plateNo" label="车牌号" maxlength="12" type="text" />
             <input type="hidden" formControlName="customerVehicleId" />
             <input type="hidden" formControlName="customerId" />
@@ -68,7 +68,7 @@
         <div class="hq-input">
           <label for="vin" class="form-label">VIN</label>
           <div class="hq-col">
-            <input hqConversionCase='upper' maxlength="17" label="车辆识别码" type="text" class="form-control" formControlName="vin" id="vin">
+            <input maxlength="17" label="车辆识别码" type="text" class="form-control" formControlName="vin" id="vin">
           </div>
         </div>
       </div>
