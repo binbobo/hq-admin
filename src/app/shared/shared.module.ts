@@ -20,6 +20,8 @@ import { IDCardValidator } from './directives/validators/idCard.directive';
 import { HqBsModalDirective } from './directives/modal/hq-bs-modal.directive';
 import { HqModalDirective } from './directives/modal/hq-modal.directive';
 import { HqModalComponent } from './directives/modal/hq-modal/hq-modal.component';
+import { ConversionCaseDirective } from './directives/conversion-case/conversion-case.directive';
+
 
 
 const HQ_COMPONENTS = [
@@ -59,6 +61,7 @@ const HQ_DIRECTIVES = [
     directives.IDCardValidator,
     directives.HqBsModalDirective,
     directives.HqModalDirective,
+    directives.ConversionCaseDirective,
 ]
 
 const HQ_PIPES = [

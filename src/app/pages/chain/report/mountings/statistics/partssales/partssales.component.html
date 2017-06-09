@@ -23,11 +23,11 @@
       <div class="input-group m-1" *ngIf="items">
         <span class="input-group-addon">门店查询</span>
         <div *ngIf="true" class="form-controls">
-          <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)">
+          <ngx-dropdown-treeview [items]="items" (selectedChange)="onSearchRangeChange($event)">
           </ngx-dropdown-treeview>
         </div>
       </div>
-      <div class="col-sm-1"><button class="btn btn-primary">查询</button></div>
+      <div class="input-group m-1"><button class="btn btn-primary">查询</button></div>
     </form>
     <hr>
     <p>温馨提示：系统为您找到<span style="font-size:16px;color:red;font-weight:bold;">{{total}}</span>条记录</p>

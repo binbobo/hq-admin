@@ -23,12 +23,6 @@ export class PartssalesComponent extends DataList<any> {
 
   // 用于ngx-treeview组件
   public items: TreeviewItem[];
-  public config: TreeviewConfig = {
-    isShowAllCheckBox: false,
-    isShowFilter: false,
-    isShowCollapseExpand: false,
-    maxHeight: 500
-  };
 
   constructor(
     injector: Injector,

@@ -26,7 +26,7 @@
       <div class="input-group m-1" *ngIf="items">
         <span class="input-group-addon">门店查询</span>
         <div *ngIf="true" class="form-controls">
-          <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSearchRangeChange($event)">
+          <ngx-dropdown-treeview [items]="items" (selectedChange)="onSearchRangeChange($event)">
           </ngx-dropdown-treeview>
         </div>
       </div>

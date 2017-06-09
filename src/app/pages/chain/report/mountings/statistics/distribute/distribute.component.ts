@@ -40,13 +40,6 @@ export class DistributeComponent extends DataList<any> {
 
   // 用于ngx-treeview组件
   public items: TreeviewItem[];
-  public config: TreeviewConfig = {
-    isShowAllCheckBox: false,
-    isShowFilter: false,
-    isShowCollapseExpand: true,
-    maxHeight: 500
-  };
-
 
   //详情模态框
   alert(ev, id, bdModule, billCode) {
