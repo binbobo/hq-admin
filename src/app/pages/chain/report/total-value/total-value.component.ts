@@ -1,7 +1,6 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { DataList } from 'app/shared/models';
 import { TotalValue, TotalValueService, TotalValueSearchParams } from './total-value.service';
-import { TreeviewItem } from 'ngx-treeview/lib';
 
 @Component({
   selector: 'hq-total-value',
@@ -11,7 +10,7 @@ import { TreeviewItem } from 'ngx-treeview/lib';
 export class TotalValueComponent extends DataList<TotalValue> implements OnInit {
 
   params: TotalValueSearchParams = new TotalValueSearchParams();
-  private stations: Array<TreeviewItem>;
+  private stations: Array<any>;
   private selectedStations: Array<any> = [];
 
   constructor(
@@ -41,7 +40,7 @@ export class TotalValueComponent extends DataList<TotalValue> implements OnInit 
     }
   }
 
-  private resetStations(stations: Array<TreeviewItem>) {
+  private resetStations(stations: Array<any>) {
     if (!Array.isArray(stations)) return;
     stations.forEach(m => {
       m.checked = this.selectedStations.findIndex(s => s.value === m.value) >= 0;

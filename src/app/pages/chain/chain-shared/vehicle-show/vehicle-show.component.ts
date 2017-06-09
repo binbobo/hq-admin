@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation} from '@angular/core';
 
 @Component({
   selector: 'hq-vehicle-show',
@@ -9,10 +9,18 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 export class VehicleShowComponent implements OnInit {
 
   public vehicles: Array<any>;
-
-  constructor() { }
+   private direction:any="bottom";
+  constructor() {}
 
   ngOnInit() {
   }
-
+  onDirection(e){
+    let dc=document.documentElement.clientHeight||document.body.clientHeight;
+    let sc=dc/2;
+    if(e.clientY-sc>0){
+      this.direction="top"
+    }else{
+      this.direction="bottom"
+    }
+  }
 }

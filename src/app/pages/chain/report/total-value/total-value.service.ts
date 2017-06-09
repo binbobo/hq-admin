@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { PagedService, PagedParams, PagedResult, SelectOption } from 'app/shared/models';
-import { TreeviewItem } from 'ngx-treeview/lib';
 import { Urls, HttpService } from 'app/shared/services';
 import * as moment from 'moment';
 
@@ -13,21 +12,11 @@ export class TotalValueService implements PagedService<TotalValue> {
       .catch(err => Promise.reject(`获取产值汇总信息失败：${err}`));
   }
 
-  getStationTreeView(): Promise<Array<TreeviewItem>> {
+  getStationTreeView(): Promise<Array<any>> {
     const url = Urls.chain.concat('/Organizations');
     return this.httpService.getObject(url)
       .then(data => [data])
-      .then(arr => this.convertToTreeView(arr))
       .catch(err => Promise.reject(`获取门店列表失败：${err}`));
-  }
-
-  convertToTreeView(options: Array<any>): Array<TreeviewItem> {
-    if (!Array.isArray(options) || !options.length) return null;
-    return options.filter(m => m).map(m => {
-      let item = new TreeviewItem({ value: m.id, text: m.name, checked: false });
-      item.children = this.convertToTreeView(m['children']);
-      return item;
-    });
   }
 
   export(params: TotalValueSearchParams): Promise<void> {

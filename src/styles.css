@@ -344,6 +344,12 @@ table .tr-left-bold{
 .input-group ngx-dropdown-treeview button::after{
     margin-top:0.4rem!important;
 }
+.input-group .custom .form-control{
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+}
 table tr:not(:last-child) th{
     border-bottom-width: 0px;
 }
