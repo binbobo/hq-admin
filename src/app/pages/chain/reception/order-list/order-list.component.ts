@@ -128,7 +128,6 @@ export class OrderListComponent extends DataList<Order> {
       this.selectedOrder.id = id;
 
       this.service.getSettlements(id).then(feeData => {
-        console.log('各项费用数据：', feeData);
         // 统计各项费用
         const fee: any = {};
         // 工时合计  临时放在fee下面 以后都通过接口获取
@@ -152,9 +151,24 @@ export class OrderListComponent extends DataList<Order> {
           this.selectedOrder.productOutputs.fee = fee.material;
         }
 
-        item.generating = false;
-        // 显示窗口
-        modalDialog.show();
+        // 判断是否有预检单id
+        if (this.selectedOrder.preCheckId) {
+          this.service.getPreCheckOrderInfoByPreCheckId(this.selectedOrder.preCheckId).then(preCheckOrder => {
+            this.selectedOrder.preCheckOrder = preCheckOrder;
+
+            // 显示窗口
+            item.generating = false;
+            modalDialog.show();
+          }).catch(err => {
+            this.alerter.error(err, true, 2000);
+            item.generating = false;
+          });
+        } else {
+          // 显示窗口
+          item.generating = false;
+          modalDialog.show();
+        }
+
       }).catch(err => {
         this.alerter.error(err, true, 2000);
         item.generating = false;
@@ -198,7 +212,7 @@ export class OrderListComponent extends DataList<Order> {
     return !!this.endDateParams.leaveEndTimeDate ? this.endDateParams.leaveEndTimeDate : moment().toDate()
   }
   public get minLeaveEndDate() {
-    if(this.params.leaveStartTimeDate) {
+    if (this.params.leaveStartTimeDate) {
       // ngui-date-timer [min-date] 不包含指定的值,所以需要在指定的值的基础上减1
       return moment(this.params.leaveStartTimeDate).subtract(1, 'd').toDate();
     }
@@ -211,7 +225,7 @@ export class OrderListComponent extends DataList<Order> {
     return !!this.endDateParams.enterEndTimeDate ? this.endDateParams.enterEndTimeDate : moment().toDate();
   }
   public get minEnterEndDate() {
-      if(this.params.enterStartTimeDate) {
+    if (this.params.enterStartTimeDate) {
       return moment(this.params.enterStartTimeDate).subtract(1, 'd').toDate();
     }
     return '';

@@ -29,6 +29,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   // 上次维修工单信息
   public lastOrderData = null;
+  // 预检单信息
+  public preCheckOrderData = null;
 
   // 当前选择的维修项目记录  用于编辑
   selectedItem: any;
@@ -181,51 +183,66 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
     // 根据客户车辆id查询上次工单信息
     this.service.getLastOrderInfo(evt.id).then(lastOrder => {
-      // console.log('根据客户车辆id自动带出的上次工单信息：', JSON.stringify(lastOrder));
-      // 加载上次维修记录
-      this.loadLastOrderInfo(lastOrder);
       // 保存上次工单记录
       this.lastOrderData = lastOrder;
+      // 无论接口调用成功还是失败，都调用getPreCheckOrder()方法
+      this.getPreCheckOrder(evt);
+    }).catch(err => {
+      // 没有上次工单记录  或者  接口出错 继续去尝试加载预检单记录
+      this.getPreCheckOrder(evt);
+    });
+  }
+
+  // 根据客户车辆id查询预检单信息
+  private getPreCheckOrder(evt) {
+    this.service.getPreCheckOrderInfoByCustomerVehicleId(evt.id).then(preCheckOrder => {
+      this.preCheckOrderData = preCheckOrder;
+      this.loadPreCheckOrderInfo(preCheckOrder);
+
       // 设置选择为true
       this.isSelected = true;
     }).catch(err => {
-      // 没有上次工单记录  或者  接口出错
+      console.log(err);
+      // 没有预检单记录  或者  接口出错
       this.isSelected = true;
-
+      // 设置送修人默认为车主
       this.workSheetForm.controls.contactUser.setValue(evt.name);
       this.workSheetForm.controls.contactInfo.setValue(evt.phone);
+      // 加载上次维修记录数据
+      this.loadLastOrderInfo(this.lastOrderData);
     });
   }
 
   // 根据车牌号， 车主自动带出上次维修历史记录信息
   loadLastOrderInfo(lastOrder) {
-    // 区分预检单还是 上次维修记录
-    if (lastOrder.preCheckId) {
-      // 预检单 带出所有能带出的信息
-      this.workSheetForm.patchValue({
-        // 传过去预检单id  用于删除当前预检单
-        preCheckId: lastOrder.preCheckId,
-        contactUser: lastOrder.contactUser || lastOrder.customerName,
-        contactInfo: lastOrder.contactInfo || lastOrder.phone,
-        type: lastOrder.type,
-        mileage: lastOrder.mileage,
-        introducer: lastOrder.introducer,
-        introPhone: lastOrder.introPhone,
-        validate: lastOrder.validate ? moment(lastOrder.validate).format('YYYY-MM-DD') : '',
-        location: lastOrder.location,
-        nextDate: lastOrder.nextDate ? moment(lastOrder.nextDate).format('YYYY-MM-DD') : '',
-        nextMileage: lastOrder.nextMileage,
-      });
-      this.resetNextMileageValidators(lastOrder.mileage);
-    } else {
-      // 上次维修记录 带出部分信息
-      this.workSheetForm.patchValue({
-        contactUser: lastOrder.contactUser || lastOrder.customerName, // 没有默认带车主
-        contactInfo: lastOrder.contactInfo || lastOrder.phone, // 没有默认带车主电话
-        lastEnter: moment(lastOrder.lastEnter).format('YYYY-MM-DD HH:mm'),
-        lastMileage: lastOrder.lastMileage,
-      });
-    }
+    if (!lastOrder) return;
+
+    // 上次维修记录 带出部分信息
+    this.workSheetForm.patchValue({
+      contactUser: lastOrder.contactUser || lastOrder.customerName, // 没有默认带车主
+      contactInfo: lastOrder.contactInfo || lastOrder.phone, // 没有默认带车主电话
+      lastEnter: moment(lastOrder.lastEnter).format('YYYY-MM-DD HH:mm'),
+      lastMileage: lastOrder.lastMileage,
+    });
+  }
+  // 根据车牌号， 车主自动带出预检单记录信息
+  loadPreCheckOrderInfo(preCheckOrder) {
+    if (!preCheckOrder) return;
+    // 预检单 带出所有能带出的信息
+    this.workSheetForm.patchValue({
+      preCheckId: preCheckOrder.id,
+      contactUser: preCheckOrder.contactUser || preCheckOrder.customer.name,
+      contactInfo: preCheckOrder.contactInfo || preCheckOrder.customer.phone,
+      type: preCheckOrder.type,
+      mileage: preCheckOrder.mileage,
+      introducer: preCheckOrder.introducer,
+      introPhone: preCheckOrder.introPhone,
+      validate: preCheckOrder.validate ? moment(preCheckOrder.validate).format('YYYY-MM-DD') : '',
+      location: preCheckOrder.location,
+      nextDate: preCheckOrder.nextDate ? moment(preCheckOrder.nextDate).format('YYYY-MM-DD') : '',
+      nextMileage: preCheckOrder.nextMileage,
+    });
+    this.resetNextMileageValidators(preCheckOrder.mileage);
   }
 
   // 根据车牌号， 车主 自动带出客户车辆信息
@@ -595,6 +612,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
     // 清空上次维修工单数据
     this.lastOrderData = null;
+    this.preCheckOrderData = null;
 
     this.isSelected = false;
     this.isFuzzySearchEnable = true;
@@ -641,6 +659,10 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
           this.newWorkOrderData.serviceOutputs.fee = this.fee;
           this.newWorkOrderData.typeName = this.maintenanceTypeData.find(item => item.id === workSheet.type).value;
           this.newWorkOrderData.printDateTime = moment().format('YYYY-MM-DD HH:mm:ss');
+          // 添加预检单信息
+          if(workSheet.preCheckId) {
+            this.newWorkOrderData.preCheckOrder = this.preCheckOrderData;
+          }
           // 延迟打印
           setTimeout(() => {
             this.print();
