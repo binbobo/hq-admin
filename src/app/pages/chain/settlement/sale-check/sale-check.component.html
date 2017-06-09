@@ -89,14 +89,7 @@
 <div hqModal #lgModal="hq-modal" class="modal fade" tabindex="-1" role="dialog" size="lg" modalTitle="销售收银详情">
   <!--工单详情 start-->
   <hq-sale-check-detail *ngIf="lgModal.isShown" [data]="selectedOrder"></hq-sale-check-detail>
-  <div class="card hq-fee">
-    <div>
-      <!--<span class="fee-name">工时费：<span class="fee-value">{{workHourFee|centToYuan}}</span></span>
-      <span class="fee-name"> 材料费：<span class="fee-value">{{materialFee|centToYuan}}</span></span>
-      <span class="fee-name"> 优惠：<span class="fee-value">{{deduceAmount|centToYuan}}</span></span>-->
-      <span class="fee-name pull-right">金额：<span class="fee-value">{{billPrice|centToYuan}}</span></span>
-    </div>
-  </div>
+
 </div>
 <!--详情 end-->
 <!--收银弹框 begin-->

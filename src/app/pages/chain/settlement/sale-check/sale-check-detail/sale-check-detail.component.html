@@ -1,15 +1,15 @@
 <table class="table table-order-info table-bordered">
   <tr>
     <td class="fixed-width">出库单号</td>
-    <td>{{selectedOrder?.billCode}}</td>
+    <td>{{data?.billCode}}</td>
     <td class="fixed-width">客户名称</td>
-    <td>{{selectedOrder?.customerName}}</td>
+    <td>{{data?.customerName}}</td>
   </tr>
   <tr>
     <td class="fixed-width">销售人</td>
-    <td>{{selectedOrder?.salesman}}</td>
+    <td>{{data?.salesman}}</td>
     <td class="fixed-width">开单时间</td>
-    <td>{{selectedOrder?.createdOnUtc |sDatetime}}</td>
+    <td>{{data?.createdOnUtc |sDatetime}}</td>
   </tr>
 </table>
 <div class="table-container">
@@ -27,7 +27,7 @@
       <th>数量</th>
       <th>金额（元）</th>
     </tr>
-    <tr class="text-center" *ngFor="let item of detailItems">
+    <tr class="text-center" *ngFor="let item of data.detailItems">
       <td>{{item.code }}</td>
       <td>{{item.category }}</td>
       <td>{{item.name }}</td>
@@ -42,4 +42,11 @@
     </tr>
   </table>
 </div>
-<p *ngIf="!!!detailItemsLength">暂无数据</p>
+<div class="card hq-fee">
+  <div>
+    <!--<span class="fee-name">工时费：<span class="fee-value">{{workHourFee|centToYuan}}</span></span>
+      <span class="fee-name"> 材料费：<span class="fee-value">{{materialFee|centToYuan}}</span></span>
+      <span class="fee-name"> 优惠：<span class="fee-value">{{deduceAmount|centToYuan}}</span></span>-->
+    <span class="fee-name pull-right">金额：<span class="fee-value">{{data?.billPrice|centToYuan}}</span></span>
+  </div>
+</div>

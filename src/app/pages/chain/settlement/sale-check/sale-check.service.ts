@@ -6,7 +6,7 @@ import * as moment from 'moment';
 
 @Injectable()
 export class SaleCheckService implements BasicService<any>{
-     get(body: any): Promise<any> {
+    get(body: any): Promise<any> {
         throw new Error('Method not implemented.');
     }
     create(body: any): Promise<any> {
@@ -23,7 +23,6 @@ export class SaleCheckService implements BasicService<any>{
     }
     constructor(private httpService: HttpService) { }
 
-
     // 获取收银列表
     public getPagedList(params: PagedParams): Promise<PagedResult<OrderListSearch>> {
         const url = Urls.chain.concat('/Settlements/SalesSummaryBills?', params.serialize());
@@ -34,16 +33,6 @@ export class SaleCheckService implements BasicService<any>{
             })
             .catch(err => Promise.reject(`加载工单列表失败：${err}`));
     }
-// //    获取结算方式
-//     public getSettlementType(): Promise<any> {
-//         const url = Urls.chain.concat('/DictValues/SaleEttlementMethod');
-//         return this.httpService
-//             .get<ApiResult<any>>(url)
-//             .then(result => {
-//                 return result.data
-//             })
-//             .catch(err => Promise.reject(`获取结算方式类型失败：${err}`))
-//     }
     // 获取收银查询状态
     public getOrderStatus(): Observable<any[]> {
         const url = Urls.chain.concat('/DictValues/SettlementSearchType');
@@ -65,7 +54,7 @@ export class SaleCheckService implements BasicService<any>{
     }
     // 提交收银接口
     public postPay(body: any, id: any): Promise<any> {
-        const url = Urls.chain.concat('/CheckOuts/MaintenanceBill/', id);
+        const url = Urls.chain.concat('/CheckOuts/Sale/', id);
         return this.httpService
             .post<void>(url, body)
             .catch(err => Promise.reject(`${err}`));

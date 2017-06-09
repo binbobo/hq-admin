@@ -53,6 +53,7 @@ export class SaleCheckComponent extends DataList<any>  {
     //结算方式类型
     this.typeservice.getSettlementType().then(data=>{
       this.billTypeData=data;
+      this.params.settlementid=this.billTypeData[0].id;
     }) 
     this.user = JSON.parse(sessionStorage.getItem(StorageKeys.Identity));
     // 构建表单
@@ -77,10 +78,13 @@ export class SaleCheckComponent extends DataList<any>  {
     item.generating = true;
     evt.preventDefault();
     this.selectedOrder=item;
-    console.log(item)
     this.service.getSaleDetail(id)
       .then(data => {
         this.selectedOrder.detailItems = data;
+        this.selectedOrder.billPrice=0;
+        data.forEach(item=>{
+          this.selectedOrder.billPrice+=item.amount;
+        })
         item.generating = false;
         // 显示窗口
         setTimeout(() => dialog.show(), 200);
@@ -88,7 +92,7 @@ export class SaleCheckComponent extends DataList<any>  {
       .catch(err => { this.alerter.error(err, true, 2000); item.generating = false; });
   }
   private billData = {};
-  private billPrice;
+
   // 点击收银显示弹框
   OnCheckout(evt, amount, id, dialog) {
     evt.preventDefault();
@@ -125,6 +129,7 @@ export class SaleCheckComponent extends DataList<any>  {
     if (cost != this.costMoney) {
       this.alerter.error('输入金额与应收金额不符，请重新填写！', true, 3000);
     } else {
+      console.log(JSON.stringify(this.payPost))
       this.service.postPay(this.payPost, this.billId).then(() => {
         this.alerter.info('收银成功!', true, 2000).onClose(() => { dialog.hide(); this.onLoadList(); });
         this.payCheckSingle = [];
