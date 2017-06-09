@@ -116,7 +116,7 @@ export class DistributeCreateComponent implements OnInit {
   public onReset() {
     this.storages = null;
     this.locations = null;
-    this.form.reset({ ...this.model, yuan: this.model.price / 100 });
+    this.form.reset({ ...this.model});
   }
 
   private onResetForm(event: Event, key: string) {
