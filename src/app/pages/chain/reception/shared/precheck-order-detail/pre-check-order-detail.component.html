@@ -27,8 +27,8 @@
         <td>随车附件</td>
         <td>
           <span class="d-block">检查项： {{data?.accessory.checkItem}}</span>
-          <span class="d-block">合格项： {{data?.accessory.qualified}}项</span>
-          <span class="d-block">异常项： {{data?.accessory.exception}}项</span>
+          <span class="d-block">合格项： {{data?.accessory.qualified}}</span>
+          <span class="d-block text-danger">异常项： {{data?.accessory.exception}}</span>
         </td>
         <td>
           <span class="d-block" *ngFor="let item of data?.accessory.exceptionList">
@@ -43,8 +43,8 @@
         <td>仪表盘</td>
         <td>
           <span class="d-block">检查项： {{data?.dashboard.checkItem}}</span>
-          <span class="d-block">合格项： {{data?.dashboard.qualified}}项</span>
-          <span class="d-block">异常项： {{data?.dashboard.exception}}项</span>
+          <span class="d-block">合格项： {{data?.dashboard.qualified}}</span>
+          <span class="d-block text-danger">异常项： {{data?.dashboard.exception}}</span>
         </td>
         <td>
           <span class="d-block" *ngFor="let item of data?.dashboard.exceptionList">

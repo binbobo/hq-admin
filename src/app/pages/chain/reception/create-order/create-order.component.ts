@@ -196,6 +196,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   // 根据客户车辆id查询预检单信息
   private getPreCheckOrder(evt) {
     this.service.getPreCheckOrderInfoByCustomerVehicleId(evt.id).then(preCheckOrder => {
+      console.log('预检单：', preCheckOrder)
       this.preCheckOrderData = preCheckOrder;
       this.loadPreCheckOrderInfo(preCheckOrder);
 
@@ -612,6 +613,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
     // 清空上次维修工单数据
     this.lastOrderData = null;
+     // 清空预检单数据
     this.preCheckOrderData = null;
 
     this.isSelected = false;
@@ -659,7 +661,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
           this.newWorkOrderData.serviceOutputs.fee = this.fee;
           this.newWorkOrderData.typeName = this.maintenanceTypeData.find(item => item.id === workSheet.type).value;
           this.newWorkOrderData.printDateTime = moment().format('YYYY-MM-DD HH:mm:ss');
-          // 添加预检单信息
+          // 如果是预检单 添加预检单信息
           if(workSheet.preCheckId) {
             this.newWorkOrderData.preCheckOrder = this.preCheckOrderData;
           }
