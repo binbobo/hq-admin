@@ -20,6 +20,8 @@ import { IDCardValidator } from './directives/validators/idCard.directive';
 import { HqBsModalDirective } from './directives/modal/hq-bs-modal.directive';
 import { HqModalDirective } from './directives/modal/hq-modal.directive';
 import { HqModalComponent } from './directives/modal/hq-modal/hq-modal.component';
+import { TreeComponent } from './components/treeview/tree/tree.component';
+import { DropdownTreeComponent } from './components/treeview/dropdown-tree/dropdown-tree.component';
 
 
 const HQ_COMPONENTS = [
@@ -27,6 +29,8 @@ const HQ_COMPONENTS = [
     components.ClippedWordComponent,
     components.MenuComponent,
     components.SmartTableComponent,
+    components.TreeComponent,
+    components.DropdownTreeComponent
 ];
 
 const HQ_DIRECTIVE_COMPONENTS = [
@@ -112,7 +116,7 @@ export const HQ_VALIDATORS = {
         HQ_PIPES,
         HQ_DIRECTIVES,
     ],
-    declarations: [HQ_COMPONENTS, HQ_PIPES, HQ_DIRECTIVE_COMPONENTS, HQ_DIRECTIVES],
+    declarations: [HQ_COMPONENTS, HQ_PIPES, HQ_DIRECTIVE_COMPONENTS, HQ_DIRECTIVES, DropdownTreeComponent],
     entryComponents: [HQ_DIRECTIVE_COMPONENTS]
 })
 export class SharedModule {

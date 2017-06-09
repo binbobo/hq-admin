@@ -15,8 +15,7 @@
       </div>
       <div class="input-group m-1" *ngIf="stations">
         <span class="input-group-addon">门店</span>
-        <ngx-dropdown-treeview [items]="stations" (selectedChange)="onStationSelect($event)">
-        </ngx-dropdown-treeview>
+        <hq-dropdown-tree text="name" value="id" [items]="stations" (onChange)="onStationSelect($event)"></hq-dropdown-tree>
       </div>
       <div class="input-group m-1"><button class="btn btn-primary">查询</button></div>
     </form>
