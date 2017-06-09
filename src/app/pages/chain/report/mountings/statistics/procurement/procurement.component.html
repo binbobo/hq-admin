@@ -19,7 +19,7 @@
           formControlName="name" placeholder="请输供应商" />
       </div>
 
-      <div class="input-group m-1" *ngIf="!stationsView">
+      <div class="input-group m-1" *ngIf="stations?.length&&stations[0]?.children?.length">
         <span class="input-group-addon">门店查询</span>
         <div class="form-controls">
           <hq-dropdown-tree text="name" value="id" [items]="stations" (onChange)="onSearchRangeChange($event)">

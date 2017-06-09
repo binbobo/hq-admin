@@ -20,7 +20,7 @@
         <input hqMobile name="name" class="form-control tooltips-top" data-tooltips="top" formControlName="phone" placeholder="请输客户手机"
         />
       </div>
-      <div class="input-group m-1" *ngIf="!stationsView">
+      <div class="input-group m-1" *ngIf="stations?.length&&stations[0]?.children?.length">
         <span class="input-group-addon">门店查询</span>
         <div *ngIf="true" class="form-controls">
           <hq-dropdown-tree text="name" value="id" [items]="stations" (onChange)="onSearchRangeChange($event)">
