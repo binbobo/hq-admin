@@ -4,9 +4,9 @@ import { PrintDirective } from "app/shared/directives";
 import { PartssalesService, PartssalesRequest } from "./partssales.service"
 import { DataList } from "app/shared/models";
 import { TreeviewItem, TreeviewConfig } from "ngx-treeview/lib";
-import { OrderService } from "app/pages/chain/reception/order.service";
 import { CentToYuanPipe, DurationHumanizePipe } from "app/shared/pipes";
 import * as moment from 'moment';
+import { TotalValueService } from "app/pages/chain/report/total-value/total-value.service";
 @Component({
   selector: 'hq-partssales',
   templateUrl: './partssales.component.html',
@@ -19,26 +19,25 @@ export class PartssalesComponent extends DataList<any> {
   detailItems;
   detailItemsLength: number;
   isLoading: boolean = false;
-
-
-  // 用于ngx-treeview组件
-  public items: TreeviewItem[];
+  private stations: Array<any>;
+  private stationsView: boolean;
 
   constructor(
     injector: Injector,
     protected service: PartssalesService,
     private formBuilder: FormBuilder,
-    protected orderService: OrderService,
+    protected totalValueService: TotalValueService,
   ) {
     super(injector, service);
     this.createForm();
     this.params = new PartssalesRequest();
     // 获取可以选择的店名, 用于查询范围筛选
-    this.orderService.getSelectableStores().subscribe(data => {
-      console.log('采购统计门店数据', data);
-      if (data[0].children && data[0].children.length > 0)
-        this.items = data;
-    });
+    this.totalValueService.getStationTreeView()
+      .then(data => {
+        this.stationsView = data.length == 1 && !data[0].children;
+        this.stations = data;
+      })
+      .catch(err => this.alerter.error(err));
   }
 
 
@@ -105,7 +104,12 @@ export class PartssalesComponent extends DataList<any> {
 
   onSearchRangeChange(ev) {
     // 更新查询范围参数
-    this.params.orgIds = ev;
+    let orgIdsArr: Array<any> = [];
+    ev.map(m => {
+      orgIdsArr.push(m.value)
+    })
+    this.params.orgIds = orgIdsArr;
+    console.log('查询范围', ev, this.params.orgIds);
   }
 
   joinOrderNumberOnSelect(ev) {

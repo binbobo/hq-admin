@@ -22,12 +22,13 @@ import { InvoicingPrintComponent } from './invoicing/invoicing-print/invoicing-p
 import { PartssalesPrintComponent } from './partssales/partssales-print/partssales-print.component';
 
 //服务
-import { OrderService } from "app/pages/chain/reception/order.service";
 import { ProcurementService } from "app/pages/chain/report/mountings/statistics/procurement/procurement.service";
 import { DistributeService } from "app/pages/chain/report/mountings/statistics/distribute/distribute.service";
 import { PartssalesService } from "app/pages/chain/report/mountings/statistics/partssales/partssales.service";
 import { ReceiveService } from "app/pages/chain/report/mountings/statistics/inner-receive/receive.service";
 import { InvoicingService } from "app/pages/chain/report/mountings/statistics/invoicing/invoicing.service";
+import { TotalValueService } from "app/pages/chain/report/total-value/total-value.service";
+import { treeviewEventParser } from "app/shared/services";
 
 @NgModule({
   imports: [
@@ -58,6 +59,6 @@ import { InvoicingService } from "app/pages/chain/report/mountings/statistics/in
     InvoicingPrintComponent,
     PartssalesPrintComponent,
   ],
-  providers: [ProcurementService, OrderService, DistributeService, PartssalesService, ReceiveService, InvoicingService]
+  providers: [ProcurementService, TotalValueService, DistributeService, PartssalesService, ReceiveService, InvoicingService,treeviewEventParser]
 })
 export class StatisticsModule { }

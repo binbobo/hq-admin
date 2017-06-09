@@ -4,9 +4,9 @@ import { PrintDirective } from "app/shared/directives";
 import { InvoicingService, InvoicingRequest, InvoicingDetailRequest } from "./invoicing.service"
 import { DataList, SelectOption } from "app/shared/models";
 import { TreeviewItem, TreeviewConfig } from "ngx-treeview/lib";
-import { OrderService } from "app/pages/chain/reception/order.service";
 import { CentToYuanPipe, DurationHumanizePipe } from "app/shared/pipes";
 import * as moment from 'moment';
+import { TotalValueService } from "app/pages/chain/report/total-value/total-value.service";
 
 @Component({
   selector: 'hq-procurement',
@@ -29,15 +29,14 @@ export class InvoicingComponent extends DataList<any> {
   storeId: string;
   searchStart: string;
   searchEnd: string;
-
-  // 用于ngx-treeview组件
-  public items: TreeviewItem[];
+  private stations: Array<any>;
+  private stationsView: boolean;
 
   constructor(
     injector: Injector,
     protected service: InvoicingService,
     private formBuilder: FormBuilder,
-    protected orderService: OrderService,
+    protected totalValueService: TotalValueService,
   ) {
     super(injector, service);
     this.createForm();
@@ -45,11 +44,12 @@ export class InvoicingComponent extends DataList<any> {
     this.params = new InvoicingRequest();
     this.paramsDetail = new InvoicingDetailRequest();
     // 获取可以选择的店名, 用于查询范围筛选
-    this.orderService.getSelectableStores().subscribe(data => {
-      console.log('采购统计门店数据', data);
-      if (data[0].children && data[0].children.length > 0)
-        this.items = data;
-    });
+    this.totalValueService.getStationTreeView()
+      .then(data => {
+        this.stationsView = data.length == 1 && !data[0].children;
+        this.stations = data;
+      })
+      .catch(err => this.alerter.error(err));
     this.service.getWarehouseOptions()
       .then(options => this.warehouses = options)
       .catch(err => this.alerter.warn(err));
@@ -140,16 +140,21 @@ export class InvoicingComponent extends DataList<any> {
     })
   }
   //配件模糊搜索
-  onSelect(ev) { 
+  onSelect(ev) {
     this.invoicingDetailForm.patchValue({
-      productCode:ev.code,
-      productName:ev.name
+      productCode: ev.code,
+      productName: ev.name
     });
   }
 
   onSearchRangeChange(ev) {
     // 更新查询范围参数
-    this.params.orgIds = ev;
+    let orgIdsArr: Array<any> = [];
+    ev.map(m => {
+      orgIdsArr.push(m.value)
+    })
+    this.params.orgIds = orgIdsArr;
+    console.log('查询范围', ev, this.params.orgIds);
   }
 
   joinOrderNumberOnSelect(ev) {
