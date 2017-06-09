@@ -5,6 +5,7 @@ import { SelectOption, PagedResult } from 'app/shared/models';
 import { Router } from '@angular/router';
 import { NgForm } from "@angular/forms";
 import { SalesOutBillDirective } from '../sales-out-bill.directive';
+import { ChainService } from '../../../../chain.service';
 
 @Component({
   selector: 'hq-sales-list',
@@ -26,15 +27,21 @@ export class SalesListComponent implements OnInit {
   private printModel: SalesPrintItem;
   private model: SalesListRequest = new SalesListRequest();
   private generating: boolean;
+  private settlements: Array<any>;
 
   constructor(
     private salesService: SalesService,
+    private chainService: ChainService,
   ) { }
 
   ngOnInit() {
     this.salesService.getSalesmanOptions()
       .then(data => this.salesmen = data)
       .then(data => this.reset())
+      .catch(err => this.alerter.error(err));
+    this.chainService.getSettlementType()
+      .then(data => this.settlements = data)
+      .then(data => data && data.length && (this.model.settlementMethodId = data[0]['id']))
       .catch(err => this.alerter.error(err));
   }
 

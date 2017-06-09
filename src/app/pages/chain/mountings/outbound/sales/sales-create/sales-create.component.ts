@@ -78,6 +78,7 @@ export class SalesCreateComponent implements OnInit {
       count: [this.model.count, [Validators.required, CustomValidators.min(1)]],
       price: [this.model.price],
       amount: [this.model.amount],
+      description: [this.model.description, Validators.maxLength(100)],
       stockCount: [this.model.stockCount, [CustomValidators.min(1)]],
       yuan: [this.model['yuan'], [Validators.required, CustomValidators.gt(0)]]
     })
