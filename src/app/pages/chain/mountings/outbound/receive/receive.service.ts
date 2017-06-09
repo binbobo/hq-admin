@@ -68,20 +68,22 @@ export class ReceiveListRequest {
 
 export class ReceiveListItem {
   constructor(
-    public count: number = 0,
+    public count: number = 1,
     public price: number = 0,
     public amount: number = 0,
     public stockCount: number = 0,
     public productName?: string,
+    public productUnit?: string,
     public brand?: string,
     public productId?: string,
     public productCode?: string,
     public productSpecification?: string,
-    public storeId?: string,
-    public locationId?: string,
     public description?: string,
     public locationName?: string,
-    public houseName?: string,
-    public productUnit?: string,
+    public locationId?: string,
+    public storeId?: string,
+    public productCategory?: string,
+    public categoryId?: string,
+    public houseName?: string
   ) { }
 }

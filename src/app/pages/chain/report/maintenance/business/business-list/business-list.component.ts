@@ -5,9 +5,9 @@ import { BusinessService, BusinessListRequest, DetailsSearchRequest } from "../b
 import { TypeaheadRequestParams, PrintDirective, HqModalDirective } from "app/shared/directives";
 import { CentToYuanPipe, DurationHumanizePipe } from "app/shared/pipes";
 import { TreeviewItem, TreeviewConfig } from "ngx-treeview/lib";
-import { OrderService } from "app/pages/chain/reception/order.service";
 import { ModalDirective } from "ngx-bootstrap";
 import * as moment from 'moment';
+import { TotalValueService } from "app/pages/chain/report/total-value/total-value.service";
 
 @Component({
   selector: 'hq-business-list',
@@ -38,7 +38,8 @@ export class BusinessListComponent extends DataList<any> {
   private moneyObj = null;
 
   // 用于查询范围ngx-treeview组件
-  public items: TreeviewItem[];
+  private stations: Array<any>;
+  private orgShow = false;
 
   // 用于服务顾问ngx-treeview组件
   public nameItems: TreeviewItem[];
@@ -46,17 +47,20 @@ export class BusinessListComponent extends DataList<any> {
   constructor(
     injector: Injector,
     protected service: BusinessService,
-    protected orderService: OrderService,
+    private totalValueService: TotalValueService,
     private formBuilder: FormBuilder,
   ) {
     super(injector, service);
     this.params = new BusinessListRequest();
     this.onLoadList();
     // 获取可以选择的店名, 用于查询范围筛选
-    this.orderService.getSelectableStores().subscribe(data => {
-      if (data[0].children && data[0].children.length > 0)
-        this.items = data;
-    });
+    this.totalValueService.getStationTreeView()
+      .then(data => {
+        this.stations = data;
+        if (this.stations.length > 1 || this.stations.find(m => m.children.length > 0).children.length > 0)
+          this.orgShow = true;
+      })
+      .catch(err => this.alerter.error(err));
     // 获取可以选择的服务顾问, 用于查询范围筛选
     this.service.getEmployeesStores().subscribe(data => {
       // if (data[0].children && data[0].children.length > 0)
@@ -65,10 +69,13 @@ export class BusinessListComponent extends DataList<any> {
   }
 
   //门店下拉框选择
-  onSearchRangeChange(evt) {
-    // 更新查询范围参数
+  onStationSelect(evt) {
     if (evt.length) {
-      this.params.orgIds = evt;
+      let arr = [];
+      evt.map(m => {
+        arr.push(m.value);
+      })
+      this.params.orgIds = arr;
     } else {
       this.params.orgIds = null;
     }
@@ -98,7 +105,7 @@ export class BusinessListComponent extends DataList<any> {
     this.params.enterEndTimeDate = this.params.enterEndTimeDate && moment(this.params.enterEndTimeDate).endOf('day').format('YYYY-MM-DDTHH:mm:ss.SSS');
     this.params.leaveEndTimeDate = this.params.leaveEndTimeDate && moment(this.params.leaveEndTimeDate).endOf('day').format('YYYY-MM-DDTHH:mm:ss.SSS');
     this.index = 1;
-    this.params.setPage(1,this.size);
+    this.params.setPage(1, this.size);
     this.loadList()
       .then(() => {
         if (this.params.plateNo) {

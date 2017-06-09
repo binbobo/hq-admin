@@ -13,7 +13,7 @@
         <input class="form-control" [(ngModel)]="params.endTimeDate" [min-date]="params.startTimeDate" name="endTimeDate" date-only="true"
           ngui-datetime-picker/>
       </div>
-      <div class="input-group m-1" *ngIf="stations">
+      <div class="input-group m-1" *ngIf="stations?.length&&stations[0]?.children?.length">
         <span class="input-group-addon">门店</span>
         <hq-dropdown-tree text="name" value="id" [items]="stations" (onChange)="onStationSelect($event)"></hq-dropdown-tree>
       </div>

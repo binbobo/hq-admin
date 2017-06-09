@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { DataList, StorageKeys } from "app/shared/models";
 import { Router } from "@angular/router";
 import { OrderListSearch, SaleCheckService } from "./sale-check.service";
+import { ChainService } from "app/pages/chain/chain.service";
 import { HqAlerter } from "app/shared/directives";
 import * as moment from 'moment';
 
@@ -29,7 +30,7 @@ export class SaleCheckComponent extends DataList<any>  {
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
   public user = null;
-
+  private billTypeData:any;
   // 结束时间参数对象
   endDateParams = {
     endtime: undefined,
@@ -39,6 +40,7 @@ export class SaleCheckComponent extends DataList<any>  {
     private router: Router,
     injector: Injector,
     protected service: SaleCheckService,
+    protected typeservice:ChainService,
     private fb: FormBuilder) {
     super(injector, service);
     this.params = new OrderListSearch();
@@ -48,6 +50,10 @@ export class SaleCheckComponent extends DataList<any>  {
       .subscribe(data => {
         this.orderStatusData = data;
       });
+    //结算方式类型
+    this.typeservice.getSettlementType().then(data=>{
+      this.billTypeData=data;
+    }) 
     this.user = JSON.parse(sessionStorage.getItem(StorageKeys.Identity));
     // 构建表单
     this.createForm();
@@ -70,52 +76,16 @@ export class SaleCheckComponent extends DataList<any>  {
   DetailsDialog(evt, item, id, dialog) {
     item.generating = true;
     evt.preventDefault();
-
-    // 根据id获取工单详细信息
-    // this.service.get(id).then(data => {
-    //   // 记录当前操作的工单记录
-    //   this.selectedOrder = data;
-    //   this.billId = this.selectedOrder["id"];
-    // });
-
-    this.service.getPrintDetail(id)
+    this.selectedOrder=item;
+    console.log(item)
+    this.service.getSaleDetail(id)
       .then(data => {
-        this.selectedOrder = data;
-        this.billId = this.selectedOrder["id"];
-        // Object.assign(this.selectedOrder, data);
-        // this.selectedOrder.updateUser = data.updateUser;//结算人
-        // this.selectedOrder.updateOnUtc = data.updateOnUtc;//结算时间
-        // this.selectedOrder.settlementParty = data.settlementParty;//结算方
-        // this.selectedOrder.settlementCode = data.settlementCode;//结算单号
-        // this.selectedOrder.leaveMileage = data.leaveMileage;//出厂里程
-        if (item.updateOnUtc) {
-          this.selectedOrder.updataTime = item.updateOnUtc;//出厂时间
-        }
+        this.selectedOrder.detailItems = data;
         item.generating = false;
         // 显示窗口
         setTimeout(() => dialog.show(), 200);
       })
       .catch(err => { this.alerter.error(err, true, 2000); item.generating = false; });
-
-    // 根据工单id获取工单材料费和工时费
-    this.service.getCost(id).then(data => {
-      // 工时费： 维修项目金额总和
-      this.workHourFee = data.workReceivableCost;
-      // 材料费： 维修配件金额总和
-      this.materialFee = data.materialCost;
-      // 其它费： 0
-      this.otherFee = 0;
-      // 总计费： 
-      this.sumFee = data.workHourCost + data.materialCost + this.otherFee;
-
-      this.billPrice = data.amount;
-
-      if (data.deduceAmount) {
-        this.deduceAmount = data.deduceAmount + data.workReceivableCost - data.workHourCost;
-      } else {
-        this.deduceAmount = data.workReceivableCost - data.workHourCost
-      }
-    })
   }
   private billData = {};
   private billPrice;
@@ -166,11 +136,14 @@ export class SaleCheckComponent extends DataList<any>  {
     // 初始化数组类型参数
     this.statekey = []
     this.CheckoutForm = this.fb.group({
-      carnumber: '', // 车牌号
-      billcode: '',//工单号
-      SettlementCode: '',
-      starttime: '',
-      endtime: '',
+      // carnumber: '', // 车牌号
+      // billcode: '',//工单号
+      settlementcode: '',//结算单号
+      starttime: '',//销售开始时间
+      endtime: '',//销售结束时间
+      phone:'',//手机号
+      customername:'',//客户名称
+      settlementid:''//结算方式id
     });
   }
   

@@ -23,12 +23,12 @@ export class SalesService {
   }
 
   getSalesmanOptions(): Promise<Array<SelectOption>> {
-    let url = Urls.chain.concat('/Employees/GetByKey?key=Seller');
+    let url = Urls.chain.concat('/Employees?pageSize=100');
     return this.httpService.get<ListResult<any>>(url)
       .then(result => result.data)
       .then(data => Array.isArray(data) ? data : [])
       .then(data => data.map(m => new SelectOption(m.name, m.id)))
-      .catch(err => Promise.reject(`获取销售员选项失败：${err}`));
+      .catch(err => Promise.reject(`获取销售员失败：${err}`));
   }
 }
 
@@ -50,6 +50,7 @@ export class SalesListRequest {
     public custName?: string,
     public custPhone?: string,
     public seller?: string,
+    public settlementMethodId?: string,
     public suspendedBillId?: string,
   ) { }
 }
