@@ -84,6 +84,7 @@ table th{
 }
 caption {
     caption-side: top;
+    padding:.5rem;
 }
 /*必选项前面的星号样式*/ 
 .asterisk {
