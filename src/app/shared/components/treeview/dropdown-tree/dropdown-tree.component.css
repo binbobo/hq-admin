@@ -1,0 +1,21 @@
+.form-control:disabled{
+    user-select:none;
+    width: 100%!important;
+    background-color: #fff;
+}
+
+.toggle{
+    cursor: pointer;
+}
+
+hq-tree{
+    position: absolute!important;
+    z-index: 11;
+    width: initial!important;
+    min-width: 100%;
+    line-height: 1.25;
+    padding: .5rem .75rem;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+}

@@ -108,6 +108,36 @@ export class OrderService implements BasicService<Order> {
     }
 
     /**
+*  根据客户车辆id查询预检单信息
+* @param {string} id 
+* @returns Promise<any>
+* @memberOf OrderService
+*/
+    getPreCheckOrderInfoByCustomerVehicleId(id: string): Promise<any> {
+        const url = Urls.chain.concat('/PreChecks/GetPreCheck?customerVehicleId=', id);
+        return this.httpService
+            .get<ApiResult<any>>(url)
+            .then(result => result.data)
+            .then(data => data || Promise.reject('获取数据无效！'))
+            .catch(err => Promise.reject(`获取预检单记录失败：${err}`));
+    }
+    /**
+*  根据预检单id查询预检单信息
+* @param {string} id 
+* @returns Promise<any>
+* @memberOf OrderService
+*/
+    getPreCheckOrderInfoByPreCheckId(id: string): Promise<any> {
+        const url = Urls.chain.concat('/PreChecks/', id);
+        return this.httpService
+            .get<ApiResult<any>>(url)
+            .then(result => result.data)
+            .then(data => data || Promise.reject('获取数据无效！'))
+            .catch(err => Promise.reject(`获取预检单记录失败：${err}`));
+    }
+
+
+    /**
  *  获取可以选择的门店，用于中查询范围下拉框
  * @param {string} id 
  * @returns Observable<TreeviewItem[]>

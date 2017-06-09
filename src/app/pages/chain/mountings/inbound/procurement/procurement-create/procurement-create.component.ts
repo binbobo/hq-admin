@@ -154,6 +154,7 @@ export class ProcurementCreateComponent implements OnInit {
   private reset() {
     this.storages = null;
     this.locations = null;
-    this.form.reset({ ...this.model });
+    this.form = null;
+    setTimeout(() => this.buildForm(), 1);
   }
 }
