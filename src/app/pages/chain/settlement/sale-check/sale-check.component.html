@@ -19,15 +19,15 @@
       <div class="form-inline">
         <div class="input-group m-1">
           <span class="input-group-addon">结算单号</span>
-          <input type="text" class="form-control" [(ngModel)]="params.SettlementCode" id="SettlementCode" name="SettlementCode" placeholder="请输入结算单号">
+          <input type="text" class="form-control" [(ngModel)]="params.settlementcode" id="settlementcode" name="SettlementCode" placeholder="请输入结算单号">
         </div>
         <div class="input-group m-1">
           <span class="input-group-addon">客户名称</span>
-          <input type="text" [(ngModel)]="params.customer" class="form-control" id="customer" name="customer" placeholder="请输入客户名称">
+          <input type="text" [(ngModel)]="params.customername" class="form-control" id="customername" name="customername" placeholder="请输入客户名称">
         </div>
         <div class="input-group m-1">
           <span class="input-group-addon">手机号码</span>
-          <input type="text" [(ngModel)]="params.phonenumber" class="form-control" id="phonenumber" name="phonenumber" placeholder="请输入手机号码">
+          <input type="text" [(ngModel)]="params.phone" class="form-control" id="phone" name="phone" placeholder="请输入手机号码">
         </div>
         <div class="input-group m-1">
           <span class="input-group-addon">销售时间</span>
@@ -40,11 +40,11 @@
         </div>
         <div class="input-group m-1">
           <span class="input-group-addon">结算方式</span>
-          <select [(ngModel)]="params.billtype" id="billtype" name="billtype" class="form-control">
+          <select [(ngModel)]="params.settlementid" id="settlementid" name="settlementid" class="form-control">
             <option style="display:none">
-            <option *ngFor="let type of billtypedata" value="{{type.id}}">{{type?.value}}</option>
+            <option *ngFor="let settlementid of billTypeData" value="{{settlementid.id}}">{{settlementid?.value}}</option>
           </select>
-          <div class="ml-1"><button class="btn btn-primary">查询</button></div>
+          <div class="ml-2"><button class="btn btn-primary">查询</button></div>
         </div>
       </div>
     </form>
@@ -73,9 +73,9 @@
             <!--<td>{{item.plateNo}}</td>-->
             <td>{{item?.settlementCode}}</td>
             <td class="text-right">¥{{item.amount|centToYuan}}</td>
-            <td>{{item.billtype}}</td>
-            <td>{{item.customer}}</td>
-            <td>{{item.phonenumber}}</td>
+            <td>{{item.settlementMethod}}</td>
+            <td>{{item.customerName}}</td>
+            <td>{{item.phone}}</td>
             <td>{{item.paymentName}}</td>
             <td>{{item.updateOnUtc|sDatetime}}</td>
           </tr>
