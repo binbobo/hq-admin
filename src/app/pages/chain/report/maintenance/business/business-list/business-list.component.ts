@@ -39,6 +39,7 @@ export class BusinessListComponent extends DataList<any> {
 
   // 用于查询范围ngx-treeview组件
   private stations: Array<any>;
+  private orgShow = false;
 
   // 用于服务顾问ngx-treeview组件
   public nameItems: TreeviewItem[];
@@ -54,7 +55,11 @@ export class BusinessListComponent extends DataList<any> {
     this.onLoadList();
     // 获取可以选择的店名, 用于查询范围筛选
     this.totalValueService.getStationTreeView()
-      .then(data => this.stations = data)
+      .then(data => {
+        this.stations = data;
+        if (this.stations.length > 1 || this.stations.find(m => m.children.length > 0).children.length > 0)
+          this.orgShow = true;
+      })
       .catch(err => this.alerter.error(err));
     // 获取可以选择的服务顾问, 用于查询范围筛选
     this.service.getEmployeesStores().subscribe(data => {
@@ -66,8 +71,8 @@ export class BusinessListComponent extends DataList<any> {
   //门店下拉框选择
   onStationSelect(evt) {
     if (evt.length) {
-        let arr = [];
-      evt.map(m=>{
+      let arr = [];
+      evt.map(m => {
         arr.push(m.value);
       })
       this.params.orgIds = arr;
@@ -100,7 +105,7 @@ export class BusinessListComponent extends DataList<any> {
     this.params.enterEndTimeDate = this.params.enterEndTimeDate && moment(this.params.enterEndTimeDate).endOf('day').format('YYYY-MM-DDTHH:mm:ss.SSS');
     this.params.leaveEndTimeDate = this.params.leaveEndTimeDate && moment(this.params.leaveEndTimeDate).endOf('day').format('YYYY-MM-DDTHH:mm:ss.SSS');
     this.index = 1;
-    this.params.setPage(1,this.size);
+    this.params.setPage(1, this.size);
     this.loadList()
       .then(() => {
         if (this.params.plateNo) {

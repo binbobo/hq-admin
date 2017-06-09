@@ -29,7 +29,7 @@
         <ngx-dropdown-treeview [items]="nameItems" (selectedChange)="onSearchNameChange($event)">
         </ngx-dropdown-treeview>
       </div>
-      <div *ngIf="stations" class="input-group m-1">
+      <div *ngIf="orgShow" class="input-group m-1">
         <label class="input-group-addon">门店</label>
         <hq-dropdown-tree text="name" value="id" [items]="stations" (onChange)="onStationSelect($event)"></hq-dropdown-tree>
       </div>
@@ -46,7 +46,7 @@
         <thead>
           <tr>
             <th>操作</th>
-            <th *ngIf="stations">店名</th>
+            <th *ngIf="orgShow">店名</th>
             <th>车牌号</th>
             <th>工单号</th>
             <th>维修类型</th>
@@ -67,7 +67,7 @@
             <td width="75">
               <button [hqSpinner]="item.generating" [disabled]="item.generating" type="button" class="btn btn-info btn-sm" (click)="businessDetailsHandler(item, item.id)">详情</button>
             </td>
-            <td *ngIf="stations" class="text-left">{{item.orgName}}</td>
+            <td *ngIf="orgShow" class="text-left">{{item.orgName}}</td>
             <td>{{item.plateNo}}</td>
             <td>{{item.billCode}}</td>
             <td>{{item.typeName}}</td>
