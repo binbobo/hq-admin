@@ -15,7 +15,7 @@
         <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" date-only="true" class="form-control datetime-picker" style="border-right-width:1px;"
           id="endtime" formControlName="searchEnd" name="endtime" type="text" ngui-datetime-picker/>
       </div>
-      <div class="input-group m-1" *ngIf="!stationsView">
+      <div class="input-group m-1" *ngIf="stations?.length&&stations[0]?.children?.length">
         <span class="input-group-addon">门店查询</span>
         <div *ngIf="true" class="form-controls">
           <hq-dropdown-tree text="name" value="id" [items]="stations" (onChange)="onSearchRangeChange($event)">

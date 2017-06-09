@@ -20,7 +20,6 @@ export class PartssalesComponent extends DataList<any> {
   detailItemsLength: number;
   isLoading: boolean = false;
   private stations: Array<any>;
-  private stationsView: boolean;
 
   constructor(
     injector: Injector,
@@ -34,7 +33,6 @@ export class PartssalesComponent extends DataList<any> {
     // 获取可以选择的店名, 用于查询范围筛选
     this.totalValueService.getStationTreeView()
       .then(data => {
-        this.stationsView = data.length == 1 && !data[0].children;
         this.stations = data;
       })
       .catch(err => this.alerter.error(err));
