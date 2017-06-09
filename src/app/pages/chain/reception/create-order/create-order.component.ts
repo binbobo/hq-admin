@@ -568,6 +568,9 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     if (!workSheet.nextDate) { delete workSheet.nextDate; }
     // 车牌号转成大写
     workSheet.plateNo = workSheet.plateNo.toUpperCase();
+    // vin转成大写
+    if (workSheet.vin)
+      workSheet.vin = workSheet.vin.toUpperCase();
     // 2.新增维修项目数据
     workSheet.maintenanceItems = this.newMaintenanceItemData;
     return workSheet;
