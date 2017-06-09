@@ -3,10 +3,10 @@ import { DistributeService, DistributeRequest } from './distribute.service'
 import { TreeviewItem, TreeviewConfig } from "ngx-treeview/lib";
 import { DataList } from "app/shared/models";
 import { FormGroup, FormBuilder } from "@angular/forms";
-import { OrderService } from "app/pages/chain/reception/order.service";
 import { PrintDirective, TypeaheadRequestParams } from "app/shared/directives";
 import { CentToYuanPipe, DurationHumanizePipe } from "app/shared/pipes";
 import * as moment from 'moment';
+import { TotalValueService } from "app/pages/chain/report/total-value/total-value.service";
 
 @Component({
   selector: 'hq-distribute',
@@ -20,26 +20,26 @@ export class DistributeComponent extends DataList<any> {
   detailItems;
   detailItemsLength: number;
   isLoading: boolean = false;
+  private stations: Array<any>;
+  private stationsView: boolean;
 
   constructor(
     protected service: DistributeService,
-    protected orderService: OrderService,
     injector: Injector,
     private formBuilder: FormBuilder,
+    protected totalValueService: TotalValueService,
   ) {
     super(injector, service);
     this.ngOnInit();
     this.bindForm();
     // 获取可以选择的店名, 用于查询范围筛选
-    this.orderService.getSelectableStores().subscribe(data => {
-      console.log('门店数据', data);
-      if (data[0].children && data[0].children.length > 0)
-        this.items = data;
-    });
+    this.totalValueService.getStationTreeView()
+      .then(data => {
+        this.stationsView = data.length == 1 && !data[0].children;
+        this.stations = data;
+      })
+      .catch(err => this.alerter.error(err));
   }
-
-  // 用于ngx-treeview组件
-  public items: TreeviewItem[];
 
   //详情模态框
   alert(ev, id, bdModule, billCode) {
@@ -61,7 +61,12 @@ export class DistributeComponent extends DataList<any> {
 
   //门店查询
   onSearchRangeChange(ev) {
-    this.params.orgIds = ev;
+    let orgIdsArr: Array<any> = [];
+    ev.map(m => {
+      orgIdsArr.push(m.value)
+    })
+    this.params.orgIds = orgIdsArr;
+    console.log('查询范围', ev, this.params.orgIds);
   }
   @ViewChild('printer')
   public printer: PrintDirective;

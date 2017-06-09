@@ -19,11 +19,11 @@
           formControlName="name" placeholder="请输供应商" />
       </div>
 
-      <div class="input-group m-1" *ngIf="items">
+      <div class="input-group m-1" *ngIf="!stationsView">
         <span class="input-group-addon">门店查询</span>
         <div class="form-controls">
-          <ngx-dropdown-treeview [items]="items" (selectedChange)="onSearchRangeChange($event)">
-          </ngx-dropdown-treeview>
+          <hq-dropdown-tree text="name" value="id" [items]="stations" (onChange)="onSearchRangeChange($event)">
+          </hq-dropdown-tree>
         </div>
       </div>
       <div class="col-sm-1"><button class="btn btn-primary">查询</button></div>
@@ -75,7 +75,7 @@
   </table>
   <div class="" *ngIf="detailItems">
     <div class="table-container">
-      <table class="table table-bordered" *ngFor="let item of detailItems" style="white-space: nowrap">
+      <table class="table table-bordered" style="white-space: nowrap">
         <tr class="text-center">
           <th class="clo-4">仓库</th>
           <th>库位</th>
@@ -91,7 +91,7 @@
           <th>不含税单价（元）</th>
           <th>不含税金额（元）</th>
         </tr>
-        <tbody>
+        <tbody *ngFor="let item of detailItems">
           <tr>
             <td>{{item.storeName}}</td>
             <td class="text-center">{{item.locationName}}</td>

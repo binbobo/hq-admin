@@ -4,9 +4,9 @@ import { PrintDirective } from "app/shared/directives";
 import { ReceiveService, ReceiveRequest } from "./receive.service"
 import { DataList, SelectOption } from "app/shared/models";
 import { TreeviewItem, TreeviewConfig } from "ngx-treeview/lib";
-import { OrderService } from "app/pages/chain/reception/order.service";
 import { CentToYuanPipe, DurationHumanizePipe } from "app/shared/pipes";
 import * as moment from 'moment';
+import { TotalValueService } from "app/pages/chain/report/total-value/total-value.service";
 
 @Component({
   selector: 'hq-inner-receive',
@@ -22,25 +22,27 @@ export class InnerReceiveComponent extends DataList<any> {
   isLoading: boolean = false;
   private employees: Array<SelectOption>;
   private departments: Array<SelectOption>;
+  private stations: Array<any>;
+  private stationsView: boolean;
 
-  // 用于ngx-treeview组件
-  public items: TreeviewItem[];
 
   constructor(
     injector: Injector,
     protected service: ReceiveService,
     private formBuilder: FormBuilder,
-    protected orderService: OrderService,
+    protected totalValueService: TotalValueService,
   ) {
     super(injector, service);
     this.createForm();
     this.params = new ReceiveRequest();
     // 获取可以选择的店名, 用于查询范围筛选
-    this.orderService.getSelectableStores().subscribe(data => {
-      console.log('内部领用门店数据', data);
-      if (data[0].children && data[0].children.length > 0)
-        this.items = data;
-    });
+    this.totalValueService.getStationTreeView()
+      .then(data => {
+        this.stationsView = data.length == 1 && !data[0].children;
+        this.stations = data;
+      })
+      .catch(err => this.alerter.error(err));
+
     this.service.getReceiverOptions()
       .then(data => {
         this.employees = data;
@@ -142,7 +144,12 @@ export class InnerReceiveComponent extends DataList<any> {
 
   onSearchRangeChange(ev) {
     // 更新查询范围参数
-    this.params.orgIds = ev;
+    let orgIdsArr: Array<any> = [];
+    ev.map(m => {
+      orgIdsArr.push(m.value)
+    })
+    this.params.orgIds = orgIdsArr;
+    console.log('查询范围', ev, this.params.orgIds);
   }
 
   joinOrderNumberOnSelect(ev) {
