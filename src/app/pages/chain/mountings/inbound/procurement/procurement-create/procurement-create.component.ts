@@ -53,7 +53,7 @@ export class ProcurementCreateComponent implements OnInit {
       exTaxAmount: [this.model.exTaxAmount],
       locationName: [this.model.locationName, [Validators.required]],
       storeName: [this.model.houseName],
-      unit: [this.model.unit],
+      productUnit: [this.model.productUnit],
     })
   }
 
@@ -102,7 +102,7 @@ export class ProcurementCreateComponent implements OnInit {
   private onItemSelect(event) {
     this.isSelected = true;
     let item: any = {
-      unit: event.unitName,
+      productUnit: event.unitName,
       productCode: event.code,
       productName: event.name,
       productSpecification: event.specification,

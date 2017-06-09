@@ -17,7 +17,7 @@
     <ngx-dropdown-treeview [items]="roles" (selectedChange)="onRoleSelect($event)">
     </ngx-dropdown-treeview>
   </div>
-  <div class="form-group">
+  <div class="form-group" [hidden]="stations?.length<2">
     <label class="form-control-label hq-required">组织</label>
     <select formControlName="orgId" (change)="onStationChange($event)" class="form-control">
       <option *ngFor="let item of stations" [value]="item.value" [innerHTML]="item.indent+item.text"></option>
