@@ -1,6 +1,6 @@
 <div class="checkout card">
   <div class="card-header">
-    <span>维修收银</span>
+    <span>销售收银</span>
   </div>
   <div class='card-block'>
     <form (ngSubmit)="onSearch()" autocomplete="off">
@@ -22,18 +22,29 @@
           <input type="text" class="form-control" [(ngModel)]="params.SettlementCode" id="SettlementCode" name="SettlementCode" placeholder="请输入结算单号">
         </div>
         <div class="input-group m-1">
-          <span class="input-group-addon">车牌号</span>
-          <input type="text" [(ngModel)]="params.carnumber" class="form-control" id="carnumber" name="carnumber" placeholder="请输入车牌号">
+          <span class="input-group-addon">客户名称</span>
+          <input type="text" [(ngModel)]="params.customer" class="form-control" id="customer" name="customer" placeholder="请输入客户名称">
         </div>
         <div class="input-group m-1">
-          <span class="input-group-addon">进厂时间</span>
+          <span class="input-group-addon">手机号码</span>
+          <input type="text" [(ngModel)]="params.phonenumber" class="form-control" id="phonenumber" name="phonenumber" placeholder="请输入手机号码">
+        </div>
+        <div class="input-group m-1">
+          <span class="input-group-addon">销售时间</span>
           <input [max-date]="maxStartTime" class="form-control datetime-picker" style="border-right:0;" [(ngModel)]="params.starttime"
             id="starttime" name="starttime" type="text" placeholder="请选择开始时间" [close-on-select]="false" ngui-datetime-picker/>
           <span class="input-group-addon">-</span>
           <input [min-date]="minEndTime" [max-date]="maxEndTime" class="form-control" style="border-right-width:1px;" id="endtime"
             [(ngModel)]="endDateParams.endtime" name="endtime" type="text" placeholder="请选择截止时间" [close-on-select]="false"
             ngui-datetime-picker/>
-          <div class="col-sm-1"><button class="btn btn-primary">查询</button></div>
+        </div>
+        <div class="input-group m-1">
+          <span class="input-group-addon">结算方式</span>
+          <select [(ngModel)]="params.billtype" id="billtype" name="billtype" class="form-control">
+            <option style="display:none">
+            <option *ngFor="let type of billtypedata" value="{{type.id}}">{{type?.value}}</option>
+          </select>
+          <div class="ml-1"><button class="btn btn-primary">查询</button></div>
         </div>
       </div>
     </form>
@@ -41,16 +52,14 @@
       <table class='table table-bordered'>
         <thead>
           <tr>
-            <th>操作</th>
+            <th style="width:200px;">操作</th>
             <th>状态</th>
-            <th>车牌号</th>
+            <!--<th>车牌号</th>-->
             <th>结算单号</th>
             <th>应收金额</th>
-            <th>维修类型</th>
-            <th>预计交车时间</th>
-            <th>车型</th>
-            <th>送修人</th>
-            <th>服务顾问</th>
+            <th>结算方式</th>
+            <th>客户名称</th>
+            <th>手机号</th>
             <th>支付方式</th>
             <th>收银时间</th>
           </tr>
@@ -61,14 +70,12 @@
               <button type="button" class="btn btn-sm btn-info" [hqSpinner]="item.generating" (click)='DetailsDialog($event,item,item.id,lgModal)'>详情</button>
             </td>
             <td>{{item.statusName}}</td>
-            <td>{{item.plateNo}}</td>
+            <!--<td>{{item.plateNo}}</td>-->
             <td>{{item?.settlementCode}}</td>
             <td class="text-right">¥{{item.amount|centToYuan}}</td>
-            <td>{{item.typeName}}</td>
-            <td>{{item.expectLeave|sDatetime}}</td>
-            <td>{{item.model}}</td>
-            <td>{{item.customerName}}</td>
-            <td>{{item.createdUserName}}</td>
+            <td>{{item.billtype}}</td>
+            <td>{{item.customer}}</td>
+            <td>{{item.phonenumber}}</td>
             <td>{{item.paymentName}}</td>
             <td>{{item.updateOnUtc|sDatetime}}</td>
           </tr>
@@ -79,15 +86,15 @@
   </div>
 </div>
 <!--详情 begin-->
-<div hqModal #lgModal="hq-modal" class="modal fade" tabindex="-1" role="dialog" size="lg" modalTitle="维修收银详情">
+<div hqModal #lgModal="hq-modal" class="modal fade" tabindex="-1" role="dialog" size="lg" modalTitle="销售收银详情">
   <!--工单详情 start-->
-  <hq-checkout-print-detail *ngIf="lgModal.isShown" [data]="selectedOrder"></hq-checkout-print-detail>
+  <hq-sale-check-detail *ngIf="lgModal.isShown" [data]="selectedOrder"></hq-sale-check-detail>
   <div class="card hq-fee">
     <div>
-      <span class="fee-name">工时费：<span class="fee-value">{{workHourFee|centToYuan}}</span></span>
+      <!--<span class="fee-name">工时费：<span class="fee-value">{{workHourFee|centToYuan}}</span></span>
       <span class="fee-name"> 材料费：<span class="fee-value">{{materialFee|centToYuan}}</span></span>
-      <span class="fee-name"> 优惠：<span class="fee-value">{{deduceAmount|centToYuan}}</span></span>
-      <span class="fee-name pull-right">应收金额：<span class="fee-value">{{billPrice|centToYuan}}</span></span>
+      <span class="fee-name"> 优惠：<span class="fee-value">{{deduceAmount|centToYuan}}</span></span>-->
+      <span class="fee-name pull-right">金额：<span class="fee-value">{{billPrice|centToYuan}}</span></span>
     </div>
   </div>
 </div>
@@ -95,12 +102,14 @@
 <!--收银弹框 begin-->
 <div hqModal #CheckoutModal="hq-modal" class="modal fade" tabindex="-1" role="dialog" size="lg" modalTitle="收银">
   <ng-template hq-alerter></ng-template>
-  <div class="hq-fee" style="margin-top:0">
-    <span class="fee-name">应收金额：<span class="fee-value">{{costMoney|centToYuan}}</span></span>
-  </div>
-  <div class="input-group checkout-item" *ngFor="let item of payData;">
-    <span class="input-group-addon" id="sizing-addon2" style="width:150px;">{{item.value}}(元)</span>
-    <input type="number" class="form-control" [(ngModel)]="item.amount" aria-label="Username" aria-describedby="sizing-addon1">
+  <div class="modal-body">
+    <div class="hq-fee" style="margin-top:0">
+      <span class="fee-name">应收金额：<span class="fee-value">{{costMoney|centToYuan}}</span></span>
+    </div>
+    <div class="input-group checkout-item" *ngFor="let item of payData;">
+      <span class="input-group-addon" id="sizing-addon2" style="width:150px;">{{item.value}}(元)</span>
+      <input type="number" class="form-control" [(ngModel)]="item.amount" aria-label="Username" aria-describedby="sizing-addon1">
+    </div>
   </div>
   <div class="btn-center"><button type="button" class="btn btn-primary" aria-label="Close" (click)="OnPostPay(CheckoutModal)">确定收银</button></div>
 </div>

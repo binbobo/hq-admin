@@ -63,6 +63,7 @@ const HQ_DIRECTIVES = [
     directives.IDCardValidator,
     directives.HqBsModalDirective,
     directives.HqModalDirective,
+    directives.ConversionCaseDirective,
 ]
 
 const HQ_PIPES = [
@@ -116,7 +117,7 @@ export const HQ_VALIDATORS = {
         HQ_PIPES,
         HQ_DIRECTIVES,
     ],
-    declarations: [HQ_COMPONENTS, HQ_PIPES, HQ_DIRECTIVE_COMPONENTS, HQ_DIRECTIVES, DropdownTreeComponent],
+    declarations: [HQ_COMPONENTS, HQ_PIPES, HQ_DIRECTIVE_COMPONENTS, HQ_DIRECTIVES],
     entryComponents: [HQ_DIRECTIVE_COMPONENTS]
 })
 export class SharedModule {

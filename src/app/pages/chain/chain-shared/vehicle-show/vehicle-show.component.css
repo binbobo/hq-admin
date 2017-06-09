@@ -1,9 +1,12 @@
 hq-vehicle-show .popover{
-    max-width: none!important;
+    max-width: none!important;  
 }
 hq-vehicle-show .popover-content{
     padding: 0;
 }
 hq-vehicle-show table td{
     padding: 4px 5px!important;
+}
+hq-vehicle-show  .popover.bs-tether-element-attached-top::after, .popover.popover-bottom::after{
+    border-bottom-color:#fff;
 }
