@@ -57,7 +57,7 @@ export class BusinessListComponent extends DataList<any> {
     this.totalValueService.getStationTreeView()
       .then(data => {
         this.stations = data;
-        if (this.stations.length > 1 || this.stations.find(m => m.children.length > 0).children.length > 0)
+        if (this.stations.length > 1 || this.stations.find(m => m.children.length > 0))
           this.orgShow = true;
       })
       .catch(err => this.alerter.error(err));
