@@ -5,66 +5,67 @@
     <span class="clearfix"></span>
   </p>
   <p>
-    <span class="fixed-width text-left"><span class="print-label">电话：</span>{{organizationInfo?.serviceCall}}</span>
-    <span class="fixed-width text-left"><span class="print-label">24小时救援电话：</span>{{organizationInfo?.rescueCall}}</span>
-    <span class="fixed-width text-center"><span class="print-label">操作人：</span>{{employeeInfo?.name}}</span>
-    <span class="fixed-width text-right"><span class="print-label">打印时间：</span>{{data?.printDateTime}}</span>
+    <span class="mr-2 pull-left"><span class="print-label">电话：</span>{{organizationInfo?.serviceCall}}</span>
+    <span class="mr-2 pull-right"><span class="print-label">24小时救援电话：</span>{{organizationInfo?.rescueCall}}</span>
+    <span class="clearfix"></span>
   </p>
 </div>
-<table class="table table-bordered">
+<table class="sign-table">
   <tr>
-    <td rowspan="4" class="td-header"><span class="print-label">托修方</span></td>
-    <td class="fixed-width"><span class="print-label">车牌号</span></td>
-    <td>{{data?.plateNo}}</td>
-    <td class="fixed-width"><span class="print-label">车型</span></td>
-    <td>
-      <span *ngIf="data?.brand">{{data?.brand}}</span>
-      <span *ngIf="data?.series">,{{data?.series}}</span>
-      <span *ngIf="data?.vehicleName">,{{data?.vehicleName}}</span>
-    </td>
+    <td colspan="6" class="print-label sign-title">托修方</td>
   </tr>
   <tr>
-    <td class="fixed-width"><span class="print-label">VIN</span></td>
-    <td>{{data?.vin}}</td>
     <td class="fixed-width"><span class="print-label">工单号</span></td>
     <td>{{data?.billCode}}</td>
+    <td class="fixed-width"><span class="print-label">车主</span></td>
+    <td>{{data?.customerName}}</td>
+    <td class="fixed-width"><span class="print-label">车牌号</span></td>
+    <td>{{data?.plateNo}}</td>
   </tr>
   <tr>
     <td class="fixed-width"><span class="print-label">送修人</span></td>
     <td>{{data?.contactUser}}</td>
     <td class="fixed-width"><span class="print-label">送修人手机</span></td>
     <td>{{data?.contactInfo}}</td>
-  </tr>
-  <tr>
-    <td class="fixed-width"><span class="print-label">车主</span></td>
-    <td>{{data?.customerName}}</td>
     <td class="fixed-width"><span class="print-label">购车日期</span></td>
     <td>{{data?.purchaseDate|sDate}}</td>
   </tr>
   <tr>
-    <td class="td-header" rowspan="4"><span class="print-label">承修方</span></td>
+    <td class="fixed-width"><span class="print-label">VIN</span></td>
+    <td>{{data?.vin}}</td>
+    <td class="fixed-width"><span class="print-label">车型</span></td>
+    <td rowspan="3">
+      <span *ngIf="data?.brand">{{data?.brand}}</span>
+      <span *ngIf="data?.series">,{{data?.series}}</span>
+      <span *ngIf="data?.vehicleName">,{{data?.vehicleName}}</span>
+    </td>
+  </tr>
+</table>
+<table class="sign-table">
+  <tr>
+    <td colspan="6" class="print-label sign-title">承修方</td>
+  </tr>
+  <tr>
     <td class="fixed-width"><span class="print-label">维修类型</span></td>
     <td>{{data?.typeName}}</td>
     <td class="fixed-width"><span class="print-label">服务顾问</span></td>
     <td>{{data?.createdUserName}}</td>
-  </tr>
-  <tr>
     <td class="fixed-width"><span class="print-label">维修技师</span></td>
     <td>{{data?.employeeNames}}</td>
-    <td class="fixed-width"><span class="print-label">预计交车时间</span></td>
-    <td>{{data?.expectLeave|sDatetime}}</td>
   </tr>
   <tr>
     <td class="fixed-width"><span class="print-label">进厂时间</span></td>
     <td>{{data?.createdOnUtc|sDatetime}}</td>
     <td class="fixed-width"><span class="print-label">进厂里程</span></td>
-    <td>{{data?.mileage}}<span class="pull-right">KM</span></td>
+    <td>{{data?.mileage}}KM</td>
+    <td class="fixed-width"><span class="print-label">预计交车时间</span></td>
+    <td>{{data?.expectLeave|sDatetime}}</td>
   </tr>
-  <tr>
+  <tr *ngIf="data.leaveTime">
     <td class="fixed-width"><span class="print-label">出厂时间</span></td>
     <td>{{data?.leaveTime|sDatetime}}</td>
     <td class="fixed-width"><span class="print-label">出厂里程</span></td>
-    <td>{{data?.leaveMileage}}<span class="pull-right">KM</span></td>
+    <td colspan="3">{{data?.leaveMileage}}KM</td>
   </tr>
 </table>
 <hq-maintenance-item-list [showCaption]="true" [showNo]="true" [showFee]="true" *ngIf="data?.serviceOutputs?.length>0" [serviceOutputs]="data?.serviceOutputs">
@@ -131,11 +132,9 @@
     </tr>
   </tbody>
 </table>
-<div class="row mt-5">
-  <p class="text-left col-6">
-    <span class="ml-2 col-6"><span class="print-label">客户签字：</span></span>
-  </p>
-    <p class="text-left  col-6">
-    <span class="col-6"><span class="print-label">日期：</span></span>
-  </p>
+<div class="mb-3">
+  <span class="mr-2"><span class="print-label">操作人：</span>{{employeeInfo?.name}}</span>
+  <span class="print-label">打印时间：</span>{{data?.printDateTime}}<span class="mr-2"></span>
+  <span class="print-label mr-5">客户签名：</span><span class="mr-5"></span>
+  <span class="print-label">日期：</span>
 </div>

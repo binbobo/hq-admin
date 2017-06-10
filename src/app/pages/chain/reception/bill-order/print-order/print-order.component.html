@@ -12,56 +12,59 @@
         <span class="clearfix"></span>
       </p>
     </div>
-    <table class="table table-bordered">
+    <table class="sign-table">
       <tr>
-        <td rowspan="3" class="td-header"><span class="print-label">托修方</span></td>
+        <td colspan="6" class="print-label sign-title">托修方</td>
+      </tr>
+      <tr>
+        <td><span class="print-label">工单号</span></td>
+        <td>{{data.maindata.billCode}}</td>
+        <td class="print-label">车主</td>
+        <td>{{data.maindata.customerName}}</td>
         <td class="print-label">车牌号</td>
         <td>{{data.maindata.plateNo}}</td>
-        <td class="fixed-width print-label">车型描述</td>
-        <td>{{data.maindata.model}} </td>
+
       </tr>
       <tr>
         <td><span class="print-label">送修人</span></td>
         <td>{{data.maindata.contactUser}}</td>
-        <td class="fixed-width"><span class="print-label">送修人电话</span></td>
+        <td class="fixed-width"><span class="print-label">送修人手机</span></td>
         <td>{{data.maindata.contactInfo}}</td>
-      </tr>
-      <tr>
         <td><span class="print-label">VIN</span></td>
         <td>{{data.maindata.vin}} </td>
-        <td><span class="print-label">工单号</span></td>
-        <td>{{data.maindata.billCode}}</td>
       </tr>
       <tr>
-        <td rowspan="5" class="td-header"><span class="print-label">承修方</span></td>
+        <td class="fixed-width print-label">车型</td>
+        <td colspan="5">{{data.maindata.model}} </td>
+      </tr>
+    </table>
+    <table class="sign-table">
+      <tr>
+        <td colspan="6" class="print-label sign-title">承修方</td>
+      </tr>
+      <tr>
         <td class="fixed-width"><span class="print-label">维修类型</span></td>
         <td>{{data.maindata.typeName}}</td>
         <td><span class="print-label">结算员</span></td>
         <td>{{data.maindata.updateUser}}</td>
+        <td class="fixed-width"><span class="print-label">服务顾问</span></td>
+        <td>{{data.maindata.createdUserName}}</td>
       </tr>
       <tr>
+        <td><span class="print-label">结算方</span></td>
+        <td>{{data.maindata.settlementParty}}</td>
         <td class="fixed-width"><span class="print-label">结算单号</span></td>
         <td>{{data.maindata.settlementCode}}</td>
         <td class="fixed-width"><span class="print-label">结算时间</span></td>
         <td>{{data.maindata.updateOnUtc|sDatetime}}</td>
       </tr>
       <tr>
-        <td><span class="print-label">结算方</span></td>
-        <td>{{data.maindata.settlementParty}}</td>
         <td class="fixed-width"><span class="print-label">进厂时间</span></td>
         <td>{{data.maindata.createdOnUtc|sDatetime}}</td>
-      </tr>
-      <tr>
-        <td class="fixed-width"><span class="print-label">进厂里程(KM)</span></td>
-        <td>{{data.maindata.mileage}}</td>
-        <td class="fixed-width"><span class="print-label">出厂里程(KM)</span></td>
-        <td>{{data.maindata.leaveMileage}}</td>
-      </tr>
-      <tr>
-        <td class="fixed-width"><span class="print-label">服务顾问</span></td>
-        <td>{{data.maindata.createdUserName}}</td>
-        <td></td>
-        <td></td>
+        <td class="fixed-width"><span class="print-label">进厂里程</span></td>
+        <td>{{data.maindata.mileage}}KM</td>
+        <td class="fixed-width"><span class="print-label">出厂里程</span></td>
+        <td>{{data.maindata.leaveMileage}}KM</td>
       </tr>
     </table>
     <table class="table table-bordered">
@@ -89,9 +92,8 @@
         </tr>
         <tr>
           <td colspan="7"><span class="print-label">金额合计：</span>¥{{(data.moneyObj)?.workItemMoney|centToYuan}}<span class="mr-4"></span>
-            <span
-              class="print-label">优惠：</span>¥{{(data.moneyObj).discountMoney|centToYuan}}
-              <span class="mr-4"></span><span class="print-label">应收金额：</span>¥{{(data.moneyObj)?.workCostMoney|centToYuan}}</td>
+            <span class="print-label">优惠：</span>¥{{(data.moneyObj).discountMoney|centToYuan}}
+            <span class="mr-4"></span><span class="print-label">应收金额：</span>¥{{(data.moneyObj)?.workCostMoney|centToYuan}}</td>
           <!--<td colspan="7">合计：应收金额：{{(data.moneyObj)?.workCostMoney|centToYuan}}&nbsp;&nbsp;&nbsp;&nbsp;折扣金额：{{(data.moneyObj)?.discountMoney|centToYuan}}</td>-->
         </tr>
       </tbody>
@@ -173,27 +175,17 @@
         </tr>
         <tr>
           <td colspan="4"><span class="print-label">金额合计：</span>¥{{(data.moneyObj)?.costMoney|centToYuan}}<span class="mr-4"></span>
-            <span
-              class="print-label">优惠：</span>¥{{(data.moneyObj).costCountMoney|centToYuan}}
-              <span class="mr-4"></span><span class="print-label">应收金额：</span>¥{{data.maindata.actualAmount|centToYuan}}
+            <span class="print-label">优惠：</span>¥{{(data.moneyObj).costCountMoney|centToYuan}}
+            <span class="mr-4"></span><span class="print-label">应收金额：</span>¥{{data.maindata.actualAmount|centToYuan}}
           </td>
         </tr>
       </tbody>
     </table>
     <hr>
     <div class="mb-3">
-      <p>
-        <span class="pull-left"><span class="print-label">打印时间：</span>{{data.maindata.printOnUtc|sDatetime}}</span>
-        <span class="mr-4 pull-right"><span class="print-label">操作人：</span>{{employeeInfo?.name}}<span class="mr-5"></span>
-        <span
-          class="mr-5"></span><span class="mr-5"></span></span>
-          <span class="clearfix"></span>
-      </p>
-      <p>
-        <span class="pull-left"><span class="print-label">客户签名：</span></span>
-        <span class="pull-right"><span class="print-label">日期：</span><span class="mr-5"></span><span class="print-label mr-5">年</span>
-        <span class="print-label mr-5">月</span><span class="print-label mr-4">日</span></span>
-        <span class="clearfix"></span>
-      </p>
+      <span class="mr-2"><span class="print-label">操作人：</span>{{employeeInfo?.name}}</span>
+      <span class="print-label">打印时间：</span>{{data.maindata.printOnUtc|sDatetime}}<span class="mr-2"></span>
+      <span class="print-label mr-5">客户签名：</span><span class="mr-5"></span>
+      <span class="print-label">日期：</span>
     </div>
   </div>
