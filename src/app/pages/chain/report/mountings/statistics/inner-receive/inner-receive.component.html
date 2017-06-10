@@ -23,12 +23,10 @@
         <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" date-only="true" class="form-control datetime-picker" style="border-right-width:1px;"
           id="endtime" formControlName="searchEnd" name="endtime" type="text" ngui-datetime-picker/>
       </div>
-      <div class="input-group m-1" *ngIf="stations?.length&&stations[0]?.children?.length">
-        <span class="input-group-addon">门店查询</span>
-        <div *ngIf="true" class="form-controls">
-          <hq-dropdown-tree text="name" value="id" [items]="stations" (onChange)="onSearchRangeChange($event)">
-          </hq-dropdown-tree>
-        </div>
+      <div class="input-group m-1" *ngIf="orgShow">
+        <span class="input-group-addon">门店</span>
+        <hq-dropdown-tree text="name" value="id" [items]="stations" (onChange)="onSearchRangeChange($event)">
+        </hq-dropdown-tree>
       </div>
       <button type="submit" class="btn btn-primary">查询</button>
     </form>
@@ -101,17 +99,17 @@
       </tr>
       <tr class="text-center" *ngFor="let item of detailItems">
         <td>{{item.productCode }}</td>
-        <td>{{item.locationName || '无'}}</td>
-        <td>{{item.productName }}</td>
-        <td>{{item.brandName}}</td>
-        <td>{{item.specification }}</td>
+        <td class="text-left">{{item.locationName || '无'}}</td>
+        <td class="text-left">{{item.productName }}</td>
+        <td class="text-left">{{item.brandName}}</td>
+        <td class="text-left">{{item.specification }}</td>
         <td>{{item.unit ||'个'}}</td>
-        <td>{{item.storeName }}</td>
-        <td>{{item.locationName }}</td>
+        <td class="text-left">{{item.storeName }}</td>
+        <td class="text-left">{{item.locationName }}</td>
         <td>{{item.existCount }}</td>
-        <td>{{item.price |centToYuan}}</td>
+        <td class="text-right">{{item.price |centToYuan}}</td>
         <td>{{item.count }}</td>
-        <td>{{item.amount |centToYuan }}</td>
+        <td class="text-right">{{item.amount |centToYuan }}</td>
       </tr>
     </table>
   </div>
