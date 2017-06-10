@@ -18,26 +18,28 @@
         <button type="button" (click)="createModal.show()" class="btn btn-secondary mx-sm-1">新增</button>
       </div>
     </form>
-    <table class="table table-bordered table-sm">
-      <thead>
-        <tr *ngIf="!loading">
-          <th>仓库代码</th>
-          <th>仓库名称</th>
-          <th>备注</th>
-          <th>操作时间</th>
-          <th>操作人</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of list">
-          <td class="text-center">{{item.code}}</td>
-          <td>{{item.name}}</td>
-          <td>{{item.description}}</td>
-          <td class="text-center">{{item.createdOnUtc|sDatetime}}</td>
-          <td>{{item.operator}}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-container text-center">
+      <table class="table table-bordered table-sm">
+        <thead>
+          <tr *ngIf="!loading">
+            <th>仓库代码</th>
+            <th>仓库名称</th>
+            <th>备注</th>
+            <th>操作时间</th>
+            <th>操作人</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of list">
+            <td class="text-center">{{item.code}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.description}}</td>
+            <td class="text-center">{{item.createdOnUtc|sDatetime}}</td>
+            <td>{{item.operator}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" [(itemsPerPage)]="size" (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
 </div>

@@ -85,10 +85,10 @@ export class DistributeComponent implements OnInit {
         this.serviceData = data.serviceOutputs;
         this.productData = data.productOutputs;
         this.serviceData.forEach(element => {
-          if(element.maintenanceEmployees.length>0){
-            element.isable=true;
-          }else{
-            element.isable=false;
+          if (element.maintenanceEmployees.length > 0) {
+            element.isable = true;
+          } else {
+            element.isable = false;
           }
         });
       }).catch(err => { this.alerter.error(err), this.serviceShow = false });
@@ -141,12 +141,8 @@ export class DistributeComponent implements OnInit {
       return this.service.getOrderPageData(p);
     };
   }
-
-
   private newItem: any;
-  private addNewItem = false
-
-
+  private addNewItem = false;
   InputData = {
     serviceName: "",
     employeesData: "",
@@ -168,6 +164,11 @@ export class DistributeComponent implements OnInit {
   generat = false;
   OnCreatBill() {
     this.generat = true;
+    if (!this.listId) {
+      this.alerter.error('工单id不能为空，请刷新重试', true, 3000);
+      this.generat = false;
+      return false;
+    }
     this.billData = {
       billCode: this.billCode,
       billId: this.listId,
@@ -258,11 +259,14 @@ export class DistributeComponent implements OnInit {
     SerialNumsList: []
   }
   printList: any;
-
   print() {
     this.printer.print();
   }
   onConfirmNumber(evt) {
+    if(evt.value.length<1){
+      this.alerter.error("请选择要打印的流水号", true, 3000);
+      return false;
+    }
     this.SerialNumsList = evt.value;
     this.service.getPrintList(this.listId, this.billCode, this.SerialNumsList).toPromise()
       .then(data => {
@@ -302,9 +306,7 @@ export class DistributeComponent implements OnInit {
     }, [])
 
   }
-
   suspend() {
-
     this.suspendData = {
       newMainData: this.newMainData,
       serviceData: this.serviceData,
@@ -325,7 +327,7 @@ export class DistributeComponent implements OnInit {
     if (!this.suspendData.billCode) {
       alert('请选择工单');
       return false;
-    }   
+    }
     this.suspendBill.suspend(this.suspendData)
       .then(() => { this.alerter.success('挂单成功！'); this.initDetailOrder(); this.initValue = ""; })
       .then(() => this.suspendBill.refresh())

@@ -38,7 +38,14 @@ h1::first-letter,h2::first-letter,h3::first-letter,h4::first-letter,h5::first-le
     font-size: 14px;
 }
 /*维修工单打印页面样式 --End*/
-
+.hq-printing .sign-table{
+ width:100%;
+}
+.hq-printing .sign-title{
+    text-align: left;
+    border-bottom: 1px solid #000;
+    vertical-align: bottom;
+}
 .print-header{
     /*clear: both;*/
     padding-bottom: 10px;
