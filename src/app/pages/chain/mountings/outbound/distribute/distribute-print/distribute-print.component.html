@@ -1,58 +1,57 @@
-<div class="print card">
-  <div class='card-block'>
-    <div *ngFor="let item of data">
-      <div class="col-12">
-        <!--<span class="print-label">门店名称</span>：{{organizationInfo?.name}} <br>-->
-        <span class="print-label">领料单号：</span>{{item.billCode}} <span class="mr-3"></span><span class="print-label">流水号：</span>{{item.serialNum}} <span class="mr-3"></span><span class="print-label">车牌号：</span>{{item.plateNo}}
-        <span class="mr-3"></span><span class="print-label">开单时间：</span>{{item.createBillDateTime|sDatetime}}</div>
-        <br>
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>维修项目</th>
-            <th>配件编码</th>
-            <th>配件类型</th>
-            <th>配件名称</th>
-            <th>品牌</th>
-            <th>规格型号</th>
-            <th>单位</th>
-            <th>&nbsp;仓库&nbsp;</th>
-            <th>库位</th>
-            <th>单价</th>
-            <th>数量</th>
-            <th>金额(元)</th>
-            <th>备注</th>
-            <th>领料人</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let ele of item.list">
-            <td>{{ele.serviceItem}}</td>
-            <td>{{ele.productCode}}</td>
-            <td>{{ele.productCategory}}</td>
-            <td>{{ele.productName}}</td>
-            <th>{{ele.brand}}</th>
-            <td>{{ele.productSpecification}}</td>
-            <td>{{ele.unit}}</td>
-            <td>{{ele.storeName}}</td>
-            <td>{{ele.locationName}}</td>
-            <td  class="text-right">{{ele.price |centToYuan}}</td>
-            <td>{{ele.count}}</td>
-            <td  class="text-right">{{ele.amount|centToYuan}}</td>
-            <td>{{ele.description}}</td>
-            <td>{{ele.employee}}</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="container">
-        <p>
-          <span class="mr-2 pull-left"><span class="print-label">打印时间：</span>{{item.printDateTime|sDatetime}}</span>
-          <span class="mr-2 pull-right"><span class="print-label">操作人：</span>{{employeeInfo?.name}}<span class="mr-3"></span><span class="print-label">领料人：</span><span class="mr-5"></span><span class="mr-5"></span></span>
-        </p>
-      </div>
-      <br>
-      <div class="page-break-after"></div>
-    </div>
+<br>
+<div *ngFor="let item of data">
+  <div class="clearfix">
+    <!--<span class="print-label">门店名称</span>：{{organizationInfo?.name}} <br>-->
+    <span class="print-label">领料单号：</span>{{item.billCode}} <span class="mr-3"></span><span class="print-label">流水号：</span>{{item.serialNum}}
+    <span class="mr-3"></span><span class="print-label">车牌号：</span>{{item.plateNo}}
+    <span class="mr-3"></span><span class="print-label">开单时间：</span>{{item.createBillDateTime|sDatetime}}
   </div>
-
+  <br>
+  <table class="bound-table">
+    <thead>
+      <tr>
+        <th>维修项目</th>
+        <th>配件编码</th>
+        <th>配件类型</th>
+        <th>配件名称</th>
+        <th>品牌</th>
+        <th>规格型号</th>
+        <th>单位</th>
+        <th>&nbsp;仓库&nbsp;</th>
+        <th>库位</th>
+        <th>单价</th>
+        <th>数量</th>
+        <th>金额(元)</th>
+        <th>备注</th>
+        <th>领料人</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let ele of item.list">
+        <td>{{ele.serviceItem}}</td>
+        <td>{{ele.productCode}}</td>
+        <td>{{ele.productCategory}}</td>
+        <td>{{ele.productName}}</td>
+        <th>{{ele.brand}}</th>
+        <td>{{ele.productSpecification}}</td>
+        <td>{{ele.unit}}</td>
+        <td>{{ele.storeName}}</td>
+        <td>{{ele.locationName}}</td>
+        <td class="text-right">{{ele.price |centToYuan}}</td>
+        <td>{{ele.count}}</td>
+        <td class="text-right">{{ele.amount|centToYuan}}</td>
+        <td>{{ele.description}}</td>
+        <td>{{ele.employee}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="clearfix">
+    <p>
+      <span class="mr-2 pull-left"><span class="print-label">打印时间：</span>{{item.printDateTime|sDatetime}}</span>
+      <span class="mr-2 pull-right"><span class="print-label">操作人：</span>{{employeeInfo?.name}}<span class="mr-3"></span>
+      <span class="print-label">领料人：</span><span class="mr-5"></span><span class="mr-5"></span></span>
+    </p>
+  </div>
+  <br>
+  <div class="page-break-after"></div>
 </div>

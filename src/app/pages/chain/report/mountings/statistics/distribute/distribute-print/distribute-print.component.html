@@ -18,8 +18,9 @@
   </div>-->
 </div>
 <!--<div class="table-container">-->
-<table class="table table-bordered">
-  <tr class="text-center">
+<table class="bound-table">
+  <thead>
+  <tr>
     <th>配件编码</th>
     <th>配件类型</th>
     <th>配件名称</th>
@@ -34,25 +35,28 @@
     <th>备注</th>
     <th>领料人</th>
   </tr>
+  </thead>
+  <tbody>
   <tr *ngFor="let item of detailItems">
-    <td class="text-center">{{item.productCode }}</td>
+    <td>{{item.productCode }}</td>
     <td>{{item.productSpecification }}</td>
     <td>{{item.productName }}</td>
     <td>{{item.brandName }}</td>
     <td>{{item.productSpecification }}</td>
-    <td class="text-center">{{item.specification || '个'}}</td>
+    <td>{{item.specification || '个'}}</td>
     <td>{{item.storeName }}</td>
     <td>{{item.locationName }}</td>
     <td class="text-right">{{item.price|centToYuan }}</td>
-    <td class="text-center">{{item.count }}</td>
+    <td>{{item.count }}</td>
     <td class="text-right">{{item.amount |centToYuan}}</td>
     <td>{{item.description }}</td>
     <td>{{item.takeUser }}</td>
   </tr>
+  </tbody>
 </table>
 <!--</div>-->
 <p *ngIf="!!!detailItemsLength">暂无数据</p>
-<div class="row">
-  <p class="col-4"><label class="print-label">打印时间：</label>{{newDate}}</p>
-  <p class="col-4"><label class="print-label">操作人：</label>{{detail?.operator}}</p>
+ <div class="clearfix mt-2">
+  <p class="col-4 pull-left"><label class="print-label">打印时间：</label>{{newDate}}</p>
+  <p class="col-4 pull-left"><label class="print-label">操作人：</label>{{detail?.operator}}</p>
 </div>
