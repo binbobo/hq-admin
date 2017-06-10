@@ -14,9 +14,10 @@
       </div>
       <div class="form-group">
         <label class="form-control-label hq-required">配件分类：</label>
-        <input label="配件分类：" [attr.disabled]='editable' (input)="onCategoryChange($event)" hqProductCategoryTypeahead (onSelect)="onCategorySelect($event)"
-          formControlName="categoryName" class="form-control" placeholder="请输入配件分类">
-        <input label="配件分类" formControlName="categoryId" [errors]="{required:'请选择一个有效的分类'}" type="hidden">
+        <input label="配件分类：" [attr.disabled]='editable' (focus)="categoryId.clear()" (blur)="categoryId.validate()" (input)="onCategoryChange($event)"
+          hqProductCategoryTypeahead (onSelect)="onCategorySelect($event)" formControlName="categoryName" class="form-control"
+          placeholder="请输入配件分类">
+        <input label="配件分类" #categoryId="hq-error" formControlName="categoryId" [errors]="{required:'请从搜索结果中选择分类'}" type="hidden">
       </div>
       <div class="form-group">
         <label class="form-control-label hq-required">配件名称：</label>
