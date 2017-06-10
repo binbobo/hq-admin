@@ -4,15 +4,22 @@
     border-radius: 4px;
     position: absolute;
     z-index: 4;
-    border: 1px solid #27b394;
+    border: 1px solid rgba(0,0,0,.15);
 }
-
+tr td:first-child,tr th:first-child{
+    border-left-width: 0;
+}
+tr td:last-child,tr th:last-child{
+    border-right-width: 0;
+}
 td,th{
     padding: 5px 10px!important;
     white-space: nowrap;
 }
 .table{
-    margin-bottom: 0;
+    margin-bottom: 0px;
+    border-right-width: 0;
+    border-left-width: 0;
 }
 tbody tr{
     cursor: pointer;
@@ -26,4 +33,7 @@ tbody tr{
 }
 .hq-search{
     background-color:#fff;
+}
+.footer{
+    margin: 1px;
 }

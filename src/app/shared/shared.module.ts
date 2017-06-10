@@ -10,19 +10,6 @@ import { FormsModule, NgModel } from '@angular/forms';
 import { PaginationModule, PopoverModule, AlertModule, ModalModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
 import { NgPipesModule } from 'ngx-pipes';
-import { TelValidator } from './directives/validators/tel.directive';
-import { MobileValidator } from './directives/validators/mobile.directive';
-import { PlateNoValidator } from './directives/validators/plateNo.directive';
-import { VINValidator } from './directives/validators/vin.directive';
-import { EngineNoValidator } from './directives/validators/engineNo.directive';
-import { MileageValidator } from './directives/validators/mileage.directive';
-import { IDCardValidator } from './directives/validators/idCard.directive';
-import { HqBsModalDirective } from './directives/modal/hq-bs-modal.directive';
-import { HqModalDirective } from './directives/modal/hq-modal.directive';
-import { HqModalComponent } from './directives/modal/hq-modal/hq-modal.component';
-import { TreeComponent } from './components/treeview/tree/tree.component';
-import { DropdownTreeComponent } from './components/treeview/dropdown-tree/dropdown-tree.component';
-
 
 const HQ_COMPONENTS = [
     components.PaginationComponent,

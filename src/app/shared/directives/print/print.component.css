@@ -39,13 +39,23 @@ h1::first-letter,h2::first-letter,h3::first-letter,h4::first-letter,h5::first-le
 }
 /*维修工单打印页面样式 --End*/
 .hq-printing .sign-table{
- width:100%;
+    width:100%;
 }
 .hq-printing .sign-title{
     text-align: left;
     border-bottom: 1px solid #000;
     vertical-align: bottom;
 }
+/*出入库表格样式*/
+.hq-printing .bound-table {
+    width:100%;
+    color:#727171;
+    text-align: center;
+}
+.hq-printing .bound-table thead{
+    border: 1px solid #727171;
+}
+
 .print-header{
     /*clear: both;*/
     padding-bottom: 10px;

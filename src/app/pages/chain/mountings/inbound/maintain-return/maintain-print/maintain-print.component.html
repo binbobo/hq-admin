@@ -1,13 +1,12 @@
-<div class="print card">
-  <div class='card-block'>
+  <br>
     <div *ngFor="let item of data">
-      <div class="col-12">
+      <div class="clearfix">
         <!--<span class="print-label">门店名称：</span>{{organizationInfo?.name}}<br>-->
         <span class="print-label">退料单号：</span>{{item.billCode}}<span class="mr-3"></span><span class="print-label">流水号：</span>{{item.serialNum}} <span class="mr-3"></span><span class="print-label">车牌号：</span>{{item.plateNo}}
        <span class="mr-3"></span><span class="print-label">开单时间：</span>{{item.createBillDateTime|sDatetime}}
       </div>
       <br>
-      <table class="table table-bordered">
+      <table class="bound-table">
         <thead>
           <tr>
             <th>维修项目</th>
@@ -45,7 +44,7 @@
           </tr>
         </tbody>
       </table>
-      <div class="container">
+      <div class="clearfix">
         <p>
           <span class="mr-2 pull-left"><span class="print-label">打印时间：</span>{{item.printDateTime|sDatetime}}</span>
           <span class="mr-2 pull-right"><span class="print-label">操作人：</span>{{employeeInfo?.name}}<span class="mr-3"></span><span class="print-label">退料人：</span><span class="mr-5"></span><span class="mr-5"></span></span>
@@ -54,5 +53,3 @@
       <br>
       <div class="page-break-after"></div>
     </div>
-  </div>
-</div>

@@ -263,6 +263,10 @@ export class DistributeComponent implements OnInit {
     this.printer.print();
   }
   onConfirmNumber(evt) {
+    if (evt.value.length < 1) {
+      this.alerter.error("请选择要打印的流水号", true, 3000);
+      return false;
+    }
     this.SerialNumsList = evt.value;
     this.service.getPrintList(this.listId, this.billCode, this.SerialNumsList).toPromise()
       .then(data => {

@@ -71,7 +71,7 @@ export class BillOrderComponent extends DataList<any>{
     billSheetForm: FormGroup;
     billForm() {
         this.billSheetForm = this.fb.group({
-            billPrice: ['', [Validators.required, CustomValidators.lte(this.billPricex / 100), CustomValidators.digits]], //金额
+            billPrice: ['', [Validators.required, CustomValidators.lte(this.billPricex / 100)]], //金额
             leaveMileage: ['', [Validators.required, CustomValidators.gte(this.mileage)]], // 出厂里程
         })
     }

@@ -5,6 +5,7 @@ import { SelectOption, PagedResult, DataList, PagedParams } from "app/shared/mod
 import { InnerReturnService, InnerPrintItem, BillCodeSearchRequest } from "../inner-return.service";
 import { SuspendBillDirective } from "app/pages/chain/chain-shared";
 import { FormGroup, FormBuilder } from "@angular/forms/";
+// import { RequestIdService } from "app/shared/services";
 
 @Component({
   selector: 'hq-return-list',
@@ -49,6 +50,7 @@ export class ReturnListComponent extends DataList<any> {
     injector: Injector,
     private formBuilder: FormBuilder,
     private innerReturnService: InnerReturnService,
+    // private requestIdService: RequestIdService,
   ) {
     super(injector, innerReturnService);
     this.params = new BillCodeSearchRequest();
@@ -56,12 +58,14 @@ export class ReturnListComponent extends DataList<any> {
   }
 
   ngOnInit() {
+    // this.requestIdService.refesh();
     this.innerReturnService.getInnerOptions()
       .then(data => {
         this.employees = data;
         this.takeUser = this.employees.length && this.employees[0].takeUser;
         this.departments = this.employees.find(m => m.takeUser == this.takeUser);
-        this.takeDepartId =this.departments.departList && this.departments.departList[0].id;
+        let departLists = this.departments && this.departments.departList;
+        this.takeDepartId = departLists.length && departLists[0].id;
       })
       .catch(err => this.alerter.error(err));
     this.lazyLoad = true;
@@ -76,7 +80,9 @@ export class ReturnListComponent extends DataList<any> {
     this.departments = null;
     this.takeUser = el.value;
     this.departments = this.employees.find(m => m.takeUser == this.takeUser);
-    this.takeDepartId =this.departments.departList && this.departments.departList[0].id;
+    let departLists = this.departments && this.departments.departList;
+    this.takeDepartId = departLists.length && departLists[0].id;
+    // this.takeDepartId =this.departments && this.departments.departList[0].id;
     this.billCode = null;
     this.list = null;
     this.originalBillId = null;
@@ -110,6 +116,7 @@ export class ReturnListComponent extends DataList<any> {
     this.innerReturnService.createReturnList(this.billData)
       .then(data => {
         this.createLoading = false;
+        // this.requestIdService.refesh();
         return confirm('已生成内部退料单，是否需要打印？') ? data : null;
       })
       .then(code => code && this.innerReturnService.get(code))
@@ -126,6 +133,8 @@ export class ReturnListComponent extends DataList<any> {
       })
       .catch(err => {
         this.alerter.error(err);
+        this.createLoading = false;
+        // this.requestIdService.refesh();
       })
   }
 
@@ -197,8 +206,10 @@ export class ReturnListComponent extends DataList<any> {
 
   //删除退料信息
   onDelCreat(e, i) {
-    if (confirm('是否确认删除该条退料信息！'))
+    if (confirm('是否确认删除该条退料信息！')) {
       this.returnData.splice(i, 1);
+
+    }
   }
 
   //选择挂单信息

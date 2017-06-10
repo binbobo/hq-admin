@@ -57,7 +57,7 @@ export class BusinessListComponent extends DataList<any> {
     this.totalValueService.getStationTreeView()
       .then(data => {
         this.stations = data;
-        if (this.stations.length > 1 || this.stations.find(m => m.children.length > 0).children.length > 0)
+        if (this.stations.length > 1 || this.stations.find(m => m.children.length > 0))
           this.orgShow = true;
       })
       .catch(err => this.alerter.error(err));
@@ -71,11 +71,11 @@ export class BusinessListComponent extends DataList<any> {
   //门店下拉框选择
   onStationSelect(evt) {
     if (evt.length) {
-      let arr = [];
+      let orgIdsArr = [];
       evt.map(m => {
-        arr.push(m.value);
+        orgIdsArr.push(m.value);
       })
-      this.params.orgIds = arr;
+      this.params.orgIds = orgIdsArr;
     } else {
       this.params.orgIds = null;
     }

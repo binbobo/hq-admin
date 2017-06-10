@@ -15,12 +15,10 @@
         <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" date-only="true" class="form-control datetime-picker" style="border-right-width:1px;"
           id="endtime" formControlName="searchEnd" name="endtime" type="text" ngui-datetime-picker/>
       </div>
-      <div class="input-group m-1" *ngIf="stations?.length&&stations[0]?.children?.length">
-        <span class="input-group-addon">门店查询</span>
-        <div *ngIf="true" class="form-controls">
+      <div class="input-group m-1" *ngIf="orgShow">
+        <span class="input-group-addon">门店</span>
           <hq-dropdown-tree text="name" value="id" [items]="stations" (onChange)="onSearchRangeChange($event)">
           </hq-dropdown-tree>
-        </div>
       </div>
       <button type="submit" class="btn btn-primary">查询</button>
     </form>
@@ -39,7 +37,7 @@
         </tr>
         <tr *ngFor="let item of list">
           <td class="text-center">
-            <button type="button" [hqSpinner]="false" class="btn btn-info btn-sm" (click)="alert(item,item.id,bdModal,item.billCode)">详情</button>
+            <button type="button" [hqSpinner]="item.hqSpinner" class="btn btn-info btn-sm" (click)="alert(item,item.id,bdModal,item.billCode)">详情</button>
           </td>
           <td class="text-center">{{item.plateNo }}</td>
           <td class="text-center">{{item.billCode }}</td>

@@ -21,6 +21,7 @@ export class DistributeComponent extends DataList<any> {
   detailItemsLength: number;
   isLoading: boolean = false;
   private stations: Array<any>;
+  private orgShow = false;
 
   constructor(
     protected service: DistributeService,
@@ -35,6 +36,8 @@ export class DistributeComponent extends DataList<any> {
     this.totalValueService.getStationTreeView()
       .then(data => {
         this.stations = data;
+        if (this.stations.length > 1 || this.stations.find(m => m.children.length > 0))
+          this.orgShow = true;
       })
       .catch(err => this.alerter.error(err));
   }
@@ -52,8 +55,9 @@ export class DistributeComponent extends DataList<any> {
       bdModule.show();
       ev.hqSpinner = false;
     }).catch((err) => {
-      console.log('err', err)
-      // this.alerter.error(err, true, 2000);
+      // console.log('err', err)
+      ev.hqSpinner = false;
+      this.alerter.error(err, true, 2000);
     });
   }
 
