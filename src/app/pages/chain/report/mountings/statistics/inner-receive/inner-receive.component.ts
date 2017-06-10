@@ -23,6 +23,7 @@ export class InnerReceiveComponent extends DataList<any> {
   private employees: Array<SelectOption>;
   private departments: Array<SelectOption>;
   private stations: Array<any>;
+  private orgShow = false;
 
   constructor(
     injector: Injector,
@@ -37,6 +38,8 @@ export class InnerReceiveComponent extends DataList<any> {
     this.totalValueService.getStationTreeView()
       .then(data => {
         this.stations = data;
+        if (this.stations.length > 1 || this.stations.find(m => m.children.length > 0))
+          this.orgShow = true;
       })
       .catch(err => this.alerter.error(err));
 

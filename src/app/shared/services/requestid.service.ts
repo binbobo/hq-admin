@@ -10,7 +10,6 @@ export class RequestIdService {
     this.dispatcher.emit('RequestIdChanged', requestId);
   }
 
-  //ng2-uuid  v1
   private generateId(l?: number): string {
     if (!l) {
       l = 4;

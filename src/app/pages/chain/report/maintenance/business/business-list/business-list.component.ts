@@ -71,11 +71,11 @@ export class BusinessListComponent extends DataList<any> {
   //门店下拉框选择
   onStationSelect(evt) {
     if (evt.length) {
-      let arr = [];
+      let orgIdsArr = [];
       evt.map(m => {
-        arr.push(m.value);
+        orgIdsArr.push(m.value);
       })
-      this.params.orgIds = arr;
+      this.params.orgIds = orgIdsArr;
     } else {
       this.params.orgIds = null;
     }
