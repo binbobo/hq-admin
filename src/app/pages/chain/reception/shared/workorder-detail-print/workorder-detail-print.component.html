@@ -34,7 +34,7 @@
     <td class="fixed-width"><span class="print-label">VIN</span></td>
     <td>{{data?.vin}}</td>
     <td class="fixed-width"><span class="print-label">车型</span></td>
-    <td rowspan="3">
+    <td colspan="3">
       <span *ngIf="data?.brand">{{data?.brand}}</span>
       <span *ngIf="data?.series">,{{data?.series}}</span>
       <span *ngIf="data?.vehicleName">,{{data?.vehicleName}}</span>
