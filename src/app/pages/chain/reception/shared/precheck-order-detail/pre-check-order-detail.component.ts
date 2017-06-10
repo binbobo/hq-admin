@@ -9,6 +9,8 @@ export class PreCheckOrderDetailComponent implements OnInit {
   @Input()
   data: any;
 
+  emptyText = '暂无';
+
   constructor() { }
 
   ngOnInit() {

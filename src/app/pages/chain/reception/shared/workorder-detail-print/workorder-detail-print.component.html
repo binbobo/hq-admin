@@ -73,22 +73,23 @@
   [productOutputs]="data?.productOutputs"></hq-maintenance-fixings-list>
 <hq-attachment-item-list *ngIf="data?.attachServiceOutputs?.length>0" [showNo]="true" [showCaption]="true" [attachServiceOutputs]="data?.attachServiceOutputs"></hq-attachment-item-list>
 <hq-suggested-item-list *ngIf="data?.suggestServiceOutputs?.length>0" [showNo]="true" [showCaption]="true" [suggestServiceOutputs]="data?.suggestServiceOutputs"></hq-suggested-item-list>
-<table class="table table-bordered">
+<table class="table text-font table-bordered">
   <caption>预检信息</caption>
   <tbody>
     <tr>
       <td>预检类型</td>
-      <td>{{data?.preCheckOrder?.maintainType}}</td>
+      <td>{{data?.maintainType || data?.preCheckOrder?.emptyText}}</td>
       <td>油量</td>
-      <td>{{data?.preCheckOrder?.innage}}</td>
+      <td *ngIf="data?.innage">{{data?.innage}}<span class="pull-right">%</span></td>
+      <td *ngIf="!data?.innage">{{data?.preCheckOrder?.emptyText}}</td>
     </tr>
     <tr>
       <td>故障描述</td>
-      <td colspan="3">{{data?.preCheckOrder?.customerDescription}}</td>
+      <td colspan="3">{{data?.customerDescription || data?.preCheckOrder?.emptyText}}</td>
     </tr>
   </tbody>
 </table>
-<table class="table table-bordered">
+<table class="table text-font table-bordered">
   <caption>检查项</caption>
   <thead>
     <th>项目名称</th>
@@ -101,32 +102,34 @@
       <td>随车附件</td>
       <td>
         <span class="d-block">检查项： {{data?.preCheckOrder?.accessory.checkItem}}</span>
-        <span class="d-block">合格项： {{data?.preCheckOrder?.accessory.qualified}}项</span>
-        <span class="d-block">异常项： {{data?.preCheckOrder?.accessory.exception}}项</span>
+        <span class="d-block">合格项： {{data?.preCheckOrder?.accessory.qualified}}</span>
+        <span class="d-block text-danger">异常项： {{data?.preCheckOrder?.accessory.exception}}</span>
       </td>
-      <td>
+      <td *ngIf="data?.preCheckOrder?.accessory.exceptionList&&data?.preCheckOrder?.accessory.exceptionList.length>0">
         <span class="d-block" *ngFor="let item of data?.preCheckOrder?.accessory.exceptionList">
             {{item.content}}
           </span>
       </td>
+      <td *ngIf="!data?.preCheckOrder?.accessory.exceptionList || data?.preCheckOrder?.accessory.exceptionList.length<=0">{{data?.preCheckOrder?.emptyText}}</td>
       <td>
-        {{data?.preCheckOrder?.accessoryDescription}}
+        {{data?.preCheckOrder?.accessoryDescription || data?.preCheckOrder?.emptyText}}
       </td>
     </tr>
     <tr>
       <td>仪表盘</td>
       <td>
         <span class="d-block">检查项： {{data?.preCheckOrder?.dashboard.checkItem}}</span>
-        <span class="d-block">合格项： {{data?.preCheckOrder?.dashboard.qualified}}项</span>
-        <span class="d-block">异常项： {{data?.preCheckOrder?.dashboard.exception}}项</span>
+        <span class="d-block">合格项： {{data?.preCheckOrder?.dashboard.qualified}}</span>
+        <span class="d-block text-danger">异常项： {{data?.preCheckOrder?.dashboard.exception}}</span>
       </td>
-      <td>
+      <td *ngIf="data?.preCheckOrder?.dashboard.exceptionList&&data?.preCheckOrder?.dashboard.exceptionList.length>0">
         <span class="d-block" *ngFor="let item of data?.preCheckOrder?.dashboard.exceptionList">
             {{item.content}}
           </span>
       </td>
+      <td *ngIf="!data?.preCheckOrder?.dashboard.exceptionList||data?.preCheckOrder?.dashboard.exceptionList.length<=0">{{data?.preCheckOrder?.emptyText}}</td>
       <td>
-        {{data?.preCheckOrder?.dashboardDescription}}
+        {{data?.preCheckOrder?.dashboardDescription || data?.preCheckOrder?.emptyText}}
       </td>
     </tr>
   </tbody>
@@ -135,7 +138,7 @@
   <p class="text-left col-6">
     <span class="ml-2 col-6"><span class="print-label">客户签字：</span></span>
   </p>
-    <p class="text-left  col-6">
+  <p class="text-left  col-6">
     <span class="col-6"><span class="print-label">日期：</span></span>
   </p>
 </div>
