@@ -74,7 +74,7 @@
   [productOutputs]="data?.productOutputs"></hq-maintenance-fixings-list>
 <hq-attachment-item-list *ngIf="data?.attachServiceOutputs?.length>0" [showNo]="true" [showCaption]="true" [attachServiceOutputs]="data?.attachServiceOutputs"></hq-attachment-item-list>
 <hq-suggested-item-list *ngIf="data?.suggestServiceOutputs?.length>0" [showNo]="true" [showCaption]="true" [suggestServiceOutputs]="data?.suggestServiceOutputs"></hq-suggested-item-list>
-<table class="table text-font table-bordered">
+<table *ngIf="data?.preCheckOrder" class="table text-font table-bordered">
   <caption>预检信息</caption>
   <tbody>
     <tr>
@@ -90,7 +90,7 @@
     </tr>
   </tbody>
 </table>
-<table class="table text-font table-bordered">
+<table *ngIf="data?.preCheckOrder" class="table text-font table-bordered">
   <caption>检查项</caption>
   <thead>
     <th>项目名称</th>
