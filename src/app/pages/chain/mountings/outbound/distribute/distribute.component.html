@@ -78,6 +78,7 @@
           <thead>
             <tr>
               <th>操作</th>
+              <th>序号</th>
               <th>维修项目</th>
               <th>配件编码</th>
               <th>配件分类</th>
@@ -98,6 +99,7 @@
           <tbody>
             <tr *ngFor="let ele of newMainData;let i=index">
               <td><button class="btn btn-sm btn-danger" (click)="onDelCreat(i)">删除</button></td>
+              <td>{{i+1}}</td>
               <td>{{ele.serviceName}}</td>
               <td>{{ele.productCode}}</td>
               <td>{{ele.productCategory}}</td>

@@ -22,6 +22,7 @@ export class ProcurementComponent extends DataList<any> {
   isLoading: boolean = false;
   private stations: Array<any>;
   private orgShow = false;
+  private orgNameShow = false;
 
   constructor(
     injector: Injector,
@@ -81,7 +82,11 @@ export class ProcurementComponent extends DataList<any> {
     Object.assign(this.params, this.procurementForm.value);
     this.params.searchEnd = this.procurementForm.get('searchEnd').value && this.procurementForm.get('searchEnd').value + 'T23:59:59.999';
     console.log('params', this.params);
+    this.orgNameShow = false;
     this.onLoadList();
+    if (this.params.orgIds && this.params.orgIds.length > 1) {
+      this.orgNameShow = true;
+    }
   }
 
   //绑定表单

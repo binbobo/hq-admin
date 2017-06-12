@@ -38,6 +38,7 @@
         <thead>
           <tr>
             <th>操作</th>
+            <th>序号</th>
             <th>配件编码</th>
             <th>配件分类</th>
             <th>配件名称</th>
@@ -52,8 +53,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of model?.list">
+          <tr *ngFor="let item of model?.list;let index = index">
             <td class="text-center"><button (click)="onProductRemove(item)" class="btn btn-sm btn-danger">删除</button></td>
+            <td class="text-center">{{index+1}}</td>
             <td class="text-center">{{item.productCode }}</td>
             <td>{{item.productCategory}}</td>
             <td>{{item.productName}}</td>

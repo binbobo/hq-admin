@@ -22,6 +22,7 @@
         <thead>
           <tr>
             <th>操作</th>
+            <th>序号</th>
             <th>仓库</th>
             <th>库位</th>
             <th>配件编码</th>
@@ -43,6 +44,7 @@
               <button (click)="onEdit(item)" class="btn btn-sm btn-info">编辑</button>
               <button (click)="onRemove(item)" class="btn btn-sm btn-danger">删除</button>
             </td>
+            <td>{{i+1}}</td>
             <td>{{item.storeName}}</td>
             <td>{{item.locationName }}</td>
             <td>{{item.productCode }}</td>

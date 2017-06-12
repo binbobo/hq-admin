@@ -24,7 +24,7 @@ export class InnerReceiveComponent extends DataList<any> {
   private departments: Array<SelectOption>;
   private stations: Array<any>;
   private orgShow = false;
-
+  private orgNameShow=false;
   constructor(
     injector: Injector,
     protected service: ReceiveService,
@@ -129,7 +129,11 @@ export class InnerReceiveComponent extends DataList<any> {
     Object.assign(this.params, this.receiveForm.value);
     this.params.searchEnd = this.receiveForm.get('searchEnd').value && this.receiveForm.get('searchEnd').value + 'T23:59:59.999';
     console.log('params', this.params);
+    this.orgNameShow=false;
     this.onLoadList();
+    if(this.params.orgIds&&this.params.orgIds.length>1){
+      this.orgNameShow=true;
+    }
   }
 
   //绑定表单

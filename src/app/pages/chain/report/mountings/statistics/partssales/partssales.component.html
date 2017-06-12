@@ -1,3 +1,4 @@
+<ng-template hq-alerter></ng-template>
 <div class="card">
   <div class="card-header">配件销售统计</div>
   <div class="card-block">
@@ -47,6 +48,7 @@
       <table class="table table-bordered text-center">
         <tr>
           <th>操作</th>
+          <th *ngIf="orgNameShow">店名</th>
           <th>出库单号</th>
           <th>客户名称</th>
           <th>客户手机</th>
@@ -60,6 +62,7 @@
           <td>
             <button type="button" [hqSpinner]="item.hqSpinner" class="btn btn-info btn-sm" (click)="alert(item,item.id,bdModal,item.billCode,item.customerName)">详情</button>
           </td>
+          <td *ngIf="orgNameShow" class="text-left">{{item.orgName}}</td>
           <td>{{item.billCode}}</td>
           <td class="text-left">{{item.customerName }}</td>
           <td>{{item.customerPhone }}</td>
