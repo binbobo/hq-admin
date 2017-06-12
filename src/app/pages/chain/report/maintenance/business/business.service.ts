@@ -63,27 +63,13 @@ export class BusinessService implements BasicService<any> {
       .catch(err => Promise.reject(`获取详情数据失败：${err}`))
   }
 
-  //获取服务顾问列表
-  getEmployeesStores(): Observable<TreeviewItem[]> {
-    const url = Urls.chain.concat('/Employees/GetByKey?key=SA');
-    return this.httpService
-      .request(url)
-      .map(response => {
-        let employeess = [];
-        response.json().data.map((value) => {
-          let obj = { text: value.name, value: value.id ,checked: false};
-          employeess.push(new TreeviewItem(obj));
-        })
-        return employeess;
-      });
-  }
 
 }
 //请求参数
 export class BusinessListRequest extends PagedParams {
   constructor(
     public plateNo?: string, // 车牌号
-    public employees?: Array<string>, // 服务顾问ID
+    public employeeName?: string, // 服务顾问
     public enterStartTimeDate?: string, // 进店开始时间
     public enterEndTimeDate?: string, // 进店结束时间
     public leaveStartTimeDate?: string, // 出厂开始时间

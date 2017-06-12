@@ -26,8 +26,9 @@
       </div>
       <div class="input-group m-1">
         <label class="input-group-addon">服务顾问</label>
-        <ngx-dropdown-treeview [items]="nameItems" (selectedChange)="onSearchNameChange($event)">
-        </ngx-dropdown-treeview>
+        <input type="text" class="form-control" [(ngModel)]="params.employeeName" name="employeeName" placeholder="请输入服务顾问">
+        <!--<ngx-dropdown-treeview [items]="nameItems" (selectedChange)="onSearchNameChange($event)">
+        </ngx-dropdown-treeview>-->
       </div>
       <div *ngIf="orgShow" class="input-group m-1">
         <label class="input-group-addon">门店</label>
@@ -46,7 +47,7 @@
         <thead>
           <tr>
             <th>操作</th>
-            <th *ngIf="orgShow">店名</th>
+            <th *ngIf="orgNameShow">店名</th>
             <th>车牌号</th>
             <th>工单号</th>
             <th>维修类型</th>
@@ -67,7 +68,7 @@
             <td width="75">
               <button [hqSpinner]="item.generating" [disabled]="item.generating" type="button" class="btn btn-info btn-sm" (click)="businessDetailsHandler(item, item.id)">详情</button>
             </td>
-            <td *ngIf="orgShow" class="text-left">{{item.orgName}}</td>
+            <td *ngIf="orgNameShow" class="text-left">{{item.orgName}}</td>
             <td>{{item.plateNo}}</td>
             <td>{{item.billCode}}</td>
             <td>{{item.typeName}}</td>
@@ -93,7 +94,7 @@
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" [(itemsPerPage)]="size" (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
   <div class="card-footer">
-    <button type="button" (click)="onExport()" class="btn btn-export">导出</button>
+    <button [hqSpinner]="exportGenerating" type="button" (click)="onExport()" class="btn btn-export">导出</button>
   </div>
 </div>
 
