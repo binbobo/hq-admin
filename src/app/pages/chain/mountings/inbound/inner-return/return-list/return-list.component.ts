@@ -64,8 +64,8 @@ export class ReturnListComponent extends DataList<any> {
         this.employees = data;
         this.takeUser = this.employees.length && this.employees[0].takeUser;
         this.departments = this.employees.find(m => m.takeUser == this.takeUser);
-        let departLists = this.departments && this.departments.departList;
-        this.takeDepartId = departLists.length && departLists[0].id;
+        if (this.departments && this.departments.departLists)
+          this.takeDepartId = this.departments.departLists.length && this.departments.departLists[0].id;
       })
       .catch(err => this.alerter.error(err));
     this.lazyLoad = true;
@@ -80,8 +80,8 @@ export class ReturnListComponent extends DataList<any> {
     this.departments = null;
     this.takeUser = el.value;
     this.departments = this.employees.find(m => m.takeUser == this.takeUser);
-    let departLists = this.departments && this.departments.departList;
-    this.takeDepartId = departLists.length && departLists[0].id;
+    if (this.departments && this.departments.departLists)
+      this.takeDepartId = this.departments.departLists.length && this.departments.departLists[0].id;
     // this.takeDepartId =this.departments && this.departments.departList[0].id;
     this.billCode = null;
     this.list = null;
@@ -117,6 +117,7 @@ export class ReturnListComponent extends DataList<any> {
       .then(data => {
         this.createLoading = false;
         // this.requestIdService.refesh();
+        this.suspendBill.refresh();
         return confirm('已生成内部退料单，是否需要打印？') ? data : null;
       })
       .then(code => code && this.innerReturnService.get(code))
@@ -166,9 +167,9 @@ export class ReturnListComponent extends DataList<any> {
         originalBillId: this.originalBillId,
       }
       this.suspendBill.suspend(this.suspendData)
-        .then(() => this.suspendBill.refresh())
         .then(() => {
           this.alerter.success('挂单成功！');
+          this.suspendBill.refresh();
           this.suspendLoading = false;
           this.createLoading = false;
         })

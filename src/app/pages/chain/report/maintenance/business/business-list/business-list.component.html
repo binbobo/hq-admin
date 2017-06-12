@@ -26,8 +26,9 @@
       </div>
       <div class="input-group m-1">
         <label class="input-group-addon">服务顾问</label>
-        <ngx-dropdown-treeview [items]="nameItems" (selectedChange)="onSearchNameChange($event)">
-        </ngx-dropdown-treeview>
+        <input type="text" class="form-control" [(ngModel)]="params.employeeName" name="employeeName" placeholder="请输入服务顾问">
+        <!--<ngx-dropdown-treeview [items]="nameItems" (selectedChange)="onSearchNameChange($event)">
+        </ngx-dropdown-treeview>-->
       </div>
       <div *ngIf="orgShow" class="input-group m-1">
         <label class="input-group-addon">门店</label>
@@ -93,7 +94,7 @@
     <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" [(itemsPerPage)]="size" (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
   <div class="card-footer">
-    <button type="button" (click)="onExport()" class="btn btn-export">导出</button>
+    <button [hqSpinner]="exportGenerating" type="button" (click)="onExport()" class="btn btn-export">导出</button>
   </div>
 </div>
 

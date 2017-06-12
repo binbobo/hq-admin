@@ -26,7 +26,7 @@ export class BusinessListComponent extends DataList<any> {
   params: BusinessListRequest;
   @ViewChild('bdModal')
   private bdModal: HqModalDirective;
-
+  private exportGenerating = false;
   public isSearch = false;//温馨提示是否显示
   public isShow1 = false;//温馨提示是否显示
   public isShow2 = false;//温馨提示是否显示
@@ -61,11 +61,6 @@ export class BusinessListComponent extends DataList<any> {
           this.orgShow = true;
       })
       .catch(err => this.alerter.error(err));
-    // 获取可以选择的服务顾问, 用于查询范围筛选
-    this.service.getEmployeesStores().subscribe(data => {
-      // if (data[0].children && data[0].children.length > 0)
-      this.nameItems = data;
-    });
   }
 
   //门店下拉框选择
@@ -78,16 +73,6 @@ export class BusinessListComponent extends DataList<any> {
       this.params.orgIds = orgIdsArr;
     } else {
       this.params.orgIds = null;
-    }
-  }
-
-  //服务顾问下拉框选择
-  onSearchNameChange(evt) {
-    // 更新查询范围参数
-    if (evt.length) {
-      this.params.employees = evt;
-    } else {
-      this.params.employees = null;
     }
   }
 
@@ -122,8 +107,13 @@ export class BusinessListComponent extends DataList<any> {
   }
   //导出维修历史
   onExport() {
+    this.exportGenerating = true;
     this.service.export(this.params).then(() => {
-      console.log('导出维修历史数据成功！');
+      this.alerter.success('导出维修历史成功！');
+      this.exportGenerating = false;
+    }).catch(err => {
+      this.exportGenerating = false;
+      this.alerter.error('导出维修历史失败：' + err, true, 3000);
     });
   }
   //详情
