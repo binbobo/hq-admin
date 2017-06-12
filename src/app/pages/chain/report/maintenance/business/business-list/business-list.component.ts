@@ -39,7 +39,8 @@ export class BusinessListComponent extends DataList<any> {
 
   // 用于查询范围ngx-treeview组件
   private stations: Array<any>;
-  private orgShow = false;
+  private orgShow = false;//门店选择是否显示
+  private orgNameShow = false;//店名是否显示
 
   // 用于服务顾问ngx-treeview组件
   public nameItems: TreeviewItem[];
@@ -81,6 +82,7 @@ export class BusinessListComponent extends DataList<any> {
     this.isSearch = false;
     this.isShow1 = false;
     this.isShow2 = false;
+    this.orgNameShow = false;
     this.orgItems = this.params.orgIds;
     // this.onLoadList();
     this.params.enterStartTimeDate = this.enterStartTime;
@@ -103,6 +105,10 @@ export class BusinessListComponent extends DataList<any> {
             this.isShow2 = true;
           }
         }
+      })
+      .then(() => {
+        if (this.orgItems && this.orgItems.length > 1)
+          this.orgNameShow = true;
       });
   }
   //导出维修历史
