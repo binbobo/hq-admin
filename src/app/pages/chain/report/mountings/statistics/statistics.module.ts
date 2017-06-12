@@ -18,7 +18,6 @@ import { InvoicingComponent } from './invoicing/invoicing.component';
 import { DistributePrintComponent } from './distribute/distribute-print/distribute-print.component';
 import { ProcurementPrintComponent } from './procurement/procurement-print/procurement-print.component';
 import { ReceivePrintComponent } from './inner-receive/receive-print/receive-print.component';
-import { InvoicingPrintComponent } from './invoicing/invoicing-print/invoicing-print.component';
 import { PartssalesPrintComponent } from './partssales/partssales-print/partssales-print.component';
 
 //服务
@@ -56,7 +55,6 @@ import { treeviewEventParser } from "app/shared/services";
     DistributePrintComponent,
     ProcurementPrintComponent,
     ReceivePrintComponent,
-    InvoicingPrintComponent,
     PartssalesPrintComponent,
   ],
   providers: [ProcurementService, TotalValueService, DistributeService, PartssalesService, ReceiveService, InvoicingService,treeviewEventParser]
