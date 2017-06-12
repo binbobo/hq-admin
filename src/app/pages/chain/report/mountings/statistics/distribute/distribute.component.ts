@@ -22,7 +22,7 @@ export class DistributeComponent extends DataList<any> {
   isLoading: boolean = false;
   private stations: Array<any>;
   private orgShow = false;
-
+  private orgNameShow = false;
   constructor(
     protected service: DistributeService,
     injector: Injector,
@@ -88,7 +88,11 @@ export class DistributeComponent extends DataList<any> {
   onSearch() {
     Object.assign(this.params, this.distributeForm.value)
     this.params.searchEnd = this.distributeForm.get('searchEnd').value && this.distributeForm.get('searchEnd').value + 'T23:59:59.999';
+    this.orgNameShow=false;
     this.onLoadList();
+    if(this.params.orgIds&&this.params.orgIds.length>1){
+      this.orgNameShow=true;
+    }
   }
 
   onSelect(ev) {

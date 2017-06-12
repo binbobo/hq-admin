@@ -21,7 +21,7 @@ export class PartssalesComponent extends DataList<any> {
   isLoading: boolean = false;
   private stations: Array<any>;
   private orgShow = false;
-
+  private orgNameShow = false;
   constructor(
     injector: Injector,
     protected service: PartssalesService,
@@ -90,7 +90,11 @@ export class PartssalesComponent extends DataList<any> {
     Object.assign(this.params, this.partssalesForm.value);
     this.params.searchEnd = this.partssalesForm.get('searchEnd').value && this.partssalesForm.get('searchEnd').value + 'T23:59:59.999';
     console.log('params', this.params);
+    this.orgNameShow = false;
     this.onLoadList();
+    if (this.params.orgIds && this.params.orgIds.length > 1) {
+      this.orgNameShow = true;
+    }
   }
 
   //绑定表单
@@ -107,11 +111,11 @@ export class PartssalesComponent extends DataList<any> {
   }
 
   onSelect(ev) {
-    console.log("配件编码",ev)
+    console.log("配件编码", ev)
     this.partssalesForm.patchValue({
-      productCode:ev.code,
-      productCategory:ev.categoryName,
-      productName:ev.name
+      productCode: ev.code,
+      productCategory: ev.categoryName,
+      productName: ev.name
     });
   }
 

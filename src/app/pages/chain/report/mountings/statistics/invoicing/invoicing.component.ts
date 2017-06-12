@@ -31,7 +31,7 @@ export class InvoicingComponent extends DataList<any> {
   searchEnd: string;
   private stations: Array<any>;
   private orgShow = false;
-
+  private orgNameShow = false;
   constructor(
     injector: Injector,
     protected service: InvoicingService,
@@ -94,7 +94,11 @@ export class InvoicingComponent extends DataList<any> {
     Object.assign(this.params, this.invoicingForm.value);
     this.params.searchEnd = this.invoicingForm.get('searchEnd').value && this.invoicingForm.get('searchEnd').value + 'T23:59:59.999';
     console.log('params', this.params);
+    this.orgNameShow=false;
     this.onLoadList();
+    if(this.params.orgIds&&this.params.orgIds.length>1){
+      this.orgNameShow=true;
+    }
   }
 
   //明细里的搜索
