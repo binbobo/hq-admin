@@ -44,7 +44,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of list">
+          <tr *ngFor="let item of list;let index=index">
             <td><button [disabled]="item.count<=item.returnCount" class="btn btn-sm btn-primary" (click)="OnCreatBound(item,item.id)">退库</button></td>
             <td class="text-center">{{item.productCode }}</td>
             <td class="text-left">{{item?.categoryName?.length&&item.categoryName[0]}}</td>
@@ -70,6 +70,7 @@
         <thead>
           <tr>
             <th>操作</th>
+            <th>序号</th>
             <th>配件编码</th>
             <th>配件分类</th>
             <th>配件名称</th>
@@ -87,6 +88,7 @@
         <tbody>
           <tr *ngFor="let item of salesReturnData;let i = index">
             <td><button class="btn btn-sm btn-danger" (click)="onDelCreat(e,i)">删除</button></td>
+            <td class="text-center">{{i+1}}</td>
             <td class="text-center">{{item.productCode }}</td>
             <td class="text-left">{{item.productCategory}}</td>
             <td class="text-left">{{item.productName}}</td>
