@@ -9,5 +9,6 @@ export class Urls {
     public static readonly validate = Urls.base.concat('validate/');
     public static readonly media = Urls.base.concat('media/');
     public static readonly platform = Urls.base.concat('platform/');
-    public static readonly chain = Urls.base.concat('chain');
+    // public static readonly chain = Urls.base.concat('chain');
+    public static readonly chain = 'http://192.168.58.234/api';
 }

@@ -41,7 +41,6 @@
         <div class="input-group m-1">
           <span class="input-group-addon">结算方式</span>
           <select [(ngModel)]="params.settlementid" id="settlementid" name="settlementid" class="form-control">
-            <option style="display:none">
             <option *ngFor="let settlementid of billTypeData" value="{{settlementid.id}}">{{settlementid?.value}}</option>
           </select>
           <div class="ml-3"><button class="btn btn-primary">查询</button></div>
@@ -95,13 +94,13 @@
 <!--收银弹框 begin-->
 <div hqModal #CheckoutModal="hq-modal" class="modal fade" tabindex="-1" role="dialog" size="lg" modalTitle="收银">
   <ng-template hq-alerter></ng-template>
-    <div class="hq-fee" style="margin-top:0">
-      <span class="fee-name">应收金额：<span class="fee-value">{{costMoney|centToYuan}}</span></span>
-    </div>
-    <div class="input-group checkout-item" *ngFor="let item of payData;">
-      <span class="input-group-addon" id="sizing-addon2" style="width:150px;">{{item.value}}(元)</span>
-      <input type="number" class="form-control" [(ngModel)]="item.amount" aria-label="Username" aria-describedby="sizing-addon1">
-    </div>
+  <div class="hq-fee" style="margin-top:0">
+    <span class="fee-name">应收金额：<span class="fee-value">{{costMoney|centToYuan}}</span></span>
+  </div>
+  <div class="input-group checkout-item" *ngFor="let item of payData;">
+    <span class="input-group-addon" id="sizing-addon2" style="width:150px;">{{item.value}}(元)</span>
+    <input type="number" class="form-control" [(ngModel)]="item.amount" aria-label="Username" aria-describedby="sizing-addon1">
+  </div>
   <div class="btn-center"><button type="button" class="btn btn-primary" aria-label="Close" (click)="OnPostPay(CheckoutModal)">确定收银</button></div>
 </div>
 <!--收银弹框 end-->

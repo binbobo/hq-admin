@@ -55,6 +55,9 @@ export class PartssalesService implements BasicService<any>{
 
 export class PartssalesRequest extends PagedParams {
   constructor(
+    public productCode?:string,
+    public productName?:string,
+    public productCategory?:string,
     public searchStart?: string,
     public searchEnd?: string,
     public name?: string,//客户名称

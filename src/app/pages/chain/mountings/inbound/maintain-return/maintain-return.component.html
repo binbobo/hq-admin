@@ -5,12 +5,15 @@
     <ng-template hqSuspendBill="RR" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
   <div class='card-block'>
-    <form class="form-inline"  autocomplete="off">
+    <form class="form-inline" autocomplete="off">
       <div class="input-group m-1">
         <!--<span class="input-group-addon">选择工单</span>-->
         <input [hqTableTypeahead]="PlatNoSource" [(ngModel)]="initValue" [columns]="typeaheadColumns" name="initValue" (onSelect)="onPlateNoSelect($event)"
           class="form-control" placeholder="请输入车牌号/工单号" style="width:365px;">
         <span class='button-right'></span>
+      </div>
+      <div class="text-warn ml-2">
+        注意：已完工的工单，不能再进行退料操作。
       </div>
     </form>
     <table class="table table-order-info table-bordered">
@@ -102,8 +105,8 @@
               <td>{{ele.locationName}}</td>
               <td>{{ele.count}}</td>
               <td>{{ele.returnCount}}</td>
-              <td  class="text-right">{{ele.price|centToYuan}}</td>
-              <td  class="text-right">{{ele.amount|centToYuan}}</td>
+              <td class="text-right">{{ele.price|centToYuan}}</td>
+              <td class="text-right">{{ele.amount|centToYuan}}</td>
               <td>{{ele.description}}</td>
               <td>{{ele.takeUser}}</td>
             </tr>
@@ -152,8 +155,8 @@
               <td>{{ele.storeName}}</td>
               <td>{{ele.locationName}}</td>
               <td>{{ele.count}}</td>
-              <td  class="text-right">{{ele.price|centToYuan}}</td>
-              <td  class="text-right">{{ele.amount|centToYuan}}</td>
+              <td class="text-right">{{ele.price|centToYuan}}</td>
+              <td class="text-right">{{ele.amount|centToYuan}}</td>
               <td>{{ele.description}}</td>
               <td>{{ele.returnUser}}</td>
             </tr>
@@ -200,7 +203,7 @@
               <td>{{ele.locationName}}</td>
               <td>{{ele.count}}</td>
               <td class="text-right">{{ele.price|centToYuan}}</td>
-              <td  class="text-right">{{ele.amount|centToYuan}}</td>
+              <td class="text-right">{{ele.amount|centToYuan}}</td>
               <td>{{ele.description}}</td>
               <td>{{ele.returnUser?ele.returnUser:ele.returnName}}</td>
             </tr>
@@ -218,7 +221,7 @@
       [hqMutilSelect]="numberPrintList" title="选择流水号" href="#" placement="right">打印</button>
   </div>
 </div>
-<div class="modal fade" hqModal #createModal="hq-modal" tabindex="-1" role="dialog"  size="lg" modalTitle="新增">
-        <hq-maintain-create *ngIf="createModal.isShown" [inputData]="inputData" (formSubmit)="onCreate($event)"></hq-maintain-create>
+<div class="modal fade" hqModal #createModal="hq-modal" tabindex="-1" role="dialog" size="lg" modalTitle="新增">
+  <hq-maintain-create *ngIf="createModal.isShown" [inputData]="inputData" (formSubmit)="onCreate($event)"></hq-maintain-create>
 </div>
-<hq-maintain-print *ngIf="printList" [hidden]="true" [data]="printList" hqPrint #printer="hq-print"  print-title="维修退料单"></hq-maintain-print>
+<hq-maintain-print *ngIf="printList" [hidden]="true" [data]="printList" hqPrint #printer="hq-print" print-title="维修退料单"></hq-maintain-print>

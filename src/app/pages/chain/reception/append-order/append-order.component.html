@@ -11,6 +11,9 @@
         <input [hqTableTypeahead]="typeaheadSource" [(ngModel)]="initValue" name="initValue" [columns]="typeaheadColumns" (onSelect)="onTypeaheadSelect($event)"
           class="form-control" placeholder="请输入车牌号/工单号" style="width:365px;" />
       </div>
+      <div class="text-warn ml-2">
+        注意：已结算的工单，不能再进行增项操作。
+      </div>
     </form>
     <table class="table table-order-info table-bordered">
       <thead>
@@ -105,7 +108,6 @@
                   <th>折扣率(%)</th>
                   <th>金额(元)</th>
                   <!--<th>操作时间</th>-->
-
                 </tr>
               </thead>
               <tbody>
@@ -315,7 +317,7 @@
       <div class="card hq-fee">
         <div>
           <span class="fee-name">工时费：<span class="fee-value">{{workHourFee|centToYuan}}</span></span>
-          <span class="fee-name"> 材料费：<span class="fee-value">{{materialFee|centToYuan}}</span></span>
+          <!--<span class="fee-name"> 材料费：<span class="fee-value">{{materialFee|centToYuan}}</span></span>-->
           <span class="fee-name"> 优惠：<span class="fee-value">{{(workHourFee-sumFee)|centToYuan}}</span></span>
           <span class="fee-name pull-right">应收金额：<span class="fee-value">{{sumFee|centToYuan}}</span></span>
         </div>

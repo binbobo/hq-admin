@@ -57,3 +57,6 @@ table .tr-left-bold{
 .operation{
     width: 200px !important;
 }
+.text-warn{
+    color:#727171;
+}
