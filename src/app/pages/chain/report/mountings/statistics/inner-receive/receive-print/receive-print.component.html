@@ -60,7 +60,7 @@
   <!--</div>-->
   <p *ngIf="!!!detailItemsLength">暂无数据</p>
 </div>
-<div class="clearfix mt-2">
-  <p class="col-4 pull-left"><label class="print-label">打印时间：</label>{{newDate}}</p>
-  <p class="col-2 pull-left"><label class="print-label">操作人：</label>{{detail?.operator}}</p>
+<div class="row">
+  <p class="col-4"><label class="print-label">打印时间：</label><span>{{newDate}}</span></p>
+  <p class="col-2"><label class="print-label">操作人：</label><span>{{detail?.operator}}</span></p>
 </div>

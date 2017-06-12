@@ -17,7 +17,7 @@
     <span>{{detail?.createName}}</span>
   </div>-->
 </div>
-<table class="bound-table" *ngFor="let item of detailItems">
+<table class="bound-table" style="white-space: nowrap">
   <thead>
     <tr>
       <th>仓库</th>
@@ -36,7 +36,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
+    <tr *ngFor="let item of detailItems">
       <td>{{item.storeName}}</td>
       <td>{{item.locationName}}</td>
       <td class="text-center">{{item.productCode}}</td>
@@ -54,7 +54,7 @@
   </tbody>
 </table>
 <p *ngIf="!!!detailItemsLength">暂无数据</p>
-<div class="clearfix mt-2">
-  <p class="col-4 pull-left"><label class="print-label">打印时间：</label>{{newDate}}</p>
-  <p class="col-4 pull-left"><label class="print-label">操作人：</label>{{detail?.createName}}</p>
+<div class="row">
+  <p class="col-4"><label class="print-label">打印时间：</label><span>{{newDate}}</span></p>
+  <p class="col-4"><label class="print-label">操作人：</label><span>{{detail?.createName}}</span></p>
 </div>
