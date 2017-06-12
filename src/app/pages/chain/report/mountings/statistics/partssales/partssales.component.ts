@@ -100,7 +100,19 @@ export class PartssalesComponent extends DataList<any> {
       searchEnd: moment().format('YYYY-MM-DD'),    // 结束时间
       name: '',         //供应商
       phone: '',         //供应商手机
+      productCode: '',
+      productCategory: '',
+      productName: ''
     })
+  }
+
+  onSelect(ev) {
+    console.log("配件编码",ev)
+    this.partssalesForm.patchValue({
+      productCode:ev.code,
+      productCategory:ev.categoryName,
+      productName:ev.name
+    });
   }
 
   onSearchRangeChange(ev) {
