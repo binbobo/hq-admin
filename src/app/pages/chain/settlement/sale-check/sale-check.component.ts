@@ -30,7 +30,7 @@ export class SaleCheckComponent extends DataList<any>  {
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
   public user = null;
-  private billTypeData:any;
+  private billTypeData: any;
   // 结束时间参数对象
   endDateParams = {
     endtime: undefined,
@@ -40,7 +40,7 @@ export class SaleCheckComponent extends DataList<any>  {
     private router: Router,
     injector: Injector,
     protected service: SaleCheckService,
-    protected typeservice:ChainService,
+    protected typeservice: ChainService,
     private fb: FormBuilder) {
     super(injector, service);
     this.params = new OrderListSearch();
@@ -51,10 +51,11 @@ export class SaleCheckComponent extends DataList<any>  {
         this.orderStatusData = data;
       });
     //结算方式类型
-    this.typeservice.getSettlementType().then(data=>{
-      this.billTypeData=data;
-      this.params.settlementid=this.billTypeData[0].id;
-    }) 
+    this.typeservice.getSettlementType().then(data => {
+      this.billTypeData = data;
+      this.billTypeData.unshift({value:"所有",id:""})
+      this.params.settlementid = this.billTypeData[0].id;
+    })
     this.user = JSON.parse(sessionStorage.getItem(StorageKeys.Identity));
     // 构建表单
     this.createForm();
@@ -77,13 +78,13 @@ export class SaleCheckComponent extends DataList<any>  {
   DetailsDialog(evt, item, id, dialog) {
     item.generating = true;
     evt.preventDefault();
-    this.selectedOrder=item;
+    this.selectedOrder = item;
     this.service.getSaleDetail(id)
       .then(data => {
         this.selectedOrder.detailItems = data;
-        this.selectedOrder.billPrice=0;
-        data.forEach(item=>{
-          this.selectedOrder.billPrice+=item.amount;
+        this.selectedOrder.billPrice = 0;
+        data.forEach(item => {
+          this.selectedOrder.billPrice += item.amount;
         })
         item.generating = false;
         // 显示窗口
@@ -145,12 +146,12 @@ export class SaleCheckComponent extends DataList<any>  {
       settlementcode: '',//结算单号
       starttime: '',//销售开始时间
       endtime: '',//销售结束时间
-      phone:'',//手机号
-      customername:'',//客户名称
-      settlementid:''//结算方式id
+      phone: '',//手机号
+      customername: '',//客户名称
+      settlementid: ''//结算方式id
     });
   }
-  
+
   public get maxStartTime() {
     return !!this.endDateParams.endtime ? this.endDateParams.endtime : moment().toDate()
   }

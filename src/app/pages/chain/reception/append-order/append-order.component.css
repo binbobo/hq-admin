@@ -42,3 +42,6 @@ table .tr-left-bold{
   margin-bottom: .8rem;
   margin-left: -3px;
 }
+.text-warn{
+    color:#727171;
+}

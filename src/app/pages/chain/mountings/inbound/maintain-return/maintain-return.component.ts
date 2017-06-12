@@ -43,9 +43,9 @@ export class MaintainReturnComponent implements OnInit {
     this.params = new MaintainRequest();
     // 构建表单
     this.createForm();
+        
   }
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   private orderDetail: any;
   public get typeaheadColumns() {
@@ -151,17 +151,6 @@ export class MaintainReturnComponent implements OnInit {
       keyword: '', // 车牌号或车主姓名或工单号
     });
   }
-  // // 是否取消退料
-  // finishedOrder(evt, confirmModal) {
-  //   evt.preventDefault();
-  //   // 显示确认框
-  //   confirmModal.show();
-  // }
-  // // 取消退料
-  // onConfirmFinished(confirmModal) {
-  //   confirmModal.hide();
-  //   history.go(-1);
-  // }
 
   private newMainData = [];
 
@@ -266,7 +255,6 @@ export class MaintainReturnComponent implements OnInit {
     } else {
       this.newMainData.push(e);
     }
-
     this.createModal.hide();
   }
   onDelCreat(e, i) {
@@ -284,7 +272,7 @@ export class MaintainReturnComponent implements OnInit {
   onSuspendSelect(item) {
     this.sunspendRequest = JSON.parse(item.data);
     this.billCode = this.sunspendRequest["billCode"]
-    this.listId = this.sunspendRequest["id"];
+    this.listId = this.sunspendRequest["billId"];
     this.orderDetail = this.sunspendRequest;
     this.newMainData = this.sunspendRequest["newMainData"];
     this.serviceData = this.sunspendRequest["serviceData"];
@@ -302,7 +290,6 @@ export class MaintainReturnComponent implements OnInit {
     this.mrData = [];
     this.suspendedBillId = "";
     this.suspendData = "";
-
   }
   suspend() {
     this.suspendData = {
@@ -325,7 +312,6 @@ export class MaintainReturnComponent implements OnInit {
       alert('请选择工单');
       return false;
     }
-
 
     this.suspendBill.suspend(this.suspendData)
       .then(() => { this.alerter.success('挂单成功！'); this.initDetailData(); this.initValue = "" })

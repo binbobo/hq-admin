@@ -4,12 +4,12 @@
     <div class="col-12">
       <div class="form-group">
         <!--<label class="form-control-label">备注</label>-->
-        <textarea type="textarea" formControlName="description" class="form-control" placeholder="备注"></textarea>
+        <textarea label="备注" type="textarea" formControlName="description" class="form-control" placeholder="备注"></textarea>
       </div>
     </div>
   </form>
 </div>
 <div style="text-align:center">
-  <button type="submit" class="btn btn-primary" (click)="onSubmit()">保存</button>
+  <button type="submit" class="btn btn-primary"  [disabled]="!form.valid" (click)="onSubmit()">保存</button>
   <button type="button" class="btn btn-secondary" (click)="onCancelHandler()">取消</button>
 </div>

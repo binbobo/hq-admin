@@ -169,6 +169,7 @@ export class DistributeComponent implements OnInit {
       this.generat = false;
       return false;
     }
+    
     this.billData = {
       billCode: this.billCode,
       billId: this.listId,
@@ -290,7 +291,7 @@ export class DistributeComponent implements OnInit {
   onSuspendSelect(item) {
     this.sunspendRequest = JSON.parse(item.data);
     this.billCode = this.sunspendRequest["billCode"]
-    this.listId = this.sunspendRequest["id"];
+    this.listId = this.sunspendRequest["billId"];
     this.orderDetail = this.sunspendRequest["orderDetail"];
     this.newMainData = this.sunspendRequest["newMainData"];
     this.serviceData = this.sunspendRequest["serviceData"];
@@ -313,7 +314,7 @@ export class DistributeComponent implements OnInit {
       serialData: this.serialData,
       billCode: this.billCode,
       billId: this.listId,
-      plateNo: this.plateNo,
+      plateNo: this.plateNo, 
       customerName: this.customerName,
       MRData: this.MRData,
       suspendedBillId: this.suspendedBillId,
