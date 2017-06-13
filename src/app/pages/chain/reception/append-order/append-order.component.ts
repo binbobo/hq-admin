@@ -131,6 +131,12 @@ export class AppendOrderComponent {
     return (params: TypeaheadRequestParams) => {
       let p = new AppendItemSearchRequest(params.text);
       p.setPage(params.pageIndex, params.pageSize);
+      this.service1.getAppendOrderParma(p).then((result)=>{
+        if (result.data.length < 1) {
+          this.alerter.error("找不到该工单或已完工，不能进行增项操作。", true, 5000);
+        }
+      }).catch((err)=> this.alerter.error(err, true, 2000))
+      
       return this.service1.getAppendOrderParma(p);
     };
   }

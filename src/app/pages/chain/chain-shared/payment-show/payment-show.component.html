@@ -1,0 +1,21 @@
+<div *ngIf="payment&&payment.length">
+  <span>{{payment[0].name}}</span>
+  <i triggers="mouseenter:mouseleave" placement="{{direction}}" [popover]="popTemplate" *ngIf="payment.length>1" class="fa fa-ellipsis-h"
+    (mouseenter)="onDirection($event)"></i>
+</div>
+<template #popTemplate>
+  <table class="table table-sm text-center table-bordered">
+    <thead>
+      <tr>
+        <th>支付方式</th>
+        <th>支付金额</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of payment">
+        <td>{{item.name}}</td>
+        <td class="text-right">¥{{item.amount}}</td>
+      </tr>
+    </tbody>
+  </table>
+</template>

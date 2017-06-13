@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { DataList, StorageKeys } from "app/shared/models";
 import { Router } from "@angular/router";
 import { OrderListSearch, CheckOutService } from "./checkout.service";
+import { ChainService } from "app/pages/chain/chain.service";
 import { HqAlerter } from "app/shared/directives";
 import * as moment from 'moment';
 
@@ -28,7 +29,7 @@ export class CheckoutComponent extends DataList<any> {
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
   public user = null;
-
+  
   // 结束时间参数对象
   endDateParams = {
     endtime: undefined,
@@ -38,6 +39,7 @@ export class CheckoutComponent extends DataList<any> {
     private router: Router,
     injector: Injector,
     protected service: CheckOutService,
+    protected typeservice: ChainService,
     private fb: FormBuilder) {
     super(injector, service);
     this.params = new OrderListSearch();
@@ -52,9 +54,15 @@ export class CheckoutComponent extends DataList<any> {
     this.createForm();
     this.service.getPayType().then(data => {
       this.payData = data;
+    });
+    //结算方式类型
+    this.typeservice.getSettlementType().then(data => {
+      this.billTypeData = data;
+      this.billTypeData.unshift({ value: "所有", id: "" })
+      this.params.SettlementMethod = this.billTypeData[0].id;
     })
   }
-
+  private billTypeData: any;
   // 点击查询
   onSearch() {
     // 组织工单状态数据
@@ -81,12 +89,6 @@ export class CheckoutComponent extends DataList<any> {
       .then(data => {
         this.selectedOrder = data;
         this.billId = this.selectedOrder["id"];
-        // Object.assign(this.selectedOrder, data);
-        // this.selectedOrder.updateUser = data.updateUser;//结算人
-        // this.selectedOrder.updateOnUtc = data.updateOnUtc;//结算时间
-        // this.selectedOrder.settlementParty = data.settlementParty;//结算方
-        // this.selectedOrder.settlementCode = data.settlementCode;//结算单号
-        // this.selectedOrder.leaveMileage = data.leaveMileage;//出厂里程
         if (item.updateOnUtc) {
           this.selectedOrder.updataTime = item.updateOnUtc;//出厂时间
         }
@@ -170,9 +172,10 @@ export class CheckoutComponent extends DataList<any> {
       SettlementCode: '',
       starttime: '',
       endtime: '',
+      SettlementMethod:''
     });
   }
-  
+
   public get maxStartTime() {
     return !!this.endDateParams.endtime ? this.endDateParams.endtime : moment().toDate()
   }
