@@ -110,24 +110,24 @@
           <div class="input-group m-1">
             <span class="input-group-addon">应收金额(元)</span>
             <div class="hq-col">
-              <input [textMask]="{mask: priceMask}" type="text" class="form-control" [errors]="{lte:'输入金额不能大于应收金额'}" [value]="billPricex|centToYuan" label="金额" formControlName="billPrice">
+              <input [textMask]="{mask: priceMask}" type="text" class="form-control" [errors]="{lte:'输入金额不能大于应收金额'}" [value]="billPricex|centToYuan"
+                label="金额" formControlName="billPrice">
             </div>
           </div>
         </div>
         <div class="col-5" style="height:50px;">
-          <!--<div class="input-group m-1">
-            <span class="input-group-addon">出厂里程(KM)：</span>
-            <div class="hq-col">
-              <input type="number" class="form-control" label="出厂里程" [errors]="{gte:'出厂里程不能小于进厂里程'}" formControlName="leaveMileage">
-            </div>
-          </div>-->
           <div class="input-group m-1">
             <span class="input-group-addon">结算方式</span>
             <select formControlName="settlementid" id="settlementid" class="form-control">
             <option *ngFor="let settlementid of billTypeData" value="{{settlementid.id}}">{{settlementid?.value}}</option>
           </select>
           </div>
-
+          <!--<div class="input-group m-1">
+            <span class="input-group-addon">出厂里程(KM)：</span>
+            <div class="hq-col">
+              <input type="number" class="form-control" label="出厂里程" [errors]="{gte:'出厂里程不能小于进厂里程'}" formControlName="leaveMileage">
+            </div>
+          </div>-->
         </div>
         <div class="col-2" style="height:50px;">
           <div class="input-group m-1">
