@@ -6,6 +6,7 @@ import { OrderListSearch, SaleCheckService } from "./sale-check.service";
 import { ChainService } from "app/pages/chain/chain.service";
 import { HqAlerter } from "app/shared/directives";
 import * as moment from 'moment';
+import { priceMask} from 'app/pages/chain/chain-shared';
 
 @Component({
   selector: 'hq-sale-check',
@@ -13,7 +14,7 @@ import * as moment from 'moment';
   styleUrls: ['./sale-check.component.css']
 })
 export class SaleCheckComponent extends DataList<any>  {
-
+  priceMask = priceMask;
   costMoney: any;
   payCheckSingle: any;
   payData: any;
@@ -53,7 +54,7 @@ export class SaleCheckComponent extends DataList<any>  {
     //结算方式类型
     this.typeservice.getSettlementType().then(data => {
       this.billTypeData = data;
-      this.billTypeData.unshift({value:"所有",id:""})
+      this.billTypeData.unshift({ value: "所有", id: "" })
       this.params.settlementid = this.billTypeData[0].id;
     })
     this.user = JSON.parse(sessionStorage.getItem(StorageKeys.Identity));

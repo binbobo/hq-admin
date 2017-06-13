@@ -26,6 +26,19 @@ export class OrderService implements BasicService<Order> {
     }
 
     /**
+     * 获取客户来源数据
+     * @memberOf OrderService
+     */
+    getCustomerSource(): Observable<any[]> {
+        const url = Urls.chain.concat('/CustomerSources');
+        return this.httpService
+            .request(url)
+            .map(response => {
+                return response.json().data;
+            });
+    }
+
+    /**
      * 获取维修项目类型数据
      * @memberOf OrderService
      */

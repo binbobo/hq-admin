@@ -11,3 +11,6 @@ table.table-order-info{
     color: #727171;
     text-align: left;
 }
+#starttime:hover,#endtime:hover{
+    cursor: pointer;
+}

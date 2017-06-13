@@ -23,3 +23,6 @@ thead tr:last-child th:last-child, td:last-child{
     border-bottom-left-radius:0px;
     border-top-left-radius:0px;
 }
+#startTimeDate:hover,#endTimeDate:hover{
+    cursor: pointer;
+}

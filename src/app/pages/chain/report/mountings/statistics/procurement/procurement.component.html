@@ -1,26 +1,28 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
-  <div class="card-header">采购入库统计</div>
+  <div class="card-header">
+    <label>采购入库统计</label>
+  </div>
   <div class="card-block">
     <form class="form-inline mb-2" [formGroup]="procurementForm" (ngSubmit)="onSearch()">
       <div class="input-group m-1">
-        <span class="input-group-addon">查询日期</span>
+        <label class="input-group-addon">查询日期</label>
         <input [max-date]="maxEnterStartDate" class="form-control datetime-picker" style="border-right:0;" formControlName="searchStart"
           id="starttime" name="starttime" date-only="true" type="text" ngui-datetime-picker/>
-        <span class="input-group-addon">-</span>
+        <label class="input-group-addon">-</label>
         <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" class="form-control datetime-picker" style="border-right-width:1px;"
           formControlName="searchEnd" id="endtime" formControlName="searchEnd" name="endtime" date-only="true" type="text"
           ngui-datetime-picker/>
       </div>
 
       <div class="input-group m-1">
-        <span class="input-group-addon">供应商</span>
+        <label class="input-group-addon">供应商</label>
         <input hqProviderTypeahead (onSelect)="onProviderSelect($event)" name="name" class="form-control tooltips-top" data-tooltips="top"
           formControlName="name" placeholder="请输供应商" />
       </div>
 
       <div class="input-group m-1" *ngIf="orgShow">
-        <span class="input-group-addon">门店</span>
+        <label class="input-group-addon">门店</label>
         <hq-dropdown-tree text="name" value="id" [items]="stations" (onChange)="onSearchRangeChange($event)">
         </hq-dropdown-tree>
       </div>

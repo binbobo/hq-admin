@@ -6,7 +6,7 @@
   <div class="card-block">
     <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
       <div class="input-group m-1">
-        <span class="input-group-addon">仓库</span>
+        <label class="input-group-addon">仓库</label>
         <select (change)="onSelectHouse($event)" class="form-control" name="storeId" [(ngModel)]="params.storeId">
           <option *ngFor="let item of houses" value="{{item.value}}">{{item.text}}</option>
         </select>

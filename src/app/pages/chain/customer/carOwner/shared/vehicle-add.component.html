@@ -7,6 +7,7 @@
       <table class="table table-bordered">
         <thead>
           <tr>
+            <th>序号</th>
             <th>操作</th>
             <th>车牌号</th>
             <th>品牌</th>
@@ -22,7 +23,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let vehicle of data">
+          <tr *ngFor="let vehicle of data; let i=index;">
+            <td class="text-center">{{i+1}}</td>
             <td>
               <button type="button" class="btn btn-sm btn-success" (click)="onEditClick(vehicle)">编辑</button>
               <button [hidden]="true" type="button" class="btn btn-sm btn-danger" (click)="onDelClick(vehicle.plateNo)">删除</button>

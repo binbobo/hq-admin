@@ -1,26 +1,28 @@
 <ng-template hq-alerter></ng-template>
 <div class="card business">
-  <div class="card-header">维修历史</div>
+  <div class="card-header">
+    <label>维修历史</label>
+  </div>
   <div class="card-block">
     <form (ngSubmit)="onSearch()" class="form-inline mb-2">
       <div class="input-group m-1">
-        <span class="input-group-addon">车牌号</span>
+        <label class="input-group-addon">车牌号</label>
         <input [(ngModel)]="params.plateNo" hqPlateNoTypeahead class="form-control" name="plateNo" id="plateNo" type="text" placeholder="请输入车牌号"
         />
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">进厂时间</span>
+        <label class="input-group-addon">进厂时间</label>
         <input [max-date]="maxEnterStartDate" [(ngModel)]="enterStartTime" class="form-control" id="enterStartTimeDate" name="enterStartTimeDate"
           date-only="true" type="text" ngui-datetime-picker placeholder="请选择开始日期" />
-        <span class="input-group-addon">-</span>
+        <label class="input-group-addon">-</label>
         <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" [(ngModel)]="enterEndTime" class="form-control" id="enterEndTimeDate"
           name="enterEndTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请选择截止日期" />
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">出厂时间</span>
+        <label class="input-group-addon">出厂时间</label>
         <input [max-date]="maxLeaveStartDate" [(ngModel)]="leaveStartTime" class="form-control" id="leaveStartTimeDate" name="leaveStartTimeDate"
           date-only="true" type="text" ngui-datetime-picker placeholder="请选择开始日期" />
-        <span class="input-group-addon">-</span>
+        <label class="input-group-addon">-</label>
         <input [min-date]="minLeaveEndDate" [max-date]="maxLeaveEndDate" [(ngModel)]="leaveEndTime" class="form-control" id="leaveEndTimeDate"
           name="leaveEndTimeDate" date-only="true" type="text" ngui-datetime-picker placeholder="请选择截止日期" />
       </div>

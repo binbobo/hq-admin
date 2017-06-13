@@ -2,6 +2,11 @@ import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { StorageKeys, SelectOption, DataList } from 'app/shared/models';
 import { Observable } from 'rxjs/Observable';
 import { WorkshopListRequest, WorkshopService } from '../workshop.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { numberMask } from 'app/pages/chain/chain-shared';
+import { HQ_VALIDATORS } from "app/shared/shared.module";
+import { CustomValidators } from 'ng2-validation';
+import { ModalDirective } from 'ngx-bootstrap';
 
 
 @Component({
@@ -11,6 +16,7 @@ import { WorkshopListRequest, WorkshopService } from '../workshop.service';
 })
 
 export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
+  mileageMask = numberMask;
   // 查询参数对象
   params: WorkshopListRequest;
 
@@ -25,10 +31,17 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
   // 执行验收操作加载动画
   generating = false;
 
+  mileageForm: FormGroup;
+  @ViewChild('checkModal')
+  checkModal: ModalDirective;
+
   constructor(injector: Injector,
+    private fb: FormBuilder,
     protected service: WorkshopService) {
     super(injector, service);
     this.params = new WorkshopListRequest();
+
+    this.createForm();
   }
 
   ngOnInit() {
@@ -52,10 +65,17 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
       });
 
   }
-   /**
-    * 维修验收全选/反选事件处理程序
-    * @param evt 
-    */
+
+  createForm() {
+    this.mileageForm = this.fb.group({
+      leaveMileage: ['', [Validators.required]], // 出厂里程
+    });
+  }
+
+  /**
+   * 维修验收全选/反选事件处理程序
+   * @param evt 
+   */
   toggleCheckboxAll(cb) {
     // 更新全选复选框状态
     this.selectedOrder.serviceOutputs.checkedAll = cb.checked;
@@ -74,13 +94,13 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
       });
     }
     // 通过按钮是否可用
-    this.selectedOrder.serviceOutputs.enableBtn = this.selectedOrder.serviceOutputs.filter(item => item.checked).length > 0;
+    this.selectedOrder.serviceOutputs.enableBtn = this.isCheckPassBtnEnable();
   }
 
   /**
- * 复选框切换事件
- * @param record 
- */
+  * 复选框切换事件
+  * @param record 
+  */
   toggleCheckbox(record) {
     if (record.teamType === 6) {
       // 已验收的不可以再操作
@@ -98,10 +118,12 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
 
     this.selectedOrder.serviceOutputs.checkedAll = (checked + disabled) === tmp.length;
     // 通过按钮是否可用
-    this.selectedOrder.serviceOutputs.enableBtn = this.selectedOrder.serviceOutputs.filter(item => item.checked).length > 0;
+    this.selectedOrder.serviceOutputs.enableBtn = this.isCheckPassBtnEnable();
   }
 
-
+  private isCheckPassBtnEnable() {
+    return this.mileageForm.valid && this.selectedOrder.serviceOutputs.filter(item => item.checked).length > 0;
+  }
 
   /**
    * 维修验收  通过按钮处理程序
@@ -115,15 +137,14 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
 
     // 获取选择的工项列表
     const maintenanceItemIds = this.selectedOrder.serviceOutputs.filter(item => item.checked).map(item => item.id);
-    
-    console.log('test特色test：', maintenanceItemIds);
+
     // 判断是否选择维修工项
     if (maintenanceItemIds.length === 0) {
       this.alerter.error('您还未选择任何维修工项, 请选择维修工项！', true, 3000);
       return;
     }
     // 调用接口  执行通过验收动作
-    this.service.update({ ids: maintenanceItemIds }).then(() => {
+    this.service.update({ ids: maintenanceItemIds, leaveMileage: this.mileageForm.value.leaveMileage }).then(() => {
       // 修改操作记录的teamType为6
       for (let j = 0; j < maintenanceItemIds.length; j++) {
         for (let i = 0; i < this.selectedOrder.serviceOutputs.length; i++) {
@@ -138,11 +159,15 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
       }
       // 设置验收操作按钮不可用
       this.selectedOrder.serviceOutputs.checkedAll = false;
-      this.selectedOrder.serviceOutputs.enableBtn =  false;
+      this.selectedOrder.serviceOutputs.enableBtn = false;
       // 验收通过
       this.alerter.success('执行验收通过操作成功！', true, 3000);
       this.generating = false;
 
+      // 判断是否所有工项都验收通过  如果是，隐藏弹框
+      if (this.selectedOrder.serviceOutputs.filter(m => m.teamType !== 6).length <= 0) {
+        this.checkModal.hide();
+      }
       // 刷新列表
       this.load();
     }).catch(err => {
@@ -153,9 +178,9 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
 
 
   /**
- * 根据条件查询工单数据
- * @memberOf OrderListComponent
- */
+  * 根据条件查询工单数据
+  * @memberOf OrderListComponent
+  */
   onSearch(evt) {
     this.params.status = evt.chechedStatusIds;
     this.params.keyword = evt.keyword;
@@ -184,29 +209,47 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
     });
   }
 
+  private getOrderDetailSuccess(item, data) {
+    item.checkGenerating = false;
+    this.checkModal.show();
+    this.isDetailModalShown = true;
+    // 默认带出进厂里程
+    this.mileageForm.controls.leaveMileage.setValue(data.mileage);
+    this.mileageForm.controls.leaveMileage.setValidators([Validators.required, HQ_VALIDATORS.mileage, CustomValidators.gte(data.mileage)]);
+  }
+
   /**
-* 点击工单详情按钮处理程序
-* @param {any} item
-* @param {any} modalDialog 
-* 
-* @memberOf OrderListComponent
-*/
-  orderDetailsHandler(item, modalDialog) {
+  * 点击工单详情按钮处理程序
+  * @param {any} item
+  * 
+  * @memberOf OrderListComponent
+  */
+  orderDetailsHandler(item) {
     item.checkGenerating = true;
 
     // 根据id获取工单详细信息
     this.service.get(item.id).then(data => {
       // 记录当前操作的工单记录
       this.selectedOrder = data;
-      // 指派按钮是否可用标志
+      // 验收按钮是否可用标志
       this.selectedOrder.serviceOutputs.enableBtn = false;
       // 全选复选框是否选中标志
       this.selectedOrder.serviceOutputs.checkedAll = false;
 
-      item.checkGenerating = false;
-      // 显示窗口
-      modalDialog.show();
-      this.isDetailModalShown = true;
+      // 判断是否有预检单id
+      if (data.preCheckId) {
+        this.service.getPreCheckOrderInfoByPreCheckId(data.preCheckId).then(preCheckOrder => {
+          this.selectedOrder.preCheckOrder = preCheckOrder;
+          this.selectedOrder.preCheckOrder.emptyText = '暂无';
+
+          this.getOrderDetailSuccess(item, data);
+        }).catch(err => {
+          this.alerter.error(err, true, 2000);
+          item.checkGenerating = false;
+        });
+      } else {
+        this.getOrderDetailSuccess(item, data);
+      }
     }).catch(err => {
       this.alerter.error('获取工单信息失败: ' + err, true, 3000);
       item.checkGenerating = false;

@@ -4,6 +4,7 @@ import { HQ_VALIDATORS } from 'app/shared/shared.module';
 import { CustomValidators } from 'ng2-validation';
 import { CustomerService } from '../../customer.service';
 import * as moment from 'moment';
+import { phoneNumberMask } from 'app/pages/chain/chain-shared';
 
 @Component({
   selector: 'hq-customer-add-form',
@@ -11,6 +12,7 @@ import * as moment from 'moment';
   styleUrls: ['./customer-add-form.component.css']
 })
 export class CustomerAddFormComponent implements OnInit {
+  phoneNumberMask = phoneNumberMask;
   // 保存省份数据
   protected provincesData: any[];
   // 保存城市数据
@@ -22,6 +24,8 @@ export class CustomerAddFormComponent implements OnInit {
   isProvinceLevelMunicipality = false;// 是否为直辖市标志
   cityIdList = []; // 省份,城市, 区县id列表
   cityNameList = []; // 省份,城市, 区县Name列表
+  // 客户来源数据
+  customerSourceData: any;
 
 
   @Output() formValueChanges = new EventEmitter<any>(); // 表单值改变
@@ -38,6 +42,9 @@ export class CustomerAddFormComponent implements OnInit {
     // 初始化省份数据
     this.service.getProvincesData()
       .subscribe(data => this.provincesData = data);
+    // 获取客户来源数据
+    this.service.getCustomerSource()
+      .subscribe(data => this.customerSourceData = data);
 
     this.createForm();
     // 用于编辑车主
@@ -49,6 +56,7 @@ export class CustomerAddFormComponent implements OnInit {
   private createForm() {
     // 添加车主表单
     this.carOwnerForm = this.fb.group({
+      source:'', // 客户来源
       id: '', // 车主主键 用于更新(模糊查询选择车主)
       name: ['', [Validators.required]], // 车主
       phone: ['', [Validators.required, HQ_VALIDATORS.mobile]], // 车主手机号

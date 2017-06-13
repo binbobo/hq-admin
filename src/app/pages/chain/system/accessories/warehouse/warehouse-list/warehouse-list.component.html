@@ -1,16 +1,16 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
   <div class="card-header">
-    <span>仓库列表</span>
+    <label>仓库列表</label>
   </div>
   <div class="card-block">
     <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
       <div class="input-group m-1">
-        <span class="input-group-addon">仓库代码</span>
+        <label class="input-group-addon">仓库代码</label>
         <input type="text" class="form-control" name="code" [(ngModel)]="params.code" placeholder="请输入仓库代码">
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">仓库名称</span>
+        <label class="input-group-addon">仓库名称</label>
         <input type="text" class="form-control" name="name" [(ngModel)]="params.name" placeholder="请输入仓库名称">
       </div>
       <div class="input-group m-1">

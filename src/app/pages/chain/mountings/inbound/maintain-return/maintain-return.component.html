@@ -1,7 +1,7 @@
 <ng-template hq-alerter></ng-template>
 <div class="maintain card">
   <div class="card-header">
-    <span>维修退料</span>
+    <label>维修退料</label>
     <ng-template hqSuspendBill="RR" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
   <div class='card-block'>
@@ -11,9 +11,6 @@
         <input [hqTableTypeahead]="PlatNoSource" [(ngModel)]="initValue" [columns]="typeaheadColumns" name="initValue" (onSelect)="onPlateNoSelect($event)"
           class="form-control" placeholder="请输入车牌号/工单号" style="width:365px;">
         <span class='button-right'></span>
-      </div>
-      <div class="text-warn ml-2">
-        注意：已完工的工单，不能再进行退料操作。
       </div>
     </form>
     <table class="table table-order-info table-bordered">
@@ -56,7 +53,7 @@
           </thead>
           <tbody>
             <tr *ngFor='let item of serviceData;let index=index'>
-              <td style="position:relative;">{{item.serviceName}}<span *ngIf="item.type === 3" class="append-stamp">增项</span></td>
+              <td style="position:relative;">{{item.serviceName}}<label *ngIf="item.type === 3" class="append-stamp">增项</label></td>
               <td>{{item.employeeNames.join(",")}}</td>
             </tr>
           </tbody>

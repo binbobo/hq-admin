@@ -12,11 +12,6 @@
       </div>
 
       <div class="input-group m-1">
-        <label class="input-group-addon">车牌号</label>
-        <input class="form-control" maxlength="12" type="text" [(ngModel)]="params.plateNo" class="form-control" name="plateNo" id="plateNo">
-      </div>
-
-      <div class="input-group m-1">
         <label class="input-group-addon">车主电话</label>
         <input class="form-control" maxlength="11" type="text" [(ngModel)]="params.phone" class="form-control" name="plateNo" id="phone">
       </div>
@@ -29,6 +24,14 @@
         <label class="input-group-addon">-</label>
         <input readonly [min-date]="minCreatedEndDate" [max-date]="maxCreatedEndDate" [(ngModel)]="endDateParams.createdEndDate"
           class="form-control datetime-picker" type="text" name="createdEndDate" ngui-datetime-picker date-only="true" />
+      </div>
+
+      <div class="input-group m-1">
+        <label class="input-group-addon">客户来源</label>
+        <select [(ngModel)]="params.source" label="客户来源" id="source" name="source" class="form-control">
+          <option style="display:none">
+          <option *ngFor="let source of customerSourceData" value="{{source.id}}">{{source.name}}</option>
+        </select>
       </div>
 
       <div class="input-group" style="width:50%">
@@ -46,6 +49,7 @@
             <th>建档日期</th>
             <th>车主</th>
             <th>手机号</th>
+            <th>客户来源</th>
             <th>首次进厂时间</th>
             <th>末次进厂时间</th>
             <th>创建人</th>
@@ -63,6 +67,7 @@
             <td>{{item.createdOnUtc|sDate}}</td>
             <td>{{item.name}}</td>
             <td>{{item.phone}}</td>
+            <td>{{item.sourceName}}</td>
             <td>{{item.firstEnter|sDatetime}}</td>
             <td>{{item.lastEnter|sDatetime}}</td>
             <td>{{item.createdUserName}}</td>

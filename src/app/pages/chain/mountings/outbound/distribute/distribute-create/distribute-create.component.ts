@@ -6,7 +6,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FormGroupControlErrorDirective, TypeaheadRequestParams, HqAlerter, PrintDirective } from 'app/shared/directives';
 import { CustomValidators } from 'ng2-validation';
 import { CentToYuanPipe } from "app/shared/pipes";
-
+import { numberMask,priceMask } from 'app/pages/chain/chain-shared';
 
 @Component({
   selector: 'hq-distribute-create',
@@ -14,6 +14,8 @@ import { CentToYuanPipe } from "app/shared/pipes";
   styleUrls: ['./distribute-create.component.css']
 })
 export class DistributeCreateComponent implements OnInit {
+  priceMask=priceMask;
+  numberMask=numberMask;
   private form: FormGroup;
   private converter: CentToYuanPipe = new CentToYuanPipe();
   @Output()

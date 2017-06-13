@@ -1,13 +1,13 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
   <div class="card-header">
-    <span>采购入库</span>
+    <label>采购入库</label>
     <ng-template hqPurchaseInBill (onRemove)="onSuspendRemove($event)" (onSelect)="onSuspendSelect($event)"></ng-template>
   </div>
   <div class="card-block">
     <form #form="ngForm" class="form-inline mb-2">
       <div class="input-group m-1">
-        <span class="input-group-addon">供应商名称</span>
+        <label class="input-group-addon">供应商名称</label>
         <div>
           <input hqProviderTypeahead (onSelect)="onProviderSelect($event)" [(ngModel)]="model.custName" name="custName" class="form-control"
             placeholder="请输入供应商名称" required />

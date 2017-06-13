@@ -27,16 +27,21 @@
       <td>{{data?.email}}</td>
     </tr>
     <tr>
+      <td class="fixed-width">客户来源</td>
+      <td>{{data?.sourceName}}
+      </td>
       <td class="fixed-width">省份</td>
       <td>{{data?.cityNameList?.split(',')[0]}}</td>
+    </tr>
+    <tr>
       <td class="fixed-width">城市</td>
+      <td>{{data?.cityNameList?.split(',')[1]}}</td>
+      <td class="fixed-width">区县</td>
       <td>{{data?.cityNameList?.split(',')[1]}}</td>
     </tr>
     <tr>
-      <td class="fixed-width">区县</td>
-      <td>{{data?.cityNameList?.split(',')[1]}}</td>
       <td class="fixed-width">详细地址</td>
-      <td>{{data?.address}}
+      <td colspan="3">{{data?.address}}
       </td>
     </tr>
   </tbody>

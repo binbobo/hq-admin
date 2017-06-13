@@ -1,7 +1,7 @@
 <ng-template hq-alerter></ng-template>
 <div class="distribute card">
   <div class="card-header">
-    <span>维修领料</span>
+    <label>维修领料</label>
     <ng-template hqSuspendBill="RM" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
   <div class="card-block">
@@ -10,8 +10,7 @@
         <div class="input-group m-1">
           <input [hqTableTypeahead]="PlatNoSource" [(ngModel)]="initValue" name="initValue" [columns]="typeaheadColumns" (onSelect)="onPlateNoSelect($event)"
             class="form-control input-left" placeholder="请输入车牌号/工单号" style="width:365px;">
-          <span class='button-right'>
-        </span>
+          <span class='button-right'></span>
         </div>
         <div class="text-warn ml-2">
           注意：已完工的工单，不能再进行领料操作。
@@ -60,7 +59,7 @@
           <tbody>
             <tr *ngFor='let item of serviceData;let index=index'>
               <td><button class="btn btn-sm btn-primary" (dataName)="item.serviceName" [disabled]="!item.isable" (click)="OnCreatBound(item)">发料</button></td>
-              <td style="position:relative;">{{item.serviceName}}<span *ngIf="item.type === 3" class="append-stamp">增项</span></td>
+              <td style="position:relative;">{{item.serviceName}}<label *ngIf="item.type === 3" class="append-stamp">增项</label></td>
               <td>
                 <span *ngIf="item.employeeNames">{{item?.employeeNames.join(',')}}</span>
                 <span *ngIf="item.turnEmployeeNames">{{item?.turnEmployeeNames.join(',')}}</span></td>
