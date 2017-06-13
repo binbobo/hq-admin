@@ -1,3 +1,25 @@
-div{
-    background-color: #f3f3f4;
+#welcome_container{
+    height: 100%;
+    width:100%;
+    background: url('/assets/images/welcome.jpg');
+    background-size: cover;
+}
+
+#welcome_container .content{
+    overflow: hidden;
+    text-align: center;
+    text-shadow: 1px 9px 9px rgba(13, 13, 13, 0.32);
+    background-color: rgba(255, 255, 255, 0.4);
+    font-size: 64px;
+    color: #fff;
+    font-weight: bold;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    display: block;
+    height: 220px;
+    line-height: 220px;
 }

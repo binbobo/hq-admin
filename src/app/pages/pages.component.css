@@ -13,7 +13,8 @@ nav{
 
 #content-container{
     overflow: auto;
-    padding-top: 10px!important;
+    /*padding-top: 10px!important;*/
+    padding: 0;
     background: #f3f3f4;
 }
 

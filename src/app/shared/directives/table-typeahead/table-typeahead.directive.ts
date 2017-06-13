@@ -55,6 +55,7 @@ export class TableTypeaheadDirective implements OnInit {
   }
 
   ngOnInit(): void {
+    this.el.autocomplete = "off";
     if (!this.selectedField) {
       let col = this.columns && this.columns.find(m => m.selected);
       col = col || this.columns && this.columns.length && this.columns[0];
