@@ -153,6 +153,9 @@ export class AppendOrderComponent {
       MaintenanceRecommends: this.newSuggestData,
       suspendedBillId: this.suspendedBillId
     };
+    postData.MaintenanceItems.forEach((item) => {
+      item.amount = item.amount.toFixed(0)
+    })
     this.listId = this.listId;
     this.service1.put(postData, this.listId).then((result) => {
       this.isableAppend = false;
