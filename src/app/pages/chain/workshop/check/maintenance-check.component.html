@@ -28,7 +28,7 @@
         <tbody>
           <tr *ngFor="let item of list">
             <td>
-              <button [hqSpinner]="item.checkGenerating" type="button" class="btn btn-sm btn-info" [disabled]="item.checkGenerating" (click)="orderDetailsHandler(item, checkModal)">验收</button>
+              <button [hqSpinner]="item.checkGenerating" type="button" class="btn btn-sm btn-info" [disabled]="item.checkGenerating" (click)="orderDetailsHandler(item)">验收</button>
             </td>
             <td>{{item.statusName}}</td>
             <td>{{item.plateNo}}</td>

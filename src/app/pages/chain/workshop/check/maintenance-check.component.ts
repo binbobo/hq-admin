@@ -6,6 +6,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { numberMask } from 'app/pages/chain/chain-shared';
 import { HQ_VALIDATORS } from "app/shared/shared.module";
 import { CustomValidators } from 'ng2-validation';
+import { ModalDirective } from 'ngx-bootstrap';
 
 
 @Component({
@@ -31,6 +32,8 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
   generating = false;
 
   mileageForm: FormGroup;
+  @ViewChild('checkModal')
+  checkModal: ModalDirective;
 
   constructor(injector: Injector,
     private fb: FormBuilder,
@@ -135,14 +138,13 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
     // 获取选择的工项列表
     const maintenanceItemIds = this.selectedOrder.serviceOutputs.filter(item => item.checked).map(item => item.id);
 
-    console.log('test特色test：', maintenanceItemIds);
     // 判断是否选择维修工项
     if (maintenanceItemIds.length === 0) {
       this.alerter.error('您还未选择任何维修工项, 请选择维修工项！', true, 3000);
       return;
     }
     // 调用接口  执行通过验收动作
-    this.service.update({ ids: maintenanceItemIds, leaveMileage: this.mileageForm.value.leaveMileage}).then(() => {
+    this.service.update({ ids: maintenanceItemIds, leaveMileage: this.mileageForm.value.leaveMileage }).then(() => {
       // 修改操作记录的teamType为6
       for (let j = 0; j < maintenanceItemIds.length; j++) {
         for (let i = 0; i < this.selectedOrder.serviceOutputs.length; i++) {
@@ -162,6 +164,10 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
       this.alerter.success('执行验收通过操作成功！', true, 3000);
       this.generating = false;
 
+      // 判断是否所有工项都验收通过  如果是，隐藏弹框
+      if (this.selectedOrder.serviceOutputs.filter(m => m.teamType !== 6).length <= 0) {
+        this.checkModal.hide();
+      }
       // 刷新列表
       this.load();
     }).catch(err => {
@@ -203,9 +209,9 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
     });
   }
 
-  private getOrderDetailSuccess(item, modalDialog, data) {
+  private getOrderDetailSuccess(item, data) {
     item.checkGenerating = false;
-    modalDialog.show();
+    this.checkModal.show();
     this.isDetailModalShown = true;
     // 默认带出进厂里程
     this.mileageForm.controls.leaveMileage.setValue(data.mileage);
@@ -215,11 +221,10 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
   /**
   * 点击工单详情按钮处理程序
   * @param {any} item
-  * @param {any} modalDialog 
   * 
   * @memberOf OrderListComponent
   */
-  orderDetailsHandler(item, modalDialog) {
+  orderDetailsHandler(item) {
     item.checkGenerating = true;
 
     // 根据id获取工单详细信息
@@ -237,13 +242,13 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
           this.selectedOrder.preCheckOrder = preCheckOrder;
           this.selectedOrder.preCheckOrder.emptyText = '暂无';
 
-          this.getOrderDetailSuccess(item, modalDialog, data);
+          this.getOrderDetailSuccess(item, data);
         }).catch(err => {
           this.alerter.error(err, true, 2000);
           item.checkGenerating = false;
         });
       } else {
-        this.getOrderDetailSuccess(item, modalDialog, data);
+        this.getOrderDetailSuccess(item, data);
       }
     }).catch(err => {
       this.alerter.error('获取工单信息失败: ' + err, true, 3000);

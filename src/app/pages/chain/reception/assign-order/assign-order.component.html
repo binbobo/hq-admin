@@ -31,7 +31,7 @@
           <tr *ngFor="let item of list">
             <td>
               <button [hqSpinner]="item.assignGenerating" type="button" class="btn btn-sm btn-info" [disabled]="item.assignGenerating"
-                (click)="orderDetailsHandler(item, assignModal)">派工</button>
+                (click)="orderDetailsHandler(item)">派工</button>
               <button [hqSpinner]="item.finishGenerating" type="button" class="btn btn-sm btn-danger" [disabled]="item.finishGenerating"
                 (click)="finishedOrder(item)">完工</button>
             </td>

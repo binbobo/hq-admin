@@ -1,7 +1,8 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { AssignService, AssignListRequest } from '../assign.service';
 import { StorageKeys, SelectOption, DataList } from 'app/shared/models';
 import * as fileSaver from 'file-saver';
+import { ModalDirective } from 'ngx-bootstrap';
 
 
 @Component({
@@ -26,6 +27,8 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
     selectedOrder = null;
     isDetailModalShown = false; // 详情弹框是否可见
     statistics: any = null; // 各种状态数量统计
+    @ViewChild('assignModal')
+    assignModal: ModalDirective;
 
     generating = {
         assign: false,
@@ -167,11 +170,10 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
     /**
     * 点击工单详情按钮处理程序
     * @param {any} item
-    * @param {any} modalDialog 
     * 
     * @memberOf OrderListComponent
     */
-    orderDetailsHandler(item, modalDialog) {
+    orderDetailsHandler(item) {
         item.assignGenerating = true;
 
         // 根据id获取工单详细信息
@@ -185,7 +187,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
 
             item.assignGenerating = false;
             // 显示窗口
-            modalDialog.show();
+            this.assignModal.show();
             this.isDetailModalShown = true;
         }).catch(err => {
             this.alerter.error('获取工单信息失败: ' + err, true, 2000);
@@ -312,6 +314,10 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             // 设置派工按钮不可用
             this.selectedOrder.serviceOutputs.enableBtn = false;
 
+            // 判断是否所有工项已派工  如果是, 关闭弹框
+            if(this.selectedOrder.serviceOutputs.filter(m=>m.teamType===1).length <= 0) {
+                this.assignModal.hide();
+            }
             // 刷新页面
             this.load();
         }).catch(err => {

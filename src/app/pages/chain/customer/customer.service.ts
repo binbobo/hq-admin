@@ -129,8 +129,7 @@ export class CustomerService implements BasicService<any> {
      * @memberOf OrderService
      */
     public getCustomerSource(): Observable<any[]> {
-        // const url = Urls.chain.concat('/CustomerSources');
-        const url = 'http://192.168.60.57:8028/api/CustomerSources';
+        const url = Urls.chain.concat('/CustomerSources');
         return this.httpService
             .request(url)
             .map(response => {
