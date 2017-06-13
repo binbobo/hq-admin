@@ -1,0 +1,74 @@
+<ng-template hq-alerter></ng-template>
+<div class="card">
+  <form *ngIf="form" class="card-block row" [formGroup]="form" (ngSubmit)="onSubmit($event)">
+    <div class="col-6">
+      <div class="form-group">
+        <label class="form-control-label">维修项目</label>
+        <input readonly type="text" formControlName="serviceName" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">配件编码</label>
+        <input readonly type="text" formControlName="productCode" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">配件名称</label>
+        <input readonly type="text" formControlName="productName" class="form-control">
+      </div>
+       <div class="form-group">
+        <label class="form-control-label">配件分类</label>
+        <input readonly type="text" formControlName="productCategory" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">品牌</label>
+        <input readonly type="text" formControlName="brandName" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">规格型号</label>
+        <input readonly type="text" formControlName="productSpecification" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">单价（元）</label>
+        <input readonly type="text" [value]="model.price|centToYuan" formControlName="price" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">备注</label>
+        <input readonly type="text" formControlName="description" class="form-control">
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="form-group">
+        <label class="form-control-label">适用车型</label>
+         <div readonly *ngIf="!inputData.vehicleInfoList" class="form-control"  [hqVehicleShow]="inputData.vehicleInfoList">&nbsp;</div>
+        <div readonly *ngIf="inputData.vehicleInfoList" class="form-control" style="height:38px;line-height:23px;" [hqVehicleShow]="inputData.vehicleInfoList"></div>
+        <!--<input readonly formControlName="vihicleName" class="form-control">-->
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">仓库</label>
+        <input readonly type="text" formControlName="storeName" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">库位</label>
+        <input readonly type="text" formControlName="locationName" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label hq-required">数量(可退数量：{{inputData.count - inputData.returnCount}}&nbsp;)</label>
+        <input label="数量" type="number" formControlName="initcount" (change)="onChangeCount($event)" class="form-control">
+      </div>
+       <div class="form-group">
+        <label class="form-control-label">单位</label>
+        <input readonly type="text" formControlName="productUnit" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">金额(元)</label>
+        <input readonly class="form-control" label="金额" [value]="model.initamount|centToYuan" formControlName="initamount">
+      </div>
+      <div class="form-group">
+        <label class="form-control-label">退料人</label>
+        <input readonly type="text" formControlName="takeUser" class="form-control">
+      </div>
+    </div>
+    <div class="col-12">
+      <button type="submit" [disabled]="submitting" class="btn btn-primary mr-3">提交</button>
+    </div>
+  </form>
+</div>

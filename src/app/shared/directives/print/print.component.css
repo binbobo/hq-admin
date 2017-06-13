@@ -1,11 +1,104 @@
-.print-page{
-    page-break-after:always;
+h1::first-letter,h2::first-letter,h3::first-letter,h4::first-letter,h5::first-letter,th {
+    margin-top: 0;
 }
 
-.no-print{
+.hq-printing{
+    font-size: 12px!important;
+    font-weight: 100!important;
+}
+/*维修工单打印页面样式 --Start*/
+.hq-printing div.order-detail-print-header {
+    margin-top: 15px;
+}
+.hq-printing div.order-detail-print-header p span.fixed-width {
+    display: inline-block;
+    min-width:160px;
+}
+.hq-printing table td.fixed-width{
+    width: 100px;
+}
+.hq-printing table td.td-header{
+    width: 25px;
+}
+.hq-printing table td{ 
+    vertical-align: middle;
+    padding: .35rem;
+}
+.hq-printing table th {
+    font-weight: 200 !important;
+    font-size: 14px;
+    padding: .35rem;
+}
+.hq-printing table caption {
+    font-weight: normal !important;
+    font-size: 16px;
+}
+.hq-printing .print-label {
+    font-weight: normal !important;
+    font-size: 14px;
+}
+/*维修工单打印页面样式 --End*/
+.hq-printing .sign-table{
+    width:100%;
+}
+.hq-printing .sign-title{
+    text-align: left;
+    border-bottom: 1px solid #000;
+    vertical-align: bottom;
+}
+/*出入库表格样式*/
+.hq-printing .bound-table {
+    width:100%;
+    color:#727171;
+    text-align: center;
+}
+.hq-printing .bound-table thead{
+    border: 1px solid #727171;
+}
+
+.print-header{
+    /*clear: both;*/
+    padding-bottom: 10px;
+    border-bottom: 3px solid #595757;
+}
+
+.print-header img{
+    margin-top: -4px;
+    height: 20px;
+    display: inline-block;
+}
+
+.print-header .print-title{
+    float: right;
+    /*font-weight: bold;*/
+    font-size: 1.2rem;
+    height: 20px;
+    line-height: 20px;
+}
+
+.print-hidden{
     display: none;
+}
+
+.print-visible{
+    display: none;
+}
+
+.page-break-before{
+    page-break-before: always;
+}
+
+.page-break-after{
+    page-break-after: always;
 }
 
 .hq-visible{
     visibility: visible!important;
+}
+
+@media print {
+  footer {
+    position: fixed;
+    bottom: 0;
+  }
 }

@@ -2,79 +2,80 @@
 <div class="card">
   <div class="card-header">
     <span>采购入库</span>
-    <ng-template hqSuspendBill="PW" (onRemove)="onSuspendRemove($event)" (onSelect)="onSuspendSelect($event)" [columns]="suspendedColumns"></ng-template>
+    <ng-template hqPurchaseInBill (onRemove)="onSuspendRemove($event)" (onSelect)="onSuspendSelect($event)"></ng-template>
   </div>
   <div class="card-block">
-    <form class="form-inline mb-2">
-      <div class="form-group mb-2">
-        <label>*供应商名称</label>
-        <div class="mx-sm-3">
-          <input [hqTableTypeahead]="source" [columns]="providerColumns" (onSelect)="onProviderSelect($event)" value="{{model?.provider||''}}"
-            class="form-control" placeholder="请输入供应商名称" />
+    <form #form="ngForm" class="form-inline mb-2">
+      <div class="input-group m-1">
+        <span class="input-group-addon">供应商名称</span>
+        <div>
+          <input hqProviderTypeahead (onSelect)="onProviderSelect($event)" [(ngModel)]="model.custName" name="custName" class="form-control"
+            placeholder="请输入供应商名称" required />
         </div>
       </div>
-      <div class="form-group mb-2">
-        <button (click)="createModal.show()" class="btn btn-primary mx-sm-1" translate>新增</button>
+      <div class="form-group">
+        <button [disabled]="form.invalid" (click)="createModal.show()" class="btn btn-primary">新增</button>
       </div>
     </form>
-    <table class="table table-bordered table-striped">
-      <thead>
-        <tr>
-          <th translate>装箱单号</th>
-          <th translate>仓库</th>
-          <th translate>品牌</th>
-          <th translate>配件编码</th>
-          <th translate>配件名称</th>
-          <th translate>规格型号</th>
-          <th translate>配件类别</th>
-          <th translate>库位</th>
-          <th translate>数量（个）</th>
-          <th translate>含税单价（元）</th>
-          <th translate>含税总金额（元）</th>
-          <th translate>税率（%）</th>
-          <th translate>不含税单价（元）</th>
-          <th translate>不含税总金额（元）</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of model.list;let i=index">
-          <td>{{item.packingCode }}</td>
-          <td>{{item.storeName}}</td>
-          <td>{{item.brand}}</td>
-          <td>{{item.productCode }}</td>
-          <td>{{item.productName }}</td>
-          <td>{{item.productSpecification}}</td>
-          <td>{{item.productCategory}}</td>
-          <td>{{item.locationName }}</td>
-          <td class="text-center">{{item.count }}</td>
-          <td class="text-right">{{item.price|centToYuan}}</td>
-          <td class="text-right">{{item.amount|centToYuan}}</td>
-          <td class="text-center">{{item.taxRate }}</td>
-          <td class="text-right">{{item.exTaxPrice|centToYuan }}</td>
-          <td class="text-right">{{item.exTaxAmount|centToYuan }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="card-footer text-muted">
-    <button class="btn btn-primary" (click)="generate($event)">生成采购入库单</button>
-    <button class="btn btn-warning" (click)="cancel($event)">取消</button>
-    <button class="btn btn-info" (click)="suspend($event)">挂单</button>
-  </div>
-</div>
-
-<div class="modal fade" bsModal #createModal="bs-modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title pull-left">新增</h5>
-        <button class="close pull-right" (click)="createModal.hide()">&times;</button>
-      </div>
-      <div class="modal-body">
-        <hq-procurement-create (formSubmit)="onCreate($event)"></hq-procurement-create>
-      </div>
+    <div class="table-container">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>操作</th>
+            <th>序号</th>
+            <th>仓库</th>
+            <th>库位</th>
+            <th>配件编码</th>
+            <th>配件分类</th>
+            <th>配件名称</th>
+            <th>品牌</th>
+            <th>规格型号</th>
+            <th>单位</th>
+            <th>数量</th>
+            <th>含税单价（元）</th>
+            <th>含税金额（元）</th>
+            <th>不含税单价（元）</th>
+            <th>不含税金额（元）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of model.list;let i=index">
+            <td class="text-center">
+              <button (click)="onEdit(item)" class="btn btn-sm btn-info">编辑</button>
+              <button (click)="onRemove(item)" class="btn btn-sm btn-danger">删除</button>
+            </td>
+            <td>{{i+1}}</td>
+            <td>{{item.storeName}}</td>
+            <td>{{item.locationName }}</td>
+            <td>{{item.productCode }}</td>
+            <td>{{item.productCategory}}</td>
+            <td>{{item.productName }}</td>
+            <td>{{item.brandName}}</td>
+            <td>{{item.productSpecification}}</td>
+            <td class="text-center">{{item.productUnit }}</td>
+            <td class="text-center">{{item.count }}</td>
+            <td class="text-right">{{item.price|centToYuan}}</td>
+            <td class="text-right">{{item.amount|centToYuan}}</td>
+            <td class="text-right">{{item.exTaxPrice|centToYuan }}</td>
+            <td class="text-right">{{item.exTaxAmount|centToYuan }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
+  <div class="card-footer text-muted">
+    <button [hqSpinner]="generating" [disabled]="form.invalid||!model.valid" class="btn btn-primary" (click)="generate($event)">生成采购入库单</button>
+    <button [hqSpinner]="suspendBill.suspending" [disabled]="form.invalid||!model.valid" class="btn btn-success btn-suspend"
+      (click)="suspend($event)">挂单</button>
+  </div>
 </div>
 
-<hq-procurement-print class="invisible" hqPrint #printer="hq-print" [model]="printModel"></hq-procurement-print>
+<div hqModal #createModal="hq-modal" modalTitle="新增" size="lg">
+  <hq-procurement-create *ngIf="createModal.isShown" (formSubmit)="onCreate($event)"></hq-procurement-create>
+</div>
+
+<div hqModal #editModal="hq-modal" modalTitle="新增" size="lg">
+  <hq-procurement-edit *ngIf="editModal.isShown" [model]="selectedModel" (onSubmit)="onUpdated($event)"></hq-procurement-edit>
+</div>
+
+<hq-procurement-print class="invisible" hqPrint #printer="hq-print" print-title="采购入库单" [model]="printModel"></hq-procurement-print>

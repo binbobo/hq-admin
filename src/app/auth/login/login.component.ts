@@ -2,12 +2,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService, LoginRequestModel } from '../auth.service';
 import { UserService, User } from "app/shared/services";
-import { HqAlerter }  from 'app/shared/directives';
+import { HqAlerter } from 'app/shared/directives';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
 
@@ -55,6 +55,9 @@ export class LoginComponent implements OnInit {
         this.userService.onUserLogin.emit(user);
         this.userService.redirect();
       })
-      .catch(err => this.alerter.error(err));
+      .catch(err => {
+        this.alerter.clear();
+        this.alerter.error(err);
+      });
   }
 }

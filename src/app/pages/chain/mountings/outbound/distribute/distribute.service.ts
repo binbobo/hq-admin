@@ -21,7 +21,6 @@ export class DistributeService implements BasicService<any>{
     delete(id: string): Promise<void> {
         throw new Error('Method not implemented.');
     }
-
     constructor(private httpService: HttpService) { }
     /**
     * 分页获取工单列表信息
@@ -31,7 +30,6 @@ export class DistributeService implements BasicService<any>{
         return this.httpService
             .get<PagedResult<any>>(url)
             .then(result => {
-                console.log('工单列表数据', result);
                 return result;
             })
             .catch(err => Promise.reject(`列表失败：${err}`));
@@ -52,17 +50,16 @@ export class DistributeService implements BasicService<any>{
             .then(result => {
                 return result.data
             })
-            .then(data => data || Promise.reject('获取数据无效！'))
             .catch(err => Promise.reject(`加载失败：${err}`));
     }
 
     // 根据配件编码或配件名称搜索编码列表 
-    getProductList(params: ProductRequest): Promise<PagedResult<ProductsParams>> {
-        let search = params.serialize();
-        const url = Urls.chain.concat('/products/getListByNameOrCode');
-        return this.httpService
-            .get<PagedResult<ProductsParams>>(url, search)
-    }
+    // getProductList(params: ProductRequest): Promise<PagedResult<ProductsParams>> {
+    //     let search = params.serialize();
+    //     const url = Urls.chain.concat('/Products/SearchInventory');
+    //     return this.httpService
+    //         .get<PagedResult<ProductsParams>>(url, search)
+    // }
 
     //生成维修发料单
     public postBill(body: any): Promise<any> {
@@ -96,7 +93,6 @@ export class DistributeService implements BasicService<any>{
     //     return this.httpService
     //         .get<ApiResult<any>>(url)
     //         .then(result => {
-    //             console.log(result.data)
     //             return result.data
     //         })
     //         .then(data => data || Promise.reject('获取数据无效！'))
@@ -109,7 +105,7 @@ export class DistributeService implements BasicService<any>{
             .request(url, {
                 params: {
                     "BillCode": billCode,
-                    "BillTypeKey": "MM"
+                    "BillTypeKey": "RM"
                 }
             })
             .map(response => {
@@ -117,14 +113,14 @@ export class DistributeService implements BasicService<any>{
             });
     }
     //已有发料接口
-    
+
     getMMList(billCode: string): Observable<any> {
         const url = Urls.chain.concat('/StoreInOutDetails/GetMainList');
         return this.httpService
             .request(url, {
                 params: {
                     "BillCode": billCode,
-                    "BillTypeKey": "MM"
+                    "BillTypeKey": "RM"
                 }
             })
             .map(response => {
@@ -140,7 +136,7 @@ export class DistributeService implements BasicService<any>{
             .request(url, {
                 params: {
                     "BillCode": billCode,
-                    "BillTypeKey": "MR"
+                    "BillTypeKey": "RR"
                 }
             })
             .map(response => {
@@ -167,7 +163,7 @@ export class SearchReturnData {
         public typeName: string = '',   //维修类型
         public expectLeave: string = '',  //预计交车日期
         public mileage: number = 0, //行驶里程
-        public lastEnterDate: string = '',//上次进店时间
+        public lastEnterDate: string = '',//上次进厂时间
         public nextDate: string = '',   //建议下次保养日期
         public location: string = '',   //维修工位
         public lastMileage: string = '', //上次进店里程
@@ -216,6 +212,8 @@ export class DetailData {
     constructor(
         public id: any,
         public billCode: any,
+        public customerName: any,
+        public plateNo: any,
         public serviceOutputs: any = [],//维修项目
         public attachServiceOutputs: Array<any> = [],//附加项目
         public suggestServiceOutputs: any = [],//建议维修项
@@ -229,6 +227,7 @@ export class DistributeListItem {
     constructor(
         public count: number = 0,
         public price: number = 0,
+        public initprice?: any,
         public amount: number = 0,
         public stockCount: number = 0,
         public productName?: string,
@@ -248,9 +247,12 @@ export class DistributeListItem {
         public createUserName?: string,
         public maintenanceItemId?: string,
         public number?: any,
-        public initcount:number=1,
-        public storeName?:string,
-        public specifications?:string,
-        public storeHouse?:string,
+        public initcount: number = 1,
+        public storeName?: string,
+        public specifications?: string,
+        public storeHouse?: string,
+        public productCategory?: string,
+        public productUnit?:string,
+        public vehicleInfoList?:any
     ) { }
 }

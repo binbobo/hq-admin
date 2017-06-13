@@ -3,7 +3,7 @@
   <div class="card-header">
     <span>资源列表</span>
     <div class="pull-right">
-      <a routerLink="create" class="btn btn-sm btn-primary" translate>add</a>
+      <a routerLink="create" class="btn btn-sm btn-primary">add</a>
     </div>
   </div>
   <div class="card-block">
@@ -17,18 +17,18 @@
         <option *ngFor="let item of languages" value="{{item.id}}">{{item.name}}</option>
       </select>
       <input type="text" class="form-control mb-2 mr-2" [(ngModel)]="params.key" name="key" placeholder="请输入资源名称">
-      <button type="submit" class="btn btn-primary mb-2 mr-2" translate>search</button>
+      <button type="submit" class="btn btn-primary mb-2 mr-2">查询</button>
     </form>
-    <table class="table table-bordered table-sm table-striped">
+    <table class="table table-bordered table-sm">
       <thead>
         <tr>
-          <th translate>language</th>
-          <th translate>key</th>
-          <th translate>value</th>
-          <th translate>display.order</th>
-          <th translate>create.time</th>
-          <th translate>status</th>
-          <th translate>operator</th>
+          <th>language</th>
+          <th>key</th>
+          <th>value</th>
+          <th>display.order</th>
+          <th>create.time</th>
+          <th>status</th>
+          <th>operator</th>
         </tr>
       </thead>
       <tbody>
@@ -36,16 +36,16 @@
           <td>{{ item.languageName }}</td>
           <td>{{ item.key }}</td>
           <td>{{ item.value}}</td>
-          <td>{{ item.displayOrder}}</td>
-          <td>{{ item.createdOnUtc|date:'y-MM-dd HH:mm:ss'}}</td>
-          <td><i class="fa fa-{{ item.enabled?'check':'times' }}"></i></td>
-          <td>
+          <td class="text-center">{{ item.displayOrder}}</td>
+          <td class="text-center">{{ item.createdOnUtc|sDatetime}}</td>
+          <td class="text-center"><i class="fa fa-{{ item.enabled?'check':'times' }}"></i></td>
+          <td class="text-center">
             <a [routerLink]="['edit',item.id]" class="btn btn-sm btn-success" title="编辑"><i class="fa fa-pencil-square-o"></i></a>
             <a (click)="onDelete($event,item.id)" class="btn btn-sm btn-danger" title="删除"><i class="fa fa-trash-o"></i></a>
           </td>
         </tr>
       </tbody>
     </table>
-    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" [(itemsPerPage)]="size" (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
 </div>

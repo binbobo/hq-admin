@@ -1,7 +1,8 @@
 import { Directive, Input, ElementRef, ViewContainerRef, ComponentFactoryResolver, OnInit, Output, EventEmitter } from '@angular/core';
 import { SuspendBillComponent } from './suspend-bill.component';
 import { SuspendedBillItem } from './suspend-bill.service';
-import { SuspendBillsService } from './suspend-bill.service';
+import { SuspendBillService } from './suspend-bill.service';
+import { PagedResult } from 'app/shared/models';
 
 @Directive({
   selector: '[hqSuspendBill]',
@@ -10,20 +11,22 @@ import { SuspendBillsService } from './suspend-bill.service';
 export class SuspendBillDirective implements OnInit {
 
   @Input("hqSuspendBill")
-  private type: string;
+  protected type: string;
   @Input()
-  private columns: Array<SuspendBillColumn>;
+  protected columns: Array<SuspendBillColumn>;
+  @Input()
+  protected resultHandle: (result: PagedResult<any>) => void;
   @Output()
-  private onSelect = new EventEmitter<SuspendedBillItem>();
+  protected onSelect = new EventEmitter<SuspendedBillItem>();
   @Output()
-  private onRemove: EventEmitter<SuspendedBillItem> = new EventEmitter<SuspendedBillItem>();
-
-  private selectedItem: SuspendedBillItem;
+  protected onRemove: EventEmitter<SuspendedBillItem> = new EventEmitter<SuspendedBillItem>();
+  public suspending: boolean;
+  protected selectedItem: SuspendedBillItem;
   private component: SuspendBillComponent;
   constructor(
-    private service: SuspendBillsService,
-    private viewContainerRef: ViewContainerRef,
-    private componentFactoryResolver: ComponentFactoryResolver
+    protected service: SuspendBillService,
+    protected viewContainerRef: ViewContainerRef,
+    protected componentFactoryResolver: ComponentFactoryResolver
   ) { }
 
   ngOnInit(): void {
@@ -33,6 +36,7 @@ export class SuspendBillDirective implements OnInit {
     this.component.columns = this.columns;
     this.component.type = this.type;
     this.component.onSelect = this.onSelect;
+    this.component.resultHandle = this.resultHandle;
     this.component.onSelect.subscribe(m => {
       this.selectedItem = m;
     });
@@ -45,10 +49,21 @@ export class SuspendBillDirective implements OnInit {
   }
 
   public suspend(data: any): Promise<void> {
+    this.suspending = true;
     if (this.selectedItem) {
-      return this.service.update(data, this.type, this.selectedItem.id);
+      return this.service.update(data, this.type, this.selectedItem.id)
+        .then(() => { this.suspending = false })
+        .catch(err => {
+          this.suspending = true;
+          return Promise.reject(err);
+        });
     } else {
-      return this.service.create(data, this.type);
+      return this.service.create(data, this.type)
+        .then(() => { this.suspending = false })
+        .catch(err => {
+          this.suspending = true;
+          return Promise.reject(err);
+        });
     }
   }
 

@@ -1,45 +1,70 @@
-import { Directive, ViewContainerRef, ComponentFactoryResolver, Input, EventEmitter, Output, OnInit, HostListener, ElementRef, Component, ComponentRef } from '@angular/core';
+import { Directive, ViewContainerRef, ComponentFactoryResolver, Input, EventEmitter, Output, OnInit, HostListener, Component, ComponentRef, Injector, TemplateRef, Optional, ElementRef } from '@angular/core';
 import { TableTypeaheadComponent } from './table-typeahead.component';
 import { PagedResult, PagedParams } from 'app/shared/models';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/debounceTime';
-
+import { FormControlName, NgModel, FormControl } from '@angular/forms';
+import { inject } from '@angular/core/testing';
 @Directive({
   selector: '[hqTableTypeahead]',
   exportAs: 'hq-table-typeahead'
 })
 export class TableTypeaheadDirective implements OnInit {
-
   @Input("hqTableTypeahead")
-  private source: (params: TypeaheadRequestParams) => Promise<PagedResult<any>>;
+  public source: (params: TypeaheadRequestParams) => Promise<PagedResult<any>>;
   @Input()
-  private delay: number = 600;
+  protected delay: number = 600;
   @Input()
-  private forceRefresh: boolean;
+  protected forceRefresh: boolean;
   @Input()
-  private columns: Array<TableTypeaheadColumn>;
+  protected columns: Array<TableTypeaheadColumn>;
   @Input()
-  private pageSize: number = 10;
+  protected pageSize: number = 10;
   @Input()
-  private multiple: boolean;
+  protected multiple: boolean;
+  @Input()
+  protected showTitle = true;
+  @Input()
+  protected checkStrategy: (item: any) => boolean;
+  @Input()
+  protected params: Object;
   @Output()
-  private onSelect = new EventEmitter<any>();
+  protected onEmpty = new EventEmitter<string>();
   @Output()
-  private onRemove = new EventEmitter();
+  protected onSelect = new EventEmitter<any>();
+  @Input()
+  protected selectedField: string;
 
   private el: HTMLInputElement;
   private componentRef: ComponentRef<TableTypeaheadComponent>;
   private paging = false;
-  private sortedKeys: Array<string> = [];
   private statusElement: HTMLElement;
+  private control: FormControl;
+
+  protected viewContainerRef: ViewContainerRef;
+  protected componentFactoryResolver: ComponentFactoryResolver
 
   constructor(
-    private viewContainerRef: ViewContainerRef,
-    private componentFactoryResolver: ComponentFactoryResolver
+    private injector: Injector,
   ) {
+    this.viewContainerRef = this.injector.get(ViewContainerRef);
+    this.componentFactoryResolver = this.injector.get(ComponentFactoryResolver);
     this.el = this.viewContainerRef.element.nativeElement;
+  }
+
+  ngOnInit(): void {
+    this.el.autocomplete = "off";
+    if (!this.selectedField) {
+      let col = this.columns && this.columns.find(m => m.selected);
+      col = col || this.columns && this.columns.length && this.columns[0];
+      col && (this.selectedField = col.name);
+    }
+    this.setControl();
+    this.generateHtml();
+    this.initComponent();
+    this.bindEvent();
   }
 
   @HostListener('blur', ['$event'])
@@ -47,92 +72,84 @@ export class TableTypeaheadDirective implements OnInit {
     if (!this.multiple) {
       setTimeout(() => {
         if (this.paging) {
-          this.paging = false;
           this.el.focus();
+          this.paging = false;
         } else {
           this.hide();
         }
-      }, 500);
+      }, 200);
     }
   }
-
   @HostListener('focus', ['$event'])
   onFocus(event) {
-    this.show();
-    if (this.forceRefresh || !this.componentRef.instance.result) {
-      this.componentRef.instance.result = null;
+    if (!this.paging && event.sourceCapabilities) {
       this.search();
     }
   }
-
   @HostListener('input', ['$event'])
   onInput(event) {
     this.componentRef.instance.result = null;
   }
-
   show() {
     let rect = this.el.getBoundingClientRect();
-    let ne = this.componentRef.location.nativeElement;
-    ne.style.top = rect.height + "px";
-    ne.style.left = "-2px";
+    this.componentRef.instance.minWidth = rect.width;
+    this.componentRef.instance.height = rect.height;
     this.componentRef.instance.show();
   }
-
   hide() {
     this.componentRef.instance.hide();
   }
-
   private search(pageIndex = 1) {
+    if (!this.paging) {
+      this.componentRef.instance.result = null;
+    }
     let param = new TypeaheadRequestParams(this.el.value);
     param.setPage(pageIndex, this.pageSize);
-    this.statusElement.classList.add('fa-spinner');
-    let rotate = 0;
-    let animation = setInterval(() => {
-      rotate = (rotate + 10) % 360;
-      this.statusElement.style.transform = `rotate(${rotate}deg)`;
-    }, 20);
-    let stopAnimation = () => {
-      clearInterval(animation);
-      this.statusElement.classList.remove('fa-spinner');
-      this.statusElement.style.transform = 'none';
-    };
     if (this.source) {
+      this.statusElement.classList.add('fa-spinner', 'fa-spin');
       this.source(param)
         .then(result => result || new PagedResult())
         .then(result => {
+          if (!result.data.length) {
+            this.onEmpty.emit(param.text);
+          }
+          if (this.multiple && this.checkStrategy) {
+            result.data.forEach(m => {
+              m.checked = this.checkStrategy(m);
+            });
+          }
           this.componentRef.instance.result = result;
           this.show();
         })
-        .then(() => stopAnimation())
+        .then(() => this.statusElement.classList.remove('fa-spinner', 'fa-spin'))
         .catch(err => {
-          stopAnimation();
+          console.log(err);
+          this.statusElement.classList.remove('fa-spinner', 'fa-spin');
           this.componentRef.instance.result = null;
         });
     }
   }
 
-  ngOnInit(): void {
-    if (this.columns) {
-      this.sortedKeys = this.columns
-        .slice(0)
-        .sort((m, n) => {
-          m.weight = m.weight || 0;
-          n.weight = n.weight || 0;
-          return m.weight === n.weight ? 0 : n.weight - m.weight
-        })
-        .map(m => m.name);
-    }
+  private setControl() {
+    this.control = this.injector.get(FormControl, null);
+    if (this.control) return;
+    let controlName = this.injector.get(FormControlName, null);
+    controlName && (this.control = controlName.control);
+    if (this.control) return;
+    let ngModel = this.injector.get(NgModel, null);
+    ngModel && (this.control = ngModel.control);
+  }
+
+  private generateHtml() {
+    this.el.style.borderBottomLeftRadius = "0.25rem";
+    this.el.style.borderTopLeftRadius = "0.25rem";
     let wrapper = document.createElement("div");
+    this.el.insertAdjacentElement('beforebegin', wrapper);
     wrapper.className = 'input-group';
-    this.el.parentElement.insertBefore(wrapper, this.el.nextSibling);
     wrapper.appendChild(this.el);
     let span = document.createElement('span');
     span.className = "input-group-addon";
-    span.style.borderTopRightRadius = "0.25rem";
-    span.style.borderBottomRightRadius = "0.25rem";
-    span.style.borderRightWidth = "1px";
-    span.style.borderRightStyle = "solid";
-    span.style.borderRightColor = "rgba(0, 0, 0, 0.14902)";
+    span.style.backgroundColor = "#fff";
     this.statusElement = document.createElement('i');
     this.statusElement.className = "cursor-pointer fa fa-search";
     span.appendChild(this.statusElement);
@@ -140,30 +157,41 @@ export class TableTypeaheadDirective implements OnInit {
     let componentFactory = this.componentFactoryResolver.resolveComponentFactory(TableTypeaheadComponent);
     this.componentRef = this.viewContainerRef.createComponent(componentFactory);
     let ne = this.componentRef.location.nativeElement;
-    ne.style.transition = 'height 0.3s ease-in';
-    wrapper.appendChild(ne);
+    wrapper.insertAdjacentElement('afterbegin', ne);
+  }
+
+  private initComponent() {
+    if (this.showTitle) {
+      if (!this.columns || this.columns.length < 2) {
+        this.showTitle = false;
+      }
+    }
     let component = this.componentRef.instance;
     component.columns = this.columns;
-    component.onRemove = this.onRemove;
     component.size = this.pageSize;
     component.multiple = this.multiple;
+    component.showTitle = this.showTitle;
     component.onPageChange.subscribe(params => {
       this.paging = true;
       this.search(params.pageIndex);
     });
     component.onSelect.subscribe((item) => {
-      let originValue = this.el.value;
-      if (!this.multiple) {
-        let selectedValue = this.sortedKeys
-          .filter(key => item[key])
-          .map(key => item[key].toString())
-          .find(value => value.includes(originValue));
-        if (selectedValue) {
+      let selectedValue = item[this.selectedField];
+      if (!this.multiple && selectedValue) {
+        if (this.control) {
+          this.control.setValue(selectedValue.trim());
+        } else {
           this.el.value = selectedValue.trim();
         }
+        setTimeout(() => {
+          this.paging = false;
+        }, this.delay + 100);
       }
       this.onSelect.emit(item);
     })
+  }
+
+  private bindEvent() {
     Observable.fromEvent(this.el, 'input')
       .map((e: any) => e.target.value)
       .debounceTime(this.delay)
@@ -172,25 +200,23 @@ export class TableTypeaheadDirective implements OnInit {
         this.search();
       });
     this.statusElement.addEventListener('click', (event: MouseEvent) => {
+      event.stopPropagation();
+      if (this.el.readOnly) return false;
       let el = event.target as HTMLElement;
       if (!el.classList.contains('fa-spinner')) {
         this.search();
       }
-      event.stopPropagation();
     });
   }
-
 }
-
 export class TableTypeaheadColumn {
   constructor(
     public name: string,
-    public weight: number = 0,
     public title?: string,
     public maxLength?: number,
+    public selected?: boolean,
   ) { }
 }
-
 export class TypeaheadRequestParams extends PagedParams {
   constructor(public text?: string) {
     super();

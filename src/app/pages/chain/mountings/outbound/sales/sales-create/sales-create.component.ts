@@ -1,10 +1,9 @@
-import { Component, OnInit, Injector, Output, EventEmitter, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, Injector, Output, EventEmitter, ViewChildren, QueryList, ViewChild } from '@angular/core';
 import { FormHandle } from 'app/shared/models';
 import { SalesListItem } from '../sales.service';
 import { Observable } from "rxjs/Rx";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { FormControlErrorDirective, TypeaheadRequestParams } from 'app/shared/directives';
-import { GetMountingsListRequest, MountingsService } from '../../../mountings.service';
+import { TypeaheadRequestParams, FormGroupControlErrorDirective, HqAlerter } from 'app/shared/directives';
 import { CustomValidators } from 'ng2-validation';
 import { CentToYuanPipe } from "app/shared/pipes";
 
@@ -20,41 +19,68 @@ export class SalesCreateComponent implements OnInit {
   @Output()
   private formSubmit = new EventEmitter<SalesListItem>();
   private model: SalesListItem = new SalesListItem();
-  @ViewChildren(FormControlErrorDirective)
-  private controls: QueryList<FormControlErrorDirective>;
+  @ViewChildren(FormGroupControlErrorDirective)
+  private controls: QueryList<FormGroupControlErrorDirective>;
+  @ViewChild(HqAlerter)
+  protected alerter: HqAlerter;
+  private storages: Array<any>;
+  private locations: Array<any>;
 
   constructor(
     private formBuilder: FormBuilder,
-    private moutingsService: MountingsService,
   ) { }
 
   ngOnInit() {
+    this.model['yuan'] = this.model.price / 100;
     this.buildForm();
   }
 
   onPriceChange(event) {
     let val = event.target.value || 0;
-    let price = Math.floor(val * 100);
+    let price = (val * 100).toFixed();
     this.form.patchValue({ price: price });
     this.calculate();
   }
 
+  onStorageChange(storageId: string) {
+    let storage = this.storages.find(m => m.id === storageId);
+    this.locations = storage && storage.locations;
+    let location = this.locations && this.locations.length && this.locations[0];
+    let count = location && location.count;
+    this.form.patchValue({
+      locationId: location && location.id,
+      stockCount: count,
+    });
+    this.onLocationChange(location && location.id);
+  }
+
+  onLocationChange(locationId: string) {
+    let location = this.locations && this.locations.find(m => m.id === locationId);
+    let stock = location && location.count || 0;
+    this.form.controls['stockCount'].setValue(stock);
+    let countControl = this.form.controls['count'];
+    let validators = Validators.compose([Validators.required, CustomValidators.min(1), CustomValidators.max(stock)])
+    countControl.setValidators(validators);
+    countControl.updateValueAndValidity();
+  }
+
   private buildForm() {
     this.form = this.formBuilder.group({
-      brand: [this.model.brand, [Validators.required]],
+      brandName: [this.model.brand, [Validators.required]],
       productCode: [this.model.productCode],
       productName: [this.model.productName],
+      productCategory: [this.model.productCategory, [Validators.required]],
       productId: [this.model.productId, [Validators.required, Validators.maxLength(36)]],
       productSpecification: [this.model.productSpecification, [Validators.required]],
       storeId: [this.model.storeId],
       locationId: [this.model.locationId],
-      count: [this.model.count, [Validators.required, CustomValidators.digits]],
+      productUnit: [this.model.productUnit],
+      count: [this.model.count, [Validators.required, CustomValidators.min(1)]],
       price: [this.model.price],
       amount: [this.model.amount],
-      stockCount: [this.model.stockCount, [Validators.required]],
-      locationName: [this.model.locationName, [Validators.required]],
-      houseName: [this.model.houseName, [Validators.required]],
-      yuan: [0, [Validators.required]]
+      description: [this.model.description, Validators.maxLength(100)],
+      stockCount: [this.model.stockCount, [CustomValidators.min(1)]],
+      yuan: [this.model['yuan'], [Validators.required, CustomValidators.gt(0)]]
     })
   }
 
@@ -66,64 +92,61 @@ export class SalesCreateComponent implements OnInit {
       event.preventDefault();
       return false;
     } else {
-      this.formSubmit.emit(this.form.value);
-      this.form.reset(this.model);
+      let formData = this.form.value;
+      let location = formData.locationId && this.locations.find(m => m.id === formData.locationId);
+      let storageId = this.form.get('storeId').value;
+      let storage = formData.storeId && this.storages.find(m => m.id === formData.storeId);
+      let value = { ...formData, locationName: location && location.name, houseName: storage && storage.name };
+      this.formSubmit.emit(value);
+      this.reset();
     }
   }
 
-  public onReset() {
-    this.form = null;
-    setTimeout(() => this.buildForm(), 1);
-    return false;
-  }
-
-  public itemColumns(isName: boolean) {
-    return [
-      { name: 'name', title: '名称', weight: isName ? 1 : 0 },
-      { name: 'code', title: '编码', weight: isName ? 0 : 1 },
-      { name: 'brand', title: '品牌' },
-      { name: 'houseName', title: '仓库' },
-      { name: 'locationName', title: '库位' },
-    ];
+  private onResetForm(event: any, retainKey: string) {
+    if (!event.isTrusted) return false;
+    this.storages = null;
+    this.locations = null;
+    Object.keys(this.form.controls)
+      .forEach(key => key !== retainKey && this.form.get(key).setValue(this.model[key]));
   }
 
   public onItemSelect(event) {
-    let item = {
+    let item: any = {
+      productUnit: event.unitName,
+      productId: event.id,
       productCode: event.code,
       productName: event.name,
       productSpecification: event.specification,
-      productId: event.productId,
-      brand: event.brand,
-      brandId: event.brandId,
-      storeId: event.storeId,
-      houseName: event.houseName,
-      locationId: event.locationId,
-      locationName: event.locationName,
-      stockCount: event.count,
+      brandName: event.brandName,
+      productCategory: event.categoryName,
+      storeId: null,
       price: event.price,
       yuan: (event.price || 0) / 100
     }
-    this.form.controls['yuan'].setValidators(CustomValidators.gte(item.price / 100))
-    setTimeout(() => {
-      this.form.patchValue(item);
-      this.calculate();
-    }, 1);
+    this.storages = event.storages;
+    this.locations = null;
+    if (Array.isArray(event.storages) && event.storages.length) {
+      let storage = this.storages.find(m => m.locations && m.locations.length);
+      storage = storage || this.storages[0];
+      item.storeId = storage.id;
+      this.onStorageChange(storage.id);
+    } else {
+      item.locationId = null;
+      item.stockCount = 0;
+    }
+    let priceControl = this.form.controls['yuan'];
+    this.price = event.newPrice / 100;
+    let validators = Validators.compose([Validators.required, CustomValidators.gt(0), CustomValidators.min(this.price)]);
+    priceControl.setValidators(validators);
+    this.form.patchValue(item);
+    this.calculate();
+    this.form.updateValueAndValidity();
   }
 
-  public get codeSource() {
-    return (params: TypeaheadRequestParams) => {
-      let p = new GetMountingsListRequest(params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.moutingsService.getListByCodeOrName(p);
-    };
-  }
+  private price = 0;
 
-  public get nameSource() {
-    return (params: TypeaheadRequestParams) => {
-      let p = new GetMountingsListRequest(undefined, params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.moutingsService.getListByCodeOrName(p);
-    };
+  get priceError() {
+    return { min: `最低价格不能低于${this.price}` };
   }
 
   private calculate() {
@@ -133,6 +156,13 @@ export class SalesCreateComponent implements OnInit {
     price = Math.floor(price || 0);
     let amount = (count || 0) * (price || 0);
     this.form.patchValue({ amount: amount, count: count, price: price });
+  }
+
+  private reset() {
+    this.storages = null;
+    this.locations = null;
+    this.form = null;
+    setTimeout(() => this.buildForm(), 1);
   }
 
 }

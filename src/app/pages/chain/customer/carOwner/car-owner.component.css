@@ -1,41 +1,28 @@
-/*重写ngui-datetimer-picker表单input样式*/
-.datetime-picker {
-    width: 100%;
-    border-radius:0;
+.hq-col{
+  flex: 2;
+  position: relative;
 }
-
-.textInputBtn {
-    border: 1px solid #eed;
+.hq-input{
+  display: flex;
+  width: 25%;
+  float: left;
+  padding: 0.3125rem 0.625rem;
+  margin-bottom: -1.25rem;
 }
-
-@media (min-width: 992px) {
-    .modal-lg {
-        max-width: 1000px;
-    }
+.form-label{
+  min-width: 6.25rem;
+  padding: 0 0.625rem;
+  line-height: 2.5rem;
+  height: 2.5rem;
+  background:#f3f3f4;
+  color: #727171;
+  font-size: 0.875rem;
 }
-
-input.ng-valid[required], input.ng-valid.required  {
-  border-left: 5px solid #42A948 !important; /* green */
+.form-control {
+  height: 2.5rem;
+  border-bottom-left-radius: 0 !important;
+  border-top-left-radius: 0 !important;
 }
-input.ng-touched.ng-invalid  {
-  border-left: 5px solid #a94442; /* red */
-  border-radius: .2rem
+.card-block {
+  padding-top: 0.625rem;
 }
-
-/*#addVehicle hqTableTypeahead {
-    position: fixed !important; 
-}*/
-#addVehicle input {
-    width: 100px;
-}
-#addVehicle ngui-datetime-picker {
-    /*!important强制 覆盖父组件中的内联样式 */
-    /*position: fixed !important; */
-   /* top: 0px !important;
-    transition: height 0.3s ease-in !important;
-    visibility: visible !important;*/
-}
-
-/*#vehicle-add-table {
-    overflow: visible;  
-}*/

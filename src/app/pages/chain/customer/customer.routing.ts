@@ -6,6 +6,7 @@ import { AddCarownerComponent } from './carOwner/add-carowner/add-carowner.compo
 import { AddVehicleComponent } from './carOwner/add-vehicle/add-vehicle.component';
 import { EditCarownerComponent } from './carOwner/edit-carowner/edit-carowner.component';
 import { CarOwnerDetailComponent } from './carOwner/car-owner-detail/car-owner-detail.component';
+import { VehicleListComponent, VehicleAddComponent, CustomerAddFormComponent } from './carOwner/shared';
 
 const routes: Routes = [
     // 车主管理路由
@@ -20,5 +21,5 @@ const routes: Routes = [
 })
 export class CustomerRoutingModule { }
 
-export const routedComponents = [CarOwnerDetailComponent, CarOwnerComponent, AddCarownerComponent, AddVehicleComponent, EditCarownerComponent];
+export const routedComponents = [CarOwnerDetailComponent, CarOwnerComponent, AddCarownerComponent, AddVehicleComponent, EditCarownerComponent, VehicleListComponent, VehicleAddComponent, CustomerAddFormComponent];
 

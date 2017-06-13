@@ -1,10 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ProviderService, ProviderListRequest } from '../../../provider/provider.service';
-import { TypeaheadRequestParams, HqAlerter, PrintDirective } from 'app/shared/directives';
-import { Location } from '@angular/common';
-import { SuspendBillDirective } from 'app/pages/chain/chain-shared';
-import { ModalDirective } from 'ngx-bootstrap';
+import { TypeaheadRequestParams, HqAlerter, PrintDirective, HqModalDirective } from 'app/shared/directives';
 import { ProcurementService, ProcurementPrintItem, ProcurementItem, ProcurementRequest } from '../procurement.service';
+import { PurchaseInBillDirective } from '../purchase-in-bill.directive';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'hq-procurement-list',
@@ -13,21 +11,25 @@ import { ProcurementService, ProcurementPrintItem, ProcurementItem, ProcurementR
 })
 export class ProcurementListComponent implements OnInit {
 
-  @ViewChild(SuspendBillDirective)
-  private suspendBill: SuspendBillDirective;
+  @ViewChild(PurchaseInBillDirective)
+  private suspendBill: PurchaseInBillDirective;
   @ViewChild('createModal')
-  private createModal: ModalDirective;
+  private createModal: HqModalDirective;
+  @ViewChild('editModal')
+  private editModal: HqModalDirective;
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
   @ViewChild('printer')
   public printer: PrintDirective;
+  @ViewChild('form')
+  public form: NgForm;
+  private generating: boolean;
   private printModel: ProcurementPrintItem;
   private model = new ProcurementRequest();
+  private selectedModel;
 
   constructor(
-    private providerService: ProviderService,
     private procurementService: ProcurementService,
-    private location: Location
   ) { }
 
   ngOnInit() {
@@ -45,27 +47,32 @@ export class ProcurementListComponent implements OnInit {
   }
 
   onCreate(event: ProcurementItem) {
-    this.model.list.push(event);
-    this.createModal.hide();
+    let exists = this.model.list.find(m => m.productId == event.productId && m.locationId === event.locationId);
+    if (exists) {
+      Object.assign(exists, event);
+    } else {
+      this.model.list.push(event);
+    }
+    //this.createModal.hide();
+  }
+
+  onEdit(model: ProcurementItem) {
+    this.selectedModel = model;
+    this.editModal.show();
+  }
+
+  onUpdated(event: ProcurementItem) {
+    let exists = this.model.list.find(m => m.productId == event.productId && m.locationId === event.locationId);
+    if (exists) {
+      Object.assign(exists, event);
+    }
+    this.editModal.hide();
   }
 
   reset() {
     this.model = new ProcurementRequest();
-  }
-
-  public get suspendedColumns() {
-    return [
-      { name: 'custName', title: '供应商' },
-      { name: 'createBillTime', title: '挂单时间' },
-    ];
-  }
-
-  private get providerColumns() {
-    return [
-      { name: 'code', title: '代码' },
-      { name: 'name', title: '名称', weight: 1 },
-      { name: 'contactUser', title: '联系人' },
-    ];
+    this.form.reset();
+    this.suspendBill.refresh();
   }
 
   public onProviderSelect(event) {
@@ -73,45 +80,22 @@ export class ProcurementListComponent implements OnInit {
     this.model.outunit = event.id;
   }
 
-  public get source() {
-    return (params: TypeaheadRequestParams) => {
-      let p = new ProviderListRequest(params.text, params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.providerService.getPagedList(p);
-    };
-  }
-
   suspend(event: Event) {
-    if (!this.model.outunit) {
-      alert('请选择供应商名称');
-      return false;
-    }
-    let el = event.target as HTMLButtonElement;
-    el.disabled = true;
     this.suspendBill.suspend(this.model)
       .then(() => this.reset())
-      .then(() => el.disabled = false)
-      .then(() => this.suspendBill.refresh())
       .then(() => this.alerter.success('挂单成功！'))
       .catch(err => {
-        el.disabled = false;
         this.alerter.error(err);
       })
   }
 
   generate(event: Event) {
-    if (!this.model.outunit) {
-      alert('请选择供应商名称');
-      return false;
-    }
-    let el = event.target as HTMLButtonElement;
-    el.disabled = true;
+    this.generating = true;
     this.procurementService.generate(this.model)
       .then(data => {
-        el.disabled = false;
+        this.generating = false;
         this.reset();
-        this.suspendBill.refresh();
-        return confirm('已生成出库单，是否需要打印？') ? data : null;
+        return confirm('已生成采购入库单，是否需要打印？') ? data : null;
       })
       .then(code => code && this.procurementService.get(code))
       .then(data => {
@@ -121,12 +105,14 @@ export class ProcurementListComponent implements OnInit {
         }
       })
       .catch(err => {
-        el.disabled = false;
+        this.generating = false;
         this.alerter.error(err);
       })
   }
 
-  private cancel() {
-    this.location.back();
+  private onRemove(item) {
+    if (!confirm('确定要删除？')) return;
+    let index = this.model.list.indexOf(item);
+    this.model.list.splice(index, 1);
   }
 }

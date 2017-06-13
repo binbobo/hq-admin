@@ -12,7 +12,7 @@ export class ReceiveService {
     let url = Urls.chain.concat('/UseDetails/Print?BillCode=', code);
     return this.httpService.get<ApiResult<any>>(url)
       .then(result => result.data)
-      .catch(err => Promise.reject(`获取内部领用单信息失败：${err}`));
+      .catch(err => Promise.reject(`获取内部领料单信息失败：${err}`));
   }
 
   generate(data: ReceiveListRequest): Promise<string> {
@@ -28,7 +28,7 @@ export class ReceiveService {
       .then(result => result.data)
       .then(data => Array.isArray(data) ? data : [])
       .then(data => data.map(m => new SelectOption(m.name, m.id)))
-      .catch(err => Promise.reject(`获取领用人选项失败：${err}`));
+      .catch(err => Promise.reject(`获取领料人选项失败：${err}`));
   }
 
   getDepartmentsByReceiver(id: string): Promise<Array<SelectOption>> {
@@ -60,23 +60,30 @@ export class ReceiveListRequest {
     public takeDepart?: string,
     public suspendedBillId?: string,
   ) { }
+
+  get valid() {
+    return this.takeUser && this.takeDepart && this.list && this.list.length;
+  }
 }
 
 export class ReceiveListItem {
   constructor(
-    public count: number = 0,
+    public count: number = 1,
     public price: number = 0,
     public amount: number = 0,
     public stockCount: number = 0,
     public productName?: string,
+    public productUnit?: string,
     public brand?: string,
     public productId?: string,
     public productCode?: string,
     public productSpecification?: string,
-    public storeId?: string,
-    public locationId?: string,
     public description?: string,
     public locationName?: string,
+    public locationId?: string,
+    public storeId?: string,
+    public productCategory?: string,
+    public categoryId?: string,
     public houseName?: string
   ) { }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, Injector, ViewChild } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap';
 import { DataList } from 'app/shared/models';
 import { RoleService, RoleSearchParams, Role } from '../role.service';
+import { HqModalDirective } from 'app/shared/directives';
 
 @Component({
   selector: 'hq-role-list',
@@ -11,11 +11,11 @@ import { RoleService, RoleSearchParams, Role } from '../role.service';
 export class RoleListComponent extends DataList<any> implements OnInit {
 
   @ViewChild('createModal')
-  private createModal: ModalDirective;
+  private createModal: HqModalDirective;
   @ViewChild('editModal')
-  private editModal: ModalDirective;
+  private editModal: HqModalDirective;
   @ViewChild('allocateModal')
-  private allocateModal: ModalDirective;
+  private allocateModal: HqModalDirective;
   private tree: Array<any>;
   private role: Role;
 

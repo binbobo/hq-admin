@@ -3,10 +3,11 @@ import { FormHandle, SelectOption, PagedResult } from 'app/shared/models';
 import { Inventory, InventoryService } from '../inventory.service';
 import { Observable } from 'rxjs/Observable';
 import { FormGroup, Validators } from '@angular/forms';
-import { MountingsService, GetMountingsListRequest } from '../../../mountings/mountings.service';
+import { MountingsService } from '../../../mountings/mountings.service';
 import { TypeaheadMatch } from "ngx-bootstrap";
 import { TypeaheadRequestParams } from 'app/shared/directives';
 import { TreeviewItem, TreeItem } from 'ngx-treeview';
+import { CustomValidators } from 'ng2-validation';
 
 @Component({
   selector: 'hq-inventory-create',
@@ -17,10 +18,18 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
 
   private warehouses: Array<SelectOption>;
   private units: Array<SelectOption>;
-  private categories: Array<TreeviewItem>;
-  private brands: Array<SelectOption>;
-  public items: Array<any> = [];
   private owned: boolean;
+  private selectedProduct: any;
+
+  private get exists() {
+    return false;
+    // if (!this.selectedProduct) return false;
+    // if (!this.form) return false;
+    // let locations: Array<{ id: string }> = this.selectedProduct.locations;
+    // let locationId = this.form.get('locationId').value;
+    // let item = locations.find(m => m.id === locationId);
+    // return item;
+  }
 
   constructor(
     injector: Injector,
@@ -36,19 +45,23 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
   protected buidForm(): FormGroup {
     return this.formBuilder.group({
       locationName: [this.model.locationName, [Validators.maxLength(50)]],
+      locationId: [this.model.locationId, [Validators.maxLength(50)]],
       storeId: [this.model.storeId, [Validators.required, Validators.maxLength(36)]],
       vehicleId: [this.model.vehicleId],
       unit: [this.model.unit, [Validators.required, Validators.maxLength(36)]],
       brandName: [this.model.brandName, [Validators.required, Validators.maxLength(50)]],
-      categoryId: [this.model.categoryId],
+      categoryId: [this.model.categoryId, [Validators.required]],
+      categoryName: [this.model.category],
       code: [this.model.code, [Validators.required, Validators.maxLength(36)]],
       name: [this.model.name, [Validators.required, Validators.maxLength(60)]],
-      maxCount: [this.model.maxCount],
-      minCount: [this.model.minCount],
+      productSpecification: [this.model.productSpecification, [Validators.required, Validators.maxLength(20)]],
+      maxCount: [this.model.maxCount, [CustomValidators.min(0)]],
+      minCount: [this.model.minCount, [CustomValidators.min(0)]],
       brandId: [this.model.brandId],
       packageInfo: [this.model.packageInfo, [Validators.maxLength(20)]],
       madeIn: [this.model.madeIn, [Validators.maxLength(100)]],
       description: [this.model.description, [Validators.maxLength(200)]],
+      id: ['']
     });
   }
 
@@ -59,134 +72,124 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
       .then(options => options.length ? options[0].value : '')
       .then(id => this.patchValue('storeId', id))
       .catch(err => this.alerter.warn(err));
-    this.moutingsService.getCategoryOptions()
-      .then(options => options.map(m => new TreeviewItem(m as TreeItem)))
-      .then(options => this.categories = options)
-      .then(options => options.length ? options[0].value : '')
-      .then(id => this.patchValue('categoryId', id))
-      .catch(err => this.alerter.warn(err));
     this.moutingsService.getUnitOptions()
       .then(options => this.units = options)
       .then(options => options.length ? options[0].value : '')
       .then(id => this.patchValue('unit', id))
       .catch(err => this.alerter.warn(err));
-    this.moutingsService.getBrands()
-      .then(options => this.brands = options)
-      .catch(err => this.alerter.warn(err));
   }
 
-  onBrandSelect(event: TypeaheadMatch) {
-    this.form.patchValue({ brandId: event.item.value });
+  get typeaheadParams() {
+    return { storeId: this.form.get('storeId').value };
+  }
+
+  onStorageChange(event) {
+    this.form.patchValue({ locationName: undefined, locationId: undefined });
+  }
+
+  onLocationChange(event: Event) {
+    if (event.isTrusted) {
+      this.form.patchValue({ locationId: undefined });
+    }
+  }
+
+  onLocationSelect(event) {
+    this.form.patchValue({ locationId: event.id });
+  }
+
+  onBrandSelect(event) {
+    this.form.patchValue({ brandId: event.id });
   }
 
   onBrandChange(event: Event) {
-    this.form.patchValue({ brandId: undefined });
+    if (event.isTrusted) {
+      this.form.patchValue({ brandId: undefined });
+    }
   }
 
   public vehicles: Array<any> = [];
-  private _vehicles: Array<any> = [];
 
   onVehicleSelect(event) {
-    let index = this.vehicles.findIndex(m => m.id === event.id);
-    if (!~index) {
+    this.vehicles = this.vehicles || [];
+    let index = this.vehicles.findIndex(m => m.vehicleId === event.vehicleId);
+    if (event.checked && !~index) {
       this.vehicles.push(event);
+    } else if (!event.checked && ~index) {
+      this.vehicles.splice(index, 1);
     }
   }
 
   onVehicleRemove(event) {
-    let index = this.vehicles.findIndex(m => m.id === event.id);
+    let index = this.vehicles.indexOf(event);
     if (~index) {
       this.vehicles.splice(index, 1);
     }
-    let item = this._vehicles.find(m => m.id === event.id);
-    if (item) {
-      item.checked = false;
-    }
   }
 
-  public get vehicleColumns() {
-    return [
-      { name: 'brandName', title: '品牌' },
-      { name: 'seriesName', title: '车系' },
-      { name: 'name', title: '车型', checked: true },
-    ];
+  public get vehicleCheckStrategy() {
+    return (item) => this.vehicles && this.vehicles.some(m => m.vehicleId === item.vehicleId);
   }
 
-  public get vehicleSource() {
-    return (params: TypeaheadRequestParams) => {
-      return this.moutingsService.get(params.text)
-        .then(result => {
-          result.data.forEach(m => m.checked = this.vehicles.some(n => m.id === n.id))
-          this._vehicles = result.data;
-          return result;
-        });
-    };
-  }
-
-  public itemColumns(isName: boolean) {
-    return [
-      { name: 'name', title: '名称', weight: isName ? 1 : 0 },
-      { name: 'code', title: '编码', weight: isName ? 0 : 1 },
-      { name: 'brand', title: '品牌' },
-    ];
-  }
-
-  onItemChange(event) {
-    this.disableItem(false);
+  onItemChange(event, key: string) {
+    this.disableItem(false, key);
   }
 
   public onItemSelect(event) {
+    this.selectedProduct = event;
     let item = {
       code: event.code,
       name: event.name,
       packageInfo: event.packageInfo,
       madeIn: event.madeIn,
-      brandName: event.brand,
-      brandId: event.brandId
-    }
+      brandName: event.brandName,
+      brandId: event.brandId,
+      productSpecification: event.specification,
+      unit: event.unitId,
+      categoryId: event.categoryId,
+      categoryName: event.categoryName,
+      id: event.id,
+    };
     this.form.patchValue(item);
+    this.vehicles = event.vehicleInfoList;
     this.disableItem(true);
   }
 
-  private disableItem(disabled: boolean) {
-    let keys = ['packageInfo', 'madeIn', 'brandName'];
-    if (disabled) {
-      this.owned = true;
-    } else {
-      this.owned = undefined;
-      keys.forEach(key => {
-        this.form.controls[key].setValue('');
-      });
+  private onCategoryChange(event: Event) {
+    if (event.isTrusted) {
+      this.form.patchValue({ categoryId: undefined });
     }
   }
 
-  public get codeSource() {
-    return (params: TypeaheadRequestParams) => {
-      let p = new GetMountingsListRequest(params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.moutingsService.getListByCodeOrName(p);
-    };
+  private onCategorySelect(event) {
+    this.form.patchValue({
+      categoryId: event.value,
+      name: event.text,
+    });
   }
 
-  public get nameSource() {
-    return (params: TypeaheadRequestParams) => {
-      let p = new GetMountingsListRequest(undefined, params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.moutingsService.getListByCodeOrName(p);
-    };
-  }
-
-  onCategorySelect(event) {
-    this.form.patchValue({ categoryId: event });
-  }
-
-  onReset() {
-    this.vehicles = [];
-    super.onReset();
+  private disableItem(disabled: boolean, ...sources: Array<string>) {
+    let keys = ['packageInfo', 'madeIn', 'brandName', 'id'];
+    keys.push.apply(keys, sources.filter(m => m));
+    if (disabled) {
+      this.owned = true;
+    } else {
+      if (this.owned) {
+        this.vehicles = null;
+        this.owned = null;
+        keys.forEach(key => {
+          this.form.controls[key].setValue('');
+        });
+      }
+    }
   }
 
   onCreate() {
-    let vehicles = this.vehicles.map(m => m.id);
+    let formData = this.form.value;
+    if (formData.minCount && formData.maxCount && formData.minCount >= formData.maxCount) {
+      this.alerter.error('最大库存必须大于最小库存');
+      return false;
+    }
+    let vehicles = this.vehicles && this.vehicles.map(m => m.vehicleId);
     this.form.patchValue({ vehicleId: vehicles });
     return super.onCreate();
   }

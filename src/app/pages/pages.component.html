@@ -1,11 +1,11 @@
-<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse fixed-top">
   <a class="navbar-brand" href="/">
-  <img src="http://sinoauto.com/Themes/SinoAutoAdaption/Content/logonew.png" class="d-inline-block align-middle">
+  <img src="/assets/images/logo.png" class="d-inline-block align-middle">
   </a>
   <div class="navbar-right">
-    <div dropdown class="dropdown d-inline">
+    <!--<div dropdown class="dropdown d-inline">
       <a dropdownToggle class="btn cursor-pointer">
-        <span [hidden]="language" class="fa fa-globe" translate> language</span>
+        <span [hidden]="language" class="fa fa-globe"> language</span>
         <p *ngIf="language" class="d-inline">
           <span class="flag-icon flag-icon-{{language.flag}}"></span> {{language.name}}
         </p>
@@ -16,13 +16,13 @@
           <span class="flag-icon flag-icon-{{item.flag}}"></span> {{item.name}}
         </a>
       </div>
-    </div>
+    </div>-->
     <div dropdown class="dropdown d-inline">
       <a dropdownToggle class="btn cursor-pointer">
         <a><i class="fa fa-user-circle"> {{userService?.user?.username}}</i></a>
       </a>
       <div *dropdownMenu class="dropdown-menu dropdown-menu-right bg-inverse">
-        <a class="dropdown-item" href="#">设置</a>
+        <!--<a class="dropdown-item" href="#">设置</a>-->
         <a class="dropdown-item" routerLink="/auth/change_pwd">修改密码</a>
         <div class="dropdown-divider"></div>
         <a routerLink="/auth/logout" class="dropdown-item"><i class="fa fa-sign-out">退出</i></a>
@@ -31,11 +31,11 @@
   </div>
 </nav>
 <div class="container-fluid">
-  <div class="row">
-    <div class="menus col-xs-3 col-sm-3 col-md-3 col-lg-2">
+  <div id="main-container" class="row">
+    <div id="menu-container" class="col-xs-3 col-sm-3 col-md-3 col-lg-2">
       <hq-menu *ngIf="menus" [menus]="menus" [root]="true"></hq-menu>
     </div>
-    <div class="col-xs-9 pt-3 col-sm-9 col-md-9 col-lg-10">
+    <div id="content-container" class="col-xs-9 col-sm-9 col-md-9 col-lg-10">
       <router-outlet></router-outlet>
       <div id="loading" [hidden]="!loading" class="jumbotron align-items-center">
         <div class="container" [hqSpinner]="loading">

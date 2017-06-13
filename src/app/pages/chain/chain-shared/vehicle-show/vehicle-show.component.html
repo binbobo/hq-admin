@@ -1,0 +1,14 @@
+<div *ngIf="vehicles&&vehicles.length">
+  <span>{{vehicles[0].name}}</span>
+  <i triggers="mouseenter:mouseleave" placement="{{direction}}" [popover]="popTemplate" *ngIf="vehicles.length>1" class="fa fa-ellipsis-h"
+    (mouseenter)="onDirection($event)"></i>
+</div>
+<template #popTemplate>
+  <table class="table table-sm">
+    <tr *ngFor="let item of vehicles">
+      <td>{{item.brandName}}</td>
+      <td>{{item.seriesName}}</td>
+      <td>{{item.name}}</td>
+    </tr>
+  </table>
+</template>

@@ -1,17 +1,22 @@
 import { Injectable } from '@angular/core';
-import { PagedResult, PagedParams, ApiResult } from 'app/shared/models';
+import { PagedResult, PagedParams, ApiResult, PagedService } from 'app/shared/models';
 import { Urls, HttpService } from 'app/shared/services';
 
 @Injectable()
-export class PurchaseReturnService {
+export class PurchaseReturnService implements PagedService<any> {
 
   constructor(private httpService: HttpService) { }
 
-  public getProducts(request: GetProductsRequest): Promise<PagedResult<any>> {
+  public getPagedList(request: GetProductsRequest): Promise<PagedResult<any>> {
     let url = Urls.chain.concat('/PurchaseDetails/GetPageList');
-    let search = request.serialize();
-    return this.httpService.get<PagedResult<any>>(url, search)
+    return this.httpService.getPagedList(url, request)
       .catch(err => Promise.reject(`获取配件信息失败：${err}`));
+  }
+
+  getBillCodeListByProvider(request: GetBillCodeRequest) {
+    let url = Urls.chain.concat('/Purchases/GetPagedList');
+    return this.httpService.getPagedList<any>(url, request)
+      .catch(err => Promise.reject(`获取入库单号失败：${err}`));
   }
 
   get(code: string): Promise<PurchaseReturnPrintItem> {
@@ -30,10 +35,18 @@ export class PurchaseReturnService {
   }
 }
 
+export class GetBillCodeRequest extends PagedParams {
+  constructor(
+    public supplierId: string
+  ) {
+    super();
+  }
+}
+
 export class GetProductsRequest extends PagedParams {
   constructor(
-    public productCode?: string,
-    public productName?: string,
+    public suppliers?: string,
+    public billCode?: string,
   ) {
     super();
   }
@@ -44,8 +57,14 @@ export class PurchaseReturnRequest {
     public list: Array<PurchaseReturnItem> = [],
     public provider?: string,
     public inunit?: string,
+    public originalBillId?: string,
     public suspendedBillId?: string,
+    public billCode?: string
   ) { }
+
+  get valid() {
+    return this.inunit && this.originalBillId && this.list && this.list.length;
+  }
 }
 
 export class PurchaseReturnItem {
@@ -53,7 +72,7 @@ export class PurchaseReturnItem {
     public count: number = 0,
     public price: number = 0,
     public amount: number = 0,
-    public taxRate: number = 0,
+    public taxRate: number = 17,
     public exTaxPrice: number = 0,
     public exTaxAmount: number = 0,
     public brand?: string,
@@ -61,14 +80,14 @@ export class PurchaseReturnItem {
     public productName?: string,
     public productCode?: string,
     public productCategory?: string,
-    public productSpecification?: string,
+    public specification?: string,
     public storeId?: string,
     public locationId?: string,
     public packingCode?: string,
     public description?: string,
-
+    public originalId?: string,
     public locationName?: string,
-    public houseName?: string,
+    public storeName?: string,
     public vehicleName?: string,
   ) { }
 }

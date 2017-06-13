@@ -1,0 +1,19 @@
+.hq-tree hq-tree{
+    margin-top: 0.25rem;
+}
+
+.form-check i.fa{
+    position: absolute;
+    left: -15px;
+    height: 24px;
+    line-height: 24px;
+    cursor: pointer;
+}
+
+.form-check{
+    justify-content:flex-start!important;
+}
+
+.form-check-label{
+    white-space: nowrap;   
+}

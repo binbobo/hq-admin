@@ -6,9 +6,9 @@
   <div class="card-block">
     <form class="form-inline mb-2">
       <input type="text" class="form-control mb-2 mr-2" placeholder="请输入菜单名称">
-      <button type="submit" class="btn btn-primary mb-2 mr-2" translate>search</button>
+      <button type="submit" class="btn btn-primary mb-2 mr-2">查询</button>
     </form>
-    <table class="table table-bordered table-sm table-striped">
+    <table class="table table-bordered table-sm">
       <thead>
         <tr>
           <th translate>application</th>
@@ -23,89 +23,79 @@
       <tbody>
         <tr *ngFor="let item of list">
           <td>{{ item.applicationName }}</td>
-          <td>{{item.environmentName}}</td>
-          <td>{{item.logLevel}}</td>
+          <td class="text-center">{{item.environmentName}}</td>
+          <td class="text-center">{{item.logLevel}}</td>
           <td>
             <clipped-word length="20" [content]="item.message"></clipped-word>
           </td>
           <td class="hidden-md-down">
             <clipped-word length="30" [content]="item.exceptionMessage"></clipped-word>
           </td>
-          <td>{{item.timestamp|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-          <td>
+          <td class="text-center">{{item.timestamp|sDatetime}}</td>
+          <td class="text-center">
             <a (click)="showModal(item.id)" class="btn btn-sm btn-info" title="详情"><i class="fa fa-info-circle"></i></a>
           </td>
         </tr>
       </tbody>
     </table>
-    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" [(itemsPerPage)]="size" (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
 </div>
 
-<div bsModal #detailModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel"></h5>
-        <button type="button" class="close" aria-label="Close" (click)="detailModal.hide()">
-            <span aria-hidden="true">&times;</span>
-        </button>
+<div hqModal #detailModal="hq-modal" size="lg">
+  <div *ngIf="model">
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" translate>session.id</label>
+      <div class="col-sm-10">
+        <p class="form-control-static mb-0">{{model.sessionId}}</p>
       </div>
-      <div class="modal-body" *ngIf="model">
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label" translate>session.id</label>
-          <div class="col-sm-10">
-            <p class="form-control-static mb-0">{{model.sessionId}}</p>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label" translate>level</label>
-          <div class="col-sm-10">
-            <p class="form-control-static mb-0">{{model.logLevel}}</p>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label" translate>message</label>
-          <div class="col-sm-10">
-            <p class="form-control-static mb-0">{{model.message}}</p>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label" translate>exception</label>
-          <div class="col-sm-10">
-            <p class="form-control-static mb-0">{{model.exceptionMessage}}</p>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label" translate>application</label>
-          <div class="col-sm-10">
-            <p class="form-control-static mb-0">{{model.applicationName}}</p>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label" translate>timestamp</label>
-          <div class="col-sm-10">
-            <p class="form-control-static mb-0">{{model.timestamp|date:"yyyy/MM/dd HH:mm:ss"}}</p>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label" translate>environment</label>
-          <div class="col-sm-10">
-            <p class="form-control-static mb-0">{{model.environmentName}}</p>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label" translate>stack.trace</label>
-          <div class="col-sm-10">
-            <p class="form-control-static mb-0">{{model.stackTrace}}</p>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label" translate>source</label>
-          <div class="col-sm-10">
-            <p class="form-control-static mb-0">{{model.sourceName}}</p>
-          </div>
-        </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" translate>level</label>
+      <div class="col-sm-10">
+        <p class="form-control-static mb-0">{{model.logLevel}}</p>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" translate>message</label>
+      <div class="col-sm-10">
+        <p class="form-control-static mb-0">{{model.message}}</p>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" translate>exception</label>
+      <div class="col-sm-10">
+        <p class="form-control-static mb-0">{{model.exceptionMessage}}</p>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" translate>application</label>
+      <div class="col-sm-10">
+        <p class="form-control-static mb-0">{{model.applicationName}}</p>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" translate>timestamp</label>
+      <div class="col-sm-10">
+        <p class="form-control-static mb-0">{{model.timestamp|sDatetime}}</p>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" translate>environment</label>
+      <div class="col-sm-10">
+        <p class="form-control-static mb-0">{{model.environmentName}}</p>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" translate>stack.trace</label>
+      <div class="col-sm-10">
+        <p class="form-control-static mb-0">{{model.stackTrace}}</p>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" translate>source</label>
+      <div class="col-sm-10">
+        <p class="form-control-static mb-0">{{model.sourceName}}</p>
       </div>
     </div>
   </div>

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HqAlerter, TypeaheadRequestParams } from "app/shared/directives";
 import { PagedResult } from 'app/shared/models';
-
+import { OrganizationService, OrganizationInfo } from '../organization.service';
 
 @Component({
   selector: 'app-home',
@@ -10,9 +10,13 @@ import { PagedResult } from 'app/shared/models';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  private org: OrganizationInfo;
+
+  constructor(private orgService: OrganizationService) { }
 
   ngOnInit() {
-
+    this.orgService.getOrganization()
+      .then(org => this.org = org)
+      .catch(err => console.log(err));
   }
 }

@@ -44,6 +44,11 @@ export class HttpService {
             .then(result => Array.isArray(result.data) ? result.data : []);
     }
 
+    getObject<T>(url: string, search?: string): Promise<T> {
+        return this.get<ApiResult<T>>(url, search)
+            .then(result => result.data);
+    }
+
     post<TResult>(url: string, body: any): Promise<TResult> {
         return this.promise(url, { method: RequestMethod.Post, body: body })
             .then(resp => this.extractData<TResult>(resp))
@@ -122,7 +127,7 @@ export class HttpService {
     }
 
     private handleError(error: Response | any) {
-        console.error(error);
+        console.error(error, 11);
         let errMsg: string = error.statusText;
         if (error instanceof Response) {
             if (error.status == 401) {
@@ -133,20 +138,31 @@ export class HttpService {
                 errMsg = '没有找到请求的资源！';
             }
             else {
-                const body = error.json() || '';
-                if (body instanceof ProgressEvent) {
-                    errMsg = '服务端请求错误！'
-                }
-                else if (body) {
-                    errMsg = body.error || this.handleModelValidateError(body) || JSON.stringify(body);
-                }
+                errMsg = this.getErrors(error);
             }
         } else {
             errMsg = error.message ? error.message : error.toString();
         }
         return Promise.reject(errMsg);
     }
-    //.net core模型验证返回结果处理
+
+    public getErrors(response: Response) {
+        let errMsg: string = response.statusText;
+        try {
+            let body = response.json() || '';
+            if (body instanceof ProgressEvent) {
+                errMsg = '服务端请求错误！'
+            }
+            else if (body && Object.keys(body).length) {
+                errMsg = body.error || this.handleModelValidateError(body) || JSON.stringify(body);
+            }
+        } catch (error) {
+            return errMsg;
+        }
+        return errMsg;
+    }
+
+    //.net模型验证返回结果处理
     private handleModelValidateError(errors: any) {
         let errorArr = [];
         for (var err in errors) {

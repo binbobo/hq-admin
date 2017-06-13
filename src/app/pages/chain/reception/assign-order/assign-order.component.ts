@@ -1,6 +1,5 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { AssignService, AssignListRequest } from '../assign.service';
-import { FormGroup, FormBuilder } from '@angular/forms';
 import { StorageKeys, SelectOption, DataList } from 'app/shared/models';
 import * as fileSaver from 'file-saver';
 
@@ -12,9 +11,6 @@ import * as fileSaver from 'file-saver';
 })
 
 export class AssignOrderComponent extends DataList<any> implements OnInit {
-    // 表单
-    assignOrderForm: FormGroup;
-
     // 查询参数对象
     params: AssignListRequest;
 
@@ -31,8 +27,10 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
     isDetailModalShown = false; // 详情弹框是否可见
     statistics: any = null; // 各种状态数量统计
 
-    // 当前登录用户信息
-    public user = null;
+    generating = {
+        assign: false,
+        reassign: false
+    };
 
     ngOnInit() {
         // 解决缓存问题
@@ -41,57 +39,34 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         // 初始化维修指派类型数据
         this.service.getMaintenanceAssignTypes()
             .subscribe(data => {
-                console.log('维修派工状态类型数据：', data);
                 this.maintenanceAssignTypes = [{
                     id: 'all',
                     value: '全部'
                 }].concat(data);
 
                 // 页面初始化的时候  就要加入状态参数
-                this.params.states = this.maintenanceAssignTypes
+                this.params.status = this.maintenanceAssignTypes
                     .filter(item => item.id !== 'all')
                     .map(item => item.id);
                 // 加载列表
-                this.loadList().then(() => {
-                    // this.statistics = {};
-                    // this.statistics['all'] = 0;
-                    // // 统计各种状态下面的工单数量
-                    // this.params.states.forEach(state => {
-                    //     console.log('111111111111：', this.list);
-                    //     this.statistics[state] = this.list.filter(item => item.status === state).length;
-                    //     this.statistics['all'] += this.statistics[state];
-                    // });
-                    // console.log('testesttestestset:', JSON.stringify(this.statistics));
-                });
+                this.load();
             });
     }
-
-
     constructor(injector: Injector,
-        protected service: AssignService,
-
-        private fb: FormBuilder) {
+        protected service: AssignService) {
         super(injector, service);
         this.params = new AssignListRequest();
 
-        // 获取当前登录用户信息
-        this.user = JSON.parse(sessionStorage.getItem(StorageKeys.Identity));
-        console.log('当前登陆用户: ', this.user);
-
-        // 创建表单
-        this.createForm();
-
         // 初始化维修技师数据
-        this.service.getMaintenanceTechnicians()
-            .subscribe(data => {
-                this.maintenanceTechnicians = data.map(item => {
-                    return {
-                        text: item.name,
-                        value: item.id,
-                        // checked: false
-                    };
-                });
+        this.service.getMaintenanceTechnicians().subscribe(data => {
+            this.maintenanceTechnicians = data.map(item => {
+                return {
+                    text: item.name,
+                    value: item.id,
+                    // checked: false  // 默认都不选中
+                };
             });
+        });
     }
 
     // 点击多选框处理程序
@@ -108,9 +83,24 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         });
     }
 
-    createForm() {
-        this.assignOrderForm = this.fb.group({
-            keyword: '', // 车牌号
+    // 加载派工列表
+    load() {
+        this.statistics = null;
+
+        this.index = 1;
+        this.params.setPage(1, this.size);
+        this.loadList().then((result: any) => {
+            if (!result || !result.tabList) { return; }
+            this.statistics = {};
+            // 统计各种状态下面的工单数量
+            result.tabList.forEach(item => {
+                // 处理全部状态
+                if (!item.status) {
+                    this.statistics['all'] = item.count;
+                } else {
+                    this.statistics[item.status] = item.count;
+                }
+            });
         });
     }
 
@@ -119,48 +109,17 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
     * 根据条件查询工单数据
     * @memberOf OrderListComponent
     */
-    onSearch() {
-        // 组织工单状态数据
-        let checkedStatus = this.maintenanceAssignTypes.filter(item => item.checked);
-        // 没选的话   查询所有
-        if (checkedStatus.length === 0) {
-            checkedStatus = this.maintenanceAssignTypes;
-        }
-        this.params.states = checkedStatus.filter(item => item.id !== 'all').map(item => item.id);
-
-        console.log('当前选择的工单状态为：', JSON.stringify(this.params.states));
-
+    onSearch(evt?: any) {
+        this.params.status = evt.chechedStatusIds;
+        this.params.keyword = evt.keyword;
         // 执行查询
-        this.onLoadList();
+        this.load();
     }
-
-    /**
-     * 状态改变事件处理程序
-     * @param type
-     */
-    onStatusChange(type) {
-        type.checked = !type.checked;
-
-        if (type.id === 'all') {
-            this.maintenanceAssignTypes.map(item => item.checked = type.checked);
-        } else {
-            if (!type.checked) {
-                this.maintenanceAssignTypes[0].checked = false;
-            } else {
-                const len = this.maintenanceAssignTypes.filter(item => item !== type && item.id !== 'all' && item.checked).length;
-                if (len === this.maintenanceAssignTypes.length - 2) {
-                    this.maintenanceAssignTypes[0].checked = true;
-                }
-            }
-        }
-    }
-
-    /**
+      /**
      * 维修派工全选/反选事件处理程序
      * @param evt 
      */
-    assignToggleCheckboxAll(cb) {
-        console.log('维修派工切换全选复选框', cb.checked);
+    toggleCheckboxAll(cb) {
         // 更新全选复选框状态
         this.selectedOrder.serviceOutputs.checkedAll = cb.checked;
         // 更新维修工项复选框状态
@@ -178,14 +137,14 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             });
         }
         // 指派  转派按钮是否可用
-        this.selectedOrder.serviceOutputs.enableAssignment = this.selectedOrder.serviceOutputs.filter(item => item.checked).length > 0;
+        this.selectedOrder.serviceOutputs.enableBtn = this.selectedOrder.serviceOutputs.filter(item => item.checked).length > 0;
     }
 
     /**
      * 复选框切换事件
      * @param record 
      */
-    assignToggleCheckbox(record) {
+    toggleCheckbox(record) {
         if (record.teamType === 4 || record.teamType === 5) {
             // 已转派或者已完工的不可以再操作
             return false;
@@ -202,33 +161,36 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
 
         this.selectedOrder.serviceOutputs.checkedAll = (checked + disabled) === tmp.length;
         // 指派  转派按钮是否可用
-        this.selectedOrder.serviceOutputs.enableAssignment = this.selectedOrder.serviceOutputs.filter(item => item.checked).length > 0;
+        this.selectedOrder.serviceOutputs.enableBtn = this.selectedOrder.serviceOutputs.filter(item => item.checked).length > 0;
     }
 
     /**
     * 点击工单详情按钮处理程序
-    * @param {any} id 
+    * @param {any} item
     * @param {any} modalDialog 
     * 
     * @memberOf OrderListComponent
     */
-    orderDetailsHandler(evt, id, modalDialog) {
-        evt.preventDefault();
+    orderDetailsHandler(item, modalDialog) {
+        item.assignGenerating = true;
 
         // 根据id获取工单详细信息
-        this.service.get(id).then(data => {
-            console.log('根据工单id获取工单详情数据：', data);
-
+        this.service.get(item.id).then(data => {
             // 记录当前操作的工单记录
             this.selectedOrder = data;
             // 指派按钮是否可用标志
-            this.selectedOrder.serviceOutputs.enableAssignment = false;
+            this.selectedOrder.serviceOutputs.enableBtn = false;
             // 全选复选框是否选中标志
             this.selectedOrder.serviceOutputs.checkedAll = false;
+
+            item.assignGenerating = false;
             // 显示窗口
             modalDialog.show();
             this.isDetailModalShown = true;
-        }).catch(err => this.alerter.error(err));
+        }).catch(err => {
+            this.alerter.error('获取工单信息失败: ' + err, true, 2000);
+            item.assignGenerating = false;
+        });
     }
 
     /**
@@ -242,22 +204,31 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             alert('此工单还没有指派维修技师, 不可以执行完工操作。请先指派维修技师');
             return;
         }
-        // 判断用户是否领料
-        if (!item.productOutputs || item.productOutputs.length === 0) {
-            if (confirm('用户' + item.createdUserName + '工项没有发料，是否确认完工？')) {
-                // 调用完工接口
-                this.confirmOrderFinish(item.id);
-            }
-        } else {
-            // 调用完工接口
-            this.confirmOrderFinish(item.id);
-        }
+        // // 判断用户是否领料
+        // if (!item.productOutputs || item.productOutputs.length === 0) {
+        //     if (confirm('用户' + item.createdUserName + '工项没有发料，是否确认完工？')) {
+        //         // 调用完工接口
+        //         this.confirmOrderFinish(item);
+        //     }
+        // } else {
+        //     // 调用完工接口
+        //     this.confirmOrderFinish(item);
+        // }
+        this.confirmOrderFinish(item);
     }
 
-    confirmOrderFinish(id) {
-        this.service.update({ id: id }).then(() => {
-            this.onLoadList();
-        }).catch(err => this.alerter.error('执行完工操作失败: ' + err));
+    confirmOrderFinish(item) {
+        if (confirm('是否确认完工？')) {
+            item.finishGenerating = true;
+
+            this.service.update({ id: item.id }).then(() => {
+                item.finishGenerating = false;
+                this.load();
+            }).catch(err => {
+                this.alerter.error('执行完工操作失败: ' + err, true, 2000);
+                item.finishGenerating = false;
+            });
+        }
     }
 
     /**
@@ -268,8 +239,11 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
     assignOrderHandler(type) {
         // 获取选择的工项列表
         const maintenanceItems = this.selectedOrder.serviceOutputs.filter(item => item.checked);
+        // 提示消息
+        let msg = '';
         // 执行指派操作时候  判断是否有已开工的工项
         if (type === 1) {
+            msg = '指派';
             // teamType (integer, optional): 工项状态 1.待派工 2.待开工 3.已开工 4.已转派 5.已完工 = ['1', '2', '3', '4', '5'],
             let started = [];
             maintenanceItems.filter((item, index) => {
@@ -283,13 +257,11 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             if (started.length > 0) {
                 started = started.map(item => item.serviceName);
                 // 给出提示
-                this.alerter.warn(started.join(',') + ' 已开工, 不可以再指派， 只能转派');
+                this.alerter.error(started.join(',') + ' 已开工, 不可以再指派， 只能转派', true, 3000);
             }
-        }
-
-        // 执行转派操作时候  判断是否有未指派的工项
-        if (type === 2) {
-            // teamType (integer, optional): 工项状态 1.待派工 2.待开工 3.已开工 4.已转派 5.已完工 = ['1', '2', '3', '4', '5'],
+        } else if (type === 2) {
+            msg = '转派';
+            // 执行转派操作时候  判断是否有未指派的工项
             let notAssigned = [];
             maintenanceItems.filter((item, index) => {
                 if (item.teamType === 1) {
@@ -298,51 +270,37 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
                     maintenanceItems.splice(index, 1);
                 }
             });
-            console.log('未指派的工项', JSON.stringify(notAssigned));
             // 判断是否有未指派的工项  如果有给出提示
             if (notAssigned.length > 0) {
                 notAssigned = notAssigned.map(item => item.serviceName);
                 // 给出提示
-                this.alerter.warn(notAssigned.join(',') + ' 未指派, 不可以转派， 请先派');
+                this.alerter.error(notAssigned.join(',') + ' 未指派, 不可以转派,  请先指派', true, 3000);
             }
         }
-        // 获取可以选择的工项id列表
+        // 获取过滤之后的工项id列表
         const maintenanceItemIds = maintenanceItems.map(item => item.id);
-
-        console.log('选择的维修工单为：', maintenanceItemIds);
-        // 判断是否选择维修工项
+        // 判断工项id列表是否为空
         if (maintenanceItemIds.length === 0) {
-            this.alerter.warn('请选择维修工项！');
+            this.generatingReset(type);
             return;
         }
-
-        // 获取选中的维修技师
+        // 获取选中的维修技师id列表
         const employeeIds = this.selectedTechnicians;
-        console.log('选择的维修技师为：', employeeIds);
-        // 判断是否选择维修技师
+        // 判断选中的维修技师id列表是否为空
         if (employeeIds.length === 0) {
-            this.alerter.warn('请选择维修技师！');
+            this.alerter.error('您还未选择维修技师,请先选择维修技师！', true, 3000);
+            this.generatingReset(type);
             return;
         }
 
-        // 提示消息
-        let msg = '';
-        // 执行 派工操作
+        // 执行 派工/转派 操作 根据type区分
         this.service.assignOrder({
             type: type,
             employeeIds: employeeIds,
             maintenanceItemIds: maintenanceItemIds
         }).then(data => {
-            if (type === 1) {
-                msg = '指派';
-            } else if (type === 2) {
-                msg = '转派';
-            }
-            // 更新页面
-            console.log('执行指派转派操作之后返回的数据为：', data);
-
+            this.generatingReset(type);
             // forEach不可修改list数据, 只能遍历
-
             data.forEach(ele => {
                 const index = this.selectedOrder.serviceOutputs.findIndex(m => m.id === ele.id);
                 if (index > -1) {
@@ -350,13 +308,24 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
                 }
             });
 
-            // 给出操作成功提示employeeNames
             this.alerter.success('执行' + msg + '操作成功！');
-            // 设置按钮不可用
-            this.selectedOrder.serviceOutputs.enableAssignment = false;
+            // 设置派工按钮不可用
+            this.selectedOrder.serviceOutputs.enableBtn = false;
+
+            // 刷新页面
+            this.load();
         }).catch(err => {
-            this.alerter.error('执行' + msg + '操作成功！' + err);
+            this.alerter.error(err, true, 3000);
+            this.generatingReset(type);
         });
+    }
+    // 派工按钮动画重置
+    private generatingReset(type) {
+        if (type === 1) {
+            this.generating.assign = false;
+        } else if (type === 2) {
+            this.generating.reassign = false;
+        }
     }
 
     /**
@@ -368,6 +337,11 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
      */
     onConfirmTechnicians(evt, type) {
         this.selectedTechnicians = evt.value;
+        if (type === 1) {
+            this.generating.assign = true;
+        } else if (type === 2) {
+            this.generating.reassign = true;
+        }
         this.assignOrderHandler(type);
     }
 }

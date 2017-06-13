@@ -4,7 +4,7 @@ import { SelectOption, ListResult, PagedResult, PagedParams, ApiResult } from 'a
 import { DatePipe } from '@angular/common';
 
 @Injectable()
-export class SuspendBillsService {
+export class SuspendBillService {
   constructor(
     private httpService: HttpService
   ) { }

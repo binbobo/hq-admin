@@ -14,15 +14,18 @@ export class PagesService {
     ) { }
 
     public getMenuTree(): Promise<Array<any>> {
-        let url = Urls.platform.concat('/users/currentMenus');
-        return this.httpService.get<ListResult<any>>(url)
-            .then(result => result.data)
-            .then(data => data || Promise.reject('获取数据无效！'))
+        let url = Urls.platform.concat('/users/clientMenus?key=PC');
+        return this.httpService.getList<any>(url)
             .catch(err => console.error(err));
         //return this.menuService.getMenuTree();
     }
 
     public getLanguages(): Promise<Array<any>> {
         return this.languageService.getAvailableList(true);
+    }
+
+    public getOrganizationInfo() {
+        let url = Urls.chain.concat('/OrganizationInfos/Current');
+        return this.httpService.get<any>(url);
     }
 }

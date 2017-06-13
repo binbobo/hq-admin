@@ -7,9 +7,11 @@ import { SharedModule } from 'app/shared/shared.module';
 import { Routes, RouterModule } from '@angular/router';
 import { InventoryService } from './inventory.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ModalModule, TypeaheadModule } from 'ngx-bootstrap';
+import { TypeaheadModule } from 'ngx-bootstrap';
 import { TreeviewModule } from 'ngx-treeview';
 import { NgPipesModule } from 'ngx-pipes';
+import { ChainSharedModule } from '../../chain-shared/chain-shared.module';
+import { InventoryProductTypeaheadDirective } from './inventory-product-typeahead.directive';
 
 const routes: Routes = [
   { path: '', component: InventoryListComponent },
@@ -19,16 +21,16 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    SharedModule,
+    TreeviewModule.forRoot(),
+    SharedModule.forRoot(),
+    ChainSharedModule,
     FormsModule,
     ReactiveFormsModule,
-    ModalModule,
     NgPipesModule,
-    TreeviewModule.forRoot(),
     TypeaheadModule.forRoot(),
     RouterModule.forChild(routes)
   ],
   providers: [InventoryService],
-  declarations: [InventoryListComponent, InventoryCreateComponent, InventoryEditComponent]
+  declarations: [InventoryListComponent, InventoryCreateComponent, InventoryEditComponent, InventoryProductTypeaheadDirective]
 })
 export class InventoryModule { }

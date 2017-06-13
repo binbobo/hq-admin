@@ -1,0 +1,20 @@
+<div *ngIf="!parent">
+  <div class="form-check mb-0">
+    <label class="form-check-label">
+    <input type="checkbox" class="form-check-input" [checked]="allChecked||undefined" (change)="allChange($event)">
+      全选
+    </label>
+  </div>
+  <hr class="my-1">
+</div>
+<div class="hq-tree" *ngFor="let item of items">
+  <div class="form-check">
+    <i class="fa" [class.fa-caret-down]="item.collapsed" [class.fa-caret-up]="!item.collapsed" (click)="item.collapsed=!item.collapsed"
+      *ngIf="item?.children?.length"></i>
+    <label class="form-check-label">
+    <input type="checkbox" class="form-check-input" (change)="itemChange($event,item)" [value]="item.value" [checked]="isChecked(item)">
+      {{item.text}}
+    </label>
+  </div>
+  <hq-tree (onChange)="emitChange($event)" [collapsed]="collapsed" [parent]="item" [auto]="auto" [hidden]="item.collapsed" [items]="item.children"></hq-tree>
+</div>

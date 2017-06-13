@@ -11,11 +11,11 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { OrderService } from './order.service';
 import { AssignService } from './assign.service';
-import { ModalModule } from 'ngx-bootstrap';
 import { NguiDatetimePickerModule } from '@ngui/datetime-picker';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { SharedModule } from 'app/shared/shared.module';
 import { BillOrderService } from "app/pages/chain/reception/bill-order/bill-order.service";
+
 
 @NgModule({
   imports: [
@@ -25,10 +25,9 @@ import { BillOrderService } from "app/pages/chain/reception/bill-order/bill-orde
     PopoverModule.forRoot(),
     AlertModule.forRoot(),
     TypeaheadModule.forRoot(),
-    ModalModule.forRoot(),
     ReceptionRoutingModule,
     ChainSharedModule,
-    SharedModule,
+    SharedModule.forRoot(),
     Ng2SmartTableModule,
     ReactiveFormsModule,
     NguiDatetimePickerModule

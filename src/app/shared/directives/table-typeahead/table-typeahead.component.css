@@ -2,17 +2,38 @@
     background-color: #fff;
     font-size: 14px;
     border-radius: 4px;
-    padding: 2px;
+    position: absolute;
+    z-index: 4;
+    border: 1px solid rgba(0,0,0,.15);
 }
-table{
-    margin: 2px;
+tr td:first-child,tr th:first-child{
+    border-left-width: 0;
 }
-
+tr td:last-child,tr th:last-child{
+    border-right-width: 0;
+}
+td,th{
+    padding: 5px 10px!important;
+    white-space: nowrap;
+}
+.table{
+    margin-bottom: 0px;
+    border-right-width: 0;
+    border-left-width: 0;
+}
 tbody tr{
     cursor: pointer;
 }
-
 .close{
     position: absolute;
     right: -20px;
+}
+.form-inline .form-control,.goto{
+    border:1px solid #27b394 !important;
+}
+.hq-search{
+    background-color:#fff;
+}
+.footer{
+    margin: 1px;
 }

@@ -11,7 +11,6 @@ export class ApplicationService implements BasicService<Application> {
     let url = Urls.platform.concat('/applications/options');
     return this.httpService.get<ListResult<SelectOption>>(url)
       .then(result => result.data)
-      .then(data => data || Promise.reject('无效的返回结果'))
       .catch(err => Promise.reject(`获取应用选项失败：${err}`));
   }
 

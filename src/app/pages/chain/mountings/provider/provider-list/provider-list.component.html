@@ -5,59 +5,59 @@
   </div>
   <div class="card-block">
     <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
-      <div class="form-group mb-2">
-        <label for="inlineFormCustomSelect">供应商名称：</label>
-        <input type="text" class="form-control mx-sm-3" name="name" [(ngModel)]="params.name" placeholder="供应商名称">
+      <div class="input-group m-1">
+        <span class="input-group-addon">供应商名称</span>
+        <input type="text" class="form-control" name="name" [(ngModel)]="params.name" placeholder="供应商名称">
       </div>
-      <div class="form-group mb-2">
-        <label class="mr-sm-2" for="inlineFormCustomSelect">联系人：</label>
-        <input type="text" class="form-control mx-sm-3" name="contactUser" [(ngModel)]="params.contactUser" placeholder="联系人">
+      <div class="input-group m-1">
+        <span class="input-group-addon">联系人</span>
+        <input type="text" class="form-control" name="contactUser" [(ngModel)]="params.contactUser" placeholder="联系人">
       </div>
-      <div class="form-group mb-2">
-        <label class="mr-sm-2" for="inlineFormCustomSelect">联系人电话：</label>
-        <input type="text" class="form-control mx-sm-3" name="tel" [(ngModel)]="params.tel" placeholder="联系人电话">
+      <div class="input-group m-1">
+        <span class="input-group-addon">联系人电话</span>
+        <input type="text" class="form-control" name="tel" [(ngModel)]="params.tel" placeholder="联系人电话">
       </div>
-      <div class="form-group mb-2">
-        <button type="submit" class="btn btn-primary mx-sm-1" translate>search</button>
+      <div class="input-group m-1">
+        <button type="submit" class="btn btn-primary">查询</button>
       </div>
     </form>
-    <table class="table table-bordered table-striped">
-      <thead>
-        <tr *ngIf="!loading">
-          <th translate><input (change)="onCheckChange($event)" type="checkbox"></th>
-          <th translate>操作</th>
-          <th translate>代码</th>
-          <th translate>名称</th>
-          <th translate>简称</th>
-          <th translate>联系人</th>
-          <th translate>联系人电话</th>
-          <th translate>地址</th>
-          <th translate>邮编</th>
-          <th translate>传真</th>
-          <th translate>备注</th>
-          <th translate>状态</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of list">
-          <td class="text-center"><input [(ngModel)]="item.checked" type="checkbox"></td>
-          <td class="text-center">
-            <button (click)="onProviderEdit(item)" class="btn btn-sm btn-success">编辑</button>
-          </td>
-          <td>{{item.code}}</td>
-          <td>{{item.name}}</td>
-          <td>{{item.shortName}}</td>
-          <td>{{item.contactUser}}</td>
-          <td class="text-center">{{item.tel}}</td>
-          <td>{{item.address}}</td>
-          <td>{{item.postal}}</td>
-          <td>{{item.fax}}</td>
-          <td>{{item.description}}</td>
-          <td class="text-center">{{item.status}}</td>
-        </tr>
-      </tbody>
-    </table>
-    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    <div class="table-container">
+      <table class="table table-bordered">
+        <thead>
+          <tr *ngIf="!loading">
+            <th><input (change)="onCheckChange($event)" type="checkbox"></th>
+            <th>操作</th>
+            <th>状态</th>
+            <th>供应商名称</th>
+            <th>简称</th>
+            <th>联系人</th>
+            <th>联系人电话</th>
+            <th>座机</th>
+            <th>地址</th>
+            <th>邮编</th>
+            <th>备注</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of list">
+            <td class="text-center"><input [(ngModel)]="item.checked" type="checkbox"></td>
+            <td class="text-center">
+              <button [attr.disabled]="!item.status||undefined" (click)="onProviderEdit(item)" class="btn btn-sm btn-success">编辑</button>
+            </td>
+            <td class="text-center">{{item.status?'启用':'停用'}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.shortName}}</td>
+            <td>{{item.contactUser}}</td>
+            <td class="text-center">{{item.tel}}</td>
+            <td>{{item.fax}}</td>
+            <td>{{item.address}}</td>
+            <td>{{item.postal}}</td>
+            <td>{{item.description}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" [(itemsPerPage)]="size" (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
   <div class="card-footer text-muted">
     <button class="btn btn-primary" (click)="createModal.show()">新增</button>
@@ -66,30 +66,14 @@
   </div>
 </div>
 
-<div class="modal fade" bsModal #createModal="bs-modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title pull-left">新增供应商</h5>
-        <button class="close pull-right" (click)="createModal.hide()">&times;</button>
-      </div>
-      <div class="modal-body">
-        <hq-provider-create (onSubmit)="onProviderCreate($event)"></hq-provider-create>
-      </div>
-    </div>
+<div hqModal #createModal="hq-modal" modalTitle="新增供应商" size="lg">
+  <div *ngIf="createModal.isShown">
+    <hq-provider-create (onSubmit)="onProviderCreate($event)"></hq-provider-create>
   </div>
 </div>
 
-<div class="modal fade" bsModal #editModal="bs-modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title pull-left">修改供应商</h5>
-        <button class="close pull-right" (click)="editModal.hide()">&times;</button>
-      </div>
-      <div *ngIf="provider" class="modal-body">
-        <hq-provider-edit (onSubmit)="onProviderUpdate($event)" [model]="provider"></hq-provider-edit>
-      </div>
-    </div>
+<div hqModal #editModal="hq-modal" modalTitle="修改供应商" size="lg">
+  <div *ngIf="provider&&editModal.isShown">
+    <hq-provider-edit (onSubmit)="onProviderUpdate($event)" [model]="provider"></hq-provider-edit>
   </div>
 </div>

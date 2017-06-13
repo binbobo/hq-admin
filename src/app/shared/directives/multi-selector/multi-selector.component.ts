@@ -20,6 +20,8 @@ export class MultiSelectorComponent implements OnInit {
   public title: string;
   @Input()
   public options: Array<SelectOption>;
+  @Input()
+  public emptyInfo: string;
   @Output()
   public onChange = new EventEmitter<SelectOption>();
   @Output()

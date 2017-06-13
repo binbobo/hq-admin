@@ -1,0 +1,33 @@
+<table class="table table-bordered">
+  <caption *ngIf="showCaption">维修配件</caption>
+  <thead>
+    <tr>
+      <th *ngIf="showNo" width="65">序号</th>
+      <th>维修工项</th>
+      <th>配件名称</th>
+      <th>品牌</th>
+      <th>规格型号</th>
+      <th>数量</th>
+      <th>单价(元)</th>
+      <th>金额(元)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let record of productOutputs; let index=index;">
+      <td *ngIf="showNo" class="text-center">{{index+1}}</td>
+      <td>{{record?.serviceName}}</td>
+      <td>{{record?.productName}}</td>
+      <td>{{record?.brandName}}</td>
+      <td>{{record?.specification}}</td>
+      <td>{{record?.count}}</td>
+      <td class="text-right">{{record?.price|centToYuan}}</td>
+      <td class="text-right">{{record?.amount|centToYuan}}</td>
+    </tr>
+    <tr *ngIf="showFee&&productOutputs?.fee">
+      <td>小计：</td>
+      <td colspan="7">
+        <i class="mr-1" style="font-style:italic;">&#165;</i>{{productOutputs?.fee|centToYuan}}
+      </td>
+    </tr>
+  </tbody>
+</table>

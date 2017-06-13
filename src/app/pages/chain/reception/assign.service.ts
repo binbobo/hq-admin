@@ -10,8 +10,6 @@ export class AssignService implements BasicService<any> {
 
     constructor(private httpService: HttpService) {
     }
-
-
     /**
      * 获取维修指派类型数据 用于维修指派
      * 
@@ -24,7 +22,6 @@ export class AssignService implements BasicService<any> {
         return this.httpService
             .request(url)
             .map(response => {
-                console.log('查询维修指派类型数据：', response.json().data);
                 return response.json().data as any[];
             });
     }
@@ -40,11 +37,11 @@ export class AssignService implements BasicService<any> {
         return this.httpService
             .request(url, {
                 params: {
-                    'key': 'ST'  // ST 代表维修技师
+                    'key': 'ST',  // ST 代表维修技师
+                    'pageSize': 50
                 }
             })
             .map(response => {
-                console.log('查询维修技师列表数据：', response.json().data);
                 return response.json().data as any[];
             });
     }
@@ -55,11 +52,10 @@ export class AssignService implements BasicService<any> {
      * @param params
      */
     public getPagedList(params: PagedParams): Promise<PagedResult<any>> {
-        const url = Urls.chain.concat('/Maintenances/team/search?', params.serialize());
+        const url = Urls.chain.concat('/MaintenanceTeams/assign/search?', params.serialize());
         return this.httpService
             .get<PagedResult<any>>(url)
             .then(result => {
-                console.log('工单列表数据', result);
                 return result;
             })
             .catch(err => Promise.reject(`加载工单列表失败：${err}`));
@@ -73,7 +69,7 @@ export class AssignService implements BasicService<any> {
         const url = Urls.chain.concat('/MaintenanceTeams');
         return this.httpService
             .post<ApiResult<any>>(url, body)
-            .catch(err => Promise.reject(`派工失败：${err}`));
+            .catch(err => Promise.reject(`${err}`));
     }
 
 
@@ -86,7 +82,7 @@ export class AssignService implements BasicService<any> {
      * @memberOf OrderService
      */
     public get(id: string): Promise<any> {
-        const url = Urls.chain.concat('/Maintenances/', id);
+        const url = Urls.chain.concat('/Maintenances/assign/', id);
         return this.httpService
             .get<ApiResult<any>>(url)
             .then(result => result.data)
@@ -134,7 +130,7 @@ export class AssignService implements BasicService<any> {
 export class AssignListRequest extends PagedParams {
     constructor(
         // 工单列表页面查询参数
-        public states?: Array<string>, // 工单状态
+        public status?: Array<string>, // 工单状态
         public plateNo?: string, // 车牌号
         public billCode?: string, // 工单号
         public keyword?: string // 车牌号或者工单号

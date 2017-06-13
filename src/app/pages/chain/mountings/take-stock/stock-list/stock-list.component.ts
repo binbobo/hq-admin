@@ -1,7 +1,7 @@
 import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { DataList } from 'app/shared/models';
 import { Stock, TakeStockService, StockListRequest } from '../take-stock.service';
-import { ModalDirective } from 'ngx-bootstrap';
+import { HqModalDirective } from 'app/shared/directives';
 
 @Component({
   selector: 'hq-stock-list',
@@ -11,7 +11,7 @@ import { ModalDirective } from 'ngx-bootstrap';
 export class StockListComponent extends DataList<Stock> implements OnInit {
 
   @ViewChild("generateModal")
-  protected generateModal: ModalDirective;
+  protected generateModal: HqModalDirective;
 
   constructor(
     injector: Injector,

@@ -1,0 +1,43 @@
+.text-font {
+    font-size: 0.875rem;
+    color: #727171;
+    text-align: left;
+}
+.table td {
+    vertical-align: middle;
+}
+.table th {
+    background: white;
+    font-weight: 500;
+}
+.table caption {
+    width: 100%;
+    background:#f3f3f4;
+    padding: 0.5rem;
+}
+.trouble-icon {
+    display: inline-block;
+    width:16px;
+    height: 16px;
+}
+
+/*.zoom {      
+-webkit-transition: all 0.35s ease-in-out;    
+-moz-transition: all 0.35s ease-in-out;    
+transition: all 0.35s ease-in-out;     
+cursor: -webkit-zoom-in;      
+cursor: -moz-zoom-in;      
+cursor: zoom-in;  
+}     
+
+.zoom:hover,  
+.zoom:active,   
+.zoom:focus {
+-ms-transform: scale(2.5);    
+-moz-transform: scale(2.5);  
+-webkit-transform: scale(2.5);  
+-o-transform: scale(2.5);  
+transform: scale(2.5);    
+position:relative;      
+z-index:100;  
+}*/

@@ -7,7 +7,7 @@ export class InventoryService implements BasicService<Inventory> {
 
   getPagedList(params: InventoryListRequest): Promise<PagedResult<Inventory>> {
     let search = params.serialize();
-    let url = Urls.chain.concat('/products/getproductlist?', search);
+    let url = Urls.chain.concat('/Products/Search?', search);
     return this.httpService.get<PagedResult<Inventory>>(url)
       .catch(err => Promise.reject(`获取配件列表失败：${err}`));
   }
@@ -71,13 +71,15 @@ export class InventoryListRequest extends PagedParams {
 
 export class Inventory extends BasicModel {
   constructor(
-    public categoryId: Array<string> = [],
     public vehicleId: Array<string> = [],
     public vehicleList: Array<any> = [],
     public categoryList: Array<any> = [],
+    public vehicleInfoList: Array<any> = [],
+    public categoryId?: string,
     public number?: number,
     public storeId?: string,
     public locationName?: string,
+    public locationId?: string,
     public storageLocationName?: string,
     public category?: string,
     public brand?: string,
@@ -85,19 +87,22 @@ export class Inventory extends BasicModel {
     public brandName?: string,
     public code?: string,
     public name?: string,
-    public count?: string,
+    public count?: number,
     public vehicleName?: string,
     public unit?: string,
+    public unitId?: string,
     public price?: string,
     public newPrice?: string,
     public packageInfo?: string,
     public madeIn?: string,
+    public productSpecification?: string,
     public properties?: Array<string>,
     public description?: string,
     public inCount?: string,
     public outCount?: string,
     public maxCount?: string,
-    public minCount?: string
+    public minCount?: string,
+    public dataSource?: string,
   ) {
     super();
   }

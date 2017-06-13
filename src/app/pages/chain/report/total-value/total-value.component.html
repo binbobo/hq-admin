@@ -1,0 +1,67 @@
+<ng-template hq-alerter></ng-template>
+<div class="card">
+  <div class="card-header">
+    <span>产值汇总</span>
+  </div>
+  <div class="card-block">
+    <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
+      <div class="input-group my-1 mr-1">
+        <span class="input-group-addon">日期</span>
+        <input class="form-control" [(ngModel)]="params.startTimeDate" [max-date]="params.endTimeDate" name="startTimeDate" date-only="true"
+          ngui-datetime-picker/>
+        <span class="input-group-addon">-</span>
+        <input class="form-control" [(ngModel)]="params.endTimeDate" [min-date]="params.startTimeDate" name="endTimeDate" date-only="true"
+          ngui-datetime-picker/>
+      </div>
+      <div class="input-group m-1" *ngIf="stations?.length&&stations[0]?.children?.length">
+        <span class="input-group-addon">门店</span>
+        <hq-dropdown-tree text="name" value="id" [items]="stations" (onChange)="onStationSelect($event)"></hq-dropdown-tree>
+      </div>
+      <div class="input-group m-1"><button class="btn btn-primary">查询</button></div>
+    </form>
+    <div id="selectedStations" class="input-group mb-2" [hidden]="!selectedStations?.length">
+      <span class="input-group-addon">已选店铺</span>
+      <div class="form-control p-0">
+        <div *ngFor="let item of selectedStations" class="selected mx-1 p-1">
+          <span>{{item.text}}</span>
+          <i class="cursor-pointer fa fa-times" (click)="onStationRemove(item)"></i>
+        </div>
+      </div>
+    </div>
+    <div class="table-container">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th rowspan="2" class="align-middle">日期</th>
+            <th rowspan="2" class="align-middle">进厂台次</th>
+            <th rowspan="2" class="align-middle">平均单产</th>
+            <th colspan="6">产值</th>
+          </tr>
+          <tr>
+            <th *ngFor="let item of result?.totalProductions">{{item.nameColumn}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of list">
+            <td class="text-center">{{item.date|sDate}}</td>
+            <td class="text-center">{{item.vehicleCount}}</td>
+            <td class="text-right">{{item.averageProduction|number:'1.2-2'}}</td>
+            <td class="text-right" *ngFor="let item of item.productions">{{item.amount|number:'1.2-2'}}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td class="text-center">总计</td>
+            <td class="text-center">{{result?.vehicleCount}}</td>
+            <td class="text-right">{{result?.averageProduction|number:'1.2-2'}}</td>
+            <td *ngFor="let item of result?.totalProductions" class="text-right">{{item?.amount|number:'1.2-2'}}</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" [(itemsPerPage)]="size" (pageChanged)="onPageChanged($event)"></hq-pagination>
+  </div>
+  <div class="d-none card-footer text-center">
+    <button class="btn btn-primary" (click)="export()">导出</button>
+  </div>
+</div>

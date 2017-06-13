@@ -22,14 +22,18 @@ export class AccountListComponent extends DataList<JournalAccount> implements On
   }
 
   private onSelectItem(item) {
+    if (typeof item === 'string') {
+      this.alerter.error(item);
+      return false;
+    }
     this.item = item;
-    this.params.productId = item.productId;
+    this.params.productId = item.id;
     this.loadList();
   }
 
   private onSelectTag(tag: JournalAcountType) {
-    this.params.billType = tag.type;
-    this.tags = [];
+    this.params.billTypeKey = tag.type;
+    this.tags.forEach(m => m.checked = m === tag);
     this.loadList();
   }
 
@@ -48,12 +52,18 @@ export class AccountListComponent extends DataList<JournalAccount> implements On
     return super.loadList()
       .then(result => {
         let resp = result as JournalAccountListResponse;
-        this.tags = resp.tabList;
+        if (resp && resp.tabList && resp.tabList.length) {
+          this.tags = resp.tabList;
+        }
       })
   }
 
   ngOnInit() {
     super.ngOnInit();
+  }
+
+  get current() {
+    return this.tags.findIndex(m => m.checked);
   }
 
 }

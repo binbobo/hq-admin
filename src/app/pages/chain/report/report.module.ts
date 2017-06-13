@@ -4,8 +4,8 @@ import { ReportRoutingModule } from "./report.routing";
 
 @NgModule({
   imports: [
-    SharedModule,
-    ReportRoutingModule
+    SharedModule.forRoot(),
+    ReportRoutingModule,
   ],
   declarations: []
 })

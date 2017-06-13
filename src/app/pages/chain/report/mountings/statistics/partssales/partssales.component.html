@@ -1,0 +1,138 @@
+<ng-template hq-alerter></ng-template>
+<div class="card">
+  <div class="card-header">配件销售统计</div>
+  <div class="card-block">
+    <form class="form-inline mb-2" [formGroup]="partssalesForm" (ngSubmit)="onSearch()">
+      <div class="input-group m-1">
+        <span class="input-group-addon">配件编码</span>
+        <input [hqProductTypeahead]='code' (onSelect)="onSelect($event)" class="form-control" formControlName="productCode" placeholder="请输配件编码"
+        />
+      </div>
+      <div class="input-group m-1">
+        <span class="input-group-addon">配件分类</span>
+        <input [hqProductTypeahead]='categoryName' (onSelect)="onSelect($event)" class="form-control" formControlName="productCategory"
+          placeholder="请输配件分类" />
+      </div>
+      <div class="input-group m-1">
+        <span class="input-group-addon">配件名称</span>
+        <input [hqProductTypeahead]='name' (onSelect)="onSelect($event)" class="form-control" formControlName="productName" placeholder="请输配件名称"
+        />
+      </div>
+      <div class="input-group m-1">
+        <span class="input-group-addon">客户名称</span>
+        <input hqCustomerTypeahead name="name" class="form-control" (onSelect)="changeVal($event)" formControlName="name" placeholder="请输客户名字"
+        />
+      </div>
+      <div class="input-group m-1">
+        <span class="input-group-addon">客户手机</span>
+        <input hqMobile name="phone" class="form-control" formControlName="phone" placeholder="请输客户手机" />
+      </div>
+      <div class="input-group m-1">
+        <span class="input-group-addon">查询日期</span>
+        <input [max-date]="maxEnterStartDate" class="form-control datetime-picker" style="border-right:0;" formControlName="searchStart"
+          id="starttime" name="starttime" type="text" date-only="true" ngui-datetime-picker/>
+        <span class="input-group-addon">-</span>
+        <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" class="form-control datetime-picker" style="border-right-width:1px;"
+          id="endtime" formControlName="searchEnd" name="endtime" type="text" date-only="true" ngui-datetime-picker/>
+      </div>
+      <div class="input-group m-1" *ngIf="orgShow">
+        <span class="input-group-addon">门店</span>
+        <hq-dropdown-tree text="name" value="id" [items]="stations" (onChange)="onSearchRangeChange($event)">
+        </hq-dropdown-tree>
+      </div>
+      <div class="input-group m-1"><button type="submit" class="btn btn-primary">查询</button></div>
+    </form>
+    <hr>
+    <p>温馨提示：系统为您找到<span style="font-size:16px;color:red;font-weight:bold;">{{total}}</span>条记录</p>
+    <div class="table-container">
+      <table class="table table-bordered text-center">
+        <tr>
+          <th>操作</th>
+          <th *ngIf="orgNameShow">店名</th>
+          <th>出库单号</th>
+          <th>客户名称</th>
+          <th>客户手机</th>
+          <th>销售员</th>
+          <th>金额（元）</th>
+          <th>结账方式</th>
+          <th>开单时间</th>
+          <th>操作人</th>
+        </tr>
+        <tr *ngFor="let item of list">
+          <td>
+            <button type="button" [hqSpinner]="item.hqSpinner" class="btn btn-info btn-sm" (click)="alert(item,item.id,bdModal,item.billCode,item.customerName)">详情</button>
+          </td>
+          <td *ngIf="orgNameShow" class="text-left">{{item.orgName}}</td>
+          <td>{{item.billCode}}</td>
+          <td class="text-left">{{item.customerName }}</td>
+          <td>{{item.customerPhone }}</td>
+          <td class="text-left">{{item.sellerName }}</td>
+          <td class="text-right">{{item.amount|centToYuan}}</td>
+          <td class="text-left">{{item?.settlementMethod}}</td>
+          <td>{{item.createTime |sDatetime}}</td>
+          <td class="text-left">{{item.operator}}</td>
+        </tr>
+      </table>
+    </div>
+    <hq-pagination [(itemsPerPage)]="size" [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    <button type="button" (click)="onExport()" class="btn btn-export">导出</button>
+  </div>
+</div>
+<!--详情-->
+<div class="modal fade" hqModal #bdModal="hq-modal" role="dialog" modalTitle="配件销售详情" size="lg">
+  <table class="table table-order-info table-bordered">
+    <tr>
+      <td class="fixed-width">出库单号：</td>
+      <td>{{detail?.billCode}}</td>
+      <td class="fixed-width">客户名称：</td>
+      <td>{{detail?.customerName}}</td>
+    </tr>
+    <tr>
+      <td class="fixed-width">开单时间：</td>
+      <td>{{detail?.createBillTime |sDatetime}}</td>
+      <td class="fixed-width">操作人：</td>
+      <td>{{detail?.operator }}</td>
+    </tr>
+  </table>
+  <div class="table-container">
+    <table class="table table-bordered" style="white-space: nowrap">
+      <tr class="active">
+        <th>配件编码</th>
+        <th>配件分类</th>
+        <th>配件名称</th>
+        <th>品牌</th>
+        <th>规格型号</th>
+        <th>单位</th>
+        <th>仓库</th>
+        <th>库位</th>
+        <th>单价（元）</th>
+        <th>数量</th>
+        <th>金额（元）</th>
+        <!--<th>备注</th>-->
+      </tr>
+      <tr class="text-center" *ngFor="let item of detailItems">
+        <td>{{item.productCode }}</td>
+        <td class="text-left">{{item.categoryName }}</td>
+        <td class="text-left">{{item.productName }}</td>
+        <td class="text-left">{{item.brandName}}</td>
+        <td class="text-left">{{item.specification }}</td>
+        <td>{{item.unit }}</td>
+        <td class="text-left">{{item.storeName }}</td>
+        <td class="text-left">{{item.locationName }}</td>
+        <td class="text-right">{{item.price |centToYuan}}</td>
+        <td>{{item.count }}</td>
+        <td class="text-right">{{item.amount |centToYuan}}</td>
+        <!--<td class="text-left">{{item?.description}}</td>-->
+      </tr>
+    </table>
+  </div>
+  <p *ngIf="!!!detailItemsLength">暂无数据</p>
+  <div class="modal-footer">
+    <div class="text-center" style="width:100%;">
+      <button type="button" (click)="print()" class="btn btn-export">打印</button>
+    </div>
+  </div>
+</div>
+<div hqPrint #printer="hq-print" print-title="配件销售统计">
+  <hq-partssales-print [hidden]="true" [detail]="detail" [detailItems]="detailItems" [detailItemsLength]="detailItemsLength"></hq-partssales-print>
+</div>

@@ -1,13 +1,13 @@
 import { ViewChild, Injector } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap';
 import { DetailService } from "app/shared/models";
 import { PagedService } from './basic-service.interface';
 import { DataList } from './data-list';
+import { HqModalDirective } from 'app/shared/directives';
 
 export abstract class DataListWithDetail<T> extends DataList<T> {
 
     @ViewChild("detailModal")
-    protected detailModal: ModalDirective;
+    protected detailModal: HqModalDirective;
     protected model: T;
 
     constructor(

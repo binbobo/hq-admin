@@ -3,23 +3,23 @@
   <div class="card-header">
     <span>资源分组列表</span>
     <div class="pull-right">
-      <a routerLink="create" class="btn btn-sm btn-primary" translate>add</a>
+      <a routerLink="create" class="btn btn-sm btn-primary">add</a>
     </div>
   </div>
   <div class="card-block">
     <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
       <input type="text" name="groupName" [(ngModel)]="params.groupName" class="form-control mb-2 mr-2" placeholder="请输入分组名称">
-      <button type="submit" class="btn btn-primary mb-2 mr-2" translate>search</button>
+      <button type="submit" class="btn btn-primary mb-2 mr-2">查询</button>
     </form>
-    <table class="table table-bordered table-sm table-striped">
+    <table class="table table-bordered table-sm">
       <thead>
         <tr>
-          <th translate>name</th>
-          <th translate>description</th>
-          <th translate>display.order</th>
-          <th translate>create.time</th>
-          <th translate>status</th>
-          <th translate>operator</th>
+          <th>name</th>
+          <th>description</th>
+          <th>display.order</th>
+          <th>create.time</th>
+          <th>status</th>
+          <th>operator</th>
         </tr>
       </thead>
       <tbody>
@@ -27,7 +27,7 @@
           <td>{{ item.groupName }}</td>
           <td>{{ item.description }}</td>
           <td class="text-center">{{ item.displayOrder }}</td>
-          <td class="text-center">{{ item.createdOnUtc|date:'y-MM-dd HH:mm:ss' }}</td>
+          <td class="text-center">{{ item.createdOnUtc|sDatetime }}</td>
           <td class="text-center"><i class="fa fa-{{ item.enabled?'check':'times' }}"></i></td>
           <td class="text-center">
             <a [routerLink]="['../../resource']" [queryParams]="{groupId:item.id}" class="btn btn-sm btn-info" title="查看资源"><i class="fa fa-linode"></i></a>

@@ -1,0 +1,28 @@
+<tabset>
+  <tab *ngIf="selectedOrder?.serviceOutputs?.length>0">
+    <template tabHeading>
+      <i class="fa fa-clone mr-2" aria-hidden="true"></i>维修项目
+    </template>
+    <div class="table-container">
+      <ng-content select="table"></ng-content>
+    </div>
+    <br>
+    <ng-content select="div"></ng-content>
+  </tab>
+  <tab *ngIf="selectedOrder?.attachServiceOutputs?.length>0">
+    <template tabHeading>
+      <i class="fa fa-wrench mr-2" aria-hidden="true"></i>附加项目
+    </template>
+    <div class="table-container">
+      <hq-attachment-item-list [attachServiceOutputs]="selectedOrder.attachServiceOutputs"></hq-attachment-item-list>
+    </div>
+  </tab>
+  <tab *ngIf="selectedOrder?.suggestServiceOutputs?.length>0">
+    <template tabHeading>
+      <i class="fa fa-wpforms mr-2" aria-hidden="true"></i>建议维修项目
+    </template>
+    <div class="table-container">
+      <hq-suggested-item-list [suggestServiceOutputs]="selectedOrder?.suggestServiceOutputs"></hq-suggested-item-list>
+    </div>
+  </tab>
+</tabset>

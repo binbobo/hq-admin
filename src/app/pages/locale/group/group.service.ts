@@ -17,9 +17,7 @@ export class GroupService implements BasicService<Group> {
   public getOptionList(): Promise<Array<SelectOption>> {
     let url = Urls.localization.concat('/groups/options');
     return this.httpService
-      .get<ListResult<SelectOption>>(url)
-      .then(result => result.data)
-      .then(data => data || Promise.reject('无效的数据！'))
+      .getList<SelectOption>(url)
       .catch(err => Promise.reject(`资源分组加载失败:${err}`));
   }
 

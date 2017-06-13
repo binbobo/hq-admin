@@ -1,10 +1,9 @@
-import { Component, OnInit, EventEmitter, Output, ViewChildren, QueryList, ViewChild } from '@angular/core';
-import { TypeaheadRequestParams, FormControlErrorDirective, HqAlerter } from 'app/shared/directives';
+import { Component, OnInit, EventEmitter, Output, ViewChildren, QueryList, ViewChild, ElementRef } from '@angular/core';
+import { TypeaheadRequestParams, FormGroupControlErrorDirective, HqAlerter } from 'app/shared/directives';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { CentToYuanPipe } from 'app/shared/pipes';
 import { ProcurementService, ProcurementItem, GetProductsRequest } from '../procurement.service';
-import { MountingsService } from '../../../mountings.service';
 import { SelectOption } from 'app/shared/models';
 
 @Component({
@@ -15,56 +14,65 @@ import { SelectOption } from 'app/shared/models';
 export class ProcurementCreateComponent implements OnInit {
 
   private form: FormGroup;
-  private converter: CentToYuanPipe = new CentToYuanPipe();
   @Output()
   private formSubmit = new EventEmitter<ProcurementItem>();
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
   private model: ProcurementItem = new ProcurementItem();
-  @ViewChildren(FormControlErrorDirective)
-  private controls: QueryList<FormControlErrorDirective>;
-  private warehouses: Array<SelectOption>;
+  @ViewChildren(FormGroupControlErrorDirective)
+  private controls: QueryList<FormGroupControlErrorDirective>;
+  private storages: Array<any>;
+  private locations: Array<any>;
+  private isSelected: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
     private procurementService: ProcurementService,
-    private moutingsService: MountingsService,
   ) { }
 
   ngOnInit() {
+    this.model['yuan'] = this.model.price / 100;
     this.buildForm();
-    this.moutingsService.getWarehouseOptions()
-      .then(options => this.warehouses = options)
-      .then(options => options.length ? options[0].value : '')
-      .then(id => {
-        this.form.controls['storeId'].setValue(id);
-        this.model.storeId = id;
-      })
-      .catch(err => this.alerter.error(err))
   }
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      brand: [this.model.brand],
-      productCode: [this.model.productCode],
-      productName: [this.model.productName],
+      brandName: [this.model.brandName],
+      productCode: [this.model.productCode, [Validators.required]],
+      productName: [this.model.productName, [Validators.required]],
       productCategory: [this.model.productCategory],
-      packingCode: [this.model.packingCode],
-      taxRate: [this.model.taxRate],
       productId: [this.model.productId, [Validators.required, Validators.maxLength(36)]],
       productSpecification: [this.model.productSpecification],
       storeId: [this.model.storeId, [Validators.required, Validators.maxLength(36)]],
-      locationId: [this.model.locationId],
-      count: [this.model.count, [Validators.required, CustomValidators.digits]],
+      locationId: [this.model.locationId, [Validators.maxLength(36)]],
+      count: [this.model.count, [Validators.required, CustomValidators.min(1), CustomValidators.digits]],
       price: [this.model.price],
-      yuan: [this.model.price / 100, [Validators.required]],
+      yuan: [this.model['yuan'], [Validators.required, CustomValidators.gt(0)]],
       amount: [this.model.amount],
       exTaxPrice: [this.model.exTaxPrice],
       exTaxAmount: [this.model.exTaxAmount],
       locationName: [this.model.locationName, [Validators.required]],
-      storeName: [this.model.houseName, [Validators.required]],
+      storeName: [this.model.houseName],
+      productUnit: [this.model.productUnit],
     })
   }
+
+  private onResetForm(event: Event, key: string) {
+    this.productNotExist = false;
+    if (!event.isTrusted || !this.isSelected) return false;
+    let obj = { ...this.model };
+    key in obj && delete obj[key];
+    this.form.patchValue(obj);
+    this.storages = null;
+    this.locations = null;
+    this.isSelected = false;
+  }
+
+  private onEmpty(event) {
+    event && (this.productNotExist = true);
+  }
+
+  private productNotExist: boolean;
 
   public onSubmit(event: Event) {
     let invalid = this.controls
@@ -74,89 +82,66 @@ export class ProcurementCreateComponent implements OnInit {
       event.preventDefault();
       return false;
     } else {
-      this.formSubmit.emit(this.form.value);
-      this.form.reset(this.model);
+      let value = { ...this.form.value, taxRate: this.model.taxRate };
+      this.formSubmit.emit(value);
+      this.reset();
     }
   }
 
-  public onReset() {
-    this.form = null;
-    setTimeout(() => this.buildForm(), 1);
-    return false;
-  }
-
-  private itemColumns(isName: boolean) {
-    return [
-      { name: 'brand', title: '品牌' },
-      { name: 'productName', title: '名称', weight: isName ? 1 : 0 },
-      { name: 'productCode', title: '编码', weight: isName ? 0 : 1 },
-      { name: 'specification', title: '规格' },
-      { name: 'vehicleName', title: '车型' },
-    ];
+  onStorageChange(storageId: string) {
+    let storage = this.storages.find(m => m.id === storageId);
+    this.locations = storage && storage.locations;
+    let location = this.locations && this.locations.length && this.locations[0];
+    let count = location && location.count;
+    this.form.patchValue({
+      locationId: location && location.id,
+      locationName: location && location.name,
+    });
   }
 
   private onItemSelect(event) {
-    let item = {
-      productCode: event.productCode,
-      productName: event.productName,
-      packingCode: event.packingCode,
+    this.isSelected = true;
+    let item: any = {
+      productUnit: event.unitName,
+      productCode: event.code,
+      productName: event.name,
       productSpecification: event.specification,
-      productId: event.productId,
-      brand: event.brand,
-      brandId: event.brandId,
-      storeId: event.storeId,
-      storeName: event.storeName,
-      locationId: event.locationId,
-      locationName: event.locationName,
-      stockCount: event.count,
-      price: event.price,
-      yuan: event.price / 100,
+      productId: event.id,
+      brandName: event.brandName,
+      price: event.newPrice,
+      yuan: event.newPrice / 100,
       taxRate: event.taxRate,
-      exTaxPrice: event.exTaxPrice,
-      productCategory: event.productCategory,
+      productCategory: event.categoryName,
+    }
+    this.storages = event.storages;
+    this.locations = null;
+    if (Array.isArray(event.storages) && event.storages.length) {
+      let storage = this.storages.find(m => m.locations && m.locations.length);
+      storage = storage || this.storages[0];
+      item.storeId = storage.id;
+      item.storeName = storage.name;
+      this.onStorageChange(storage.id);
+    } else {
+      item.locationId = null;
     }
     this.form.patchValue(item);
     this.calculate();
   }
 
-  get editable() {
-    return this.form.controls['productId'].value ? true : undefined;
-  }
-
   onPriceChange(event) {
     let val = event.target.value || 0;
-    let price = Math.floor(val * 100);
+    let price = (val * 100).toFixed();
     this.form.controls['price'].setValue(price);
     this.calculate();
-  }
-
-  public get codeSource() {
-    return (params: TypeaheadRequestParams) => {
-      let model = Object.assign({}, this.model, { productCode: params.text });
-      this.form.reset(model);
-      let p = new GetProductsRequest(params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.procurementService.getProducts(p);
-    };
-  }
-
-  public get nameSource() {
-    return (params: TypeaheadRequestParams) => {
-      let model = Object.assign({}, this.model, { productName: params.text });
-      this.form.reset(model);
-      let p = new GetProductsRequest(undefined, params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.procurementService.getProducts(p);
-    };
   }
 
   private calculate() {
     let count = this.form.controls['count'].value || 0;
     let price = this.form.controls['price'].value || 0;
-    let tax = this.form.controls['taxRate'].value || 0;
-    let exTaxPrice = price / (tax * 0.01 + 1);
+    let tax = this.model.taxRate || 0;
+    let exTaxPrice = (price / (tax * 0.01 + 1)).toFixed(0);
     let amount = count * price;
-    let exTaxAmount = count * exTaxPrice;
+    let exTaxAmount = count * +exTaxPrice;
     this.form.patchValue({
       amount: amount,
       count: count,
@@ -164,5 +149,12 @@ export class ProcurementCreateComponent implements OnInit {
       exTaxAmount: exTaxAmount,
       exTaxPrice: exTaxPrice
     });
+  }
+
+  private reset() {
+    this.storages = null;
+    this.locations = null;
+    this.form = null;
+    setTimeout(() => this.buildForm(), 1);
   }
 }

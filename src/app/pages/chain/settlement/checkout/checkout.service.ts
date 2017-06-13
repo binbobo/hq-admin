@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Urls, HttpService } from "app/shared/services";
 import { ApiResult, BasicService, PagedParams, PagedResult } from 'app/shared/models';
 import { Observable } from "rxjs/Observable";
+import * as moment from 'moment';
 
 @Injectable()
 export class CheckOutService implements BasicService<any>{
@@ -35,7 +36,6 @@ export class CheckOutService implements BasicService<any>{
         return this.httpService
             .get<PagedResult<OrderListSearch>>(url)
             .then(result => {
-                console.log('工单列表数据', result);
                 return result;
             })
             .catch(err => Promise.reject(`加载工单列表失败：${err}`));
@@ -76,6 +76,16 @@ export class CheckOutService implements BasicService<any>{
             .post<void>(url, body)
             .catch(err => Promise.reject(`${err}`));
     }
+    //    根据id获取结算单信息
+    public getPrintDetail(id: string): Promise<any> {
+        const url = Urls.chain.concat('/Settlements/Details/', id);
+        return this.httpService
+            .get<ApiResult<any>>(url)
+            .then(result => result.data)
+            .then(data => data || Promise.reject('获取打印数据无效'))
+            .catch(err => Promise.reject(`获取打印数据失败：${err}`))
+
+    }
 }
 
 // 工单请求参数类
@@ -88,6 +98,8 @@ export class OrderListSearch extends PagedParams {
         public starttime?: string, // 进店开始时间
         public endtime?: string, // 进店结束时间
     ) {
-        super('OrderListSearchParams');
+        super();
+        // this.starttime = starttime || moment().subtract(30, 'd').format('YYYY-MM-DD');
+        // this.endtime = endtime || moment().endOf('day').format('YYYY-MM-DD HH:mm');
     }
 }

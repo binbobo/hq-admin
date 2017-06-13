@@ -1,0 +1,67 @@
+<ng-template hq-alerter></ng-template>
+<div class="card">
+  <div class="card-header">
+    <span>用户管理</span>
+  </div>
+  <div class="card-block">
+    <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
+      <div class="form-group mb-2">
+        <input type="text" class="form-control mx-sm-3" name="name" [(ngModel)]="params.keyWord" placeholder="请输入姓名或手机号">
+      </div>
+      <div class="form-group mb-2">
+        <button type="submit" class="btn btn-primary mx-sm-1">查询</button>
+        <button type="button" (click)="onUserCreate($event)" class="btn btn-secondary mx-sm-1">新增</button>
+      </div>
+    </form>
+    <div class="table-container">
+      <table class="table table-bordered table-sm">
+        <thead>
+          <tr *ngIf="!loading">
+            <th>操作</th>
+            <th>姓名</th>
+            <th>角色</th>
+            <th>组织</th>
+            <th>职位</th>
+            <th>所属部门</th>
+            <th>手机号</th>
+            <th>创建时间</th>
+            <th>备注</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of list;let i=index">
+            <td class="text-center">
+              <button [disabled]="!item.enabled" (click)="onUserUpdate($event,item)" class="btn btn-sm btn-success">编辑</button>
+              <button [disabled]="!item.enabled" (click)="onResetPassword($event,item)" class="btn btn-sm btn-danger">重置密码</button>
+              <button [hidden]="!item.enabled" (click)="onToggle($event,item,false)" class="btn btn-sm btn-warning">冻结</button>
+              <button [hidden]="item.enabled" (click)="onToggle($event,item,true)" class="btn btn-sm btn-warning">解冻</button>
+            </td>
+            <td>{{item.name}}</td>
+            <td>
+              {{item?.roles|slice:0:3|pluck:'name'}}
+            </td>
+            <td>{{item.orgName}}</td>
+            <td>
+              {{item?.partPositionItems|slice:0:3|pluck:'positionItems'|flatten|slice:0:3|pluck:'name'}}
+            </td>
+            <td>
+              {{item?.partPositionItems|slice:0:3|pluck:'name'}}
+            </td>
+            <td class="text-center">{{item.phone}}</td>
+            <td class="text-center">{{item.createTime|sDatetime}}</td>
+            <td>{{item.description|shorten: 10: '...'}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" [(itemsPerPage)]="size" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    </div>
+  </div>
+</div>
+
+<div hqModal #createModal="hq-modal" modalTitle="新增用户">
+  <hq-user-create *ngIf="createModal.isShown" (onSubmit)="onUserCreated($event)"></hq-user-create>
+</div>
+
+<div hqModal #editModal="hq-modal" modalTitle="修改用户">
+  <hq-user-edit *ngIf="user&&editModal.isShown" [model]="user" (onSubmit)="onUserUpdated($event)"></hq-user-edit>
+</div>

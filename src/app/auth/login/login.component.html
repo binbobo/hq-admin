@@ -1,22 +1,25 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
-  <div class="card-header">
-    用户登录
+  <div class="form-group">
+    <a href="http://ls1.sinoauto.com" class="change-right">使用旧版本</a>
+  </div>
+  <div class="card-header text-center">
+    <img src="/assets/images/login_logo.png">
   </div>
   <form *ngIf="form" class="card-block" [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div class="form-group row">
-      <label for="username" class="col-sm-3 col-form-label">用户名</label>
-      <div class="col-sm-9">
-        <input hqError="用户名" type="text" formControlName="username" class="form-control" id="username">
+    <div class="form-group">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+        <input label="用户名" formControlName="username" class="form-control" placeholder="请输入用户名">
       </div>
     </div>
-    <div class="form-group row">
-      <label for="password" class="col-sm-3 col-form-label">密码</label>
-      <div class="col-sm-9">
-        <input hqError="密码" type="password" formControlName="password" class="form-control" id="password">
+    <div class="form-group input-h">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+        <input label="密码" type="password" formControlName="password" class="form-control" placeholder="请输入密码">
       </div>
     </div>
-    <div class="form-group row">
+    <!--<div class="form-group row">
       <div class="offset-sm-3">
         <div class="form-check">
           <label class="form-check-label">
@@ -25,10 +28,9 @@
           </label>
         </div>
       </div>
-    </div>
-    <div class="text-center">
-      <button type="submit" [disabled]="!form.valid" class="btn btn-primary mr-5">登录</button>
-      <button routerLink="/auth/register" class="btn btn-secondary">注册</button>
+    </div>-->
+    <div class="form-group">
+      <button type="submit" [disabled]="!form.valid" class="btn btn-login form-control">登&nbsp;&nbsp;录</button>
     </div>
   </form>
-</div>
+</div> 

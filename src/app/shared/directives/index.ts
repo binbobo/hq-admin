@@ -4,3 +4,8 @@ export * from './table-typeahead';
 export * from './print';
 export * from './form-control-error';
 export * from './spinner';
+export * from './trim';
+export * from './validators';
+export * from './modal';
+export * from './conversion-case';
+// export * from './validators';

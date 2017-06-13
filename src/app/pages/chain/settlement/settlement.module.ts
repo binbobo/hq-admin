@@ -8,12 +8,15 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { AlertModule } from 'ngx-bootstrap/alert';
-import { ModalModule } from 'ngx-bootstrap';
 import { NguiDatetimePickerModule } from '@ngui/datetime-picker';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { SharedModule } from 'app/shared/shared.module';
 import { BillOrderService } from "app/pages/chain/reception/bill-order/bill-order.service";
 import { CheckOutService } from "app/pages/chain/settlement/checkout/checkout.service";
+import { SaleCheckService } from "app/pages/chain/settlement/sale-check/sale-check.service";
+import { CheckoutPrintDetailComponent } from './checkout/checkout-print-detail/checkout-print-detail.component';
+import { SaleCheckComponent } from './sale-check/sale-check.component';
+import { SaleCheckDetailComponent } from './sale-check/sale-check-detail/sale-check-detail.component';
 
 @NgModule({
   imports: [
@@ -23,15 +26,14 @@ import { CheckOutService } from "app/pages/chain/settlement/checkout/checkout.se
     PopoverModule.forRoot(),
     AlertModule.forRoot(),
     TypeaheadModule.forRoot(),
-    ModalModule.forRoot(),
     SettlementRoutingModule,
-    SharedModule,
+    SharedModule.forRoot(),
     Ng2SmartTableModule,
     ReactiveFormsModule,
     NguiDatetimePickerModule
   ],
-   declarations: [routedComponents],
-  providers: [CheckOutService],
+   declarations: [routedComponents, CheckoutPrintDetailComponent, SaleCheckComponent, SaleCheckDetailComponent],
+  providers: [CheckOutService,SaleCheckService],
   entryComponents: [routedComponents[0]],
 })
 export class SettlementModule { }

@@ -1,8 +1,27 @@
+
+.form-control {
+  height: 2.5rem;
+  border-bottom-left-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+}
+hr {
+    border-top:2px dotted #ccc;
+}
+.card-block {
+  padding-top: 0.625rem;
+}
+h5{
+    line-height: 1.25rem;
+    margin-bottom: 0;
+}
+.table td{
+    vertical-align:middle;
+}
 .business .margin-l{
     margin-left: 15px;
 }
 .business .color{
-    color: red;
+    color: #c9302c;
 }
 .business table th,.business table td{
     text-overflow:ellipsis; 
@@ -10,44 +29,42 @@
     overflow:hidden;
     text-align: center;
 }
-.mg{
-    margin: 0 auto;
-}
-.modal-header{
-    padding-bottom: 0;
-    border: none;
-}
-.modal-body{
-    padding-top: 0;
-}
-
-.modal-body .card {
+.modal-card .card {
     border: none;
     font-size: 14px;
 }
-.modal-body .card-block {
-    border: 1px solid #333333;
-    font-weight: 400;
+/*.modal-body table{
+     table-layout: fixed;
+}*/
+.modal-card .table-order-info td{
+    text-align: left;
+    padding-left: 1.1rem !important;
+    width: 25%;
+    color: #727171;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
-.modal-body .clearborder{
-    border: none;
-    padding-top: 0;
-    font-size: 12px;
-}
-.modal-body .card-block label {
-    width: 70px;
-}
-.modal-body .clearborder label{
-    text-align: right;
-}
-.modal-body caption{
+.modal-card caption{
     font-weight: 700;
+    caption-side: top;
+    font-size: 1rem;
+    /*line-height: 2.5rem;*/
+    color: #595757;
+    /*background-color: #f3f3f4;*/
 }
-.modal-body hr {
-    border-top: 2px solid #333333;
+.modal-card .card-block {
+    border: 1px solid #eceeef;
 }
-.modal-body th,.modal-body td {
-    padding: 0.25rem;
+.modal-card td {
+    /*padding: 0.25rem;*/
     text-align: center;
-    white-space: normal; 
+    font-size: 0.875rem;
+    /*white-space: normal; */
+}
+.modal-card .table-container{
+    border: 0 !important;
+}
+.modal-card .table-container table{
+    margin-bottom: 1rem!important;
+    border: 1px solid #eceeef!important;
 }

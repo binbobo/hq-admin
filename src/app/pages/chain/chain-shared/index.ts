@@ -1,1 +1,1 @@
-export * from './suspend-bill/suspend-bill.directive'
+export * from './suspend-bill';

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Http, Headers, Response } from '@angular/http';
 import { Urls, User, HttpService } from 'app/shared/services';
 
 @Injectable()
@@ -14,6 +14,8 @@ export class AuthService {
     const url = Urls.platform.concat('users/login');
     let basic = btoa(`${model.username}:${model.password}`);
     let headers = new Headers({ 'Authorization': `Basic ${basic}` });
+    headers.append('X-Application', '9951112f8dd2b0e52597c27197f1121c');
+    headers.append('X-Client', 'bc54f4d60f1cec0f9a6cb70e13f2127a');
     return this.http.get(url, { 'headers': headers })
       .toPromise()
       .then(resp => {
@@ -25,8 +27,11 @@ export class AuthService {
         return new User(user.id, model.username, null, user.accessToken, user.refreshToken, model.rememberMe);
       })
       .catch(err => {
-        console.error(err);
-        return Promise.reject(`用户登录失败！`);
+        if (err.status === 404) {
+          return Promise.reject('用户不存在！');
+        } else {
+          return Promise.reject(this.httpService.getErrors(err));
+        }
       });
   }
 

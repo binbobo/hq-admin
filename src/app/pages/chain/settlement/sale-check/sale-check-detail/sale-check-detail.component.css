@@ -1,0 +1,18 @@
+
+table th,table td{
+    text-align: center;
+    
+}
+table.table-order-info{
+     table-layout: fixed;
+}
+table.table-order-info td {
+    vertical-align: middle;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+    color: #727171;
+    text-align: center;
+}
+table.table-order-info td.fixed-width {
+    width: 100px;
+}

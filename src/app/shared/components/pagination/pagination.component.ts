@@ -1,12 +1,15 @@
-import { Component, EventEmitter, Input, Output, ViewEncapsulation, OnChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewEncapsulation, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'hq-pagination',
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.css'],
+  host: {
+    style: 'margin-bottom:10px;display:block;margin-top:20px;'
+  },
   encapsulation: ViewEncapsulation.None,
 })
-export class PaginationComponent {
+export class PaginationComponent implements OnChanges {
 
   @Input() loading: boolean;
   @Input() totalItems: number;
@@ -17,15 +20,20 @@ export class PaginationComponent {
   @Output() numPages = new EventEmitter<any>();
   @Output() pageChanged = new EventEmitter<any>();
   @Output() currentPageChange = new EventEmitter<number>();
+  @Output() itemsPerPageChange = new EventEmitter<number>();
 
   constructor() { }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    
+  }
 
   get totalPages() {
     return Math.ceil(this.totalItems / this.itemsPerPage);
   }
 
   onPageChanged(event) {
-    this.currentPageChange.emit(this.currentPage);
+    this.currentPageChange.emit(event.page);
     this.pageChanged.emit(event);
   }
 
@@ -45,6 +53,7 @@ export class PaginationComponent {
     let value = parseInt(ele.value);
     if (isNaN(value)) return;
     this.itemsPerPage = value;
+    this.itemsPerPageChange.emit(value);
     this.pageChanged.emit({ page: this.currentPage, itemsPerPage: value });
   }
 

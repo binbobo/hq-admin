@@ -1,6 +1,6 @@
 # 代码编写准则
 ## （Tables）表格:
-- 统一使用table table-striped table-borderd类；
+- 统一使用table table-borderd类；
 - 所有表头居中；
 - 序号、操作、时间、车牌号、手机号等一些等宽字段（长度固定）居中显示（text-center）；
 - 金额、计时居右显示（text-right）；
@@ -17,6 +17,48 @@
 
 # Dicrectives(指令)
 
+## hqError(表单验证及错误提示)
+
+>默认添加"*请输入`{name}`*"的placeholder,其中`{name}`为hqError绑定的值；
+
+>必须添加formControlName属性，且包含在一个有效的formGroup中；
+
+### code:
+```
+this.form = this.formBuilder.group({
+    'username': ['', [
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(20)
+    ]],
+    'password': ['', [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(20)
+    ]],
+});
+```
+```
+<form *ngIf="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <input label="用户名" [errors]="{minLength:'{name}太短了'}" formControlName="username">
+    <input label="密码" type="password" formControlName="password">
+</form>
+```
+### inputs:
+
+`name:string(hqErrors)`：可以为空，字段名称，用于错误提示，也用于自定义错误提示时`{name}`的绑定；
+
+`errors:object`：自定义错误消息，键为错误类型，值为错误提示消息，比如`{required:'{name}不能为空',minLength:'长度不满足需求'}`;
+
+### methods:
+
+`validate`：validate(compulsive = true):boolean
+- 描述：验证当前控件的值是否有效；
+- 参数：compulsive：强制验证，忽略控件的状态，为false时只验证值已经变更的控件；
+- 返回值：有效返回true，否则返回false
+
+***
+
 ## hqPrint(打印):
 
 ### code:
@@ -24,7 +66,7 @@
 ```
 <div hqPrint #printer="hq-print">
     <div>打印消息</div>
-    <div class="no-print print-page">这条打印消息将会隐藏</div>
+    <div class="print-hidden page-break-after">这条打印消息将会隐藏</div>
     <div>这条打印消息将换页打印</div>
 </div>
 <button type="button" (click)="printer.print()">点击打印</button>
@@ -32,9 +74,9 @@
 
 ### class:
 
-`print-page`：分页打印，用于将多个内容分页打印使用；
+`page-break-after`：分页打印，用于将多个内容分页打印使用；
 
-`no-print`：打印时隐藏内容；
+`print-hidden`：打印时隐藏内容；
 
 ***
 

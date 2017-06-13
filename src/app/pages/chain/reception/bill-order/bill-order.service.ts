@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Urls, HttpService } from "app/shared/services";
 import { ApiResult, BasicService, PagedParams, PagedResult } from 'app/shared/models';
 import { Observable } from "rxjs/Observable";
+import * as moment from 'moment';
 
 @Injectable()
 export class BillOrderService implements BasicService<any>{
@@ -35,7 +36,6 @@ export class BillOrderService implements BasicService<any>{
     return this.httpService
       .get<PagedResult<OrderListSearch>>(url)
       .then(result => {
-        console.log('工单列表数据', result);
         return result;
       })
       .catch(err => Promise.reject(`加载工单列表失败：${err}`));
@@ -95,9 +95,9 @@ export class OrderListSearch extends PagedParams {
     public statekey?: any, // 工单状态
     public carnumber?: string, // 车牌号
     public billcode?: string, // 工单号
-    public starttime?: string, // 进店开始时间
-    public endtime?: string, // 进店结束时间
+    public starttime?: any, // 进店开始时间
+    public endtime?: any, // 进店结束时间
   ) {
-    super('OrderListSearchParams');
+    super();
   }
 }

@@ -58,7 +58,7 @@ export class Role extends BasicModel {
 
 export class RoleSearchParams extends PagedParams {
   constructor(
-    public name?: string
+    public name?: string,
   ) {
     super();
   }

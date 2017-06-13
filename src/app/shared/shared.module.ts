@@ -1,35 +1,33 @@
 import { NgModule } from '@angular/core';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import * as services from 'app/shared/services';
 import * as components from "./components";
 import * as pipes from './pipes';
 import * as directives from './directives';
-import { FormsModule } from '@angular/forms';
-import { PaginationModule, PopoverModule, AlertModule } from 'ngx-bootstrap';
-import { RouterModule } from '@angular/router';
-import { TranslateStore } from "@ngx-translate/core/src/translate.store";
 import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { FormsModule, NgModel } from '@angular/forms';
+import { PaginationModule, PopoverModule, AlertModule, ModalModule } from 'ngx-bootstrap';
+import { RouterModule } from '@angular/router';
 import { NgPipesModule } from 'ngx-pipes';
-import { TreeviewModule } from "ngx-treeview";
-import { StandardDatetimePipe } from './pipes/standard-datetime/standard-datetime.pipe';
-import { StandardDatePipe } from './pipes/standard-datetime/standard-date.pipe';
-import { StandardTimePipe } from './pipes/standard-datetime/standard-time.pipe';
 
 const HQ_COMPONENTS = [
     components.PaginationComponent,
     components.ClippedWordComponent,
     components.MenuComponent,
-    components.LoadingComponent,
     components.SmartTableComponent,
+    components.TreeComponent,
+    components.DropdownTreeComponent
 ];
 
 const HQ_DIRECTIVE_COMPONENTS = [
     directives.MultiSelectorComponent,
     directives.HqAlerterComponent,
     directives.TableTypeaheadComponent,
-    directives.FormControlErrorComponent,
     directives.PrintComponent,
+    directives.FormGroupControlErrorComponent,
+    directives.FormInlineControlErrorComponent,
+    directives.HqModalComponent,
 ];
 
 const HQ_DIRECTIVES = [
@@ -37,8 +35,22 @@ const HQ_DIRECTIVES = [
     directives.HqAlerter,
     directives.TableTypeaheadDirective,
     directives.PrintDirective,
-    directives.FormControlErrorDirective,
+    directives.FormGroupControlErrorDirective,
+    directives.FormInlineControlErrorDirective,
     directives.SpinnerDirective,
+    directives.NgModelTrimDirective,
+    directives.FormControlTrimDirective,
+    directives.FormControlNameTrimDirective,
+    directives.MobileValidator,
+    directives.TelValidator,
+    directives.PlateNoValidator,
+    directives.VINValidator,
+    directives.EngineNoValidator,
+    directives.MileageValidator,
+    directives.IDCardValidator,
+    directives.HqBsModalDirective,
+    directives.HqModalDirective,
+    directives.ConversionCaseDirective,
 ]
 
 const HQ_PIPES = [
@@ -52,10 +64,22 @@ const HQ_PIPES = [
 
 const HQ_SERVICES = [
     services.UserService,
+    services.RequestIdService,
     services.requestOptionsProvider,
     services.HttpService,
     services.EventDispatcher,
+    services.treeviewI18nProvider,
 ]
+
+export const HQ_VALIDATORS = {
+    mobile: directives.MobileValidator.validator,
+    tel: directives.TelValidator.validator,
+    plateNo: directives.PlateNoValidator.validator,
+    vin: directives.VINValidator.validator,
+    engineNo: directives.EngineNoValidator.validator,
+    mileage: directives.MileageValidator.validator,
+    idCard: directives.IDCardValidator.validator,
+}
 
 @NgModule({
     imports: [
@@ -63,12 +87,13 @@ const HQ_SERVICES = [
         FormsModule,
         NgPipesModule,
         RouterModule,
+        ModalModule.forRoot(),
         PaginationModule.forRoot(),
         AlertModule.forRoot(),
         PopoverModule.forRoot(),
         Ng2SmartTableModule,
         TranslateModule.forChild({
-            loader: { provide: TranslateLoader, useClass: services.ServerTranslateLoader },
+            loader: { provide: TranslateLoader, useClass: services.ServerTranslateLoader }
         }),
     ],
     exports: [
@@ -86,7 +111,7 @@ export class SharedModule {
     static forRoot() {
         return {
             ngModule: SharedModule,
-            providers: [HQ_SERVICES, TranslateStore]
+            providers: [HQ_SERVICES]
         }
     }
 }

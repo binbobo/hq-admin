@@ -1,0 +1,113 @@
+<table class="table text-font table-bordered">
+  <caption>基本信息</caption>
+  <tbody>
+    <tr>
+      <td>预检类型</td>
+      <td>{{data?.maintainType || emptyText}}</td>
+      <td>油量</td>
+      <td *ngIf="data?.innage">{{data?.innage}}<span class="pull-right">%</span></td>
+      <td *ngIf="!data?.innage">{{emptyText}}</td>
+    </tr>
+    <tr>
+      <td>故障描述</td>
+      <td colspan="3">{{data?.customerDescription || emptyText}}</td>
+    </tr>
+  </tbody>
+</table>
+<table class="table text-font table-bordered">
+  <caption>检查项</caption>
+  <thead>
+    <th>项目名称</th>
+    <th>检查项（项）</th>
+    <th>异常项</th>
+    <th>其他备注</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>随车附件</td>
+      <td>
+        <span class="d-block">检查项： {{data?.accessory.checkItem}}</span>
+        <span class="d-block">合格项： {{data?.accessory.qualified}}</span>
+        <span class="d-block text-danger">异常项： {{data?.accessory.exception}}</span>
+      </td>
+      <td *ngIf="data?.accessory.exceptionList&&data?.accessory.exceptionList.length>0">
+        <span class="d-block" *ngFor="let item of data?.accessory.exceptionList">
+            {{item.content}}
+          </span>
+      </td>
+      <td *ngIf="!data?.accessory.exceptionList || data?.accessory.exceptionList.length<=0">{{emptyText}}</td>
+      <td>
+        {{data?.accessoryDescription || emptyText}}
+      </td>
+    </tr>
+    <tr>
+      <td>仪表盘</td>
+      <td>
+        <span class="d-block">检查项： {{data?.dashboard.checkItem}}</span>
+        <span class="d-block">合格项： {{data?.dashboard.qualified}}</span>
+        <span class="d-block text-danger">异常项： {{data?.dashboard.exception}}</span>
+      </td>
+      <td *ngIf="data?.dashboard.exceptionList&&data?.dashboard.exceptionList.length>0">
+        <span class="d-block" *ngFor="let item of data?.dashboard.exceptionList">
+            {{item.content}}
+          </span>
+      </td>
+      <td *ngIf="!data?.dashboard.exceptionList||data?.dashboard.exceptionList.length<=0">{{emptyText}}</td>
+      <td>
+        {{data?.dashboardDescription || emptyText}}
+      </td>
+    </tr>
+  </tbody>
+</table>
+<table class="table text-font table-bordered">
+  <caption>
+    车辆缺陷标识
+    <div class="pull-right" style="background:white">
+      <span class="trouble-icon mr-1"><img src="../../../../../assets/images/huahen.png" class="thumbnail img-fluid rounded" alt="划痕"></span>划痕
+      <span class="trouble-icon ml-3 mr-1"><img src="../../../../../assets/images/bianxing.png" class="thumbnail img-fluid rounded" alt="变形"></span>变形
+      <span class="trouble-icon ml-3 mr-1"><img src="../../../../../assets/images/posun.png" class="thumbnail img-fluid rounded" alt="变形"></span>破损
+    </div>
+  </caption>
+  <thead>
+    <th>外观</th>
+    <th>内饰</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <img *ngIf="data?.appearanceId" src="{{data?.appearanceId}}" class="thumbnail img-fluid rounded" alt="外观图片">
+        <span *ngIf="!data?.appearanceId">{{emptyText}}</span>
+      </td>
+      <td>
+        <img *ngIf="data?.interiorId" src="{{data?.interiorId}}" class="thumbnail img-fluid rounded" alt="内饰图片">
+        <span *ngIf="!data?.interiorId">{{emptyText}}</span>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<table class="table text-font table-bordered">
+  <caption>照片</caption>
+  <tbody>
+    <tr *ngIf="data?.listImg&&data?.listImg.length>0">
+      <td *ngFor="let img of data?.listImg"><img src="{{img}}" class="thumbnail img-fluid rounded mx-auto d-block" alt="预检图"></td>
+    </tr>
+    <tr *ngIf="!data?.listImg||data?.listImg.length<=0">
+      <td>{{emptyText}}</td>
+    </tr>
+  </tbody>
+</table>
+<div class="text-font mt-5">
+  <div class="pull-left text-left">
+    <p>
+      <span class="mr-3">预检员：{{data?.userName}}</span>
+      <span>日期：{{data?.endTime|sDate}}</span>
+    </p>
+  </div>
+  <div class="pull-right text-left">
+    <p>
+      <span class="mr-3">
+          客户签名：<img src="{{data?.customersignId}}" width="100" height="25" class="img-fluid rounded" alt="客户签名"></span>
+      <span>日期：{{data?.endTime|sDate}}</span>
+    </p>
+  </div>
+</div>

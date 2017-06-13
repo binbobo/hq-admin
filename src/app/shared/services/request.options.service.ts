@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BaseRequestOptions, RequestOptions } from '@angular/http';
 import { UserService } from "app/shared/services/user.service";
-import { TranslateService } from '@ngx-translate/core';
 import { EventDispatcher } from './event-dispatcher.service';
+import * as moment from 'moment';
 
 @Injectable()
 export class DefaultRequestOptions extends BaseRequestOptions {
@@ -14,13 +14,26 @@ export class DefaultRequestOptions extends BaseRequestOptions {
         super();
         let user = userService.user;
         this.setAuthorization(user);
+        let utfOffset = moment().utcOffset();
+        this.headers.append('x-timezoneutc', utfOffset.toString());
+        this.headers.append('X-Application', '9951112f8dd2b0e52597c27197f1121c');
+        this.headers.append('X-Client', 'bc54f4d60f1cec0f9a6cb70e13f2127a');
         this.headers.append('Content-Type', 'application/json');
         userService.onUserLogin.subscribe(user => this.setAuthorization(user));
-        this.dispatcher.subscribe('LanguageChanged', lang => this.setAcceptLanguage(lang))
+        this.dispatcher.subscribe('LanguageChanged', lang => this.setAcceptLanguage(lang));
+        this.dispatcher.subscribe('RequestIdChanged', requestId => this.setRequestId(requestId))
     }
 
     private setAcceptLanguage(lang) {
         this.headers.set('Accept-Language', lang.culture || navigator.language);
+    }
+
+    private setRequestId(requestId) {
+        if (requestId) {
+            this.headers.set('X-RequestId', requestId);
+        } else {
+            this.headers.delete("X-RequestId");
+        }
     }
 
     private setAuthorization(user) {
@@ -31,3 +44,4 @@ export class DefaultRequestOptions extends BaseRequestOptions {
 }
 
 export const requestOptionsProvider = { provide: RequestOptions, useClass: DefaultRequestOptions };
+export const defaultRequestOptionProvider = { provide: RequestOptions, useClass: BaseRequestOptions }

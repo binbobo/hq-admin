@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpService, Urls } from 'app/shared/services';
-import { PagedParams, PagedResult, PagedService } from 'app/shared/models';
+import { PagedParams, PagedResult, PagedService, ApiResult } from 'app/shared/models';
+import * as moment from 'moment';
 
 
 @Injectable()
@@ -8,25 +9,19 @@ export class JournalAccountService implements PagedService<JournalAccount> {
 
   constructor(private httpService: HttpService) { }
 
+  public getProduct(id: string) {
+    let url = Urls.chain.concat('/StoreInOutDetails/Product/', id);
+    return this.httpService.get<ApiResult<any>>(url)
+      .then(result => result.data)
+      .catch(err => Promise.reject(`获取配件信息失败：${err}`));
+  }
+
   public getPagedList(params: JournalAccountListRequest): Promise<JournalAccountListResponse> {
     if (!params.productId) return Promise.resolve(new PagedResult());
     let url = Urls.chain.concat('/storeInOutDetails/ProductSerialPageList');
     let search = params.serialize();
     return this.httpService.get<JournalAccountListResponse>(url, search)
-      .then(result => {
-        if (result.tabList) {
-          result.tabList.forEach(m => m.checked = m.type === params.billType);
-        }
-        return result;
-      })
       .catch(err => Promise.reject(`账单加载失败：${err}`));
-  }
-
-  public getMountings(params: MountingListRequest): Promise<PagedResult<any>> {
-    let url = Urls.chain.concat('/products/getListByNameOrCode');
-    let search = params.serialize();
-    return this.httpService.get<PagedResult<any>>(url, search)
-      .catch(err => Promise.reject(`配件加载失败：${err}`));
   }
 
   public export(params: JournalAccountListRequest): Promise<void> {
@@ -71,21 +66,16 @@ export class JournalAcountType {
 
 export class JournalAccountListRequest extends PagedParams {
   constructor(
-    public billType: string = '',
+    public billTypeKey?: string,
     public productId?: string,
-    public CreateStartTime?: string,
-    public CreateEndTime?: string
+    public createStartTime?: string,
+    public createEndTime?: string,
   ) {
     super();
   }
-}
 
-export class MountingListRequest extends PagedParams {
-  constructor(
-    public code?: string,
-    public name?: string,
-  ) {
-    super();
+  serialize() {
+    return super.serialize({ endTimeDate: this.createEndTime + 'T23:59:59.999' });
   }
 }
 

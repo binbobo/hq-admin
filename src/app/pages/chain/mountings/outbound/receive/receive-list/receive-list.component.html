@@ -1,77 +1,81 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
   <div class="card-header">
-    <span>内部领用</span>
-    <ng-template hqSuspendBill="IU" (onRemove)="onSuspendRemove($event)" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
+    <span>内部领料</span>
+    <ng-template hqReceiveOutBill (onRemove)="onSuspendRemove($event)" (onSelect)="onSuspendSelect($event)"></ng-template>
   </div>
   <div class="card-block">
-    <form class="form-inline mb-2">
-      <div class="form-group mb-2">
-        <label>*领用人：</label>
-        <select class="form-control mx-sm-3" (change)="onReceiverSelect($event)">
+    <form #form="ngForm" class="form-inline mb-2">
+      <div class="input-group m-1">
+        <span class="input-group-addon">领料人</span>
+        <select class="form-control" name="takeUser" [(ngModel)]="model.takeUser" (change)="onReceiverSelect($event)">
           <option *ngFor="let item of employees" [value]="item.value">{{item.text}}</option>
         </select>
       </div>
-      <div class="form-group mb-2">
-        <label class="mr-sm-2">部门：</label>
-        <select class="form-control mx-sm-3">
+      <div class="input-group m-1">
+        <span class="input-group-addon">部门</span>
+        <select class="form-control" name="takeDepart" [(ngModel)]="model.takeDepart">
           <option *ngFor="let item of departments" [value]="item.value">{{item.text}}</option>
         </select>
       </div>
-      <div class="form-group mb-2">
-        <button (click)="createModal.show()" class="btn btn-primary mx-sm-1" translate>新增</button>
+      <div class="form-group">
+        <button [disabled]="form.invalid" (click)="createModal.show()" class="btn btn-primary">新增</button>
       </div>
     </form>
-    <table class="table table-bordered table-striped">
-      <thead>
-        <tr>
-          <th translate>品牌</th>
-          <th translate>配件编码</th>
-          <th translate>配件名称</th>
-          <th translate>规格型号</th>
-          <th translate>仓库</th>
-          <th translate>库位</th>
-          <th translate>库存</th>
-          <th translate>数量（个）</th>
-          <th translate>单价（元/个）</th>
-          <th translate>金额（元）</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of model.list;let i=index">
-          <td>{{item.brand }}</td>
-          <td class="text-center">{{item.productCode }}</td>
-          <td>{{item.productName}}</td>
-          <td>{{item.productSpecification}}</td>
-          <td>{{item.houseName }}</td>
-          <td>{{item.locationName }}</td>
-          <td class="text-center">{{item.stockCount}}</td>
-          <td class="text-center">{{item.count}}</td>
-          <td class="text-right">{{item.price|centToYuan }}</td>
-          <td class="text-right">{{item.amount|centToYuan }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="card-footer text-muted">
-    <button class="btn btn-primary" (click)="generate($event)">生成内部领用单</button>
-    <button class="btn btn-warning" (click)="cancel($event)">取消</button>
-    <button [disabled]="!model?.list?.length" class="btn btn-info" (click)="suspend($event)">挂单</button>
-  </div>
-</div>
-
-<div class="modal fade" bsModal #createModal="bs-modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title pull-left">新增</h5>
-        <button class="close pull-right" (click)="createModal.hide()">&times;</button>
-      </div>
-      <div class="modal-body">
-        <hq-sales-create (formSubmit)="onCreate($event)"></hq-sales-create>
-      </div>
+    <hr>
+    <div class="table-caption">内部领料</div>
+    <div class="table-container">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>操作</th>
+            <th>序号</th>
+            <th>配件编码</th>
+            <th>配件分类</th>
+            <th>配件名称</th>
+            <th>品牌</th>
+            <th>规格型号</th>
+            <th>单位</th>
+            <th>仓库</th>
+            <th>库位</th>
+            <th>库存量</th>
+            <th>单价（元）</th>
+            <th>数量</th>
+            <th>金额（元）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of model.list;let i=index">
+            <td class="text-center"><button (click)="onProductRemove(item)" class="btn btn-sm btn-danger">删除</button></td>
+            <td class="text-center">{{i+1}}</td>
+            <td class="text-center">{{item.productCode }}</td>
+            <td class="text-center">{{item.productCategory }}</td>
+            <td>{{item.productName}}</td>
+            <td>{{item.brandName }}</td>
+            <td>{{item.productSpecification}}</td>
+            <td class="text-center">{{item.productUnit}}</td>
+            <td>{{item.houseName }}</td>
+            <td>{{item.locationName }}</td>
+            <td class="text-center">{{item.stockCount}}</td>
+            <td class="text-right">{{item.price|centToYuan }}</td>
+            <td class="text-center">{{item.count}}</td>
+            <td class="text-right">{{item.amount|centToYuan }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
+  <div class="card-footer text-muted">
+    <button [hqSpinner]="generating" [disabled]="form.invalid||!model.valid" class="btn btn-primary" (click)="generate($event)">生成内部领料单</button>
+    <button [hqSpinner]="suspendBill.suspending" [disabled]="form.invalid||!model.valid" class="btn btn-success btn-suspend"
+      (click)="suspend($event)">挂单</button>
+  </div>
 </div>
 
-<hq-receive-print class="invisible" hqPrint #printer="hq-print" [model]="printModel"></hq-receive-print>
+<div hqModal #createModal="hq-modal" modalTitle="新增" size="lg">
+  <div *ngIf="createModal.isShown">
+    <hq-receive-create (formSubmit)="onCreate($event)"></hq-receive-create>
+  </div>
+</div>
+
+<hq-receive-print class="invisible" hqPrint #printer="hq-print" print-title="内部领料单" [model]="printModel"></hq-receive-print>

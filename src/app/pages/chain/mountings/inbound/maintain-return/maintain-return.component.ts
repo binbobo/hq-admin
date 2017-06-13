@@ -3,8 +3,7 @@ import { DataList, StorageKeys, SelectOption } from "app/shared/models";
 import { Router, ActivatedRoute } from "@angular/router";
 import { MaintainReturnService, MaintainRequest } from "./maintain-return.service";
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { TypeaheadRequestParams, HqAlerter } from "app/shared/directives";
-import { ModalDirective } from "ngx-bootstrap";
+import { TypeaheadRequestParams, HqAlerter, PrintDirective, HqModalDirective } from 'app/shared/directives';
 import { SuspendBillDirective } from "app/pages/chain/chain-shared";
 @Component({
   selector: 'app-maintain-return',
@@ -14,19 +13,21 @@ import { SuspendBillDirective } from "app/pages/chain/chain-shared";
 export class MaintainReturnComponent implements OnInit {
   [name: string]: any;
   numberList: SelectOption[];
-  mrData: any;
+  mrData: any = [];
   suspendedBillId: any;
-  serialData: any;
+  serialData: any = [];
   @ViewChild('createModal')
-  private createModal: ModalDirective;
+  private createModal: HqModalDirective;
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
   @ViewChild(SuspendBillDirective)
   private suspendBill: SuspendBillDirective;
+  @ViewChild('printer')
+  public printer: PrintDirective;
   billCode: any;
   printId: any;
   productData: any;
-  serviceData: any;
+  serviceData: any = [];
   listId: any;
   SearchappendList: any;
   private newItem: any;
@@ -42,9 +43,9 @@ export class MaintainReturnComponent implements OnInit {
     this.params = new MaintainRequest();
     // 构建表单
     this.createForm();
+        
   }
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   private orderDetail: any;
   public get typeaheadColumns() {
@@ -53,27 +54,31 @@ export class MaintainReturnComponent implements OnInit {
       { name: 'billCode', title: '工单号' },
       { name: 'customerName', title: '车主' },
       { name: 'brand', title: '品牌' },
-      { name: 'model', title: '车型' }
+      { name: 'vehicleName', title: '车型' }
     ];
   }
   suspendData: any;
   // 选择之后根据id查找工单详情并替换数据
+  serviceisShow = false;
   public onPlateNoSelect($event) {
+    this.initDetailData();
+    this.serviceisShow = true;
+    this.serialDataShow = true;
     this.SearchappendList = $event;
     this.listId = $event.id;
     this.billCode = $event.billCode;
-    this.suspendData = $event;
     this.service.getOrderItemData(this.listId)
       .then(data => {
-        this.orderDetail = data
+        this.serviceisShow = false;
+        this.orderDetail = data;
         this.serviceData = data.serviceOutputs;
         this.productData = data.productOutputs;
-      });
+      }).catch(err => { this.alerter.error(err), this.serviceisShow = false });
 
     this.service.getMMList(this.billCode).toPromise()
       .then(data => {
+        this.serialDataShow = false;
         this.serialData = data;
-        this.suspendData.serialData = this.serialData;
         this.serialData.sort((a, b) => {
           return a.serialNum - b.serialNum;
         })
@@ -84,17 +89,14 @@ export class MaintainReturnComponent implements OnInit {
             } else {
               element.isable = false;
             }
+            ele.curId = element.id;
           })
-
         });
-        console.log(this.serialData)
-      });
-    this.newMainData = [];
+      }).catch(err => { this.alerter.error(err); this.serialDataShow = false; });
 
     this.service.getMRList(this.billCode).toPromise()
       .then(data => {
         this.mrData = data;
-        this.suspendData.mrData = this.mrData;
         this.mrData.sort((a, b) => {
           return a.serialNum - b.serialNum;
         });
@@ -115,15 +117,25 @@ export class MaintainReturnComponent implements OnInit {
         this.numberPrintList.sort((a, b) => {
           return a.value - b.value
         });
-      });
+      }).catch(err => { this.alerter.error(err) });;
 
   }
-
+  print() {
+    this.printer.print();
+  }
   onConfirmNumber(evt) {
-    console.log(evt);
+    if (evt.value.length < 1) {
+      this.alerter.error("请选择要打印的流水号", true, 3000);
+      return false;
+    }
     this.SerialNumsList = evt.value;
-    console.log(this.SerialNumsList)
-    this.router.navigate(['./print', this.listId, this.billCode, this.SerialNumsList.join("-")], { relativeTo: this.route });
+    this.service.getPrintList(this.listId, this.billCode, this.SerialNumsList).toPromise()
+      .then(data => {
+        this.printList = data;
+        setTimeout(() => { this.print(); }, 1000);
+        setTimeout(() => { this.printList = null }, 1200)
+      })
+      .catch(err => { this.alerter.error(err) });
   }
   // 车牌号模糊搜索接口调用
   public get PlatNoSource() {
@@ -139,23 +151,15 @@ export class MaintainReturnComponent implements OnInit {
       keyword: '', // 车牌号或车主姓名或工单号
     });
   }
-  // 是否取消退料
-  finishedOrder(evt, confirmModal) {
-    evt.preventDefault();
-    // 显示确认框
-    confirmModal.show();
-  }
-  // 取消退料
-  onConfirmFinished(confirmModal) {
-    confirmModal.hide();
-    history.go(-1);
-  }
 
   private newMainData = [];
 
   private billData: any;
+  private generat = false;
   //生成退料单
   OnCreatReturnBill() {
+
+    this.generat = true;
     this.billData = {
       billCode: this.billCode,
       billId: this.listId,
@@ -163,10 +167,32 @@ export class MaintainReturnComponent implements OnInit {
       suspendedBillId: this.suspendedBillId,
       list: this.newMainData
     }
-    let postData = JSON.stringify(this.billData)
-    console.log(postData);
+    let postData = JSON.stringify(this.billData);
     this.service.postReturnBill(postData).then((result) => {
-      console.log(result)
+      this.generat = false;
+      this.serialDataShow = true;
+      this.suspendBill.refresh();
+      this.service.getMMList(this.billCode).toPromise()
+        .then(data => {
+          this.serialDataShow = false;
+          this.serialData = data;
+          this.serialData.sort((a, b) => {
+            return a.serialNum - b.serialNum;
+          })
+          this.serialData.forEach(element => {
+            (element.list).forEach(ele => {
+              if ((ele.count - ele.returnCount) > 0) {
+                element.isable = true;
+              } else {
+                element.isable = false;
+              }
+              ele.curId = element.id;
+            })
+
+          });
+        }).catch(err => { this.alerter.error(err); this.serialDataShow = false; });
+      this.newMainData = [];
+      this.generat = false;
       let num = result.data[0].serialNum;
       this.newMainData = [];
       this.mrData = this.mrData.concat(result.data);
@@ -191,36 +217,48 @@ export class MaintainReturnComponent implements OnInit {
       this.numberPrintList.sort((a, b) => {
         return a.value - b.value
       });
-      this.alerter.info('生成退料单成功', true, 2000);
-    }).catch(err => this.alerter.error(err, true, 2000));
+      if (confirm('生成退料单成功！ 是否打印？')) {
+        this.service.getPrintList(this.listId, this.billCode, num).toPromise()
+          .then(data => {
+            this.printList = data;
+            setTimeout(() => { this.print(); }, 1000);
+            setTimeout(() => { this.printList = null }, 1200)
+          })
+          .catch(err => { this.alerter.error(err); this.generat = false });
+      }
+    }).catch(err => { this.alerter.error(err); this.generat = false });
   }
+
 
   inputData: any;
   // 点击退料弹出弹框
-
-  OnCreatBound(ele, id) {
-   
-    console.log(ele);
-    ele.maintenanceItemId = ele.id; //维修明细id
+  OnCreatBound(ele, item, id) {
+    ele.serialNum = item.serialNum;
+    ele.maintenanceItemId = ele.maintenanceItemId; //维修明细id
+    ele.curId = id;//记录点击的id
+    ele.originalId = ele.id;//原始单id
     this.OriginalBillId = id;
     this.inputData = ele;
     this.createModal.show();
   }
-hasList:any;
+  hasList: any;
   onCreate(e) {
-    if (this.newMainData) {
-      this.hasList=this.newMainData.filter(item=>item.id===e.id);
-      if(this.hasList){
-        
-      }
-      this.newMainData.push(e);
+    // this.item.returnCount += Number(e.count);
+    this.hasList = this.newMainData.filter(item => item.curId === e.curId && item.maintenanceItemId === e.maintenanceItemId);
+    if (this.hasList.length > 0) {
+      this.newMainData.forEach((item, index) => {
+        if (item.curId === e.curId && item.maintenanceItemId === e.maintenanceItemId) {
+          item.count = Number(e.count);
+          item.amount = Number(e.amount);
+        }
+      })
     } else {
-      this.newMainData = []
+      this.newMainData.push(e);
     }
-
     this.createModal.hide();
   }
-  onDelCreat(i) {
+  onDelCreat(e, i) {
+    // this.serialData.find(item => item.id = e.curId).list.find(cur => cur.maintenanceItemId === e.maintenanceItemId).returnCount -= Number(e.count);
     this.newMainData.splice(i, 1);
   }
   get columns() {
@@ -232,18 +270,28 @@ hasList:any;
   }
   private sunspendRequest: any;
   onSuspendSelect(item) {
-    console.log(item)
     this.sunspendRequest = JSON.parse(item.data);
     this.billCode = this.sunspendRequest["billCode"]
-    this.listId = this.sunspendRequest["id"];
+    this.listId = this.sunspendRequest["billId"];
     this.orderDetail = this.sunspendRequest;
     this.newMainData = this.sunspendRequest["newMainData"];
     this.serviceData = this.sunspendRequest["serviceData"];
     this.serialData = this.sunspendRequest["serialData"];
     this.suspendedBillId = item.id;
   }
-
-  suspend(event: Event) {
+  initDetailData() {
+    this.sunspendRequest = null;
+    this.billCode = "";
+    this.listId = "";
+    this.orderDetail = null;
+    this.newMainData = [];
+    this.serviceData = [];
+    this.serialData = [];
+    this.mrData = [];
+    this.suspendedBillId = "";
+    this.suspendData = "";
+  }
+  suspend() {
     this.suspendData = {
       newMainData: this.newMainData,
       serviceData: this.serviceData,
@@ -265,14 +313,10 @@ hasList:any;
       return false;
     }
 
-    // let el = event.target as HTMLButtonElement;
-    // el.disabled = true;
     this.suspendBill.suspend(this.suspendData)
-      // .then(() => el.disabled = false)
+      .then(() => { this.alerter.success('挂单成功！'); this.initDetailData(); this.initValue = "" })
       .then(() => this.suspendBill.refresh())
-      .then(() => this.alerter.success('挂单成功！'))
       .catch(err => {
-        // el.disabled = false;
         this.alerter.error(err);
       })
   }

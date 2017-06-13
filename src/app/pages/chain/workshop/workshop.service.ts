@@ -29,7 +29,6 @@ export class WorkshopService implements BasicService<any> {
         return this.httpService
             .request(url)
             .map(response => {
-                console.log('查询维修验收类型数据：', response.json().data);
                 return response.json().data as any[];
             });
     }
@@ -39,12 +38,11 @@ export class WorkshopService implements BasicService<any> {
      * @param params
      */
     public getPagedList(params: PagedParams): Promise<PagedResult<any>> {
-        const url = Urls.chain.concat('/Maintenances?', params.serialize());
-        console.log('查询维修验收数据列表url: ', url);
+        const url = Urls.chain.concat('/MaintenanceTeams/Check/search?', params.serialize());
+        // console.log('查询维修验收数据列表url: ', url);
         return this.httpService
             .get<PagedResult<any>>(url)
             .then(result => {
-                console.log('维修验收工单列表数据', result);
                 return result;
             })
             .catch(err => Promise.reject(`加载维修验收工单列表失败：${err}`));
@@ -59,7 +57,7 @@ export class WorkshopService implements BasicService<any> {
      * @memberOf OrderService
      */
     public get(id: string): Promise<any> {
-        const url = Urls.chain.concat('/Maintenances/', id);
+        const url = Urls.chain.concat('/Maintenances/Check/', id);
         return this.httpService
             .get<ApiResult<any>>(url)
             .then(result => result.data)
@@ -105,7 +103,7 @@ export class WorkshopService implements BasicService<any> {
 export class WorkshopListRequest extends PagedParams {
     constructor(
         // 工单列表页面查询参数
-        public states?: Array<string>, // 工单状态
+        public status?: Array<string>, // 工单状态
         public plateNo?: string, // 车牌号
         public billCode?: string, // 工单号
         public keyword?: string // 车牌号或者工单号

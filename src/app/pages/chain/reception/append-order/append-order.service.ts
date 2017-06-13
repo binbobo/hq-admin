@@ -38,11 +38,9 @@ export class AppendOrderService implements BasicService<any> {
   // 有分页的
   // public getPagedList(params: PagedParams): Promise<PagedResult<DetailData>> {
   //   const url = Urls.chain.concat('/Maintenances/', params.serialize());
-  //   console.log(url)
   //   return this.httpService
   //     .get<PagedResult<DetailData>>(url)
   //     .then(result => {
-  //       console.log('工单列表数据', result);
   //       return result;
   //     })
   //     .catch(err => Promise.reject(`加载工单列表失败：${err}`));
@@ -54,44 +52,17 @@ export class AppendOrderService implements BasicService<any> {
     return this.httpService
       .get<ApiResult<DetailData>>(url)
       .then(result => {
-        console.log(result.data)
         return result.data
       })
-      .then(data => data || Promise.reject('获取数据无效！'))
       .catch(err => Promise.reject(`加载失败：${err}`));
   }
+  //  增项 /Maintenances/increase/{id}
 
-  // 新增维修项目及附加项目
-  public post(body: any): Promise<any> {
-    const url = Urls.chain.concat('/MaintenanceItems/list');
+  public put(body: any, id: string): Promise<any> {
+    const url = Urls.chain.concat('/Maintenances/increase/', id);
     return this.httpService
-      .post<ApiResult<any>>(url, body)
+      .put<ApiResult<any>>(url, body)
       .catch(err => Promise.reject(`${err}`));
-  }
-
-  // 新增建议维修项目
-  public suggestpost(body: any): Promise<any> {
-    const url = Urls.chain.concat('/MaintenanceRecommends/list');
-    return this.httpService
-      .post<ApiResult<any>>(url, body)
-      .catch(err => Promise.reject(`${err}`));
-  }
-  /**
- * 获取维修类型数据
- * @memberOf OrderService
- */
-  getMaintenanceItemsByName(name: string): Observable<any> {
-    const url = Urls.chain.concat('/Services/GetByName');
-    return this.httpService
-      .request(url, {
-        params: {
-          name: name
-        }
-      })
-      .map(response => {
-        // console.log(response.json().data);
-        return response.json().data;
-      });
   }
 }
 
@@ -118,7 +89,7 @@ export class SearchReturnData {
     public typeName: string = '',   //维修类型
     public expectLeave: string = '',  //预计交车日期
     public mileage: number = 0, //行驶里程
-    public lastEnterDate: string = '',//上次进店时间
+    public lastEnterDate: string = '',//上次进厂时间
     public nextDate: string = '',   //建议下次保养日期
     public location: string = '',   //维修工位
     public lastMileage: string = '', //上次进店里程

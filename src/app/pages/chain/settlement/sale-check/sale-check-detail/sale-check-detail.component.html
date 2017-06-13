@@ -1,0 +1,54 @@
+<table class="table table-order-info table-bordered">
+  <tr>
+    <td class="fixed-width">出库单号</td>
+    <td>{{data?.billCode}}</td>
+    <td class="fixed-width">客户名称</td>
+    <td>{{data?.customerName}}</td>
+  </tr>
+  <tr>
+    <td class="fixed-width">销售人</td>
+    <td>{{data?.salesman}}</td>
+    <td class="fixed-width">开单时间</td>
+    <td>{{data?.createdOnUtc |sDatetime}}</td>
+  </tr>
+</table>
+<div class="table-container">
+  <table class="table table-bordered" style="white-space: nowrap">
+    <tr class="active">
+      <th>配件编码</th>
+      <th>配件分类</th>
+      <th>配件名称</th>
+      <th>品牌</th>
+      <th>规格型号</th>
+      <th>单位</th>
+      <th>仓库</th>
+      <th>库位</th>
+      <th>单价（元）</th>
+      <th>数量</th>
+      <th>金额（元）</th>
+      <th>备注</th>
+    </tr>
+    <tr class="text-center" *ngFor="let item of data.detailItems">
+      <td>{{item.code }}</td>
+      <td>{{item.category }}</td>
+      <td>{{item.name }}</td>
+      <td>{{item.brand}}</td>
+      <td>{{item.secification }}</td>
+      <td>{{item.unit }}</td>
+      <td>{{item.storeName }}</td>
+      <td>{{item.locationName }}</td>
+      <td class="text-right">{{item.price |centToYuan}}</td>
+      <td>{{item.count }}</td>
+      <td class="text-right">{{item.amount |centToYuan}}</td>
+      <td>{{item.description}}</td>
+    </tr>
+  </table>
+</div>
+<div class="card hq-fee">
+  <div>
+    <!--<span class="fee-name">工时费：<span class="fee-value">{{workHourFee|centToYuan}}</span></span>
+      <span class="fee-name"> 材料费：<span class="fee-value">{{materialFee|centToYuan}}</span></span>
+      <span class="fee-name"> 优惠：<span class="fee-value">{{deduceAmount|centToYuan}}</span></span>-->
+    <span class="fee-name pull-right">金额：<span class="fee-value">{{data?.billPrice|centToYuan}}</span></span>
+  </div>
+</div>

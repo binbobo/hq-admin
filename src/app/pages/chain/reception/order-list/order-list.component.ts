@@ -1,9 +1,10 @@
 import { Component, Injector, ViewChild } from '@angular/core';
 import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
 import { OrderService, OrderListRequest, Order, MaintenanceType } from '../order.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Validators, NgForm } from '@angular/forms';
 import { StorageKeys, DataList } from 'app/shared/models';
 import { PrintDirective } from 'app/shared/directives';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-order-list',
@@ -17,8 +18,8 @@ export class OrderListComponent extends DataList<Order> {
   // 高级筛选条件面包是否折叠标志, 默认折叠
   public isCollapsed = true;
 
-  // 用于ngx-treeview组件
-  public items: TreeviewItem[];
+  // ngx-treeview组件 参数配置 数据组织
+  // public items: TreeviewItem[];
   public config: TreeviewConfig = {
     isShowAllCheckBox: true,
     isShowFilter: true,
@@ -31,26 +32,26 @@ export class OrderListComponent extends DataList<Order> {
   // 工单状态数据
   public orderStatusData;
 
-  // 表单
-  workSheetFilterForm: FormGroup;
-
   // 当前选择的工单记录   用于查看工单详情  执行作废等功能
   selectedOrder = null;
 
   // 定义OrderListRequest类型的参数对 象， 覆盖父类的
   params: OrderListRequest;
 
-  // 当前登录用户信息
-  public user = null;
+  generating = false;
 
   @ViewChild('printer')
   public printer: PrintDirective;
 
+  // 结束时间参数对象
+  endDateParams = {
+    leaveEndTimeDate: undefined,
+    enterEndTimeDate: undefined
+  }
+
   constructor(
     injector: Injector,
     protected service: OrderService,
-
-    private fb: FormBuilder
   ) {
     super(injector, service);
     this.params = new OrderListRequest();
@@ -62,16 +63,10 @@ export class OrderListComponent extends DataList<Order> {
     this.service.getOrderStatus()
       .subscribe(data => {
         this.orderStatusData = data;
-        console.log('工单状态数据：', JSON.stringify(data));
       });
     // 获取可以选择的店名, 用于查询范围筛选
-    this.service.getSelectableStores().subscribe(data => this.items = data);
-
-    // 获取当前登录用户信息
-    this.user = JSON.parse(sessionStorage.getItem(StorageKeys.Identity));
-    console.log('当前登陆用户: ', this.user);
-    // 构建表单
-    this.createForm();
+    // this.service.getSelectableStores().subscribe(data => this.items = data);
+    this.reset();
   }
 
   /**
@@ -80,13 +75,12 @@ export class OrderListComponent extends DataList<Order> {
    */
   onSearch() {
     // 组织工单状态数据
-    const checkedStatus = this.orderStatusData.filter(item => {
-      return item.checked;
-    });
-    this.params.states = checkedStatus.map(item => item.id);
-
-    console.log('当前选择的工单状态为：', this.params.states);
-
+    this.params.states = this.orderStatusData.filter(item => item.checked).map(item => item.id);
+    // 处理时间
+    if (this.endDateParams.enterEndTimeDate)
+      this.params.enterEndTimeDate = this.endDateParams.enterEndTimeDate + ':59.999';
+    if (this.endDateParams.leaveEndTimeDate)
+      this.params.leaveEndTimeDate = this.endDateParams.leaveEndTimeDate + ':59.999';
     // 执行查询
     this.onLoadList();
   }
@@ -99,8 +93,6 @@ export class OrderListComponent extends DataList<Order> {
     evt.preventDefault();
 
     this.service.delete(id).then(res => {
-      console.log('根据工单id删除/作废工单：', res);
-
       this.alerter.success('执行作废操作成功');
 
       // 重新加载页面
@@ -109,43 +101,82 @@ export class OrderListComponent extends DataList<Order> {
   }
 
   print() {
-    this.printer.print();
+    this.generating = true;
+    // 记录打印时间
+    this.selectedOrder.printDateTime = moment().format('YYYY-MM-DD HH:mm:ss');
+    setTimeout(() => {
+      this.generating = false;
+      this.printer.print();
+    }, 500);
   }
 
   /**
    * 点击工单详情按钮处理程序
-   * @param {any} id 
+   * @param {any} item 
    * @param {any} modalDialog 
    * 
    * @memberOf OrderListComponent
    */
-  orderDetailsHandler(evt, id, modalDialog) {
-    evt.preventDefault();
+  orderDetailsHandler(item, modalDialog) {
+    item.generating = true;
 
+    const id = item.id;
     // 根据id获取工单详细信息
     this.service.get(id).then(data => {
-      console.log('根据工单id获取工单详情数据：', data);
-
       // 记录当前操作的工单记录
       this.selectedOrder = data;
       this.selectedOrder.id = id;
 
-      // 统计各项费用
+      this.service.getSettlements(id).then(feeData => {
+        // 统计各项费用
+        const fee: any = {};
+        // 工时合计  临时放在fee下面 以后都通过接口获取
+        fee.workHours = this.selectedOrder.serviceOutputs.reduce((accumulator, currentValue) => {
+          return accumulator + currentValue.workHour;
+        }, 0);
+        // 工时费： 维修项目金额总和
+        fee.workHour = feeData.workHourCost;
+        // 材料费： 维修配件金额总和
+        fee.material = feeData.materialCost;
+        // 优惠：维修项目有折扣 + 结算抹零
+        fee.discount = feeData.deduceAmount;
+        //实收金额
+        fee.amount = feeData.amount;
 
-      // 工时费： 维修项目金额总和
-      this.selectedOrder.workHourFee = data.serviceOutputs.reduce((accumulator, currentValue) => {
-        return accumulator + currentValue.amount;
-      }, 0);
-      // 材料费： 维修配件金额总和
-      this.selectedOrder.materialFee = data.productOutputs.reduce((accumulator, currentValue) => {
-        return accumulator + currentValue.amount;
-      }, 0);
-      // 其它费： 0
-      this.selectedOrder.otherFee = 0;
-      // 总计费：
-      this.selectedOrder.sumFee = this.selectedOrder.workHourFee + this.selectedOrder.materialFee + this.selectedOrder.otherFee;
-      // 显示窗口
-      modalDialog.show();
+        this.selectedOrder.fee = fee;
+        // 维修项目费用
+        this.selectedOrder.serviceOutputs.fee = fee;
+        // 材料费
+        if (data.productOutputs && data.productOutputs.length > 0) {
+          this.selectedOrder.productOutputs.fee = fee.material;
+        }
+
+        // 判断是否有预检单id
+        if (this.selectedOrder.preCheckId) {
+          this.service.getPreCheckOrderInfoByPreCheckId(this.selectedOrder.preCheckId).then(preCheckOrder => {
+            this.selectedOrder.preCheckOrder = preCheckOrder;
+            this.selectedOrder.preCheckOrder.emptyText = '暂无';
+
+            // 显示窗口
+            item.generating = false;
+            modalDialog.show();
+          }).catch(err => {
+            this.alerter.error(err, true, 2000);
+            item.generating = false;
+          });
+        } else {
+          // 显示窗口
+          item.generating = false;
+          modalDialog.show();
+        }
+
+      }).catch(err => {
+        this.alerter.error(err, true, 2000);
+        item.generating = false;
+      })
+    }).catch(err => {
+      this.alerter.error(err, true, 2000);
+      item.generating = false;
     });
   }
 
@@ -153,33 +184,13 @@ export class OrderListComponent extends DataList<Order> {
 
   // 导出当前查询条件下的车主信息
   export() {
+    this.generating = true;
     this.service.export(this.params).then(() => {
-      console.log('导出工单列表数据成功！');
-    });
-  }
-
-
-  createForm() {
-    // 初始化数组类型参数
-    this.params.states = [];
-    this.params.orgIds = [];
-
-    this.workSheetFilterForm = this.fb.group({
-      plateNo: '', // 车牌号
-      customerName: '', // 车主
-      phone: '', // 车主电话
-      contactUser: '', // 送修人
-      contactInfo: '', // 送修人电话
-      brand: '', // 品牌
-      series: '', // 车系
-      billCode: '', // 工单号
-      createdUserName: '', // 服务顾问
-      vehicleName: '', // 车型
-      type: '', // 维修类型
-      enterStoreTimeStart: '',
-      enterStoreTimeEnd: '',
-      leaveFactoryTimeStart: '',
-      leaveFactoryTimeEnd: '',
+      this.alerter.success('导出工单列表数据成功！');
+      this.generating = false;
+    }).catch(err => {
+      this.generating = false;
+      this.alerter.error('导出工单列表失败：' + err, true, 3000);
     });
   }
 
@@ -193,13 +204,40 @@ export class OrderListComponent extends DataList<Order> {
     // 更新查询范围参数
     this.params.orgIds = evt;
 
-    console.log('当前选择的查询范围列表：', this.params.orgIds);
+    // console.log('当前选择的查询范围列表：', this.params.orgIds);
   }
+
+
+  // 时间选择限制  ngui-date-timer的值类型为： moment().toDate()   看源码可知
+  public get maxLeaveStartDate() {
+    return !!this.endDateParams.leaveEndTimeDate ? this.endDateParams.leaveEndTimeDate : moment().toDate()
+  }
+  public get minLeaveEndDate() {
+    if (this.params.leaveStartTimeDate) {
+      // ngui-date-timer [min-date] 不包含指定的值,所以需要在指定的值的基础上减1
+      return moment(this.params.leaveStartTimeDate).subtract(1, 'd').toDate();
+    }
+    return '';
+  }
+  public get maxLeaveEndDate() {
+    return moment().toDate();
+  }
+  public get maxEnterStartDate() {
+    return !!this.endDateParams.enterEndTimeDate ? this.endDateParams.enterEndTimeDate : moment().toDate();
+  }
+  public get minEnterEndDate() {
+    if (this.params.enterStartTimeDate) {
+      return moment(this.params.enterStartTimeDate).subtract(1, 'd').toDate();
+    }
+    return '';
+  }
+  public get maxEnterEndDate() {
+    return moment().toDate();
+  }
+
 
   // 重置为初始查询条件
   reset() {
-    this.workSheetFilterForm.reset();
-
     this.params.states = [];
     this.params.orgIds = [];
   }

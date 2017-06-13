@@ -14,15 +14,16 @@ export class DurationHumanizePipe implements PipeTransform {
     unit = unit || 'seconds';
     format = format || '{h}时{m}分{s}秒';
     let duration = moment.duration(value, unit);
+    let first = true;
     if (!moment.isDuration(duration)) return value;
     DurationHumanizePipe.shorthandUnits
       .filter(m => format.includes(`{${m}}`))
       .forEach(m => {
         let index = DurationHumanizePipe.shorthandUnits.indexOf(m);
         let unit: any = DurationHumanizePipe.units[index];
-        let val = duration.get(unit);
-        let valformat = '0'.concat(val.toString()).substr(-2);
-        format = format.replace(`{${m}}`, valformat);
+        let val = first ? Math.floor(duration.as(unit)) : duration.get(unit);
+        format = format.replace(`{${m}}`, val.toString());
+        first = false;
         // if (val > 0) {
         //   format = format.replace(`{${m}}`, val.toString());
         // } else {

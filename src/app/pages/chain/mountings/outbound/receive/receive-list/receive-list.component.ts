@@ -1,10 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HqAlerter, PrintDirective } from 'app/shared/directives';
+import { HqAlerter, PrintDirective, HqModalDirective } from 'app/shared/directives';
 import { SelectOption, PagedResult } from 'app/shared/models';
-import { ModalDirective } from 'ngx-bootstrap';
 import { ReceiveService, ReceiveListRequest, ReceiveListItem, ReceivePrintItem } from '../receive.service';
-import { SuspendBillDirective } from 'app/pages/chain/chain-shared';
-import { Location } from '@angular/common';
+import { ReceiveOutBillDirective } from '../receive-out-bill.directive';
 
 @Component({
   selector: 'hq-receive-list',
@@ -12,10 +10,10 @@ import { Location } from '@angular/common';
   styleUrls: ['./receive-list.component.css']
 })
 export class ReceiveListComponent implements OnInit {
-  @ViewChild(SuspendBillDirective)
-  private suspendBill: SuspendBillDirective;
+  @ViewChild(ReceiveOutBillDirective)
+  private suspendBill: ReceiveOutBillDirective;
   @ViewChild('createModal')
-  private createModal: ModalDirective;
+  private createModal: HqModalDirective;
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
   @ViewChild('printer')
@@ -24,10 +22,10 @@ export class ReceiveListComponent implements OnInit {
   private departments: Array<SelectOption>;
   private printModel: ReceivePrintItem;
   private model: ReceiveListRequest = new ReceiveListRequest();
+  private generating: boolean;
 
   constructor(
     private receiveService: ReceiveService,
-    private location: Location
   ) { }
 
   ngOnInit() {
@@ -39,8 +37,17 @@ export class ReceiveListComponent implements OnInit {
   }
 
   onCreate(event: ReceiveListItem) {
-    this.model.list.push(event);
-    this.createModal.hide();
+    if (event.count > event.stockCount) {
+      alert('所选配件已超过当前库位最大库存量，请减少领用数量或者选择其它库位中的配件！')
+      return false;
+    }
+    let exists = this.model.list.find(m => m.productId == event.productId && m.locationId === event.locationId);
+    if (exists) {
+      Object.assign(exists, event);
+    } else {
+      this.model.list.push(event);
+    }
+    // this.createModal.hide();
   }
 
   onSuspendSelect(item: { id: string, value: any }) {
@@ -56,14 +63,12 @@ export class ReceiveListComponent implements OnInit {
   }
 
   generate(event: Event) {
-    let el = event.target as HTMLButtonElement;
-    el.disabled = true;
-    console.log(JSON.stringify(this.model));
+    this.generating = true;
     this.receiveService.generate(this.model)
       .then(data => {
-        el.disabled = false;
+        this.generating = false;
         this.reset();
-        return confirm('已生成出库单，是否需要打印？') ? data : null;
+        return confirm('已生成内部领料单，是否需要打印？') ? data : null;
       })
       .then(code => code && this.receiveService.get(code))
       .then(data => {
@@ -73,13 +78,14 @@ export class ReceiveListComponent implements OnInit {
         }
       })
       .catch(err => {
-        el.disabled = false;
+        this.generating = false;
         this.alerter.error(err);
       })
   }
 
   reset() {
     this.model = new ReceiveListRequest();
+    this.suspendBill.refresh();
     if (Array.isArray(this.employees) && this.employees.length) {
       this.model.takeUser = this.employees[0].value;
     }
@@ -89,28 +95,16 @@ export class ReceiveListComponent implements OnInit {
   }
 
   suspend(event: Event) {
-    let el = event.target as HTMLButtonElement;
-    el.disabled = true;
     let reveiver = this.employees.find(m => m.value == this.model.takeUser);
     let department = this.departments.find(m => m.value == this.model.takeDepart);
     this.model['reveiver'] = reveiver && reveiver.text;
     this.model['department'] = department && department.text;
     this.suspendBill.suspend(this.model)
       .then(() => this.reset())
-      .then(() => el.disabled = false)
-      .then(() => this.suspendBill.refresh())
       .then(() => this.alerter.success('挂单成功！'))
       .catch(err => {
-        el.disabled = false;
         this.alerter.error(err);
       })
-  }
-
-  get columns() {
-    return [
-      { name: 'reveiver', title: '领用人' },
-      { name: 'department', title: '部门' },
-    ]
   }
 
   onReceiverSelect(event: Event) {
@@ -122,12 +116,18 @@ export class ReceiveListComponent implements OnInit {
     this.departments = [];
     this.receiveService.getDepartmentsByReceiver(id)
       .then(options => this.departments = options)
-      .then(options => this.reset())
+      .then(() => {
+        if (Array.isArray(this.departments) && this.departments.length) {
+          this.model.takeDepart = this.departments[0].value;
+        }
+      })
       .catch(err => this.alerter.error(err));
   }
 
-  cancel() {
-    this.location.back();
+  private onProductRemove(item) {
+    if (!confirm('确定要删除？')) return;
+    let index = this.model.list.indexOf(item);
+    this.model.list.splice(index, 1);
   }
 }
 

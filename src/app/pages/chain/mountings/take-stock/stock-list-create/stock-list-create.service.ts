@@ -17,8 +17,7 @@ export class StockListCreateService implements PagedService<CreateStock> {
 
 export class CreateStockListRequest extends PagedParams {
   constructor(
-    public inventoryId: string = '',
-    public locationId?: Array<string>
+    public storeId: string = '',
   ) { super(); }
 }
 

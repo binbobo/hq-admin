@@ -8,7 +8,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { AlertModule } from 'ngx-bootstrap/alert';
-import { ModalModule, BsDropdownModule } from 'ngx-bootstrap';
+import { BsDropdownModule } from 'ngx-bootstrap';
 import { NguiDatetimePickerModule } from '@ngui/datetime-picker';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { MaintainReturnService } from "./maintain-return/maintain-return.service";
@@ -16,8 +16,7 @@ import { ReturnListComponent } from './inner-return/return-list/return-list.comp
 import { ReturnCreateComponent } from './inner-return/return-create/return-create.component';
 import { ReturnPrintComponent } from './inner-return/return-print/return-print.component';
 import { InnerReturnService } from "./inner-return/inner-return.service";
-import { PrintComponent } from './maintain-return/print/print.component';
-import { MaintainCreatComponent } from './maintain-return/maintain-creat/maintain-creat.component';
+import { MaintainCreateComponent } from './maintain-return/maintain-create/maintain-create.component';
 import { ChainSharedModule } from "app/pages/chain/chain-shared/chain-shared.module";
 import { SalesReturnListComponent } from './sales-return/sales-return-list/sales-return-list.component';
 import { SalesReturnCreateComponent } from './sales-return/sales-return-create/sales-return-create.component';
@@ -29,31 +28,29 @@ import { ProcurementCreateComponent } from './procurement/procurement-create/pro
 import { ProcurementPrintComponent } from './procurement/procurement-print/procurement-print.component';
 import { ProcurementService } from './procurement/procurement.service';
 import { ProviderService } from '../provider/provider.service';
-
+import { MaintainPrintComponent } from './maintain-return/maintain-print/maintain-print.component';
+import { PurchaseInBillDirective } from './procurement/purchase-in-bill.directive';
+import { ProcurementEditComponent } from './procurement/procurement-edit/procurement-edit.component';
 
 @NgModule({
   imports: [
-    SharedModule,
+    TreeviewModule.forRoot(),
+    SharedModule.forRoot(),
     ChainSharedModule,
     InboundRoutingModule,
-    TreeviewModule.forRoot(),
     CollapseModule.forRoot(),
     TabsModule.forRoot(),
     PopoverModule.forRoot(),
     AlertModule.forRoot(),
     TypeaheadModule.forRoot(),
-    ModalModule.forRoot(),
     ReactiveFormsModule,
     NguiDatetimePickerModule,
     FormsModule,
     CustomFormsModule,
     BsDropdownModule.forRoot(),
   ],
-
-
-  declarations: [routedComponents, ReturnListComponent, ReturnCreateComponent, ReturnPrintComponent, PrintComponent, routedComponents, SalesReturnListComponent, SalesReturnCreateComponent, SalesReturnPrintComponent, PrintComponent, ProcurementListComponent, ProcurementCreateComponent, ProcurementPrintComponent, PrintComponent, MaintainCreatComponent],
+  declarations: [routedComponents, ReturnListComponent, ReturnCreateComponent, ReturnPrintComponent, SalesReturnListComponent, SalesReturnCreateComponent, SalesReturnPrintComponent, ProcurementListComponent, ProcurementCreateComponent, ProcurementPrintComponent, MaintainCreateComponent, MaintainPrintComponent, PurchaseInBillDirective, ProcurementEditComponent],
   providers: [MaintainReturnService, ProcurementService, ProviderService, InnerReturnService, SalesReturnService],
-
   entryComponents: [routedComponents[0]],
 })
 export class InboundModule { }

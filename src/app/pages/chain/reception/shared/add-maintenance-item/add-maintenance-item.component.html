@@ -1,43 +1,68 @@
 <ng-template hq-alerter></ng-template>
 <form [formGroup]="maintenanceItemForm" autocomplete="off">
   <div class="form-group row">
-    <div class="col-4">
-      <label for="serviceName" class="col-form-label"><span class="asterisk mr-1">*</span>维修项目名称</label>
-      <input [hqTableTypeahead]="serviceNameTypeaheadSource" [columns]="nameTypeaheadColumns" (onSelect)="serviceTypeaheadOnSelect($event)"
-        type="text" hqError="维修项目名称" class="form-control" formControlName="serviceName" placeholder="维修项目名称">
-      <input type="hidden" formControlName="serviceId">
-      <input type="hidden" formControlName="type">
+    <div class="hq-input hq-input-column">
+      <label for="serviceName" class="form-label"><span class="asterisk mr-1">*</span>项目名称</label>
+      <div class="hq-col">
+        <input (input)="serviceNameInput()" hqMaintenanceItemTypeahead [serviceIds]="serviceIds" (onSelect)="serviceTypeaheadOnSelect($event)" type="text" label="维修项目名称"
+          class="form-control" formControlName="serviceName">
+        <input type="hidden" formControlName="serviceId">
+        <input type="hidden" formControlName="type">
+      </div>
     </div>
-    <div class="col-4">
-      <label for="workHour" class="col-form-label"><span class="asterisk mr-1">*</span>维修工时</label>
-      <input hqError="维修工时" formControlName="workHour" type="text" class="form-control" placeholder="维修工时">
-    </div>
-    <div class="col-4">
-      <label for="price" class="col-form-label"><span class="asterisk mr-1">*</span>工时单价</label>
-      <input hqError="工时单价" formControlName="price" type="text" class="form-control" placeholder="工时单价">
+    <div class="hq-input hq-input-column">
+      <label for="serviceType" class="form-label"><span class="asterisk mr-1">*</span>维修类型</label>
+      <div class="hq-col">
+        <select label="项目类型" id="serviceType" formControlName="serviceType" class="form-control">
+            <option style="display:none">
+            <option *ngFor="let type of serviceTypeData" value="{{type.id}}">{{type.name}}</option>
+          </select>
+      </div>
     </div>
   </div>
   <div class="form-group row">
-    <div class="col-4">
-      <label for="discount" class="col-form-label"><span class="asterisk mr-1">*</span>折扣率</label>
-      <div class="input-group">
-        <input hqError="折扣率" formControlName="discount" type="text" class="form-control" placeholder="折扣率">
-        <span class="input-group-addon">%</span>
+    <div class="hq-input hq-input-column">
+      <label for="workHour" class="form-label"><span class="asterisk mr-1">*</span>维修工时</label>
+      <div class="hq-col">
+        <div class="input-group">
+          <input maxlength="5" label="维修工时" formControlName="workHour" type="text" class="form-control">
+          <!--<span class="input-group-addon"></span>-->
+        </div>
       </div>
     </div>
-    <div class="col-4">
-      <label for="amount" class="col-form-label">金额</label>
-      <input hqError="金额" formControlName="amount" type="text" class="form-control">
+    <div class="hq-input hq-input-column">
+      <label for="price" class="form-label"><span class="asterisk mr-1">*</span>工时单价</label>
+      <div class="hq-col">
+        <div class="input-group">
+          <input maxlength="7" label="工时单价" formControlName="price" type="text" class="form-control">
+          <span class="input-group-addon">元</span>
+        </div>
+      </div>
     </div>
-    <div class="col-4">
-      <label for="operationTime" class="col-form-label">操作时间</label>
-      <input formControlName="operationTime" type="text" class="form-control">
+  </div>
+  <div class="form-group row">
+    <div class="hq-input hq-input-column">
+      <label for="discount" class="form-label"><span class="asterisk mr-1">*</span>折扣率</label>
+      <div class="hq-col">
+        <div class="input-group">
+          <input maxlength="3" label="折扣率" formControlName="discount" type="text" class="form-control">
+          <span class="input-group-addon">%</span>
+        </div>
+      </div>
+    </div>
+    <div class="hq-input hq-input-column">
+      <label for="amount" class="form-label">金额</label>
+      <div class="hq-col">
+        <div class="input-group">
+          <input label="金额" formControlName="amount" type="text" class="form-control">
+          <span class="input-group-addon">元</span>
+        </div>
+      </div>
     </div>
   </div>
 </form>
 <br>
-<hr>
-<div style="text-align:center">
-  <button type="submit" class="btn btn-secondary" [disabled]="!maintenanceItemForm.valid" (click)="onConfirmHandler()">保存</button>
+<div class="text-center">
+  <button type="submit" class="btn btn-success" [disabled]="!maintenanceItemForm.valid" (click)="onConfirmHandler()">保存</button>
   <button type="button" class="btn btn-secondary" (click)="onCancelHandler()">取消</button>
 </div>

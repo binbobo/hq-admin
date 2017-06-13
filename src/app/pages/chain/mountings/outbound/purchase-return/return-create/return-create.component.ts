@@ -1,8 +1,7 @@
-import { Component, OnInit, EventEmitter, Output, ViewChildren, QueryList } from '@angular/core';
-import { TypeaheadRequestParams, FormControlErrorDirective } from 'app/shared/directives';
+import { Component, OnInit, EventEmitter, Output, ViewChildren, QueryList, Input } from '@angular/core';
+import { TypeaheadRequestParams, FormGroupControlErrorDirective, } from 'app/shared/directives';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
-import { CentToYuanPipe } from 'app/shared/pipes';
 import { PurchaseReturnItem, PurchaseReturnService, GetProductsRequest } from '../purchase-return.service';
 
 @Component({
@@ -13,12 +12,12 @@ import { PurchaseReturnItem, PurchaseReturnService, GetProductsRequest } from '.
 export class ReturnCreateComponent implements OnInit {
 
   private form: FormGroup;
-  private converter: CentToYuanPipe = new CentToYuanPipe();
   @Output()
-  private formSubmit = new EventEmitter<PurchaseReturnItem>();
-  private model: PurchaseReturnItem = new PurchaseReturnItem();
-  @ViewChildren(FormControlErrorDirective)
-  private controls: QueryList<FormControlErrorDirective>;
+  private submit = new EventEmitter<PurchaseReturnItem>();
+  @Input()
+  private model: PurchaseReturnItem;
+  @ViewChildren(FormGroupControlErrorDirective)
+  private controls: QueryList<FormGroupControlErrorDirective>;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,23 +30,20 @@ export class ReturnCreateComponent implements OnInit {
 
   private buildForm() {
     this.form = this.formBuilder.group({
+      originalId: [this.model['id']],
       brand: [this.model.brand],
       productCode: [this.model.productCode],
       productName: [this.model.productName],
       productCategory: [this.model.productCategory],
-      packingCode: [this.model.packingCode],
-      taxRate: [this.model.taxRate],
       productId: [this.model.productId, [Validators.required, Validators.maxLength(36)]],
-      productSpecification: [this.model.productSpecification],
-      storeId: [this.model.storeId],
-      locationId: [this.model.locationId],
-      count: [this.model.count, [Validators.required, CustomValidators.digits]],
+      specification: [this.model.specification],
+      count: [this.model.count, [Validators.required, CustomValidators.digits, CustomValidators.min(1), CustomValidators.max(this.model.count)]],
       price: [this.model.price],
       amount: [this.model.amount],
       exTaxPrice: [this.model.exTaxPrice],
       exTaxAmount: [this.model.exTaxAmount],
       locationName: [this.model.locationName, [Validators.required]],
-      storeName: [this.model.houseName, [Validators.required]],
+      storeName: [this.model.storeName, [Validators.required]],
     })
   }
 
@@ -59,64 +55,10 @@ export class ReturnCreateComponent implements OnInit {
       event.preventDefault();
       return false;
     } else {
-      this.formSubmit.emit(this.form.value);
+      let value = Object.assign({}, this.model, this.form.value);
+      this.submit.emit(value);
       this.form.reset(this.model);
     }
-  }
-
-  public onReset() {
-    this.form = null;
-    setTimeout(() => this.buildForm(), 1);
-    return false;
-  }
-
-  public itemColumns(isName: boolean) {
-    return [
-      { name: 'brand', title: '品牌' },
-      { name: 'productName', title: '名称', weight: isName ? 1 : 0 },
-      { name: 'productCode', title: '编码', weight: isName ? 0 : 1 },
-      { name: 'specification', title: '规格' },
-      { name: 'vehicleName', title: '车型' },
-    ];
-  }
-
-  public onItemSelect(event) {
-    let item = {
-      productCode: event.productCode,
-      productName: event.productName,
-      packingCode: event.packingCode,
-      productSpecification: event.specification,
-      productId: event.productId,
-      brand: event.brand,
-      brandId: event.brandId,
-      storeId: event.storeId,
-      storeName: event.storeName,
-      locationId: event.locationId,
-      locationName: event.locationName,
-      stockCount: event.count,
-      price: event.price,
-      taxRate: event.taxRate,
-      exTaxPrice: event.exTaxPrice,
-      productCategory: event.productCategory,
-    }
-    this.form.patchValue(item);
-    this.calculate();
-  }
-
-  public get codeSource() {
-    return (params: TypeaheadRequestParams) => {
-      let p = new GetProductsRequest(params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.returnService.getProducts(p);
-    };
-  }
-
-  public get nameSource() {
-    return (params: TypeaheadRequestParams) => {
-      let p = new GetProductsRequest(undefined, params.text);
-      p.setPage(params.pageIndex, params.pageSize);
-      return this.returnService.getProducts(p);
-    };
   }
 
   private calculate() {
@@ -133,4 +75,5 @@ export class ReturnCreateComponent implements OnInit {
       exTaxPrice: exTaxPrice
     });
   }
+
 }

@@ -34,9 +34,7 @@ export class MenuService implements BasicService<Menu> {
     public getSelectOptions(clientId?: string): Promise<Array<SelectOption>> {
         let url = Urls.platform.concat('/navigations/options?clientId=', clientId);
         return this.httpService
-            .get<ListResult<SelectOption>>(url)
-            .then(result => result.data)
-            .then(data => data || Promise.reject('获取数据无效！'))
+            .getList<SelectOption>(url)
             .catch(err => Promise.reject(`菜单选项获取失败：${err}`));
     }
 
@@ -45,7 +43,6 @@ export class MenuService implements BasicService<Menu> {
         return this.httpService
             .get<ApiResult<Menu>>(url)
             .then(result => result.data)
-            .then(data => data || Promise.reject('获取数据无效！'))
             .catch(err => Promise.reject(`加载菜单失败：${err}`));
     }
 
@@ -89,8 +86,8 @@ export class Menu extends BasicModel {
     constructor(
         public autoRun: boolean = false,
         public scopes: Array<string> = [],
-        public parentId: string = '',
-        public clientId: string = '',
+        public parentId?: string,
+        public clientId?: string,
         public title?: string,
         public path?: string,
         public icon?: string,

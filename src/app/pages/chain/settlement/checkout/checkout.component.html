@@ -1,281 +1,107 @@
 <div class="checkout card">
-  <div hq-alerter></div>
   <div class="card-header">
     <span>维修收银</span>
   </div>
   <div class='card-block'>
-    <form [formGroup]="CheckoutForm" (ngSubmit)="onSearch()">
-      <div class="form-group">
-        <div class="form-check form-check-inline" *ngFor="let status of orderStatusData">
-          <label class="form-check-label">
+    <form (ngSubmit)="onSearch()" autocomplete="off">
+      <div class="form-group row" *ngIf="orderStatusData" style="margin-bottom: 5px;">
+        <div class="check-label">
+          <label class="input-group-addon">工单状态</label>
+          <div class="check-label-col">
+            <div class="form-check form-check-inline" *ngFor="let status of orderStatusData">
+              <label class="form-check-label">
             <input (change)='status.checked = !status.checked' [checked]="status.checked" class="form-check-input"  type="checkbox" value="{{status.id}}"> {{status.value}}
           </label>
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="serviceId">工单号：</label>
-        <div class="col-sm-2">
-          <input type="text" class="form-control form-control-sm" [(ngModel)]="params.billcode" id="billcode" formControlName="billcode"
-            placeholder="工单号">
-        </div>
-        <label for="plateNo">车牌号：</label>
-        <div class="col-sm-2">
-          <input type="text" [(ngModel)]="params.carnumber" class="form-control form-control-sm" id="carnumber" formControlName="carnumber"
-            placeholder="车牌号">
-        </div>
-        <label for="createdTime">进店时间：</label>
-        <div class="col-sm-2">
-          <input class="form-control form-control-sm datetime-picker" [(ngModel)]="params.starttime" id="starttime" formControlName="starttime"
-            type="text" ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
-        </div>
-        至：
-        <div class="col-sm-2">
-          <input class="form-control form-control-sm datetime-picker" id="endtime" [(ngModel)]="params.endtime" formControlName="endtime"
-            type="text" ngui-datetime-picker date-format="YYYY-MM-DD" date-only="true" />
-        </div>
-      </div>
-      <div class="search-button"><button class="btn btn-primary">查询</button></div>
-    </form>
-    <hr>
-
-    <table class='table table-striped table-bordered'>
-      <thead>
-        <tr>
-          <th>操作</th>
-          <th>状态</th>
-          <th>维修类型</th>
-          <th>工单号</th>
-          <th>开单时间</th>
-          <th>预计交车时间</th>
-          <th>服务顾问</th>
-          <th>车型</th>
-          <th>车牌号</th>
-          <th>行驶里程(KM)</th>
-          <th>购车日期</th>
-          <th>车主</th>
-          <th>实收金额</th>
-          <th>支付方式</th>
-          <th>收银时间</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of list">
-          <td *ngIf="!item.updateOnUtc"><a href="javascript:void(0)" (click)="OnCheckout($event,item.amount,item.id,CheckoutModal)">收银</a> | <a href="javascript:void(0)"
-              (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
-          <td *ngIf="item.updateOnUtc"><a href="javascript:void(0)" (click)='DetailsDialog($event, item.id,lgModal)'>详情</a></td>
-          <td>{{item.statusName}}</td>
-          <td>{{item.typeName}}</td>
-          <td>{{item.billCode}}</td>
-          <td>{{item.createdOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-          <td>{{item.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-          <td>{{item.createdUserName}}</td>
-          <td>{{item.model}}</td>
-          <td>{{item.plateNo}}</td>
-          <td>{{item.mileage}}</td>
-          <td>{{item.purchaseDate|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-          <td>{{item.customerName}}</td>
-          <td>{{item.amount/100}}</td>
-          <td>{{item.paymentName}}</td>
-          <td>{{item.updateOnUtc|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-        </tr>
-      </tbody>
-    </table>
-    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
-  </div>
-</div>
-
-<!--详情 begin-->
-<div bsModal #lgModal="bs-modal" class="modal" style='background-color: rgba(0, 0, 0, 0.47);' tabindex="-1" role="dialog"
-  aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header pos-top">
-
-        <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
-          <span aria-hidden="true" class="close-right">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" style='overflow:scroll;'>
-        <!--工单详情 start-->
-        <table class="table table-striped table-bordered">
-          <caption>工单详情</caption>
-          <thead>
-            <tr>
-              <th>维修类型</th>
-              <th>工单号</th>
-              <th>进店时间</th>
-              <th>预计交车时间</th>
-              <th>超时</th>
-              <th>服务顾问</th>
-              <th>品牌</th>
-              <th>车型</th>
-              <th>车牌号</th>
-              <th>行驶里程</th>
-              <th>购车时间</th>
-              <th>车主</th>
-              <th>送修人</th>
-              <th>送修人电话</th>
-              <th>介绍人</th>
-              <th>介绍人电话</th>
-              <th>维修技师</th>
-              <th>出厂时间</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{{selectedOrder?.typeName}}</td>
-              <td>{{selectedOrder?.billCode}}</td>
-              <td>{{selectedOrder?.createdOnUtc |date:"yyyy/MM/dd HH:mm:ss"}}</td>
-              <td>{{selectedOrder?.expectLeave|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-              <td>{{selectedOrder?.overTime|durationHumanize}}</td>
-              <td>{{selectedOrder?.createdUserName}}</td>
-              <td>{{selectedOrder?.brand}}</td>
-              <td>{{selectedOrder?.model}}</td>
-              <td>{{selectedOrder?.plateNo}}</td>
-              <td>{{selectedOrder?.mileage }}</td>
-              <td>{{selectedOrder?.purchaseDate|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-              <td>{{selectedOrder?.customerName}}</td>
-              <td>{{selectedOrder?.contactUser}}</td>
-              <td>{{selectedOrder?.contactInfo}}</td>
-              <td>{{selectedOrder?.introducer}}</td>
-              <td>{{selectedOrder?.introPhone}}</td>
-              <td>{{selectedOrder?.employeeNames?.join(',')}}，{{selectedOrder?.turnEmployeeNames?.join(',')}}</td>
-              <td>{{selectedOrder?.leaveTime |date:"yyyy/MM/dd HH:mm:ss" }}</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <br>
-        <tabset>
-          <tab heading="维修项目">
-            <table class="table table-striped table-bordered">
-              <thead>
-                <tr>
-                  <th>项目名称</th>
-                  <th>维修工时</th>
-                  <th>工时单价(元)</th>
-                  <th>金额(元)</th>
-                  <th>折扣率(%)</th>
-                  <th>操作时间</th>
-                  <th>操作员</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let record of selectedOrder?.serviceOutputs">
-                  <td>{{record?.serviceName}}</td>
-                  <td>{{record?.workHour}}</td>
-                  <td>{{record?.price/100}}</td>
-                  <td>{{record?.amount/100}}</td>
-                  <td>{{record?.discount}}</td>
-                  <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-                  <td>{{user.username}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </tab>
-          <tab heading="维修配件">
-            <table class="table table-striped table-bordered">
-              <thead>
-                <tr>
-                  <th>维修工项</th>
-                  <th>配件名称</th>
-                  <th>品牌</th>
-                  <th>规格型号</th>
-                  <th>数量</th>
-                  <th>单价(元)</th>
-                  <th>金额(元)</th>
-                  <th>操作时间</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let record of selectedOrder?.productOutputs">
-                  <td>{{record?.serviceName}}</td>
-                  <td>{{record?.productName}}</td>
-                  <td>{{record?.brandName}}</td>
-                  <td>{{record?.specification}}</td>
-                  <td>{{record?.count}}</td>
-                  <td>{{record?.price/100}}</td>
-                  <td>{{record?.amount/100}}</td>
-                  <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </tab>
-          <tab heading="附加项目">
-            <table class="table table-striped table-bordered">
-              <thead>
-                <tr>
-                  <th>备注</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let record of selectedOrder?.attachServiceOutputs">
-                  <td>{{record?.description}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </tab>
-
-          <tab heading="建议维修项目">
-            <table class="table table-striped table-bordered">
-              <thead>
-                <tr>
-                  <th>建议维修项目</th>
-                  <th>操作时间</th>
-                  <th>备注</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let record of selectedOrder?.suggestServiceOutputs">
-                  <td>{{record?.content}}</td>
-                  <td>{{record?.operateDateTime|date:"yyyy/MM/dd HH:mm:ss"}}</td>
-                  <td>{{record?.description}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </tab>
-
-          <div class="card">
-            <div class="card-header" style="font-size:smaller;color:gray;padding: 3px 5px;">
-              应收金额: 工时费
-              <span class="ml-2 mr-2">{{workHourFee}}</span> | 材料费
-              <span class="ml-2 mr-2">{{materialFee}}</span> | 其它
-              <span class="ml-2 mr-2">{{otherFee}}</span> | 合计
-              <span class="ml-2 mr-2">{{sumFee}}</span>|
-              <span class="ml-2 mr-2">实收金额：{{billPrice}}</span>
             </div>
           </div>
-        </tabset>
-        <!--建议维修项 end-->
-        <!--导出详情end-->
+        </div>
       </div>
+      <div class="form-inline">
+        <div class="input-group m-1">
+          <span class="input-group-addon">结算单号</span>
+          <input type="text" class="form-control" [(ngModel)]="params.SettlementCode" id="SettlementCode" name="SettlementCode" placeholder="请输入结算单号">
+        </div>
+        <div class="input-group m-1">
+          <span class="input-group-addon">车牌号</span>
+          <input type="text" [(ngModel)]="params.carnumber" class="form-control" id="carnumber" name="carnumber" placeholder="请输入车牌号">
+        </div>
+        <div class="input-group m-1">
+          <span class="input-group-addon">进厂时间</span>
+          <input [max-date]="maxStartTime" class="form-control datetime-picker" style="border-right:0;" [(ngModel)]="params.starttime"
+            id="starttime" name="starttime" type="text" placeholder="请选择开始时间" [close-on-select]="false" ngui-datetime-picker/>
+          <span class="input-group-addon">-</span>
+          <input [min-date]="minEndTime" [max-date]="maxEndTime" class="form-control" style="border-right-width:1px;" id="endtime"
+            [(ngModel)]="endDateParams.endtime" name="endtime" type="text" placeholder="请选择截止时间" [close-on-select]="false"
+            ngui-datetime-picker/>
+          <div class="col-sm-1"><button class="btn btn-primary">查询</button></div>
+        </div>
+      </div>
+    </form>
+    <div class="table-container">
+      <table class='table table-bordered'>
+        <thead>
+          <tr>
+            <th>操作</th>
+            <th>状态</th>
+            <th>车牌号</th>
+            <th>结算单号</th>
+            <th>应收金额</th>
+            <th>维修类型</th>
+            <th>预计交车时间</th>
+            <th>车型</th>
+            <th>送修人</th>
+            <th>服务顾问</th>
+            <th>支付方式</th>
+            <th>收银时间</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of list">
+            <td><button *ngIf="!item.updateOnUtc" type="button" class="btn btn-sm btn-primary" (click)="OnCheckout($event,item.amount,item.id,CheckoutModal)">收银</button>&nbsp;
+              <button type="button" class="btn btn-sm btn-info" [hqSpinner]="item.generating" (click)='DetailsDialog($event,item,item.id,lgModal)'>详情</button>
+            </td>
+            <td>{{item.statusName}}</td>
+            <td>{{item.plateNo}}</td>
+            <td>{{item?.settlementCode}}</td>
+            <td class="text-right">¥{{item.amount|centToYuan}}</td>
+            <td>{{item.typeName}}</td>
+            <td>{{item.expectLeave|sDatetime}}</td>
+            <td>{{item.model}}</td>
+            <td>{{item.customerName}}</td>
+            <td>{{item.createdUserName}}</td>
+            <td>{{item.paymentName}}</td>
+            <td>{{item.updateOnUtc|sDatetime}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <hq-pagination [(itemsPerPage)]="size" [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+  </div>
+</div>
+<!--详情 begin-->
+<div hqModal #lgModal="hq-modal" class="modal fade" tabindex="-1" role="dialog" size="lg" modalTitle="维修收银详情">
+  <!--工单详情 start-->
+  <hq-checkout-print-detail *ngIf="lgModal.isShown" [data]="selectedOrder"></hq-checkout-print-detail>
+  <div class="card hq-fee">
+    <div>
+      <span class="fee-name">工时费：<span class="fee-value">{{workHourFee|centToYuan}}</span></span>
+      <span class="fee-name"> 材料费：<span class="fee-value">{{materialFee|centToYuan}}</span></span>
+      <span class="fee-name"> 优惠：<span class="fee-value">{{deduceAmount|centToYuan}}</span></span>
+      <span class="fee-name pull-right">应收金额：<span class="fee-value">{{billPrice|centToYuan}}</span></span>
     </div>
   </div>
 </div>
 <!--详情 end-->
-
 <!--收银弹框 begin-->
-<div bsModal #CheckoutModal="bs-modal" class="modal" style='background-color: rgba(0, 0, 0, 0.47);' tabindex="-1" role="dialog"
-  aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content" style="background-color:#fff;">
-      <div class="modal-header">
-        <h5>收银</h5>
-        <button type="button" class="close pull-right" (click)="CheckoutModal.hide()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="cost-money">应收金额：{{costMoney}}元</div>
-
-        <div class="input-group checkout-item" *ngFor="let item of payData;">
-          <span class="input-group-addon" id="sizing-addon2" style="width:150px;">{{item.value}}(元)</span>
-          <input type="text" class="form-control" [(ngModel)]="item.amount" aria-label="Username" aria-describedby="sizing-addon1">
-        </div>
-
-      </div>
-      <div class="btn-center"><button type="button" class="btn btn-primary" aria-label="Close" (click)="OnPostPay(CheckoutModal)">确定收银</button></div>
-    </div>
+<div hqModal #CheckoutModal="hq-modal" class="modal fade" tabindex="-1" role="dialog" size="lg" modalTitle="收银">
+  <ng-template hq-alerter></ng-template>
+  <div class="hq-fee" style="margin-top:0">
+    <span class="fee-name">应收金额：<span class="fee-value">{{costMoney|centToYuan}}</span></span>
   </div>
+  <div class="input-group checkout-item" *ngFor="let item of payData;">
+    <span class="input-group-addon" id="sizing-addon2" style="width:150px;">{{item.value}}(元)</span>
+    <input type="number" class="form-control" [(ngModel)]="item.amount" aria-label="Username" aria-describedby="sizing-addon1">
+  </div>
+  <div class="btn-center"><button type="button" class="btn btn-primary" aria-label="Close" (click)="OnPostPay(CheckoutModal)">确定收银</button></div>
 </div>
 <!--收银弹框 end-->

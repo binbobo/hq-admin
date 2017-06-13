@@ -5,67 +5,157 @@
   </div>
   <div class="card-block">
     <hq-mountings-list (selectItem)="onSelectItem($event)"></hq-mountings-list>
-    <hr>
     <div [hidden]="!item">
       <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
-        <div class="form-group mb-2">
-          <label>查询日期：</label>
-          <input [(ngModel)]="params.createStartTime" name="createStartTime" ngui-datetime-picker date-only="true" class="form-control mx-sm-3"
-            placeholder="选择开始日期">
+        <div class="input-group m-1">
+          <span class="input-group-addon">查询日期</span>
+          <input [(ngModel)]="params.createStartTime" [max-date]="params.createEndTime" name="createStartTime" ngui-datetime-picker
+            date-only="true" class="form-control" placeholder="选择开始日期">
+          <span class="input-group-addon">-</span>
+          <input [(ngModel)]="params.createEndTime" [max-date]="params.createStartTime" name="createEndTime" ngui-datetime-picker date-only="true"
+            class="form-control" placeholder="选择截止日期">
         </div>
         <div class="form-group mb-2">
-          <label class="mr-sm-2">至：</label>
-          <input [(ngModel)]="params.createEndTime" name="createEndTime" ngui-datetime-picker date-only="true" class="form-control mx-sm-3"
-            placeholder="选择截止日期">
-        </div>
-        <div class="form-group mb-2">
-          <button type="submit" class="btn btn-primary mx-sm-1" translate>查询明细</button>
+          <button type="submit" class="btn btn-primary mx-sm-1">查询明细</button>
         </div>
       </form>
-      <div>
+      <hr>
+      <div *ngIf="tags">
         <button *ngFor="let item of tags" (click)="onSelectTag(item)" class="btn mr-1" [class.btn-primary]="item.checked">
           <span>{{item.name}}</span>
           <span class="badge badge-default">{{item.count}}</span>
         </button>
+        <hr>
       </div>
-      <hr>
-      <table class="table table-bordered table-striped">
-        <thead>
-          <tr *ngIf="!loading">
-            <th translate>单号</th>
-            <th translate>发生时间</th>
-            <th translate>进出类型</th>
-            <th translate>进出量</th>
-            <th translate>成本</th>
-            <th translate>金额</th>
-            <th translate>销售单价</th>
-            <th translate>销售金额</th>
-            <th translate>库存量</th>
-            <th translate>车牌号</th>
-            <th translate>供应商</th>
-            <th translate>客户名称</th>
-            <th translate>操作人</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of list">
-            <td>{{item.billCode}}</td>
-            <td class="text-center">{{item.createTime}}</td>
-            <td>{{item.billType}}</td>
-            <td class="text-center">{{item.outCount}}</td>
-            <td class="text-right">{{item.price|centToYuan}}</td>
-            <td class="text-center">{{item.amount}}</td>
-            <td class="text-right">{{item.salePrice|centToYuan}}</td>
-            <td class="text-center">{{item.saleAmount}}</td>
-            <td class="text-center">{{item.count}}</td>
-            <td class="text-center">{{item.plateNo}}</td>
-            <td>{{item.supplier}}</td>
-            <td>{{item.customer}}</td>
-            <td>{{item.operator}}</td>
-          </tr>
-        </tbody>
-      </table>
-      <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+      <div class="table-container">
+        <table *ngIf="!loading&&current<=0" class="table table-bordered">
+          <thead>
+            <tr>
+              <th>单号</th>
+              <th>发生时间</th>
+              <th>数量</th>
+              <th>成本单价</th>
+              <th>成本金额</th>
+              <th>销售单价</th>
+              <th>销售金额</th>
+              <th>库存量</th>
+              <th>车牌号</th>
+              <th>客户名称</th>
+              <th>操作人</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of list">
+              <td class="text-center">{{item.billCode}}</td>
+              <td class="text-center">{{item.createTime|sDatetime}}</td>
+              <td class="text-center">{{item.inCount}}</td>
+              <td class="text-right">{{item.costPrice|centToYuan}}</td>
+              <td class="text-center">{{item.costAmount|centToYuan}}</td>
+              <td class="text-right">{{item.salePrice|centToYuan}}</td>
+              <td class="text-center">{{item.saleAmount|centToYuan}}</td>
+              <td class="text-center">{{item.count}}</td>
+              <td class="text-center">{{item.plateNo}}</td>
+              <td>{{item.customer}}</td>
+              <td>{{item.operator}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <table *ngIf="!loading&&current==1" class="table table-bordered">
+          <thead>
+            <tr>
+              <th>单号</th>
+              <th>发生时间</th>
+              <th>数量</th>
+              <th>成本单价</th>
+              <th>成本金额</th>
+              <th>销售单价</th>
+              <th>销售金额</th>
+              <th>库存量</th>
+              <th>客户名称</th>
+              <th>手机号</th>
+              <th>操作人</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of list">
+              <td class="text-center">{{item.billCode}}</td>
+              <td class="text-center">{{item.createTime|sDatetime}}</td>
+              <td class="text-center">{{item.inCount}}</td>
+              <td class="text-right">{{item.costPrice|centToYuan}}</td>
+              <td class="text-center">{{item.costAmount|centToYuan}}</td>
+              <td class="text-right">{{item.salePrice|centToYuan}}</td>
+              <td class="text-center">{{item.saleAmount|centToYuan}}</td>
+              <td class="text-center">{{item.count}}</td>
+              <td class="text-center">{{item.customer}}</td>
+              <td>{{item.customerPhone}}</td>
+              <td>{{item.operator}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <table *ngIf="!loading&&current==2" class="table table-bordered">
+          <thead>
+            <tr>
+              <th>单号</th>
+              <th>发生时间</th>
+              <th>数量</th>
+              <th>不含税单价</th>
+              <th>不含税金额</th>
+              <th>含税单价</th>
+              <th>含税金额</th>
+              <th>库存量</th>
+              <th>供应商</th>
+              <th>操作人</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of list">
+              <td class="text-center">{{item.billCode}}</td>
+              <td class="text-center">{{item.createTime|sDatetime}}</td>
+              <td class="text-center">{{item.inCount}}</td>
+              <td class="text-right">{{item.exTaxPrice|centToYuan}}</td>
+              <td class="text-center">{{item.exTaxAmount|centToYuan}}</td>
+              <td class="text-right">{{item.price|centToYuan}}</td>
+              <td class="text-center">{{item.amount|centToYuan}}</td>
+              <td class="text-center">{{item.count}}</td>
+              <td>{{item.supplier}}</td>
+              <td>{{item.operator}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <table *ngIf="!loading&&current==3" class="table table-bordered">
+          <thead>
+            <tr>
+              <th>单号</th>
+              <th>发生时间</th>
+              <th>入库量</th>
+              <th>成本单价</th>
+              <th>成本金额</th>
+              <th>销售单价</th>
+              <th>销售金额</th>
+              <th>库存量</th>
+              <th>领料人</th>
+              <th>领料部门</th>
+              <th>操作人</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of list">
+              <td class="text-center">{{item.billCode}}</td>
+              <td class="text-center">{{item.createTime|sDatetime}}</td>
+              <td class="text-center">{{item.inCount}}</td>
+              <td class="text-right">{{item.costPrice|centToYuan}}</td>
+              <td class="text-center">{{item.costAmount|centToYuan}}</td>
+              <td class="text-right">{{item.salePrice|centToYuan}}</td>
+              <td class="text-center">{{item.saleAmount|centToYuan}}</td>
+              <td class="text-center">{{item.count}}</td>
+              <td>{{item.takeUser}}</td>
+              <td>{{item.takeDepart}}</td>
+              <td>{{item.operator}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" [(itemsPerPage)]="size" (pageChanged)="onPageChanged($event)"></hq-pagination>
     </div>
   </div>
   <div class="card-footer text-muted">

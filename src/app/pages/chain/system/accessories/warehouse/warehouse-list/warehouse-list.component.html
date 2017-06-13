@@ -5,53 +5,45 @@
   </div>
   <div class="card-block">
     <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
-      <div class="form-group mb-2">
-        <label for="inlineFormCustomSelect">仓库代码：</label>
-        <input type="text" class="form-control mx-sm-3" name="code" [(ngModel)]="params.code" placeholder="仓库代码">
+      <div class="input-group m-1">
+        <span class="input-group-addon">仓库代码</span>
+        <input type="text" class="form-control" name="code" [(ngModel)]="params.code" placeholder="请输入仓库代码">
       </div>
-      <div class="form-group mb-2">
-        <label class="mr-sm-2" for="inlineFormCustomSelect">仓库名称：</label>
-        <input type="text" class="form-control mx-sm-3" name="name" [(ngModel)]="params.name" placeholder="仓库名称">
+      <div class="input-group m-1">
+        <span class="input-group-addon">仓库名称</span>
+        <input type="text" class="form-control" name="name" [(ngModel)]="params.name" placeholder="请输入仓库名称">
       </div>
-      <div class="form-group mb-2">
-        <button type="submit" class="btn btn-primary mx-sm-1" translate>搜索</button>
-        <button type="button" (click)="createModal.show()" class="btn btn-secondary mx-sm-1" translate>新增</button>
+      <div class="input-group m-1">
+        <button type="submit" class="btn btn-primary mx-sm-1">查询</button>
+        <button type="button" (click)="createModal.show()" class="btn btn-secondary mx-sm-1">新增</button>
       </div>
     </form>
-    <table class="table table-bordered table-sm table-striped">
-      <thead>
-        <tr *ngIf="!loading">
-          <th translate>仓库代码</th>
-          <th translate>仓库名称</th>
-          <th translate>备注</th>
-          <th translate>操作时间</th>
-          <th translate>操作人</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of list">
-          <td>{{item.code}}</td>
-          <td>{{item.name}}</td>
-          <td>{{item.description}}</td>
-          <td>{{item.createdOnUtc}}</td>
-          <td>{{item.operator}}</td>
-        </tr>
-      </tbody>
-    </table>
-    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    <div class="table-container text-center">
+      <table class="table table-bordered table-sm">
+        <thead>
+          <tr *ngIf="!loading">
+            <th>仓库代码</th>
+            <th>仓库名称</th>
+            <th>备注</th>
+            <th>操作时间</th>
+            <th>操作人</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of list">
+            <td class="text-center">{{item.code}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.description}}</td>
+            <td class="text-center">{{item.createdOnUtc|sDatetime}}</td>
+            <td>{{item.operator}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" [(itemsPerPage)]="size" (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
 </div>
 
-<div class="modal fade" bsModal #createModal="bs-modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title pull-left">新增仓库</h5>
-        <button class="close pull-right" (click)="createModal.hide()">&times;</button>
-      </div>
-      <div class="modal-body">
-        <hq-warehouse-create (onSubmit)="onWarehouseCreate($event)"></hq-warehouse-create>
-      </div>
-    </div>
-  </div>
+<div hqModal #createModal="hq-modal" modalTitle="新增仓库">
+  <hq-warehouse-create *ngIf="createModal.isShown" (onSubmit)="onWarehouseCreate($event)"></hq-warehouse-create>
 </div>

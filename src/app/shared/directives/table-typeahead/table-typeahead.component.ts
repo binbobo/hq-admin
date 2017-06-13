@@ -5,10 +5,10 @@ import { PagedParams, PagedResult } from 'app/shared/models';
 @Component({
   selector: 'hqTableTypeahead',
   templateUrl: './table-typeahead.component.html',
+  styleUrls: ['./table-typeahead.component.css'],
   host: {
-    style: 'position:absolute;z-index:99999999;display:table-column',
-  },
-  styleUrls: ['./table-typeahead.component.css']
+    style: 'position:relative'
+  }
 })
 export class TableTypeaheadComponent implements OnInit {
 
@@ -16,11 +16,15 @@ export class TableTypeaheadComponent implements OnInit {
   @Input()
   public size: number = 10;
   @Input()
+  public height = 40;
+  @Input()
+  public minWidth = 100;
+  @Input()
+  public showTitle = true;
+  @Input()
   public columns: Array<TableTypeaheadColumn>;
   @Output()
   public onSelect: EventEmitter<any> = new EventEmitter();
-  @Output()
-  public onRemove: EventEmitter<any> = new EventEmitter();
   @Output()
   public onPageChange: EventEmitter<PagedParams> = new EventEmitter<PagedParams>();
   @Input()
@@ -62,11 +66,7 @@ export class TableTypeaheadComponent implements OnInit {
 
   private check(item: any, checked: boolean) {
     item.checked = checked;
-    if (checked) {
-      this.onSelect.emit(item)
-    } else {
-      this.onRemove.emit(item);
-    }
+    this.onSelect.emit(item)
   }
 
   public onSelectAll($event: Event) {

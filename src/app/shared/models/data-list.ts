@@ -10,6 +10,7 @@ export abstract class DataList<T> implements OnInit {
   @ViewChild(HqAlerter)
   protected alerter: HqAlerter;
   protected params: PagedParams;
+  protected result: any;
 
   ngOnInit(): void {
     this.params.init();
@@ -63,6 +64,7 @@ export abstract class DataList<T> implements OnInit {
     return this.service.getPagedList(this.params)
       .then(m => {
         this.loading = false;
+        this.result = m;
         this.list = m.data;
         this.total = m.totalCount;
         this.params.save();
@@ -75,7 +77,8 @@ export abstract class DataList<T> implements OnInit {
   }
 
   protected onLoadList() {
-    this.params.setPage(1);
-    this.loadList();
+    this.index = 1;
+    this.params.setPage(1, this.size);
+    return this.loadList();
   }
 }

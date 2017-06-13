@@ -21,8 +21,20 @@ export class OrderService implements BasicService<Order> {
         return this.httpService
             .request(url)
             .map(response => {
-                // console.log('查询维修类型数据：', response.json().data);
                 return response.json().data as MaintenanceType[];
+            });
+    }
+
+    /**
+     * 获取维修项目类型数据
+     * @memberOf OrderService
+     */
+    getServiceTypes(): Observable<any[]> {
+        const url = Urls.chain.concat('/Services/serach/type');
+        return this.httpService
+            .request(url)
+            .map(response => {
+                return response.json().data as any[];
             });
     }
 
@@ -35,7 +47,6 @@ export class OrderService implements BasicService<Order> {
         return this.httpService
             .request(url)
             .map(response => {
-                console.log('查询工单状态数据：', response.json().data);
                 return response.json().data as any[];
             });
     }
@@ -49,69 +60,11 @@ export class OrderService implements BasicService<Order> {
  */
     public export(params: OrderListRequest): Promise<void> {
         const url = Urls.chain.concat('/Maintenances/ExportToExcel');
-        console.log('导出工单列表参数以及url：', params.serialize(), url);
         return this.httpService
-            .download(url, params.serialize(), '工单列表')
+            .download(url, params.serialize())
             .catch(err => Promise.reject(`工单列表导出失败：${err}`));
     }
 
-    /**
-  * 根据车牌号模糊查询客户车辆信息
-  * 
-  * @param {FuzzySearchRequest} params 
-  * @returns {Promise<PagedResult<any>>} 
-  * 
-  * @memberof OrderService
-  */
-    getCustomerVehicleByPlateNo(params: FuzzySearchRequest): Promise<PagedResult<any>> {
-        const search = params.serialize();
-        const url = Urls.chain.concat('/CustomerVehicles/Search');
-        console.log('根据车牌号模糊查询客户车辆信息 响应数据', url, search);
-        return this.httpService
-            .get<PagedResult<any>>(url, search)
-            .then(response => {
-                console.log('根据车牌号模糊查询客户车辆信息 响应数据', response);
-                // 加工数据
-                response.data = response.data.map(item => {
-                    const o = item;
-                    o.customerName = item.customerInfo.name;
-                    o.phone = item.customerInfo.phone;
-                    return o;
-                });
-                return response;
-            });
-    }
-
-    /**
-     * 根据品牌模糊查询车辆信息
-     * 
-     * @param {FuzzySearchRequest} params 
-     * @returns {Promise<PagedResult<any>>} 
-     * 
-     * @memberof OrderService
-     */
-    getVehicleByBrand(params: VehicleBrandSearchRequest): Promise<PagedResult<any>> {
-        const search = params.serialize();
-        const url = Urls.chain.concat('/Brands/search');
-        console.log('根据品牌模糊查询车辆信息:', url + '?' + search);
-        return this.httpService
-            .get<PagedResult<any>>(url, search);
-    }
-    /**
-  * 根据车系模糊查询车辆信息
-  * 
-  * @param {FuzzySearchRequest} params 
-  * @returns {Promise<PagedResult<any>>} 
-  * 
-  * @memberof OrderService
-  */
-    getVehicleBySeries(params: VehicleSeriesSearchRequest): Promise<PagedResult<any>> {
-        const search = params.serialize();
-        const url = Urls.chain.concat('/VehicleSeries/search');
-        console.log('根据车系模糊查询车辆信息:', url + search);
-        return this.httpService
-            .get<PagedResult<any>>(url, search);
-    }
     /**
   * 根据维修项目名称模糊查询维修项目信息
   * 
@@ -123,16 +76,15 @@ export class OrderService implements BasicService<Order> {
     getMaintenanceItemsByName(params: FuzzySearchRequest): Promise<PagedResult<any>> {
         const search = params.serialize();
         const url = Urls.chain.concat('/Services/GetByName');
-        console.log('模糊查询维修项目:', url + search);
         return this.httpService
             .get<PagedResult<any>>(url, search);
     }
 
     /**
-* 添加维修项目
-* 
-* @memberof OrderService
-*/
+    * 添加维修项目
+    * 
+    * @memberof OrderService
+    */
     createMaintenanceItem(body: any): Promise<any> {
         const url = Urls.chain.concat('/Services');
         return this.httpService
@@ -141,63 +93,9 @@ export class OrderService implements BasicService<Order> {
             .catch(err => Promise.reject(`添加维修工项失败：${err}`));
     }
     /**
-  * 根据车型模糊查询车辆信息
-  * 
-  * @param {FuzzySearchRequest} params 
-  * @returns {Promise<PagedResult<any>>} 
-  * 
-  * @memberof OrderService
-  */
-    getVehicleByModel(params: VehicleSearchRequest): Promise<PagedResult<any>> {
-        const search = params.serialize();
-        const url = Urls.chain.concat('/Vehicles/search');
-        console.log('根据车型模糊查询车辆信息:', url + search);
-        return this.httpService
-            .get<PagedResult<any>>(url, search);
-    }
-    /**
-     * 根据车主姓名模糊查询客户车辆信息
-     * @param params 
-     */
-    getCustomerVehicleByCustomerName(params: FuzzySearchRequest): Promise<PagedResult<any>> {
-        const search = params.serialize();
-        const url = Urls.chain.concat('/Customers/GetByName');
-        return this.httpService
-            .get<PagedResult<any>>(url, search)
-            .then(response => {
-                // 加工数据
-                console.log('根据车主名称查询客户车辆信息：', response.data);
-                // 每个车主下面可能有多个车辆信息
-                const customerVehicles: CustomerVehicle[] = [];
-                response.data.forEach((customer) => {
-                    if (!customer.customerVehicles) { return; };
-                    customer.customerVehicles.forEach(vehicle => {
-                        const customerVehicle = new CustomerVehicle(
-                            vehicle.id, // 客户车辆id
-                            vehicle.vehicleId,  // 车辆id
-                            vehicle.customerId, // 客户id
-                            vehicle.plateNo,
-                            customer.name,
-                            customer.phone,
-                            vehicle.series,
-                            vehicle.vehicleName,
-                            vehicle.brand,
-                            vehicle.mileage,
-                            vehicle.purchaseDate,
-                            vehicle.vin,  // 底盘号
-                        );
-                        customerVehicles.push(customerVehicle);
-                    });
-                });
-                response.data = customerVehicles;
-                return response;
-            });
-    }
-
-    /**
   *  根据客户车辆id查询上一次工单信息
   * @param {string} id 
-  * @returns {Observable<CustomerVehicle[]>}
+  * @returns Promise<any>
   * @memberOf OrderService
   */
     getLastOrderInfo(id: string): Promise<any> {
@@ -210,9 +108,39 @@ export class OrderService implements BasicService<Order> {
     }
 
     /**
+*  根据客户车辆id查询预检单信息
+* @param {string} id 
+* @returns Promise<any>
+* @memberOf OrderService
+*/
+    getPreCheckOrderInfoByCustomerVehicleId(id: string): Promise<any> {
+        const url = Urls.chain.concat('/PreChecks/GetPreCheck?customerVehicleId=', id);
+        return this.httpService
+            .get<ApiResult<any>>(url)
+            .then(result => result.data)
+            .then(data => data || Promise.reject('获取数据无效！'))
+            .catch(err => Promise.reject(`获取预检单记录失败：${err}`));
+    }
+    /**
+*  根据预检单id查询预检单信息
+* @param {string} id 
+* @returns Promise<any>
+* @memberOf OrderService
+*/
+    getPreCheckOrderInfoByPreCheckId(id: string): Promise<any> {
+        const url = Urls.chain.concat('/PreChecks/', id);
+        return this.httpService
+            .get<ApiResult<any>>(url)
+            .then(result => result.data)
+            .then(data => data || Promise.reject('获取数据无效！'))
+            .catch(err => Promise.reject(`获取预检单记录失败：${err}`));
+    }
+
+
+    /**
  *  获取可以选择的门店，用于中查询范围下拉框
  * @param {string} id 
- * @returns {Observable<CustomerVehicle[]>}
+ * @returns Observable<TreeviewItem[]>
  * @memberOf OrderService
  */
     getSelectableStores(): Observable<TreeviewItem[]> {
@@ -220,13 +148,10 @@ export class OrderService implements BasicService<Order> {
         return this.httpService
             .request(url)
             .map(response => {
-                console.log('获取可以选择的门店，用于查询范围下拉框：', response.json().data);
-
                 let orgs = null;
                 if (this.orgsRecursion([response.json().data])) {
                     orgs = <any>this.orgsRecursion([response.json().data])[0];
                 }
-                // 每个车主下面可能有多个车辆信息
                 return [new TreeviewItem(orgs)];
             });
     }
@@ -237,10 +162,20 @@ export class OrderService implements BasicService<Order> {
             return null;
         };
         return orgsArr.map((value, index, array) => {
-            const obj = { text: value.name, value: value.id };
+            // 导航节点
+            const obj = { text: value.name, value: null, checked: false };
             // 如果有子组织, 递归遍历
             if (value.children && value.children.length > 0) {
+                // 如果有孩子  将父节点组织到孩子节点中  放到前头
+                value.children = [{
+                    name: value.name + '总店',
+                    id: value.id,
+                    checked: false,
+                }].concat(value.children);
                 obj['children'] = this.orgsRecursion(value.children);
+            } else {
+                // 如果没有孩子  直接返回
+                obj.value = value.id;
             }
             return obj;
         });
@@ -255,7 +190,6 @@ export class OrderService implements BasicService<Order> {
         return this.httpService
             .get<PagedResult<Order>>(url)
             .then(result => {
-                console.log('工单列表数据', result);
                 return result;
             })
             .catch(err => Promise.reject(`列表失败：${err}`));
@@ -270,12 +204,29 @@ export class OrderService implements BasicService<Order> {
      * @memberOf OrderService
      */
     public get(id: string): Promise<any> {
-        const url = Urls.chain.concat('/Maintenances/', id);
+        const url = Urls.chain.concat('/Maintenances/Detail/', id);
         return this.httpService
             .get<ApiResult<any>>(url)
             .then(result => result.data)
             .then(data => data || Promise.reject('获取数据无效！'))
             .catch(err => Promise.reject(`获取工单详情数据失败：${err}`));
+    }
+
+    /**
+   * 根据工单id查询工单费用统计信息
+   * 
+   * @param {string} id 
+   * @returns {Promise<any>} 
+   * 
+   * @memberOf OrderService
+   */
+    public getSettlements(id: string): Promise<any> {
+        const url = Urls.chain.concat('/Settlements/Maintenance/', id);
+        return this.httpService
+            .get<ApiResult<any>>(url)
+            .then(result => result.data)
+            .then(data => data || Promise.reject('获取数据无效！'))
+            .catch(err => Promise.reject(`获取工单费用统计信息失败：${err}`));
     }
 
     public update(body: Order): Promise<void> {
@@ -352,31 +303,6 @@ export class FuzzySearchRequest extends PagedParams {
     }
 }
 
-export class VehicleBrandSearchRequest extends PagedParams {
-    constructor(
-        public brandName: string, // 品牌名称
-    ) {
-        super();
-    }
-}
-export class VehicleSeriesSearchRequest extends PagedParams {
-    constructor(
-        public seriesName?: string, // 车系名称
-        public brandId?: string, // 品牌id
-    ) {
-        super();
-    }
-}
-export class VehicleSearchRequest extends PagedParams {
-    constructor(
-        public vehicleName?: string, // 车型名称
-        public brandId?: string, // 品牌id
-        public seriesId?: string, // 车系id
-    ) {
-        super();
-    }
-}
-
 // 工单model类
 export class Order extends BasicModel {
     constructor(
@@ -384,7 +310,7 @@ export class Order extends BasicModel {
         public status: string, // 状态
         public type: string, // 维修类型
         public billCode: string, // 工单号
-        // 进店时间 / 开单时间  使用父类的createdOnUtc字段
+        // 进厂时间 / 开单时间  使用父类的createdOnUtc字段
         public expectLeave: Date, // 预计交车时间
         public overTime: number, // 超时(时间)
         public createdUserName: string, // 服务顾问
@@ -405,31 +331,12 @@ export class Order extends BasicModel {
         public employeeNames: string, // 维修技师
         public leaveTime: string, // 出厂时间
         public location: string, // 维修工位
-        public lastEnter: Date, // 上次进店时间
+        public lastEnter: Date, // 上次进厂时间
         public lastMileage: number, // 上次进店里程
         public nextDate: Date, // 建议下次保养日期
         public nextMileage: number, // 建议下次保养里程
     ) {
         super();
-    }
-}
-
-// 客户车辆关系model类
-export class CustomerVehicle {
-    constructor(
-        public id: string = '', // 客户车辆id
-        public vehicleId: string = '', // 车辆id
-        public customerId: string = '', // 客户id
-        public plateNo: string = '', // 车牌号
-        public customerName: string = '', // 车主
-        public phone: string = '', // 车主电话
-        public series: string = '', // 车系
-        public vehicleName: string = '', // 车型
-        public brand: string = '', // 品牌
-        public mileage: string = '', // 行驶里程
-        public purchaseDate: Date = null, // 购车时间
-        public vin: string = '', // vin, 车辆唯一编码
-    ) {
     }
 }
 

@@ -1,0 +1,53 @@
+<tabset>
+  <tab>
+    <template tabHeading>
+      <i class="fa fa-car mr-2" aria-hidden="true"></i>车辆信息
+    </template>
+    <div class="table-container">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>操作</th>
+            <th>车牌号</th>
+            <th>品牌</th>
+            <th>车系</th>
+            <th>车型</th>
+            <th>VIN</th>
+            <th>发动机号</th>
+            <th>车身颜色</th>
+            <th>购车日期</th>
+            <th>验车日期</th>
+            <th>保险到期日期</th>
+            <th>保险公司</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let vehicle of data">
+            <td>
+              <button type="button" class="btn btn-sm btn-success" (click)="onEditClick(vehicle)">编辑</button>
+              <button [hidden]="true" type="button" class="btn btn-sm btn-danger" (click)="onDelClick(vehicle.plateNo)">删除</button>
+            </td>
+            <td>{{vehicle.plateNo}}</td>
+            <td>{{vehicle.brand}}</td>
+            <td>{{vehicle.series}}</td>
+            <td>{{vehicle.vehicleName}}</td>
+            <td>{{vehicle.vin}}</td>
+            <td>{{vehicle.engineNo}}</td>
+            <td>{{vehicle.vehicleColor}}</td>
+            <td>{{vehicle.purchaseDate|sDate}}</td>
+            <td>{{vehicle.validate|sDate}}</td>
+            <td>{{vehicle.insuranceDue|sDate}}</td>
+            <td>{{vehicle.insuranceCompany}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br>
+    <div class="text-center">
+      <button class="btn btn-secondary btn-add" (click)="onAddClick()">
+        <i class="fa fa-plus-circle mr-1" aria-hidden="true"></i>
+        新增车辆
+      </button>
+    </div>
+  </tab>
+</tabset>

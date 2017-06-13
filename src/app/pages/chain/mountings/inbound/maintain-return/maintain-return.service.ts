@@ -30,7 +30,6 @@ export class MaintainReturnService implements BasicService<any>{
         return this.httpService
             .get<PagedResult<any>>(url)
             .then(result => {
-                console.log('工单列表数据', result);
                 return result;
             })
             .catch(err => Promise.reject(`列表失败：${err}`));
@@ -38,7 +37,7 @@ export class MaintainReturnService implements BasicService<any>{
     //  根据工单或者车牌号搜索
     getOrderPageData(params: MaintainRequest): Promise<PagedResult<SearchReturnData>> {
         let search = params.serialize();
-        const url = Urls.chain.concat('/Maintenances');
+        const url = Urls.chain.concat('/Maintenances/MaterialReturn');
         return this.httpService
             .get<PagedResult<SearchReturnData>>(url, search)
 
@@ -52,7 +51,6 @@ export class MaintainReturnService implements BasicService<any>{
             .then(result => {
                 return result.data
             })
-            .then(data => data || Promise.reject('获取数据无效！'))
             .catch(err => Promise.reject(`加载失败：${err}`));
     }
 
@@ -63,7 +61,7 @@ export class MaintainReturnService implements BasicService<any>{
             .request(url, {
                 params: {
                     "BillCode": billCode,
-                    "BillTypeKey": "MR"
+                    "BillTypeKey": "RR"
                 }
             })
             .map(response => {
@@ -78,11 +76,10 @@ export class MaintainReturnService implements BasicService<any>{
             .request(url, {
                 params: {
                     "BillCode": billCode,
-                    "BillTypeKey": "MM"
+                    "BillTypeKey": "RM"
                 }
             })
             .map(response => {
-                console.log(response.json())
                 return response.json().data as any[];
             });
     }
@@ -134,7 +131,7 @@ export class SearchReturnData {
         public typeName: string = '',   //维修类型
         public expectLeave: string = '',  //预计交车日期
         public mileage: number = 0, //行驶里程
-        public lastEnterDate: string = '',//上次进店时间
+        public lastEnterDate: string = '',//上次进厂时间
         public nextDate: string = '',   //建议下次保养日期
         public location: string = '',   //维修工位
         public lastMileage: string = '', //上次进店里程
@@ -174,23 +171,27 @@ export class MaintainReturnListItem {
         public price: number = 0,
         public amount: number = 0,
         public stockCount: number = 0,
-        public productName: string="",
-        public brand: string="",
+        public productName: string = "",
+        public brandName: string = "",
         public productId?: string,
         public productCode?: string,
-        public productSpecification: string="",
+        public productSpecification: string = "",
         public storeId?: string,
         public locationId?: string,
-        public locationName: string="",
-        public vihicleName: string="",
-        public serviceName: string="",
+        public locationName: string = "",
+        public vehicleInfoList?:any,
+        public serviceName: string = "",
         public maintenanceItemId?: string,
+        public IODetailId?: string,
         public number?: any,
         public takeUser?: any,
-        public storeName:string="",
-        public initcount:number=1,
-        public initamount:any=0,
-        public operatorId:string="",
-        public createUser:string="",
+        public storeName: string = "",
+        public initcount: number = 1,
+        public initamount: any = 0,
+        public operatorId: string = "",
+        public createUser: string = "",
+        public description?:string,
+        public productUnit?:string,
+        public productCategory?:string,
     ) { }
 }

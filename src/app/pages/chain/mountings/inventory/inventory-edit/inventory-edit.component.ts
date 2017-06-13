@@ -1,13 +1,10 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { FormHandle, SelectOption } from 'app/shared/models';
 import { Inventory, InventoryService } from '../inventory.service';
-import { MountingsService } from '../../../mountings/mountings.service';
 import { Observable } from 'rxjs/Observable';
 import { FormGroup, Validators } from '@angular/forms';
-import { TypeaheadMatch } from 'ngx-bootstrap';
-import { TreeviewItem } from 'ngx-treeview';
-import { ActivatedRoute } from '@angular/router';
-import { TypeaheadRequestParams } from 'app/shared/directives';
+import { CustomValidators } from 'ng2-validation';
+import { MountingsService } from '../../mountings.service';
 
 @Component({
   selector: 'hq-inventory-edit',
@@ -16,7 +13,8 @@ import { TypeaheadRequestParams } from 'app/shared/directives';
 })
 export class InventoryEditComponent extends FormHandle<Inventory> implements OnInit {
 
-  private brands: Array<SelectOption>;
+  private vehicles: Array<any> = [];
+  private warehouses: Array<SelectOption>;
   private units: Array<SelectOption>;
 
   constructor(
@@ -27,91 +25,127 @@ export class InventoryEditComponent extends FormHandle<Inventory> implements OnI
     super(injector, service);
   }
 
+  private get editable() {
+    return this.model.dataSource === "2" ? undefined : true;
+  }
+
   protected getModel(): Observable<Inventory> {
+    if (Array.isArray(this.model.categoryList) && this.model.categoryList.length) {
+      let category = this.model.categoryList[0];
+      this.model.categoryId = category.value;
+      this.model.category = category.text;
+    }
     return Observable.of(this.model)
   }
   protected buidForm(): FormGroup {
     return this.formBuilder.group({
-      unit: [this.model.unit, [Validators.required, Validators.maxLength(36)]],
       locationName: [this.model.locationName, [Validators.maxLength(50)]],
-      brandName: [this.model.brandName, [Validators.required, Validators.maxLength(50)]],
-      maxCount: [this.model.maxCount],
-      minCount: [this.model.minCount],
-      brandId: [this.model.brandId],
-      storeId: [this.model.storeId],
-      id: [this.model.id],
+      locationId: [this.model.locationId, [Validators.maxLength(50)]],
+      storeId: [this.model.storeId, [Validators.required, Validators.maxLength(36)]],
       vehicleId: [this.model.vehicleId],
+      unit: [this.model.unitId, [Validators.required, Validators.maxLength(36)]],
+      categoryId: [this.model.categoryId, [Validators.required]],
+      categoryName: [this.model.category],
+      code: [this.model.code, [Validators.required, Validators.maxLength(36)]],
+      name: [this.model.name, [Validators.required, Validators.maxLength(60)]],
+      productSpecification: [this.model['specification'], [Validators.required, Validators.maxLength(20)]],
+      maxCount: [this.model.maxCount, [CustomValidators.min(0)]],
+      minCount: [this.model.minCount, [CustomValidators.min(0)]],
+      brandId: [this.model.brandId],
+      packageInfo: [this.model.packageInfo, [Validators.maxLength(20)]],
+      madeIn: [this.model.madeIn, [Validators.maxLength(100)]],
       description: [this.model.description, [Validators.maxLength(200)]],
+      id: [this.model.id],
+      brandName: [this.model.brand, [Validators.required, Validators.maxLength(50)]],
     });
   }
 
   ngOnInit() {
     super.ngOnInit();
-    this.moutingsService.getBrands()
-      .then(options => this.brands = options)
+    if (Array.isArray(this.model.vehicleInfoList)) {
+      this.vehicles = this.model.vehicleInfoList;
+    }
+    this.moutingsService.getWarehouseOptions()
+      .then(options => this.warehouses = options)
+      .then(options => options.length ? options[0].value : '')
+      .then(id => this.patchValue('storeId', id))
       .catch(err => this.alerter.warn(err));
     this.moutingsService.getUnitOptions()
       .then(options => this.units = options)
+      .then(options => options.length ? options[0].value : '')
+      .then(id => this.patchValue('unit', id))
       .catch(err => this.alerter.warn(err));
-    if (Array.isArray(this.model.vehicleList)) {
-      this.vehicles = this.model.vehicleList.map(v => ({ id: v.vehicleId, name: v.vehicleName }));
-      this._vehicles = this.model.vehicleList.map(v => v.vehicleId);
+  }
+
+  get typeaheadParams() {
+    return { storeId: this.form.get('storeId').value };
+  }
+
+  private onCategoryChange(event: Event) {
+    if (event.isTrusted) {
+      this.form.patchValue({ categoryId: undefined });
     }
   }
 
-  public vehicles: Array<any> = [];
-  private _vehicles: Array<any> = [];
+  private onCategorySelect(event) {
+    this.form.patchValue({
+      categoryId: event.value,
+      name: event.text,
+    });
+  }
+
+  onBrandSelect(event) {
+    this.form.patchValue({ brandId: event.id });
+  }
+
+  onBrandChange(event: Event) {
+    if (event.isTrusted) {
+      this.form.patchValue({ brandId: undefined });
+    }
+  }
+
+  onLocationChange(event: Event) {
+    if (event.isTrusted) {
+      this.form.patchValue({ locationId: undefined });
+    }
+  }
+
+  onLocationSelect(event) {
+    this.form.patchValue({ locationId: event.id, locationName: event.name });
+  }
 
   onVehicleSelect(event) {
-    let index = this.vehicles.findIndex(m => m.id === event.id);
-    if (!~index) {
+    this.vehicles = this.vehicles || [];
+    let index = this.vehicles.findIndex(m => m.vehicleId === event.vehicleId);
+    if (event.checked && !~index) {
       this.vehicles.push(event);
+    } else if (!event.checked && ~index) {
+      this.vehicles.splice(index, 1);
     }
   }
 
   onVehicleRemove(event) {
-    let index = this.vehicles.findIndex(m => m.id === event.id);
+    let index = this.vehicles.indexOf(event);
     if (~index) {
       this.vehicles.splice(index, 1);
     }
-    let item = this._vehicles.find(m => m.id === event.id);
-    if (item) {
-      item.checked = false;
+  }
+
+  public get vehicleCheckStrategy() {
+    return (item) => this.vehicles && this.vehicles.some(m => m.vehicleId === item.vehicleId);
+  }
+
+  onUpdate() {
+    if (this.model.count > 0) {
+      let formData = this.form.value;
+      if (formData.locationId !== this.model.locationId && formData.locationName) {
+        if (!confirm(`是否将${this.model.name}(库存量：${this.model.count})全部移至${formData.locationName}？`)) {
+          return false;
+        }
+      }
     }
-  }
-
-  public get vehicleColumns() {
-    return [
-      { name: 'brandName', title: '品牌' },
-      { name: 'seriesName', title: '车系' },
-      { name: 'name', title: '车型', checked: true },
-    ];
-  }
-
-  public get vehicleSource() {
-    return (params: TypeaheadRequestParams) => {
-      return this.moutingsService.get(params.text)
-        .then(result => {
-          result.data.forEach(m => m.checked = m.id && this.vehicles.some(n => m.id === n.id))
-          this._vehicles = result.data;
-          return result;
-        });
-    };
-  }
-
-
-  onBrandSelect(event: TypeaheadMatch) {
-    this.form.patchValue({ brandId: event.item.value });
-  }
-
-  onBrandChange(event: Event) {
-    this.form.patchValue({ brandId: undefined });
-  }
-
-  protected onUpdate() {
-    let vehicles = this.vehicles.map(m => m.id);
+    let vehicles = this.vehicles && this.vehicles.map(m => m.vehicleId);
     this.form.patchValue({ vehicleId: vehicles });
     return super.onUpdate();
   }
-
 }

@@ -9,16 +9,16 @@
   <div class="card-block">
     <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
       <input type="text" name="name" [(ngModel)]="params.name" class="form-control mb-2 mr-2" placeholder="请输入应用名称">
-      <button type="submit" class="btn btn-primary mb-2 mr-2" translate>search</button>
+      <button type="submit" class="btn btn-primary mb-2 mr-2">查询</button>
     </form>
-    <table class="table table-bordered table-sm table-striped">
+    <table class="table table-bordered table-sm">
       <thead>
         <tr>
-          <th translate>name</th>
-          <th translate>icon</th>
-          <th translate>display.order</th>
-          <th translate>status</th>
-          <th translate>operator</th>
+          <th>name</th>
+          <th>icon</th>
+          <th>display.order</th>
+          <th>status</th>
+          <th>operator</th>
         </tr>
       </thead>
       <tbody>
@@ -34,6 +34,6 @@
         </tr>
       </tbody>
     </table>
-    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
+    <hq-pagination [loading]="loading" [totalItems]="total" [(currentPage)]="index" [(itemsPerPage)]="size" (pageChanged)="onPageChanged($event)"></hq-pagination>
   </div>
 </div>

@@ -1,0 +1,13 @@
+table td,table th{
+    vertical-align: inherit;
+}
+.fixed-width{
+    width: 20%;
+}
+table.table-order-info{
+    vertical-align: middle;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+    color: #727171;
+    text-align: left;
+}
