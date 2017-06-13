@@ -3,9 +3,9 @@ import { OrderService, OrderListRequest, Order, Vehicle, MaintenanceItem, Mainte
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { TabsetComponent, ModalDirective } from 'ngx-bootstrap';
 import * as moment from 'moment';
-import { PrintDirective } from 'app/shared/directives';
+import { PrintDirective, FormGroupControlErrorDirective } from 'app/shared/directives';
 import { DataList, StorageKeys } from 'app/shared/models';
-import { SuspendBillDirective } from 'app/pages/chain/chain-shared';
+import { SuspendBillDirective, numberMask, phoneNumberMask } from 'app/pages/chain/chain-shared';
 import { CustomValidators } from 'ng2-validation';
 import { HQ_VALIDATORS } from '../../../../shared/shared.module';
 
@@ -39,6 +39,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   // 维修类型数据
   maintenanceTypeData: MaintenanceType[];
+  // 客户来源数据
+  customerSourceData: any;
   // 创建工单表单FormGroup
   workSheetForm: FormGroup;
 
@@ -67,6 +69,11 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   // 覆盖父类的初始化方法
   ngOnInit() { }
 
+  // 行驶里程掩码输入
+  mileageMask = numberMask;
+  phoneNumberMask = phoneNumberMask;
+
+
   constructor(
     injector: Injector,
     protected service: OrderService,
@@ -79,6 +86,9 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 获取维修类型数据
     this.service.getMaintenanceTypes()
       .subscribe(data => this.maintenanceTypeData = data);
+    // 获取客户来源数据
+    this.service.getCustomerSource()
+      .subscribe(data => this.customerSourceData = data);
 
     // 构建表单
     this.createForm();
@@ -146,10 +156,17 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       this.workSheetForm.controls.contactInfo.setValue(val);
     }
   }
+  // 行驶里程失去焦点的时候 需要再次验证建议下次里程
+  onMileageBlur(val, nextMileageCtr) {
+    this.resetNextMileageValidators(val);
+    nextMileageCtr.validate();
+  }
   // 重新设置下次里程验证器 实现多个表单域联动验证
   private resetNextMileageValidators(val) {
-    if (val)
+    if (val) {
       this.workSheetForm.controls.nextMileage.setValidators([HQ_VALIDATORS.mileage, CustomValidators.gte(val)]);
+      this.workSheetForm.controls.nextMileage.updateValueAndValidity();
+    }
   }
 
   // 从模糊查询下拉列表中选择一个车型事件处理程序
@@ -262,6 +279,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       vehicleId: customerVehicle.vehicleId,
       customerVehicleId: customerVehicle.id,
       customerId: customerVehicle.customerId,
+      source: customerVehicle.source,// 客户来源 可能没有值
     });
     // 设置品牌 车系 车型选中状态为true
     this.isBrandSelected = this.isSeriesSelected = this.isVehicleSelected = true;
@@ -288,7 +306,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.workSheetForm.controls.plateNo.enable();
     this.workSheetForm.controls.customerName.enable();
     this.workSheetForm.controls.phone.enable();
-    // this.workSheetForm.controls.vin.enable();
     this.workSheetForm.controls.brand.enable();
     this.workSheetForm.controls.series.enable();
     this.workSheetForm.controls.vehicleName.enable();
@@ -298,7 +315,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.workSheetForm.controls.plateNo.disable();
     this.workSheetForm.controls.customerName.disable();
     this.workSheetForm.controls.phone.disable();
-    // this.workSheetForm.controls.vin.disable();
     this.workSheetForm.controls.brand.disable();
     this.workSheetForm.controls.series.disable();
     this.workSheetForm.controls.vehicleName.disable();
@@ -489,6 +505,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   createForm() {
     this.workSheetForm = this.fb.group({
+      source: [''/*, [Validators.required]*/], // 客户来源
       customerName: ['', [Validators.required]], // 车主
       phone: ['', [Validators.required, HQ_VALIDATORS.mobile]], // 车主电话
       contactUser: ['', [Validators.required]], // 送修人
@@ -612,7 +629,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
     // 清空上次维修工单数据
     this.lastOrderData = null;
-     // 清空预检单数据
+    // 清空预检单数据
     this.preCheckOrderData = null;
 
     this.isSelected = false;
@@ -661,7 +678,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
           this.newWorkOrderData.typeName = this.maintenanceTypeData.find(item => item.id === workSheet.type).value;
           this.newWorkOrderData.printDateTime = moment().format('YYYY-MM-DD HH:mm:ss');
           // 如果是预检单 添加预检单信息
-          if(workSheet.preCheckId) {
+          if (workSheet.preCheckId) {
             this.newWorkOrderData.preCheckOrder = this.preCheckOrderData;
             this.newWorkOrderData.preCheckOrder.emptyText = '暂无';
           }

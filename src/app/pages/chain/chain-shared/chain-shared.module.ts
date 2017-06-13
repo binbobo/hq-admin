@@ -19,7 +19,7 @@ import { ProductCategoryTypeaheadDirective } from './table-typeahead/product-cat
 import { ProductBrandTypeaheadDirective } from './table-typeahead/product-brand-typeahead.directive';
 import { VehicleShowDirective, VehicleShowComponent } from './vehicle-show';
 import { PopoverModule } from 'ngx-bootstrap/popover';
-import { AttachmentItemListComponent, SuggestedItemListComponent, MaintenanceItemListComponent, MaintenanceFixingsListComponent } from './maintenance-item-list';
+import { PreCheckOrderDetailComponent, AttachmentItemListComponent, SuggestedItemListComponent, MaintenanceItemListComponent, MaintenanceFixingsListComponent } from './maintenance-item-list';
 import { WorkshopSearchFormComponent, WorkshopOrderOperationComponent } from './workshop';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 
@@ -52,7 +52,8 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
     MaintenanceItemListComponent,
     MaintenanceFixingsListComponent,
     WorkshopSearchFormComponent, 
-    WorkshopOrderOperationComponent
+    WorkshopOrderOperationComponent,
+    PreCheckOrderDetailComponent
   ],
   declarations: [
     SuspendBillDirective,
@@ -79,6 +80,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
     MaintenanceFixingsListComponent,
     WorkshopSearchFormComponent,
     WorkshopOrderOperationComponent,
+    PreCheckOrderDetailComponent
   ],
   providers: [SuspendBillService],
   entryComponents: [SuspendBillComponent, VehicleShowComponent]

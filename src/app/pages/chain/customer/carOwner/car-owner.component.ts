@@ -23,11 +23,18 @@ export class CarOwnerComponent extends DataList<any>  {
     createdEndDate: undefined
   }
 
+   // 客户来源数据
+  customerSourceData: any;
+
   constructor(
     injector: Injector,
     protected service: CustomerService) {
     super(injector, service);
     this.params = new CustomerListRequest();
+    
+    // 获取客户来源数据
+    this.service.getCustomerSource()
+      .subscribe(data => this.customerSourceData = data);
   }
 
   onSearch() {
@@ -96,7 +103,7 @@ export class CarOwnerComponent extends DataList<any>  {
     return !!this.endDateParams.createdEndDate ? this.endDateParams.createdEndDate : moment().toDate();
   }
   public get minCreatedEndDate() {
-    if(this.params.createdStartDate) {
+    if (this.params.createdStartDate) {
       return moment(this.params.createdStartDate).subtract(1, 'd').toDate();
     }
     return '';

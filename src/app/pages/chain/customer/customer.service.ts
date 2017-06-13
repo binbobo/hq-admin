@@ -123,12 +123,26 @@ export class CustomerService implements BasicService<any> {
             .delete(url)
             .catch(err => Promise.reject(`删除客户记录失败：${err}`));
     }
+
+    /**
+     * 获取客户来源数据
+     * @memberOf OrderService
+     */
+    public getCustomerSource(): Observable<any[]> {
+        // const url = Urls.chain.concat('/CustomerSources');
+        const url = 'http://192.168.60.57:8028/api/CustomerSources';
+        return this.httpService
+            .request(url)
+            .map(response => {
+                return response.json().data;
+            });
+    }
 }
 
 // 维修派工请求参数类
 export class CustomerListRequest extends PagedParams {
     constructor(
-        public plateNo?: string, // 车牌号
+        public source?: string, // 客户来源
         public name?: string, // 车主
         public phone?: string, // 车主电话
         public createdStartDate?: string, // 建档开始时间

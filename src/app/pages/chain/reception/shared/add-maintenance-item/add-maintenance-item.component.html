@@ -25,7 +25,7 @@
       <label for="workHour" class="form-label"><span class="asterisk mr-1">*</span>维修工时</label>
       <div class="hq-col">
         <div class="input-group">
-          <input maxlength="5" label="维修工时" formControlName="workHour" type="text" class="form-control">
+          <input [textMask]="{mask: workHourMask}" label="维修工时" formControlName="workHour" type="text" class="form-control">
           <!--<span class="input-group-addon"></span>-->
         </div>
       </div>
@@ -34,7 +34,7 @@
       <label for="price" class="form-label"><span class="asterisk mr-1">*</span>工时单价</label>
       <div class="hq-col">
         <div class="input-group">
-          <input maxlength="7" label="工时单价" formControlName="price" type="text" class="form-control">
+          <input [textMask]="{mask: priceMask}" label="工时单价" formControlName="price" type="text" class="form-control">
           <span class="input-group-addon">元</span>
         </div>
       </div>
@@ -45,7 +45,7 @@
       <label for="discount" class="form-label"><span class="asterisk mr-1">*</span>折扣率</label>
       <div class="hq-col">
         <div class="input-group">
-          <input maxlength="3" label="折扣率" formControlName="discount" type="text" class="form-control">
+          <input [textMask]="{mask: discountMask}" [errors]="{range:'折扣率必须得是0~100之间的整数'}" label="折扣率" formControlName="discount" type="text" class="form-control">
           <span class="input-group-addon">%</span>
         </div>
       </div>
