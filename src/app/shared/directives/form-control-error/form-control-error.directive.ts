@@ -131,6 +131,8 @@ export class FormControlErrorDirective<T extends FormControlErrorComponent> impl
       return `${this.label}不能小于${errors.requiredValue}`;
     } else if (key === "mobile") {
       return `无效的手机号码`;
+    }  else if (key === "requiredvalue") {
+      return ``;
     } else {
       console.log(key, error, errors);
       return `无效的${this.label}`;

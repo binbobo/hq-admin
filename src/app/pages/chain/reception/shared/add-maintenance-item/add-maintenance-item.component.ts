@@ -4,6 +4,7 @@ import { HqAlerter } from 'app/shared/directives';
 import { OrderService } from '../../../reception/order.service';
 import * as moment from 'moment';
 import { CustomValidators } from 'ng2-validation';
+import { priceMask, numberMask, discountMask} from 'app/pages/chain/chain-shared';
 
 @Component({
   selector: 'hq-add-maintenance-item',
@@ -12,6 +13,10 @@ import { CustomValidators } from 'ng2-validation';
 })
 
 export class AddMaintenanceItemComponent implements OnInit {
+  priceMask = priceMask;
+  workHourMask = numberMask;
+  discountMask = discountMask;
+
   maintenanceItemForm: FormGroup;
 
   @Output() onCancel = new EventEmitter<any>();
@@ -99,17 +104,16 @@ export class AddMaintenanceItemComponent implements OnInit {
 
   createForm() {
     // 保留一位小数正则
-    const workHourRegex = /^[1-9]+(\.\d{1})?$|^[0]{1}(\.[1-9]{1}){1}$/; // 正浮点数  保留一位小数 不能为0 只能有一个前导0(不可以000.3)
-    const workHourPriceRegex = /^[0-9]{1,6}(\.\d{1})?$/; // 可以为0  /^[0]{1}(\.\d{1})?$|^[1-9]+(\.\d{1})?$/
+    const floatRegex = /^[0-9]+(\.\d{1})?$/; 
 
     this.maintenanceItemForm = this.fb.group({
       serviceName: ['', [Validators.required]],
       serviceId: [''],
       serviceType: ['', [Validators.required]],// 维修项目类型
       type: 1, // 1表示维修项目/
-      workHour: ['', Validators.compose([Validators.required, Validators.pattern(workHourPriceRegex)])],
-      price: ['', Validators.compose([Validators.required, Validators.pattern(workHourPriceRegex)])],
-      discount: [100, [Validators.required, CustomValidators.digits, CustomValidators.range([0, 100])]],
+      workHour: ['', Validators.compose([Validators.required, Validators.pattern(floatRegex)])],
+      price: ['', Validators.compose([Validators.required, Validators.pattern(floatRegex)])],
+      discount: [100, [Validators.required, CustomValidators.range([0, 100])]],
       amount: [{ value: '', disabled: true }],
     });
 

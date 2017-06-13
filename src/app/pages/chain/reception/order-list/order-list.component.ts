@@ -152,8 +152,8 @@ export class OrderListComponent extends DataList<Order> {
         }
 
         // 判断是否有预检单id
-        if (this.selectedOrder.preCheckId) {
-          this.service.getPreCheckOrderInfoByPreCheckId(this.selectedOrder.preCheckId).then(preCheckOrder => {
+        if (data.preCheckId) {
+          this.service.getPreCheckOrderInfoByPreCheckId(data.preCheckId).then(preCheckOrder => {
             this.selectedOrder.preCheckOrder = preCheckOrder;
             this.selectedOrder.preCheckOrder.emptyText = '暂无';
 

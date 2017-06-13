@@ -10,6 +10,8 @@ import { FormsModule, NgModel } from '@angular/forms';
 import { PaginationModule, PopoverModule, AlertModule, ModalModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
 import { NgPipesModule } from 'ngx-pipes';
+import { TextMaskModule } from 'angular2-text-mask';
+
 
 const HQ_COMPONENTS = [
     components.PaginationComponent,
@@ -95,11 +97,13 @@ export const HQ_VALIDATORS = {
         TranslateModule.forChild({
             loader: { provide: TranslateLoader, useClass: services.ServerTranslateLoader }
         }),
+        TextMaskModule
     ],
     exports: [
         CommonModule,
         TranslateModule,
         FormsModule,
+        TextMaskModule,
         HQ_COMPONENTS,
         HQ_PIPES,
         HQ_DIRECTIVES,
