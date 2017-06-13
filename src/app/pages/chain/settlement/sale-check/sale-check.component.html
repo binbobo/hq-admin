@@ -101,7 +101,7 @@
   </div>
   <div class="input-group checkout-item" *ngFor="let item of payData;">
     <span class="input-group-addon" id="sizing-addon2" style="width:150px;">{{item.value}}(元)</span>
-    <input type="number" class="form-control" [(ngModel)]="item.amount" aria-label="Username" aria-describedby="sizing-addon1">
+    <input [textMask]="{mask: priceMask}" type="text" class="form-control" [(ngModel)]="item.amount" aria-label="Username" aria-describedby="sizing-addon1">
   </div>
   <div class="btn-center"><button type="button" class="btn btn-primary" aria-label="Close" (click)="OnPostPay(CheckoutModal)">确定收银</button></div>
 </div>

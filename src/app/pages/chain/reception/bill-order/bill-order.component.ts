@@ -7,6 +7,7 @@ import { HqAlerter } from "app/shared/directives";
 import { PrintDirective, FormGroupControlErrorDirective } from 'app/shared/directives';
 import { CustomValidators } from "ng2-validation/dist";
 import { ChainService } from "app/pages/chain/chain.service";
+import { priceMask } from 'app/pages/chain/chain-shared';
 import * as moment from 'moment';
 
 @Component({
@@ -16,6 +17,7 @@ import * as moment from 'moment';
 })
 
 export class BillOrderComponent extends DataList<any>{
+    priceMask = priceMask;
     [name: string]: any;
     private form: FormGroup;
     moneyObj: any;

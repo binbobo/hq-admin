@@ -110,7 +110,7 @@
           <div class="input-group m-1">
             <span class="input-group-addon">应收金额(元)</span>
             <div class="hq-col">
-              <input type="number" class="form-control" [errors]="{lte:'输入金额不能大于应收金额'}" [value]="billPricex|centToYuan" label="金额" formControlName="billPrice">
+              <input [textMask]="{mask: priceMask}" type="text" class="form-control" [errors]="{lte:'输入金额不能大于应收金额'}" [value]="billPricex|centToYuan" label="金额" formControlName="billPrice">
             </div>
           </div>
         </div>

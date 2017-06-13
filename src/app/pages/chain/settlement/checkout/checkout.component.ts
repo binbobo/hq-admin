@@ -6,6 +6,7 @@ import { OrderListSearch, CheckOutService } from "./checkout.service";
 import { ChainService } from "app/pages/chain/chain.service";
 import { HqAlerter } from "app/shared/directives";
 import * as moment from 'moment';
+import { priceMask} from 'app/pages/chain/chain-shared';
 
 @Component({
   selector: 'hq-checkout',
@@ -13,6 +14,7 @@ import * as moment from 'moment';
   styleUrls: ['./checkout.component.css']
 })
 export class CheckoutComponent extends DataList<any> {
+  priceMask = priceMask;
   costMoney: any;
   payCheckSingle: any;
   payData: any;

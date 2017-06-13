@@ -6,6 +6,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FormGroupControlErrorDirective, TypeaheadRequestParams, HqAlerter } from 'app/shared/directives';
 import { CustomValidators } from 'ng2-validation';
 import { CentToYuanPipe } from "app/shared/pipes";
+import { numberMask } from 'app/pages/chain/chain-shared';
 
 @Component({
   selector: 'hq-maintain-create',
@@ -13,6 +14,7 @@ import { CentToYuanPipe } from "app/shared/pipes";
   styleUrls: ['./maintain-create.component.css']
 })
 export class MaintainCreateComponent implements OnInit, OnChanges {
+  numberMask = numberMask;
   private form: FormGroup;
   private converter: CentToYuanPipe = new CentToYuanPipe();
   @Output()
@@ -60,8 +62,8 @@ export class MaintainCreateComponent implements OnInit, OnChanges {
       operatorId: [this.model.operatorId],
       createUser: [this.model.createUser],
       description: [this.model.description],
-      productCategory:[this.model.productCategory],
-      productUnit:[this.model.productUnit]
+      productCategory: [this.model.productCategory],
+      productUnit: [this.model.productUnit]
     })
   }
 
@@ -92,9 +94,18 @@ export class MaintainCreateComponent implements OnInit, OnChanges {
     evt.preventDefault();
     this.model.initcount = evt.target.value;
     this.model.initamount = Number(this.model.initcount) * Number(this.inputData.price);
+    
+    let count = this.form.controls['initcount'].value;
+    if (count > (this.inputData.count - this.inputData.returnCount)) {
+      this.alerter.error("数量不能高于当前可退数量，请重新填写", true, 2000);
+      return false;
+    }
   }
 
+  //数量改变控制
+  private calculate() {
 
+  }
 
 
 
