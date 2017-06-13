@@ -10,4 +10,5 @@ export class Urls {
     public static readonly media = Urls.base.concat('media/');
     public static readonly platform = Urls.base.concat('platform/');
     public static readonly chain = Urls.base.concat('chain');
+    // public static readonly chain = Urls.base.concat('api');
 }

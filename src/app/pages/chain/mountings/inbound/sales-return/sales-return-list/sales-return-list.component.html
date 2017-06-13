@@ -1,22 +1,22 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
   <div class="card-header">
-    <span>销售退库</span>
+    <label>销售退库</label>
     <ng-template hqSuspendBill="MR" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
   <div class="card-block">
     <form class="form-inline mb-2">
       <div class="input-group m-1">
-        <span class="input-group-addon">客户名称：</span>
+        <label class="input-group-addon">客户名称：</label>
         <input type="text" [(ngModel)]="customerName" class="form-control" forceRefresh (onSelect)="onItemNameSelect($event)" [hqTableTypeahead]="nameSource"
           [columns]="itemNameColumns" name="custName" placeholder="客户名称">
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">手机号：</span>
+        <label class="input-group-addon">手机号：</label>
         <input class="form-control" [(ngModel)]="customerPhone" name="custPhone" placeholder="手机号">
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">销售出库单：</span>
+        <label class="input-group-addon">销售出库单：</label>
         <input type="text" forceRefresh [(ngModel)]="billCode" name="billCode" (onSelect)="onItemCodeSelect($event)" [hqTableTypeahead]="codeSource"
           [columns]="itemCodeColumns" class="form-control" placeholder="请输入出库单号">
       </div>

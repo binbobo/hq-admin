@@ -1,25 +1,25 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
   <div class="card-header">
-    <span>内部退料</span>
+    <label>内部退料</label>
     <ng-template hqSuspendBill="IR" (onSelect)="onSuspendSelect($event)" [columns]="innerColumns"></ng-template>
   </div>
   <div class="card-block">
     <form class="form-inline mb-2">
       <div class="input-group m-1">
-        <span class="input-group-addon">领料人：</span>
+        <label class="input-group-addon">领料人：</label>
         <select class="form-control" (change)="onInnerSelect($event)" [value]="takeUser" name="takeUser">
           <option *ngFor="let employee of employees" [value]="employee.takeUser">{{employee.takeUserName}}</option>
         </select>
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">部门：</span>
+        <label class="input-group-addon">部门：</label>
         <select class="form-control" [value]="takeDepartId" (change)="onDepartSelect($event)">
           <option *ngFor="let department of departments?.departList" [value]="department.id">{{department.name}}</option>
         </select>
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">内部领料单号：</span>
+        <label class="input-group-addon">内部领料单号：</label>
         <input type="text" forceRefresh [(ngModel)]="billCode" name="billCode" [hqTableTypeahead]="codeSource" [columns]="itemColumns"
           (onSelect)="onItemSelect($event)" class="form-control" placeholder="请输入领料单号">
       </div>

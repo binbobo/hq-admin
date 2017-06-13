@@ -17,9 +17,11 @@ import { SaleCheckService } from "app/pages/chain/settlement/sale-check/sale-che
 import { CheckoutPrintDetailComponent } from './checkout/checkout-print-detail/checkout-print-detail.component';
 import { SaleCheckComponent } from './sale-check/sale-check.component';
 import { SaleCheckDetailComponent } from './sale-check/sale-check-detail/sale-check-detail.component';
+import { ChainSharedModule } from '../chain-shared/chain-shared.module';
 
 @NgModule({
   imports: [
+    ChainSharedModule,
     TreeviewModule.forRoot(),
     CollapseModule.forRoot(),
     TabsModule.forRoot(),
@@ -32,8 +34,8 @@ import { SaleCheckDetailComponent } from './sale-check/sale-check-detail/sale-ch
     ReactiveFormsModule,
     NguiDatetimePickerModule
   ],
-   declarations: [routedComponents, CheckoutPrintDetailComponent, SaleCheckComponent, SaleCheckDetailComponent],
-  providers: [CheckOutService,SaleCheckService],
+  declarations: [routedComponents, CheckoutPrintDetailComponent, SaleCheckComponent, SaleCheckDetailComponent],
+  providers: [CheckOutService, SaleCheckService],
   entryComponents: [routedComponents[0]],
 })
 export class SettlementModule { }

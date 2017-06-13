@@ -1,10 +1,10 @@
 <form class="form-inline mb-2">
   <div class="input-group m-1">
-    <span class="input-group-addon">配件编码</span>
+    <label class="input-group-addon">配件编码</label>
     <input [hqProductTypeahead]="'code'" [value]="item?.code" (onSelect)="onItemSelect($event)" class="form-control" placeholder="配件编码">
   </div>
   <div class="input-group m-1">
-    <span class="input-group-addon">配件名称</span>
+    <label class="input-group-addon">配件名称</label>
     <input [hqProductTypeahead]="'name'" [value]="item?.name" (onSelect)="onItemSelect($event)" class="form-control" placeholder="配件名称">
   </div>
 </form>

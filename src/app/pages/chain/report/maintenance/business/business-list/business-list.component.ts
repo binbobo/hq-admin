@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChildren, QueryList, Injector, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { DataList, StorageKeys } from "app/shared/models";
 import { BusinessService, BusinessListRequest, DetailsSearchRequest } from "../business.service";
 import { TypeaheadRequestParams, PrintDirective, HqModalDirective } from "app/shared/directives";
@@ -22,7 +21,6 @@ export class BusinessListComponent extends DataList<any> {
   private leaveEndTime: string;//出厂截止时间
   private detailsId;
   private orgItems;
-  private businessForm: FormGroup;
   params: BusinessListRequest;
   @ViewChild('bdModal')
   private bdModal: HqModalDirective;
@@ -49,7 +47,6 @@ export class BusinessListComponent extends DataList<any> {
     injector: Injector,
     protected service: BusinessService,
     private totalValueService: TotalValueService,
-    private formBuilder: FormBuilder,
   ) {
     super(injector, service);
     this.params = new BusinessListRequest();

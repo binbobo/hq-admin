@@ -97,6 +97,7 @@ export class OrderListSearch extends PagedParams {
         public billcode?: string, // 工单号
         public starttime?: string, // 进店开始时间
         public endtime?: string, // 进店结束时间
+        public SettlementMethod?:string,//结算方式id
     ) {
         super();
         // this.starttime = starttime || moment().subtract(30, 'd').format('YYYY-MM-DD');

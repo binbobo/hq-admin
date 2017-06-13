@@ -1,26 +1,26 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
   <div class="card-header">
-    <span>产值汇总</span>
+    <label>产值汇总</label>
   </div>
   <div class="card-block">
     <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
       <div class="input-group my-1 mr-1">
-        <span class="input-group-addon">日期</span>
-        <input class="form-control" [(ngModel)]="params.startTimeDate" [max-date]="params.endTimeDate" name="startTimeDate" date-only="true"
+        <label class="input-group-addon">日期</label>
+        <input class="form-control" [(ngModel)]="params.startTimeDate" [max-date]="params.endTimeDate" name="startTimeDate" id="startTimeDate" date-only="true"
           ngui-datetime-picker/>
-        <span class="input-group-addon">-</span>
-        <input class="form-control" [(ngModel)]="params.endTimeDate" [min-date]="params.startTimeDate" name="endTimeDate" date-only="true"
+        <label class="input-group-addon">-</label>
+        <input class="form-control" [(ngModel)]="params.endTimeDate" [min-date]="params.startTimeDate" name="endTimeDate" id="endTimeDate" date-only="true"
           ngui-datetime-picker/>
       </div>
       <div class="input-group m-1" *ngIf="stations?.length&&stations[0]?.children?.length">
-        <span class="input-group-addon">门店</span>
+        <label class="input-group-addon">门店</label>
         <hq-dropdown-tree text="name" value="id" [items]="stations" (onChange)="onStationSelect($event)"></hq-dropdown-tree>
       </div>
       <div class="input-group m-1"><button class="btn btn-primary">查询</button></div>
     </form>
     <div id="selectedStations" class="input-group mb-2" [hidden]="!selectedStations?.length">
-      <span class="input-group-addon">已选店铺</span>
+      <label class="input-group-addon">已选店铺</label>
       <div class="form-control p-0">
         <div *ngFor="let item of selectedStations" class="selected mx-1 p-1">
           <span>{{item.text}}</span>

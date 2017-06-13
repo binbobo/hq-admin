@@ -1,25 +1,27 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
-  <div class="card-header">维修发料统计</div>
+  <div class="card-header">
+    <label>维修发料统计</label>
+  </div>
   <div class="card-block">
     <form class="form-inline mb-2" [formGroup]="distributeForm" (ngSubmit)="onSearch()">
       <div class="input-group m-1">
-        <span class="input-group-addon">车牌号</span>
+        <label class="input-group-addon">车牌号</label>
         <input hqPlateNoTypeahead (onSelect)="onSelect($event)" name="plateNo" class="form-control" formControlName="plateNo" placeholder="请输车牌号"
         />
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">查询日期</span>
+        <label class="input-group-addon">查询日期</label>
         <input [max-date]="maxEnterStartDate" date-only="true" class="form-control datetime-picker" style="border-right:0;" formControlName="searchStart"
           id="starttime" name="starttime" type="text" ngui-datetime-picker/>
-        <span class="input-group-addon">-</span>
+        <label class="input-group-addon">-</label>
         <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" date-only="true" class="form-control datetime-picker" style="border-right-width:1px;"
           id="endtime" formControlName="searchEnd" name="endtime" type="text" ngui-datetime-picker/>
       </div>
       <div class="input-group m-1" *ngIf="orgShow">
-        <span class="input-group-addon">门店</span>
-          <hq-dropdown-tree text="name" value="id" [items]="stations" (onChange)="onSearchRangeChange($event)">
-          </hq-dropdown-tree>
+        <label class="input-group-addon">门店</label>
+        <hq-dropdown-tree text="name" value="id" [items]="stations" (onChange)="onSearchRangeChange($event)">
+        </hq-dropdown-tree>
       </div>
       <button type="submit" class="btn btn-primary">查询</button>
     </form>

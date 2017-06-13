@@ -12,6 +12,9 @@
 .card-header,.card-footer{
     background-color: #fff;
 }
+.card-header label{
+    margin-bottom: 0;
+}
 
 .cursor-pointer{
     cursor: pointer;
@@ -129,6 +132,7 @@ hqtabletypeahead ul{
     background-color: #fff;
     border-radius: 2px;
     font-size:.875rem;
+    margin-bottom: 0;
 }
 .append-stamp::before {  
     content: '';

@@ -34,3 +34,6 @@ button.close{
     width: 1rem;
     height: 1rem;
 }
+#starttime:hover,#endtime:hover{
+    cursor: pointer;
+}

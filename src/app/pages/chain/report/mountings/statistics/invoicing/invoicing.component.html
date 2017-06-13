@@ -1,27 +1,29 @@
 <ng-template hq-alerter></ng-template>
 <div class="card" *ngIf="showIf">
-  <div class="card-header">进销存汇总</div>
+  <div class="card-header">
+    <label>进销存汇总</label>
+  </div>
   <div class="card-block">
     <form class="form-inline mb-2" [formGroup]="invoicingForm" (ngSubmit)="onSearch()">
       <div class="input-group m-1">
-        <span class="input-group-addon">仓库</span>
+        <label class="input-group-addon">仓库</label>
         <select class="form-control" formControlName="storeId">
           <option value="">全部仓库</option>
           <option *ngFor="let item of warehouses" value="{{item.value}}">{{item.text}}</option>
         </select>
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">查询日期</span>
+        <label class="input-group-addon">查询日期</label>
         <input [max-date]="maxEnterStartDate" class="form-control datetime-picker" style="border-right:0;" formControlName="searchStart"
           id="starttime" name="starttime" type="text" date-only="true" ngui-datetime-picker/>
-        <span class="input-group-addon">-</span>
+        <label class="input-group-addon">-</label>
         <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" class="form-control datetime-picker" style="border-right-width:1px;"
           id="endtime" formControlName="searchEnd" name="endtime" type="text" date-only="true" ngui-datetime-picker/>
       </div>
       <div class="input-group m-1" *ngIf="orgShow">
-        <span class="input-group-addon">门店</span>
-          <hq-dropdown-tree text="name" value="id" [items]="stations" (onChange)="onSearchRangeChange($event)">
-          </hq-dropdown-tree>
+        <label class="input-group-addon">门店</label>
+        <hq-dropdown-tree text="name" value="id" [items]="stations" (onChange)="onSearchRangeChange($event)">
+        </hq-dropdown-tree>
       </div>
       <button type="submit" class="btn btn-primary">查询</button>
     </form>
@@ -123,7 +125,9 @@
 <!--详情-->
 <div class="card" *ngIf="!showIf">
   <div class="card-header">
-    <div class="card-title" style="float:left;">进销存明细</div>
+    <div style="float:left;">
+      <label>进销存明细</label>
+    </div>
     <button class="close pull-right" style="float:right;" (click)="showIf=true;">
        <span aria-hidden="true" class="fa-stack hq-fa-lg"><i class="fa fa-cir fa-stack-2x" aria-hidden="true"></i><i class="fa fa-times fa-stack-1x" aria-hidden="true"></i></span>
     </button>
@@ -131,12 +135,14 @@
   <div class="card-block" hqPrint #printer="hq-print">
     <form class="form-inline mb-2" [formGroup]="invoicingDetailForm" (ngSubmit)="onSearchDetail()">
       <div class="input-group m-1">
-        <span class="input-group-addon">配件编码</span>
-        <input [hqProductTypeahead]='code' name="name" class="form-control" (onSelect)="onSelect($event)" formControlName="productCode" placeholder="请输配件编码" />
+        <label class="input-group-addon">配件编码</label>
+        <input [hqProductTypeahead]='code' name="name" class="form-control" (onSelect)="onSelect($event)" formControlName="productCode"
+          placeholder="请输配件编码" />
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">配件名称</span>
-        <input [hqProductTypeahead]='name' name="name" class="form-control" (onSelect)="onSelect($event)" formControlName="productName" placeholder="请输配件名称" />
+        <label class="input-group-addon">配件名称</label>
+        <input [hqProductTypeahead]='name' name="name" class="form-control" (onSelect)="onSelect($event)" formControlName="productName"
+          placeholder="请输配件名称" />
       </div>
       <!--<div class="input-group m-1">
         <span class="input-group-addon">查询日期</span>

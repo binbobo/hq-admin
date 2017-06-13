@@ -22,6 +22,8 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
 import { PreCheckOrderDetailComponent, AttachmentItemListComponent, SuggestedItemListComponent, MaintenanceItemListComponent, MaintenanceFixingsListComponent } from './maintenance-item-list';
 import { WorkshopSearchFormComponent, WorkshopOrderOperationComponent } from './workshop';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { PaymentShowComponent } from './payment-show/payment-show.component';
+import { PaymentShowDirective } from './payment-show/payment-show.directive';
 
 @NgModule({
   imports: [
@@ -46,7 +48,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
     ProductCategoryTypeaheadDirective,
     ProductBrandTypeaheadDirective,
     VehicleShowDirective,
-    
+    PaymentShowDirective,
     AttachmentItemListComponent,
     SuggestedItemListComponent,
     MaintenanceItemListComponent,
@@ -73,16 +75,17 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
     ProductBrandTypeaheadDirective,
     VehicleShowDirective,
     VehicleShowComponent,
-    
     AttachmentItemListComponent,
     SuggestedItemListComponent,
     MaintenanceItemListComponent,
     MaintenanceFixingsListComponent,
     WorkshopSearchFormComponent,
     WorkshopOrderOperationComponent,
+    PaymentShowComponent,
+    PaymentShowDirective,
     PreCheckOrderDetailComponent
   ],
   providers: [SuspendBillService],
-  entryComponents: [SuspendBillComponent, VehicleShowComponent]
+  entryComponents: [SuspendBillComponent, VehicleShowComponent, PaymentShowComponent]
 })
 export class ChainSharedModule { }
