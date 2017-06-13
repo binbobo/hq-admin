@@ -41,7 +41,7 @@ export class ClientCreateComponent extends FormHandle<Client> implements OnInit 
     return Observable.of(new Client());
   }
 
-  protected buidForm(): FormGroup {
+  protected buildForm(): FormGroup {
     return this.formBuilder.group({
       name: [this.model.name, [
         Validators.required,

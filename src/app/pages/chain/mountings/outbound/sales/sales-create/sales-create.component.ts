@@ -1,38 +1,49 @@
-import { Component, OnInit, Injector, Output, EventEmitter, ViewChildren, QueryList, ViewChild } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { FormHandle } from 'app/shared/models';
 import { SalesListItem } from '../sales.service';
 import { Observable } from "rxjs/Rx";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { TypeaheadRequestParams, FormGroupControlErrorDirective, HqAlerter } from 'app/shared/directives';
 import { CustomValidators } from 'ng2-validation';
-import { CentToYuanPipe } from "app/shared/pipes";
 
 @Component({
   selector: 'hq-sales-create',
   templateUrl: './sales-create.component.html',
   styleUrls: ['./sales-create.component.css']
 })
-export class SalesCreateComponent implements OnInit {
+export class SalesCreateComponent extends FormHandle<any> {
 
-  private form: FormGroup;
-  private converter: CentToYuanPipe = new CentToYuanPipe();
-  @Output()
-  private formSubmit = new EventEmitter<SalesListItem>();
-  private model: SalesListItem = new SalesListItem();
-  @ViewChildren(FormGroupControlErrorDirective)
-  private controls: QueryList<FormGroupControlErrorDirective>;
-  @ViewChild(HqAlerter)
-  protected alerter: HqAlerter;
+  protected getModel(): Observable<any> {
+    this.model = new SalesListItem();
+    this.model['yuan'] = this.model.price / 100;
+    return Observable.of(this.model);
+  }
+  protected buildForm(): FormGroup {
+    return this.formBuilder.group({
+      brandName: [this.model.brand, [Validators.required]],
+      productCode: [this.model.productCode],
+      productName: [this.model.productName],
+      productCategory: [this.model.productCategory, [Validators.required]],
+      productId: [this.model.productId, [Validators.required, Validators.maxLength(36)]],
+      productSpecification: [this.model.productSpecification, [Validators.required]],
+      storeId: [this.model.storeId],
+      locationId: [this.model.locationId],
+      productUnit: [this.model.productUnit],
+      count: [this.model.count, [Validators.required, CustomValidators.min(1)]],
+      price: [this.model.price],
+      amount: [this.model.amount],
+      description: [this.model.description, Validators.maxLength(100)],
+      stockCount: [this.model.stockCount, [CustomValidators.min(1)]],
+      yuan: [this.model['yuan'], [Validators.required, CustomValidators.gt(0)]]
+    })
+  }
+
   private storages: Array<any>;
   private locations: Array<any>;
 
   constructor(
-    private formBuilder: FormBuilder,
-  ) { }
-
-  ngOnInit() {
-    this.model['yuan'] = this.model.price / 100;
-    this.buildForm();
+    private injector: Injector,
+  ) {
+    super(injector, null)
   }
 
   onPriceChange(event) {
@@ -64,42 +75,17 @@ export class SalesCreateComponent implements OnInit {
     countControl.updateValueAndValidity();
   }
 
-  private buildForm() {
-    this.form = this.formBuilder.group({
-      brandName: [this.model.brand, [Validators.required]],
-      productCode: [this.model.productCode],
-      productName: [this.model.productName],
-      productCategory: [this.model.productCategory, [Validators.required]],
-      productId: [this.model.productId, [Validators.required, Validators.maxLength(36)]],
-      productSpecification: [this.model.productSpecification, [Validators.required]],
-      storeId: [this.model.storeId],
-      locationId: [this.model.locationId],
-      productUnit: [this.model.productUnit],
-      count: [this.model.count, [Validators.required, CustomValidators.min(1)]],
-      price: [this.model.price],
-      amount: [this.model.amount],
-      description: [this.model.description, Validators.maxLength(100)],
-      stockCount: [this.model.stockCount, [CustomValidators.min(1)]],
-      yuan: [this.model['yuan'], [Validators.required, CustomValidators.gt(0)]]
-    })
-  }
-
-  public onSubmit(event: Event) {
-    let invalid = this.controls
-      .map(c => c.validate())
-      .some(m => !m);
-    if (invalid) {
-      event.preventDefault();
-      return false;
-    } else {
-      let formData = this.form.value;
-      let location = formData.locationId && this.locations.find(m => m.id === formData.locationId);
-      let storageId = this.form.get('storeId').value;
-      let storage = formData.storeId && this.storages.find(m => m.id === formData.storeId);
-      let value = { ...formData, locationName: location && location.name, houseName: storage && storage.name };
-      this.formSubmit.emit(value);
-      this.reset();
-    }
+  public submit(event: Event) {
+    let valid = this.validate();
+    if (!valid) return false;
+    let formData = this.form.value;
+    let location = formData.locationId && this.locations.find(m => m.id === formData.locationId);
+    let storageId = this.form.get('storeId').value;
+    let storage = formData.storeId && this.storages.find(m => m.id === formData.storeId);
+    let value = { ...formData, locationName: location && location.name, houseName: storage && storage.name };
+    let obj = { data: value, continuable: !event };
+    this.onSubmit.emit(obj);
+    this.reset();
   }
 
   private onResetForm(event: any, retainKey: string) {
@@ -161,8 +147,7 @@ export class SalesCreateComponent implements OnInit {
   private reset() {
     this.storages = null;
     this.locations = null;
-    this.form = null;
-    setTimeout(() => this.buildForm(), 1);
+    super.onReset();
   }
 
 }

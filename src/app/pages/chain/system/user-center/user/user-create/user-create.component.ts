@@ -21,7 +21,7 @@ export class UserCreateComponent extends FormHandle<User> implements OnInit {
     return Observable.of(new User());
   }
 
-  protected buidForm(): FormGroup {
+  protected buildForm(): FormGroup {
     return this.formBuilder.group({
       name: [this.model.name, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
       password: [this.model.passWord, [Validators.required, Validators.minLength(6), Validators.maxLength(18)]],

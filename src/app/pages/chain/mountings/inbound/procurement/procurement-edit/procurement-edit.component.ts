@@ -16,7 +16,7 @@ export class ProcurementEditComponent extends FormHandle<ProcurementItem> implem
     return Observable.of(this.model);
   }
 
-  protected buidForm(): FormGroup {
+  protected buildForm(): FormGroup {
     return this.formBuilder.group({
       brandName: [this.model.brandName],
       productCode: [this.model.productCode, [Validators.required]],

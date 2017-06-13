@@ -1,35 +1,19 @@
-import { Component, OnInit, EventEmitter, Output, ViewChildren, QueryList, Input } from '@angular/core';
-import { TypeaheadRequestParams, FormGroupControlErrorDirective, } from 'app/shared/directives';
+import { Component, Injector } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
-import { PurchaseReturnItem, PurchaseReturnService, GetProductsRequest } from '../purchase-return.service';
+import { PurchaseReturnItem } from '../purchase-return.service';
+import { FormHandle } from 'app/shared/models';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'hq-return-create',
   templateUrl: './return-create.component.html',
   styleUrls: ['./return-create.component.css'],
 })
-export class ReturnCreateComponent implements OnInit {
+export class ReturnCreateComponent extends FormHandle<any> {
 
-  private form: FormGroup;
-  @Output()
-  private submit = new EventEmitter<PurchaseReturnItem>();
-  @Input()
-  private model: PurchaseReturnItem;
-  @ViewChildren(FormGroupControlErrorDirective)
-  private controls: QueryList<FormGroupControlErrorDirective>;
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private returnService: PurchaseReturnService,
-  ) { }
-
-  ngOnInit() {
-    this.buildForm();
-  }
-
-  private buildForm() {
-    this.form = this.formBuilder.group({
+  protected buildForm(): FormGroup {
+    return this.formBuilder.group({
       originalId: [this.model['id']],
       brand: [this.model.brand],
       productCode: [this.model.productCode],
@@ -47,18 +31,26 @@ export class ReturnCreateComponent implements OnInit {
     })
   }
 
-  public onSubmit(event: Event) {
-    let invalid = this.controls
-      .map(c => c.validate())
-      .some(m => !m);
-    if (invalid) {
-      event.preventDefault();
-      return false;
-    } else {
-      let value = Object.assign({}, this.model, this.form.value);
-      this.submit.emit(value);
-      this.form.reset(this.model);
-    }
+  protected getModel(): Observable<any> {
+    return Observable.of(this.model);
+  }
+
+  constructor(
+    private injector: Injector,
+  ) {
+    super(injector, null);
+  }
+
+  public submit(event: Event) {
+    let valid = this.validate();
+    if (!valid) return false;
+    let value = Object.assign({}, this.model, this.form.value);
+    let obj = {
+      data: value,
+      continuable: !event,
+    };
+    this.onSubmit.emit(obj);
+    this.form.reset(this.model);
   }
 
   private calculate() {
@@ -75,5 +67,4 @@ export class ReturnCreateComponent implements OnInit {
       exTaxPrice: exTaxPrice
     });
   }
-
 }

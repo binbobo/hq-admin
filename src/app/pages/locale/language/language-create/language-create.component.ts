@@ -22,7 +22,7 @@ export class LanguageCreateComponent extends FormHandle<Language> {
     super(injector, languageService);
   }
 
-  protected buidForm(): FormGroup {
+  protected buildForm(): FormGroup {
     return this.formBuilder.group({
       'name': [this.model.name, [
         Validators.required,

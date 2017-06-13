@@ -53,11 +53,19 @@
             <td>{{item.brandName}}</td>
             <td>{{item.productSpecification}}</td>
             <td class="text-center">{{item.productUnit }}</td>
-            <td class="text-center">{{item.count }}</td>
+            <td class="text-right">{{item.count }}</td>
             <td class="text-right">{{item.price|centToYuan}}</td>
             <td class="text-right">{{item.amount|centToYuan}}</td>
             <td class="text-right">{{item.exTaxPrice|centToYuan }}</td>
             <td class="text-right">{{item.exTaxAmount|centToYuan }}</td>
+          </tr>
+          <tr [hidden]="!model?.list?.length" class="font-bold">
+            <td class="text-center" colspan="10">合计</td>
+            <td class="text-right">{{totalValue?.count||0 }}</td>
+            <td class="text-right">{{totalValue?.price|centToYuan}}</td>
+            <td class="text-right">{{totalValue?.amount|centToYuan}}</td>
+            <td class="text-right">{{totalValue?.exTaxPrice|centToYuan }}</td>
+            <td class="text-right">{{totalValue?.exTaxAmount|centToYuan }}</td>
           </tr>
         </tbody>
       </table>
@@ -71,10 +79,10 @@
 </div>
 
 <div hqModal #createModal="hq-modal" modalTitle="新增" size="lg">
-  <hq-procurement-create *ngIf="createModal.isShown" (formSubmit)="onCreate($event)"></hq-procurement-create>
+  <hq-procurement-create *ngIf="createModal.isShown" (onSubmit)="onCreated($event)"></hq-procurement-create>
 </div>
 
-<div hqModal #editModal="hq-modal" modalTitle="新增" size="lg">
+<div hqModal #editModal="hq-modal" modalTitle="编辑" size="lg">
   <hq-procurement-edit *ngIf="editModal.isShown" [model]="selectedModel" (onSubmit)="onUpdated($event)"></hq-procurement-edit>
 </div>
 

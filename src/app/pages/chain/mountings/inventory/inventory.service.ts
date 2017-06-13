@@ -8,7 +8,7 @@ export class InventoryService implements BasicService<Inventory> {
   getPagedList(params: InventoryListRequest): Promise<PagedResult<Inventory>> {
     let search = params.serialize();
     let url = Urls.chain.concat('/Products/Search?', search);
-    return this.httpService.get<PagedResult<Inventory>>(url)
+    return this.httpService.getPagedList<Inventory>(url)
       .catch(err => Promise.reject(`获取配件列表失败：${err}`));
   }
   get(id: string): Promise<Inventory> {
@@ -65,7 +65,7 @@ export class InventoryListRequest extends PagedParams {
     public name?: string,
     public vehicleName?: string,
   ) {
-    super('InventoryListRequest');
+    super();
   }
 }
 

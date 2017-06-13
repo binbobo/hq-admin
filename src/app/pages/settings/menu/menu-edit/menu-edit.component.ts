@@ -83,7 +83,7 @@ export class MenuEditComponent extends FormHandle<Menu> {
     return routerData;
   }
 
-  protected buidForm(): FormGroup {
+  protected buildForm(): FormGroup {
     return this.formBuilder.group({
       title: [this.model.title, [
         Validators.required,

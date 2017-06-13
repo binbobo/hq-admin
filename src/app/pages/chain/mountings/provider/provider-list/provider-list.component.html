@@ -5,6 +5,10 @@
   </div>
   <div class="card-block">
     <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
+      <div class="input-group mr-1">
+        <span class="input-group-addon">供应商编码</span>
+        <input type="text" class="form-control" name="code" [(ngModel)]="params.code" placeholder="供应商编码">
+      </div>
       <div class="input-group m-1">
         <span class="input-group-addon">供应商名称</span>
         <input type="text" class="form-control" name="name" [(ngModel)]="params.name" placeholder="供应商名称">

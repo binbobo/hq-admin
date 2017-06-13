@@ -8,10 +8,10 @@ import { SalesCreateComponent } from './sales/sales-create/sales-create.componen
 import { BsDropdownModule } from 'ngx-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomFormsModule } from "ng2-validation/dist";
-import { ReceiveListComponent } from './receive/receive-list/receive-list.component';
-import { ReceiveCreateComponent } from './receive/receive-create/receive-create.component';
-import { ReceiveService } from './receive/receive.service';
-import { ReceivePrintComponent } from './receive/receive-print/receive-print.component';
+import { ReceiveListComponent } from './inner-receive/receive-list/receive-list.component';
+import { ReceiveCreateComponent } from './inner-receive/receive-create/receive-create.component';
+import { ReceiveService } from './inner-receive/receive.service';
+import { ReceivePrintComponent } from './inner-receive/receive-print/receive-print.component';
 import { SalesPrintComponent } from './sales/sales-print/sales-print.component';
 import { ChainSharedModule } from '../../chain-shared/chain-shared.module';
 import { DistributeCreateComponent } from './distribute/distribute-create/distribute-create.component';
@@ -23,7 +23,7 @@ import { PurchaseReturnService } from './purchase-return/purchase-return.service
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { DistributePrintComponent } from './distribute/distribute-print/distribute-print.component';
 import { SalesOutBillDirective } from './sales/sales-out-bill.directive';
-import { ReceiveOutBillDirective } from './receive/receive-out-bill.directive';
+import { ReceiveOutBillDirective } from './inner-receive/receive-out-bill.directive';
 import { PurchaseOutBillDirective } from './purchase-return/purchase-out-bill.directive';
 
 const routes: Routes = [
@@ -46,7 +46,5 @@ const routes: Routes = [
   exports: [RouterModule],
   providers: [SalesService, ReceiveService, ProviderService, PurchaseReturnService],
   declarations: [DistributeComponent, SalesListComponent, SalesCreateComponent, ReceiveListComponent, ReceiveCreateComponent, ReceivePrintComponent, SalesPrintComponent, ReturnListComponent, ReturnCreateComponent, ReturnPrintComponent, DistributeCreateComponent, DistributePrintComponent, SalesOutBillDirective, ReceiveOutBillDirective, PurchaseOutBillDirective]
-
-
 })
 export class OutboundModule { }

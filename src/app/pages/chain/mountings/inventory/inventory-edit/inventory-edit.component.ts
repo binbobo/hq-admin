@@ -37,7 +37,7 @@ export class InventoryEditComponent extends FormHandle<Inventory> implements OnI
     }
     return Observable.of(this.model)
   }
-  protected buidForm(): FormGroup {
+  protected buildForm(): FormGroup {
     return this.formBuilder.group({
       locationName: [this.model.locationName, [Validators.maxLength(50)]],
       locationId: [this.model.locationId, [Validators.maxLength(50)]],
