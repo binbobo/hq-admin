@@ -3,11 +3,10 @@
     <div class="hq-input">
       <label for="phone" class="form-label"><span class="asterisk mr-1">*</span>手机号</label>
       <div class="hq-col" *ngIf="!customerId">
-        <input label="手机号"  [hqCustomerTypeahead]="'phone'" (onSelect)="onCustomerPhoneSelect($event)" type="text" maxlength="11"
-          class="form-control" formControlName="phone">
+        <input [textMask]="{mask: phoneNumberMask}" label="手机号" [hqCustomerTypeahead]="'phone'" (onSelect)="onCustomerPhoneSelect($event)" type="text" class="form-control" formControlName="phone">
       </div>
       <div class="hq-col" *ngIf="customerId">
-        <input maxlength="11" label="手机号" type="text" class="form-control" formControlName="phone">
+        <input [textMask]="{mask: phoneNumberMask}" label="手机号" type="text" class="form-control" formControlName="phone">
       </div>
     </div>
     <div class="hq-input">
@@ -52,7 +51,7 @@
     <div class="hq-input">
       <label for="tel" class="form-label">电话</label>
       <div class="hq-col">
-        <input maxlength="12" label="电话" type="text" class="form-control" formControlName="tel" id="tel">
+        <input maxlength="12" placeholder="010-1234567" label="电话" type="text" class="form-control" formControlName="tel" id="tel">
       </div>
     </div>
     <div class="hq-input">
@@ -69,6 +68,15 @@
     </div>
   </div>
   <div class="form-group row">
+    <div class="hq-input">
+      <label for="source" class="form-label">客户来源</label>
+      <div class="hq-col">
+        <select label="客户来源" id="source" formControlName="source" class="form-control">
+          <option style="display:none">
+          <option *ngFor="let source of customerSourceData" value="{{source.id}}">{{source.name}}</option>
+        </select>
+      </div>
+    </div>
     <div class="hq-input">
       <label for="province" class="form-label">省份</label>
       <div class="hq-col">

@@ -17,13 +17,13 @@ export class WorkshopService implements BasicService<any> {
         throw new Error('Method not implemented.');
     }
 
-      /**
-     * 获取维修验收类型数据 用于维修指派
-     * 
-     * @returns {Observable<any[]>} 
-     * 
-     * @memberOf OrderService
-     */
+    /**
+   * 获取维修验收类型数据 用于维修指派
+   * 
+   * @returns {Observable<any[]>} 
+   * 
+   * @memberOf OrderService
+   */
     getMaintenanceCheckTypes(): Observable<any[]> {
         const url = Urls.chain.concat('/DictValues/MaintainCheckedType');
         return this.httpService
@@ -47,6 +47,20 @@ export class WorkshopService implements BasicService<any> {
             })
             .catch(err => Promise.reject(`加载维修验收工单列表失败：${err}`));
     }
+    /**
+    *  根据预检单id查询预检单信息
+    * @param {string} id 
+    * @returns Promise<any>
+    * @memberOf OrderService
+    */
+    getPreCheckOrderInfoByPreCheckId(id: string): Promise<any> {
+        const url = Urls.chain.concat('/PreChecks/', id);
+        return this.httpService
+            .get<ApiResult<any>>(url)
+            .then(result => result.data)
+            .then(data => data || Promise.reject('获取数据无效！'))
+            .catch(err => Promise.reject(`获取预检单记录失败：${err}`));
+    }
 
     /**
      * 根据工单id查询工单详细信息
@@ -61,7 +75,7 @@ export class WorkshopService implements BasicService<any> {
         return this.httpService
             .get<ApiResult<any>>(url)
             .then(result => result.data)
-            .then(data => data || Promise.reject('获取数据无效！'))
+            .then(data => data || Promise.reject('获取数据无效！')) 
             .catch(err => Promise.reject(`加载菜单失败：${err}`));
     }
 

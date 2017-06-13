@@ -35,8 +35,17 @@
         <div class="hq-input">
           <label for="phone" class="form-label"><span class="asterisk mr-1">*</span>车主电话</label>
           <div class="hq-col">
-            <input maxlength="11" #phone (blur)="onPhoneBlur(phone.value)" type="text" label="手机号" class="form-control" formControlName="phone"
+            <input [textMask]="{mask: phoneNumberMask}" #phone (blur)="onPhoneBlur(phone.value)" type="text" label="手机号" class="form-control" formControlName="phone"
               id="phone">
+          </div>
+        </div>
+        <div class="hq-input">
+          <label for="source" class="form-label">客户来源</label>
+          <div class="hq-col">
+            <select label="客户来源" id="source" formControlName="source" class="form-control">
+              <option style="display:none">
+              <option *ngFor="let source of customerSourceData" value="{{source.id}}">{{source.name}}</option>
+            </select>
           </div>
         </div>
       </div>
@@ -99,7 +108,7 @@
         <div class="hq-input">
           <label for="contactInfo" class="form-label"><span class="asterisk mr-1">*</span>送修人电话</label>
           <div class="hq-col">
-            <input maxlength="11" type="text" label="送修人电话" class="form-control" formControlName="contactInfo" id="contactInfo">
+            <input [textMask]="{mask: phoneNumberMask}" type="text" label="送修人电话" class="form-control" formControlName="contactInfo" id="contactInfo">
           </div>
         </div>
       </div>
@@ -108,8 +117,7 @@
           <label for="mileage" class="form-label"><span class="asterisk mr-1">*</span>行驶里程</label>
           <div class="hq-col">
             <div class="input-group">
-              <input #mileage (blur)="resetNextMileageValidators(mileage.value)" maxlength="10" label="行驶里程" type="text" class="form-control"
-                formControlName="mileage" id="mileage">
+              <input #mileage (blur)="onMileageBlur(mileage.value, nextMileageCtr)" [textMask]="{mask: mileageMask}" label="行驶里程" type="text" class="form-control" formControlName="mileage" id="mileage">
               <span class="input-group-addon">KM</span>
             </div>
           </div>
@@ -168,7 +176,7 @@
           <label for="nextMileage" class="form-label">建议下次保养里程</label>
           <div class="hq-col">
             <div class="input-group">
-              <input maxlength="10" [errors]="{gt:'输入里程不能小于0', gte:'输入里程不能小于行驶里程'}" label="建议下次保养里程" type="text" class="form-control" formControlName="nextMileage"
+              <input #nextMileageCtr="hq-error" [textMask]="{mask: mileageMask}" [errors]="{gte:'输入里程不能小于行驶里程'}" label="建议下次保养里程" type="text" class="form-control" formControlName="nextMileage"
                 id="nextMileage">
               <span class="input-group-addon">KM</span>
             </div>
@@ -186,6 +194,7 @@
           <table class="table table-bordered">
             <thead>
               <tr>
+                <th>序号</th>
                 <th>操作</th>
                 <th>维修项目名称</th>
                 <th>维修工时</th>
@@ -195,7 +204,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let item of newMaintenanceItemData">
+              <tr *ngFor="let item of newMaintenanceItemData;let i=index;">
+                <td class="text-center">{{i+1}}</td>
                 <td width="75">
                   <button type="button" class="btn btn-sm btn-success" (click)="onMaintenanceItemEdit(addModal, item)">编辑</button>
                   <button type="button" class="btn btn-sm btn-danger" (click)="onDelMaintenanceItem(item.serviceId)">删除</button>

@@ -9,7 +9,21 @@
     <br>
     <ng-content select="div"></ng-content>
   </tab>
-  <tab *ngIf="selectedOrder?.attachServiceOutputs?.length>0">
+ <tab *ngIf="selectedOrder?.productOutputs?.length>0">
+    <template tabHeading>
+      <i class="fa fa-wrench mr-2" aria-hidden="true"></i>维修配件
+    </template>
+    <div class="table-container">
+      <hq-maintenance-fixings-list [productOutputs]="selectedOrder?.productOutputs"></hq-maintenance-fixings-list>
+    </div>
+  </tab>
+  <tab style="max-height:300px;overflow:auto" *ngIf="selectedOrder?.preCheckOrder" >
+    <template tabHeading>
+      <i class="fa fa-clipboard mr-2" aria-hidden="true"></i>预检单
+    </template>
+    <hq-pre-check-order-detail [data]="selectedOrder?.preCheckOrder"></hq-pre-check-order-detail>
+  </tab>
+  <!--<tab *ngIf="selectedOrder?.attachServiceOutputs?.length>0">
     <template tabHeading>
       <i class="fa fa-wrench mr-2" aria-hidden="true"></i>附加项目
     </template>
@@ -24,5 +38,5 @@
     <div class="table-container">
       <hq-suggested-item-list [suggestServiceOutputs]="selectedOrder?.suggestServiceOutputs"></hq-suggested-item-list>
     </div>
-  </tab>
+  </tab>-->
 </tabset>

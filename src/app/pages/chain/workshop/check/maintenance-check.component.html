@@ -61,7 +61,7 @@
 </div>
 <div hqModal #checkModal="hq-modal" size="lg" modalTitle="维修验收详情">
   <ng-template *ngIf="isDetailModalShown" hq-alerter></ng-template>
-  <hq-workshop-order-operation *ngIf="checkModal.isShown"  [selectedOrder]="selectedOrder">
+  <hq-workshop-order-operation *ngIf="checkModal.isShown" [selectedOrder]="selectedOrder">
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -69,6 +69,7 @@
               type="checkbox" /></th>
           <th>项目名称</th>
           <th>维修工时</th>
+          <th>维修技师</th>
         </tr>
       </thead>
       <tbody>
@@ -83,11 +84,19 @@
             <span [class.accept-stamp]="record.teamType === 6"></span>
           </td>
           <td>{{record?.workHour}}</td>
+          <td>{{record?.turnEmployeeNames.length>0 ? record?.turnEmployeeNames : record?.employeeNames}}</td>
         </tr>
       </tbody>
     </table>
     <div>
-      <button [hqSpinner]="generating" class="btn btn-sm btn-primary" [disabled]="!selectedOrder?.serviceOutputs?.enableBtn" (click)="onOrderCheckPass()">通过</button>
+      <form [formGroup]="mileageForm" class="form-inline">
+        <label><span class="asterisk mr-1">*</span>出厂里程：</label>
+        <div class="input-group">
+          <input type="text" [errors]="{gte:'出厂里程不能小于进厂里程'}" [textMask]="{mask: mileageMask}" label="出厂里程" class="form-control" formControlName="leaveMileage" />
+          <div class="input-group-addon">KM</div>
+        </div>
+      </form>
+      <button [hqSpinner]="generating" class="mt-3 btn btn-sm btn-primary" [disabled]="!selectedOrder?.serviceOutputs?.enableBtn" (click)="onOrderCheckPass()">通过</button>
     </div>
   </hq-workshop-order-operation>
 </div>

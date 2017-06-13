@@ -1,11 +1,12 @@
 import { Component, OnInit, Injector, ViewChild, ViewChildren, QueryList } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ValidationErrors, Validator } from '@angular/forms';
 import { DataList, StorageKeys } from "app/shared/models";
 import { BillOrderService, OrderListSearch } from "./bill-order.service";
 import { Router } from "@angular/router";
 import { HqAlerter } from "app/shared/directives";
 import { PrintDirective, FormGroupControlErrorDirective } from 'app/shared/directives';
 import { CustomValidators } from "ng2-validation/dist";
+import { ChainService } from "app/pages/chain/chain.service";
 import * as moment from 'moment';
 
 @Component({
@@ -50,11 +51,12 @@ export class BillOrderComponent extends DataList<any>{
     endDateParams = {
         endtime: undefined,
     }
-
+    private settlementid: any;
     constructor(
         private router: Router,
         injector: Injector,
         protected service: BillOrderService,
+        protected typeservice: ChainService,
         private fb: FormBuilder) {
         super(injector, service);
         this.params = new OrderListSearch();
@@ -67,12 +69,19 @@ export class BillOrderComponent extends DataList<any>{
         this.user = JSON.parse(sessionStorage.getItem(StorageKeys.Identity));
         this.reset();
         this.billForm();
+
+        //结算方式类型
+        this.typeservice.getSettlementType().then(data => {
+            this.billTypeData = data;
+
+        })
     }
     billSheetForm: FormGroup;
     billForm() {
         this.billSheetForm = this.fb.group({
             billPrice: ['', [Validators.required, CustomValidators.lte(this.billPricex / 100)]], //金额
-            leaveMileage: ['', [Validators.required, CustomValidators.gte(this.mileage)]], // 出厂里程
+            // leaveMileage: ['', [Validators.required, CustomValidators.gte(this.mileage)]], // 出厂里程
+            settlementid: ['', [Validators.required]]
         })
     }
     // 点击查询
@@ -128,8 +137,9 @@ export class BillOrderComponent extends DataList<any>{
                 this.billPricex = (+this.sumFee);
                 item.generat = false;
                 this.billForm();
-                this.billSheetForm.controls.leaveMileage.setValue(this.mileage);
-                this.billSheetForm.controls.billPrice.setValue((+this.sumFee / 100))
+                // this.billSheetForm.controls.leaveMileage.setValue(this.mileage);
+                this.billSheetForm.controls.billPrice.setValue((+this.sumFee / 100));
+                this.billSheetForm.controls.settlementid.setValue(this.billTypeData[0].id);
                 // 显示窗口
                 dialog.show();
             });
@@ -150,7 +160,7 @@ export class BillOrderComponent extends DataList<any>{
     unBill(confirmModal) {
         confirmModal.hide();
         this.service.put(confirmModal.id).then(() => {
-            this.alerter.info('撤销结算成功!', true,3000);
+            this.alerter.info('撤销结算成功!', true, 3000);
             this.onLoadList()
         }).catch(err => this.alerter.error(err, true, 3000));
 
@@ -236,11 +246,6 @@ export class BillOrderComponent extends DataList<any>{
                     this.service.getPrintDetail(id)
                         .then(data => {
                             Object.assign(this.selectedOrder, data);
-                            // this.selectedOrder.updateUser = data.updateUser;//结算人
-                            // this.selectedOrder.updateOnUtc = data.updateOnUtc;//结算时间
-                            // this.selectedOrder.settlementParty = data.settlementParty;//结算方
-                            // this.selectedOrder.settlementCode = data.settlementCode;//结算单号
-                            // this.selectedOrder.leaveMileage = data.leaveMileage;//出厂里程
                             this.printData.maindata = data;
                             this.printData.costData = data.totalCost; //收费结算单
                             this.printData.workHourData = data.workHours;//工时明细
@@ -309,7 +314,8 @@ export class BillOrderComponent extends DataList<any>{
         evt.preventDefault();
         // this.billData["id"] = this.billId;
         this.billData["price"] = parseInt((this.billSheetForm.controls.billPrice.value * 100).toFixed(2));
-        this.billData["leaveMileage"] = this.billSheetForm.controls.leaveMileage.value + "";
+        // this.billData["leaveMileage"] = this.billSheetForm.controls.leaveMileage.value + "";
+        this.billData["settlementid"] = this.billSheetForm.controls.settlementid.value;
         let invalid = this.controls
             .map(c => c.validate())
             .some(m => !m);
@@ -320,6 +326,7 @@ export class BillOrderComponent extends DataList<any>{
             if (confirm('是否生成维修结算单？')) {
                 this.initprint();
                 this.generat = true;
+
                 this.service.post(this.billData, this.billId).then((result) => {
                     this.generat = false;
                     if (confirm('已生成维修结算单，是否需要打印？')) {

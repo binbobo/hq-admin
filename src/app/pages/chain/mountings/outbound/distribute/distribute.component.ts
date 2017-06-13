@@ -133,11 +133,18 @@ export class DistributeComponent implements OnInit {
   numberList: any;
   serialData: any = [];
   serialDataList: any;
-  // 车牌号模糊搜索接口调用
+  // 车牌号工单号模糊搜索接口调用
   public get PlatNoSource() {
     return (params: TypeaheadRequestParams) => {
       let p = new DistributeRequest(params.text);
       p.setPage(params.pageIndex, params.pageSize);
+
+      this.service.getOrderPageData(p).then((result) => {
+        if (result.data.length < 1) {
+          this.alerter.error("找不到该工单或已完工，不能进行领料操作。", true, 5000);
+        }
+      }).catch((err) => this.alerter.error(err, true, 2000))
+
       return this.service.getOrderPageData(p);
     };
   }
@@ -169,7 +176,7 @@ export class DistributeComponent implements OnInit {
       this.generat = false;
       return false;
     }
-    
+
     this.billData = {
       billCode: this.billCode,
       billId: this.listId,
@@ -314,7 +321,7 @@ export class DistributeComponent implements OnInit {
       serialData: this.serialData,
       billCode: this.billCode,
       billId: this.listId,
-      plateNo: this.plateNo, 
+      plateNo: this.plateNo,
       customerName: this.customerName,
       MRData: this.MRData,
       suspendedBillId: this.suspendedBillId,
