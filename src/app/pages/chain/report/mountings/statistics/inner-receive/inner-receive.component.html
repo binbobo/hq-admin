@@ -1,30 +1,32 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
-  <div class="card-header">内部领料统计</div>
+  <div class="card-header">
+    <label>内部领料统计</label>
+  </div>
   <div class="card-block">
     <form class="form-inline mb-2" [formGroup]="receiveForm" (ngSubmit)="onSearch()">
       <div class="input-group m-1">
-        <span class="input-group-addon">领料人</span>
+        <label class="input-group-addon">领料人</label>
         <select formControlName="takeUser" class="form-control" (change)="onReceiverSelect($event)">
-              <option *ngFor="let item of employees" [value]="item.value">{{item.text}}</option>
-            </select>
+          <option *ngFor="let item of employees" [value]="item.value">{{item.text}}</option>
+        </select>
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">部门</span>
+        <label class="input-group-addon">部门</label>
         <select formControlName="takeDepart" class="form-control">
-              <option *ngFor="let item of departments" [value]="item.value">{{item.text}}</option>
-            </select>
+          <option *ngFor="let item of departments" [value]="item.value">{{item.text}}</option>
+        </select>
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">查询日期</span>
+        <label class="input-group-addon">查询日期</label>
         <input [max-date]="maxEnterStartDate" date-only="true" class="form-control datetime-picker" style="border-right:0;" formControlName="searchStart"
           id="starttime" name="starttime" type="text" ngui-datetime-picker/>
-        <span class="input-group-addon">-</span>
+        <label class="input-group-addon">-</label>
         <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" date-only="true" class="form-control datetime-picker" style="border-right-width:1px;"
           id="endtime" formControlName="searchEnd" name="endtime" type="text" ngui-datetime-picker/>
       </div>
       <div class="input-group m-1" *ngIf="orgShow">
-        <span class="input-group-addon">门店</span>
+        <label class="input-group-addon">门店</label>
         <hq-dropdown-tree text="name" value="id" [items]="stations" (onChange)="onSearchRangeChange($event)">
         </hq-dropdown-tree>
       </div>

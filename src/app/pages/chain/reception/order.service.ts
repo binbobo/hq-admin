@@ -30,8 +30,7 @@ export class OrderService implements BasicService<Order> {
      * @memberOf OrderService
      */
     getCustomerSource(): Observable<any[]> {
-        // const url = Urls.chain.concat('/CustomerSources');
-        const url = 'http://192.168.60.57:8028/api/CustomerSources';
+        const url = Urls.chain.concat('/CustomerSources');
         return this.httpService
             .request(url)
             .map(response => {

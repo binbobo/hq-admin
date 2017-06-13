@@ -1,6 +1,6 @@
 <div class="checkout card">
   <div class="card-header">
-    <span>维修收银</span>
+    <label>维修收银</label>
   </div>
   <div class='card-block'>
     <form (ngSubmit)="onSearch()" autocomplete="off">
@@ -28,14 +28,14 @@
           <input type="text" class="form-control" [(ngModel)]="params.SettlementCode" id="SettlementCode" name="SettlementCode" placeholder="请输入结算单号">
         </div>
         <div class="input-group m-1">
-          <span class="input-group-addon">车牌号</span>
+          <label class="input-group-addon">车牌号</label>
           <input type="text" [(ngModel)]="params.carnumber" class="form-control" id="carnumber" name="carnumber" placeholder="请输入车牌号">
         </div>
         <div class="input-group m-1">
-          <span class="input-group-addon">进厂时间</span>
+          <label class="input-group-addon">进厂时间</label>
           <input [max-date]="maxStartTime" class="form-control datetime-picker" style="border-right:0;" [(ngModel)]="params.starttime"
             id="starttime" name="starttime" type="text" placeholder="请选择开始时间" [close-on-select]="false" ngui-datetime-picker/>
-          <span class="input-group-addon">-</span>
+          <label class="input-group-addon">-</label>
           <input [min-date]="minEndTime" [max-date]="maxEndTime" class="form-control" style="border-right-width:1px;" id="endtime"
             [(ngModel)]="endDateParams.endtime" name="endtime" type="text" placeholder="请选择截止时间" [close-on-select]="false"
             ngui-datetime-picker/>

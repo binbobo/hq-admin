@@ -1,31 +1,31 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
   <div class="card-header">
-    库存管理
+    <label>库存管理</label>
   </div>
   <div class="card-block">
     <form class="form-inline mb-3" (ngSubmit)="onLoadList()">
       <div class="input-group m-1">
-        <span class="input-group-addon">仓库</span>
+        <label class="input-group-addon">仓库</label>
         <select class="form-control" name="storehouseId" [(ngModel)]="params.storehouseId">
           <option value="">全部仓库</option>
           <option *ngFor="let item of warehouses" value="{{item.value}}">{{item.text}}</option>
         </select>
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">库位</span>
+        <label class="input-group-addon">库位</label>
         <input type="text" class="form-control" name="storageLocationName" [(ngModel)]="params.storageLocationName" placeholder="请输入库位">
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">配件编码</span>
+        <label class="input-group-addon">配件编码</label>
         <input type="text" class="form-control" name="code" [(ngModel)]="params.code" placeholder="请输入配件编码">
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">配件名称</span>
+        <label class="input-group-addon">配件名称</label>
         <input type="text" class="form-control" name="name" [(ngModel)]="params.name" placeholder="请输入配件名称">
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">适用车型</span>
+        <label class="input-group-addon">适用车型</label>
         <input type="text" class="form-control" name="vehicleName" [(ngModel)]="params.vehicleName" placeholder="请输入适用车型">
       </div>
       <div class="form-group">

@@ -1,12 +1,12 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
   <div class="card-header">
-    <span>角色管理</span>
+    <label>角色管理</label>
   </div>
   <div class="card-block">
     <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
       <div class="input-group m-1">
-        <span class="input-group-addon">角色名称</span>
+        <label class="input-group-addon">角色名称</label>
         <input type="text" class="form-control" name="name" [(ngModel)]="params.name" placeholder="角色名称">
       </div>
       <div class="input-group m-1">
