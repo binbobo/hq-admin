@@ -1,24 +1,24 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
   <div class="card-header">
-    盘点清单
+    <label>盘点清单</label>
   </div>
   <div class="card-block">
     <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
       <div class="input-group m-1">
-        <span class="input-group-addon">盘点单号</span>
+        <label class="input-group-addon">盘点单号</label>
         <input type="text" class="form-control" name="billCode" [(ngModel)]="params.billCode" placeholder="请输入盘点单号">
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">生成日期</span>
+        <label class="input-group-addon">生成日期</label>
         <input class="form-control" ngui-datetime-picker date-only="true" name="createTimeStart" [(ngModel)]="params.createTimeStart"
           placeholder="请选择开始日期">
-        <span class="input-group-addon">-</span>
+        <label class="input-group-addon">-</label>
         <input class="form-control" ngui-datetime-picker date-only="true" name="createTimeEnd" [(ngModel)]="params.createTimeEnd"
           placeholder="请选择截止日期">
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">操作人</span>
+        <label class="input-group-addon">操作人</label>
         <input type="text" class="form-control" name="operator" [(ngModel)]="params.operator" placeholder="请输入操作人">
       </div>
       <div class="input-group m-1">

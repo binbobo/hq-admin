@@ -1,28 +1,28 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
   <div class="card-header">
-    <span>销售出库</span>
+    <label>销售出库</label>
     <ng-template hqSalesOutBill (onRemove)="onSuspendRemove($event)" (onSelect)="onSuspendSelect($event)"></ng-template>
   </div>
   <div class="card-block">
     <form #form="ngForm" class="form-inline mb-2">
       <div class="input-group m-1">
-        <span class="input-group-addon">客户名称</span>
+        <label class="input-group-addon">客户名称</label>
         <input class="form-control" hqCustomerTypeahead (onSelect)="onCustomerSelect($event)" name="custName" required [(ngModel)]="model.custName"
           placeholder="请输入客户名称">
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">手机号</span>
+        <label class="input-group-addon">手机号</label>
         <input class="form-control" hqMobile required name="custPhone" [(ngModel)]="model.custPhone" placeholder="请输入手机号">
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">销售员</span>
+        <label class="input-group-addon">销售员</label>
         <select class="form-control" required name="seller" [(ngModel)]="model.seller">
           <option *ngFor="let item of salesmen" [value]="item.value">{{item.text}}</option>
         </select>
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">结算方式</span>
+        <label class="input-group-addon">结算方式</label>
         <select class="form-control" required name="settlementMethodId" [(ngModel)]="model.settlementMethodId">
           <option *ngFor="let item of settlements" [value]="item.id">{{item.value}}</option>
         </select>

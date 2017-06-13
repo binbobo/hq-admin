@@ -1,42 +1,44 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
-  <div class="card-header">配件销售统计</div>
+  <div class="card-header">
+    <label>配件销售统计</label>
+  </div>
   <div class="card-block">
     <form class="form-inline mb-2" [formGroup]="partssalesForm" (ngSubmit)="onSearch()">
       <div class="input-group m-1">
-        <span class="input-group-addon">配件编码</span>
+        <label class="input-group-addon">配件编码</label>
         <input [hqProductTypeahead]='code' (onSelect)="onSelect($event)" class="form-control" formControlName="productCode" placeholder="请输配件编码"
         />
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">配件分类</span>
+        <label class="input-group-addon">配件分类</label>
         <input [hqProductTypeahead]='categoryName' (onSelect)="onSelect($event)" class="form-control" formControlName="productCategory"
           placeholder="请输配件分类" />
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">配件名称</span>
+        <label class="input-group-addon">配件名称</label>
         <input [hqProductTypeahead]='name' (onSelect)="onSelect($event)" class="form-control" formControlName="productName" placeholder="请输配件名称"
         />
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">客户名称</span>
+        <label class="input-group-addon">客户名称</label>
         <input hqCustomerTypeahead name="name" class="form-control" (onSelect)="changeVal($event)" formControlName="name" placeholder="请输客户名字"
         />
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">客户手机</span>
+        <label class="input-group-addon">客户手机</label>
         <input hqMobile name="phone" class="form-control" formControlName="phone" placeholder="请输客户手机" />
       </div>
       <div class="input-group m-1">
-        <span class="input-group-addon">查询日期</span>
+        <label class="input-group-addon">查询日期</label>
         <input [max-date]="maxEnterStartDate" class="form-control datetime-picker" style="border-right:0;" formControlName="searchStart"
           id="starttime" name="starttime" type="text" date-only="true" ngui-datetime-picker/>
-        <span class="input-group-addon">-</span>
+        <label class="input-group-addon">-</label>
         <input [min-date]="minEnterEndDate" [max-date]="maxEnterEndDate" class="form-control datetime-picker" style="border-right-width:1px;"
           id="endtime" formControlName="searchEnd" name="endtime" type="text" date-only="true" ngui-datetime-picker/>
       </div>
       <div class="input-group m-1" *ngIf="orgShow">
-        <span class="input-group-addon">门店</span>
+        <label class="input-group-addon">门店</label>
         <hq-dropdown-tree text="name" value="id" [items]="stations" (onChange)="onSearchRangeChange($event)">
         </hq-dropdown-tree>
       </div>
