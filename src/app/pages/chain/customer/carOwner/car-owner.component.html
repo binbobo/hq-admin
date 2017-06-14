@@ -17,21 +17,20 @@
       </div>
 
       <div class="input-group m-1">
-        <label class="input-group-addon">建档日期</label>
-        <input readonly [max-date]="maxCreatedStartDate" [(ngModel)]="params.createdStartDate" class="form-control datetime-picker"
-          type="text" name="createdStartDate" ngui-datetime-picker date-only="true" style="border-bottom-right-radius: 0;border-top-right-radius: 0;"
-        />
-        <label class="input-group-addon">-</label>
-        <input readonly [min-date]="minCreatedEndDate" [max-date]="maxCreatedEndDate" [(ngModel)]="endDateParams.createdEndDate"
-          class="form-control datetime-picker" type="text" name="createdEndDate" ngui-datetime-picker date-only="true" />
-      </div>
-
-      <div class="input-group m-1">
         <label class="input-group-addon">来源渠道</label>
         <select [(ngModel)]="params.source" label="来源渠道" id="source" name="source" class="form-control">
           <option style="display:none">
           <option *ngFor="let source of customerSourceData" value="{{source.id}}">{{source.name}}</option>
         </select>
+      </div>
+
+      <div class="input-group m-1">
+        <label class="input-group-addon">建档日期</label>
+        <input readonly [max-date]="maxCreatedStartDate" [(ngModel)]="params.createdStartDate" class="form-control datetime-picker"
+          type="text" name="createdStartDate" ngui-datetime-picker date-only="true" style="border-bottom-right-radius: 0;border-top-right-radius: 0;" />
+        <label class="input-group-addon">-</label>
+        <input readonly [min-date]="minCreatedEndDate" [max-date]="maxCreatedEndDate" [(ngModel)]="endDateParams.createdEndDate"
+          class="form-control datetime-picker" type="text" name="createdEndDate" ngui-datetime-picker date-only="true" />
       </div>
 
       <div class="input-group" style="width:50%">

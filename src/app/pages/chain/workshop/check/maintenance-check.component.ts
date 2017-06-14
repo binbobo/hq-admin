@@ -7,6 +7,7 @@ import { numberMask } from 'app/pages/chain/chain-shared';
 import { HQ_VALIDATORS } from "app/shared/shared.module";
 import { CustomValidators } from 'ng2-validation';
 import { ModalDirective } from 'ngx-bootstrap';
+import { FormGroupControlErrorDirective } from 'app/shared/directives';
 
 
 @Component({
@@ -34,6 +35,8 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
   mileageForm: FormGroup;
   @ViewChild('checkModal')
   checkModal: ModalDirective;
+  @ViewChild('leaveMileageControl')
+  leaveMileageControl: FormGroupControlErrorDirective;
 
   constructor(injector: Injector,
     private fb: FormBuilder,
@@ -69,6 +72,12 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
   createForm() {
     this.mileageForm = this.fb.group({
       leaveMileage: ['', [Validators.required]], // 出厂里程
+    });
+    this.mileageForm.valueChanges.subscribe(data => {
+      if(this.leaveMileageControl) {
+        console.log(this.leaveMileageControl);
+      }
+      this.selectedOrder.serviceOutputs.enableBtn = this.isCheckPassBtnEnable();
     });
   }
 
@@ -143,6 +152,7 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
       this.alerter.error('您还未选择任何维修工项, 请选择维修工项！', true, 3000);
       return;
     }
+    console.log(this.mileageForm.value.leaveMileage);
     // 调用接口  执行通过验收动作
     this.service.update({ ids: maintenanceItemIds, leaveMileage: this.mileageForm.value.leaveMileage }).then(() => {
       // 修改操作记录的teamType为6
@@ -217,7 +227,8 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
     this.mileageForm.controls.leaveMileage.setValue(data.leaveMileage || data.mileage);
     // 出厂里程不能小于进厂里程
     this.mileageForm.controls.leaveMileage.setValidators([Validators.required, HQ_VALIDATORS.mileage, CustomValidators.gte(data.mileage)]);
-  }
+    this.mileageForm.controls.leaveMileage.updateValueAndValidity();
+}
 
   /**
   * 点击工单详情按钮处理程序

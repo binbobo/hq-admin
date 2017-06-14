@@ -8,6 +8,7 @@ import { DataList, StorageKeys } from 'app/shared/models';
 import { SuspendBillDirective, numberMask, phoneNumberMask } from 'app/pages/chain/chain-shared';
 import { CustomValidators } from 'ng2-validation';
 import { HQ_VALIDATORS } from '../../../../shared/shared.module';
+import { SweetAlertService } from '../../../../shared/services/sweetalert.service';
 
 
 @Component({
@@ -69,7 +70,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   // 车牌号 车主姓名模糊查询框是否可用标志
   isFuzzySearchEnable = true;
   // 覆盖父类的初始化方法
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
   // 行驶里程掩码输入
   mileageMask = numberMask;
@@ -79,7 +81,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   constructor(
     injector: Injector,
     protected service: OrderService,
-
+    protected sweetAlertService: SweetAlertService,
     private fb: FormBuilder,
   ) {
     super(injector, service);
@@ -402,20 +404,25 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   // 从表格中删除一条添加的维修项目事件处理程序
   onDelMaintenanceItem(serviceId) {
-    if (!confirm('确定要删除当前选择的维修项目吗?')) { return; }
-    this.newMaintenanceItemData.filter((item, index) => {
-      if (item.serviceId === serviceId) {
-        this.newMaintenanceItemData.splice(index, 1);
-        // 费用计算
-        this.fee.workHour -= item.price * item.workHour;
-        this.fee.discount -= item.price * item.workHour - item.amount;
-        this.fee.amount = this.fee.workHour - this.fee.discount;
-        // 如果新增项目为0 设置生成工单按钮不可用
-        this.enableCreateWorkSheet = (this.newMaintenanceItemData.length > 0) && this.workSheetForm.controls.vehicleId.value && this.workSheetForm.valid;
-        return;
-      }
+    this.sweetAlertService.confirm({
+      text: '确定要删除当前选择的维修项目吗？'
+    }).then(() => {
+      this.newMaintenanceItemData.filter((item, index) => {
+        if (item.serviceId === serviceId) {
+          this.newMaintenanceItemData.splice(index, 1);
+          // 费用计算
+          this.fee.workHour -= item.price * item.workHour;
+          this.fee.discount -= item.price * item.workHour - item.amount;
+          this.fee.amount = this.fee.workHour - this.fee.discount;
+          // 如果新增项目为0 设置生成工单按钮不可用
+          this.enableCreateWorkSheet = (this.newMaintenanceItemData.length > 0) && this.workSheetForm.controls.vehicleId.value && this.workSheetForm.valid;
+          return;
+        }
+      });
+      this.selectedServices = this.getSelectedServices();
+    }, () => {
+      console.log('点击了取消')
     });
-    this.selectedServices = this.getSelectedServices();
   }
 
   private getSelectedServices() {
@@ -678,8 +685,11 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.service.create(workSheet)
       .then(data => {
         this.generating = false;
+
         // 创建订单成功之后  做一些重置操作
-        if (confirm('创建工单成功！ 是否打印？')) {
+        this.sweetAlertService.confirm({
+          text: '创建工单成功，是否打印？'
+        }).then(() => {
           // 组织打印需要的数据
           this.newWorkOrderData = {};
           Object.assign(this.newWorkOrderData, data);
@@ -708,14 +718,14 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
               }
             }, 100);
           }, 100);
-        } else {
+        }, () => {
           // 清空数据
           this.initOrderData();
           // 刷新挂单列表
           if (workSheet.suspendedBillId) {
             this.suspendBill.refresh();
           }
-        }
+        });
       }).catch(err => {
         this.generating = false;
         // 出错的话  允许再次提交
