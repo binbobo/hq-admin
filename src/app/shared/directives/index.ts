@@ -8,4 +8,5 @@ export * from './trim';
 export * from './validators';
 export * from './modal';
 export * from './conversion-case';
+export * from './header-fixed';
 // export * from './validators';

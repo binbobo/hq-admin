@@ -7,6 +7,7 @@ import { TabsetComponent } from 'ngx-bootstrap';
 import { TypeaheadRequestParams, HqAlerter, PrintDirective, HqModalDirective } from 'app/shared/directives';
 import * as moment from 'moment';
 import { SuspendBillDirective } from "app/pages/chain/chain-shared";
+import { SweetAlertService } from "app/shared/services";
 
 @Component({
   selector: 'hq-distribute',
@@ -43,6 +44,7 @@ export class DistributeComponent implements OnInit {
     private route: ActivatedRoute,
     injector: Injector,
     protected service: DistributeService,
+    protected sweetAlertService: SweetAlertService,
     private fb: FormBuilder) {
   }
   ngOnInit() {
@@ -187,15 +189,19 @@ export class DistributeComponent implements OnInit {
     this.service.postBill(postData).then((result) => {
       this.suspendBill.refresh();
       this.generat = false;
-      if (confirm('生成发料单成功！ 是否打印？')) {
+      this.sweetAlertService.confirm({
+        type: "question",
+        text: '生成发料单成功！ 是否打印？'
+      }).then(() => {
         this.service.getPrintList(this.listId, this.billCode, result.data[0].serialNum).toPromise()
           .then(data => {
             this.printList = data;
             setTimeout(() => { this.print() }, 1000);
             setTimeout(() => { this.printList = null }, 1200)
           })
-          .catch(err => { this.alerter.error(err, true, 2000); this.generat = false; });
-      }
+          .catch(err => { this.alerter.error(err, true, 2000); this.generat = false; })
+      }, () => console.log("取消了打印"))
+
 
       this.isablePrint = true;
       let num = result.data[0].serialNum;
@@ -223,17 +229,6 @@ export class DistributeComponent implements OnInit {
     }).catch(err => { this.alerter.error(err, true, 2000); this.generat = false; });
   }
 
-  // 是否取消发料
-  finishedOrder(evt, confirmModal) {
-    evt.preventDefault();
-    // 显示确认框
-    confirmModal.show();
-  }
-  // 取消发料
-  // onConfirmFinished(confirmModal) {
-  //   confirmModal.hide();
-  //   history.go(-1);
-  // }
   hasList: any;
   onCreate(evt) {
     evt.price = evt.price;
@@ -252,11 +247,17 @@ export class DistributeComponent implements OnInit {
     }
     if (evt.isclose) {
       this.createModal.hide();
-    } 
+    }
   }
 
   onDelCreat(i) {
-    this.newMainData.splice(i, 1);
+    this.sweetAlertService.confirm({
+      type: "warning",
+      text: '确定要删除当前选择的发料吗？'
+    }).then(() => {
+      this.newMainData.splice(i, 1);
+    }, () => console.log("取消删除"))
+
   }
   SerialNumsList: any;
 

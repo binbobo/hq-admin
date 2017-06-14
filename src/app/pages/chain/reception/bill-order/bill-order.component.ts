@@ -7,6 +7,7 @@ import { HqAlerter } from "app/shared/directives";
 import { PrintDirective, FormGroupControlErrorDirective } from 'app/shared/directives';
 import { CustomValidators } from "ng2-validation/dist";
 import { ChainService } from "app/pages/chain/chain.service";
+import { SweetAlertService } from "app/shared/services";
 import { priceMask } from 'app/pages/chain/chain-shared';
 import * as moment from 'moment';
 
@@ -59,6 +60,7 @@ export class BillOrderComponent extends DataList<any>{
         injector: Injector,
         protected service: BillOrderService,
         protected typeservice: ChainService,
+        protected sweetAlertService: SweetAlertService,
         private fb: FormBuilder) {
         super(injector, service);
         this.params = new OrderListSearch();
@@ -76,7 +78,7 @@ export class BillOrderComponent extends DataList<any>{
         this.typeservice.getSettlementType().then(data => {
             this.billTypeData = data;
 
-        })
+        });
     }
     billSheetForm: FormGroup;
     billForm() {
@@ -103,7 +105,7 @@ export class BillOrderComponent extends DataList<any>{
     attachServiceOutputs: any = [];
     suggestServiceOutputs: any = [];
     WorkReceivableCost: any;
-    private modaltitle:string;
+    private modaltitle: string;
     orderDetailsDialog(evt, id, dialog, item) {
         this.modaltitle = "维修结算";
         item.generat = true;
@@ -153,22 +155,20 @@ export class BillOrderComponent extends DataList<any>{
         });
     }
     // 点击撤销结算事件
-    finishedOrder(evt, id, confirmModal) {
+    finishedOrder(evt, id) {
         evt.preventDefault();
-        // 显示确认框
-        confirmModal.show();
-
-        // 记录id
-        confirmModal.id = id;
-    }
-    unBill(confirmModal) {
-        confirmModal.hide();
-        this.service.put(confirmModal.id).then(() => {
-            this.alerter.info('撤销结算成功!', true, 3000);
-            this.onLoadList()
-        }).catch(err => this.alerter.error(err, true, 3000));
+        this.sweetAlertService.confirm({
+            type: "warning",
+            text: '确定要撤销结算吗？'
+        }).then(() => {
+            this.service.put(id).then(() => {
+                this.alerter.info('撤销结算成功!', true, 3000);
+                this.onLoadList()
+            }).catch(err => this.alerter.error(err, true, 3000));
+        },()=>console.log("取消了撤销结算"))
 
     }
+
     hideModal(lgModal) {
         lgModal.hide();
         this.isShowPrint = false;
@@ -320,7 +320,7 @@ export class BillOrderComponent extends DataList<any>{
         // this.billData["id"] = this.billId;
         this.billData["price"] = parseInt((this.billSheetForm.controls.billPrice.value * 100).toFixed(2));
         // this.billData["leaveMileage"] = this.billSheetForm.controls.leaveMileage.value + "";
-        this.billData["settlementid"] = this.billSheetForm.controls.settlementid.value;
+        this.billData["settlementMethodId"] = this.billSheetForm.controls.settlementid.value;
         let invalid = this.controls
             .map(c => c.validate())
             .some(m => !m);
@@ -328,13 +328,18 @@ export class BillOrderComponent extends DataList<any>{
             event.preventDefault();
             return false;
         } else {
-            if (confirm('是否生成维修结算单？')) {
+            this.sweetAlertService.confirm({
+                type: "question",
+                text: '是否生成维修结算单？'
+            }).then(() => {
                 this.initprint();
                 this.generat = true;
-
                 this.service.post(this.billData, this.billId).then((result) => {
                     this.generat = false;
-                    if (confirm('已生成维修结算单，是否需要打印？')) {
+                    this.sweetAlertService.confirm({
+                        type: "question",
+                        text: '已生成维修结算单，是否需要打印？'
+                    }).then(() => {
                         // 根据id获取工单详细信息
                         this.service.getPrintDetail(this.billId)
                             .then(data => {
@@ -373,13 +378,13 @@ export class BillOrderComponent extends DataList<any>{
                                 this.alerter.error(err, true, 2000);
                                 this.generat = false;
                             });
-                    }
+                    },()=>console.log("取消了打印"))
                     dialog.hide();
                     this.alerter.info("生成结算单成功", true, 2000);
                     this.onLoadList();
                     this.isShowCost = false;
                 }).catch(err => { dialog.hide(), this.generat = false; this.alerter.error(err, true, 3000) });
-            }
+            },()=>console.log("取消了结算"))
 
         }
 

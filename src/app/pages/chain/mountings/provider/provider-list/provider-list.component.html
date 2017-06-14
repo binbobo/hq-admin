@@ -6,7 +6,7 @@
   <div class="card-block">
     <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
       <div class="input-group mr-1">
-        <span class="input-group-addon">供应商编码</span>
+        <label class="input-group-addon">供应商编码</label>
         <input type="text" class="form-control" name="code" [(ngModel)]="params.code" placeholder="供应商编码">
       </div>
       <div class="input-group m-1">
@@ -26,9 +26,9 @@
       </div>
     </form>
     <div class="table-container">
-      <table class="table table-bordered">
+      <table hqHeaderFixed class="table table-bordered">
         <thead>
-          <tr *ngIf="!loading">
+          <tr [hidden]="loading">
             <th><input (change)="onCheckChange($event)" type="checkbox"></th>
             <th>操作</th>
             <th>状态</th>
