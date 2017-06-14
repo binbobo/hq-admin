@@ -27,6 +27,7 @@ export class ProcurementListComponent implements OnInit {
   private printModel: ProcurementPrintItem;
   private model = new ProcurementRequest();
   private selectedModel;
+  private totalValue: any;
 
   constructor(
     private procurementService: ProcurementService,
@@ -46,14 +47,30 @@ export class ProcurementListComponent implements OnInit {
     }
   }
 
-  onCreate(event: ProcurementItem) {
-    let exists = this.model.list.find(m => m.productId == event.productId && m.locationId === event.locationId);
+  onCreated(event: any) {
+    let data = event.data;
+    let exists = this.model.list.find(m => m.productId == data.productId && m.locationId === data.locationId);
     if (exists) {
-      Object.assign(exists, event);
+      Object.assign(exists, data);
     } else {
-      this.model.list.push(event);
+      this.model.list.push(data);
     }
-    //this.createModal.hide();
+    this.aggregate();
+    if (!event.continuable) {
+      this.createModal.hide();
+    }
+  }
+
+  private aggregate() {
+    if (!this.model || !this.model.list) return;
+    this.totalValue = { count: 0, price: 0, exTaxPrice: 0, amount: 0, exTaxAmount: 0 };
+    this.model.list.forEach(m => {
+      this.totalValue.count += +m.count;
+      this.totalValue.price += +m.price;
+      this.totalValue.exTaxPrice += +m.exTaxPrice;
+      this.totalValue.amount += +m.amount;
+      this.totalValue.exTaxAmount += +m.exTaxAmount;
+    })
   }
 
   onEdit(model: ProcurementItem) {
@@ -66,6 +83,7 @@ export class ProcurementListComponent implements OnInit {
     if (exists) {
       Object.assign(exists, event);
     }
+    this.aggregate();
     this.editModal.hide();
   }
 
@@ -114,5 +132,6 @@ export class ProcurementListComponent implements OnInit {
     if (!confirm('确定要删除？')) return;
     let index = this.model.list.indexOf(item);
     this.model.list.splice(index, 1);
+    this.aggregate();
   }
 }

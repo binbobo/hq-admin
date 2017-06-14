@@ -39,7 +39,7 @@ export class PropertyCreateComponent extends FormHandle<Property> {
     return Observable.of(new Property());
   }
 
-  protected buidForm(): FormGroup {
+  protected buildForm(): FormGroup {
     return this.form = this.formBuilder.group({
       'key': [this.model.key, [
         Validators.required,

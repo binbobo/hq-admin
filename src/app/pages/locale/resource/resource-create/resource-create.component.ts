@@ -56,7 +56,7 @@ export class ResourceCreateComponent extends FormHandle<Resource> implements OnI
     }
   }
 
-  protected buidForm(): FormGroup {
+  protected buildForm(): FormGroup {
     return this.formBuilder.group({
       key: [this.model.key, [
         Validators.required,

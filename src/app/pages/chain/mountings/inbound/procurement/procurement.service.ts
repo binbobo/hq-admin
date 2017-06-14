@@ -7,18 +7,10 @@ export class ProcurementService {
 
   constructor(private httpService: HttpService) { }
 
-  public getProducts(request: GetProductsRequest): Promise<PagedResult<any>> {
-    let url = Urls.chain.concat('/Products/GetListByNameOrCode');
-    let search = request.serialize();
-    return this.httpService.get<PagedResult<any>>(url, search)
-      .catch(err => Promise.reject(`获取配件信息失败：${err}`));
-  }
-
   public get(code: string): Promise<ProcurementPrintItem> {
     if (!code) return Promise.resolve({});
     let url = Urls.chain.concat('/PurchaseDetails/Print?BillCode=', code);
-    return this.httpService.get<ApiResult<ProcurementPrintItem>>(url)
-      .then(result => result.data)
+    return this.httpService.getObject<ProcurementPrintItem>(url)
       .catch(err => Promise.reject(`获取采购入库单信息失败：${err}`));
   }
 
@@ -27,15 +19,6 @@ export class ProcurementService {
     return this.httpService.post<ApiResult<string>>(url, request)
       .then(result => result.data)
       .catch(err => Promise.reject(`生成采购入库单失败：${err}`));
-  }
-}
-
-export class GetProductsRequest extends PagedParams {
-  constructor(
-    public code?: string,
-    public name?: string,
-  ) {
-    super();
   }
 }
 

@@ -8,16 +8,14 @@ export class TakeStockService implements PagedService<Stock> {
   constructor(private httpService: HttpService) { }
 
   getPagedList(params: PagedParams): Promise<PagedResult<Stock>> {
-    let search = params.serialize();
     let url = Urls.chain.concat('/inventorys/getpagelist');
-    return this.httpService.get<PagedResult<Stock>>(url, search)
+    return this.httpService.getPagedList<Stock>(url, params)
       .catch(err => Promise.reject(`获取盘点列表失败：${err}`));
   }
 
   get(id: string): Promise<any> {
     let url = Urls.chain.concat('/InventoryDetails/GetListByBillCode?billCode=', id);
-    return this.httpService.get<ApiResult<any>>(url)
-      .then(result => result.data)
+    return this.httpService.getObject<any>(url)
       .catch(err => Promise.reject(`获取详情失败：${err}`));
   }
 

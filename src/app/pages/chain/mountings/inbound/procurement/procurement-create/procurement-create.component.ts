@@ -1,42 +1,21 @@
-import { Component, OnInit, EventEmitter, Output, ViewChildren, QueryList, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, ViewChildren, QueryList, ViewChild, ElementRef, Injector } from '@angular/core';
 import { TypeaheadRequestParams, FormGroupControlErrorDirective, HqAlerter } from 'app/shared/directives';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { CentToYuanPipe } from 'app/shared/pipes';
-import { ProcurementService, ProcurementItem, GetProductsRequest } from '../procurement.service';
-import { SelectOption } from 'app/shared/models';
+import { ProcurementItem, } from '../procurement.service';
+import { SelectOption, FormHandle } from 'app/shared/models';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'hq-procurement-create',
   templateUrl: './procurement-create.component.html',
   styleUrls: ['./procurement-create.component.css']
 })
-export class ProcurementCreateComponent implements OnInit {
+export class ProcurementCreateComponent extends FormHandle<any> {
 
-  private form: FormGroup;
-  @Output()
-  private formSubmit = new EventEmitter<ProcurementItem>();
-  @ViewChild(HqAlerter)
-  protected alerter: HqAlerter;
-  private model: ProcurementItem = new ProcurementItem();
-  @ViewChildren(FormGroupControlErrorDirective)
-  private controls: QueryList<FormGroupControlErrorDirective>;
-  private storages: Array<any>;
-  private locations: Array<any>;
-  private isSelected: boolean;
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private procurementService: ProcurementService,
-  ) { }
-
-  ngOnInit() {
-    this.model['yuan'] = this.model.price / 100;
-    this.buildForm();
-  }
-
-  private buildForm() {
-    this.form = this.formBuilder.group({
+  protected buildForm(): FormGroup {
+    return this.formBuilder.group({
       brandName: [this.model.brandName],
       productCode: [this.model.productCode, [Validators.required]],
       productName: [this.model.productName, [Validators.required]],
@@ -54,7 +33,23 @@ export class ProcurementCreateComponent implements OnInit {
       locationName: [this.model.locationName, [Validators.required]],
       storeName: [this.model.houseName],
       productUnit: [this.model.productUnit],
-    })
+    });
+  }
+
+  protected getModel(): Observable<any> {
+    this.model = new ProcurementItem();
+    this.model['yuan'] = this.model.price / 100;
+    return Observable.of(this.model);
+  }
+
+  private storages: Array<any>;
+  private locations: Array<any>;
+  private isSelected: boolean;
+
+  constructor(
+    private injector: Injector,
+  ) {
+    super(injector, null);
   }
 
   private onResetForm(event: Event, key: string) {
@@ -74,18 +69,16 @@ export class ProcurementCreateComponent implements OnInit {
 
   private productNotExist: boolean;
 
-  public onSubmit(event: Event) {
-    let invalid = this.controls
-      .map(c => c.validate())
-      .some(m => !m);
-    if (invalid) {
-      event.preventDefault();
-      return false;
-    } else {
-      let value = { ...this.form.value, taxRate: this.model.taxRate };
-      this.formSubmit.emit(value);
-      this.reset();
-    }
+  public submit(event: Event) {
+    let valid = this.validate();
+    if (!valid) return false;
+    let value = { ...this.form.value, taxRate: this.model.taxRate };
+    let obj = {
+      data: value,
+      continuable: !event,
+    };
+    this.onSubmit.emit(obj);
+    this.reset();
   }
 
   onStorageChange(storageId: string) {
@@ -154,7 +147,6 @@ export class ProcurementCreateComponent implements OnInit {
   private reset() {
     this.storages = null;
     this.locations = null;
-    this.form = null;
-    setTimeout(() => this.buildForm(), 1);
+    super.onReset();
   }
 }

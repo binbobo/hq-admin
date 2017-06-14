@@ -25,7 +25,7 @@ export class LanguageEditComponent extends FormHandle<Language> {
     return this.route.data.map(m => m.model);
   }
 
-  protected buidForm(): FormGroup {
+  protected buildForm(): FormGroup {
     return this.formBuilder.group({
       'name': [this.model.name, [
         Validators.required,

@@ -22,7 +22,7 @@ export class GroupCreateComponent extends FormHandle<Group> {
     return Observable.of(new Group());
   }
 
-  protected buidForm(): FormGroup {
+  protected buildForm(): FormGroup {
     return this.form = this.formBuilder.group({
       'groupName': [this.model.groupName, [
         Validators.required,

@@ -22,7 +22,7 @@ export class WarehouseCreateComponent extends FormHandle<Warehouse> implements O
     return Observable.of(new Warehouse());
   }
 
-  protected buidForm(): FormGroup {
+  protected buildForm(): FormGroup {
     return this.formBuilder.group({
       id: [this.model.id],
       code: [this.model.code, [Validators.required, Validators.maxLength(50)]],

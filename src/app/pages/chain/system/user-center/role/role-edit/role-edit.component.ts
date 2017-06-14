@@ -22,7 +22,7 @@ export class RoleEditComponent extends FormHandle<Role> implements OnInit {
     return Observable.of(this.model);
   }
 
-  protected buidForm(): FormGroup {
+  protected buildForm(): FormGroup {
     return this.formBuilder.group({
       id: [this.model.id],
       name: [this.model.name, [Validators.required, Validators.maxLength(30),]],
