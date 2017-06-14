@@ -3,7 +3,7 @@
   系统未检索到该配件，请先去库存管理中新增。
 </div>
 <div class="card">
-  <form *ngIf="form" class="card-block row" [formGroup]="form" (ngSubmit)="onSubmit($event)">
+  <form *ngIf="form" class="card-block row" [formGroup]="form" (ngSubmit)="submit($event)">
     <div class="col-6">
       <div class="form-group">
         <label class="form-control-label hq-required">配件编码：</label>
@@ -72,7 +72,7 @@
     </div>
     <div class="col-12">
       <button type="submit" [disabled]="submitting" class="btn btn-primary mr-2">提交</button>
-      <!--<button type="button" (click)="onSubmit()" [disabled]="submitting" class="btn btn-secondary mr-2">提交并继续</button>-->
+      <!--<button type="button" (click)="submit()" [disabled]="submitting" class="btn btn-secondary mr-2">提交并继续</button>-->
     </div>
   </form>
 </div>

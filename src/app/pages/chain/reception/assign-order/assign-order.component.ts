@@ -3,6 +3,7 @@ import { AssignService, AssignListRequest } from '../assign.service';
 import { StorageKeys, SelectOption, DataList } from 'app/shared/models';
 import * as fileSaver from 'file-saver';
 import { ModalDirective } from 'ngx-bootstrap';
+import { SweetAlertService } from '../../../../shared/services/sweetalert.service';
 
 
 @Component({
@@ -56,6 +57,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             });
     }
     constructor(injector: Injector,
+        protected sweetAlertService: SweetAlertService,
         protected service: AssignService) {
         super(injector, service);
         this.params = new AssignListRequest();
@@ -118,10 +120,10 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         // 执行查询
         this.load();
     }
-      /**
-     * 维修派工全选/反选事件处理程序
-     * @param evt 
-     */
+    /**
+   * 维修派工全选/反选事件处理程序
+   * @param evt 
+   */
     toggleCheckboxAll(cb) {
         // 更新全选复选框状态
         this.selectedOrder.serviceOutputs.checkedAll = cb.checked;
@@ -203,7 +205,10 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
     finishedOrder(item) {
         // 判断是否已经指派维修技师 没有指派不可以完工
         if (item.teamType === 0) {
-            alert('此工单还没有指派维修技师, 不可以执行完工操作。请先指派维修技师');
+            this.sweetAlertService.alert({
+                text: '此工单还没有指派维修技师, 不可以执行完工操作。请先指派维修技师'
+            }).then(() => {
+            });
             return;
         }
         // // 判断用户是否领料
@@ -220,7 +225,9 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
     }
 
     confirmOrderFinish(item) {
-        if (confirm('是否确认完工？')) {
+        this.sweetAlertService.confirm({
+            text: '您确定要完工吗？'
+        }).then(() => {
             item.finishGenerating = true;
 
             this.service.update({ id: item.id }).then(() => {
@@ -230,7 +237,9 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
                 this.alerter.error('执行完工操作失败: ' + err, true, 2000);
                 item.finishGenerating = false;
             });
-        }
+        }, () => {
+            // 点击了取消
+        });
     }
 
     /**
@@ -315,7 +324,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             this.selectedOrder.serviceOutputs.enableBtn = false;
 
             // 判断是否所有工项已派工  如果是, 关闭弹框
-            if(this.selectedOrder.serviceOutputs.filter(m=>m.teamType===1).length <= 0) {
+            if (this.selectedOrder.serviceOutputs.filter(m => m.teamType === 1).length <= 0) {
                 this.assignModal.hide();
             }
             // 刷新页面

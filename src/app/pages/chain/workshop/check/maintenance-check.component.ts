@@ -75,7 +75,7 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
     });
     this.mileageForm.valueChanges.subscribe(data => {
       if(this.leaveMileageControl) {
-        console.log(this.leaveMileageControl);
+        this.leaveMileageControl.validate();
       }
       this.selectedOrder.serviceOutputs.enableBtn = this.isCheckPassBtnEnable();
     });
@@ -152,7 +152,6 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
       this.alerter.error('您还未选择任何维修工项, 请选择维修工项！', true, 3000);
       return;
     }
-    console.log(this.mileageForm.value.leaveMileage);
     // 调用接口  执行通过验收动作
     this.service.update({ ids: maintenanceItemIds, leaveMileage: this.mileageForm.value.leaveMileage }).then(() => {
       // 修改操作记录的teamType为6
