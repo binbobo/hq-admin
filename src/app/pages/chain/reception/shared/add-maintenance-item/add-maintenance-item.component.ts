@@ -76,7 +76,7 @@ export class AddMaintenanceItemComponent implements OnInit {
       const index = this.services.findIndex(item => item.name === this.maintenanceItemForm.value.serviceName);
       if (index > -1) {
         this.sweetAlertService.alert({
-          text: '当前输入的维修项目已经添加过了, 如需修改, 请去列表页面编辑'
+          text: '当前输入的维修项目已经添加过了, 如需修改, 请去列表页面编辑',
         }).then(() => {
         });
       } else {
