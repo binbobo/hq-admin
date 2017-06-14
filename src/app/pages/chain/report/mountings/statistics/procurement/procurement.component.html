@@ -36,7 +36,7 @@
           <th>操作</th>
           <th *ngIf="orgNameShow">店名</th>
           <th>供应商名称</th>
-          <th>入库单号</th>
+          <th>单号</th>
           <th>含税金额（元）</th>
           <th>不含税金额（元）</th>
           <th>开单时间</th>
@@ -63,7 +63,7 @@
 <div class="modal fade" hqModal #bdModal="hq-modal" role="dialog" modalTitle="采购入库详情" size="lg">
   <table class="table table-order-info table-bordered">
     <tr>
-      <td class="fixed-width">入库单号：</td>
+      <td class="fixed-width">单号：</td>
       <td>{{detail?.billCode}}</td>
       <td class="fixed-width">供应商：</td>
       <td>{{detail?.name}}</td>

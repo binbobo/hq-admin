@@ -4,6 +4,7 @@ import { element } from 'protractor';
 import { PrintDirective, HqAlerter } from 'app/shared/directives';
 import { ActivatedRoute, Params } from '@angular/router';
 import { OrganizationInfo, OrganizationService } from "app/pages/organization.service";
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'hq-stock-detail',
@@ -24,7 +25,8 @@ export class StockDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private service: TakeStockService,
-    private orgService: OrganizationService
+    private orgService: OrganizationService,
+    private location:Location
   ) { }
 
   ngOnInit() {
@@ -42,7 +44,7 @@ export class StockDetailComponent implements OnInit {
   print() {
     this.printer.print();
   }
-
+  
   export(event: Event) {
     let btn = event.target as HTMLButtonElement;
     btn.disabled = true;
@@ -52,6 +54,10 @@ export class StockDetailComponent implements OnInit {
         btn.disabled = false;
         this.alerter.error(err);
       })
+  }
+
+  goback(){
+    this.location.back();
   }
 
 }
