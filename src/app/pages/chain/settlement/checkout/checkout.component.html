@@ -6,7 +6,7 @@
     <form (ngSubmit)="onSearch()" autocomplete="off">
       <div class="form-inline" *ngIf="orderStatusData" style="margin-bottom: 5px;">
         <div class="input-group m-1">
-          <span class="input-group-addon">工单状态</span>
+          <label class="input-group-addon">工单状态</label>
           <div class="check-label-col">
             <div class="form-check-inline" *ngFor="let status of orderStatusData">
               <label class="form-check-label">
@@ -18,13 +18,13 @@
       </div>
       <div class="form-inline">
         <div class="input-group m-1">
-          <span class="input-group-addon">结算方式</span>
+          <label class="input-group-addon">结算方式</label>
           <select [(ngModel)]="params.SettlementMethod" id="SettlementMethod" name="SettlementMethod" class="form-control">
             <option *ngFor="let SettlementMethod of billTypeData" value="{{SettlementMethod.id}}">{{SettlementMethod?.value}}</option>
           </select>
         </div>
         <div class="input-group m-1">
-          <span class="input-group-addon">结算单号</span>
+          <label class="input-group-addon">结算单号</label>
           <input type="text" class="form-control" [(ngModel)]="params.SettlementCode" id="SettlementCode" name="SettlementCode" placeholder="请输入结算单号">
         </div>
         <div class="input-group m-1">

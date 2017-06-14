@@ -7,6 +7,7 @@ import { SelectOption, DataList } from "app/shared/models";
 import { SalesReturnService, BillCodeRequest, CustomerRequest, SaleDetailsRequest } from "../sales-return.service";
 import { Location } from '@angular/common';
 import * as moment from 'moment';
+import { SweetAlertService } from "app/shared/services";
 
 @Component({
   selector: 'hq-sales-return-list',
@@ -43,6 +44,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   constructor(
     injector: Injector,
     private salesReturnservice: SalesReturnService,
+    private sweetAlertService: SweetAlertService,
   ) {
     super(injector, salesReturnservice);
     this.params = new SaleDetailsRequest();
@@ -122,8 +124,10 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   }
   //删除操作
   onDelCreat(e, i) {
-    if (confirm('是否要删除该条退库信息！'))
-      this.salesReturnData.splice(i, 1);
+    this.sweetAlertService.confirm({ text: '是否要删除该条退库信息！', type: 'warning' })
+      .then(() => {
+        this.salesReturnData.splice(i, 1);
+      },()=>{})
   }
 
   historyData: any;
@@ -157,6 +161,15 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
     this.salesReturnData = item.value.salesReturnData;
   }
 
+  reset() {
+    this.salesReturnData = [];
+    this.list = null;
+    this.billCode = null;
+    this.customerName = null;
+    this.customerPhone = null;
+    this.originalBillId = null;
+  }
+
   //生成退库单
   createReturnList() {
     this.createLoading = true;
@@ -170,23 +183,23 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
     this.salesReturnservice.createReturnList(this.billData)
       .then(data => {
         this.createLoading = false;
-        this.suspendBill.refresh();
-        return confirm('已生成销售退库单，是否需要打印？') ? data : null;
-      })
-      .then(code => code && this.salesReturnservice.get(code))
-      .then(data => {
-        if (data) {
-          this.printModel = data;
-          setTimeout(() => this.printer.print(), 300);
-        }
-      })
-      .then(() => {
-        this.salesReturnData = [];
-        this.list = null;
-        this.billCode = null;
-        this.customerName = null;
-        this.customerPhone = null;
-        this.originalBillId = null;
+        this.sweetAlertService.confirm({ text: '已生成销售退库单，是否需要打印？' })
+          .then(() => {
+            data && this.salesReturnservice.get(data)
+              .then(data => {
+                if (data) {
+                  this.printModel = data;
+                  setTimeout(() => this.printer.print(), 300);
+                }
+              })
+              .then(() => {
+                this.suspendBill.refresh();
+                this.reset();
+              })
+          }, () => {
+            this.suspendBill.refresh();
+            this.reset();
+          })
       })
       .catch(err => {
         this.alerter.error(err);
@@ -195,40 +208,34 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   }
   // //挂单
   suspend() {
-    if (confirm('是否确认挂单？')) {
-      // let createTime = new Date();
-      // this.model.createBillDateTime = moment(createTime).format('YYYY-MM-DD hh:mm:ss');
-      this.suspendLoading = true;
-      this.suspendData = {
-        model: this.list,
-        salesReturnData: this.salesReturnData,
-        billCode: this.billCode,
-        customerName: this.customerName,
-        customerPhone: this.customerPhone,
-        customerId: this.customerId,
-        suspendedBillId: this.suspendedBillId,
-        originalBillId: this.originalBillId,
-      }
-      this.suspendBill.suspend(this.suspendData)
-        .then(() => this.suspendBill.refresh())
-        .then(() => {
-          this.salesReturnData = [];
-          this.list = null;
-          this.billCode = null;
-          this.customerName = null;
-          this.customerPhone = null;
-          this.originalBillId = null;
-        })
-        .then(() => {
-          this.alerter.success('挂单成功！');
-          this.suspendLoading = false;
-          this.createLoading = false;
-        })
-        .catch(err => {
-          this.suspendLoading = false;
-          this.alerter.error(err);
-        })
-    }
+    this.sweetAlertService.confirm({ text: '是否确认挂单？' })
+      .then(() => {
+        // let createTime = new Date();
+        // this.model.createBillDateTime = moment(createTime).format('YYYY-MM-DD hh:mm:ss');
+        this.suspendLoading = true;
+        this.suspendData = {
+          model: this.list,
+          salesReturnData: this.salesReturnData,
+          billCode: this.billCode,
+          customerName: this.customerName,
+          customerPhone: this.customerPhone,
+          customerId: this.customerId,
+          suspendedBillId: this.suspendedBillId,
+          originalBillId: this.originalBillId,
+        }
+        this.suspendBill.suspend(this.suspendData)
+          .then(() => this.suspendBill.refresh())
+          .then(() => this.reset())
+          .then(() => {
+            this.alerter.success('挂单成功！');
+            this.suspendLoading = false;
+            this.createLoading = false;
+          })
+          .catch(err => {
+            this.suspendLoading = false;
+            this.alerter.error(err);
+          })
+      },()=>{})
   }
   // //挂单列表
   get columns() {
