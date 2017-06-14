@@ -416,7 +416,7 @@ button:focus,.close:active,button:active{
 }
 .swal2-modal .swal2-content{
     font-size:17px !important;
-    color:#292b2c !important;
+    color:#727171 !important;
     font-weight:normal !important;
 }
 .swal2-icon{
@@ -447,6 +447,7 @@ button:focus,.close:active,button:active{
 }
 .swal2-modal .swal2-close{
     font-size:22px !important;
+    color:#a49f9f
 }
 .swal2-modal .swal2-buttonswrapper{
     margin-top:12px !important;

@@ -405,7 +405,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   // 从表格中删除一条添加的维修项目事件处理程序
   onDelMaintenanceItem(serviceId) {
     this.sweetAlertService.confirm({
-      text: '确定要删除当前选择的维修项目吗？'
+      text: '确定要删除当前选择的维修项目吗？',
+      type: 'warning'
     }).then(() => {
       this.newMaintenanceItemData.filter((item, index) => {
         if (item.serviceId === serviceId) {

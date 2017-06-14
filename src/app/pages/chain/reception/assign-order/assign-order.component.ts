@@ -206,7 +206,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
         // 判断是否已经指派维修技师 没有指派不可以完工
         if (item.teamType === 0) {
             this.sweetAlertService.alert({
-                text: '此工单还没有指派维修技师, 不可以执行完工操作。请先指派维修技师'
+                text: '此工单还没有指派维修技师, 不可以执行完工操作。请先指派维修技师',
             }).then(() => {
             });
             return;
