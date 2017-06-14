@@ -1,10 +1,11 @@
-<ng-template hq-alerter></ng-template>
+
 <div class="card append-order">
   <div class="card-header">
     <span>维修增项</span>
     <!--<span class="tooltipp">zegnxiang</span>-->
     <ng-template hqSuspendBill="MWIM" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
+  <ng-template hq-alerter></ng-template>
   <div class="card-block">
     <form class='form-inline' autocomplete="off">
       <div class="input-group m-1">

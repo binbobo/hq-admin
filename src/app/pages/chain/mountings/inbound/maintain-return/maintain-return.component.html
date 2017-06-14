@@ -1,9 +1,10 @@
-<ng-template hq-alerter></ng-template>
+
 <div class="maintain card">
   <div class="card-header">
     <label>维修退料</label>
     <ng-template hqSuspendBill="RR" (onSelect)="onSuspendSelect($event)" [columns]="columns"></ng-template>
   </div>
+  <ng-template hq-alerter></ng-template>
   <div class='card-block'>
     <form class="form-inline" autocomplete="off">
       <div class="input-group m-1">
