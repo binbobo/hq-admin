@@ -1,5 +1,5 @@
-.menu-text{
-    margin-left:5px;
+.menu-title{
+    user-select: none;
 }
 
 i.fa-caret-down,i.fa-caret-up{
@@ -26,4 +26,5 @@ hq-menu{
 .list-group-item{
    background-color: #2d384b;
    color: #fff!important; 
+   cursor: pointer;
 }
