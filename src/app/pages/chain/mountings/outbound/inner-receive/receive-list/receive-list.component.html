@@ -74,7 +74,7 @@
 
 <div hqModal #createModal="hq-modal" modalTitle="新增" size="lg">
   <div *ngIf="createModal.isShown">
-    <hq-receive-create (formSubmit)="onCreate($event)"></hq-receive-create>
+    <hq-receive-create (onSubmit)="onCreated($event)"></hq-receive-create>
   </div>
 </div>
 

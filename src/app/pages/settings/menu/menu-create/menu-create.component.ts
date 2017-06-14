@@ -94,7 +94,7 @@ export class MenuCreateComponent extends FormHandle<Menu> implements OnInit {
     return submit.then(() => this.loadParentMenus());
   }
 
-  protected buidForm(): FormGroup {
+  protected buildForm(): FormGroup {
     return this.formBuilder.group({
       title: [this.model.title, [
         Validators.required,

@@ -42,7 +42,7 @@ export class InventoryCreateComponent extends FormHandle<Inventory> implements O
   protected getModel(): Observable<Inventory> {
     return Observable.of(new Inventory())
   }
-  protected buidForm(): FormGroup {
+  protected buildForm(): FormGroup {
     return this.formBuilder.group({
       locationName: [this.model.locationName, [Validators.maxLength(50)]],
       locationId: [this.model.locationId, [Validators.maxLength(50)]],

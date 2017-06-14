@@ -10,8 +10,7 @@ export class ReceiveService {
   get(code: string): Promise<ReceivePrintItem> {
     if (!code) return Promise.resolve({});
     let url = Urls.chain.concat('/UseDetails/Print?BillCode=', code);
-    return this.httpService.get<ApiResult<any>>(url)
-      .then(result => result.data)
+    return this.httpService.getObject<any>(url)
       .catch(err => Promise.reject(`获取内部领料单信息失败：${err}`));
   }
 
@@ -24,18 +23,14 @@ export class ReceiveService {
 
   getReceiverOptions(): Promise<Array<SelectOption>> {
     let url = Urls.chain.concat('/Employees/GetByKey?key=ST');
-    return this.httpService.get<ListResult<any>>(url)
-      .then(result => result.data)
-      .then(data => Array.isArray(data) ? data : [])
+    return this.httpService.getList<any>(url)
       .then(data => data.map(m => new SelectOption(m.name, m.id)))
       .catch(err => Promise.reject(`获取领料人选项失败：${err}`));
   }
 
   getDepartmentsByReceiver(id: string): Promise<Array<SelectOption>> {
     let url = Urls.chain.concat('/Departments/GetDataByEmployee/', id);
-    return this.httpService.get<ListResult<any>>(url)
-      .then(result => result.data)
-      .then(data => Array.isArray(data) ? data : [])
+    return this.httpService.getList<any>(url)
       .then(data => data.map(m => new SelectOption(m.name, m.id)))
       .catch(err => Promise.reject(`获取部门选项失败：${err}`))
   }

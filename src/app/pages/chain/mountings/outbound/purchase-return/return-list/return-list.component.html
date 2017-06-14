@@ -103,11 +103,19 @@
             <td>{{item.brand}}</td>
             <td>{{item.specification}}</td>
             <td>{{item.productUnit}}</td>
-            <td class="text-center">{{item.count }}</td>
+            <td class="text-right">{{item.count }}</td>
             <td class="text-right">{{item.price|centToYuan}}</td>
             <td class="text-right">{{item.amount|centToYuan}}</td>
             <td class="text-right">{{item.exTaxPrice|centToYuan }}</td>
             <td class="text-right">{{item.exTaxAmount|centToYuan }}</td>
+          </tr>
+          <tr [hidden]="!model?.list?.length" class="font-bold">
+            <td class="text-center" colspan="10">合计</td>
+            <td class="text-right">{{totalValue?.count||0 }}</td>
+            <td class="text-right">{{totalValue?.price|centToYuan}}</td>
+            <td class="text-right">{{totalValue?.amount|centToYuan}}</td>
+            <td class="text-right">{{totalValue?.exTaxPrice|centToYuan }}</td>
+            <td class="text-right">{{totalValue?.exTaxAmount|centToYuan }}</td>
           </tr>
         </tbody>
       </table>
@@ -121,7 +129,7 @@
 
 <div hqModal #createModal="hq-modal" modalTitle="新增" size="lg">
   <div *ngIf="createModal.isShown">
-    <hq-return-create [model]="product" (submit)="onCreate($event)"></hq-return-create>
+    <hq-return-create [model]="product" (onSubmit)="onCreated($event)"></hq-return-create>
   </div>
 </div>
 

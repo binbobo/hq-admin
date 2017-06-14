@@ -18,14 +18,13 @@ export class ProviderService implements BasicService<Provider> {
   getPagedList(params: ProviderListRequest): Promise<PagedResult<Provider>> {
     let url = Urls.chain.concat('/suppliers/getPageList');
     return this.httpService
-      .get<PagedResult<Provider>>(url, params.serialize())
+      .getPagedList<Provider>(url, params)
       .catch(err => Promise.reject(`供应商列表加载失败：${err}`));
   }
   get(id: string): Promise<Provider> {
     let url = Urls.chain.concat('/suppliers/', id);
     return this.httpService
-      .get<ApiResult<Provider>>(url)
-      .then(result => result.data)
+      .getObject<Provider>(url)
       .catch(err => Promise.reject(`供应商获取失败：${err}`))
   }
   create(body: Provider): Promise<Provider> {
@@ -58,12 +57,12 @@ export class ProviderService implements BasicService<Provider> {
 
 export class ProviderListRequest extends PagedParams {
   constructor(
-    public searchInfo?: string,
+    public code?: string,
     public name?: string,
     public contactUser?: string,
     public tel?: string,
   ) {
-    super('ProviderListRequest');
+    super();
   }
 }
 

@@ -11,8 +11,7 @@ export class JournalAccountService implements PagedService<JournalAccount> {
 
   public getProduct(id: string) {
     let url = Urls.chain.concat('/StoreInOutDetails/Product/', id);
-    return this.httpService.get<ApiResult<any>>(url)
-      .then(result => result.data)
+    return this.httpService.getObject<any>(url)
       .catch(err => Promise.reject(`获取配件信息失败：${err}`));
   }
 

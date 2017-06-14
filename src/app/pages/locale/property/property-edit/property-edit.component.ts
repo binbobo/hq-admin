@@ -38,7 +38,7 @@ export class PropertyEditComponent extends FormHandle<Property> {
     return this.route.data.map(m => m.model);
   }
 
-  protected buidForm(): FormGroup {
+  protected buildForm(): FormGroup {
     return this.formBuilder.group({
       'key': [this.model.key, [
         Validators.required,

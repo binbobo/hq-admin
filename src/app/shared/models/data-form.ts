@@ -24,7 +24,7 @@ export abstract class FormHandle<T> implements OnInit {
         this.getModel()
             .subscribe(model => {
                 this.model = model;
-                this.form = this.buidForm();
+                this.form = this.buildForm();
             }, err => console.error(err));
     }
 
@@ -54,7 +54,7 @@ export abstract class FormHandle<T> implements OnInit {
     }
 
     protected onReset() {
-        this.form = this.buidForm();
+        this.form = this.buildForm();
         this.form.reset(this.model);
         let f = this.form;
         this.form = null;
@@ -104,5 +104,5 @@ export abstract class FormHandle<T> implements OnInit {
 
     protected abstract getModel(): Observable<T>;
 
-    protected abstract buidForm(): FormGroup;
+    protected abstract buildForm(): FormGroup;
 }

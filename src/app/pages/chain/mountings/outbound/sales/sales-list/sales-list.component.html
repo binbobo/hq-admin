@@ -80,7 +80,7 @@
 </div>
 
 <div hqModal #createModal="hq-modal" modalTitle="新增" size="lg">
-  <hq-sales-create *ngIf="createModal.isShown" (formSubmit)="onCreate($event)"></hq-sales-create>
+  <hq-sales-create *ngIf="createModal.isShown" (onSubmit)="onCreated($event)"></hq-sales-create>
 </div>
 
 <hq-sales-print class="invisible" hqPrint #printer="hq-print" print-title="销售出库单" [model]="printModel"></hq-sales-print>

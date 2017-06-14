@@ -22,8 +22,7 @@ export class PurchaseReturnService implements PagedService<any> {
   get(code: string): Promise<PurchaseReturnPrintItem> {
     if (!code) return Promise.resolve({});
     let url = Urls.chain.concat('/PurchaseReturnDetails/Print?BillCode=', code);
-    return this.httpService.get<ApiResult<PurchaseReturnPrintItem>>(url)
-      .then(result => result.data)
+    return this.httpService.getObject<PurchaseReturnPrintItem>(url)
       .catch(err => Promise.reject(`获取退库单信息失败：${err}`));
   }
 

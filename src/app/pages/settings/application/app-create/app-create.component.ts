@@ -22,7 +22,7 @@ export class AppCreateComponent extends FormHandle<Application> {
     return Observable.of(new Application());
   }
 
-  protected buidForm(): FormGroup {
+  protected buildForm(): FormGroup {
     return this.formBuilder.group({
       name: [this.model.name, [
         Validators.required,

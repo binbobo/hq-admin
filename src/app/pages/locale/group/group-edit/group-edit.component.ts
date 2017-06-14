@@ -25,7 +25,7 @@ export class GroupEditComponent extends FormHandle<Group> {
     return this.route.data.map(m => m.model);
   }
 
-  protected buidForm(): FormGroup {
+  protected buildForm(): FormGroup {
     return this.formBuilder.group({
       'groupName': [this.model.groupName, [
         Validators.required,

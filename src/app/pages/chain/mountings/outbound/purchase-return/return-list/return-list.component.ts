@@ -10,7 +10,7 @@ import { PurchaseOutBillDirective } from '../purchase-out-bill.directive';
   templateUrl: './return-list.component.html',
   styleUrls: ['./return-list.component.css']
 })
-export class ReturnListComponent extends DataList<any> implements OnInit {
+export class ReturnListComponent extends DataList<PurchaseReturnItem> implements OnInit {
 
   @ViewChild(PurchaseOutBillDirective)
   private suspendBill: PurchaseOutBillDirective;
@@ -25,6 +25,7 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
   private printModel: PurchaseReturnPrintItem;
   private model = new PurchaseReturnRequest();
   private product: PurchaseReturnItem;
+  private totalValue: any;
 
   constructor(
     injector: Injector,
@@ -51,14 +52,30 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
       .then(() => this.billCodes.forEach(m => m.checked = this.model.originalBillId === m.value || undefined));
   }
 
-  onCreate(item: PurchaseReturnItem) {
+  onCreated(event: any) {
+    let item = event.data;
     let exists = this.model.list.find(m => m.productId === item.productId);
     if (exists) {
       Object.assign(exists, item);
     } else {
       this.model.list.push(item);
     }
-    this.createModal.hide();
+    this.aggregate();
+    if (!event.continuable) {
+      this.createModal.hide();
+    }
+  }
+
+  private aggregate() {
+    if (!this.model || !this.model.list) return;
+    this.totalValue = { count: 0, price: 0, exTaxPrice: 0, amount: 0, exTaxAmount: 0 };
+    this.model.list.forEach(m => {
+      this.totalValue.count += +m.count;
+      this.totalValue.price += +m.price;
+      this.totalValue.exTaxPrice += +m.exTaxPrice;
+      this.totalValue.amount += +m.amount;
+      this.totalValue.exTaxAmount += +m.exTaxAmount;
+    })
   }
 
   private reset() {
@@ -152,6 +169,7 @@ export class ReturnListComponent extends DataList<any> implements OnInit {
     if (!confirm('确定要删除？')) return;
     let index = this.model.list.indexOf(item);
     this.model.list.splice(index, 1);
+    this.aggregate();
   }
 
   getAddedCount(item: PurchaseReturnItem): number {

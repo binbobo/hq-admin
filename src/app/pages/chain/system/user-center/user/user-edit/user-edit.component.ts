@@ -33,7 +33,7 @@ export class UserEditComponent extends FormHandle<User> implements OnInit {
     return Observable.of(this.model);
   }
 
-  protected buidForm(): FormGroup {
+  protected buildForm(): FormGroup {
     return this.formBuilder.group({
       id: [this.model.id],
       name: [this.model.name, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],

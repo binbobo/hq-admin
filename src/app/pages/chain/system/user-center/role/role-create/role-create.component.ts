@@ -22,7 +22,7 @@ export class RoleCreateComponent extends FormHandle<Role> implements OnInit {
     return Observable.of(new Role());
   }
 
-  protected buidForm(): FormGroup {
+  protected buildForm(): FormGroup {
     return this.formBuilder.group({
       name: [this.model.name, [Validators.required, Validators.maxLength(30),]],
       description: [this.model.description, [Validators.maxLength(100)]]

@@ -59,7 +59,7 @@ export class ResourceEditComponent extends FormHandle<Resource> implements OnIni
     return this.route.data.map(m => m.model);
   }
 
-  protected buidForm(): FormGroup {
+  protected buildForm(): FormGroup {
     return this.form = this.formBuilder.group({
       key: [this.model.key, [
         Validators.required,

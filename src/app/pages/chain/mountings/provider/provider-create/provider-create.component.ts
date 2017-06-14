@@ -23,7 +23,7 @@ export class ProviderCreateComponent extends FormHandle<Provider> implements OnI
     return Observable.of(new Provider());
   }
 
-  protected buidForm(): FormGroup {
+  protected buildForm(): FormGroup {
     return this.formBuilder.group({
       name: [this.model.name, [Validators.required, Validators.maxLength(100),]],
       shortName: [this.model.shortName, [Validators.maxLength(30),]],
