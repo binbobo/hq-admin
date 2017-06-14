@@ -6,7 +6,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FormGroupControlErrorDirective, TypeaheadRequestParams, HqAlerter, PrintDirective } from 'app/shared/directives';
 import { CustomValidators } from 'ng2-validation';
 import { CentToYuanPipe } from "app/shared/pipes";
-import { numberMask,priceMask } from 'app/pages/chain/chain-shared';
+import { numberMask, priceMask } from 'app/pages/chain/chain-shared';
 
 @Component({
   selector: 'hq-distribute-create',
@@ -14,8 +14,8 @@ import { numberMask,priceMask } from 'app/pages/chain/chain-shared';
   styleUrls: ['./distribute-create.component.css']
 })
 export class DistributeCreateComponent implements OnInit {
-  priceMask=priceMask;
-  numberMask=numberMask;
+  priceMask = priceMask;
+  numberMask = numberMask;
   private form: FormGroup;
   private converter: CentToYuanPipe = new CentToYuanPipe();
   @Output()
@@ -95,8 +95,9 @@ export class DistributeCreateComponent implements OnInit {
 
   }
 
-  public onSubmit(event: Event) {
+  public onSubmit(event: Event,isclose) {
     this.form.value["createUserName"] = this.model["createUserName"];
+    this.form.value["isclose"]=isclose;
     let invalid = this.controls
       .map(c => c.validate())
       .some(m => !m);
@@ -118,7 +119,7 @@ export class DistributeCreateComponent implements OnInit {
   public onReset() {
     this.storages = null;
     this.locations = null;
-    this.form.reset({ ...this.model});
+    this.form.reset({ ...this.model });
   }
 
   private onResetForm(event: Event, key: string) {
