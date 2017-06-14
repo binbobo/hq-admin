@@ -92,7 +92,7 @@
       <form [formGroup]="mileageForm" class="form-inline">
         <label><span class="asterisk mr-1">*</span>出厂里程：</label>
         <div class="input-group">
-          <input type="text" [errors]="{gte:'出厂里程不能小于进厂里程'}" [textMask]="{mask: mileageMask}" label="出厂里程" class="form-control" formControlName="leaveMileage" />
+          <input #leaveMileageControl="hq-error" type="text" [errors]="{gte:'出厂里程不能小于进厂里程'}" [textMask]="{mask: mileageMask}" label="出厂里程" class="form-control" formControlName="leaveMileage" />
           <div class="input-group-addon">KM</div>
         </div>
       </form>

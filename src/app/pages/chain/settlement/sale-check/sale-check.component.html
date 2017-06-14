@@ -44,13 +44,7 @@
             [(ngModel)]="endDateParams.endtime" name="endtime" type="text" placeholder="请选择截止时间" [close-on-select]="false"
             ngui-datetime-picker/>
         </div>
-        <div class="input-group m-1">
-          <label class="input-group-addon">结算方式</label>
-          <select [(ngModel)]="params.settlementid" id="settlementid" name="settlementid" class="form-control">
-            <option *ngFor="let settlementid of billTypeData" value="{{settlementid.id}}">{{settlementid?.value}}</option>
-          </select>
-          <div class="ml-3"><button class="btn btn-primary">查询</button></div>
-        </div>
+        <div class="ml-3"><button class="btn btn-primary">查询</button></div>
       </div>
     </form>
     <div class="table-container">

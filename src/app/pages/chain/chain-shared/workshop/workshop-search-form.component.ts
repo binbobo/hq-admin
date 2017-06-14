@@ -22,6 +22,7 @@ export class WorkshopSearchFormComponent implements OnInit {
   }
 
   onFormSubmit() {
+    if(!this.types) return;
     // 获取当前选中的状态id列表
 
     let checkedStatus = this.types.filter(item => item.checked);

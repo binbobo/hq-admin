@@ -24,7 +24,7 @@ export class CustomerAddFormComponent implements OnInit {
   isProvinceLevelMunicipality = false;// 是否为直辖市标志
   cityIdList = []; // 省份,城市, 区县id列表
   cityNameList = []; // 省份,城市, 区县Name列表
-  // 客户来源数据
+  // 来源渠道数据
   customerSourceData: any;
 
 
@@ -42,7 +42,7 @@ export class CustomerAddFormComponent implements OnInit {
     // 初始化省份数据
     this.service.getProvincesData()
       .subscribe(data => this.provincesData = data);
-    // 获取客户来源数据
+    // 获取来源渠道数据
     this.service.getCustomerSource()
       .subscribe(data => this.customerSourceData = data);
 
@@ -56,7 +56,7 @@ export class CustomerAddFormComponent implements OnInit {
   private createForm() {
     // 添加车主表单
     this.carOwnerForm = this.fb.group({
-      source:'', // 客户来源
+      source:'', // 来源渠道
       id: '', // 车主主键 用于更新(模糊查询选择车主)
       name: ['', [Validators.required]], // 车主
       phone: ['', [Validators.required, HQ_VALIDATORS.mobile]], // 车主手机号

@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Vehicle } from '../../../reception/order.service';
 import { CustomValidators } from 'ng2-validation';
 import { HQ_VALIDATORS } from '../../../../../shared/shared.module';
+import { SweetAlertService } from '../../../../../shared/services/sweetalert.service';
 
 @Component({
   selector: 'hq-add-vehicle',
@@ -25,6 +26,7 @@ export class AddVehicleComponent implements OnInit {
   isVehicleSelected = false;
 
   constructor(
+    protected sweetAlertService: SweetAlertService,
     private fb: FormBuilder,
   ) { }
 
@@ -44,8 +46,11 @@ export class AddVehicleComponent implements OnInit {
   onVehicleConfirmHandler() {
     // 验证数据合法性
     if (!this.vehicleForm.value.vehicleId) {
-      alert('请选择车型');
-      this.vehicleForm.controls.vehicleName.setValue('');
+      this.sweetAlertService.alert({
+        text: '请选择车型'
+      }).then(() => {
+        this.vehicleForm.controls.vehicleName.setValue('');
+      });
       return;
     }
     // 日期类型没选的话 不传
@@ -56,9 +61,9 @@ export class AddVehicleComponent implements OnInit {
     vehicleFormVal.plateNo = vehicleFormVal.plateNo.toUpperCase();
 
     this.onVehicleConfirm.emit({
-        data: vehicleFormVal,
-        isEdit: this.vehicle ? true : false
-      });
+      data: vehicleFormVal,
+      isEdit: this.vehicle ? true : false
+    });
     this.vehicleForm.reset();
   }
 

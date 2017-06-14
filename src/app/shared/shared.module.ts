@@ -72,6 +72,7 @@ const HQ_SERVICES = [
     services.HttpService,
     services.EventDispatcher,
     services.treeviewI18nProvider,
+    services.SweetAlertService,
 ]
 
 export const HQ_VALIDATORS = {

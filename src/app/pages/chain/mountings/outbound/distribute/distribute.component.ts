@@ -44,7 +44,6 @@ export class DistributeComponent implements OnInit {
     injector: Injector,
     protected service: DistributeService,
     private fb: FormBuilder) {
-
   }
   ngOnInit() {
   }
@@ -126,7 +125,6 @@ export class DistributeComponent implements OnInit {
         this.MRData.sort((a, b) => {
           return a.serialNum - b.serialNum
         });
-
       }).catch(err => { this.alerter.error(err), this.serialShow = false });
 
   }
@@ -240,7 +238,6 @@ export class DistributeComponent implements OnInit {
   onCreate(evt) {
     evt.price = evt.price;
     evt.amount = evt.amount;
-
     this.hasList = this.newMainData.filter(item => item.maintenanceItemId === evt.maintenanceItemId && item.productId === evt.productId);
     if (this.hasList.length > 0) {
       this.newMainData.forEach((item, index) => {
@@ -253,7 +250,9 @@ export class DistributeComponent implements OnInit {
     } else {
       this.newMainData.push(evt);
     }
-    // this.createModal.hide();
+    if (evt.isclose) {
+      this.createModal.hide();
+    } 
   }
 
   onDelCreat(i) {

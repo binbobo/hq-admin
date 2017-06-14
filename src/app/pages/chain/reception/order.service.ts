@@ -26,7 +26,7 @@ export class OrderService implements BasicService<Order> {
     }
 
     /**
-     * 获取客户来源数据
+     * 获取来源渠道数据
      * @memberOf OrderService
      */
     getCustomerSource(): Observable<any[]> {

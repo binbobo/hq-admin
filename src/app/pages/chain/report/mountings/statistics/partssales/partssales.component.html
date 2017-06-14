@@ -7,7 +7,7 @@
     <form class="form-inline mb-2" [formGroup]="partssalesForm" (ngSubmit)="onSearch()">
       <div class="input-group m-1">
         <label class="input-group-addon">配件编码</label>
-        <input [hqProductTypeahead]='code' (onSelect)="onSelect($event)" class="form-control" formControlName="productCode" placeholder="请输配件编码"
+        <input [hqProductTypeahead]="'code'" (onSelect)="onSelect($event)" class="form-control" formControlName="productCode" placeholder="请输配件编码"
         />
       </div>
       <div class="input-group m-1">

@@ -7,6 +7,7 @@ import { numberMask } from 'app/pages/chain/chain-shared';
 import { HQ_VALIDATORS } from "app/shared/shared.module";
 import { CustomValidators } from 'ng2-validation';
 import { ModalDirective } from 'ngx-bootstrap';
+import { FormGroupControlErrorDirective } from 'app/shared/directives';
 
 
 @Component({
@@ -34,6 +35,8 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
   mileageForm: FormGroup;
   @ViewChild('checkModal')
   checkModal: ModalDirective;
+  @ViewChild('leaveMileageControl')
+  leaveMileageControl: FormGroupControlErrorDirective;
 
   constructor(injector: Injector,
     private fb: FormBuilder,
@@ -69,6 +72,12 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
   createForm() {
     this.mileageForm = this.fb.group({
       leaveMileage: ['', [Validators.required]], // 出厂里程
+    });
+    this.mileageForm.valueChanges.subscribe(data => {
+      if(this.leaveMileageControl) {
+        this.leaveMileageControl.validate();
+      }
+      this.selectedOrder.serviceOutputs.enableBtn = this.isCheckPassBtnEnable();
     });
   }
 
@@ -213,10 +222,12 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
     item.checkGenerating = false;
     this.checkModal.show();
     this.isDetailModalShown = true;
-    // 默认带出进厂里程
-    this.mileageForm.controls.leaveMileage.setValue(data.mileage);
+    // 默认带出进厂里程 (如果填写过出厂里程，优先带出厂里程，否则带出进厂里程)
+    this.mileageForm.controls.leaveMileage.setValue(data.leaveMileage || data.mileage);
+    // 出厂里程不能小于进厂里程
     this.mileageForm.controls.leaveMileage.setValidators([Validators.required, HQ_VALIDATORS.mileage, CustomValidators.gte(data.mileage)]);
-  }
+    this.mileageForm.controls.leaveMileage.updateValueAndValidity();
+}
 
   /**
   * 点击工单详情按钮处理程序
