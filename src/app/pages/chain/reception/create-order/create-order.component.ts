@@ -34,12 +34,14 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   // 当前选择的维修项目记录  用于编辑
   selectedItem: any;
+  //弹出标题
+  addModalTitle: string;
   // 当前已经选择的维修项目列表 用于过滤
   selectedServices: Array<any> = [];
 
   // 维修类型数据
   maintenanceTypeData: MaintenanceType[];
-  // 客户来源数据
+  // 来源渠道数据
   customerSourceData: any;
   // 创建工单表单FormGroup
   workSheetForm: FormGroup;
@@ -86,7 +88,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 获取维修类型数据
     this.service.getMaintenanceTypes()
       .subscribe(data => this.maintenanceTypeData = data);
-    // 获取客户来源数据
+    // 获取来源渠道数据
     this.service.getCustomerSource()
       .subscribe(data => this.customerSourceData = data);
 
@@ -279,7 +281,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       vehicleId: customerVehicle.vehicleId,
       customerVehicleId: customerVehicle.id,
       customerId: customerVehicle.customerId,
-      source: customerVehicle.source,// 客户来源 可能没有值
+      source: customerVehicle.source,// 来源渠道 可能没有值
     });
     // 设置品牌 车系 车型选中状态为true
     this.isBrandSelected = this.isSeriesSelected = this.isVehicleSelected = true;
@@ -345,7 +347,19 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     }
 
     // 显示窗口
-    addModal.show();
+    this.addModalTitle = '编辑维修项目';
+    setTimeout(() => {
+      addModal.show();
+    }, 100);
+  }
+
+  // 新增维修项目
+  onMaintenanceItemAdd(addModal) {
+    // 显示窗口
+    this.addModalTitle = '新增维修项目';
+    setTimeout(() => {
+      addModal.show();
+    }, 100);
   }
 
   onConfirmNewMaintenanceItem(evt, addModal) {
@@ -505,7 +519,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   createForm() {
     this.workSheetForm = this.fb.group({
-      source: [''/*, [Validators.required]*/], // 客户来源
+      source: [''/*, [Validators.required]*/], // 来源渠道
       customerName: ['', [Validators.required]], // 车主
       phone: ['', [Validators.required, HQ_VALIDATORS.mobile]], // 车主电话
       contactUser: ['', [Validators.required]], // 送修人

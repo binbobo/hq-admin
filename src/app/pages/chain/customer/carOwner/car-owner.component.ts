@@ -23,7 +23,7 @@ export class CarOwnerComponent extends DataList<any>  {
     createdEndDate: undefined
   }
 
-   // 客户来源数据
+   // 来源渠道数据
   customerSourceData: any;
 
   constructor(
@@ -32,7 +32,7 @@ export class CarOwnerComponent extends DataList<any>  {
     super(injector, service);
     this.params = new CustomerListRequest();
     
-    // 获取客户来源数据
+    // 获取来源渠道数据
     this.service.getCustomerSource()
       .subscribe(data => this.customerSourceData = data);
   }

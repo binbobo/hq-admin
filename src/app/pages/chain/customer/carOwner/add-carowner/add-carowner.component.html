@@ -8,7 +8,7 @@
     <hq-customer-add-form #customerForm (formValueChanges)="enableSaveCustomer=$event" (load)="enableSaveCustomer=$event.isFormValid;newVehiclesData=$event.vehicles"></hq-customer-add-form>
     <br>
     <!--(delClick)="onDelVehicleConfirmHandler($event)"-->
-    <hq-vehicle-add [data]="newVehiclesData" (addClick)="vehicleModal.show();" (editClick)="selectedVehicle=$event;vehicleModal.show();"></hq-vehicle-add>
+    <hq-vehicle-add [data]="newVehiclesData" (addClick)="onAddVehicle(vehicleModal);" (editClick)="onEditVehicle($event, vehicleModal);"></hq-vehicle-add>
     <hr>
     <div class="text-center">
       <button [hqSpinner]="generating" type="button" class="btn btn-primary" [disabled]="!enableSaveCustomer" (click)="saveCustomer()">保存车主信息</button>
@@ -17,7 +17,7 @@
   </div>
 </div>
 
-<div hqModal #vehicleModal="hq-modal" size="lg" modalTitle="新增车辆">
+<div hqModal #vehicleModal="hq-modal" size="lg" [modalTitle]="vehicleModalTitle">
   <hq-add-vehicle *ngIf="vehicleModal.isShown" [vehicle]="selectedVehicle" (onVehicleCancel)="vehicleModal.hide();selectedVehicle = null;"
     (onVehicleConfirm)="onVehicleConfirmHandler($event, vehicleModal)"></hq-add-vehicle>
 </div>

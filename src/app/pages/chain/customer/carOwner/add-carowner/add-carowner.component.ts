@@ -25,6 +25,7 @@ export class AddCarownerComponent implements OnInit {
 
   // 当前选择的车辆记录  用于编辑
   selectedVehicle: any;
+  vehicleModalTitle: string; // 车辆编辑/添加标题
 
   constructor(
     protected service: CustomerService,
@@ -66,6 +67,20 @@ export class AddCarownerComponent implements OnInit {
       }
     });
     this.enableSaveCustomer = this.customerForm.carOwnerForm.valid && this.newVehiclesData.length >= 0;
+  }
+
+  onAddVehicle(vehicleModal) {
+    this.vehicleModalTitle = '新增车辆';
+    setTimeout(() => {
+      vehicleModal.show();
+    }, 100);
+  }
+  onEditVehicle(evt, vehicleModal) {
+    this.vehicleModalTitle = '编辑车辆';
+    this.selectedVehicle = evt;
+    setTimeout(() => {
+      vehicleModal.show();
+    }, 100);
   }
 
   // 添加车主
