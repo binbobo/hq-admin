@@ -39,7 +39,8 @@ export class SweetAlertService {
     const baseOptions = {
       confirmButtonText: '确定',
       type: 'info',
-      allowOutsideClick: false
+      allowOutsideClick: false,
+      animation: false
     };
     return sweetalert(assign(baseOptions, options));
   }
