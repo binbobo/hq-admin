@@ -526,7 +526,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   createForm() {
     this.workSheetForm = this.fb.group({
-      source: [''/*, [Validators.required]*/], // 来源渠道
+      source: [''], // 来源渠道
       customerName: ['', [Validators.required]], // 车主
       phone: ['', [Validators.required, HQ_VALIDATORS.mobile]], // 车主电话
       contactUser: ['', [Validators.required]], // 送修人
