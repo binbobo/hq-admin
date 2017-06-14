@@ -47,7 +47,8 @@ export class CarOwnerComponent extends DataList<any>  {
 
   customerDel(item) {
     this.sweetAlertService.confirm({
-      text: '确定要删除当前选择的车主吗'
+      text: '确定要删除当前选择的车主吗',
+      type: 'warn'
     }).then(() => {
       item.deleteGenerating = true;
       // 根据id删除客户详细信息记录

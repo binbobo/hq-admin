@@ -62,7 +62,8 @@ export class AddCarownerComponent implements OnInit {
   // 删除一条车辆记录 处理程序
   onDelVehicleConfirmHandler(plateNo) {
     this.sweetAlertService.confirm({
-      text: '确定要删除当前选择的车辆吗'
+      text: '确定要删除当前选择的车辆吗',
+      type: 'warn'
     }).then(() => {
       this.newVehiclesData.filter((item, index) => {
         if (item.plateNo === plateNo) {

@@ -37,6 +37,10 @@ export class SweetAlertService {
 
   alert(options) {
     const baseOptions = {
+      width: '350px',
+      confirmButtonClass: 'btn-primary btn-sm',
+      cancelButtonClass: 'btn-secondary btn-sm',
+      
       confirmButtonText: '确定',
       type: 'info',
       allowOutsideClick: false,
