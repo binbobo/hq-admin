@@ -27,15 +27,22 @@ export class HeaderFixedDirective implements OnInit {
 
   private createCopyHeader() {
     if (!this.fixed) {
-      Array.from(this.thead.querySelectorAll('th')).forEach((th: HTMLTableHeaderCellElement) => {
+      let ths = Array.from(this.thead.querySelectorAll('th'));
+      ths.forEach((th: HTMLTableHeaderCellElement) => {
         th.width = th.getBoundingClientRect().width + '';
       });
       let copy = this.thead.cloneNode(true) as HTMLElement;
+      copy.classList.add('copy');
       this.thead.insertAdjacentElement('beforebegin', copy);
       this.thead.style.position = "absolute";
+      ths.forEach((th: HTMLTableHeaderCellElement) => {
+        th.style.display = "inline-block";
+        th.style.borderRightWidth = "0";
+      });
       this.thead.classList.add('fixed');
     }
     this.thead.style.top = (this.container.scrollTop - 0) + 'px';
+    this.thead.style.whiteSpace = "nowrap";
     this.fixed = true;
   }
 
@@ -44,8 +51,13 @@ export class HeaderFixedDirective implements OnInit {
       if (head.classList.contains('fixed')) {
         head.classList.remove('fixed');
         head.removeAttribute('style');
+        Array.from(this.thead.querySelectorAll('th')).forEach((th: HTMLTableHeaderCellElement) => {
+          th.style.display = "table-cell";
+        });
       } else {
-        head.remove();
+        if (head.classList.contains('copy')) {
+          head.remove();
+        }
       }
     });
     this.fixed = false;
