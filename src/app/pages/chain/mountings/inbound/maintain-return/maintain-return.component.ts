@@ -5,6 +5,7 @@ import { MaintainReturnService, MaintainRequest } from "./maintain-return.servic
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { TypeaheadRequestParams, HqAlerter, PrintDirective, HqModalDirective } from 'app/shared/directives';
 import { SuspendBillDirective } from "app/pages/chain/chain-shared";
+import { SweetAlertService } from "app/shared/services";
 @Component({
   selector: 'app-maintain-return',
   templateUrl: './maintain-return.component.html',
@@ -39,11 +40,12 @@ export class MaintainReturnComponent implements OnInit {
     private route: ActivatedRoute,
     injector: Injector,
     protected service: MaintainReturnService,
+    protected sweetAlertService: SweetAlertService,
     private fb: FormBuilder) {
     this.params = new MaintainRequest();
     // 构建表单
     this.createForm();
-        
+
   }
   ngOnInit() { }
 
@@ -217,15 +219,18 @@ export class MaintainReturnComponent implements OnInit {
       this.numberPrintList.sort((a, b) => {
         return a.value - b.value
       });
-      if (confirm('生成退料单成功！ 是否打印？')) {
+      this.sweetAlertService.confirm({
+        type: "question",
+        text: '生成退料单成功！ 是否打印？'
+      }).then(() => {
         this.service.getPrintList(this.listId, this.billCode, num).toPromise()
           .then(data => {
             this.printList = data;
             setTimeout(() => { this.print(); }, 1000);
             setTimeout(() => { this.printList = null }, 1200)
           })
-          .catch(err => { this.alerter.error(err); this.generat = false });
-      }
+          .catch(err => { this.alerter.error(err); this.generat = false })
+      }, () => console.log("取消了打印"))
     }).catch(err => { this.alerter.error(err); this.generat = false });
   }
 
@@ -259,7 +264,13 @@ export class MaintainReturnComponent implements OnInit {
   }
   onDelCreat(e, i) {
     // this.serialData.find(item => item.id = e.curId).list.find(cur => cur.maintenanceItemId === e.maintenanceItemId).returnCount -= Number(e.count);
-    this.newMainData.splice(i, 1);
+    this.sweetAlertService.confirm({
+      type: "warning",
+      text: '确定要删除当前选择的退料吗？'
+    }).then(() => {
+      this.newMainData.splice(i, 1);
+    }, () => console.log("取消了删除"))
+
   }
   get columns() {
     return [

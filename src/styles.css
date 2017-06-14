@@ -408,3 +408,44 @@ button:focus,.close:active,button:active{
 .font-bold{
     font-weight: bold;
 }
+/*统一弹框swal2样式*/
+.swal2-modal{
+    min-height:195px !important;
+}
+.swal2-modal .swal2-content{
+    font-size:17px !important;
+    color:#292b2c !important;
+    font-weight:normal !important;
+}
+.swal2-icon{
+    width:2.5rem !important;
+    height:2.5rem !important;
+    margin:6px auto 14px !important;
+}
+.swal2-icon.swal2-question,.swal2-icon.swal2-error,.swal2-icon.swal2-warning,.swal2-icon.swal2-info,.swal2-icon.swal2-success{
+    font-size:2rem !important;
+    line-height:40px !important;
+}
+.swal2-icon.swal2-question{
+    color:rgba(39, 179, 148, 0.59);
+    border-color: rgba(39, 179, 148, 0.57)
+}
+.swal2-modal .btn-sm{
+     font-size:15px;
+     padding:7px 28px !important;
+}
+.swal2-modal .btn-primary{
+     color:#fff;
+     background: #27b394;
+}
+.swal2-modal .btn-secondary{
+    background-color:#fff !important;
+    color:#292b2c;
+    border:1px solid #ccc;
+}
+.swal2-modal .swal2-close{
+    font-size:22px !important;
+}
+.swal2-modal .swal2-buttonswrapper{
+    margin-top:12px !important;
+}

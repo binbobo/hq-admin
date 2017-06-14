@@ -14,6 +14,7 @@ import { LocalDataSource } from "ng2-smart-table";
 import { TypeaheadRequestParams, PrintDirective } from "app/shared/directives";
 import * as moment from 'moment';
 import { SuspendBillDirective } from "app/pages/chain/chain-shared";
+import { SweetAlertService } from "app/shared/services";
 
 @Component({
   selector: 'app-append-order',
@@ -41,7 +42,8 @@ export class AppendOrderComponent {
   @ViewChild('printer')
   public printer: PrintDirective;
   constructor(
-    protected service1: AppendOrderService
+    protected service1: AppendOrderService,
+    protected sweetAlertService: SweetAlertService,
   ) { }
 
   maintenanceProjectData;
@@ -131,12 +133,12 @@ export class AppendOrderComponent {
     return (params: TypeaheadRequestParams) => {
       let p = new AppendItemSearchRequest(params.text);
       p.setPage(params.pageIndex, params.pageSize);
-      this.service1.getAppendOrderParma(p).then((result)=>{
+      this.service1.getAppendOrderParma(p).then((result) => {
         if (result.data.length < 1) {
           this.alerter.error("找不到该工单或已完工，不能进行增项操作。", true, 5000);
         }
-      }).catch((err)=> this.alerter.error(err, true, 2000))
-      
+      }).catch((err) => this.alerter.error(err, true, 2000))
+
       return this.service1.getAppendOrderParma(p);
     };
   }
@@ -237,24 +239,30 @@ export class AppendOrderComponent {
 
   // 从表格中删除一条添加的维修项目事件处理程序
   onDelMaintenanceItem(serviceId) {
-    this.newMaintenanceItemData.filter((item, index) => {
-      if (item.serviceId === serviceId) {
-        this.newMaintenanceItemData.splice(index, 1);
-        // 费用计算
-        this.workHourFee -= Number(item.price * item.workHour);
-        this.sumFee -= Number(item.amount);
-        return;
+    this.sweetAlertService.confirm({
+      type: "warning",
+      text: '确定要删除当前选择的维修项目吗？'
+    }).then(() => {
+      this.newMaintenanceItemData.filter((item, index) => {
+        if (item.serviceId === serviceId) {
+          this.newMaintenanceItemData.splice(index, 1);
+          // 费用计算
+          this.workHourFee -= Number(item.price * item.workHour);
+          this.sumFee -= Number(item.amount);
+          return;
+        }
+      });
+      this.selectedServices = this.getSelectedServices();
+      this.selectedSuggestServices = this.getSelectedSuggestServices();
+      if (this.newMaintenanceItemData.length > 0 || this.newAttachData.length > 0 || this.newSuggestData.length > 0) {
+        this.isableAppend = true;
+        this.isableSuspend = true;
+      } else {
+        this.isableAppend = false;
+        this.isableSuspend = false;
       }
-    });
-    this.selectedServices = this.getSelectedServices();
-    this.selectedSuggestServices = this.getSelectedSuggestServices();
-    if (this.newMaintenanceItemData.length > 0 || this.newAttachData.length > 0 || this.newSuggestData.length > 0) {
-      this.isableAppend = true;
-      this.isableSuspend = true;
-    } else {
-      this.isableAppend = false;
-      this.isableSuspend = false;
-    }
+    },()=>console.log("取消了删除维修项目"))
+
   }
 
   private getSelectedServices() {
@@ -296,14 +304,20 @@ export class AppendOrderComponent {
   }
   // 从表格中删除一条添加的附加项目事件处理程序
   onDelAttachItem(i) {
-    this.newAttachData.splice(i, 1);
-    if (this.newMaintenanceItemData.length > 0 || this.newAttachData.length > 0 || this.newSuggestData.length > 0) {
-      this.isableAppend = true;
-      this.isableSuspend = true;
-    } else {
-      this.isableAppend = false;
-      this.isableSuspend = false;
-    }
+    this.sweetAlertService.confirm({
+      type: "warning",
+      text: '确定要删除当前选择的附加项目吗？'
+    }).then(() => {
+      this.newAttachData.splice(i, 1);
+      if (this.newMaintenanceItemData.length > 0 || this.newAttachData.length > 0 || this.newSuggestData.length > 0) {
+        this.isableAppend = true;
+        this.isableSuspend = true;
+      } else {
+        this.isableAppend = false;
+        this.isableSuspend = false;
+      }
+    },()=>console.log("取消了删除附加项目"))
+
   }
 
   // -------增加建议维修项
@@ -355,20 +369,26 @@ export class AppendOrderComponent {
 
   // 从表格中删除一条添加的维修项目事件处理程序
   onDelSuggestItem(serviceId) {
-    this.newSuggestData.filter((item, index) => {
-      if (item.serviceId === serviceId) {
-        this.newSuggestData.splice(index, 1);
-        return;
+    this.sweetAlertService.confirm({
+      type: "warning",
+      text: '确定要删除当前选择的建议维修项目吗？'
+    }).then(() => {
+      this.newSuggestData.filter((item, index) => {
+        if (item.serviceId === serviceId) {
+          this.newSuggestData.splice(index, 1);
+          return;
+        }
+      });
+      this.selectedSuggestServices = this.getSelectedSuggestServices();
+      if (this.newMaintenanceItemData.length > 0 || this.newAttachData.length > 0 || this.newSuggestData.length > 0) {
+        this.isableAppend = true;
+        this.isableSuspend = true;
+      } else {
+        this.isableAppend = false;
+        this.isableSuspend = false;
       }
-    });
-    this.selectedSuggestServices = this.getSelectedSuggestServices();
-    if (this.newMaintenanceItemData.length > 0 || this.newAttachData.length > 0 || this.newSuggestData.length > 0) {
-      this.isableAppend = true;
-      this.isableSuspend = true;
-    } else {
-      this.isableAppend = false;
-      this.isableSuspend = false;
-    }
+    },()=>console.log("取消了删除建议维修项目"))
+
     // this.suspendData.newSuggestData = this.newSuggestData;
   }
   private getSelectedSuggestServices() {

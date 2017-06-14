@@ -18,9 +18,9 @@ export class SweetAlertService {
 
   confirm(options) {
     const baseOptions = {
-      // width: '250px',
-      // confirmButtonClass: 'btn btn-primary btn-sm',
-      // cancelButtonClass: 'btn btn-secondary btn-sm',
+      width: '350px',
+      confirmButtonClass: 'btn-primary btn-sm',
+      cancelButtonClass: 'btn-secondary btn-sm',
       // imageClass: "img-fluid",
       // imageWidth: 16,
       // imageHeight: 16,
