@@ -3,6 +3,7 @@ import { CustomerListRequest } from '../../customer/customer.service';
 import { CustomerService } from '../customer.service';
 import { DataList } from 'app/shared/models';
 import * as moment from 'moment';
+import { SweetAlertService } from '../../../../shared/services/sweetalert.service';
 
 @Component({
   selector: 'app-car-owner',
@@ -23,15 +24,16 @@ export class CarOwnerComponent extends DataList<any>  {
     createdEndDate: undefined
   }
 
-   // 来源渠道数据
+  // 来源渠道数据
   customerSourceData: any;
 
   constructor(
     injector: Injector,
+    protected sweetAlertService: SweetAlertService,
     protected service: CustomerService) {
     super(injector, service);
     this.params = new CustomerListRequest();
-    
+
     // 获取来源渠道数据
     this.service.getCustomerSource()
       .subscribe(data => this.customerSourceData = data);
@@ -44,21 +46,23 @@ export class CarOwnerComponent extends DataList<any>  {
   }
 
   customerDel(item) {
-    if (!confirm('确定要删除当前选择的车主记录吗?')) {
-      return;
-    }
+    this.sweetAlertService.confirm({
+      text: '确定要删除当前选择的车主吗'
+    }).then(() => {
+      item.deleteGenerating = true;
+      // 根据id删除客户详细信息记录
+      this.service.delete(item.id).then(data => {
 
-    item.deleteGenerating = true;
-    // 根据id删除客户详细信息记录
-    this.service.delete(item.id).then(data => {
-
-      this.alerter.success('删除客户记录成功!', true, 2000);
-      item.deleteGenerating = false;
-      // 刷新车主列表
-      this.onLoadList();
-    }).catch(err => {
-      this.alerter.error('删除客户记录失败: ' + err, true, 2000);
-      item.deleteGenerating = false;
+        this.alerter.success('删除客户记录成功!', true, 2000);
+        item.deleteGenerating = false;
+        // 刷新车主列表
+        this.onLoadList();
+      }).catch(err => {
+        this.alerter.error('删除客户记录失败: ' + err, true, 2000);
+        item.deleteGenerating = false;
+      });
+    }, () => {
+      // 点击了取消
     });
   }
 

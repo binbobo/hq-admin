@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CustomerService } from '../../customer.service';
 import { Location } from '@angular/common';
 import { HqAlerter } from 'app/shared/directives';
+import { SweetAlertService } from '../../../../../shared/services/sweetalert.service';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class AddCarownerComponent implements OnInit {
   vehicleModalTitle: string; // 车辆编辑/添加标题
 
   constructor(
+    protected sweetAlertService: SweetAlertService,
     protected service: CustomerService,
     private location: Location,
   ) {
@@ -59,14 +61,19 @@ export class AddCarownerComponent implements OnInit {
   }
   // 删除一条车辆记录 处理程序
   onDelVehicleConfirmHandler(plateNo) {
-    if (!confirm('确定要删除当前选择的车辆吗?')) { return; }
-    this.newVehiclesData.filter((item, index) => {
-      if (item.plateNo === plateNo) {
-        this.newVehiclesData.splice(index, 1);
-        return;
-      }
+    this.sweetAlertService.confirm({
+      text: '确定要删除当前选择的车辆吗'
+    }).then(() => {
+      this.newVehiclesData.filter((item, index) => {
+        if (item.plateNo === plateNo) {
+          this.newVehiclesData.splice(index, 1);
+          return;
+        }
+      });
+      this.enableSaveCustomer = this.customerForm.carOwnerForm.valid && this.newVehiclesData.length >= 0;
+    }, () => {
+      // 点击了取消
     });
-    this.enableSaveCustomer = this.customerForm.carOwnerForm.valid && this.newVehiclesData.length >= 0;
   }
 
   onAddVehicle(vehicleModal) {

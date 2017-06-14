@@ -53,6 +53,7 @@ const HQ_DIRECTIVES = [
     directives.HqBsModalDirective,
     directives.HqModalDirective,
     directives.ConversionCaseDirective,
+    directives.HeaderFixedDirective,
 ]
 
 const HQ_PIPES = [

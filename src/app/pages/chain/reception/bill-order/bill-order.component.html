@@ -67,7 +67,7 @@
             <td *ngIf="!item.updateOnUtc" style="text-align:right"><button type="button" class="btn btn-sm btn-primary" [hqSpinner]="item.generat" [disabled]="item.generat" (click)='orderDetailsDialog($event, item.id,lgModal,item)'>结算</button>&nbsp;
               <button [hqSpinner]="item.generating" type="button" class="btn btn-sm btn-info  " [disabled]="item.generating" (click)='DetailsDialog($event, item.id,lgModal,item)'>详情</button>
             </td>
-            <td *ngIf="item.updateOnUtc" style="text-align:right"><button type="button" class="btn btn-sm btn-danger" (click)='finishedOrder($event, item.id, confirmModal)'>撤销结算</button>&nbsp;
+            <td *ngIf="item.updateOnUtc" style="text-align:right"><button type="button" class="btn btn-sm btn-danger" (click)='finishedOrder($event, item.id)'>撤销结算</button>&nbsp;
               <button [hqSpinner]="item.generating" type="button" class="btn btn-sm btn-info  " [disabled]="item.generating" (click)='DetailsDialog($event, item.id,lgModal,item)'>详情</button>
             </td>
             <td>{{item.statusName}}</td>
@@ -101,7 +101,7 @@
   </div>
 </div>
 <!--详情 begin-->
-<div hqModal #lgModal="hq-modal"  class="modal fade" tabindex="-1" [hidden]="!isShowCost" role="dialog" size="lg" modalTitle="{{modaltitle}}">
+<div hqModal #lgModal="hq-modal" class="modal fade" tabindex="-1" [hidden]="!isShowCost" role="dialog" size="lg" modalTitle="{{modaltitle}}">
   <div *ngIf="lgModal.isShown">
     <!--结算费用-->
     <form [formGroup]="billSheetForm" [hidden]="!isShowCost" *ngIf="lgModal.isShown">
