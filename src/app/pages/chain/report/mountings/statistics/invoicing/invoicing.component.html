@@ -170,13 +170,14 @@
           <th>出库数量</th>
           <th>出库成本<br>金额</th>
           <th>出库销售<br>金额</th>
-          <th>采购入库<br>成本金额</th>
-          <th>维修领料<br>成本金额</th>
-          <th>维修领料<br>销售金额</th>
-          <th>配件销售<br>成本金额</th>
-          <th>配件销售<br>销售金额</th>
-          <th>内部领料<br>成本金额</th>
-          <th>内部领料<br>销售金额</th>
+          <th>采购入库<br>数量</th>
+          <th>采购入库<br>金额</th>
+          <th>维修领料<br>数量</th>
+          <th>维修领料<br>金额</th>
+          <th>配件销售<br>数量</th>
+          <th>配件销售<br>金额</th>
+          <th>内部领料<br>数量</th>
+          <th>内部领料<br>金额</th>
           <!--<th style="color:red;">其他入库<br>成本金额</th>
             <th style="color:red;">其他入库<br>销售金额</th>
             <th style="color:red;">其他出库<br>成本金额</th>
@@ -195,13 +196,14 @@
             <td class="text-center">{{item.outCount}}</td>
             <td>{{item.outCostAmount |centToYuan }}</td>
             <td>{{item.outSaleAmount |centToYuan }}</td>
-            <td>{{item.purchInCostAmount |centToYuan }}</td>
-            <td>{{item.mainCostAmount |centToYuan }}</td>
-            <td>{{item.mainSaleAmount |centToYuan }}</td>
-            <td>{{item.saleCostAmount |centToYuan }}</td>
+            <td class="text-center">{{item.purchInCount}}</td>
+            <td>{{item.purchInAmount |centToYuan }}</td>
+            <td class="text-center">{{item.maintCount }}</td>
+            <td>{{item.maintAmount |centToYuan }}</td>
+            <td class="text-center">{{item.saleCount}}</td>
             <td>{{item.saleAmount |centToYuan }}</td>
-            <td>{{item.useCostAmount |centToYuan }}</td>
-            <td>{{item.useSaleAmount|centToYuan }}</td>
+            <td class="text-center">{{item.useCount}}</td>
+            <td>{{item.useAmount|centToYuan }}</td>
           </tr>
         </tbody>
       </table>
@@ -246,13 +248,13 @@
           <td>{{listDetail.outCostAmount|centToYuan }}</td>
           <td>{{listDetail.outSaleAmount|centToYuan }}</td>
           <td class="text-center">{{listDetail.purchInCount}}</td>
-          <td>{{listDetail.purCostAmount|centToYuan}}</td>
+          <td>{{listDetail.purchInAmount|centToYuan}}</td>
           <td class="text-center">{{listDetail.maintCount}}</td>
-          <td>{{listDetail.mainCostAmount|centToYuan }}</td>
+          <td>{{listDetail.maintAmount|centToYuan }}</td>
           <td class="text-center">{{listDetail.saleCount}}</td>
-          <td>{{listDetail.saleCostAmount|centToYuan }}</td>
+          <td>{{listDetail.saleAmount|centToYuan }}</td>
           <td class="text-center">{{listDetail.useCount}}</td>
-          <td>{{listDetail.useCostAmount|centToYuan }}</td>
+          <td>{{listDetail.useAmount|centToYuan }}</td>
           <!--<td></td>
             <td></td>
             <td></td>
