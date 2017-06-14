@@ -125,7 +125,7 @@ export class CustomerService implements BasicService<any> {
     }
 
     /**
-     * 获取客户来源数据
+     * 获取来源渠道数据
      * @memberOf OrderService
      */
     public getCustomerSource(): Observable<any[]> {
@@ -141,7 +141,7 @@ export class CustomerService implements BasicService<any> {
 // 维修派工请求参数类
 export class CustomerListRequest extends PagedParams {
     constructor(
-        public source?: string, // 客户来源
+        public source?: string, // 来源渠道
         public name?: string, // 车主
         public phone?: string, // 车主电话
         public createdStartDate?: string, // 建档开始时间

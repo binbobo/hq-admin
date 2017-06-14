@@ -213,8 +213,9 @@ export class MaintenanceCheckComponent extends DataList<any> implements OnInit {
     item.checkGenerating = false;
     this.checkModal.show();
     this.isDetailModalShown = true;
-    // 默认带出进厂里程
-    this.mileageForm.controls.leaveMileage.setValue(data.mileage);
+    // 默认带出进厂里程 (如果填写过出厂里程，优先带出厂里程，否则带出进厂里程)
+    this.mileageForm.controls.leaveMileage.setValue(data.leaveMileage || data.mileage);
+    // 出厂里程不能小于进厂里程
     this.mileageForm.controls.leaveMileage.setValidators([Validators.required, HQ_VALIDATORS.mileage, CustomValidators.gte(data.mileage)]);
   }
 
