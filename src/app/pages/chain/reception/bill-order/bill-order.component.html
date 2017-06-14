@@ -101,7 +101,7 @@
   </div>
 </div>
 <!--详情 begin-->
-<div hqModal #lgModal="hq-modal" class="modal fade" tabindex="-1" role="dialog" size="lg" modalTitle="维修结算">
+<div hqModal #lgModal="hq-modal"  class="modal fade" tabindex="-1" [hidden]="!isShowCost" role="dialog" size="lg" modalTitle="{{modaltitle}}">
   <div *ngIf="lgModal.isShown">
     <!--结算费用-->
     <form [formGroup]="billSheetForm" [hidden]="!isShowCost" *ngIf="lgModal.isShown">

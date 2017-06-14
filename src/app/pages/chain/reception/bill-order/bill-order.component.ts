@@ -103,7 +103,9 @@ export class BillOrderComponent extends DataList<any>{
     attachServiceOutputs: any = [];
     suggestServiceOutputs: any = [];
     WorkReceivableCost: any;
+    private modaltitle:string;
     orderDetailsDialog(evt, id, dialog, item) {
+        this.modaltitle = "维修结算";
         item.generat = true;
         this.isShowCostDetail = false;
         this.isShowCost = true;
@@ -227,6 +229,7 @@ export class BillOrderComponent extends DataList<any>{
     deduceAmount: any;
     // 点击详情事件
     DetailsDialog(evt, id, dialog, item) {
+        this.modaltitle = "维修结算详情";
         item.generating = true;
         this.isShowCost = false;
         this.isShowCostDetail = true;
