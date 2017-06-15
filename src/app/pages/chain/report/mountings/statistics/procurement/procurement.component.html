@@ -47,8 +47,8 @@
           <td *ngIf="orgNameShow" class="text-left">{{item.orgName}}</td>
           <td>{{item.outUnitName}}</td>
           <td class="text-center">{{item.billCode}}</td>
-          <td class="text-right">{{item.amount|centToYuan}}</td>
-          <td class="text-right">{{item.exTaxAmount|centToYuan}}</td>
+          <td class="text-right">{{item.isReturn?'-':'+'}}{{item.amount|centToYuan}}</td>
+          <td class="text-right">{{item.isReturn?'-':'+'}}{{item.exTaxAmount|centToYuan}}</td>
           <td class="text-center">{{item.createBillTime|sDatetime}}</td>
           <td>{{item.operator}}</td>
         </tr>
