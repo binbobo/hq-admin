@@ -1,6 +1,10 @@
 <form [formGroup]="vehicleForm" autocomplete="off">
   <div class="form-group row">
     <div class="hq-input hq-input-column">
+      <!--车辆id-->
+      <input type="hidden" formControlName="id">
+      <!--客户id-->
+      <input type="hidden" formControlName="customerId">
       <label for="plateNo" class="form-label"><span class="asterisk mr-1">*</span>车牌号</label>
       <div class="hq-col">
         <input maxlength="12" type="text" label="车牌号" class="form-control  text-uppercase" formControlName="plateNo">

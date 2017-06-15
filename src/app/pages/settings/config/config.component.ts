@@ -2,7 +2,8 @@ import { Component, OnInit, Host, ViewChild } from '@angular/core';
 import { ConfigService } from "./config.service";
 import { Tree, NodeSelectedEvent, FoldingType, TreeModel, TreeModelSettings } from 'ng2-tree';
 import { TreeStatus } from "ng2-tree/src/tree.types";
-import { HqAlerter }  from 'app/shared/directives';
+import { HqAlerter } from 'app/shared/directives';
+import { SweetAlertService } from "app/shared/services";
 
 @Component({
   selector: 'app-config',
@@ -20,6 +21,7 @@ export class ConfigComponent implements OnInit {
 
   constructor(
     private service: ConfigService,
+    private sweetAlertService: SweetAlertService,
   ) { }
 
   private onDelete($event: MouseEvent) {
@@ -27,17 +29,20 @@ export class ConfigComponent implements OnInit {
       this.alerter.warn("请先删除当前节点下面的所有子节点！");
       return false;
     }
-    if (!confirm("确定要删除当前节点吗？")) return false;
-    this.service
-      .deletePath(this.currentNode.getFullPath())
-      .then(resp => {
-        let node = this.currentTree.parent;
-        this.currentTree.removeItselfFromParent();
-        this.currentTree = node;
-        this.currentNode = node.node as ConfigNode;
-        this.editable = true;
-      })
-      .catch(err => this.alerter.error(err));
+    // if (!confirm("确定要删除当前节点吗？")) return false;
+    this.sweetAlertService.confirm({ text: '确定要删除当前节点吗？', type: 'warning' })
+      .then(() => {
+        this.service
+          .deletePath(this.currentNode.getFullPath())
+          .then(resp => {
+            let node = this.currentTree.parent;
+            this.currentTree.removeItselfFromParent();
+            this.currentTree = node;
+            this.currentNode = node.node as ConfigNode;
+            this.editable = true;
+          })
+          .catch(err => this.alerter.error(err));
+      }, () => { })
   }
 
   private onSubmit($event) {

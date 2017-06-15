@@ -113,7 +113,7 @@ export class SaleCheckComponent extends DataList<any>  {
         let paycheck: any = {};
         paycheck.paymentMethod = item.id;
         cost += item.amount * 100;
-        paycheck.amount = Number(item.amount * 100);
+        paycheck.amount = Number(item.amount * 100).toFixed(0);
         return paycheck;
       })
       this.payPost = this.payCheckSingle.filter(item => item.amount != 0);
@@ -121,13 +121,14 @@ export class SaleCheckComponent extends DataList<any>  {
       this.payPost = this.payData.filter(item => item.amount === 0).map(item => {
         let paycheck: any = {};
         paycheck.paymentMethod = item.id;
-        paycheck.amount = Number(item.amount * 100);
+        paycheck.amount = Number(item.amount * 100).toFixed(0);;
         return paycheck;
       });
       this.payCheckSingle = this.payData.filter(item => item.amount || item.amount === '').map(item => {
         cost += item.amount * 100;
       })
     }
+    cost=cost.toFixed(0);
     if (cost != this.costMoney) {
       this.alerter.error('输入金额与应收金额不符，请重新填写！', true, 3000);
     } else {

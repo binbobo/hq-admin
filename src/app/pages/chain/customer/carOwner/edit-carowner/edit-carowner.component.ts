@@ -3,7 +3,7 @@ import { CustomerService } from '../../customer.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
 import { HqAlerter } from 'app/shared/directives';
-import { SweetAlertService } from '../../../../../shared/services/sweetalert.service';
+import { DialogService } from '../../../../../shared/services/dialog.service';
 
 @Component({
   selector: 'hq-edit-carowner',
@@ -30,7 +30,7 @@ export class EditCarownerComponent implements OnInit {
   vehicleModalTitle: string; // 车辆编辑/添加标题
 
   constructor(
-    protected sweetAlertService: SweetAlertService,
+    protected dialogService: DialogService,
     protected service: CustomerService,
     private route: ActivatedRoute,
     private location: Location,
@@ -45,6 +45,7 @@ export class EditCarownerComponent implements OnInit {
   // 添加一条车辆记录处理程序
   onVehicleConfirmHandler(evt, vehicleModal) {
     const data = evt.data;
+    console.log(data);
     if (evt.isEdit && this.selectedVehicle) {
       // 编辑
       const index = this.newVehiclesData.findIndex((item) => {
@@ -56,6 +57,8 @@ export class EditCarownerComponent implements OnInit {
       // 清空当前编辑的車车辆
       this.selectedVehicle = null;
     } else {
+      // 添加车主id
+      data.customerId = this.customerId
       // 新增
       this.newVehiclesData.push(data);
     }
@@ -65,10 +68,10 @@ export class EditCarownerComponent implements OnInit {
 
   // 删除一条车辆记录 处理程序
   onDelVehicleConfirmHandler(plateNo) {
-    this.sweetAlertService.confirm({
-      text: '确定要删除当前选择的车辆吗',
+    this.dialogService.confirm({
+      text: '是否确认删除该条车辆信息？',
       type: 'warning'
-    }).then(() => {
+    }, () => {
       this.newVehiclesData.filter((item, index) => {
         if (item.plateNo === plateNo) {
           this.newVehiclesData.splice(index, 1);
@@ -76,8 +79,6 @@ export class EditCarownerComponent implements OnInit {
         }
       });
       this.enableSaveCustomer = this.customerForm.carOwnerForm.valid && this.newVehiclesData.length >= 0;
-    }, () => {
-      // 点击了取消
     });
   }
 

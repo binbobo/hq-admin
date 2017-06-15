@@ -7,4 +7,4 @@ export * from './server-translate-loader.service';
 export * from './event-dispatcher.service';
 export * from './treeview-i18n-cn.cfg';
 export * from './treeview-event-parser.cfg';
-export * from './sweetalert.service';
+export * from './dialog.service';
