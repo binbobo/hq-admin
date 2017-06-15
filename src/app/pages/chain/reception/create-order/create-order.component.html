@@ -256,7 +256,7 @@
       <button [hqSpinner]="suspendBill.suspending" type="button" class="btn btn-primary btn-suspend" (click)="suspendOrder()">挂单</button>
     </div>
   </div>
-  <div hqModal #addModal="hq-modal" size="lg" [modalTitle]="addModalTitle">
+  <div hqModal #addModal="hq-modal" size="lg" [modalTitle]="addModalTitle" (onHide)="close()">
     <hq-add-maintenance-item *ngIf="addModal.isShown" [services]="selectedServices" [item]="selectedItem" (onCancel)="close(addModal)"
       (onConfirm)="onConfirmNewMaintenanceItem($event, addModal)"></hq-add-maintenance-item>
   </div>

@@ -334,17 +334,17 @@
 
 </div>
 
-<div hqModal size="lg" modalTitle="新增维修项目" #addModal="hq-modal" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+<div hqModal size="lg" modalTitle="新增维修项目" #addModal="hq-modal" class="modal" tabindex="-1" role="dialog" aria-hidden="true" (onHide)="selectedItem=null" >
   <hq-add-maintenance-item *ngIf="addModal.isShown" [services]="selectedServices" [item]="selectedItem" (onCancel)="addModal.hide();selectedItem=null;"
     (onConfirm)="onConfirmNewMaintenanceItem($event, addModal)"></hq-add-maintenance-item>
 </div>
 
-<div hqModal #attachModal="hq-modal" class="modal" tabindex="-1" role="dialog" aria-hidden="true" size="lg" modalTitle="新增附加项目">
-  <hq-add-attach-item *ngIf="attachModal.isShown" (onCancel)="attachModal.hide();selectedAttachItem=null" [item]="selectedAttachItem"
+<div hqModal #attachModal="hq-modal" class="modal" tabindex="-1" role="dialog" aria-hidden="true" size="lg" modalTitle="新增附加项目" (onHide)="selectedAttachItem=null">
+  <hq-add-attach-item *ngIf="attachModal.isShown"  (onCancel)="attachModal.hide();selectedAttachItem=null" [item]="selectedAttachItem"
     (formSubmit)="onCreateAttach($event)"></hq-add-attach-item>
 </div>
 
-<div hqModal #suggestModal="hq-modal" class="modal" tabindex="-1" role="dialog" size="lg" modalTitle="新增建议维修项目" aria-hidden="true">
+<div hqModal #suggestModal="hq-modal" class="modal" tabindex="-1" role="dialog" size="lg" modalTitle="新增建议维修项目" aria-hidden="true"  (onHide)="selectedSuggestItem=null" >
   <hq-add-suggest-item *ngIf="suggestModal.isShown" [services]="selectedSuggestServices" [item]="selectedSuggestItem" (onCancel)="suggestModal.hide();selectedSuggestItem=null;"
     (onConfirm)="onConfirmNewSuggestItem($event, suggestModal)"></hq-add-suggest-item>
 </div>
