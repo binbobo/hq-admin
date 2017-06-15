@@ -7,7 +7,7 @@ import { HqAlerter } from "app/shared/directives";
 import { PrintDirective, FormGroupControlErrorDirective } from 'app/shared/directives';
 import { CustomValidators } from "ng2-validation/dist";
 import { ChainService } from "app/pages/chain/chain.service";
-import { SweetAlertService } from "app/shared/services";
+import { DialogService } from "app/shared/services";
 import { priceMask } from 'app/pages/chain/chain-shared';
 import * as moment from 'moment';
 
@@ -60,7 +60,7 @@ export class BillOrderComponent extends DataList<any>{
         injector: Injector,
         protected service: BillOrderService,
         protected typeservice: ChainService,
-        protected sweetAlertService: SweetAlertService,
+        protected dialogService: DialogService,
         private fb: FormBuilder) {
         super(injector, service);
         this.params = new OrderListSearch();
@@ -157,15 +157,15 @@ export class BillOrderComponent extends DataList<any>{
     // 点击撤销结算事件
     finishedOrder(evt, id) {
         evt.preventDefault();
-        this.sweetAlertService.confirm({
+        this.dialogService.confirm({
             type: "warning",
             text: '确定要撤销结算吗？'
-        }).then(() => {
+        },() => {
             this.service.put(id).then(() => {
                 this.alerter.info('撤销结算成功!', true, 3000);
                 this.onLoadList()
             }).catch(err => this.alerter.error(err, true, 3000));
-        },()=>console.log("取消了撤销结算"))
+        })
 
     }
 
@@ -328,18 +328,18 @@ export class BillOrderComponent extends DataList<any>{
             event.preventDefault();
             return false;
         } else {
-            this.sweetAlertService.confirm({
+            this.dialogService.confirm({
                 type: "question",
                 text: '是否生成维修结算单？'
-            }).then(() => {
+            },() => {
                 this.initprint();
                 this.generat = true;
                 this.service.post(this.billData, this.billId).then((result) => {
                     this.generat = false;
-                    this.sweetAlertService.confirm({
+                    this.dialogService.confirm({
                         type: "question",
                         text: '已生成维修结算单，是否需要打印？'
-                    }).then(() => {
+                    },() => {
                         // 根据id获取工单详细信息
                         this.service.getPrintDetail(this.billId)
                             .then(data => {
@@ -378,13 +378,13 @@ export class BillOrderComponent extends DataList<any>{
                                 this.alerter.error(err, true, 2000);
                                 this.generat = false;
                             });
-                    },()=>console.log("取消了打印"))
+                    })
                     dialog.hide();
                     this.alerter.info("生成结算单成功", true, 2000);
                     this.onLoadList();
                     this.isShowCost = false;
                 }).catch(err => { dialog.hide(), this.generat = false; this.alerter.error(err, true, 3000) });
-            },()=>console.log("取消了结算"))
+            })
 
         }
 

@@ -1,3 +1,23 @@
-.popover-content{
+hq-payment-show .popover-content{
     padding:0 !important;
+}
+hq-payment-show .popover{
+    padding:0 !important;
+}
+hq-payment-show .trigger-btn{
+    padding:0 !important;
+    background-color:#fff;
+    border-width:0;
+　　border-color:white;
+　　border-style:none;
+　　background:none;
+    outline: none;
+    cursor: pointer;
+}
+hq-payment-show .trigger-btn:active,hq-payment-show button:focus{
+   border-width:0;
+　　border-color:white;
+　　border-style:none;
+　　background:none;
+    outline: none;
 }
