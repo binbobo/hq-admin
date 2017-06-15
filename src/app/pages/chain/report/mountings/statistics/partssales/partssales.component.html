@@ -51,7 +51,7 @@
         <tr>
           <th>操作</th>
           <th *ngIf="orgNameShow">店名</th>
-          <th>出库单号</th>
+          <th>单号</th>
           <th>客户名称</th>
           <th>客户手机</th>
           <th>销售员</th>
@@ -84,7 +84,7 @@
 <div class="modal fade" hqModal #bdModal="hq-modal" role="dialog" modalTitle="配件销售详情" size="lg">
   <table class="table table-order-info table-bordered">
     <tr>
-      <td class="fixed-width">出库单号：</td>
+      <td class="fixed-width">单号：</td>
       <td>{{detail?.billCode}}</td>
       <td class="fixed-width">客户名称：</td>
       <td>{{detail?.customerName}}</td>

@@ -33,6 +33,7 @@
         <thead>
           <tr>
             <th rowspan="2" class="align-middle">日期</th>
+            <th rowspan="2" class="align-middle">门店</th>
             <th rowspan="2" class="align-middle">进厂台次</th>
             <th rowspan="2" class="align-middle">平均单产（元）</th>
             <th colspan="6">产值（元）</th>
@@ -44,6 +45,7 @@
         <tbody>
           <tr *ngFor="let item of list">
             <td class="text-center">{{item.date|sDate}}</td>
+            <td>{{item.orgName}}</td>
             <td class="text-center">{{item.vehicleCount}}</td>
             <td class="text-right">{{item.averageProduction|number:'1.2-2'}}</td>
             <td class="text-right" *ngFor="let item of item.productions">{{item.amount|number:'1.2-2'}}</td>
@@ -51,7 +53,7 @@
         </tbody>
         <tfoot>
           <tr>
-            <td class="text-center">总计</td>
+            <td colspan="2" class="text-center">总计</td>
             <td class="text-center">{{result?.vehicleCount}}</td>
             <td class="text-right">{{result?.averageProduction|number:'1.2-2'}}</td>
             <td *ngFor="let item of result?.totalProductions" class="text-right">{{item?.amount|number:'1.2-2'}}</td>
