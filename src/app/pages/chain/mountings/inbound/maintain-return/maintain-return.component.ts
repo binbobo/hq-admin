@@ -315,7 +315,7 @@ export class MaintainReturnComponent implements OnInit {
       Object.assign(this.suspendData, this.sunspendRequest);
     }
     if (!this.suspendData.billCode) {
-      alert('请选择工单');
+      this.alerter.error("请选择工单",true,3000);
       return false;
     }
     this.suspendBill.suspend(this.suspendData)
