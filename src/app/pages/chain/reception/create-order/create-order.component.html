@@ -247,7 +247,7 @@
     </div>
   </div>
   <div hqModal #addModal="hq-modal" size="lg" modalTitle="新增维修项目">
-    <hq-add-maintenance-item *ngIf="addModal.isShown" [services]="selectedServices" [item]="selectedItem" (onCancel)="close(addModal)"
+    <hq-add-maintenance-item *ngIf="addModal.isShown" [services]="selectedServices" [item]="selectedItem" (onHide)="close()" (onCancel)="close(addModal)"
       (onConfirm)="onConfirmNewMaintenanceItem($event, addModal)"></hq-add-maintenance-item>
   </div>
   <hq-workorder-detail-print *ngIf="newWorkOrderData" class="invisible" [data]="newWorkOrderData" hqPrint #printer="hq-print"></hq-workorder-detail-print>
