@@ -54,16 +54,23 @@ nav{
     padding: 8px 2px;
 }
 
-#loading{
-    padding-top: 100px;
+#page-loading-container{
+    background-color:rgba(45, 56, 75, 0.6);
     position: absolute;
-    top: 0px;
-    margin: 0;
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color:rgba(45, 56, 75, 0.5);
-    color: #fff;
-    text-align: center;
     z-index: 999999999;
+}
+
+#page-loading{
+    top: 50%;
+    right: 0;
+    left: 0;
+    text-align: center;
+    position: absolute;
+    transform: translateY(-50%);
+    color: #fff;
+    text-align: center; 
 }

@@ -39,7 +39,7 @@
         <tr>
           <th>操作</th>
           <th *ngIf="orgNameShow">店名</th>
-          <th>领料单号</th>
+          <th>单号</th>
           <th>领料人</th>
           <th>部门</th>
           <th>金额（元）</th>
@@ -67,7 +67,7 @@
 <div class="modal fade" hqModal #bdModal="hq-modal" role="dialog" modalTitle="内部领料详情" size="lg">
   <table class="table table-order-info table-bordered">
     <tr>
-      <td class="fixed-width">领料单号：</td>
+      <td class="fixed-width">单号：</td>
       <td>{{detail?.billCode}}</td>
       <td class="fixed-width">领料人：</td>
       <td>{{detail?.takeUserName}}</td>
