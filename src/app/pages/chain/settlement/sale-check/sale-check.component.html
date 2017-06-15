@@ -75,7 +75,7 @@
             <td>{{item.settlementMethod}}</td>
             <td>{{item.customerName}}</td>
             <td>{{item.phone}}</td>
-            <td [hqPaymentShow]="item.playItems"></td>
+            <td style="position:relative;overflow: visible;"><span style="display:inline-block;" [hqPaymentShow]="item.playItems"></span></td>
             <td>{{item.updateOnUtc|sDatetime}}</td>
           </tr>
         </tbody>
