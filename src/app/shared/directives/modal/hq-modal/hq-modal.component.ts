@@ -17,10 +17,6 @@ export class HqModalComponent implements OnInit {
   public title: string;
   @Input()
   public size: string;
-  @Output()
-  public onHide: EventEmitter<void> = new EventEmitter<void>();
-  @Output()
-  public onShow: EventEmitter<void> = new EventEmitter<void>();
 
   ngOnInit(): void {
 
