@@ -31,27 +31,29 @@
     <p>温馨提示：系统为您找到 <span style="font-size:16px;color:red;font-weight:bold;">{{total}}</span> 条记录</p>
     <div class="table-container">
       <table class="table table-bordered" *ngFor="let items of list">
-        <tr class="text-center">
-          <th width="100">操作</th>
-          <th *ngIf="orgNameShow">门店</th>
-          <th>仓库</th>
-          <th>期初金额</th>
-          <th>期末金额</th>
-          <th>入库金额</th>
-          <th>出库成本<br>金额</th>
-          <th>出库销售<br>金额</th>
-          <th>采购入库<br>成本金额</th>
-          <th>维修领料<br>成本金额</th>
-          <th>维修领料<br>销售金额</th>
-          <th>配件销售<br>成本金额</th>
-          <th>配件销售<br>销售金额</th>
-          <th>内部领料<br>成本金额</th>
-          <th>内部领料<br>销售金额</th>
-          <!--<th>其他入库<br>成本金额</th>
+        <thead>
+          <tr class="text-center">
+            <th width="100">操作</th>
+            <th *ngIf="orgNameShow">门店</th>
+            <th>仓库</th>
+            <th>期初金额</th>
+            <th>期末金额</th>
+            <th>入库金额</th>
+            <th>出库成本<br>金额</th>
+            <th>出库销售<br>金额</th>
+            <th>采购入库<br>成本金额</th>
+            <th>维修领料<br>成本金额</th>
+            <th>维修领料<br>销售金额</th>
+            <th>配件销售<br>成本金额</th>
+            <th>配件销售<br>销售金额</th>
+            <th>内部领料<br>成本金额</th>
+            <th>内部领料<br>销售金额</th>
+            <!--<th>其他入库<br>成本金额</th>
           <th>其他入库<br>销售金额</th>
           <th>其他出库<br>成本金额</th>
           <th>其他出库<br>销售金额</th>-->
-        </tr>
+          </tr>
+        </thead>
         <tr *ngFor="let item of items?.data" class="text-right">
           <td width="100"><button [hqSpinner]="item.hqSpinner" class="btn btn-info btn-sm" (click)="alert(item,item.id,bdModal)">查看明细</button></td>
           <td *ngIf="orgNameShow" class="text-left">{{item.orgName}}</td>
@@ -158,31 +160,33 @@
     <p>温馨提示：系统为您找到 <span style="font-size:16px;color:red;font-weight:bold;">{{listDetail?.totalCount}}</span> 条记录</p>
     <div class="table-container">
       <table class="table table-bordered text-center">
-        <tr>
-          <th>配件编码</th>
-          <th>配件名称</th>
-          <th>期初数量</th>
-          <th>期初金额</th>
-          <th>期末数量</th>
-          <th>期末金额</th>
-          <th>入库数量</th>
-          <th>入库金额</th>
-          <th>出库数量</th>
-          <th>出库成本<br>金额</th>
-          <th>出库销售<br>金额</th>
-          <th>采购入库<br>数量</th>
-          <th>采购入库<br>金额</th>
-          <th>维修领料<br>数量</th>
-          <th>维修领料<br>金额</th>
-          <th>配件销售<br>数量</th>
-          <th>配件销售<br>金额</th>
-          <th>内部领料<br>数量</th>
-          <th>内部领料<br>金额</th>
-          <!--<th>其他入库<br>数量</th>
+        <thead>
+          <tr>
+            <th>配件编码</th>
+            <th>配件名称</th>
+            <th>期初数量</th>
+            <th>期初金额</th>
+            <th>期末数量</th>
+            <th>期末金额</th>
+            <th>入库数量</th>
+            <th>入库金额</th>
+            <th>出库数量</th>
+            <th>出库成本<br>金额</th>
+            <th>出库销售<br>金额</th>
+            <th>采购入库<br>数量</th>
+            <th>采购入库<br>金额</th>
+            <th>维修领料<br>数量</th>
+            <th>维修领料<br>金额</th>
+            <th>配件销售<br>数量</th>
+            <th>配件销售<br>金额</th>
+            <th>内部领料<br>数量</th>
+            <th>内部领料<br>金额</th>
+            <!--<th>其他入库<br>数量</th>
           <th>其他入库<br>金额</th>
           <th>其他出库<br>数量</th>
           <th>其他出库<br>金额</th>-->
-        </tr>
+          </tr>
+        </thead>
         <tbody>
           <tr *ngFor="let item of listDetail?.data" class="text-right">
             <td class="text-center">{{item.productCode}}</td>
