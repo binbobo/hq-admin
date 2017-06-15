@@ -17,7 +17,7 @@
   </div>
 </div>
 
-<div hqModal #vehicleModal="hq-modal" size="lg" [modalTitle]="vehicleModalTitle">
-  <hq-add-vehicle *ngIf="vehicleModal.isShown" [vehicle]="selectedVehicle" (onHide)="selectedVehicle = null;" (onVehicleCancel)="vehicleModal.hide();selectedVehicle = null;"
+<div hqModal #vehicleModal="hq-modal" size="lg" (onHide)="selectedVehicle = null;" [modalTitle]="vehicleModalTitle">
+  <hq-add-vehicle *ngIf="vehicleModal.isShown" [vehicle]="selectedVehicle" (onVehicleCancel)="vehicleModal.hide();selectedVehicle = null;"
     (onVehicleConfirm)="onVehicleConfirmHandler($event, vehicleModal)"></hq-add-vehicle>
 </div>
