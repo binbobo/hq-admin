@@ -3,6 +3,7 @@ import { DataList } from 'app/shared/models';
 import { User, UserService, UserSearchParams } from '../user.service';
 import { ModalDirective } from 'ngx-bootstrap';
 import { HqModalDirective } from "app/shared/directives";
+import { SweetAlertService } from "app/shared/services";
 
 @Component({
   selector: 'hq-user-list',
@@ -21,25 +22,26 @@ export class UserListComponent extends DataList<User> implements OnInit {
 
   constructor(
     injector: Injector,
-    private userService: UserService
+    private userService: UserService,
+    private sweetAlertService: SweetAlertService,
   ) {
     super(injector, userService);
     this.params = new UserSearchParams();
   }
 
   onResetPassword(event: Event, user: User) {
-    if (!confirm('密码即将重置为手机号后6位，是否确认操作?')) {
-      return false;
-    }
-    let btn = event.target as HTMLButtonElement;
-    btn.disabled = true;
-    this.userService.resetPassword(user.id)
-      .then(() => btn.disabled = false)
-      .then(() => this.alerter.success('密码重置成功！'))
-      .catch(err => {
-        this.alerter.error(err);
-        btn.disabled = false;
-      });
+    this.sweetAlertService.confirm({ text: '密码即将重置为手机号后6位，是否确认操作?' })
+      .then(() => {
+        let btn = event.target as HTMLButtonElement;
+        btn.disabled = true;
+        this.userService.resetPassword(user.id)
+          .then(() => btn.disabled = false)
+          .then(() => this.alerter.success('密码重置成功！'))
+          .catch(err => {
+            this.alerter.error(err);
+            btn.disabled = false;
+          });
+      }, () => { })
   }
 
   onToggle(event: Event, user: User, enabled: boolean) {
