@@ -60,12 +60,12 @@
         <input type="hidden" readonly label="不含税单价" formControlName="exTaxPrice" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label hq-required">含税总金额</label>
+        <label class="form-control-label hq-required">含税总金额（元）</label>
         <input readonly class="form-control" value="{{form?.controls['amount']?.value|centToYuan}}">
         <input type="hidden" readonly label="金额" formControlName="amount" [value]="centToYuan|centToYuan" class="form-control">
       </div>
       <div class="form-group">
-        <label class="form-control-label hq-required">不含税总金额</label>
+        <label class="form-control-label hq-required">不含税总金额（元）</label>
         <input readonly class="form-control" value="{{form?.controls['exTaxAmount']?.value|centToYuan}}">
         <input type="hidden" readonly label="金额" formControlName="exTaxAmount" [value]="centToYuan|centToYuan" class="form-control">
       </div>

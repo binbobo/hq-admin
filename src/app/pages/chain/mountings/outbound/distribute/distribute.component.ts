@@ -7,7 +7,7 @@ import { TabsetComponent } from 'ngx-bootstrap';
 import { TypeaheadRequestParams, HqAlerter, PrintDirective, HqModalDirective } from 'app/shared/directives';
 import * as moment from 'moment';
 import { SuspendBillDirective } from "app/pages/chain/chain-shared";
-import { SweetAlertService } from "app/shared/services";
+import { DialogService } from "app/shared/services";
 
 @Component({
   selector: 'hq-distribute',
@@ -44,7 +44,7 @@ export class DistributeComponent implements OnInit {
     private route: ActivatedRoute,
     injector: Injector,
     protected service: DistributeService,
-    protected sweetAlertService: SweetAlertService,
+    protected dialogService: DialogService,
     private fb: FormBuilder) {
   }
   ngOnInit() {
@@ -189,10 +189,10 @@ export class DistributeComponent implements OnInit {
     this.service.postBill(postData).then((result) => {
       this.suspendBill.refresh();
       this.generat = false;
-      this.sweetAlertService.confirm({
+      this.dialogService.confirm({
         type: "question",
         text: '已生成维修领料单，是否需要打印？'
-      }).then(() => {
+      },() => {
         this.service.getPrintList(this.listId, this.billCode, result.data[0].serialNum).toPromise()
           .then(data => {
             this.printList = data;
@@ -200,7 +200,7 @@ export class DistributeComponent implements OnInit {
             setTimeout(() => { this.printList = null }, 1200)
           })
           .catch(err => { this.alerter.error(err, true, 2000); this.generat = false; })
-      }, () => console.log("取消了打印"))
+      })
 
 
       this.isablePrint = true;
@@ -251,12 +251,12 @@ export class DistributeComponent implements OnInit {
   }
 
   onDelCreat(i) {
-    this.sweetAlertService.confirm({
+    this.dialogService.confirm({
       type: "warning",
       text: '是否确认删除该条领料信息？'
-    }).then(() => {
+    },() => {
       this.newMainData.splice(i, 1);
-    }, () => console.log("取消删除"))
+    })
 
   }
   SerialNumsList: any;

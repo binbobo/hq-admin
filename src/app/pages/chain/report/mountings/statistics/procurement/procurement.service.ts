@@ -40,7 +40,7 @@ export class ProcurementService implements BasicService<any>{
 
   //详情
   public get(id: string): Promise<any> {
-    const url = Urls.chain.concat('/PurchaseDetails/Details/', id);
+    const url = Urls.chain.concat('/PurchaseDetails/Details/',id);
     return this.httpService
       .get<ApiResult<any>>(url)
       .then(result => result.data)

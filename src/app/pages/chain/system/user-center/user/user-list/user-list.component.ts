@@ -3,7 +3,7 @@ import { DataList } from 'app/shared/models';
 import { User, UserService, UserSearchParams } from '../user.service';
 import { ModalDirective } from 'ngx-bootstrap';
 import { HqModalDirective } from "app/shared/directives";
-import { SweetAlertService } from "app/shared/services";
+import { DialogService } from "app/shared/services";
 
 @Component({
   selector: 'hq-user-list',
@@ -23,15 +23,16 @@ export class UserListComponent extends DataList<User> implements OnInit {
   constructor(
     injector: Injector,
     private userService: UserService,
-    private sweetAlertService: SweetAlertService,
+    private dialogService: DialogService,
   ) {
     super(injector, userService);
     this.params = new UserSearchParams();
   }
 
   onResetPassword(event: Event, user: User) {
-    this.sweetAlertService.confirm({ text: '密码即将重置为手机号后6位，是否确认操作?' })
-      .then(() => {
+    this.dialogService.confirm(
+      '密码即将重置为手机号后6位，是否确认操作?',
+      () => {
         let btn = event.target as HTMLButtonElement;
         btn.disabled = true;
         this.userService.resetPassword(user.id)
@@ -41,7 +42,7 @@ export class UserListComponent extends DataList<User> implements OnInit {
             this.alerter.error(err);
             btn.disabled = false;
           });
-      }, () => { })
+      })
   }
 
   onToggle(event: Event, user: User, enabled: boolean) {

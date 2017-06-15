@@ -8,7 +8,7 @@ import { DataList, StorageKeys } from 'app/shared/models';
 import { SuspendBillDirective, numberMask, phoneNumberMask } from 'app/pages/chain/chain-shared';
 import { CustomValidators } from 'ng2-validation';
 import { HQ_VALIDATORS } from '../../../../shared/shared.module';
-import { SweetAlertService } from '../../../../shared/services/sweetalert.service';
+import { DialogService } from '../../../../shared/services/dialog.service';
 
 
 @Component({
@@ -84,7 +84,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   constructor(
     injector: Injector,
     protected service: OrderService,
-    protected sweetAlertService: SweetAlertService,
+    protected dialogService: DialogService,
     private fb: FormBuilder,
   ) {
     super(injector, service);
@@ -407,10 +407,10 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
   // 从表格中删除一条添加的维修项目事件处理程序
   onDelMaintenanceItem(serviceId) {
-    this.sweetAlertService.confirm({
+    this.dialogService.confirm({
       text: '是否确认删除该条维修项目？',
       type: 'warning'
-    }).then(() => {
+    }, () => {
       this.newMaintenanceItemData.filter((item, index) => {
         if (item.serviceId === serviceId) {
           this.newMaintenanceItemData.splice(index, 1);
@@ -424,8 +424,6 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
         }
       });
       this.selectedServices = this.getSelectedServices();
-    }, () => {
-      // 点击了取消
     });
   }
 
@@ -692,9 +690,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
         this.generating = false;
 
         // 创建订单成功之后  做一些重置操作
-        this.sweetAlertService.confirm({
-          text: '创建工单成功，是否打印？'
-        }).then(() => {
+        this.dialogService.confirm('创建工单成功，是否打印？', () => {
           // 组织打印需要的数据
           this.newWorkOrderData = {};
           Object.assign(this.newWorkOrderData, data);

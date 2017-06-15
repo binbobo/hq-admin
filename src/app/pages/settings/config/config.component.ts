@@ -3,7 +3,7 @@ import { ConfigService } from "./config.service";
 import { Tree, NodeSelectedEvent, FoldingType, TreeModel, TreeModelSettings } from 'ng2-tree';
 import { TreeStatus } from "ng2-tree/src/tree.types";
 import { HqAlerter } from 'app/shared/directives';
-import { SweetAlertService } from "app/shared/services";
+import { DialogService } from "app/shared/services";
 
 @Component({
   selector: 'app-config',
@@ -21,7 +21,7 @@ export class ConfigComponent implements OnInit {
 
   constructor(
     private service: ConfigService,
-    private sweetAlertService: SweetAlertService,
+    private dialogService: DialogService,
   ) { }
 
   private onDelete($event: MouseEvent) {
@@ -30,8 +30,9 @@ export class ConfigComponent implements OnInit {
       return false;
     }
     // if (!confirm("确定要删除当前节点吗？")) return false;
-    this.sweetAlertService.confirm({ text: '确定要删除当前节点吗？', type: 'warning' })
-      .then(() => {
+    this.dialogService.confirm(
+      { text: '确定要删除当前节点吗？', type: 'warning' },
+      () => {
         this.service
           .deletePath(this.currentNode.getFullPath())
           .then(resp => {
@@ -42,7 +43,7 @@ export class ConfigComponent implements OnInit {
             this.editable = true;
           })
           .catch(err => this.alerter.error(err));
-      }, () => { })
+      })
   }
 
   private onSubmit($event) {
