@@ -3,7 +3,7 @@ import { ConfigService } from "./config.service";
 import { Tree, NodeSelectedEvent, FoldingType, TreeModel, TreeModelSettings } from 'ng2-tree';
 import { TreeStatus } from "ng2-tree/src/tree.types";
 import { HqAlerter } from 'app/shared/directives';
-import { dialogService } from "app/shared/services";
+import { DialogService } from "app/shared/services";
 
 @Component({
   selector: 'app-config',
