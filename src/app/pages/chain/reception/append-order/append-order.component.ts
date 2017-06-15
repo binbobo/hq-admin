@@ -316,7 +316,7 @@ export class AppendOrderComponent {
         this.isableAppend = false;
         this.isableSuspend = false;
       }
-    },()=>console.log("取消了删除附加项目"))
+    })
 
   }
 
@@ -387,7 +387,7 @@ export class AppendOrderComponent {
         this.isableAppend = false;
         this.isableSuspend = false;
       }
-    },()=>console.log("取消了删除建议维修项目"))
+    })
 
     // this.suspendData.newSuggestData = this.newSuggestData;
   }
@@ -458,7 +458,7 @@ export class AppendOrderComponent {
       this.suspendData["sumFee"] = this.sumFee;
     }
     if (!this.suspendData.billCode) {
-      alert('请选择工单');
+      this.alerter.error("请选择工单",true,3000);
       return false;
     }
     this.suspendBill.suspend(this.suspendData)
