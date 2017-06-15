@@ -35,6 +35,7 @@ export class InventoryEditComponent extends FormHandle<Inventory> implements OnI
       this.model.categoryId = category.value;
       this.model.category = category.text;
     }
+    console.log(this.model);
     return Observable.of(this.model)
   }
   protected buidForm(): FormGroup {
@@ -67,13 +68,9 @@ export class InventoryEditComponent extends FormHandle<Inventory> implements OnI
     }
     this.moutingsService.getWarehouseOptions()
       .then(options => this.warehouses = options)
-      .then(options => options.length ? options[0].value : '')
-      .then(id => this.patchValue('storeId', id))
       .catch(err => this.alerter.warn(err));
     this.moutingsService.getUnitOptions()
       .then(options => this.units = options)
-      .then(options => options.length ? options[0].value : '')
-      .then(id => this.patchValue('unit', id))
       .catch(err => this.alerter.warn(err));
   }
 
