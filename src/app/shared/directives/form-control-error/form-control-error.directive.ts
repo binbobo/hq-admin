@@ -134,7 +134,7 @@ export class FormControlErrorDirective<T extends FormControlErrorComponent> impl
     }  else if (key === "requiredvalue") {
       return ``;
     } else {
-      console.log(key, error, errors);
+      console.info(key, error, errors);
       return `无效的${this.label}`;
     }
   }

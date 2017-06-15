@@ -105,12 +105,11 @@ export class EditCarownerComponent implements OnInit {
     // console.log('提交的车主对象为：', JSON.stringify(carOwnerBody));
 
     // 调用后台更新车主接口
-    this.service.update(carOwnerBody).then((customer: any) => {
-      // 更新客户下的车辆信息 (解决 保存车主信息之后,再次添加车辆没有id的问题)
-      if (customer.data.customerVehicles)
-        this.newVehiclesData = customer.data.customerVehicles;
+    this.service.update(carOwnerBody).then((customer:any) => {
       // 提示更新车主成功
       this.alerter.success('更新车主成功');
+      // 更新车辆信息
+      this.newVehiclesData = customer.data.customerVehicles;
 
       // 返回车主列表
       // this.goBack();

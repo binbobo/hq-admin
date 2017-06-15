@@ -123,7 +123,7 @@ export class TableTypeaheadDirective implements OnInit {
         })
         .then(() => this.statusElement.classList.remove('fa-spinner', 'fa-spin'))
         .catch(err => {
-          console.log(err);
+          console.error(err);
           this.statusElement.classList.remove('fa-spinner', 'fa-spin');
           this.componentRef.instance.result = null;
         });
