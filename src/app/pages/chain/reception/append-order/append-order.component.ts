@@ -14,7 +14,7 @@ import { LocalDataSource } from "ng2-smart-table";
 import { TypeaheadRequestParams, PrintDirective } from "app/shared/directives";
 import * as moment from 'moment';
 import { SuspendBillDirective } from "app/pages/chain/chain-shared";
-import { SweetAlertService } from "app/shared/services";
+import { DialogService } from "app/shared/services";
 
 @Component({
   selector: 'app-append-order',
@@ -43,7 +43,7 @@ export class AppendOrderComponent {
   public printer: PrintDirective;
   constructor(
     protected service1: AppendOrderService,
-    protected sweetAlertService: SweetAlertService,
+    protected dialogService: DialogService,
   ) { }
 
   maintenanceProjectData;
@@ -239,10 +239,10 @@ export class AppendOrderComponent {
 
   // 从表格中删除一条添加的维修项目事件处理程序
   onDelMaintenanceItem(serviceId) {
-    this.sweetAlertService.confirm({
+    this.dialogService.confirm({
       type: "warning",
       text: '是否确认删除该条维修项目？'
-    }).then(() => {
+    },() => {
       this.newMaintenanceItemData.filter((item, index) => {
         if (item.serviceId === serviceId) {
           this.newMaintenanceItemData.splice(index, 1);
@@ -261,7 +261,7 @@ export class AppendOrderComponent {
         this.isableAppend = false;
         this.isableSuspend = false;
       }
-    },()=>console.log("取消了删除维修项目"))
+    })
 
   }
 
@@ -304,10 +304,10 @@ export class AppendOrderComponent {
   }
   // 从表格中删除一条添加的附加项目事件处理程序
   onDelAttachItem(i) {
-    this.sweetAlertService.confirm({
+    this.dialogService.confirm({
       type: "warning",
       text: '是否确认删除该条附加项目？'
-    }).then(() => {
+    },() => {
       this.newAttachData.splice(i, 1);
       if (this.newMaintenanceItemData.length > 0 || this.newAttachData.length > 0 || this.newSuggestData.length > 0) {
         this.isableAppend = true;
@@ -369,10 +369,10 @@ export class AppendOrderComponent {
 
   // 从表格中删除一条添加的维修项目事件处理程序
   onDelSuggestItem(serviceId) {
-    this.sweetAlertService.confirm({
+    this.dialogService.confirm({
       type: "warning",
       text: '是否确认删除该条建议维修项目？'
-    }).then(() => {
+    },() => {
       this.newSuggestData.filter((item, index) => {
         if (item.serviceId === serviceId) {
           this.newSuggestData.splice(index, 1);

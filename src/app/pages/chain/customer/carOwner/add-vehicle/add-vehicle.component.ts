@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Vehicle } from '../../../reception/order.service';
 import { CustomValidators } from 'ng2-validation';
 import { HQ_VALIDATORS } from '../../../../../shared/shared.module';
-import { SweetAlertService } from '../../../../../shared/services/sweetalert.service';
+import { DialogService } from '../../../../../shared/services/dialog.service';
 
 @Component({
   selector: 'hq-add-vehicle',
@@ -26,7 +26,7 @@ export class AddVehicleComponent implements OnInit {
   isVehicleSelected = false;
 
   constructor(
-    protected sweetAlertService: SweetAlertService,
+    protected dialogService: DialogService,
     private fb: FormBuilder,
   ) { }
 
@@ -47,9 +47,9 @@ export class AddVehicleComponent implements OnInit {
   onVehicleConfirmHandler() {
     // 验证数据合法性
     if (!this.vehicleForm.value.vehicleId) {
-      this.sweetAlertService.alert({
+      this.dialogService.alert({
         text: '请选择车型'
-      }).then(() => {
+      }, () => {
         this.vehicleForm.controls.vehicleName.setValue('');
       });
       return;
@@ -106,7 +106,7 @@ export class AddVehicleComponent implements OnInit {
     // 添加车主表单
     this.vehicleForm = this.fb.group({
       id: null, // 车辆id
-      customerId: '', // 客户id
+      customerId: null, // 客户id
       plateNo: ['', [Validators.required, HQ_VALIDATORS.plateNo]],
       brand: ['', [Validators.required]], // 品牌
       series: [{ value: '', disabled: true }, [Validators.required]], // 车系

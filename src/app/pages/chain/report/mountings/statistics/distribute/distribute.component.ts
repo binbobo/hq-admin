@@ -43,12 +43,12 @@ export class DistributeComponent extends DataList<any> {
   }
 
   //详情模态框
-  alert(ev, id, bdModule, billCode) {
-    console.log('详情数据', ev, id, bdModule);
+  alert(ev, id, bdModule, billCode,isOut) {
     ev.hqSpinner = true;
-    this.service.get(id).then(data => {
+    this.service.get(`${id}&isOut=${isOut}`).then(data => {
+    console.log('详情数据', data);
       this.isLoading = true;
-      this.detail = data[0];
+      this.detail = data[0]||{};
       this.detail.billCode = billCode;
       this.detailItemsLength = data.length;
       this.detailItems = data;

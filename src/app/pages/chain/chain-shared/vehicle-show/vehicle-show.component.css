@@ -10,3 +10,26 @@ hq-vehicle-show table td{
 hq-vehicle-show  .popover.bs-tether-element-attached-top::after, .popover.popover-bottom::after{
     border-bottom-color:#fff;
 }
+hq-vehicle-show .popover-content{
+    padding:0 !important;
+}
+hq-vehicle-show .popover{
+    padding:0 !important;
+}
+hq-vehicle-show .trigger-btn{
+    padding:0 !important;
+    background-color:#fff;
+    border-width:0;
+　　border-color:white;
+　　border-style:none;
+　　background:none;
+    outline: none;
+    cursor: pointer;
+}
+hq-vehicle-show .trigger-btn:active,hq-vehicle-show button:focus{
+   border-width:0;
+　　border-color:white;
+　　border-style:none;
+　　background:none;
+    outline: none;
+}

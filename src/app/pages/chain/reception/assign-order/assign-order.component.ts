@@ -3,7 +3,7 @@ import { AssignService, AssignListRequest } from '../assign.service';
 import { StorageKeys, SelectOption, DataList } from 'app/shared/models';
 import * as fileSaver from 'file-saver';
 import { ModalDirective } from 'ngx-bootstrap';
-import { SweetAlertService } from '../../../../shared/services/sweetalert.service';
+import { DialogService } from '../../../../shared/services/dialog.service';
 
 
 @Component({
@@ -57,7 +57,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
             });
     }
     constructor(injector: Injector,
-        protected sweetAlertService: SweetAlertService,
+        protected dialogService: DialogService,
         protected service: AssignService) {
         super(injector, service);
         this.params = new AssignListRequest();
@@ -205,10 +205,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
     finishedOrder(item) {
         // 判断是否已经指派维修技师 没有指派不可以完工
         if (item.teamType === 0) {
-            this.sweetAlertService.alert({
-                text: '此工单还没有指派维修技师, 不可以执行完工操作。请先指派维修技师',
-            }).then(() => {
-            });
+            this.dialogService.alert('此工单还没有指派维修技师, 不可以执行完工操作。请先指派维修技师')
             return;
         }
         // // 判断用户是否领料
@@ -225,9 +222,7 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
     }
 
     confirmOrderFinish(item) {
-        this.sweetAlertService.confirm({
-            text: '您确定要完工吗？'
-        }).then(() => {
+        this.dialogService.confirm('您确定要完工吗？', () => {
             item.finishGenerating = true;
 
             this.service.update({ id: item.id }).then(() => {
@@ -237,8 +232,6 @@ export class AssignOrderComponent extends DataList<any> implements OnInit {
                 this.alerter.error('执行完工操作失败: ' + err, true, 2000);
                 item.finishGenerating = false;
             });
-        }, () => {
-            // 点击了取消
         });
     }
 

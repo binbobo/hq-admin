@@ -3,7 +3,7 @@ import { CustomerListRequest } from '../../customer/customer.service';
 import { CustomerService } from '../customer.service';
 import { DataList } from 'app/shared/models';
 import * as moment from 'moment';
-import { SweetAlertService } from '../../../../shared/services/sweetalert.service';
+import { DialogService } from '../../../../shared/services/dialog.service';
 
 @Component({
   selector: 'app-car-owner',
@@ -29,7 +29,7 @@ export class CarOwnerComponent extends DataList<any>  {
 
   constructor(
     injector: Injector,
-    protected sweetAlertService: SweetAlertService,
+    protected dialogService: DialogService,
     protected service: CustomerService) {
     super(injector, service);
     this.params = new CustomerListRequest();
@@ -46,10 +46,10 @@ export class CarOwnerComponent extends DataList<any>  {
   }
 
   customerDel(item) {
-    this.sweetAlertService.confirm({
+    this.dialogService.confirm({
       text: '是否确认删除该条车主信息？',
       type: 'warning'
-    }).then(() => {
+    }, () => {
       item.deleteGenerating = true;
       // 根据id删除客户详细信息记录
       this.service.delete(item.id).then(data => {
@@ -62,8 +62,6 @@ export class CarOwnerComponent extends DataList<any>  {
         this.alerter.error('删除客户记录失败: ' + err, true, 2000);
         item.deleteGenerating = false;
       });
-    }, () => {
-      // 点击了取消
     });
   }
 

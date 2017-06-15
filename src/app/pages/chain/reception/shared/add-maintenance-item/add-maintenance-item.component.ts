@@ -4,7 +4,7 @@ import { HqAlerter } from 'app/shared/directives';
 import { OrderService } from '../../../reception/order.service';
 import { CustomValidators } from 'ng2-validation';
 import { priceMask, numberMask, discountMask } from 'app/pages/chain/chain-shared';
-import { SweetAlertService } from '../../../../../shared/services/sweetalert.service';
+import { DialogService } from '../../../../../shared/services/dialog.service';
 
 @Component({
   selector: 'hq-add-maintenance-item',
@@ -36,7 +36,7 @@ export class AddMaintenanceItemComponent implements OnInit {
   protected alerter: HqAlerter;
 
   constructor(
-    protected sweetAlertService: SweetAlertService,
+    protected dialogService: DialogService,
     private fb: FormBuilder,
     protected service: OrderService,
   ) {
@@ -74,12 +74,9 @@ export class AddMaintenanceItemComponent implements OnInit {
     if (!this.maintenanceItemForm.value.serviceId) {
       const index = this.services.findIndex(item => item.name === this.maintenanceItemForm.value.serviceName);
       if (index > -1) {
-        this.sweetAlertService.alert({
-          text: '当前输入的维修项目已经添加过了, 如需修改, 请去列表页面编辑',
-        }).then(() => {
-        });
+        this.dialogService.alert('当前输入的维修项目已经添加过了, 如需修改, 请去列表页面编辑');
       } else {
-        // 新增维修项目
+        // 新增维修项目s
         this.service.createMaintenanceItem({ name: this.maintenanceItemForm.value.serviceName })
           .then(data => {
             if (!data || !data.id) {

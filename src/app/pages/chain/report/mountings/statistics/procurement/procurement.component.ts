@@ -53,11 +53,11 @@ export class ProcurementComponent extends DataList<any> {
   }
 
   //模态框
-  alert(ev, id, el) {
+  alert(ev, id, el,isOut) {
     ev.hqSpinner = true;
-    this.service.get(id).then(data => {
+    this.service.get(`${id}?isOut=${isOut}`).then(data => {
       this.isLoading = true;
-      this.detail = data;
+      this.detail = data||{};
       this.detailItemsLength = data.items.length;
       this.detailItems = data.items;
       console.log('详情数据', this.detail.items)

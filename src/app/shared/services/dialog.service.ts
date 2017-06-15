@@ -39,7 +39,7 @@ export class DialogService {
     } else if (typeof options === "object") {
       assign(baseOptions, options)
     }
-    sweetalert(baseOptions).then(confirmCB, () => {
+    return sweetalert(baseOptions).then(confirmCB, () => {
       if (cancelCB) {
         cancelCB();
       }
@@ -47,7 +47,7 @@ export class DialogService {
   }
 
 
-  alert(options, confirmCB: () => void) {
+  alert(options, confirmCB?: () => void) {
     const baseOptions: any = {
       type: 'info',
     };
@@ -57,6 +57,10 @@ export class DialogService {
     } else if (typeof options === "object") {
       assign(baseOptions, options)
     }
-    sweetalert(baseOptions).then(confirmCB);
+    return sweetalert(baseOptions).then(() => {
+      if (confirmCB) {
+        confirmCB();
+      }
+    });
   }
 }

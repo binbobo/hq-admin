@@ -51,16 +51,19 @@ export class PartssalesComponent extends DataList<any> {
   }
 
   //模态框
-  alert(ev, id, el, billCode, customerName) {
+  alert(ev, id, el, billCode, customerName, operator, isOut) {
     ev.hqSpinner = true;
-    this.service.get(id).then(data => {
+    console.log('详情数据1', this.detail, billCode)
+    this.service.get(`${id}&isOut=${isOut}`).then(data => {
       this.isLoading = true;
-      this.detail = data[0];
+      this.detail = data[0] || {};
       this.detail.billCode = billCode;
       this.detail.customerName = customerName;
+      this.detail.operator = operator;
       this.detailItemsLength = data.length;
       this.detailItems = data;
-      console.log('详情数据', this.detail.items)
+
+      console.log('详情数据2', this.detail)
       el.show()
       ev.hqSpinner = false;
     }).catch(err => {
