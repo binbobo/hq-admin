@@ -37,7 +37,6 @@ export class ModelTypeaheadDirective extends TableTypeaheadDirective {
             request['seriesId'] = this.seriesId;
             request.setPage(params.pageIndex, params.pageSize);
             let url = Urls.chain.concat('/Vehicles/search');
-            console.log('请求参数对象：', request);
             return this.httpService.getPagedList<any>(url, request);
         };
         super.ngOnInit();

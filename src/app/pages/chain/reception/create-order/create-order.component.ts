@@ -27,6 +27,9 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   private suspendBill: SuspendBillDirective;
   @ViewChild('printer')
   public printer: PrintDirective;
+  @ViewChild('plateNoControl')
+  plateNoControl: FormGroupControlErrorDirective;
+
 
   // 上次维修工单信息
   public lastOrderData = null;
@@ -370,8 +373,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 获取维修项目数据
     const data = evt.data;
     data.workHour = data.workHour * 1;
-    data.price = data.price * 100;
-    data.amount = data.amount * 100;
+    data.price = +(data.price * 100).toFixed(0);
+    data.amount = +(data.amount * 100).toFixed(0);
     if (evt.isEdit && this.selectedItem) {
       // 编辑
       const index = this.newMaintenanceItemData.findIndex((item) => {
@@ -442,7 +445,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
   suspendOrder() {
     // 判断车牌号是否合法
     if (!this.workSheetForm.controls.plateNo.valid) {
-      this.alerter.error('请先输入正确的车牌号, 再执行挂单操作！', true, 3000);
+      // 强制验证车牌号
+      this.plateNoControl.validate();
       return;
     }
     // 获取当前录入的工单数据
@@ -681,7 +685,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     }
 
     // 调用创建工单接口
-    // console.log('提交的工单对象： ', JSON.stringify(workSheet));
+    console.log('提交的工单对象： ', JSON.stringify(workSheet));
 
     this.service.create(workSheet)
       .then(data => {
