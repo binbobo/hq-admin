@@ -253,7 +253,7 @@ export class DistributeComponent implements OnInit {
   onDelCreat(i) {
     this.sweetAlertService.confirm({
       type: "warning",
-      text: '是否确认删除该条领料信息？？'
+      text: '是否确认删除该条领料信息？'
     }).then(() => {
       this.newMainData.splice(i, 1);
     }, () => console.log("取消删除"))

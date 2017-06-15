@@ -34,6 +34,7 @@ export class AddVehicleComponent implements OnInit {
     this.createForm();
     // 编辑
     if (this.vehicle) {
+      console.log("current:",this.vehicle)
       this.vehicleForm.patchValue(this.vehicle, {
         emitEvent: false
       });
@@ -104,6 +105,8 @@ export class AddVehicleComponent implements OnInit {
   createForm() {
     // 添加车主表单
     this.vehicleForm = this.fb.group({
+      id: null, // 车辆id
+      customerId: '', // 客户id
       plateNo: ['', [Validators.required, HQ_VALIDATORS.plateNo]],
       brand: ['', [Validators.required]], // 品牌
       series: [{ value: '', disabled: true }, [Validators.required]], // 车系
