@@ -37,9 +37,9 @@
     </div>
     <div id="content-container" class="col-xs-9 col-sm-9 col-md-9 col-lg-10">
       <router-outlet></router-outlet>
-      <div id="loading" [hidden]="!loading" class="jumbotron align-items-center">
-        <div class="container" [hqSpinner]="loading">
-          Loading...
+      <div id="page-loading-container" [hidden]="!loading">
+        <div id="page-loading" [hqSpinner]="true">
+          加载中...
         </div>
       </div>
     </div>
