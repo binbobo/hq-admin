@@ -336,7 +336,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       });
       this.selectedItem = null;
     }
-    addModal.hide();
+    if(addModal)
+      addModal.hide();
   }
 
   // 编辑维修项目
