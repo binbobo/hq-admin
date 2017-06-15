@@ -116,7 +116,6 @@ export class ReturnListComponent extends DataList<any> {
     }
     this.innerReturnService.createReturnList(this.billData)
       .then(data => {
-        this.createLoading = false;
         this.sweetAlertService.confirm({ text: '已生成内部退料单，是否需要打印？' })
           .then(() => {
             data && this.innerReturnService.get(data)
@@ -127,10 +126,12 @@ export class ReturnListComponent extends DataList<any> {
                 }
               })
               .then(() => {
+                this.createLoading = false;
                 this.suspendBill.refresh();
                 this.reset();
               })
           }, () => {
+            this.createLoading = false;
             this.suspendBill.refresh();
             this.reset();
           })
@@ -151,40 +152,37 @@ export class ReturnListComponent extends DataList<any> {
 
   //挂单
   suspend() {
-    this.sweetAlertService.confirm({ text: '是否确认挂单？' })
+    this.suspendLoading = true;
+    let inner = this.employees.find(m => m.takeUser == this.takeUser);
+    let department = this.departments.departList.find(m => m.id == this.takeDepartId);
+    this.innerReturner = inner && inner.takeUserName;
+    this.innerDepartment = department && department.name;
+    this.suspendData = {
+      model: this.list,
+      returnData: this.returnData,
+      billCode: this.billCode,
+      takeUserId: this.takeUser,
+      takeDepartId: this.takeDepartId,
+      suspendedBillId: this.suspendedBillId,
+      innerReturner: this.innerReturner,
+      innerDepartment: this.innerDepartment,
+      originalBillId: this.originalBillId,
+    }
+    this.suspendBill.suspend(this.suspendData)
       .then(() => {
-        this.suspendLoading = true;
-        let inner = this.employees.find(m => m.takeUser == this.takeUser);
-        let department = this.departments.departList.find(m => m.id == this.takeDepartId);
-        this.innerReturner = inner && inner.takeUserName;
-        this.innerDepartment = department && department.name;
-        this.suspendData = {
-          model: this.list,
-          returnData: this.returnData,
-          billCode: this.billCode,
-          takeUserId: this.takeUser,
-          takeDepartId: this.takeDepartId,
-          suspendedBillId: this.suspendedBillId,
-          innerReturner: this.innerReturner,
-          innerDepartment: this.innerDepartment,
-          originalBillId: this.originalBillId,
-        }
-        this.suspendBill.suspend(this.suspendData)
-          .then(() => {
-            this.alerter.success('挂单成功！');
-            this.suspendBill.refresh();
-            this.suspendLoading = false;
-            this.createLoading = false;
-          })
-          .then(() => {
-            this.reset();
-            this.originalBillId = null;
-          })
-          .catch(err => {
-            this.suspendLoading = false;
-            this.alerter.error(err);
-          })
-      },()=>{})
+        this.alerter.success('挂单成功！');
+        this.suspendBill.refresh();
+        this.suspendLoading = false;
+        this.createLoading = false;
+      })
+      .then(() => {
+        this.reset();
+        this.originalBillId = null;
+      })
+      .catch(err => {
+        this.suspendLoading = false;
+        this.alerter.error(err);
+      })
   }
   historyData: any;
   //退料提交
@@ -211,7 +209,7 @@ export class ReturnListComponent extends DataList<any> {
     this.sweetAlertService.confirm({ text: '是否确认删除该条退料信息！', type: 'warning' })
       .then(() => {
         this.returnData.splice(i, 1);
-      },()=>{})
+      }, () => { })
   }
 
   //选择挂单信息
