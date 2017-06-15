@@ -1,5 +1,9 @@
 <form [formGroup]="vehicleForm" autocomplete="off">
   <div class="form-group row">
+    <!--车辆id-->
+    <input type="hidden" formControlName="id">
+    <!--客户id-->
+    <input type="hidden" formControlName="customerId">
     <div class="hq-input hq-input-column">
       <label for="plateNo" class="form-label"><span class="asterisk mr-1">*</span>车牌号</label>
       <div class="hq-col">
@@ -57,8 +61,8 @@
     <div class="hq-input hq-input-column">
       <label for="validate" class="form-label">验车日期</label>
       <div class="hq-col">
-        <input type="text" readonly label="验车日期" class="form-control" formControlName="validate" ngui-datetime-picker
-          date-only="true" id="validate">
+        <input type="text" readonly label="验车日期" class="form-control" formControlName="validate" ngui-datetime-picker date-only="true"
+          id="validate">
       </div>
     </div>
   </div>
@@ -73,8 +77,8 @@
     <div class="hq-input hq-input-column">
       <label for="insuranceDue" class="form-label">保险到期日期</label>
       <div class="hq-col">
-        <input readonly type="text" label="保险到期日期" class="form-control" formControlName="insuranceDue"  ngui-datetime-picker
-          date-only="true" id="insuranceDue">
+        <input readonly type="text" label="保险到期日期" class="form-control" formControlName="insuranceDue" ngui-datetime-picker date-only="true"
+          id="insuranceDue">
       </div>
     </div>
   </div>

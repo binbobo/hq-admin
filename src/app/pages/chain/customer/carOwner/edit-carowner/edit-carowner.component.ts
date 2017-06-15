@@ -54,6 +54,7 @@ export class EditCarownerComponent implements OnInit {
       // 清空当前编辑的車车辆
       this.selectedVehicle = null;
     } else {
+      data.customerId = this.customerId;
       // 新增
       this.newVehiclesData.push(data);
     }
@@ -94,11 +95,11 @@ export class EditCarownerComponent implements OnInit {
     // console.log('提交的车主对象为：', JSON.stringify(carOwnerBody));
 
     // 调用后台更新车主接口
-    this.service.update(carOwnerBody).then(data => {
+    this.service.update(carOwnerBody).then((customer:any) => {
       // 提示更新车主成功
       this.alerter.success('更新车主成功');
-      // this.carOwnerForm.reset();
-      // this.newVehiclesData = [];
+      // 更新车辆信息
+      this.newVehiclesData = customer.data.customerVehicles;
 
       // 返回车主列表
       // this.goBack();

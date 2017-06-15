@@ -99,13 +99,15 @@ export class AddVehicleComponent implements OnInit {
   createForm() {
     // 添加车主表单
     this.vehicleForm = this.fb.group({
+      id: null, // 车辆id
+      customerId: null, // 客户id
       plateNo: ['', [Validators.required, HQ_VALIDATORS.plateNo]],
       brand: ['', [Validators.required]], // 品牌
       series: [{ value: '', disabled: true }, [Validators.required]], // 车系
       vehicleName: [{ value: '', disabled: true }, [Validators.required]], // 车型
-      brandId: '',
-      seriesId: '',
-      vehicleId: '',
+      brandId: null,
+      seriesId: null,
+      vehicleId: null,
       engineNo: ['', [HQ_VALIDATORS.engineNo]],
       vin: ['', [HQ_VALIDATORS.vin]],
       vehicleColor: '',
