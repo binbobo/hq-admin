@@ -124,7 +124,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   }
   //删除操作
   onDelCreat(e, i) {
-    this.sweetAlertService.confirm({ text: '是否要删除该条退库信息！', type: 'warning' })
+    this.sweetAlertService.confirm({ text: '是否确认删除该条退库信息？', type: 'warning' })
       .then(() => {
         this.salesReturnData.splice(i, 1);
       }, () => { })

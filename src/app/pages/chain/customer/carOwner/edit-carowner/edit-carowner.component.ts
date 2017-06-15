@@ -67,7 +67,7 @@ export class EditCarownerComponent implements OnInit {
   // 删除一条车辆记录 处理程序
   onDelVehicleConfirmHandler(plateNo) {
     this.sweetAlertService.confirm({
-      text: '确定要删除当前选择的车辆吗',
+      text: '是否确认删除该条车辆信息？',
       type: 'warning'
     }).then(() => {
       this.newVehiclesData.filter((item, index) => {

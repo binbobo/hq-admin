@@ -206,7 +206,7 @@ export class ReturnListComponent extends DataList<any> {
 
   //删除退料信息
   onDelCreat(e, i) {
-    this.sweetAlertService.confirm({ text: '是否确认删除该条退料信息！', type: 'warning' })
+    this.sweetAlertService.confirm({ text: '是否确认删除该条退料信息？', type: 'warning' })
       .then(() => {
         this.returnData.splice(i, 1);
       }, () => { })

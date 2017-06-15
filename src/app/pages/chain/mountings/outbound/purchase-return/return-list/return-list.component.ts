@@ -176,7 +176,7 @@ export class ReturnListComponent extends DataList<PurchaseReturnItem> implements
   }
 
   onProductRemove(item: PurchaseReturnItem) {
-    this.sweetAlertService.confirm({ text: '是否确认删除该条退库信息！', type: 'warning' })
+    this.sweetAlertService.confirm({ text: '是否确认删除该条退库信息？', type: 'warning' })
       .then(() => {
         let index = this.model.list.indexOf(item);
         this.model.list.splice(index, 1);
