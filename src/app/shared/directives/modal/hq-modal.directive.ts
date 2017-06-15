@@ -1,4 +1,4 @@
-import { Directive, OnInit, Input, ElementRef, ViewContainerRef, ComponentFactoryResolver, ComponentRef, TemplateRef, Injector, Renderer } from '@angular/core';
+import { Directive, OnInit, Input, ElementRef, ViewContainerRef, ComponentFactoryResolver, ComponentRef, TemplateRef, Injector, Renderer, EventEmitter, Output } from '@angular/core';
 import { HqModalComponent } from './hq-modal/hq-modal.component';
 import { element } from 'protractor';
 import { ModalDirective } from 'ngx-bootstrap';
@@ -15,6 +15,10 @@ export class HqModalDirective implements OnInit {
   public title: string;
   @Input()
   public size: string;
+  @Output()
+  public onShow: EventEmitter<void> = new EventEmitter<void>();
+  @Output()
+  public onHide: EventEmitter<void> = new EventEmitter<void>();
   private modal: ModalDirective;
   private componentRef: ComponentRef<HqModalComponent>;
 
@@ -24,6 +28,8 @@ export class HqModalDirective implements OnInit {
     let nodes = Array.from(element.childNodes);
     this.componentRef = this.viewContainerRef.createComponent<HqModalComponent>(resolver, 0, this.injector, [nodes]);
     this.modal = this.componentRef.instance.modal;
+    this.modal.onHidden.subscribe(() => this.onHide.emit());
+    this.modal.onShown.subscribe(() => this.onShow.emit());
   }
 
   public show() {
