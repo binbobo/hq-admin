@@ -53,7 +53,7 @@ export class SaleCheckComponent extends DataList<any>  {
     //结算方式类型
     this.typeservice.getSettlementType().then(data => {
       this.billTypeData = data;
-      this.billTypeData.unshift({value:"所有",id:""})
+      this.billTypeData.unshift({ value: "所有", id: "" })
       this.params.settlementid = this.billTypeData[0].id;
     })
     this.user = JSON.parse(sessionStorage.getItem(StorageKeys.Identity));
@@ -111,8 +111,8 @@ export class SaleCheckComponent extends DataList<any>  {
       this.payCheckSingle = this.payData.filter(item => item.amount || item.amount === '').map(item => {
         let paycheck: any = {};
         paycheck.paymentMethod = item.id;
-        cost += item.amount * 100;
-        paycheck.amount = Number(item.amount * 100);
+        cost += Number(item.amount * 100);
+        paycheck.amount = Number(item.amount * 100).toFixed(0);
         return paycheck;
       })
       this.payPost = this.payCheckSingle.filter(item => item.amount != 0);
@@ -120,16 +120,18 @@ export class SaleCheckComponent extends DataList<any>  {
       this.payPost = this.payData.filter(item => item.amount === 0).map(item => {
         let paycheck: any = {};
         paycheck.paymentMethod = item.id;
-        paycheck.amount = Number(item.amount * 100);
+        paycheck.amount = Number(item.amount * 100).toFixed(0);
         return paycheck;
       });
       this.payCheckSingle = this.payData.filter(item => item.amount || item.amount === '').map(item => {
-        cost += item.amount * 100;
+        cost += Number(item.amount * 100);
       })
     }
-    if (cost != this.costMoney) {
+    cost=cost.toFixed(0);
+    if (cost != this.costMoney) {      
       this.alerter.error('输入金额与应收金额不符，请重新填写！', true, 3000);
     } else {
+      ;
       this.service.postPay(this.payPost, this.billId).then(() => {
         this.alerter.info('收银成功!', true, 2000).onClose(() => { dialog.hide(); this.onLoadList(); });
         this.payCheckSingle = [];
