@@ -153,14 +153,11 @@ export class MaintainReturnComponent implements OnInit {
       keyword: '', // 车牌号或车主姓名或工单号
     });
   }
-
   private newMainData = [];
-
   private billData: any;
   private generat = false;
   //生成退料单
   OnCreatReturnBill() {
-
     this.generat = true;
     this.billData = {
       billCode: this.billCode,
@@ -221,7 +218,7 @@ export class MaintainReturnComponent implements OnInit {
       });
       this.sweetAlertService.confirm({
         type: "question",
-        text: '生成退料单成功！ 是否打印？'
+        text: '已生成维修退料单，是否需要打印？'
       }).then(() => {
         this.service.getPrintList(this.listId, this.billCode, num).toPromise()
           .then(data => {
@@ -266,7 +263,7 @@ export class MaintainReturnComponent implements OnInit {
     // this.serialData.find(item => item.id = e.curId).list.find(cur => cur.maintenanceItemId === e.maintenanceItemId).returnCount -= Number(e.count);
     this.sweetAlertService.confirm({
       type: "warning",
-      text: '确定要删除当前选择的退料吗？'
+      text: '是否确认删除该条退料信息？'
     }).then(() => {
       this.newMainData.splice(i, 1);
     }, () => console.log("取消了删除"))
@@ -313,17 +310,14 @@ export class MaintainReturnComponent implements OnInit {
       suspendedBillId: this.suspendedBillId,
       list: this.newMainData
     }
-
     Object.assign(this.suspendData, this.orderDetail)
     if (this.sunspendRequest) {
       Object.assign(this.suspendData, this.sunspendRequest);
     }
-
     if (!this.suspendData.billCode) {
       alert('请选择工单');
       return false;
     }
-
     this.suspendBill.suspend(this.suspendData)
       .then(() => { this.alerter.success('挂单成功！'); this.initDetailData(); this.initValue = "" })
       .then(() => this.suspendBill.refresh())
