@@ -57,6 +57,8 @@ export class EditCarownerComponent implements OnInit {
       // 清空当前编辑的車车辆
       this.selectedVehicle = null;
     } else {
+      // 添加车主id
+      data.customerId = this.customerId
       // 新增
       this.newVehiclesData.push(data);
     }
