@@ -138,16 +138,15 @@ export class InventoryEditComponent extends FormHandle<Inventory> implements OnI
   }
 
   onUpdate() {
-    if (this.model.count > 0) {
-      let formData = this.form.value;
-      if (formData.locationId !== this.model.locationId && formData.locationName) {
-        this.sweetAlertService.confirm({ text: `是否将${this.model.name}(库存量：${this.model.count})全部移至${formData.locationName}？` })
-          .then(() => {
-            let vehicles = this.vehicles && this.vehicles.map(m => m.vehicleId);
-            this.form.patchValue({ vehicleId: vehicles });
-            return super.onUpdate();
-          }, () => { })
-      }
+    let formData = this.form.value;
+    let vehicles = this.vehicles && this.vehicles.map(m => m.vehicleId);
+    this.form.patchValue({ vehicleId: vehicles });
+    if (formData.locationId !== this.model.locationId && formData.locationName) {
+      let msg = `是否将${this.model.name}(库存量：${this.model.count})全部移至${formData.locationName}？`;
+      return this.sweetAlertService.confirm({ text: msg })
+        .then(() => super.onUpdate(),()=>{})
+    } else {
+      return super.onUpdate();
     }
   }
 }
