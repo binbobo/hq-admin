@@ -191,7 +191,7 @@ export class DistributeComponent implements OnInit {
       this.generat = false;
       this.sweetAlertService.confirm({
         type: "question",
-        text: '生成发料单成功！ 是否打印？'
+        text: '已生成维修领料单，是否需要打印？'
       }).then(() => {
         this.service.getPrintList(this.listId, this.billCode, result.data[0].serialNum).toPromise()
           .then(data => {
@@ -253,7 +253,7 @@ export class DistributeComponent implements OnInit {
   onDelCreat(i) {
     this.sweetAlertService.confirm({
       type: "warning",
-      text: '确定要删除当前选择的发料吗？'
+      text: '是否确认删除该条领料信息？？'
     }).then(() => {
       this.newMainData.splice(i, 1);
     }, () => console.log("取消删除"))
