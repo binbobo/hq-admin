@@ -45,6 +45,7 @@ export class EditCarownerComponent implements OnInit {
   // 添加一条车辆记录处理程序
   onVehicleConfirmHandler(evt, vehicleModal) {
     const data = evt.data;
+    console.log(data);
     if (evt.isEdit && this.selectedVehicle) {
       // 编辑
       const index = this.newVehiclesData.findIndex((item) => {
