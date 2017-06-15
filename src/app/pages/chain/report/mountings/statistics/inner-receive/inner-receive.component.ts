@@ -95,12 +95,12 @@ export class InnerReceiveComponent extends DataList<any> {
   }
 
   //模态框
-  alert(ev, id, el, billCode, takeUserName, takeDepartmentName, createBillTime, operator) {
+  alert(ev, id, el, billCode, takeUserName, takeDepartmentName, createBillTime, operator,isOut) {
     ev.hqSpinner = true;
-    this.service.get(id).then(data => {
+    this.service.get(`${id}&isOut=${isOut}`).then(data => {
       this.isLoading = true;
-      console.log('详情数据', this.detail)
-      this.detail = data[0];
+      console.log('详情数据detail', data)
+      this.detail = data[0]||{};
       this.detail.billCode = billCode;
       this.detail.takeUserName = takeUserName;
       this.detail.takeDepartmentName = takeDepartmentName;

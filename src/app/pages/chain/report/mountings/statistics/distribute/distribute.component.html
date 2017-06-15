@@ -29,19 +29,21 @@
     <p>温馨提示：系统为您找到<span style="font-size:16px;color:red;font-weight:bold;">{{total}}</span>条记录</p>
     <div class="table-container">
       <table class="table table-bordered">
-        <tr class="text-center">
-          <th>操作</th>
-          <th *ngIf="orgNameShow">店名</th>
-          <th>车牌号</th>
-          <th>单号</th>
-          <th>金额（元）</th>
-          <th>开单时间</th>
-          <th>领料人</th>
-          <th>操作人</th>
-        </tr>
+        <thead>
+          <tr class="text-center">
+            <th>操作</th>
+            <th *ngIf="orgNameShow">店名</th>
+            <th>车牌号</th>
+            <th>单号</th>
+            <th>金额（元）</th>
+            <th>开单时间</th>
+            <th>领料人</th>
+            <th>操作人</th>
+          </tr>
+        </thead>
         <tr *ngFor="let item of list">
           <td class="text-center">
-            <button type="button" [hqSpinner]="item.hqSpinner" class="btn btn-info btn-sm" (click)="alert(item,item.id,bdModal,item.billCode)">详情</button>
+            <button type="button" [hqSpinner]="item.hqSpinner" class="btn btn-info btn-sm" (click)="alert(item,item.id,bdModal,item.billCode,item.isOut)">详情</button>
           </td>
           <td *ngIf="orgNameShow" class="text-left">{{item.orgName}}</td>
           <td class="text-center">{{item.plateNo }}</td>
