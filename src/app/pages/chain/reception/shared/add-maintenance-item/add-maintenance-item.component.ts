@@ -2,7 +2,6 @@ import { Component, OnInit, Output, EventEmitter, ViewChild, Input } from '@angu
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HqAlerter } from 'app/shared/directives';
 import { OrderService } from '../../../reception/order.service';
-import * as moment from 'moment';
 import { CustomValidators } from 'ng2-validation';
 import { priceMask, numberMask, discountMask } from 'app/pages/chain/chain-shared';
 import { SweetAlertService } from '../../../../../shared/services/sweetalert.service';
@@ -109,7 +108,7 @@ export class AddMaintenanceItemComponent implements OnInit {
 
   createForm() {
     // 保留一位小数正则
-    const floatRegex = /^[0-9]+(\.\d{1})?$/;
+    const floatRegex = /^[0-9]+(\.\d{1,2})?$/;
 
     this.maintenanceItemForm = this.fb.group({
       serviceName: ['', [Validators.required]],
