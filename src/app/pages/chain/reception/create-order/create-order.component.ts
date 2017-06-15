@@ -373,8 +373,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     // 获取维修项目数据
     const data = evt.data;
     data.workHour = data.workHour * 1;
-    data.price = (data.price * 100).toFixed(0);
-    data.amount = (data.amount * 100).toFixed(0);
+    data.price = +(data.price * 100).toFixed(0);
+    data.amount = +(data.amount * 100).toFixed(0);
     if (evt.isEdit && this.selectedItem) {
       // 编辑
       const index = this.newMaintenanceItemData.findIndex((item) => {
