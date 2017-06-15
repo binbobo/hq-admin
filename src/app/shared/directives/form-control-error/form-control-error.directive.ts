@@ -132,7 +132,7 @@ export class FormControlErrorDirective<T extends FormControlErrorComponent> impl
     } else if (key === "mobile") {
       return `无效的手机号码`;
     } else {
-      console.log(key, error, errors);
+      console.info(key, error, errors);
       return `无效的${this.label}`;
     }
   }
