@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { MountingsService } from '../../mountings.service';
+import { SweetAlertService } from "app/shared/services";
 
 @Component({
   selector: 'hq-inventory-edit',
@@ -21,6 +22,7 @@ export class InventoryEditComponent extends FormHandle<Inventory> implements OnI
     injector: Injector,
     service: InventoryService,
     private moutingsService: MountingsService,
+    private sweetAlertService: SweetAlertService,
   ) {
     super(injector, service);
   }
@@ -139,13 +141,13 @@ export class InventoryEditComponent extends FormHandle<Inventory> implements OnI
     if (this.model.count > 0) {
       let formData = this.form.value;
       if (formData.locationId !== this.model.locationId && formData.locationName) {
-        if (!confirm(`是否将${this.model.name}(库存量：${this.model.count})全部移至${formData.locationName}？`)) {
-          return false;
-        }
+        this.sweetAlertService.confirm({ text: `是否将${this.model.name}(库存量：${this.model.count})全部移至${formData.locationName}？` })
+          .then(() => {
+            let vehicles = this.vehicles && this.vehicles.map(m => m.vehicleId);
+            this.form.patchValue({ vehicleId: vehicles });
+            return super.onUpdate();
+          }, () => { })
       }
     }
-    let vehicles = this.vehicles && this.vehicles.map(m => m.vehicleId);
-    this.form.patchValue({ vehicleId: vehicles });
-    return super.onUpdate();
   }
 }

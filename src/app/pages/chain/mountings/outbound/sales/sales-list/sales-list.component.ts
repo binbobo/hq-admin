@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { NgForm } from "@angular/forms";
 import { SalesOutBillDirective } from '../sales-out-bill.directive';
 import { ChainService } from '../../../../chain.service';
+import { SweetAlertService } from "app/shared/services";
 
 @Component({
   selector: 'hq-sales-list',
@@ -32,6 +33,7 @@ export class SalesListComponent implements OnInit {
   constructor(
     private salesService: SalesService,
     private chainService: ChainService,
+    private sweetAlertService: SweetAlertService,
   ) { }
 
   ngOnInit() {
@@ -87,16 +89,23 @@ export class SalesListComponent implements OnInit {
     this.generating = true;
     this.salesService.generate(this.model)
       .then(data => {
-        this.generating = false;
-        this.reset();
-        return confirm('已生成销售出库单，是否需要打印？') ? data : null;
-      })
-      .then(code => code && this.salesService.get(code))
-      .then(data => {
-        if (data) {
-          this.printModel = data;
-          setTimeout(() => this.printer.print(), 300);
-        }
+        this.sweetAlertService.confirm({ text: '已生成销售出库单，是否需要打印？' })
+          .then(() => {
+            data && this.salesService.get(data)
+              .then(data => {
+                if (data) {
+                  this.printModel = data;
+                  setTimeout(() => this.printer.print(), 300);
+                }
+              })
+              .then(() => {
+                this.generating = false;
+                this.reset();
+              })
+          }, () => {
+            this.generating = false;
+            this.reset();
+          })
       })
       .catch(err => {
         this.generating = false;
@@ -118,9 +127,11 @@ export class SalesListComponent implements OnInit {
   }
 
   private onProductRemove(item) {
-    if (!confirm('确定要删除？')) return;
-    let index = this.model.list.indexOf(item);
-    this.model.list.splice(index, 1);
+    this.sweetAlertService.confirm({ text: '是否确认删除该条出库信息！', type: 'warning' })
+      .then(() => {
+        let index = this.model.list.indexOf(item);
+        this.model.list.splice(index, 1);
+      }, () => { })
   }
 
   private onCustomerSelect(event) {
