@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { FormGroup, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { MountingsService } from '../../mountings.service';
-import { SweetAlertService } from "app/shared/services";
+import { DialogService } from "app/shared/services";
 
 @Component({
   selector: 'hq-inventory-edit',
@@ -22,7 +22,7 @@ export class InventoryEditComponent extends FormHandle<Inventory> implements OnI
     injector: Injector,
     service: InventoryService,
     private moutingsService: MountingsService,
-    private sweetAlertService: SweetAlertService,
+    private dialogService: DialogService,
   ) {
     super(injector, service);
   }
@@ -143,8 +143,7 @@ export class InventoryEditComponent extends FormHandle<Inventory> implements OnI
     this.form.patchValue({ vehicleId: vehicles });
     if (formData.locationId !== this.model.locationId && formData.locationName) {
       let msg = `是否将${this.model.name}(库存量：${this.model.count})全部移至${formData.locationName}？`;
-      return this.sweetAlertService.confirm({ text: msg })
-        .then(() => super.onUpdate(),()=>{})
+      return this.dialogService.confirm(msg, () => super.onUpdate());
     } else {
       return super.onUpdate();
     }

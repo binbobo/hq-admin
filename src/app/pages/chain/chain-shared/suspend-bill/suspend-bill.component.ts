@@ -2,7 +2,7 @@ import { Component, OnInit, Input, EventEmitter, HostBinding, Output, ElementRef
 import { SuspendBillService, SuspendedBillItem } from './suspend-bill.service';
 import { PagedResult } from 'app/shared/models';
 import { SuspendBillColumn } from './suspend-bill.directive';
-import { SweetAlertService } from "app/shared/services";
+import { DialogService } from "app/shared/services";
 
 @Component({
   selector: 'hq-suspend-bill',
@@ -29,7 +29,7 @@ export class SuspendBillComponent implements OnInit {
 
   constructor(
     private service: SuspendBillService,
-    private sweetAlertService: SweetAlertService,
+    private dialogService: DialogService,
     private ele: ElementRef
   ) { }
 
@@ -56,12 +56,13 @@ export class SuspendBillComponent implements OnInit {
   remove(event: Event, item) {
     event.preventDefault();
     event.stopPropagation();
-    this.sweetAlertService.confirm({text:'作废后将不可恢复，是否确认作废？',type:'warning'})
-    .then(()=> {
-      this.service.delete(item.id)
-        .then(() => this.onRemove.emit(item))
-        .then(() => this.loadList())
-        .catch(err => alert(err));
-    },()=>{})
+    this.dialogService.confirm(
+      { text: '作废后将不可恢复，是否确认作废？', type: 'warning' },
+      () => {
+        this.service.delete(item.id)
+          .then(() => this.onRemove.emit(item))
+          .then(() => this.loadList())
+          .catch(err => console.error(err));
+      })
   }
 }

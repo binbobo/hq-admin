@@ -11,13 +11,15 @@ export class ProcurementService {
     if (!code) return Promise.resolve({});
     let url = Urls.chain.concat('/PurchaseDetails/Print?BillCode=', code);
     return this.httpService.getObject<ProcurementPrintItem>(url)
+      .then(data => data || Promise.reject('服务端返回数据无效！'))
       .catch(err => Promise.reject(`获取采购入库单信息失败：${err}`));
   }
 
-  public generate(request: ProcurementRequest): Promise<string> {
+  public generate(request: ProcurementRequest) {
     let url = Urls.chain.concat('/StoreInOutDetails/CreatePurchaseBill');
     return this.httpService.post<ApiResult<string>>(url, request)
       .then(result => result.data)
+      .then(id => id || Promise.reject<string>('服务端返回数据错误！'))
       .catch(err => Promise.reject(`生成采购入库单失败：${err}`));
   }
 }

@@ -3,7 +3,7 @@ import { TypeaheadRequestParams, HqAlerter, PrintDirective, HqModalDirective } f
 import { ProcurementService, ProcurementPrintItem, ProcurementItem, ProcurementRequest } from '../procurement.service';
 import { PurchaseInBillDirective } from '../purchase-in-bill.directive';
 import { NgForm } from '@angular/forms';
-import { SweetAlertService } from "app/shared/services";
+import { DialogService } from "app/shared/services";
 
 @Component({
   selector: 'hq-procurement-list',
@@ -32,7 +32,7 @@ export class ProcurementListComponent implements OnInit {
 
   constructor(
     private procurementService: ProcurementService,
-    private sweetAlertService: SweetAlertService,
+    private dialogService: DialogService,
   ) { }
 
   ngOnInit() {
@@ -112,24 +112,16 @@ export class ProcurementListComponent implements OnInit {
   generate(event: Event) {
     this.generating = true;
     this.procurementService.generate(this.model)
-      .then(data => {
-        this.sweetAlertService.confirm({ text: '已生成采购入库单，是否需要打印？' })
-          .then(() => {
-            data && this.procurementService.get(data)
-              .then(data => {
-                if (data) {
-                  this.printModel = data;
-                  setTimeout(() => this.printer.print(), 300);
-                }
-              })
-              .then(() => {
-                this.generating = false;
-                this.reset();
-              })
-          }, () => {
-            this.generating = false;
-            this.reset();
-          })
+      .then(id => {
+        this.generating = false;
+        this.reset();
+        this.dialogService.confirm('已生成采购入库单，是否需要打印？', () => {
+          this.procurementService.get(id)
+            .then(data => {
+              this.printModel = data;
+              this.printer.print();
+            })
+        });
       })
       .catch(err => {
         this.generating = false;
@@ -138,11 +130,10 @@ export class ProcurementListComponent implements OnInit {
   }
 
   private onRemove(item) {
-    this.sweetAlertService.confirm({ text: '是否确认删除该条入库信息？', type: 'warning' })
-      .then(() => {
-        let index = this.model.list.indexOf(item);
-        this.model.list.splice(index, 1);
-        this.aggregate();
-      }, () => { })
+    this.dialogService.confirm('是否确认删除该条入库信息？', () => {
+      let index = this.model.list.indexOf(item);
+      this.model.list.splice(index, 1);
+      this.aggregate();
+    })
   }
 }

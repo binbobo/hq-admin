@@ -11,6 +11,7 @@ export class ReceiveService {
     if (!code) return Promise.resolve({});
     let url = Urls.chain.concat('/UseDetails/Print?BillCode=', code);
     return this.httpService.getObject<any>(url)
+      .then(data => data || Promise.reject<string>('服务器返回数据错误！'))
       .catch(err => Promise.reject(`获取内部领料单信息失败：${err}`));
   }
 
@@ -18,6 +19,7 @@ export class ReceiveService {
     let url = Urls.chain.concat('/StoreInOutDetails/CreateUseBill');
     return this.httpService.post<ApiResult<string>>(url, data)
       .then(result => result.data)
+      .then(code => code || Promise.reject<string>('服务器返回数据错误！'))
       .catch(err => Promise.reject(`生成销售清单失败：${err}`))
   }
 
