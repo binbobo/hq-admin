@@ -5,7 +5,7 @@ import { SelectOption, PagedResult, DataList, PagedParams } from "app/shared/mod
 import { InnerReturnService, InnerPrintItem, BillCodeSearchRequest } from "../inner-return.service";
 import { SuspendBillDirective } from "app/pages/chain/chain-shared";
 import { FormGroup, FormBuilder } from "@angular/forms/";
-import { SweetAlertService } from "app/shared/services";
+import { DialogService } from "app/shared/services";
 
 @Component({
   selector: 'hq-return-list',
@@ -50,7 +50,7 @@ export class ReturnListComponent extends DataList<any> {
     injector: Injector,
     private formBuilder: FormBuilder,
     private innerReturnService: InnerReturnService,
-    private sweetAlertService: SweetAlertService,
+    private dialogService: DialogService,
   ) {
     super(injector, innerReturnService);
     this.params = new BillCodeSearchRequest();
@@ -116,8 +116,9 @@ export class ReturnListComponent extends DataList<any> {
     }
     this.innerReturnService.createReturnList(this.billData)
       .then(data => {
-        this.sweetAlertService.confirm({ text: '已生成内部退料单，是否需要打印？' })
-          .then(() => {
+        this.dialogService.confirm(
+          '已生成内部退料单，是否需要打印？',
+          () => {
             data && this.innerReturnService.get(data)
               .then(data => {
                 if (data) {
@@ -130,7 +131,8 @@ export class ReturnListComponent extends DataList<any> {
                 this.suspendBill.refresh();
                 this.reset();
               })
-          }, () => {
+          },
+          () => {
             this.createLoading = false;
             this.suspendBill.refresh();
             this.reset();
@@ -206,10 +208,11 @@ export class ReturnListComponent extends DataList<any> {
 
   //删除退料信息
   onDelCreat(e, i) {
-    this.sweetAlertService.confirm({ text: '是否确认删除该条退料信息？', type: 'warning' })
-      .then(() => {
+    this.dialogService.confirm(
+      { text: '是否确认删除该条退料信息？', type: 'warning' },
+      () => {
         this.returnData.splice(i, 1);
-      }, () => { })
+      })
   }
 
   //选择挂单信息

@@ -7,7 +7,7 @@ import { SelectOption, DataList } from "app/shared/models";
 import { SalesReturnService, BillCodeRequest, CustomerRequest, SaleDetailsRequest } from "../sales-return.service";
 import { Location } from '@angular/common';
 import * as moment from 'moment';
-import { SweetAlertService } from "app/shared/services";
+import { DialogService } from "app/shared/services";
 
 @Component({
   selector: 'hq-sales-return-list',
@@ -44,7 +44,7 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   constructor(
     injector: Injector,
     private salesReturnservice: SalesReturnService,
-    private sweetAlertService: SweetAlertService,
+    private dialogService: DialogService,
   ) {
     super(injector, salesReturnservice);
     this.params = new SaleDetailsRequest();
@@ -124,10 +124,11 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
   }
   //删除操作
   onDelCreat(e, i) {
-    this.sweetAlertService.confirm({ text: '是否确认删除该条退库信息？', type: 'warning' })
-      .then(() => {
+    this.dialogService.confirm(
+      { text: '是否确认删除该条退库信息？', type: 'warning' },
+      () => {
         this.salesReturnData.splice(i, 1);
-      }, () => { })
+      })
   }
 
   historyData: any;
@@ -182,8 +183,9 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
     }
     this.salesReturnservice.createReturnList(this.billData)
       .then(data => {
-        this.sweetAlertService.confirm({ text: '已生成销售退库单，是否需要打印？' })
-          .then(() => {
+        this.dialogService.confirm(
+          '已生成销售退库单，是否需要打印？',
+          () => {
             data && this.salesReturnservice.get(data)
               .then(data => {
                 if (data) {
@@ -196,7 +198,8 @@ export class SalesReturnListComponent extends DataList<any> implements OnInit {
                 this.suspendBill.refresh();
                 this.reset();
               })
-          }, () => {
+          }, 
+          () => {
             this.createLoading = false;
             this.suspendBill.refresh();
             this.reset();
