@@ -9,10 +9,10 @@
       <input type="hidden" formControlName="suspendedBillId" />
       <div class="form-group row">
         <div class="hq-input">
-          <label for="plateNo" class="form-label"><span class="asterisk mr-1">*</span>车牌号</label>
+          <label  class="form-label"><span class="asterisk mr-1">*</span>车牌号</label>
           <div class="hq-col">
-            <input (blur)="onPlateNoBlur()" hqPlateNoTypeahead (onSelect)="plateNoOnSelect($event)" class="form-control text-uppercase"
-              formControlName="plateNo" id="plateNo" label="车牌号" maxlength="12" type="text" />
+            <input #plateNoControl="hq-error" (blur)="onPlateNoBlur()" hqPlateNoTypeahead (onSelect)="plateNoOnSelect($event)" class="form-control text-uppercase"
+              formControlName="plateNo" label="车牌号" maxlength="12" type="text" />
             <input type="hidden" formControlName="customerVehicleId" />
             <input type="hidden" formControlName="customerId" />
             <input type="hidden" formControlName="preCheckId" />

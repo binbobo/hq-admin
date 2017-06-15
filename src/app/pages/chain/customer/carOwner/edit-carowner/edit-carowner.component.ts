@@ -67,7 +67,7 @@ export class EditCarownerComponent implements OnInit {
   onDelVehicleConfirmHandler(plateNo) {
     this.sweetAlertService.confirm({
       text: '确定要删除当前选择的车辆吗',
-      type: 'warn'
+      type: 'warning'
     }).then(() => {
       this.newVehiclesData.filter((item, index) => {
         if (item.plateNo === plateNo) {
@@ -102,9 +102,10 @@ export class EditCarownerComponent implements OnInit {
     // console.log('提交的车主对象为：', JSON.stringify(carOwnerBody));
 
     // 调用后台更新车主接口
-    this.service.update(carOwnerBody).then((customerData:any) => {
-      // 更新客户下的车辆信息
-      
+    this.service.update(carOwnerBody).then((customer: any) => {
+      // 更新客户下的车辆信息 (解决 保存车主信息之后,再次添加车辆没有id的问题)
+      if (customer.data.customerVehicles)
+        this.newVehiclesData = customer.data.customerVehicles;
       // 提示更新车主成功
       this.alerter.success('更新车主成功');
 
