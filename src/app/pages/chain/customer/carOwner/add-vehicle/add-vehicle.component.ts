@@ -111,9 +111,9 @@ export class AddVehicleComponent implements OnInit {
       brand: ['', [Validators.required]], // 品牌
       series: [{ value: '', disabled: true }, [Validators.required]], // 车系
       vehicleName: [{ value: '', disabled: true }, [Validators.required]], // 车型
-      brandId: '',
-      seriesId: '',
-      vehicleId: '',
+      brandId: null,
+      seriesId: null,
+      vehicleId: null,
       engineNo: ['', [HQ_VALIDATORS.engineNo]],
       vin: ['', [HQ_VALIDATORS.vin]],
       vehicleColor: '',
