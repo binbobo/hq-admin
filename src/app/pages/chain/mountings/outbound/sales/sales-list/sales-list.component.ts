@@ -43,7 +43,7 @@ export class SalesListComponent implements OnInit {
       .catch(err => this.alerter.error(err));
     this.chainService.getSettlementType()
       .then(data => this.settlements = data)
-      .then(data => data && data.length && (this.model.settlementMethodId = data[0]['id']))
+      .then(data => this.reset())
       .catch(err => this.alerter.error(err));
   }
 
@@ -79,20 +79,20 @@ export class SalesListComponent implements OnInit {
   reset() {
     this.model = new SalesListRequest();
     this.suspendBill.refresh();
-    this.form.reset();
-    if (Array.isArray(this.salesmen) && this.salesmen.length) {
-      setTimeout(() => this.model.seller = this.salesmen[0].value, 100);
-    }
+    this.form.reset({
+      seller: this.salesmen && this.salesmen.length && this.salesmen[0].value,
+      settlementMethodId: this.settlements && this.settlements.length && this.settlements[0].id
+    });
   }
 
   generate(event: Event) {
     this.generating = true;
     this.salesService.generate(this.model)
-      .then(data => {
+      .then(code => {
         this.generating = false;
         this.reset();
         this.dialogService.confirm('已生成销售出库单，是否需要打印？', () => {
-          return this.salesService.get(data)
+          return this.salesService.get(code)
             .then(data => {
               this.printModel = data;
               this.printer.print();
