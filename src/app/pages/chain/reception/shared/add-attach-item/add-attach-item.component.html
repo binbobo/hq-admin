@@ -1,5 +1,4 @@
 <ng-template hq-alerter></ng-template>
-<div class="card">
   <form *ngIf="form" class="card-block row" [formGroup]="form">
     <div class="col-12">
       <div class="form-group">
@@ -8,7 +7,6 @@
       </div>
     </div>
   </form>
-</div>
 <div style="text-align:center">
   <button type="submit" class="btn btn-primary"  [disabled]="!form.valid" (click)="onSubmit()">保存</button>
   <button type="button" class="btn btn-secondary" (click)="onCancelHandler()">取消</button>
