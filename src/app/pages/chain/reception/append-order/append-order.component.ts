@@ -241,7 +241,7 @@ export class AppendOrderComponent {
   onDelMaintenanceItem(serviceId) {
     this.sweetAlertService.confirm({
       type: "warning",
-      text: '确定要删除当前选择的维修项目吗？'
+      text: '是否确认删除该条维修项目？'
     }).then(() => {
       this.newMaintenanceItemData.filter((item, index) => {
         if (item.serviceId === serviceId) {
@@ -306,7 +306,7 @@ export class AppendOrderComponent {
   onDelAttachItem(i) {
     this.sweetAlertService.confirm({
       type: "warning",
-      text: '确定要删除当前选择的附加项目吗？'
+      text: '是否确认删除该条附加项目？'
     }).then(() => {
       this.newAttachData.splice(i, 1);
       if (this.newMaintenanceItemData.length > 0 || this.newAttachData.length > 0 || this.newSuggestData.length > 0) {
@@ -371,7 +371,7 @@ export class AppendOrderComponent {
   onDelSuggestItem(serviceId) {
     this.sweetAlertService.confirm({
       type: "warning",
-      text: '确定要删除当前选择的建议维修项目吗？'
+      text: '是否确认删除该条建议维修项目？'
     }).then(() => {
       this.newSuggestData.filter((item, index) => {
         if (item.serviceId === serviceId) {

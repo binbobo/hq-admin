@@ -137,7 +137,7 @@ export class ReceiveListComponent implements OnInit {
   }
 
   private onProductRemove(item) {
-    this.sweetAlertService.confirm({ text: '是否确认删除该条领料信息！', type: 'warning' })
+    this.sweetAlertService.confirm({ text: '是否确认删除该条领料信息？', type: 'warning' })
       .then(() => {
         let index = this.model.list.indexOf(item);
         this.model.list.splice(index, 1);
