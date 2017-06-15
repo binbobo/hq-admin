@@ -73,7 +73,7 @@
             <td>{{item.brand}}</td>
             <td>{{item.specification}}</td>
             <td class="text-center">{{item.count}}</td>
-            <td [hqVehicleShow]="item?.vehicleInfoList"></td>
+            <td style="position:relative;overflow:visible;"><span style="display:inline-block;" [hqVehicleShow]="item?.vehicleInfoList"></span></td>
             <td class="text-center">{{item.unit}}</td>
             <td class="text-right">{{item.costPrice|centToYuan}}</td>
             <td class="text-right">{{item.costAmount|centToYuan}}</td>
