@@ -119,11 +119,10 @@ export class SalesListComponent implements OnInit {
   }
 
   private onProductRemove(item) {
-    this.dialogService.confirm({ text: '是否确认删除该条出库信息？', type: 'warning' })
-      .then(() => {
-        let index = this.model.list.indexOf(item);
-        this.model.list.splice(index, 1);
-      }, () => { })
+    this.dialogService.confirm('是否确认删除该条出库信息？', () => {
+      let index = this.model.list.indexOf(item);
+      this.model.list.splice(index, 1);
+    })
   }
 
   private onCustomerSelect(event) {
