@@ -41,7 +41,7 @@ export class ReceiveListComponent implements OnInit {
   onCreated(event: any) {
     let data = event.data;
     if (data.count > data.stockCount) {
-      alert('所选配件已超过当前库位最大库存量，请减少领用数量或者选择其它库位中的配件！')
+      this.dialogService.alert('所选配件已超过当前库位最大库存量，请减少领用数量或者选择其它库位中的配件！')
       return false;
     }
     let exists = this.model.list.find(m => m.productId == data.productId && m.locationId === data.locationId);

@@ -11,6 +11,7 @@ export class SalesService {
     let url = Urls.chain.concat('/StoreInOutDetails/CreateSaleBill');
     return this.httpService.post<ApiResult<string>>(url, data)
       .then(result => result.data)
+      .then(data => data || Promise.reject<string>('服务端返回数据错误！'))
       .catch(err => Promise.reject(`生成销售清单失败：${err}`))
   }
 
@@ -19,6 +20,10 @@ export class SalesService {
     let url = Urls.chain.concat('/SaleDetails/Print?BillCode=', code);
     return this.httpService.get<ApiResult<SalesPrintItem>>(url)
       .then(result => result.data)
+      .then(data => {
+        data || Promise.reject<string>('服务端返回数据错误！');
+        return data;
+      })
       .catch(err => Promise.reject(`获取销售出售单信息失败：${err}`));
   }
 

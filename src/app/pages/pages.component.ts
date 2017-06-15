@@ -85,8 +85,4 @@ export class PagesComponent implements OnInit {
     localStorage.setItem(StorageKeys.AcceptLanguage, JSON.stringify(item));
     this.loadMenus();
   }
-
-  onActivate(event) {
-    alert(event);
-  }
 }

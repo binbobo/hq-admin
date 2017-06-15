@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { NgForm } from "@angular/forms";
 import { SalesOutBillDirective } from '../sales-out-bill.directive';
 import { ChainService } from '../../../../chain.service';
-import { SweetAlertService } from "app/shared/services";
+import { DialogService } from "app/shared/services";
 
 @Component({
   selector: 'hq-sales-list',
@@ -33,7 +33,7 @@ export class SalesListComponent implements OnInit {
   constructor(
     private salesService: SalesService,
     private chainService: ChainService,
-    private sweetAlertService: SweetAlertService,
+    private dialogService: DialogService,
   ) { }
 
   ngOnInit() {
@@ -50,7 +50,7 @@ export class SalesListComponent implements OnInit {
   onCreated(event: any) {
     let data = event.data;
     if (data.count > data.stockCount) {
-      alert('所选配件已超过当前库位最大库存量，请减少销售数量或者选择其它库位中的配件！')
+      this.dialogService.alert('所选配件已超过当前库位最大库存量，请减少销售数量或者选择其它库位中的配件！')
       return false;
     }
     let exists = this.model.list.find(m => m.productId == data.productId && m.locationId === data.locationId);
@@ -89,23 +89,15 @@ export class SalesListComponent implements OnInit {
     this.generating = true;
     this.salesService.generate(this.model)
       .then(data => {
-        this.sweetAlertService.confirm({ text: '已生成销售出库单，是否需要打印？' })
-          .then(() => {
-            data && this.salesService.get(data)
-              .then(data => {
-                if (data) {
-                  this.printModel = data;
-                  setTimeout(() => this.printer.print(), 300);
-                }
-              })
-              .then(() => {
-                this.generating = false;
-                this.reset();
-              })
-          }, () => {
-            this.generating = false;
-            this.reset();
-          })
+        this.generating = false;
+        this.reset();
+        this.dialogService.confirm('已生成销售出库单，是否需要打印？', () => {
+          return this.salesService.get(data)
+            .then(data => {
+              this.printModel = data;
+              this.printer.print();
+            })
+        });
       })
       .catch(err => {
         this.generating = false;
@@ -127,7 +119,7 @@ export class SalesListComponent implements OnInit {
   }
 
   private onProductRemove(item) {
-    this.sweetAlertService.confirm({ text: '是否确认删除该条出库信息？', type: 'warning' })
+    this.dialogService.confirm({ text: '是否确认删除该条出库信息？', type: 'warning' })
       .then(() => {
         let index = this.model.list.indexOf(item);
         this.model.list.splice(index, 1);

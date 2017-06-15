@@ -23,6 +23,10 @@ export class PurchaseReturnService implements PagedService<any> {
     if (!code) return Promise.resolve({});
     let url = Urls.chain.concat('/PurchaseReturnDetails/Print?BillCode=', code);
     return this.httpService.getObject<PurchaseReturnPrintItem>(url)
+      .then(data => {
+        data || Promise.reject<string>('服务端返回数据错误！');
+        return data;
+      })
       .catch(err => Promise.reject(`获取退库单信息失败：${err}`));
   }
 
@@ -30,6 +34,7 @@ export class PurchaseReturnService implements PagedService<any> {
     let url = Urls.chain.concat('/StoreInOutDetails/CreatePurchaseReturnBill');
     return this.httpService.post<ApiResult<string>>(url, request)
       .then(result => result.data)
+      .then(data => data || Promise.reject<string>('服务端返回数据错误！'))
       .catch(err => Promise.reject(`生成退库单失败：${err}`));
   }
 }

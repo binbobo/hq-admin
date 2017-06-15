@@ -4,7 +4,7 @@ import { TypeaheadRequestParams, HqAlerter, PrintDirective, HqModalDirective } f
 import { PurchaseReturnPrintItem, PurchaseReturnItem, PurchaseReturnService, GetBillCodeRequest, GetProductsRequest, PurchaseReturnRequest } from '../purchase-return.service';
 import { SelectOption, DataList } from 'app/shared/models';
 import { PurchaseOutBillDirective } from '../purchase-out-bill.directive';
-import { SweetAlertService } from "app/shared/services";
+import { DialogService } from "app/shared/services";
 
 @Component({
   selector: 'hq-return-list',
@@ -32,7 +32,7 @@ export class ReturnListComponent extends DataList<PurchaseReturnItem> implements
     injector: Injector,
     private providerService: ProviderService,
     private returnService: PurchaseReturnService,
-    private sweetAlertService: SweetAlertService,
+    private dialogService: DialogService,
   ) {
     super(injector, returnService);
     this.reset();
@@ -144,25 +144,16 @@ export class ReturnListComponent extends DataList<PurchaseReturnItem> implements
     el.disabled = true;
     this.returnService.generate(this.model)
       .then(data => {
-        this.sweetAlertService.confirm({ text: '已生成采购退库单，是否需要打印？' })
-          .then(() => {
-            data && this.returnService.get(data)
-              .then(data => {
-                if (data) {
-                  this.printModel = data;
-                  setTimeout(() => this.printer.print(), 300);
-                }
-              })
-              .then(() => {
-                el.disabled = false;
-                this.reset();
-                this.suspendBill.refresh();
-              })
-          }, () => {
-            el.disabled = false;
-            this.reset();
-            this.suspendBill.refresh();
-          })
+        el.disabled = false;
+        this.reset();
+        this.suspendBill.refresh();
+        this.dialogService.confirm('已生成采购退库单，是否需要打印？', () => {
+          return this.returnService.get(data)
+            .then(data => {
+              this.printModel = data;
+              this.printer.print();
+            })
+        })
       })
       .catch(err => {
         el.disabled = false;
@@ -176,12 +167,11 @@ export class ReturnListComponent extends DataList<PurchaseReturnItem> implements
   }
 
   onProductRemove(item: PurchaseReturnItem) {
-    this.sweetAlertService.confirm({ text: '是否确认删除该条退库信息？', type: 'warning' })
-      .then(() => {
-        let index = this.model.list.indexOf(item);
-        this.model.list.splice(index, 1);
-        this.aggregate();
-      }, () => { })
+    this.dialogService.confirm('是否确认删除该条退库信息？', () => {
+      let index = this.model.list.indexOf(item);
+      this.model.list.splice(index, 1);
+      this.aggregate();
+    })
   }
 
   getAddedCount(item: PurchaseReturnItem): number {
