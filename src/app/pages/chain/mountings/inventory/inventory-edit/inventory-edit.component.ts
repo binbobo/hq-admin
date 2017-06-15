@@ -35,7 +35,6 @@ export class InventoryEditComponent extends FormHandle<Inventory> implements OnI
       this.model.categoryId = category.value;
       this.model.category = category.text;
     }
-    console.log(this.model);
     return Observable.of(this.model)
   }
   protected buidForm(): FormGroup {
