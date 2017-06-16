@@ -186,18 +186,18 @@ export class DistributeComponent implements OnInit {
     let el = event.target as HTMLButtonElement;
     // el.disabled = true;
     let postData = JSON.stringify(this.billData);
+    this.printList = null;
     this.service.postBill(postData).then((result) => {
       this.suspendBill.refresh();
       this.generat = false;
       this.dialogService.confirm({
         type: "question",
         text: '已生成维修领料单，是否需要打印？'
-      },() => {
+      }, () => {
         this.service.getPrintList(this.listId, this.billCode, result.data[0].serialNum).toPromise()
           .then(data => {
             this.printList = data;
             setTimeout(() => { this.print() }, 1000);
-            setTimeout(() => { this.printList = null }, 1200)
           })
           .catch(err => { this.alerter.error(err, true, 2000); this.generat = false; })
       })
@@ -254,7 +254,7 @@ export class DistributeComponent implements OnInit {
     this.dialogService.confirm({
       type: "warning",
       text: '是否确认删除该条领料信息？'
-    },() => {
+    }, () => {
       this.newMainData.splice(i, 1);
     })
 
@@ -276,11 +276,11 @@ export class DistributeComponent implements OnInit {
       return false;
     }
     this.SerialNumsList = evt.value;
+    this.printList = null;
     this.service.getPrintList(this.listId, this.billCode, this.SerialNumsList).toPromise()
       .then(data => {
         this.printList = data;
         setTimeout(() => { this.print(); }, 1000);
-        setTimeout(() => { this.printList = null }, 1200)
       })
       .catch(err => { this.alerter.error(err, true, 2000) });
   }
@@ -333,7 +333,7 @@ export class DistributeComponent implements OnInit {
       Object.assign(this.suspendData, this.sunspendRequest);
     }
     if (!this.suspendData.billCode) {
-      this.alerter.error("请选择工单",true,3000);
+      this.alerter.error("请选择工单", true, 3000);
       return false;
     }
     this.suspendBill.suspend(this.suspendData)

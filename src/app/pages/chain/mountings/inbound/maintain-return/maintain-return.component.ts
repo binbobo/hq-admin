@@ -131,11 +131,11 @@ export class MaintainReturnComponent implements OnInit {
       return false;
     }
     this.SerialNumsList = evt.value;
+     this.printList = null;
     this.service.getPrintList(this.listId, this.billCode, this.SerialNumsList).toPromise()
       .then(data => {
         this.printList = data;
         setTimeout(() => { this.print(); }, 1000);
-        setTimeout(() => { this.printList = null }, 1200)
       })
       .catch(err => { this.alerter.error(err) });
   }
@@ -216,15 +216,16 @@ export class MaintainReturnComponent implements OnInit {
       this.numberPrintList.sort((a, b) => {
         return a.value - b.value
       });
+      this.printList = null;
       this.dialogService.confirm({
         type: "question",
         text: '已生成维修退料单，是否需要打印？'
       },() => {
+        
         this.service.getPrintList(this.listId, this.billCode, num).toPromise()
           .then(data => {
             this.printList = data;
             setTimeout(() => { this.print(); }, 1000);
-            setTimeout(() => { this.printList = null }, 1200)
           })
           .catch(err => { this.alerter.error(err); this.generat = false })
       })
@@ -234,19 +235,24 @@ export class MaintainReturnComponent implements OnInit {
 
   inputData: any;
   // 点击退料弹出弹框
-  OnCreatBound(ele, item, id) {
+  OnCreatBound(ele, item) {
+    console.log(ele)
     ele.serialNum = item.serialNum;
     ele.maintenanceItemId = ele.maintenanceItemId; //维修明细id
-    ele.curId = id;//记录点击的id
+    ele.curId = ele.id;//记录点击的id
     ele.originalId = ele.id;//原始单id
-    this.OriginalBillId = id;
+    this.OriginalBillId = item.id;
     this.inputData = ele;
     this.createModal.show();
   }
   hasList: any;
   onCreate(e) {
     // this.item.returnCount += Number(e.count);
-    this.hasList = this.newMainData.filter(item => item.curId === e.curId && item.maintenanceItemId === e.maintenanceItemId);
+    // this.hasList = this.newMainData.filter(item => item.curId === e.curId && item.maintenanceItemId === e.maintenanceItemId);
+        this.hasList = this.newMainData.filter(item => item.curId === e.curId);
+        this.newMainData.forEach((item)=>{
+          console.log(item.curId,e.curId)
+        })
     if (this.hasList.length > 0) {
       this.newMainData.forEach((item, index) => {
         if (item.curId === e.curId && item.maintenanceItemId === e.maintenanceItemId) {

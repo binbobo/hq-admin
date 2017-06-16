@@ -79,6 +79,7 @@ export class BillOrderComponent extends DataList<any>{
             this.billTypeData = data;
 
         });
+        this.initprint()
     }
     billSheetForm: FormGroup;
     billForm() {
@@ -160,7 +161,7 @@ export class BillOrderComponent extends DataList<any>{
         this.dialogService.confirm({
             type: "warning",
             text: '确定要撤销结算吗？'
-        },() => {
+        }, () => {
             this.service.put(id).then(() => {
                 this.alerter.info('撤销结算成功!', true, 3000);
                 this.onLoadList()
@@ -172,42 +173,11 @@ export class BillOrderComponent extends DataList<any>{
     hideModal(lgModal) {
         lgModal.hide();
         this.isShowPrint = false;
-        this.printData = {
-            maindata: {},
-            costData: [],
-            workHourData: [],
-            materialData: [],
-            appendItems: [],
-            adviceItems: [],
-            moneyObj: {
-                workCostMoney: 0,
-                discountMoney: 0,
-                materialMoney: 0,
-                costMoney: 0,
-                costCountMoney: 0,
-                workItemMoney: 0
-            }
-        }
+        this.initprint()
     }
-
 
     amountStatus: string;
-    private printData = {
-        maindata: {},
-        costData: [],
-        workHourData: [],
-        materialData: [],
-        appendItems: [],
-        adviceItems: [],
-        moneyObj: {
-            workCostMoney: 0,
-            discountMoney: 0,
-            materialMoney: 0,
-            costMoney: 0,
-            costCountMoney: 0,
-            workItemMoney: 0
-        }
-    }
+    private printData: any;
     initprint() {
         this.printData = {
             maindata: {},
@@ -229,6 +199,7 @@ export class BillOrderComponent extends DataList<any>{
     deduceAmount: any;
     // 点击详情事件
     DetailsDialog(evt, id, dialog, item) {
+        this.initprint();
         this.modaltitle = "维修结算详情";
         item.generating = true;
         this.isShowCost = false;
@@ -283,6 +254,7 @@ export class BillOrderComponent extends DataList<any>{
                             item.generating = false;
                             // 显示窗口
                             dialog.show();
+
                         })
                         .catch(err => {
                             // 获取工单信息失败
@@ -331,7 +303,7 @@ export class BillOrderComponent extends DataList<any>{
             this.dialogService.confirm({
                 type: "question",
                 text: '是否生成维修结算单？'
-            },() => {
+            }, () => {
                 this.initprint();
                 this.generat = true;
                 this.service.post(this.billData, this.billId).then((result) => {
@@ -339,7 +311,7 @@ export class BillOrderComponent extends DataList<any>{
                     this.dialogService.confirm({
                         type: "question",
                         text: '已生成维修结算单，是否需要打印？'
-                    },() => {
+                    }, () => {
                         // 根据id获取工单详细信息
                         this.service.getPrintDetail(this.billId)
                             .then(data => {
@@ -393,23 +365,10 @@ export class BillOrderComponent extends DataList<any>{
     private pathname;
     print(dialog) {
         this.printer.print();
-        dialog.hide();
-        this.printData = {
-            maindata: {},
-            costData: [],
-            workHourData: [],
-            materialData: [],
-            appendItems: [],
-            adviceItems: [],
-            moneyObj: {
-                workCostMoney: 0,
-                discountMoney: 0,
-                materialMoney: 0,
-                costMoney: 0,
-                costCountMoney: 0,
-                workItemMoney: 0
-            }
-        }
+        // dialog.hide();
+        // setTimeout(function() {
+        //     this.initprint()
+        // }, 3000); 
     }
     // 重置为初始查询条件
     reset() {

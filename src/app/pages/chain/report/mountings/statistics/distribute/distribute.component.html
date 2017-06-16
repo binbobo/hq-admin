@@ -1,7 +1,7 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
   <div class="card-header">
-    <label>维修发料统计</label>
+    <label>维修领料统计</label>
   </div>
   <div class="card-block">
     <form class="form-inline mb-2" [formGroup]="distributeForm" (ngSubmit)="onSearch()">
@@ -28,7 +28,7 @@
     <hr>
     <p>温馨提示：系统为您找到<span style="font-size:16px;color:red;font-weight:bold;">{{total}}</span>条记录</p>
     <div class="table-container">
-      <table class="table table-bordered">
+      <table hqHeaderFixed class="table table-bordered">
         <thead>
           <tr class="text-center">
             <th>操作</th>
@@ -41,18 +41,20 @@
             <th>操作人</th>
           </tr>
         </thead>
-        <tr *ngFor="let item of list">
-          <td class="text-center">
-            <button type="button" [hqSpinner]="item.hqSpinner" class="btn btn-info btn-sm" (click)="alert(item,item.id,bdModal,item.billCode,item.isOut)">详情</button>
-          </td>
-          <td *ngIf="orgNameShow" class="text-left">{{item.orgName}}</td>
-          <td class="text-center">{{item.plateNo }}</td>
-          <td class="text-center">{{item.billCode }}</td>
-          <td class="text-right">{{item.amount|centToYuan}}</td>
-          <td class="text-center">{{item.createBillTime |sDatetime}}</td>
-          <td>{{item.takeUser }}</td>
-          <td>{{item.operator }}</td>
-        </tr>
+        <tbody>
+          <tr *ngFor="let item of list">
+            <td class="text-center">
+              <button type="button" [hqSpinner]="item.hqSpinner" class="btn btn-info btn-sm" (click)="alert(item,item.id,bdModal,item.billCode,item.isOut)">详情</button>
+            </td>
+            <td *ngIf="orgNameShow" class="text-left">{{item.orgName}}</td>
+            <td class="text-center">{{item.plateNo }}</td>
+            <td class="text-center">{{item.billCode }}</td>
+            <td class="text-right">{{item.amount|centToYuan}}</td>
+            <td class="text-center">{{item.createBillTime |sDatetime}}</td>
+            <td>{{item.takeUser }}</td>
+            <td>{{item.operator }}</td>
+          </tr>
+        </tbody>
       </table>
     </div>
     <hq-pagination [(itemsPerPage)]="size" [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
@@ -60,7 +62,7 @@
   </div>
 </div>
 <!--详情-->
-<div class="modal fade" hqModal #bdModal="hq-modal" role="dialog" modalTitle="维修发料详情" size="lg">
+<div class="modal fade" hqModal #bdModal="hq-modal" role="dialog" modalTitle="维修领料详情" size="lg">
   <table class="table table-order-info table-bordered">
     <tr>
       <td class="fixed-width">单号：</td>
@@ -76,39 +78,43 @@
     </tr>
   </table>
   <div class="table-container">
-    <table class="table table-bordered" style="white-space: nowrap">
-      <tr class="text-center">
-        <th>维修项目</th>
-        <th>配件编号</th>
-        <th>配件类型</th>
-        <th>配件名称</th>
-        <th>品牌</th>
-        <th>规格型号</th>
-        <th>单位</th>
-        <th>仓库</th>
-        <th>库位</th>
-        <th>单价（元）</th>
-        <th>数量</th>
-        <th>金额（元）</th>
-        <th>备注</th>
-        <th>领料人</th>
-      </tr>
-      <tr *ngFor="let item of detailItems">
-        <td>{{item.maintName }}</td>
-        <td class="text-center">{{item.productCode }}</td>
-        <td>{{item.productSpecification }}</td>
-        <td>{{item.productName }}</td>
-        <td>{{item.brandName }}</td>
-        <td>{{item.productSpecification }}</td>
-        <td class="text-center">{{item.specification || '个'}}</td>
-        <td>{{item.storeName }}</td>
-        <td>{{item.locationName }}</td>
-        <td class="text-right">{{item.price |centToYuan}}</td>
-        <td class="text-center">{{item.count }}</td>
-        <td class="text-right">{{item.amount |centToYuan}}</td>
-        <td>{{item.description }}</td>
-        <td>{{item.takeUser }}</td>
-      </tr>
+    <table hqHeaderFixed class="table table-bordered" style="white-space: nowrap">
+      <thead>
+        <tr class="text-center">
+          <th>维修项目</th>
+          <th>配件编号</th>
+          <th>配件类型</th>
+          <th>配件名称</th>
+          <th>品牌</th>
+          <th>规格型号</th>
+          <th>单位</th>
+          <th>仓库</th>
+          <th>库位</th>
+          <th>单价（元）</th>
+          <th>数量</th>
+          <th>金额（元）</th>
+          <th>备注</th>
+          <th>领料人</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of detailItems">
+          <td>{{item.maintName }}</td>
+          <td class="text-center">{{item.productCode }}</td>
+          <td>{{item.productSpecification }}</td>
+          <td>{{item.productName }}</td>
+          <td>{{item.brandName }}</td>
+          <td>{{item.productSpecification }}</td>
+          <td class="text-center">{{item.specification || '个'}}</td>
+          <td>{{item.storeName }}</td>
+          <td>{{item.locationName }}</td>
+          <td class="text-right">{{item.price |centToYuan}}</td>
+          <td class="text-center">{{item.count }}</td>
+          <td class="text-right">{{item.amount |centToYuan}}</td>
+          <td>{{item.description }}</td>
+          <td>{{item.takeUser }}</td>
+        </tr>
+      </tbody>
     </table>
   </div>
   <p *ngIf="!!!detailItemsLength">暂无数据</p>
@@ -118,6 +124,6 @@
     </div>
   </div>
 </div>
-<div hqPrint #printer="hq-print" print-title="维修发料统计">
+<div hqPrint #printer="hq-print" print-title="维修领料统计">
   <hq-distribute-print [hidden]="true" [detail]="detail" [detailItems]="detailItems" [detailItemsLength]="detailItemsLength"></hq-distribute-print>
 </div>

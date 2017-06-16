@@ -15,6 +15,7 @@ hq-vehicle-show .popover-content{
 }
 hq-vehicle-show .popover{
     padding:0 !important;
+    z-index: 1;
 }
 hq-vehicle-show .trigger-btn{
     padding:0 !important;
