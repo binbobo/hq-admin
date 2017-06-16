@@ -183,9 +183,9 @@ export class MaintainReturnComponent implements OnInit {
           this.serialData.forEach(element => {
             (element.list).forEach(ele => {
               if ((ele.count - ele.returnCount) > 0) {
-                element.isable = true;
+                ele.isable = true;
               } else {
-                element.isable = false;
+                ele.isable = false;
               }
               ele.curId = element.id;
             })
