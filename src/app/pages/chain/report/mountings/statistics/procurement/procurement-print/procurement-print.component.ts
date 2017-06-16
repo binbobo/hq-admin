@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CentToYuanPipe, DurationHumanizePipe } from "app/shared/pipes";
 import { DataList } from "app/shared/models";
-import { TreeviewItem, TreeviewConfig } from "ngx-treeview/lib";
+import { TreeviewItem, TreeviewConfig } from "ngx-treeview";
 
 @Component({
   selector: 'hq-procurement-print',

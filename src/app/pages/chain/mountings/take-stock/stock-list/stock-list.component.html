@@ -11,11 +11,11 @@
       </div>
       <div class="input-group m-1">
         <label class="input-group-addon">生成日期</label>
-        <input class="form-control" ngui-datetime-picker date-only="true" name="createTimeStart" [(ngModel)]="params.createTimeStart"
-          placeholder="请选择开始日期">
+        <input class="form-control" ngui-datetime-picker date-only="true" [max-date]="params.createTimeEnd" name="createTimeStart"
+          [(ngModel)]="params.createTimeStart" placeholder="请选择开始日期">
         <label class="input-group-addon">-</label>
-        <input class="form-control" ngui-datetime-picker date-only="true" name="createTimeEnd" [(ngModel)]="params.createTimeEnd"
-          placeholder="请选择截止日期">
+        <input class="form-control" ngui-datetime-picker date-only="true" [min-date]="params.createTimeStart" name="createTimeEnd"
+          [(ngModel)]="params.createTimeEnd" placeholder="请选择截止日期">
       </div>
       <div class="input-group m-1">
         <label class="input-group-addon">操作人</label>

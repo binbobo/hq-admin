@@ -6,7 +6,7 @@ import { NguiDatetimePickerModule } from "@ngui/datetime-picker/dist";
 import { BsDropdownModule, TypeaheadModule, AlertModule, PopoverModule, TabsModule, CollapseModule } from "ngx-bootstrap";
 import { CustomFormsModule } from "ng2-validation/dist";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { TreeviewModule } from "ngx-treeview/lib";
+import { TreeviewModule } from "ngx-treeview";
 import { ChainSharedModule } from "app/pages/chain/chain-shared/chain-shared.module";
 import { SharedModule } from "app/shared/shared.module";
 import { PrintViewComponent } from './business/print-view/print-view.component';

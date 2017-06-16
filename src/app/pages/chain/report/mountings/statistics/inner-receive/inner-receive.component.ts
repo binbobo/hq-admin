@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { PrintDirective } from "app/shared/directives";
 import { ReceiveService, ReceiveRequest } from "./receive.service"
 import { DataList, SelectOption } from "app/shared/models";
-import { TreeviewItem, TreeviewConfig } from "ngx-treeview/lib";
+import { TreeviewItem, TreeviewConfig } from "ngx-treeview";
 import { CentToYuanPipe, DurationHumanizePipe } from "app/shared/pipes";
 import * as moment from 'moment';
 import { TotalValueService } from "app/pages/chain/report/total-value/total-value.service";

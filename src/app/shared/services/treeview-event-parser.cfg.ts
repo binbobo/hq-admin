@@ -1,4 +1,4 @@
-import { TreeviewEventParser } from "ngx-treeview/lib";
+import { TreeviewEventParser } from "ngx-treeview";
 import { Injectable } from '@angular/core';
 import { TreeviewComponent, TreeviewItem } from 'ngx-treeview';
 import { element } from 'protractor';

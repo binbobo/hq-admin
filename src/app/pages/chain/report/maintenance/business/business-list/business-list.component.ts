@@ -3,7 +3,7 @@ import { DataList, StorageKeys } from "app/shared/models";
 import { BusinessService, BusinessListRequest, DetailsSearchRequest } from "../business.service";
 import { TypeaheadRequestParams, PrintDirective, HqModalDirective } from "app/shared/directives";
 import { CentToYuanPipe, DurationHumanizePipe } from "app/shared/pipes";
-import { TreeviewItem, TreeviewConfig } from "ngx-treeview/lib";
+import { TreeviewItem, TreeviewConfig } from "ngx-treeview";
 import { ModalDirective } from "ngx-bootstrap";
 import * as moment from 'moment';
 import { TotalValueService } from "app/pages/chain/report/total-value/total-value.service";
