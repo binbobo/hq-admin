@@ -4,6 +4,7 @@ import { Vehicle } from '../../../reception/order.service';
 import { CustomValidators } from 'ng2-validation';
 import { HQ_VALIDATORS } from '../../../../../shared/shared.module';
 import { DialogService } from '../../../../../shared/services/dialog.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'hq-add-vehicle',
@@ -34,7 +35,13 @@ export class AddVehicleComponent implements OnInit {
     this.createForm();
     // 编辑
     if (this.vehicle) {
-      console.log("current:",this.vehicle)
+      // 处理日期类型
+      if (this.vehicle.purchaseDate)
+        this.vehicle.purchaseDate = moment(this.vehicle.purchaseDate).format('YYYY-MM-DD');
+      if (this.vehicle.validate)
+        this.vehicle.validate = moment(this.vehicle.validate).format('YYYY-MM-DD');
+      if (this.vehicle.insuranceDue)
+        this.vehicle.insuranceDue = moment(this.vehicle.insuranceDue).format('YYYY-MM-DD');
       this.vehicleForm.patchValue(this.vehicle, {
         emitEvent: false
       });
