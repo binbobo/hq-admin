@@ -131,11 +131,11 @@ export class MaintainReturnComponent implements OnInit {
       return false;
     }
     this.SerialNumsList = evt.value;
+     this.printList = null;
     this.service.getPrintList(this.listId, this.billCode, this.SerialNumsList).toPromise()
       .then(data => {
         this.printList = data;
         setTimeout(() => { this.print(); }, 1000);
-        setTimeout(() => { this.printList = null }, 1200)
       })
       .catch(err => { this.alerter.error(err) });
   }
@@ -216,15 +216,16 @@ export class MaintainReturnComponent implements OnInit {
       this.numberPrintList.sort((a, b) => {
         return a.value - b.value
       });
+      this.printList = null;
       this.dialogService.confirm({
         type: "question",
         text: '已生成维修退料单，是否需要打印？'
       },() => {
+        
         this.service.getPrintList(this.listId, this.billCode, num).toPromise()
           .then(data => {
             this.printList = data;
             setTimeout(() => { this.print(); }, 1000);
-            setTimeout(() => { this.printList = null }, 1200)
           })
           .catch(err => { this.alerter.error(err); this.generat = false })
       })

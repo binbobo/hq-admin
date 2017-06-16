@@ -186,6 +186,7 @@ export class DistributeComponent implements OnInit {
     let el = event.target as HTMLButtonElement;
     // el.disabled = true;
     let postData = JSON.stringify(this.billData);
+    this.printList = null;
     this.service.postBill(postData).then((result) => {
       this.suspendBill.refresh();
       this.generat = false;
@@ -193,7 +194,6 @@ export class DistributeComponent implements OnInit {
         type: "question",
         text: '已生成维修领料单，是否需要打印？'
       }, () => {
-        this.printList = null;
         this.service.getPrintList(this.listId, this.billCode, result.data[0].serialNum).toPromise()
           .then(data => {
             this.printList = data;
