@@ -12,8 +12,15 @@ export class TotalValueService implements PagedService<TotalValue> {
       .catch(err => Promise.reject(`获取产值汇总信息失败：${err}`));
   }
 
-  getStationTreeView(): Promise<Array<any>> {
-    const url = Urls.chain.concat('/Organizations');
+  getNatureList() {
+    let url = Urls.chain.concat('/DictValues/GetOrgNature');
+    return this.httpService.getList<any>(url)
+      .catch(err => Promise.reject(`获取门店性质列表失败：${err}`));
+  }
+
+  getStationTreeView(nature?: string): Promise<Array<any>> {
+    nature = nature || '';
+    const url = Urls.chain.concat('/Organizations/Nature?nature=', nature);
     return this.httpService.getObject(url)
       .then(data => [data])
       .catch(err => Promise.reject(`获取门店列表失败：${err}`));

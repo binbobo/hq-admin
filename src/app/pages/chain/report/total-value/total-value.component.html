@@ -7,11 +7,18 @@
     <form class="form-inline mb-2" (ngSubmit)="onLoadList()">
       <div class="input-group my-1 mr-1">
         <label class="input-group-addon">日期</label>
-        <input class="form-control" [(ngModel)]="params.startTimeDate" [max-date]="params.endTimeDate" name="startTimeDate" id="startTimeDate" date-only="true"
-          ngui-datetime-picker/>
+        <input class="form-control" [(ngModel)]="params.startTimeDate" [max-date]="params.endTimeDate" name="startTimeDate" id="startTimeDate"
+          date-only="true" ngui-datetime-picker/>
         <label class="input-group-addon">-</label>
-        <input class="form-control" [(ngModel)]="params.endTimeDate" [min-date]="params.startTimeDate" name="endTimeDate" id="endTimeDate" date-only="true"
-          ngui-datetime-picker/>
+        <input class="form-control" [(ngModel)]="params.endTimeDate" [min-date]="params.startTimeDate" name="endTimeDate" id="endTimeDate"
+          date-only="true" ngui-datetime-picker/>
+      </div>
+      <div class="input-group m-1">
+        <label class="input-group-addon">门店性质</label>
+        <select (change)="onNatureChange($event)" class="form-control">
+          <option value="">全部性质</option>
+          <option *ngFor="let item of natures" [value]="item.id">{{item.value}}</option>
+        </select>
       </div>
       <div class="input-group m-1" *ngIf="stations?.length&&stations[0]?.children?.length">
         <label class="input-group-addon">门店</label>

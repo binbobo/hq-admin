@@ -9,8 +9,7 @@ import { TreeItem, SelectedTreeItem } from '../tree-item';
     style: 'display:block;padding-left:20px;'
   }
 })
-export class TreeComponent implements OnInit {
-
+export class TreeComponent implements OnInit, OnChanges {
   @Input()
   public parent: TreeItem;
   @Input()
@@ -40,6 +39,12 @@ export class TreeComponent implements OnInit {
     if (!this.parent) {
       this.total = this.init(this.items);
       this.emitChange();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if ('items' in changes) {
+      this.ngOnInit();
     }
   }
 
