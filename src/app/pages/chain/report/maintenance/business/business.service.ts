@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpService, Urls } from "app/shared/services";
 import { BasicService, PagedParams, PagedResult, ApiResult } from "app/shared/models";
 import { Observable } from "rxjs/Observable";
-import { TreeviewItem } from "ngx-treeview/lib";
+import { TreeviewItem } from "ngx-treeview";
 import * as moment from 'moment';
 
 @Injectable()

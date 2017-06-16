@@ -1,6 +1,6 @@
 import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { DistributeService, DistributeRequest } from './distribute.service'
-import { TreeviewItem, TreeviewConfig } from "ngx-treeview/lib";
+import { TreeviewItem, TreeviewConfig } from "ngx-treeview";
 import { DataList } from "app/shared/models";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { PrintDirective, TypeaheadRequestParams } from "app/shared/directives";

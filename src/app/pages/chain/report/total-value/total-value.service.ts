@@ -59,6 +59,8 @@ export class TotalValueSearchParams extends PagedParams {
   }
 
   serialize() {
-    return super.serialize({ endTimeDate: this.endTimeDate + 'T23:59:59.999' });
+    return super.serialize({
+      endTimeDate: this.endTimeDate && this.endTimeDate + 'T23:59:59.999',
+    });
   }
 }

@@ -5,7 +5,7 @@ import { BsDropdownModule, TypeaheadModule, AlertModule, PopoverModule, TabsModu
 import { ChainSharedModule } from "app/pages/chain/chain-shared/chain-shared.module";
 import { NguiDatetimePickerModule } from "@ngui/datetime-picker/dist";
 import { CustomFormsModule } from "ng2-validation/dist";
-import { TreeviewModule } from "ngx-treeview/lib";
+import { TreeviewModule } from "ngx-treeview";
 import { StatisticsRoutingModule } from "./statistics.routing";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 

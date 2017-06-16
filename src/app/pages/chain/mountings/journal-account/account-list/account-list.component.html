@@ -12,7 +12,7 @@
           <input [(ngModel)]="params.createStartTime" [max-date]="params.createEndTime" name="createStartTime" ngui-datetime-picker
             date-only="true" class="form-control" placeholder="选择开始日期">
           <label class="input-group-addon">-</label>
-          <input [(ngModel)]="params.createEndTime" [max-date]="params.createStartTime" name="createEndTime" ngui-datetime-picker date-only="true"
+          <input [(ngModel)]="params.createEndTime" [min-date]="params.createStartTime" name="createEndTime" ngui-datetime-picker date-only="true"
             class="form-control" placeholder="选择截止日期">
         </div>
         <div class="form-group mb-2">

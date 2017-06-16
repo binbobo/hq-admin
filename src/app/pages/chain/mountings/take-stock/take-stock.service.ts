@@ -46,7 +46,13 @@ export class StockListRequest extends PagedParams {
     public createTimeStart?: string,
     public createTimeEnd?: string,
     public operator?: string
-  ) { super('StockListRequest'); }
+  ) { super(); }
+
+  serialize() {
+    return super.serialize({
+      createTimeEnd: this.createTimeEnd && this.createTimeEnd + 'T23:59:59.999'
+    });
+  }
 }
 
 export class Stock {
