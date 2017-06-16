@@ -80,44 +80,48 @@
     <hq-pagination [(itemsPerPage)]="size" [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
     <div class="table-container">
       <table class="table table-bordered text-center">
-        <tr>
-          <th>合计</th>
-          <th>期初金额</th>
-          <th>期末金额</th>
-          <th>入库金额</th>
-          <th>出库成本<br>金额</th>
-          <th>出库销售<br>金额</th>
-          <th>采购入库<br>成本金额</th>
-          <th>维修领料<br>成本金额</th>
-          <th>维修领料<br>销售金额</th>
-          <th>配件销售<br>成本金额</th>
-          <th>配件销售<br>销售金额</th>
-          <th>内部领料<br>成本金额</th>
-          <th>内部领料<br>销售金额</th>
-          <!--<th>其他入库<br>成本金额</th>
+        <thead>
+          <tr>
+            <th>合计</th>
+            <th>期初金额</th>
+            <th>期末金额</th>
+            <th>入库金额</th>
+            <th>出库成本<br>金额</th>
+            <th>出库销售<br>金额</th>
+            <th>采购入库<br>成本金额</th>
+            <th>维修领料<br>成本金额</th>
+            <th>维修领料<br>销售金额</th>
+            <th>配件销售<br>成本金额</th>
+            <th>配件销售<br>销售金额</th>
+            <th>内部领料<br>成本金额</th>
+            <th>内部领料<br>销售金额</th>
+            <!--<th>其他入库<br>成本金额</th>
           <th>其他入库<br>销售金额</th>
           <th>其他出库<br>成本金额</th>
           <th>其他出库<br>销售金额</th>-->
-        </tr>
-        <tr *ngFor="let item of list" class="text-right">
-          <td></td>
-          <td>{{item.beginAmount |centToYuan}}</td>
-          <td>{{item.endAmount |centToYuan}}</td>
-          <td>{{item.inAmount|centToYuan }}</td>
-          <td>{{item.outCostAmount |centToYuan}}</td>
-          <td>{{item.outSaleAmount|centToYuan }}</td>
-          <td>{{item.purCostAmount |centToYuan}}</td>
-          <td>{{item.mainCostAmount|centToYuan}}</td>
-          <td>{{item.mainSaleAmount|centToYuan }}</td>
-          <td>{{item.saleCostAmount|centToYuan }}</td>
-          <td>{{item.saleAmount|centToYuan}}</td>
-          <td>{{item.useCostAmount|centToYuan }}</td>
-          <td>{{item.useSaleAmount |centToYuan}}</td>
-          <!--<td>{{item.otherInCostAmount|centToYuan }}</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of list" class="text-right">
+            <td></td>
+            <td>{{item.beginAmount |centToYuan}}</td>
+            <td>{{item.endAmount |centToYuan}}</td>
+            <td>{{item.inAmount|centToYuan }}</td>
+            <td>{{item.outCostAmount |centToYuan}}</td>
+            <td>{{item.outSaleAmount|centToYuan }}</td>
+            <td>{{item.purCostAmount |centToYuan}}</td>
+            <td>{{item.mainCostAmount|centToYuan}}</td>
+            <td>{{item.mainSaleAmount|centToYuan }}</td>
+            <td>{{item.saleCostAmount|centToYuan }}</td>
+            <td>{{item.saleAmount|centToYuan}}</td>
+            <td>{{item.useCostAmount|centToYuan }}</td>
+            <td>{{item.useSaleAmount |centToYuan}}</td>
+            <!--<td>{{item.otherInCostAmount|centToYuan }}</td>
           <td>{{item.otherInSaleAmount |centToYuan}}</td>
           <td>{{item.otherOutCostAmount|centToYuan}}</td>
           <td>{{item.otherOutSaleAmount|centToYuan}}</td>-->
-        </tr>
+          </tr>
+        </tbody>
       </table>
     </div>
     <hr>
