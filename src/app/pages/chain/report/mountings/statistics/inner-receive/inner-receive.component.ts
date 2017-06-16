@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Injector, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { PrintDirective } from "app/shared/directives";
+import { PrintDirective, HqModalDirective } from "app/shared/directives";
 import { ReceiveService, ReceiveRequest } from "./receive.service"
 import { DataList, SelectOption } from "app/shared/models";
 import { TreeviewItem, TreeviewConfig } from "ngx-treeview";
@@ -24,7 +24,10 @@ export class InnerReceiveComponent extends DataList<any> {
   private departments: Array<SelectOption>;
   private stations: Array<any>;
   private orgShow = false;
-  private orgNameShow=false;
+  private orgNameShow = false;
+  @ViewChild('bdModal')
+  private bdModal: HqModalDirective;
+
   constructor(
     injector: Injector,
     protected service: ReceiveService,
@@ -92,15 +95,16 @@ export class InnerReceiveComponent extends DataList<any> {
   //打印
   print() {
     this.printer.print();
+    this.bdModal.hide();
   }
 
   //模态框
-  alert(ev, id, el, billCode, takeUserName, takeDepartmentName, createBillTime, operator,isOut) {
+  alert(ev, id, el, billCode, takeUserName, takeDepartmentName, createBillTime, operator, isOut) {
     ev.hqSpinner = true;
     this.service.get(`${id}&isOut=${isOut}`).then(data => {
       this.isLoading = true;
       console.log('详情数据detail', data)
-      this.detail = data[0]||{};
+      this.detail = data[0] || {};
       this.detail.billCode = billCode;
       this.detail.takeUserName = takeUserName;
       this.detail.takeDepartmentName = takeDepartmentName;
@@ -129,10 +133,10 @@ export class InnerReceiveComponent extends DataList<any> {
     Object.assign(this.params, this.receiveForm.value);
     this.params.searchEnd = this.receiveForm.get('searchEnd').value && this.receiveForm.get('searchEnd').value + 'T23:59:59.999';
     console.log('params', this.params);
-    this.orgNameShow=false;
+    this.orgNameShow = false;
     this.onLoadList();
-    if(this.params.orgIds&&this.params.orgIds.length>1){
-      this.orgNameShow=true;
+    if (this.params.orgIds && this.params.orgIds.length > 1) {
+      this.orgNameShow = true;
     }
   }
 

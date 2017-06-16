@@ -11,6 +11,7 @@ export class TotalValueComponent extends DataList<TotalValue> implements OnInit 
 
   params: TotalValueSearchParams = new TotalValueSearchParams();
   private stations: Array<any>;
+  private natures: Array<any>;
   private selectedStations: Array<any> = [];
 
   constructor(
@@ -21,10 +22,22 @@ export class TotalValueComponent extends DataList<TotalValue> implements OnInit 
   }
 
   ngOnInit() {
-    this.totalValueService.getStationTreeView()
+    this.totalValueService.getNatureList()
+      .then(data => this.natures = data)
+      .catch(err => this.alerter.warn(err));
+    super.ngOnInit();
+    this.loadStations();
+  }
+
+  loadStations(nature?: string) {
+    this.totalValueService.getStationTreeView(nature)
       .then(data => this.stations = data)
       .catch(err => this.alerter.error(err));
-    super.ngOnInit();
+  }
+
+  onNatureChange(event: Event) {
+    let el = event.target as HTMLSelectElement;
+    this.loadStations(el.value);
   }
 
   onStationSelect(event) {

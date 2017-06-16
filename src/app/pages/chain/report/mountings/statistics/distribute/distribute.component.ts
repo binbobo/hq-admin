@@ -3,7 +3,7 @@ import { DistributeService, DistributeRequest } from './distribute.service'
 import { TreeviewItem, TreeviewConfig } from "ngx-treeview";
 import { DataList } from "app/shared/models";
 import { FormGroup, FormBuilder } from "@angular/forms";
-import { PrintDirective, TypeaheadRequestParams } from "app/shared/directives";
+import { PrintDirective, TypeaheadRequestParams, HqModalDirective } from "app/shared/directives";
 import { CentToYuanPipe, DurationHumanizePipe } from "app/shared/pipes";
 import * as moment from 'moment';
 import { TotalValueService } from "app/pages/chain/report/total-value/total-value.service";
@@ -23,6 +23,9 @@ export class DistributeComponent extends DataList<any> {
   private stations: Array<any>;
   private orgShow = false;
   private orgNameShow = false;
+  @ViewChild('bdModal')
+  private bdModal: HqModalDirective;
+
   constructor(
     protected service: DistributeService,
     injector: Injector,
@@ -43,12 +46,12 @@ export class DistributeComponent extends DataList<any> {
   }
 
   //详情模态框
-  alert(ev, id, bdModule, billCode,isOut) {
+  alert(ev, id, bdModule, billCode, isOut) {
     ev.hqSpinner = true;
     this.service.get(`${id}&isOut=${isOut}`).then(data => {
-    console.log('详情数据', data);
+      console.log('详情数据', data);
       this.isLoading = true;
-      this.detail = data[0]||{};
+      this.detail = data[0] || {};
       this.detail.billCode = billCode;
       this.detailItemsLength = data.length;
       this.detailItems = data;
@@ -76,6 +79,7 @@ export class DistributeComponent extends DataList<any> {
   //打印
   print() {
     this.printer.print();
+    this.bdModal.hide();
   }
   //导出
   onExport() {
@@ -88,10 +92,10 @@ export class DistributeComponent extends DataList<any> {
   onSearch() {
     Object.assign(this.params, this.distributeForm.value)
     this.params.searchEnd = this.distributeForm.get('searchEnd').value && this.distributeForm.get('searchEnd').value + 'T23:59:59.999';
-    this.orgNameShow=false;
+    this.orgNameShow = false;
     this.onLoadList();
-    if(this.params.orgIds&&this.params.orgIds.length>1){
-      this.orgNameShow=true;
+    if (this.params.orgIds && this.params.orgIds.length > 1) {
+      this.orgNameShow = true;
     }
   }
 
