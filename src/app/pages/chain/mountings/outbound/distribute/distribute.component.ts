@@ -280,7 +280,6 @@ export class DistributeComponent implements OnInit {
     this.service.getPrintList(this.listId, this.billCode, this.SerialNumsList).toPromise()
       .then(data => {
         this.printList = data;
-        console.log(this.printList)
         setTimeout(() => { this.print(); }, 1000);
       })
       .catch(err => { this.alerter.error(err, true, 2000) });

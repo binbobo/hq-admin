@@ -3,6 +3,7 @@ hq-payment-show .popover-content{
 }
 hq-payment-show .popover{
     padding:0 !important;
+    z-index: 1;
 }
 hq-payment-show .trigger-btn{
     padding:0 !important;

@@ -1,6 +1,6 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
-  <form *ngIf="form" class="card-block row" [formGroup]="form" (ngSubmit)="onSubmit($event)">
+  <form *ngIf="form" class="card-block row" [formGroup]="form">
     <div class="col-6">
       <div class="form-group">
         <label class="form-control-label">维修项目</label>
@@ -68,7 +68,7 @@
       </div>
     </div>
     <div class="col-12">
-      <button type="submit" [disabled]="submitting" class="btn btn-primary mr-3">提交</button>
+      <button type="submit" [disabled]="submitting" (click)="onSubmit($event)" class="btn btn-primary mr-3">提交</button>
     </div>
   </form>
 </div>
