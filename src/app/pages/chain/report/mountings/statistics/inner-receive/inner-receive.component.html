@@ -48,16 +48,18 @@
             <th>操作人</th>
           </tr>
         </thead>
-        <tr *ngFor="let item of list">
-          <td><button [hqSpinner]="item.hqSpinner" class="btn btn-info btn-sm" (click)="alert(item,item.id,bdModal,item.billCode,item.takeUserName,item.takeDepartmentName,item.createBillTime,item.operator,item.isOut)">详情</button></td>
-          <td *ngIf="orgNameShow" class="text-left">{{item.orgName}}</td>
-          <td>{{item.billCode}}</td>
-          <td class="text-left">{{item.takeUserName }}</td>
-          <td class="text-left">{{item.takeDepartmentName }}</td>
-          <td class="text-right">{{item.amount|centToYuan }}</td>
-          <td>{{item.createBillTime |sDatetime}}</td>
-          <td class="text-left">{{item.operator}}</td>
-        </tr>
+        <tbody>
+          <tr *ngFor="let item of list">
+            <td><button [hqSpinner]="item.hqSpinner" class="btn btn-info btn-sm" (click)="alert(item,item.id,bdModal,item.billCode,item.takeUserName,item.takeDepartmentName,item.createBillTime,item.operator,item.isOut)">详情</button></td>
+            <td *ngIf="orgNameShow" class="text-left">{{item.orgName}}</td>
+            <td>{{item.billCode}}</td>
+            <td class="text-left">{{item.takeUserName }}</td>
+            <td class="text-left">{{item.takeDepartmentName }}</td>
+            <td class="text-right">{{item.amount|centToYuan }}</td>
+            <td>{{item.createBillTime |sDatetime}}</td>
+            <td class="text-left">{{item.operator}}</td>
+          </tr>
+        </tbody>
       </table>
     </div>
     <hq-pagination [(itemsPerPage)]="size" [loading]="loading" [totalItems]="total" [(currentPage)]="index" (pageChanged)="onPageChanged($event)"></hq-pagination>
@@ -105,20 +107,22 @@
           <th>金额（元）</th>
         </tr>
       </thead>
-      <tr class="text-center" *ngFor="let item of detailItems">
-        <td>{{item.productCode }}</td>
-        <td class="text-left">{{item.locationName || '无'}}</td>
-        <td class="text-left">{{item.productName }}</td>
-        <td class="text-left">{{item.brandName}}</td>
-        <td class="text-left">{{item.specification }}</td>
-        <td>{{item.unit ||'个'}}</td>
-        <td class="text-left">{{item.storeName }}</td>
-        <td class="text-left">{{item.locationName }}</td>
-        <td>{{item.existCount }}</td>
-        <td class="text-right">{{item.price |centToYuan}}</td>
-        <td>{{item.count }}</td>
-        <td class="text-right">{{item.amount |centToYuan }}</td>
-      </tr>
+      <tbody>
+        <tr class="text-center" *ngFor="let item of detailItems">
+          <td>{{item.productCode }}</td>
+          <td class="text-left">{{item.locationName || '无'}}</td>
+          <td class="text-left">{{item.productName }}</td>
+          <td class="text-left">{{item.brandName}}</td>
+          <td class="text-left">{{item.specification }}</td>
+          <td>{{item.unit ||'个'}}</td>
+          <td class="text-left">{{item.storeName }}</td>
+          <td class="text-left">{{item.locationName }}</td>
+          <td>{{item.existCount }}</td>
+          <td class="text-right">{{item.price |centToYuan}}</td>
+          <td>{{item.count }}</td>
+          <td class="text-right">{{item.amount |centToYuan }}</td>
+        </tr>
+      </tbody>
     </table>
   </div>
   <p *ngIf="!!!detailItemsLength">暂无数据</p>
