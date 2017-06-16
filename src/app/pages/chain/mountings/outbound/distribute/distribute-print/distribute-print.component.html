@@ -1,16 +1,15 @@
-<p style="clear:both;"></p>
-<div *ngFor="let item of data"> 
+<div *ngFor="let item of data">
   <div class="my-3">
     <!--<span class="print-label">门店名称</span>：{{organizationInfo?.name}} <br>-->
     <span class="print-label">领料单号：</span>{{item.billCode}} <span class="mr-3"></span><span class="print-label">流水号：</span>{{item.serialNum}}
     <span class="mr-3"></span><span class="print-label">车牌号：</span>{{item.plateNo}}
     <span class="mr-3"></span><span class="print-label">开单时间：</span>{{item.createBillDateTime|sDatetime}}
-  </div> 
+  </div>
   <table class="bound-table">
     <thead>
       <tr>
         <th>维修项目</th>
-        <th>配件编码</th> 
+        <th>配件编码</th>
         <th>配件类型</th>
         <th>配件名称</th>
         <th>品牌</th>
