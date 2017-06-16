@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { PrintDirective } from "app/shared/directives";
+import { PrintDirective, HqModalDirective } from "app/shared/directives";
 import { PartssalesService, PartssalesRequest } from "./partssales.service"
 import { DataList } from "app/shared/models";
 import { TreeviewItem, TreeviewConfig } from "ngx-treeview";
@@ -22,6 +22,9 @@ export class PartssalesComponent extends DataList<any> {
   private stations: Array<any>;
   private orgShow = false;
   private orgNameShow = false;
+  @ViewChild('bdModal')
+  private bdModal: HqModalDirective;
+
   constructor(
     injector: Injector,
     protected service: PartssalesService,
@@ -48,10 +51,11 @@ export class PartssalesComponent extends DataList<any> {
   //打印
   print() {
     this.printer.print();
+    this.bdModal.hide();
   }
 
   //模态框
-  alert(ev, id, el, billCode, customerName, operator, isOut) {
+  alert(ev, id, el, billCode, customerName, operator, isOut, createTime) {
     ev.hqSpinner = true;
     console.log('详情数据1', this.detail, billCode)
     this.service.get(`${id}&isOut=${isOut}`).then(data => {
@@ -60,6 +64,7 @@ export class PartssalesComponent extends DataList<any> {
       this.detail.billCode = billCode;
       this.detail.customerName = customerName;
       this.detail.operator = operator;
+      this.detail.createBillTime = createTime;
       this.detailItemsLength = data.length;
       this.detailItems = data;
 

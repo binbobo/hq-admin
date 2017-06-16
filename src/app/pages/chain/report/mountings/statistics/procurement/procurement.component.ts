@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { PrintDirective } from "app/shared/directives";
+import { PrintDirective, HqModalDirective } from "app/shared/directives";
 import { ProcurementService, ProcurementRequest } from "./procurement.service"
 import { DataList } from "app/shared/models";
 import { TreeviewItem, TreeviewConfig } from "ngx-treeview";
@@ -23,6 +23,8 @@ export class ProcurementComponent extends DataList<any> {
   private stations: Array<any>;
   private orgShow = false;
   private orgNameShow = false;
+  @ViewChild('bdModal')
+  private bdModal: HqModalDirective;
 
   constructor(
     injector: Injector,
@@ -50,6 +52,7 @@ export class ProcurementComponent extends DataList<any> {
   //打印
   print() {
     this.printer.print();
+    this.bdModal.hide();
   }
 
   //模态框
