@@ -89,7 +89,7 @@
           </thead>
           <tbody *ngFor="let item of serialData">
             <tr *ngFor="let ele of item.list">
-              <td><button class="btn btn-sm btn-primary" [disabled]="!(item.isable)" (click)="OnCreatBound(ele,item,item.id)">退料</button></td>
+              <td><button class="btn btn-sm btn-primary" [disabled]="!(item.isable)" (click)="OnCreatBound(ele,item)">退料</button></td>
               <td>{{item.serialNum}}</td>
               <td>{{ele.serviceName}}</td>
               <td>{{ele.productCode}}</td>
