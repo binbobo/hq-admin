@@ -1,4 +1,4 @@
-import { Directive, OnInit, Input, ElementRef, ViewContainerRef, ComponentFactoryResolver, ComponentRef, TemplateRef, Injector, Renderer, Output, EventEmitter } from '@angular/core';
+import { Directive, OnInit, Input, ElementRef, ViewContainerRef, ComponentFactoryResolver, ComponentRef, TemplateRef, Injector, Renderer, EventEmitter, Output } from '@angular/core';
 import { HqModalComponent } from './hq-modal/hq-modal.component';
 import { element } from 'protractor';
 import { ModalDirective } from 'ngx-bootstrap';
