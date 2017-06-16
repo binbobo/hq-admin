@@ -98,7 +98,7 @@
               <td>{{ele.brandName}}</td>
               <td>{{ele.productSpecification}}</td>
               <td>{{ele.productUnit}}</td>
-              <td [hqVehicleShow]="ele.vehicleInfoList"></td>
+              <td style="position:relative;overflow:visible;"><span style="display:inline-block;" [hqVehicleShow]="ele?.vehicleInfoList"></span></td>
               <td>{{ele.storeName}}</td>
               <td>{{ele.locationName}}</td>
               <td>{{ele.count}}</td>
@@ -149,7 +149,7 @@
               <td>{{ele.brandName}}</td>
               <td>{{ele.productSpecification}}</td>
               <td>{{ele.productUnit}}</td>
-              <td [hqVehicleShow]="ele.vehicleInfoList"></td>
+              <td style="position:relative;overflow:visible;"><span style="display:inline-block;" [hqVehicleShow]="ele?.vehicleInfoList"></span></td>
               <td>{{ele.storeName}}</td>
               <td>{{ele.locationName}}</td>
               <td>{{ele.count}}</td>
@@ -196,7 +196,7 @@
               <td>{{ele.brandName}}</td>
               <td>{{ele.productSpecification?ele.productSpecification:ele.specifications}}</td>
               <td>{{ele.productUnit}}</td>
-              <td [hqVehicleShow]="ele.vehicleInfoList"></td>
+              <td style="position:relative;overflow:visible;"><span style="display:inline-block;" [hqVehicleShow]="ele?.vehicleInfoList"></span></td>
               <td>{{ele.storeName?ele.storeName:ele.storeHouse}}</td>
               <td>{{ele.locationName}}</td>
               <td>{{ele.count}}</td>
