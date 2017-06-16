@@ -54,7 +54,7 @@ export class ReturnListComponent extends DataList<any> {
   ) {
     super(injector, innerReturnService);
     this.params = new BillCodeSearchRequest();
-    this.size = 5;
+    // this.size = 5;
   }
 
   ngOnInit() {
@@ -67,6 +67,7 @@ export class ReturnListComponent extends DataList<any> {
           this.takeDepartId = this.departments.departList.length && this.departments.departList[0].id;
       })
       .catch(err => this.alerter.error(err));
+    this.params.pageSize = 5;
     this.lazyLoad = true;
     super.ngOnInit();
   }
