@@ -13,7 +13,7 @@ export class HeaderFixedDirective implements OnInit, OnDestroy {
 
   private fix() {
     if (!this.fixed) {
-      this.thead.style.zIndex = "1";
+      this.thead.style.zIndex = "2";
       let copy = this.thead.cloneNode(true) as HTMLElement;
       copy.classList.add('copy');
       this.thead.insertAdjacentElement('beforebegin', copy);
