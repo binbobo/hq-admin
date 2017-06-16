@@ -28,15 +28,14 @@ h1::first-letter,h2::first-letter,h3::first-letter,h4::first-letter,h5::first-le
     font-weight: 200 !important;
     font-size: 14px;
     padding: .35rem;
-    display: inline-block;
 }
 .hq-printing table caption {
     font-weight: normal !important;
     font-size: 16px;
 }
 .print-label {
-    /*font-weight: normal !important;*/
-    font-size: 1.2em;
+    font-weight: normal !important;
+    font-size: 16px;
     text-align:justify;  
     display: inline-block;
 }
