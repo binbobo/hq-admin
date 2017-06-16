@@ -1,7 +1,7 @@
 <ng-template hq-alerter></ng-template>
 <div class="card">
   <div class="card-header">
-    <label>维修发料统计</label>
+    <label>维修领料统计</label>
   </div>
   <div class="card-block">
     <form class="form-inline mb-2" [formGroup]="distributeForm" (ngSubmit)="onSearch()">
@@ -60,7 +60,7 @@
   </div>
 </div>
 <!--详情-->
-<div class="modal fade" hqModal #bdModal="hq-modal" role="dialog" modalTitle="维修发料详情" size="lg">
+<div class="modal fade" hqModal #bdModal="hq-modal" role="dialog" modalTitle="维修领料详情" size="lg">
   <table class="table table-order-info table-bordered">
     <tr>
       <td class="fixed-width">单号：</td>
@@ -118,6 +118,6 @@
     </div>
   </div>
 </div>
-<div hqPrint #printer="hq-print" print-title="维修发料统计">
+<div hqPrint #printer="hq-print" print-title="维修领料统计">
   <hq-distribute-print [hidden]="true" [detail]="detail" [detailItems]="detailItems" [detailItemsLength]="detailItemsLength"></hq-distribute-print>
 </div>
