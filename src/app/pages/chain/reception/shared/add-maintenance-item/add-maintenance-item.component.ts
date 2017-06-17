@@ -84,10 +84,7 @@ export class AddMaintenanceItemComponent implements OnInit {
               return;
             }
             const maintenanceItemFormVal = this.maintenanceItemForm.getRawValue();
-            // 维修项目id
             maintenanceItemFormVal.serviceId = data.id;
-            // 维修项目类型
-            maintenanceItemFormVal.serviceType = data.type;
             this.onConfirm.emit({
               data: maintenanceItemFormVal, // 维修项目数据
               isEdit: this.item ? true : false  // 是否为编辑标志
