@@ -61,7 +61,8 @@ export class TotalValueSearchParams extends PagedParams {
     public orgIds?: Array<string>
   ) {
     super();
-    this.startTimeDate = startTimeDate || moment().subtract(30, 'd').format('YYYY-MM-DD');
+    // this.startTimeDate = startTimeDate || moment().subtract(30, 'd').format('YYYY-MM-DD');
+    this.startTimeDate = startTimeDate || moment().format('YYYY-MM-DD');
     this.endTimeDate = endTimeDate || moment().format('YYYY-MM-DD');
   }
 
