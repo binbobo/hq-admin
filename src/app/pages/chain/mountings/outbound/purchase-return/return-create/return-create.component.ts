@@ -13,6 +13,7 @@ import { Observable } from 'rxjs/Observable';
 export class ReturnCreateComponent extends FormHandle<any> {
 
   protected buildForm(): FormGroup {
+    let maxCount = this.model.count - this.model.returnCount;
     return this.formBuilder.group({
       originalId: [this.model['id']],
       brand: [this.model.brand],
@@ -21,7 +22,7 @@ export class ReturnCreateComponent extends FormHandle<any> {
       productCategory: [this.model.productCategory],
       productId: [this.model.productId, [Validators.required, Validators.maxLength(36)]],
       specification: [this.model.specification],
-      count: [this.model.count, [Validators.required, CustomValidators.digits, CustomValidators.min(1), CustomValidators.max(this.model.count)]],
+      count: [this.model.count, [Validators.required, CustomValidators.digits, CustomValidators.min(1), CustomValidators.max(maxCount)]],
       price: [this.model.price],
       amount: [this.model.amount],
       exTaxPrice: [this.model.exTaxPrice],

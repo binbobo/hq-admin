@@ -17,8 +17,6 @@ export class ReturnListComponent extends DataList<PurchaseReturnItem> implements
   private suspendBill: PurchaseOutBillDirective;
   @ViewChild('createModal')
   private createModal: HqModalDirective;
-  @ViewChild(HqAlerter)
-  protected alerter: HqAlerter;
   @ViewChild('printer')
   public printer: PrintDirective;
   params: GetProductsRequest;
@@ -174,11 +172,13 @@ export class ReturnListComponent extends DataList<PurchaseReturnItem> implements
     })
   }
 
-  getAddedCount(item: PurchaseReturnItem): number {
-    if (!item) return 0;
-    return this.model.list
+  isDisabled(item) {
+    if (!item) return undefined;
+    if (item.returnCount >= item.count) return true;
+    let total = this.model.list
       .filter(m => m.productId === item.productId)
       .map(m => +m.count)
       .reduce((pre, cur) => pre + cur, 0);
+    return total + item.returnCount >= item.count ? true : undefined;
   }
 }
