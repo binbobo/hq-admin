@@ -648,6 +648,8 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
 
     // 清空维修项目数据
     this.newMaintenanceItemData = [];
+    // 清空当前已选择的维修项目
+    this.selectedServices = [];
 
     // 重置费用
     this.fee.workHour = this.fee.discount = this.fee.workHours = this.fee.amount = 0;
