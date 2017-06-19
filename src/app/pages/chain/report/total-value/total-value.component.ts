@@ -1,6 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { DataList } from 'app/shared/models';
 import { TotalValue, TotalValueService, TotalValueSearchParams } from './total-value.service';
+import { OrganizationService, OrganizationInfo } from 'app/pages/organization.service';
 
 @Component({
   selector: 'hq-total-value',
@@ -10,23 +11,32 @@ import { TotalValue, TotalValueService, TotalValueSearchParams } from './total-v
 export class TotalValueComponent extends DataList<TotalValue> implements OnInit {
 
   params: TotalValueSearchParams = new TotalValueSearchParams();
+  private org: OrganizationInfo;
   private stations: Array<any>;
   private natures: Array<any>;
   private selectedStations: Array<any> = [];
 
   constructor(
     injector: Injector,
+    private orgService: OrganizationService,
     private totalValueService: TotalValueService,
   ) {
     super(injector, totalValueService);
   }
 
   ngOnInit() {
+    this.orgService.getOrganization()
+      .then(org => this.org = org)
+      .then(org => org && org.type === 1 && this.loadNatures())
+      .catch(err => console.log(err));
+    super.ngOnInit();
+    this.loadStations();
+  }
+
+  loadNatures() {
     this.totalValueService.getNatureList()
       .then(data => this.natures = data)
       .catch(err => this.alerter.warn(err));
-    super.ngOnInit();
-    this.loadStations();
   }
 
   loadStations(nature?: string) {

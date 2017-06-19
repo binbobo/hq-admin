@@ -56,6 +56,7 @@ export class OrganizationInfo {
     public id: string;
     public name: string;
     public code: string;
+    public type: number;
     public address: string;
     public contactUser: string;
     public contactInfo: string;
