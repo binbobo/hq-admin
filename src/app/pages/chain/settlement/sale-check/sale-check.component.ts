@@ -118,7 +118,7 @@ export class SaleCheckComponent extends DataList<any>  {
       })
       this.payPost = this.payCheckSingle.filter(item => item.amount != 0);
     } else {
-      this.payPost = this.payData.filter(item => item.amount === 0).map(item => {
+      this.payPost = this.payData.filter(item => item.amount === "0").map(item => {
         let paycheck: any = {};
         paycheck.paymentMethod = item.id;
         paycheck.amount = Number(item.amount * 100).toFixed(0);;
