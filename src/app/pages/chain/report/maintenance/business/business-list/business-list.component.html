@@ -100,7 +100,7 @@
   </div>
 </div>
 
-<hq-print-view *ngIf="businessData" class="invisible" hqPrint #printer="hq-print" [businessData]="businessData" print-title="维修历史"></hq-print-view>
+<hq-print-view *ngIf="businessData" [hidden]="true" hqPrint #printer="hq-print" [businessData]="businessData" print-title="维修历史"></hq-print-view>
 
 <!--详情弹框-->
 <div hqModal #bdModal="hq-modal" modalTitle="维修历史" size="lg">
