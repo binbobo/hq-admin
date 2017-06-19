@@ -261,7 +261,7 @@ tabset ul li a, tabset ul li a:hover {
     margin-left:2px;
 }
 .hq-fee .fee-value::before{
-    content: "¥"
+    content: "￥"
 }
 /*弹框关闭按钮样式*/
 .fa-times-circle {
