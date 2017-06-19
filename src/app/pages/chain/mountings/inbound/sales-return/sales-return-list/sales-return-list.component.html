@@ -117,4 +117,4 @@
   <hq-sales-return-create *ngIf="createModel.isShown" [selectSalesData]="selectSalesData" (formSubmit)="onCreate($event)"></hq-sales-return-create>
 </div>
 
-<hq-sales-return-print class="invisible" hqPrint #printer="hq-print" [model]="printModel" print-title="销售退库单"></hq-sales-return-print>
+<hq-sales-return-print [hidden]="true" hqPrint #printer="hq-print" [model]="printModel" print-title="销售退库单"></hq-sales-return-print>

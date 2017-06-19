@@ -83,4 +83,4 @@
   <hq-sales-create *ngIf="createModal.isShown" (onSubmit)="onCreated($event)"></hq-sales-create>
 </div>
 
-<hq-sales-print class="invisible" hqPrint #printer="hq-print" print-title="销售出库单" [model]="printModel"></hq-sales-print>
+<hq-sales-print [hidden]="true" hqPrint #printer="hq-print" print-title="销售出库单" [model]="printModel"></hq-sales-print>

@@ -121,4 +121,4 @@
   <hq-return-create *ngIf="createModel.isShown" [selectReturnData]="selectReturnData" (formSubmit)="onCreate($event)"></hq-return-create>
 </div>
 
-<hq-return-print class="invisible" hqPrint #printer="hq-print" [model]="printModel" print-title="内部退料单"></hq-return-print>
+<hq-return-print [hidden]="true" hqPrint #printer="hq-print" [model]="printModel" print-title="内部退料单"></hq-return-print>

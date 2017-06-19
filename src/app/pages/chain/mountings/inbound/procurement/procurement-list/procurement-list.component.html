@@ -86,4 +86,4 @@
   <hq-procurement-edit *ngIf="editModal.isShown" [model]="selectedModel" (onSubmit)="onUpdated($event)"></hq-procurement-edit>
 </div>
 
-<hq-procurement-print class="invisible" hqPrint #printer="hq-print" print-title="采购入库单" [model]="printModel"></hq-procurement-print>
+<hq-procurement-print [hidden]="true" hqPrint #printer="hq-print" print-title="采购入库单" [model]="printModel"></hq-procurement-print>
