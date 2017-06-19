@@ -76,8 +76,8 @@ export class AddMaintenanceItemComponent implements OnInit {
       if (index > -1) {
         this.dialogService.alert('当前输入的维修项目已经添加过了, 如需修改, 请去列表页面编辑');
       } else {
-        // 新增维修项目s
-        this.service.createMaintenanceItem({ name: this.maintenanceItemForm.value.serviceName })
+        // 新增维修项目
+        this.service.createMaintenanceItem({ name: this.maintenanceItemForm.value.serviceName, type: this.maintenanceItemForm.value.serviceType })
           .then(data => {
             if (!data || !data.id) {
               this.alerter.error('新增维修项目失败，返回的数据为空', true, 3000);
