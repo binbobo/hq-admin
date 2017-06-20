@@ -35,7 +35,7 @@
     "ngx-bootstrap": "^1.7.1",
     "ngx-pipes": "^1.6.1",
     "ngx-treeview": "^1.0.5",
-    "ngx-uploader": "^3.0.6",
+    "ngx-uploader": "^3.1.1",
     "rxjs": "^5.4.1",
     "sweetalert2": "^6.6.5",
     "text-mask-addons": "^3.6.0",
