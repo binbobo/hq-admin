@@ -336,7 +336,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
       });
       this.selectedItem = null;
     }
-    if(addModal)
+    if (addModal)
       addModal.hide();
   }
 
@@ -666,6 +666,7 @@ export class CreateOrderComponent extends DataList<Order> implements OnInit {
     this.newWorkOrderData = null;
     // 品牌车系车型是否选择
     this.isBrandSelected = this.isSeriesSelected = this.isVehicleSelected = false;
+    this.enableCreateWorkSheet = false;
   }
 
   print() {

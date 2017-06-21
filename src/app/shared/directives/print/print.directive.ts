@@ -9,8 +9,15 @@ declare var jQuery: any;
   exportAs: 'hq-print',
 })
 export class PrintDirective implements OnInit {
-  ngOnInit(): void {
 
+  private printing: boolean;
+  private loaded: boolean;
+
+  ngOnInit(): void {
+    this.loaded = true;
+    if (this.printing) {
+      this.print();
+    }
   }
 
   @Input('print-title')
@@ -23,26 +30,28 @@ export class PrintDirective implements OnInit {
   ) { }
 
   public print() {
+    if (!this.loaded) {
+      this.printing = true;
+      return false;
+    }
+    let el = this.el.nativeElement as HTMLElement;
+    let copy = el.cloneNode(true) as HTMLElement;
+    copy.classList.add('hq-visible');
+    copy.style.display = 'contents';
+    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(PrintComponent);
+    let componentRef = this.viewContainerRef.createComponent(componentFactory);
+    let hiddenItems = copy.querySelectorAll('.print-visible');
+    Array.from(hiddenItems).forEach(dom => dom.classList.remove('print-visible'));
+    componentRef.instance.html = copy.outerHTML;
+    componentRef.instance.title = this.title;
+    this.hideOthers();
+    document.body.insertAdjacentElement('afterbegin', componentRef.location.nativeElement);
     setTimeout(() => {
-      let el = this.el.nativeElement as HTMLElement;
-      let copy = el.cloneNode(true) as HTMLElement;
-      copy.classList.add('hq-visible');
-      copy.style.display = 'contents';
-      let componentFactory = this.componentFactoryResolver.resolveComponentFactory(PrintComponent);
-      let componentRef = this.viewContainerRef.createComponent(componentFactory);
-      let hiddenItems = copy.querySelectorAll('.print-visible');
-      Array.from(hiddenItems).forEach(dom => dom.classList.remove('print-visible'));
-      componentRef.instance.html = copy.outerHTML;
-      componentRef.instance.title = this.title;
-      this.hideOthers();
-      document.body.insertAdjacentElement('afterbegin', componentRef.location.nativeElement);
-      setTimeout(() => {
-        window.print();
-        this.showOthers();
-        componentRef.location.nativeElement.remove();
-        copy = null;
-      }, 100);
-    }, 300);
+      window.print();
+      this.showOthers();
+      componentRef.location.nativeElement.remove();
+      copy = null;
+    }, 100);
   }
 
   private hideOthers() {

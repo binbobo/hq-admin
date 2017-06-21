@@ -22,7 +22,7 @@ export class SpinnerDirective implements OnChanges, OnInit {
 
   private init() {
     if (this.el instanceof HTMLButtonElement) {
-      this.el.disabled = true;
+      this.el.classList.add('disabled');
     }
     this.spinner.classList.remove('d-none');
   }
@@ -41,7 +41,7 @@ export class SpinnerDirective implements OnChanges, OnInit {
 
   private clear() {
     if (this.el instanceof HTMLButtonElement) {
-      this.el.disabled = false;
+      this.el.classList.remove('disabled');
     }
     this.spinner.classList.add('d-none');
   }
