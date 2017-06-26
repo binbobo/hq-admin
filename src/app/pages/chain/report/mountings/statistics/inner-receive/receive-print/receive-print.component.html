@@ -53,7 +53,7 @@
         <td>{{item.existCount}}</td>
         <td class="text-right">{{item.price |centToYuan }}</td>
         <td>{{item.count>0?item.count:item.count*-1 }}</td>
-        <td class="text-right">{{item.amount>0?item.amount:item.amount*-1 |centToYuan }}</td>
+        <td class="text-right">{{(item.amount>0?item.amount:item.amount*-1) |centToYuan }}</td>
       </tr>
       </tbody>
     </table>
