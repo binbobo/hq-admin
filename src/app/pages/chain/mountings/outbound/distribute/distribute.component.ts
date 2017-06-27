@@ -245,7 +245,7 @@ export class DistributeComponent implements OnInit {
     } else {
       this.newMainData.push(evt);
     }
-    if (evt.isclose) {
+    if (!evt.isclose) {
       this.createModal.hide();
     }
   }

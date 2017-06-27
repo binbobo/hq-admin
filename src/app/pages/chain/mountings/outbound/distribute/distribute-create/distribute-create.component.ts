@@ -95,9 +95,9 @@ export class DistributeCreateComponent implements OnInit {
 
   }
 
-  public onSubmit(event: Event,isclose) {
+  public onSubmit(event: Event) {
     this.form.value["createUserName"] = this.model["createUserName"];
-    this.form.value["isclose"]=isclose;
+    this.form.value["isclose"] = !event;
     let invalid = this.controls
       .map(c => c.validate())
       .some(m => !m);

@@ -1,5 +1,5 @@
 <div class="card">
-  <form *ngIf="form" class="card-block row" [formGroup]="form">
+  <form *ngIf="form" class="card-block row" [formGroup]="form" (ngSubmit)="onSubmit($event)">
     <div class="col-6">
       <div class="form-group">
         <label class="form-control-label hq-required">维修项目</label>
@@ -86,8 +86,8 @@
 
     </div>
     <div class="col-12">
-      <button type="submit" [disabled]="submitting" class="btn btn-primary mr-2" (click)="onSubmit($event,true)">提交并关闭</button>
-      <button type="submit" [disabled]="submitting" class="btn btn-secondary mr-2" (click)="onSubmit($event,false)">提交并继续</button>      
+      <button type="submit" [disabled]="submitting" class="btn btn-primary mr-2">提交并关闭</button>
+      <button type="button" [disabled]="submitting" class="btn btn-secondary mr-2" (click)="onSubmit()">提交并继续</button>      
       <!--<button (click)="onReset()" class="btn btn-secondary mr-3">重置</button>-->
     </div>
   </form>
