@@ -1,6 +1,6 @@
 <div *ngIf="vehicles&&vehicles.length">
   <span>{{vehicles[0].name}}</span>
-  <button triggers="focus" placement="{{direction}}" [popover]="popTemplate" *ngIf="vehicles.length>1" class="trigger-btn">
+  <button (click)="$event.preventDefault();" triggers="focus" placement="bottom" [popover]="popTemplate" *ngIf="vehicles.length>1" class="trigger-btn">
   <i class="fa fa-ellipsis-h"></i>
   </button>
 </div>

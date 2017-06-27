@@ -1,6 +1,6 @@
 <div *ngIf="payment&&payment.length">
   <span>{{payment[0].name}}</span>
-  <button triggers="focus" placement="bottom" [popover]="popTemplate" *ngIf="payment.length>1" class="trigger-btn">
+  <button (click)="$event.preventDefault();" triggers="focus" placement="bottom" [popover]="popTemplate" *ngIf="payment.length>1" class="trigger-btn">
   <i class="fa fa-ellipsis-h"></i>
   </button>
 </div>

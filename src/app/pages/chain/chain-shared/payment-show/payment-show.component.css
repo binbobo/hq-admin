@@ -22,3 +22,6 @@ hq-payment-show .trigger-btn:active,hq-payment-show button:focus{
 　　background:none;
     outline: none;
 }
+hq-payment-show .popover.bs-tether-element-attached-top::after,hq-payment-show .popover.popover-bottom::after{
+    border-bottom-color: #f7f7f7;
+}

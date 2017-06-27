@@ -9,19 +9,8 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 export class PaymentShowComponent implements OnInit {
 
   public payment: Array<any>;
-  // private direction: any = "bottom";
   constructor() { }
 
   ngOnInit() {
   }
-  // onDirection(e) {
-  //   let dc = document.documentElement.clientHeight || document.body.clientHeight;
-  //   let sc = dc / 2;
-  //   if (e.clientY - sc > 0) {
-  //     this.direction = "top"
-  //   } else {
-  //     this.direction = "bottom"
-  //   }
-  // }
-
 }
