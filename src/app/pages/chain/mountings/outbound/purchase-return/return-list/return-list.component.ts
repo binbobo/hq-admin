@@ -149,7 +149,7 @@ export class ReturnListComponent extends DataList<PurchaseReturnItem> implements
           return this.returnService.get(data)
             .then(data => {
               this.printModel = data;
-              this.printer.print();
+              setTimeout(() => this.printer.print(), 300);
             })
         })
       })

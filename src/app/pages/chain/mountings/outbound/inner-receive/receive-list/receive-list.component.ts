@@ -77,7 +77,7 @@ export class ReceiveListComponent implements OnInit {
           this.receiveService.get(data)
             .then(data => {
               this.printModel = data;
-              this.printer.print();
+              setTimeout(() => this.printer.print(), 300);
             })
         })
       })

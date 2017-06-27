@@ -42,7 +42,7 @@ export class StockDetailComponent implements OnInit {
   }
 
   print() {
-    this.printer.print();
+    setTimeout(() => this.printer.print(), 300);
   }
   
   export(event: Event) {

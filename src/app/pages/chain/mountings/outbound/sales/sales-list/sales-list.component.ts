@@ -95,7 +95,7 @@ export class SalesListComponent implements OnInit {
           return this.salesService.get(code)
             .then(data => {
               this.printModel = data;
-              this.printer.print();
+              setTimeout(() => this.printer.print(), 300);
             })
         });
       })

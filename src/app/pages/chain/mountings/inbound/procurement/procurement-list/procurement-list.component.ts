@@ -119,7 +119,7 @@ export class ProcurementListComponent implements OnInit {
           this.procurementService.get(id)
             .then(data => {
               this.printModel = data;
-              this.printer.print();
+              setTimeout(() => this.printer.print(), 300);
             })
         });
       })

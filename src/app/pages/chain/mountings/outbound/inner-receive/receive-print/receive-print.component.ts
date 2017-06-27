@@ -22,6 +22,7 @@ export class ReceivePrintComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.model);
     this.orgService.getOrganization()
       .then(org => this.org = org)
       .catch(err => console.log(err));
