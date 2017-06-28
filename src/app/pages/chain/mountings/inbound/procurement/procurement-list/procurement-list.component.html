@@ -9,7 +9,7 @@
       <div class="input-group m-1">
         <label class="input-group-addon">供应商名称</label>
         <div>
-          <input hqProviderTypeahead (onSelect)="onProviderSelect($event)" [(ngModel)]="model.custName" name="custName" class="form-control"
+          <input hqProviderTypeahead="searchInfo" (onSelect)="onProviderSelect($event)" [(ngModel)]="model.custName" name="custName" class="form-control"
             placeholder="请输入供应商名称" required />
         </div>
       </div>
