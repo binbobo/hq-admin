@@ -17,6 +17,7 @@ export class PartssalesComponent extends DataList<any> {
   params: PartssalesRequest;
   detail;
   detailItems;
+  printTitle:string;
   detailItemsLength: number;
   isLoading: boolean = false;
   private stations: Array<any>;
@@ -67,7 +68,7 @@ export class PartssalesComponent extends DataList<any> {
       this.detail.createBillTime = createTime;
       this.detailItemsLength = data.length;
       this.detailItems = data;
-
+      this.printTitle=this.detailItems[0].amount>0?'销售出库单':'销售入库单';
       console.log('详情数据2', this.detail)
       el.show()
       ev.hqSpinner = false;

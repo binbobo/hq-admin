@@ -18,6 +18,7 @@ export class DistributeComponent extends DataList<any> {
   private distributeForm: FormGroup;
   detail;
   detailItems;
+  printTitle:string;
   detailItemsLength: number;
   isLoading: boolean = false;
   private stations: Array<any>;
@@ -55,6 +56,7 @@ export class DistributeComponent extends DataList<any> {
       this.detail.billCode = billCode;
       this.detailItemsLength = data.length;
       this.detailItems = data;
+      this.printTitle=this.detailItems[0].amount>0?'维修领料单':'维修退料单';
       bdModule.show();
       ev.hqSpinner = false;
     }).catch((err) => {

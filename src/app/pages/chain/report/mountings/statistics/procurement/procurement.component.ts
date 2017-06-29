@@ -18,6 +18,7 @@ export class ProcurementComponent extends DataList<any> {
   params: ProcurementRequest;
   detail;
   detailItems;
+  printTitle:string;
   detailItemsLength: number;
   isLoading: boolean = false;
   private stations: Array<any>;
@@ -63,7 +64,8 @@ export class ProcurementComponent extends DataList<any> {
       this.detail = data||{};
       this.detailItemsLength = data.items.length;
       this.detailItems = data.items;
-      console.log('详情数据', this.detail.items)
+      this.printTitle=this.detailItems[0].exTaxAmount>0?'采购入库单':'采购退库单';
+      console.log('详情数据', this.detailItems[0].exTaxAmount)
       el.show()
       ev.hqSpinner = false;
     }).catch(err => {

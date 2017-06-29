@@ -18,6 +18,7 @@ export class InnerReceiveComponent extends DataList<any> {
   params: ReceiveRequest;
   detail;
   detailItems;
+  printTitle:string;
   detailItemsLength: number;
   isLoading: boolean = false;
   private employees: Array<SelectOption>;
@@ -112,6 +113,7 @@ export class InnerReceiveComponent extends DataList<any> {
       this.detail.operator = operator;
       this.detailItemsLength = data.length;
       this.detailItems = data;
+      this.printTitle=this.detailItems[0].amount>0?'内部领料单':'内部退料单';
       el.show()
       ev.hqSpinner = false;
     }).catch(err => {
