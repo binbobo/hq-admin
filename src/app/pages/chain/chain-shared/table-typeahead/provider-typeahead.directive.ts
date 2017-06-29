@@ -28,6 +28,7 @@ export class ProviderTypeaheadDirective extends TableTypeaheadDirective {
   protected field: string = 'name';
 
   ngOnInit() {
+    this.field = this.field || 'searchInfo';
     this.source = (params: TypeaheadRequestParams) => {
       let request = new PagedParams();
       request[this.field] = params.text;
